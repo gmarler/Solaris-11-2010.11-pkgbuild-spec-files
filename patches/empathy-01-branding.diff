@@ -1,0 +1,46 @@
+--- empathy-2.24.1-ori/libempathy/empathy-contact-factory.c	2008-09-22 15:02:16.000000000 +0800
++++ empathy-2.24.1-my/libempathy/empathy-contact-factory.c	2008-11-06 16:09:44.209066000 +0800
+@@ -105,7 +105,8 @@
+ 	account = empathy_contact_get_account (contact);
+ 	tp_factory = empathy_contact_factory_get_tp_factory (factory, account);
+ 
+-	return empathy_tp_contact_factory_set_alias (tp_factory, contact, alias);
++	empathy_tp_contact_factory_set_alias (tp_factory, contact, alias);
++  return;
+ }
+ 
+ void
+@@ -119,8 +120,8 @@
+ 
+ 	tp_factory = empathy_contact_factory_get_tp_factory (factory, account);
+ 
+-	return empathy_tp_contact_factory_set_avatar (tp_factory,
+-						      data, size, mime_type);
++	empathy_tp_contact_factory_set_avatar (tp_factory, data, size, mime_type);
++  return;
+ }
+ 
+ static void
+--- empathy-2.24.1-ori/libempathy/Makefile.am	Thu Sep 25 15:07:50 2008
++++ empathy-2.24.1-my/libempathy/Makefile.am	Wed Nov  5 10:30:39 2008
+@@ -90,7 +90,7 @@
+ 
+ empathy-marshal.list: $(libempathy_la_SOURCES) Makefile.am
+ 	( cd $(srcdir) && \
+-	sed -n -e 's/.*empathy_marshal_\([[:upper:][:digit:]]*__[[:upper:][:digit:]_]*\).*/\1/p' \
++	/usr/gnu/bin/sed -n -e 's/.*empathy_marshal_\([[:upper:][:digit:]]*__[[:upper:][:digit:]_]*\).*/\1/p' \
+ 	$(libempathy_la_SOURCES) ) \
+ 	| sed -e 's/__/:/' -e 'y/_/,/' | sort -u > $@.tmp
+ 	if cmp -s $@.tmp $@; then \
+--- empathy-2.24.1-ori/src/Makefile.am	Tue Oct 21 01:28:37 2008
++++ empathy-2.24.1-my/src/Makefile.am	Wed Nov  5 10:37:22 2008
+@@ -13,7 +13,8 @@
+ 	$(top_builddir)/libempathy-gtk/libempathy-gtk.la	\
+ 	$(top_builddir)/libempathy/libempathy.la		\
+ 	$(top_builddir)/extensions/libemp-extensions.la		\
+-	$(EMPATHY_LIBS)
++	$(EMPATHY_LIBS) \
++	-lsocket
+ 
+ bin_PROGRAMS =			\
+ 	empathy			\

@@ -1,3 +1,9 @@
+2009-01-09  Rick Ju  <rick.ju@sun.com>
+
+	* SUNWempathy.spec, base-specs/empathy.spec
+	  copyright/SUNWempathy.copyright,
+	  patches/empathy-01-branding.diff: add empathy
+
 2009-01-08  Brian Cameron  <brian.cameron@sun.com>
 
 	* SFEgst-plugins-bad.spec, base-specs/gst-plugins-bad.spec,
