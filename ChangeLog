@@ -1,3 +1,9 @@
+2009-01-09  Brian Cameron  <brian.cameron@sun.com>
+
+	* SFEenlightenment.spec, patches/enlightenment-01-bourneshell.diff:
+	  Add patch so the startup script uses bourne shell syntax, so it
+	  works on Nevada.
+
 2009-01-09  Rick Ju  <rick.ju@sun.com>
 
 	* SUNWempathy.spec, base-specs/empathy.spec

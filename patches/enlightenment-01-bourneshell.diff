@@ -1,0 +1,18 @@
+--- e16-0.16.8.15/misc/starte16-orig	2009-01-10 03:02:14.937011000 -0600
++++ e16-0.16.8.15/misc/starte16	2009-01-10 03:02:33.648116000 -0600
+@@ -5,11 +5,13 @@ test -z "$s" && s=$0
+ 
+ case "$s" in
+ *gnome|GNOME)
+-	export WINDOW_MANAGER=e16
++	WINDOW_MANAGER=e16
++	export WINDOW_MANAGER
+ 	exec gnome-session
+ 	;;
+ *kde|KDE)
+-	export KDEWM=e16
++	KDEWM=e16
++	export KDEWM
+ 	exec startkde
+ 	;;
+ *)

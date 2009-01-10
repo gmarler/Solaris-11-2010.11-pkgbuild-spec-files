@@ -29,6 +29,7 @@ Release:      	%{pkg_release}
 License:      	GPLv2
 Group:          User Interface/Desktops
 Source:         %{sf_download}/enlightenment/%{src_name}.%{version}.tar.gz
+Patch1:         enlightenment-01-bourneshell.diff
 Vendor:       	Refer URL
 URL:            http://enlightenment.org
 Packager:     	SFE
@@ -53,6 +54,7 @@ Enlightenment - light weight X window manager
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 %prep 
 %setup -q -n %{src_name}.%{version}
+%patch1 -p1
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 # Build-Section 
@@ -106,6 +108,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/e16/*
 
 %changelog
+* Sat Jan 10 2008 - brian.cameron@sun.com
+- Add patch enlightenment-01-bourneshell.diff so the startup script uses
+  bourne shell syntax, so it works on Nevada.
 * Mon Jan 05 2008 - brian.cameron@sun.com
 - Bump to 16.8.15.  Fix packaging.
 * Tue Oct 22 2008 - Pradhap Devarajan <pradhap (at) gmail.com>
