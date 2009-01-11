@@ -1,3 +1,9 @@
+2008-01-07  Thomas Wagner  <tom68@users.sourceforge.net>
+
+	* SFEufraw.spec: temporarily force compiler to gcc,
+          add patch2 to change args to ctime_r, remove obsolete patch1
+          bump to 0.15
+
 2009-01-09  Brian Cameron  <brian.cameron@sun.com>
 
 	* SFEenlightenment.spec, patches/enlightenment-01-bourneshell.diff:

@@ -1,0 +1,12 @@
+--- ufraw_ufraw.c.orig	2009-01-10 01:15:51.012766000 +0100
++++ ufraw_ufraw.c	2009-01-10 01:41:58.684726120 +0100
+@@ -433,8 +433,7 @@
+      * Some (all?) versions of Solaris followed a draft POSIX.1c standard
+      * where ctime_r took a third length argument.
+      */
+-    ctime_r(&raw->timestamp, uf->conf->timestampText,
+-	    sizeof(uf->conf->timestampText));
++    ctime_r(&raw->timestamp, uf->conf->timestampText);
+ #else
+     /* POSIX.1c version of ctime_r() */
+     ctime_r(&raw->timestamp, uf->conf->timestampText);

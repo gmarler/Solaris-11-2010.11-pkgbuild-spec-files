@@ -3,18 +3,31 @@
 #
 # includes module(s): ufraw
 #
+# works: snv104 / pkgbuild 1.3.91 / Sun Ceres C 5.10 SunOS_i386 2008/10/22 / gcc 4.2.3
+
+
+##TODO## look for "application" directory is left empty - missing BuildRequire diabling an extension?
+##TODO## look for 64-bit build (might need reactivation of 64-bit SFElcms/other libs (in Nevada only older 32-bit version inluded)
+##TODO## check if SunStudio might be used
+##TODO## check if gcc 4.2.3 is needed (C++)
+
 %include Solaris.inc
+%define cc_is_gcc 1
+%define _gpp g++
+%include base.inc
 
 Name:                    SFEufraw
 Summary:                 Ufraw - Raw Photo Converter
-Version:                 0.12.1
+Version:                 0.15
 Source:                  %{sf_download}/ufraw/ufraw-%{version}.tar.gz
 URL:                     http://ufraw.sourceforge.net/
-Patch1:			 ufraw-01-ctime_r-fix.diff
+#Patch1:			 ufraw-01-ctime_r-fix.diff
+Patch2:			 ufraw-02-ctime_r_args.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
-BuildRequires: SUNWlcms-devel
+#BuildRequires: SUNWlcms-devel
+BuildRequires: SUNWlcms
 BuildRequires: SUNWgnome-libs-devel
 Requires: SUNWlcms
 Requires: SUNWgnome-libs
@@ -41,7 +54,8 @@ BuildRequires: SUNWperl584usr
 
 %prep
 %setup -q -n ufraw-%version
-%patch1 -p1
+#%patch1 -p1
+%patch2 -p0
 touch NEWS
 touch AUTHORS
 for f in *.[ch]; do dos2unix -ascii $f $f; done
@@ -51,14 +65,21 @@ CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
 if test "x$CPUS" = "x" -o $CPUS = 0; then
     CPUS=1
 fi
-export CFLAGS="%optflags -DSOLARIS"
-export LDFLAGS="%_ldflags"
+export CC=gcc
+export CXX=g++
+export LDFLAGS="%_ldflags  -L/usr/sfw/lib -R/usr/sfw/lib  -L/usr/gnu/lib -R/usr/gnu/lib"
 export POD2MAN=/usr/perl5/bin/pod2man
+
 %if %cc_is_gcc
+export CFLAGS="%gcc_optflags -DSOLARIS"
+export CXXFLAGS="%gcc_cxx_optflags"
 %else
 export CXX="${CXX} -norunpath"
+export CFLAGS="%optflags -DSOLARIS"
+export CXXFLAGS="%cxx_optflags"
 %endif
-export CXXFLASG="%cxx_optflags"
+
+
 autoconf
 ./configure --prefix=%{_prefix} --enable-extras --with-libexif \
 	--mandir=%{_mandir} --bindir=%{_bindir}         \
@@ -79,8 +100,10 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, bin) %{_bindir}
 %{_bindir}/*
 %dir %attr (0755, root, sys) %{_datadir}
-%dir %attr (0755, root, other) %{_datadir}/applications
-%{_datadir}/applications/*
+%attr (-, root, other) %{_datadir}/locale
+##TODO## check applications directory
+#%dir %attr (0755, root, other) %{_datadir}/applications
+#%{_datadir}/applications/*
 %dir %attr (0755, root, other) %{_datadir}/pixmaps
 %{_datadir}/pixmaps/*
 %dir %attr (0755, root, bin) %{_mandir}
@@ -90,6 +113,11 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Jan  9 2008 - Thomas Wagner
+- temporarily force compiler to gcc
+- add patch2 to change args to ctime_r ... needs check about patch1
+- remove obsolete patch1 which is really about configure.ac
+- bump to 0.15
 * Wed Oct 17 2007 - laca@sun.com
 - bump to 0.12.1
 * Wed Jul  5 2006 - laca@sun.com
