@@ -1,0 +1,10 @@
+--- SDL_perl-1.20.0/Makefile.PL.orig	2009-01-11 13:58:47.268833300 +0800
++++ SDL_perl-1.20.0/Makefile.PL	2009-01-11 13:58:53.751955775 +0800
+@@ -8,6 +8,7 @@
+ 	linux 	=> "Makefile.linux",
+ 	win 	=> "Makefile.win32",
+ 	freebsd => "Makefile.freebsd",
++	solaris => "Makefile.linux",
+ );
+ 
+ #

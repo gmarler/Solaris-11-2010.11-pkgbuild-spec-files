@@ -1,0 +1,191 @@
+--- frozen-bubble-2.2.0/server/Makefile.orig	2009-01-09 16:02:09.051148895 +0800
++++ frozen-bubble-2.2.0/server/Makefile	2009-01-09 16:03:41.730372249 +0800
+@@ -1,8 +1,10 @@
+ include ../settings.mk
+ 
+-CFLAGS ?= -g -Wall -Werror -pipe
++#CFLAGS ?= -g -Wall -Werror -pipe
++CFLAGS ?= -g
+ CPPFLAGS += -I. `pkg-config glib-2.0 --cflags` -DVERSION=\"$(shell cat ../VERSION)\"
+ LDLIBS = `pkg-config glib-2.0 --libs`
++LDLIBS += -lsocket -lnsl
+ 
+ ALLSRC = fb-server.c log.c tools.c game.c net.c
+ ALLOBJ = $(subst .c,.o,$(ALLSRC))
+--- frozen-bubble-2.2.0/c_stuff/fb_c_stuff.xs.orig	2009-01-09 15:58:46.499384798 +0800
++++ frozen-bubble-2.2.0/c_stuff/fb_c_stuff.xs	2009-01-09 17:56:25.835228162 +0800
+@@ -94,8 +94,28 @@
+ 
+ /* -------------- Double Store ------------------ */
+ 
++#if 0
++#define copy_line(l) memcpy(s->pixels + l*img->pitch, img->pixels + l*img->pitch, img->pitch)
++#define copy_column(c) \
++{                      \
++	int bpp = img->format->BytesPerPixel; \
++	for (y=0; y<YRES; y++) \
++		memcpy(s->pixels + y*img->pitch + c*bpp, img->pixels + y*img->pitch + c*bpp, bpp); \
++}
++#endif
++
++void copy_line(int l, SDL_Surface * s, SDL_Surface * img) {
++	memcpy(s->pixels + l*img->pitch, img->pixels + l*img->pitch, img->pitch);
++}
++void copy_column(int c, SDL_Surface * s, SDL_Surface * img) {
++	int bpp = img->format->BytesPerPixel;
++	for (y=0; y<YRES; y++)
++		memcpy(s->pixels + y*img->pitch + c*bpp, img->pixels + y*img->pitch + c*bpp, bpp);
++}
++
+ void store_effect(SDL_Surface * s, SDL_Surface * img)
+ {
++#if 0
+ 	void copy_line(int l) {
+ 		memcpy(s->pixels + l*img->pitch, img->pixels + l*img->pitch, img->pitch);
+ 	}
+@@ -104,6 +124,7 @@
+ 		for (y=0; y<YRES; y++)
+ 			memcpy(s->pixels + y*img->pitch + c*bpp, img->pixels + y*img->pitch + c*bpp, bpp);
+ 	}
++#endif
+ 
+ 	int step = 0;
+ 	int store_thickness = 15;
+@@ -116,8 +137,8 @@
+ 			for (i=0; i<=YRES/2/store_thickness; i++) {
+ 				int v = step - i;
+ 				if (v >= 0 && v < store_thickness) {
+-					copy_line(i*store_thickness + v);
+-					copy_line(YRES - 1 - (i*store_thickness + v));
++					copy_line(i*store_thickness + v, s, img);
++					copy_line(YRES - 1 - (i*store_thickness + v), s, img);
+ 				}
+ 			}
+ 			step++;
+@@ -133,8 +154,8 @@
+ 			for (i=0; i<=XRES/2/store_thickness; i++) {
+ 				int v = step - i;
+ 				if (v >= 0 && v < store_thickness) {
+-					copy_column(i*store_thickness + v);
+-					copy_column(XRES - 1 - (i*store_thickness + v));
++					copy_column(i*store_thickness + v, s, img);
++					copy_column(XRES - 1 - (i*store_thickness + v), s, img);
+ 				}
+ 			}
+ 			step++;
+@@ -175,9 +196,21 @@
+ 
+ 
+ /* -------------- Squares ------------------ */
++int fillrect(int i, int j, SDL_Surface * s, SDL_Surface * img) {
++	int bpp = img->format->BytesPerPixel;
++	const int squares_size = 32;
++	int c, v;
++	if (i >= XRES/squares_size || j >= YRES/squares_size)
++		return 0;
++	v = i*squares_size*bpp + j*squares_size*img->pitch;
++	for (c=0; c<squares_size; c++)
++		memcpy(s->pixels + v + c*img->pitch, img->pixels + v + c*img->pitch, squares_size*bpp);
++	return 1;
++}
+ 
+ void squares_effect(SDL_Surface * s, SDL_Surface * img)
+ {
++#if 0
+ 	int bpp = img->format->BytesPerPixel;
+ 	const int squares_size = 32;
+ 
+@@ -190,6 +223,7 @@
+ 			memcpy(s->pixels + v + c*img->pitch, img->pixels + v + c*img->pitch, squares_size*bpp);
+ 		return 1;
+ 	}
++#endif
+ 
+ 	int still_moving = 1;
+ 
+@@ -200,7 +234,7 @@
+ 
+ 		still_moving = 0;
+ 		for (j=i; j>=0; j--) {
+-			if (fillrect(j, k))
++			if (fillrect(j, k, s, img))
+ 				still_moving = 1;
+ 			k++;
+ 		}
+@@ -212,11 +246,12 @@
+ 
+ /* -------------- Circle ------------------ */
+ 
++#define sqr(v) (v)*(v)
+ int * circle_steps;
+ const int circle_max_steps = 40;
+ void circle_init(void)
+ {
+-	int sqr(int v) { return v*v; }
++//	int sqr(int v) { return v*v; }
+ 
+ 	circle_steps = malloc(XRES * YRES * sizeof(int));
+ 	if (!circle_steps)
+@@ -758,7 +793,7 @@
+ 	myUnlockSurface(dest);
+ }
+ 
+-float sqr(float a) { return a*a; }
++//float sqr(float a) { return a*a; }
+ 
+ void enlighten_(SDL_Surface * dest, SDL_Surface * orig, int offset)
+ {
+@@ -939,6 +974,7 @@
+ struct point { double x; double y; double angle; };
+ 
+ #define min(a,b) ( (a) < (b) ? (a) : (b) )
++#define max(a,b) ( (a) > (b) ? (a) : (b) )
+ 
+ void points_(SDL_Surface * dest, SDL_Surface * orig, SDL_Surface * mask)
+ {
+@@ -1276,7 +1312,8 @@
+ 	myLockSurface(orig);
+ 	myLockSurface(dest);
+         for (x = 0; x < dest->w; x++) {
+-                double y_factor = 1 - ((double)step) / 150 * MIN(pivot, abs(x - pivot) + pivot/3) / pivot;
++//                double y_factor = 1 - ((double)step) / 150 * MIN(pivot, abs(x - pivot) + pivot/3) / pivot;
++                double y_factor = 1 - ((double)step) / 150 * min(pivot, abs(x - pivot) + pivot/3) / pivot;
+                 double x__ = pivot + (x - pivot) * x_factor;
+                 x_ = floor(x__);
+                 ptr = dest->pixels + x*Bpp;
+@@ -1297,7 +1334,8 @@
+                                 C = orig->pixels + x_*Bpp     + (y_+1)*orig->pitch;
+                                 D = orig->pixels + (x_+1)*Bpp + (y_+1)*orig->pitch;
+                                 a = (geta(A) * ( 1 - dx ) + geta(B) * dx) * ( 1 - dy ) + (geta(C) * ( 1 - dx ) + geta(D) * dx) * dy;
+-                                * ( ptr + Adec ) = MAX(a * shading, * (ptr + Adec ) * fade);
++                                * ( ptr + Adec ) = max(a * shading, * (ptr + Adec ) * fade);
++//                                * ( ptr + Adec ) = MAX(a * shading, * (ptr + Adec ) * fade);
+                         }
+                         ptr += dest->pitch;
+ 		}
+@@ -1390,9 +1428,12 @@
+                         }
+                 }
+                 for (x = 0; x < orig_flake_w; x++) {
+-                        ptr = dest->pixels + (x_ + x) * Bpp + MAX(0, y_) * dest->pitch;
+-                        orig_ptr = orig->pixels + (x_ + x) * Bpp + MAX(0, y_) * orig->pitch;
+-                        for (y = MAX(0, -y_); y < orig_flake_h; y++) {
++//                        ptr = dest->pixels + (x_ + x) * Bpp + MAX(0, y_) * dest->pitch;
++                        ptr = dest->pixels + (x_ + x) * Bpp + max(0, y_) * dest->pitch;
++//                        orig_ptr = orig->pixels + (x_ + x) * Bpp + MAX(0, y_) * orig->pitch;
++                        orig_ptr = orig->pixels + (x_ + x) * Bpp + max(0, y_) * orig->pitch;
++//                        for (y = MAX(0, -y_); y < orig_flake_h; y++) {
++                        for (y = max(0, -y_); y < orig_flake_h; y++) {
+                                 // 1. bilinear filter orig_flake for smooth subpixel movement
+                                 Uint32 *A = orig_flake + x + y*orig_flake_pitch;
+                                 Uint32 *B = orig_flake + (x+1) + y*orig_flake_pitch;
+--- frozen-bubble-2.2.0/c_stuff/Makefile.PL.orig	2009-01-09 15:56:41.064520229 +0800
++++ frozen-bubble-2.2.0/c_stuff/Makefile.PL	2009-01-12 14:13:03.734168565 +0800
+@@ -77,6 +77,6 @@
+     'VERSION_FROM' => 'fb_c_stuff.pm', # finds VERSION
+     'OBJECT'       => 'fb_c_stuff.o',
+     'INC'          => chomp_(`sdl-config --cflags`) . ' ' . chomp_(`pkg-config SDL_Pango --cflags`) . ' -I.',
+-    'OPTIMIZE'     => '-O2 -Wall',
++    'OPTIMIZE'     => '-xO2',
+     'MAKEFILE'     => 'Makefile_c',
+ );

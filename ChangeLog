@@ -1,3 +1,12 @@
+2009-01-12  Alfred Peng  <alfred.peng@sun.com>
+
+	* SFEsdl-perl.spec: Added.
+	* patches/sdl-perl-01-solaris.diff: Added.
+	Multimedia binding for Perl, using the Simple DirectMedia Layer and OpenGL.
+	* SFEfrozen-bubble.spec: Added.
+	* patches/frozen-bubble-01-build-sun-studio.diff: Added.
+	Colorful 3D rendered bubble shooting game.
+
 2008-01-07  Thomas Wagner  <tom68@users.sourceforge.net>
 
 	* SFEufraw.spec: temporarily force compiler to gcc,
