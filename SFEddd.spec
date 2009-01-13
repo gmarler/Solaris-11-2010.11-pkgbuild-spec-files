@@ -7,8 +7,9 @@
 
 Name:                SFEddd
 Summary:             graphical front-end for CLI debuggers
-Version:             3.3.11
-Source:              http://ftp.gnu.org/gnu/ddd/ddd-%{version}.tar.gz
+Version:             3.3.12-test6
+Source:              http://www.mirrorservice.org/sites/download.sourceforge.net/pub/sourceforge/b/ba/bashdb/ddd-%{version}.tar.gz
+#Source:              http://ftp.gnu.org/gnu/ddd/ddd-%{version}.tar.gz
 
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
@@ -82,8 +83,8 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, bin) %{_bindir}
 %{_bindir}/*
 %dir %attr (0755, root, sys) %{_datadir}
-%dir %attr (0755, root, other) %{_datadir}/ddd-3.3.11
-%{_datadir}/ddd-3.3.11/*
+%dir %attr (0755, root, other) %{_datadir}/ddd-3.3.12-test6
+%{_datadir}/ddd-3.3.12-test6/*
 %dir %attr(0755, root, bin) %{_datadir}/info
 %{_datadir}/info/*
 %dir %attr (0755, root, bin) %{_mandir}

@@ -1,3 +1,7 @@
+2009-01-13 Erwann Chenede - <erwann.chenede@sun.com>
+
+	* SFEddd.spec: bumped to 3.3.12-test6 to support pydb
+
 2009-01-12  Alfred Peng  <alfred.peng@sun.com>
 
 	* SFEsdl-perl.spec: Added.
