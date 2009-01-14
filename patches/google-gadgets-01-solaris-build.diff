@@ -1,0 +1,696 @@
+Index: xdg/Makefile.am
+===================================================================
+--- xdg/Makefile.am	(revision 1038)
++++ xdg/Makefile.am	(working copy)
+@@ -23,6 +23,7 @@
+ intl_desktop_file_CPPFLAGS= $(PREDEFINED_MACROS)
+ intl_desktop_file_CXXFLAGS= $(DEFAULT_COMPILE_FLAGS)
+ intl_desktop_file_LDADD= $(top_builddir)/ggadget/libggadget@GGL_EPOCH@.la
++intl_desktop_file_LDFLAGS = -lsocket
+ 
+ if GGL_DISABLE_SHARED
+ intl_desktop_file_LDADD += \
+Index: extensions/linux_system_framework/machine.cc
+===================================================================
+--- extensions/linux_system_framework/machine.cc	(revision 1038)
++++ extensions/linux_system_framework/machine.cc	(working copy)
+@@ -144,7 +144,7 @@
+ }
+ 
+ void Machine::InitArchInfo() {
+-  utsname name;
++  struct utsname name;
+   if (uname(&name) == -1) { // indicates error when -1 is returned.
+     sysinfo_[CPU_ARCH] = "";
+     return;
+Index: extensions/linux_system_framework/process.cc
+===================================================================
+--- extensions/linux_system_framework/process.cc	(revision 1038)
++++ extensions/linux_system_framework/process.cc	(working copy)
+@@ -18,6 +18,8 @@
+ #include <dirent.h>
+ #include <cstdlib>
+ 
++#include <unistd.h>
++
+ #ifdef HAVE_X11
+ #include <X11/Xlib.h>
+ #include <X11/Xatom.h>
+Index: extensions/linux_system_framework/user.cc
+===================================================================
+--- extensions/linux_system_framework/user.cc	(revision 1038)
++++ extensions/linux_system_framework/user.cc	(working copy)
+@@ -160,7 +160,8 @@
+     int new_state = 0;
+     while (fgets(line, sizeof(line), interrupt_file)) {
+       for (size_t i = 0; i < input_devices_.size(); i++) {
+-        if (strcasestr(line, input_devices_[i].c_str()) != NULL) {
++//        if (strcasestr(line, input_devices_[i].c_str()) != NULL) {
++        if (strstr(line, input_devices_[i].c_str()) != NULL) {
+           new_state = GetHash(new_state, line);
+           break;
+         }
+Index: extensions/linux_system_framework/runtime.cc
+===================================================================
+--- extensions/linux_system_framework/runtime.cc	(revision 1038)
++++ extensions/linux_system_framework/runtime.cc	(working copy)
+@@ -25,7 +25,7 @@
+ 
+ Runtime::Runtime() {
+   struct utsname uts;
+-  if (uname(&uts)) {
++  if (uname(&uts) == -1) {
+     DLOG("Failed to get the system information.");
+     os_name_ = GGL_PLATFORM;
+   } else {
+Index: extensions/linux_system_framework/Makefile.am
+===================================================================
+--- extensions/linux_system_framework/Makefile.am	(revision 1038)
++++ extensions/linux_system_framework/Makefile.am	(working copy)
+@@ -17,7 +17,7 @@
+ EXTRA_DIST = CMakeLists.txt
+ 
+ # libggadget-dbus is mandatory for linux-system-framework.
+-if GGL_HOST_LINUX
++if GGL_HOST_SOLARIS
+ 
+ # Putting . into SBUDIRS list to force building current directory first.
+ SUBDIRS = . tests
+Index: extensions/google_gadget_manager/gadgets_metadata.h
+===================================================================
+--- extensions/google_gadget_manager/gadgets_metadata.h	(revision 1038)
++++ extensions/google_gadget_manager/gadgets_metadata.h	(working copy)
+@@ -27,6 +27,7 @@
+ class FileManagerInterface;
+ class XMLHttpRequestInterface;
+ template <typename R, typename P1, typename P2> class Slot2;
++template <typename P1, typename P2> class Slot2 <void, P1, P2>;
+ 
+ namespace google {
+ 
+Index: extensions/gtkmoz_browser_element/browser_element.cc
+===================================================================
+--- extensions/gtkmoz_browser_element/browser_element.cc	(revision 1038)
++++ extensions/gtkmoz_browser_element/browser_element.cc	(working copy)
+@@ -372,12 +372,19 @@
+   }
+ 
+   void Write(int fd, const char *data, size_t size) {
+-    sig_t old_handler = signal(SIGPIPE, OnSigPipe);
++    struct sigaction act, old_act;
++    act.sa_handler = SIG_IGN;
++    act.sa_flags = SA_ONSTACK;
++    if (sigaction(SIGPIPE, &act, &old_act) < 0)
++      return;
++//    sig_t old_handler = signal(SIGPIPE, OnSigPipe);
+     if (write(fd, data, size) < 0) {
+       LOG("Failed to write to pipe");
+       StopChild(true);
+     }
+-    signal(SIGPIPE, old_handler);
++    if (sigaction(SIGPIPE, &old_act, NULL) < 0)
++      return;
++//    signal(SIGPIPE, old_handler);
+   }
+ 
+   static BrowserController *instance_;
+Index: extensions/gtkmoz_browser_element/Makefile.am
+===================================================================
+--- extensions/gtkmoz_browser_element/Makefile.am	(revision 1038)
++++ extensions/gtkmoz_browser_element/Makefile.am	(working copy)
+@@ -53,9 +53,9 @@
+ 				  browser_child_internal.cc \
+ 				  ../smjs_script_runtime/libmozjs_glue.cc
+ 
+-gtkmoz_browser_child_CXXFLAGS	= $(DEFAULT_COMPILE_FLAGS) \
+-				  -Wno-non-virtual-dtor \
+-				  -fno-strict-aliasing
++gtkmoz_browser_child_CXXFLAGS	= $(DEFAULT_COMPILE_FLAGS)
++#				  -Wno-non-virtual-dtor \
++#				  -fno-strict-aliasing
+ 
+ gtkmoz_browser_child_CPPFLAGS	= $(GTK2_CFLAGS) \
+ 				  $(GTKMOZEMBED_CFLAGS) \
+Index: extensions/gst_audio_framework/gst_audio_framework.cc
+===================================================================
+--- extensions/gst_audio_framework/gst_audio_framework.cc	(revision 1038)
++++ extensions/gst_audio_framework/gst_audio_framework.cc	(working copy)
+@@ -43,7 +43,7 @@
+ 
+ static const char *kGstAudioSinks[] = {
+   GGL_DEFAULT_GST_AUDIO_SINK,
+-#if GGL_HOST_LINUX
++#if GGL_HOST_SOLARIS
+   "alsasink",
+   "osssink",
+ #endif
+Index: extensions/curl_xml_http_request/curl_xml_http_request.cc
+===================================================================
+--- extensions/curl_xml_http_request/curl_xml_http_request.cc	(revision 1038)
++++ extensions/curl_xml_http_request/curl_xml_http_request.cc	(working copy)
+@@ -202,11 +202,14 @@
+     }
+ 
+     if (is_https) {
++      curl_easy_setopt(curl_, CURLOPT_SSL_VERIFYPEER, 0);
++#if 0
+       curl_easy_setopt(curl_, CURLOPT_SSL_VERIFYPEER, 1);
+       curl_easy_setopt(curl_, CURLOPT_SSL_VERIFYHOST, 2);
+       // Older versions of libcurl's ca bundle file is also very old, so add
+       // OpenSSL's cert directory. Only for Linux and libcurl-openssl config.
+       curl_easy_setopt(curl_, CURLOPT_CAPATH, "/etc/ssl/certs");
++#endif
+     }
+ 
+     if (!default_user_agent_.empty())
+Index: extensions/gst_video_element/gst_video_element.cc
+===================================================================
+--- extensions/gst_video_element/gst_video_element.cc	(revision 1038)
++++ extensions/gst_video_element/gst_video_element.cc	(working copy)
+@@ -66,7 +66,7 @@
+ 
+ static const char *kGstAudioSinks[] = {
+   GGL_DEFAULT_GST_AUDIO_SINK,
+-#if GGL_HOST_LINUX
++#if GGL_HOST_SOLARIS
+   "alsasink",
+   "osssink",
+ #endif
+Index: extensions/gst_video_element/gadget_videosink.cc
+===================================================================
+--- extensions/gst_video_element/gadget_videosink.cc	(revision 1038)
++++ extensions/gst_video_element/gadget_videosink.cc	(working copy)
+@@ -17,6 +17,10 @@
+ #include "gadget_videosink.h"
+ #include <pthread.h>
+ 
++#include <string.h>
++
++#define GST_FUNCTION __FILE__
++
+ namespace ggadget {
+ namespace gst {
+ 
+Index: extensions/smjs_script_runtime/json.cc
+===================================================================
+--- extensions/smjs_script_runtime/json.cc	(revision 1038)
++++ extensions/smjs_script_runtime/json.cc	(working copy)
+@@ -149,7 +149,7 @@
+                        std::vector<jsval> *stack) {
+   switch (JS_TypeOfValue(cx, js_val)) {
+     case JSTYPE_OBJECT:
+-      if (find(stack->begin(), stack->end(), js_val) != stack->end()) {
++      if (std::find(stack->begin(), stack->end(), js_val) != stack->end()) {
+         // Break the infinite reference loops.
+         (*json) += "null";
+       } else {
+Index: hosts/gtk/sidebar_gtk_host.cc
+===================================================================
+--- hosts/gtk/sidebar_gtk_host.cc	(revision 1038)
++++ hosts/gtk/sidebar_gtk_host.cc	(working copy)
+@@ -142,7 +142,7 @@
+       gadget_manager_(GetGadgetManager()),
+       on_new_gadget_instance_connection_(NULL),
+       on_remove_gadget_instance_connection_(NULL),
+-#if GTK_CHECK_VERSION(2,10,0) && defined(GGL_HOST_LINUX)
++#if GTK_CHECK_VERSION(2,10,0) && defined(GGL_HOST_SOLARIS)
+       status_icon_(NULL),
+       status_icon_menu_(NULL),
+ #endif
+@@ -223,7 +223,7 @@
+ 
+     delete sidebar_;
+ 
+-#if GTK_CHECK_VERSION(2,10,0) && defined(GGL_HOST_LINUX)
++#if GTK_CHECK_VERSION(2,10,0) && defined(GGL_HOST_SOLARIS)
+     g_object_unref(G_OBJECT(status_icon_));
+     if (status_icon_menu_)
+       gtk_widget_destroy(status_icon_menu_);
+@@ -427,7 +427,7 @@
+   }
+ 
+   void OnSideBarClose() {
+-#if GTK_CHECK_VERSION(2,10,0) && defined(GGL_HOST_LINUX)
++#if GTK_CHECK_VERSION(2,10,0) && defined(GGL_HOST_SOLARIS)
+     closed_ = true;
+     ShowOrHideSideBar(false);
+ #else
+@@ -654,7 +654,7 @@
+     // AdjustSideBar() will be called by this function.
+     OnWorkAreaChange();
+ 
+-#if GTK_CHECK_VERSION(2,10,0) && defined(GGL_HOST_LINUX)
++#if GTK_CHECK_VERSION(2,10,0) && defined(GGL_HOST_SOLARIS)
+     std::string icon_data;
+     if (GetGlobalFileManager()->ReadFile(kGadgetsIcon, &icon_data)) {
+       GdkPixbuf *icon_pixbuf = LoadPixbufFromData(icon_data);
+@@ -683,7 +683,7 @@
+                      G_CALLBACK(DragObserverButtonReleaseHandler), this);
+   }
+ 
+-#if GTK_CHECK_VERSION(2,10,0) && defined(GGL_HOST_LINUX)
++#if GTK_CHECK_VERSION(2,10,0) && defined(GGL_HOST_SOLARIS)
+   void UpdateStatusIconTooltip() {
+     if (hotkey_grabber_.IsGrabbing()) {
+       gtk_status_icon_set_tooltip(status_icon_,
+@@ -1265,7 +1265,7 @@
+ 
+   void ShowOrHideSideBar(bool show) {
+     DLOG("ShowOrHideSideBar(%d)", show);
+-#if GTK_CHECK_VERSION(2,10,0) && defined(GGL_HOST_LINUX)
++#if GTK_CHECK_VERSION(2,10,0) && defined(GGL_HOST_SOLARIS)
+     if (show && !closed_) {
+       sidebar_->Restore();
+       // AdjustSideBar() will be called by OnSideBarResized().
+@@ -1641,7 +1641,7 @@
+       hotkey_grabber_.SetHotKey(hotkey);
+       // The hotkey will not be enabled if it's invalid.
+       hotkey_grabber_.SetEnableGrabbing(true);
+-#if GTK_CHECK_VERSION(2,10,0) && defined(GGL_HOST_LINUX)
++#if GTK_CHECK_VERSION(2,10,0) && defined(GGL_HOST_SOLARIS)
+       UpdateStatusIconTooltip();
+ #endif
+     }
+@@ -1812,7 +1812,7 @@
+     return FALSE;
+   }
+ 
+-#if GTK_CHECK_VERSION(2,10,0) && defined(GGL_HOST_LINUX)
++#if GTK_CHECK_VERSION(2,10,0) && defined(GGL_HOST_SOLARIS)
+   static void StatusIconActivateHandler(GtkWidget *widget, Impl *impl) {
+     if (!impl->gadgets_shown_ ||
+         (!impl->closed_ && impl->sidebar_->IsMinimized()))
+@@ -1914,7 +1914,7 @@
+   Connection *on_new_gadget_instance_connection_;
+   Connection *on_remove_gadget_instance_connection_;
+ 
+-#if GTK_CHECK_VERSION(2,10,0) && defined(GGL_HOST_LINUX)
++#if GTK_CHECK_VERSION(2,10,0) && defined(GGL_HOST_SOLARIS)
+   GtkStatusIcon *status_icon_;
+   GtkWidget *status_icon_menu_;
+ #endif
+@@ -1931,7 +1931,7 @@
+                    debug_console_config)) {
+   impl_->SetupUI();
+   impl_->LoadGadgets();
+-#if !GTK_CHECK_VERSION(2,10,0) || !defined(GGL_HOST_LINUX)
++#if !GTK_CHECK_VERSION(2,10,0) || !defined(GGL_HOST_SOLARIS)
+   impl_->sidebar_host_->ShowView(false, 0, NULL);
+ #endif
+   impl_->ShowOrHideSideBar(impl_->gadgets_shown_ && !impl_->closed_);
+Index: hosts/gtk/simple_gtk_host.cc
+===================================================================
+--- hosts/gtk/simple_gtk_host.cc	(revision 1038)
++++ hosts/gtk/simple_gtk_host.cc	(working copy)
+@@ -142,7 +142,7 @@
+     }
+ 
+     gtk_widget_destroy(host_menu_);
+-#if GTK_CHECK_VERSION(2,10,0) && defined(GGL_HOST_LINUX)
++#if GTK_CHECK_VERSION(2,10,0) && defined(GGL_HOST_SOLARIS)
+     g_object_unref(G_OBJECT(status_icon_));
+ #else
+     gtk_widget_destroy(main_widget_);
+@@ -193,7 +193,7 @@
+                          NewSlot(this, &Impl::ExitMenuCallback),
+                          MenuInterface::MENU_ITEM_PRI_HOST);
+ 
+-#if GTK_CHECK_VERSION(2,10,0) && defined(GGL_HOST_LINUX)
++#if GTK_CHECK_VERSION(2,10,0) && defined(GGL_HOST_SOLARIS)
+     // FIXME:
+     std::string icon_data;
+     if (GetGlobalFileManager()->ReadFile(kGadgetsIcon, &icon_data)) {
+@@ -227,7 +227,7 @@
+ #endif
+   }
+ 
+-#if GTK_CHECK_VERSION(2,10,0) && defined(GGL_HOST_LINUX)
++#if GTK_CHECK_VERSION(2,10,0) && defined(GGL_HOST_SOLARIS)
+   void UpdateStatusIconTooltip() {
+     if (hotkey_grabber_.IsGrabbing()) {
+       gtk_status_icon_set_tooltip(status_icon_,
+@@ -438,7 +438,7 @@
+       hotkey_grabber_.SetEnableGrabbing(true);
+       if (options_)
+         options_->PutInternalValue(kOptionHotKey, Variant(hotkey));
+-#if GTK_CHECK_VERSION(2,10,0) && defined(GGL_HOST_LINUX)
++#if GTK_CHECK_VERSION(2,10,0) && defined(GGL_HOST_SOLARIS)
+       UpdateStatusIconTooltip();
+ #endif
+     }
+@@ -779,7 +779,7 @@
+     return true;
+   }
+ 
+-#if GTK_CHECK_VERSION(2,10,0) && defined(GGL_HOST_LINUX)
++#if GTK_CHECK_VERSION(2,10,0) && defined(GGL_HOST_SOLARIS)
+   static void StatusIconPopupMenuHandler(GtkWidget *widget, guint button,
+                                          guint activate_time,
+                                          gpointer user_data) {
+@@ -849,7 +849,7 @@
+   GadgetManagerInterface *gadget_manager_;
+   Connection *on_new_gadget_instance_connection_;
+   Connection *on_remove_gadget_instance_connection_;
+-#if GTK_CHECK_VERSION(2,10,0) && defined(GGL_HOST_LINUX)
++#if GTK_CHECK_VERSION(2,10,0) && defined(GGL_HOST_SOLARIS)
+   GtkStatusIcon *status_icon_;
+ #else
+   GtkWidget *main_widget_;
+Index: hosts/gtk/main.cc
+===================================================================
+--- hosts/gtk/main.cc	(revision 1038)
++++ hosts/gtk/main.cc	(working copy)
+@@ -65,7 +65,7 @@
+   "gst-video-element",
+   "gtk-system-framework",
+   "gst-audio-framework",
+-#ifdef GGL_HOST_LINUX
++#ifdef GGL_HOST_SOLARIS
+   "linux-system-framework",
+ #endif
+   "smjs-script-runtime",
+@@ -444,8 +444,8 @@
+ 
+   // Puth the process into background in the early stage to prevent from
+   // printing any log messages.
+-  if (g_arguments.background)
+-    ggadget::Daemonize();
++//  if (g_arguments.background)
++//    ggadget::Daemonize();
+ 
+   // Set global file manager.
+   ggadget::SetupGlobalFileManager(profile_dir.c_str());
+Index: ggadget/audioclip_interface.h
+===================================================================
+--- ggadget/audioclip_interface.h	(revision 1038)
++++ ggadget/audioclip_interface.h	(working copy)
+@@ -24,6 +24,7 @@
+ 
+ class Connection;
+ template <typename R, typename P1> class Slot1;
++template <typename P1> class Slot1 <void, P1>;
+ 
+ namespace framework {
+ 
+Index: ggadget/variant.h
+===================================================================
+--- ggadget/variant.h	(revision 1038)
++++ ggadget/variant.h	(working copy)
+@@ -30,6 +30,11 @@
+ class Slot;
+ class Connection;
+ 
++static const std::string kNullString("(nil)");;
++static const UTF16Char kNullUTF16StringValue[] =
++	        { '(', 'n', 'i', 'l', ')', 0 };
++static const UTF16String kNullUTF16String(kNullUTF16StringValue);
++
+ /**
+  * @defgroup Variant Variant
+  * @ingroup ScriptableFoundation
+@@ -334,8 +339,8 @@
+   // Constants to indicate if a string value is a null pointer.
+   // This depends on the value sharing behavior of the basic_string template
+   // in the standard C++ library.
+-  static const std::string kNullString;
+-  static const UTF16String kNullUTF16String;
++//  static const std::string kNullString;
++//  static const UTF16String kNullUTF16String;
+ 
+   // Value of the Variant.
+   union {
+@@ -540,7 +545,8 @@
+       return NULL;
+     const std::string *s =
+         reinterpret_cast<const std::string *>(&v.v_.string_place_);
+-    return s->c_str() == Variant::kNullString.c_str() ? NULL : s->c_str();
++//    return s->c_str() == Variant::kNullString.c_str() ? NULL : s->c_str();
++    return s->c_str() == kNullString.c_str() ? NULL : s->c_str();
+   }
+ };
+ 
+@@ -558,7 +564,8 @@
+       return "";
+     const std::string *s =
+         reinterpret_cast<const std::string *>(&v.v_.string_place_);
+-    return s->c_str() == Variant::kNullString.c_str() ? std::string() : *s;
++//    return s->c_str() == Variant::kNullString.c_str() ? std::string() : *s;
++    return s->c_str() == kNullString.c_str() ? std::string() : *s;
+   }
+ };
+ 
+@@ -591,7 +598,8 @@
+       return NULL;
+     const UTF16String *s =
+         reinterpret_cast<const UTF16String *>(&v.v_.utf16_string_place_);
+-    return s->c_str() == Variant::kNullUTF16String.c_str() ? NULL : s->c_str();
++//    return s->c_str() == Variant::kNullUTF16String.c_str() ? NULL : s->c_str();
++    return s->c_str() == kNullUTF16String.c_str() ? NULL : s->c_str();
+   }
+ };
+ 
+@@ -609,7 +617,8 @@
+       return UTF16String();
+     const UTF16String *s =
+         reinterpret_cast<const UTF16String *>(&v.v_.utf16_string_place_);
+-    return s->c_str() == Variant::kNullUTF16String.c_str() ?
++//    return s->c_str() == Variant::kNullUTF16String.c_str() ?
++    return s->c_str() == kNullUTF16String.c_str() ?
+            UTF16String() : *s;
+   }
+ };
+@@ -641,7 +650,8 @@
+       return JSONString("");
+     const std::string *s =
+         reinterpret_cast<const std::string *>(&v.v_.string_place_);
+-    return JSONString(s->c_str() == Variant::kNullString.c_str() ?
++//    return JSONString(s->c_str() == Variant::kNullString.c_str() ?
++    return JSONString(s->c_str() == kNullString.c_str() ?
+                       std::string() : *s);
+   }
+ };
+Index: ggadget/variant.cc
+===================================================================
+--- ggadget/variant.cc	(revision 1038)
++++ ggadget/variant.cc	(working copy)
+@@ -31,10 +31,12 @@
+ // We choose the value "(nil)" to ease printing (see Print()).
+ // Don't use blank value, because all strings with blank values are shared
+ // in the standard impl of C++ library.
++/*
+ const std::string Variant::kNullString("(nil)");
+ static const UTF16Char kNullUTF16StringValue[] =
+     { '(', 'n', 'i', 'l', ')', 0 };
+ const UTF16String Variant::kNullUTF16String(kNullUTF16StringValue);
++*/
+ 
+ Variant::Variant() : type_(TYPE_VOID) {
+   memset(&v_, 0, sizeof(v_));
+Index: ggadget/npapi/npapi_plugin.h
+===================================================================
+--- ggadget/npapi/npapi_plugin.h	(revision 1038)
++++ ggadget/npapi/npapi_plugin.h	(working copy)
+@@ -31,6 +31,7 @@
+ class ScriptableInterface;
+ class Connection;
+ template <typename R, typename P1> class Slot1;
++template <typename P1> class Slot1 <void, P1>;
+ 
+ namespace npapi {
+ 
+Index: ggadget/uuid.cc
+===================================================================
+--- ggadget/uuid.cc	(revision 1038)
++++ ggadget/uuid.cc	(working copy)
+@@ -25,6 +25,9 @@
+ #include <cstring>
+ #include <ctime>
+ 
++#include <unistd.h>
++#include <stdlib.h>
++
+ #include "string_utils.h"
+ 
+ namespace ggadget {
+Index: ggadget/common.h
+===================================================================
+--- ggadget/common.h	(revision 1038)
++++ ggadget/common.h	(working copy)
+@@ -183,10 +183,10 @@
+  * Note that the function doesn't need an implementation, as we only
+  * use its type.
+  */
+-template <typename T, size_t N>
+-char (&ArraySizeHelper(T (&array)[N]))[N];
+-template <typename T, size_t N>
+-char (&ArraySizeHelper(const T (&array)[N]))[N];
++//template <typename T, size_t N>
++//char (&ArraySizeHelper(T (&array)[N]))[N];
++//template <typename T, size_t N>
++//char (&ArraySizeHelper(const T (&array)[N]))[N];
+ 
+ /**
+  * The @c arraysize(arr) macro returns the # of elements in an array arr.
+@@ -199,7 +199,8 @@
+  * due to a limitation in C++'s template system.  The limitation might
+  * eventually be removed, but it hasn't happened yet.
+  */
+-#define arraysize(array) (sizeof(::ggadget::ArraySizeHelper(array)))
++//#define arraysize(array) (sizeof(::ggadget::ArraySizeHelper(array)))
++#define arraysize(array) (sizeof(array)/sizeof(array[0]))
+ 
+ /**
+  * Used to indicate an invalid index when size_t is used for the type of the
+Index: ggadget/gadget.h
+===================================================================
+--- ggadget/gadget.h	(revision 1038)
++++ ggadget/gadget.h	(working copy)
+@@ -25,7 +25,9 @@
+ 
+ template <typename R> class Slot0;
+ template <typename R, typename P1> class Slot1;
++template <typename P1> class Slot1 <void, P1>;
+ template <typename R, typename P1, typename P2> class Slot2;
++template <typename P1, typename P2> class Slot2 <void, P1, P2>;
+ class HostInterface;
+ class DetailsViewData;
+ class FileManagerInterface;
+Index: ggadget/string_utils.cc
+===================================================================
+--- ggadget/string_utils.cc	(revision 1038)
++++ ggadget/string_utils.cc	(working copy)
+@@ -22,6 +22,8 @@
+ #include "string_utils.h"
+ #include "common.h"
+ 
++#include <stdlib.h>
++
+ namespace ggadget {
+ 
+ static const char kSlash      = '/';
+Index: ggadget/xdg/icon_theme.cc
+===================================================================
+--- ggadget/xdg/icon_theme.cc	(revision 1038)
++++ ggadget/xdg/icon_theme.cc	(working copy)
+@@ -21,6 +21,9 @@
+ #include <vector>
+ #include <list>
+ 
++#include <unistd.h>
++#include <stdlib.h>
++
+ #include <ggadget/string_utils.h>
+ #include <ggadget/logger.h>
+ 
+Index: ggadget/run_once.cc
+===================================================================
+--- ggadget/run_once.cc	(revision 1038)
++++ ggadget/run_once.cc	(working copy)
+@@ -97,7 +97,12 @@
+       fd_ = RunAsClient();
+     }
+ 
+-    sig_t old_proc = signal(SIGPIPE, SIG_IGN);
++    struct sigaction act, old_act;
++    act.sa_handler = SIG_IGN;
++    act.sa_flags = SA_ONSTACK;
++    if (sigaction(SIGPIPE, &act, &old_act) < 0)
++        return 0;
++//    sig_t old_proc = signal(SIGPIPE, SIG_IGN);
+ 
+     fd_set fds;
+     FD_ZERO(&fds);
+@@ -126,7 +131,9 @@
+     FD_CLR(fd_, &fds);
+     close(fd_);
+     fd_ = -1;
+-    signal(SIGPIPE, old_proc);
++//    signal(SIGPIPE, old_proc);
++    if (sigaction(SIGPIPE, &old_act, NULL) < 0)
++        return 0;
+     return written;
+   }
+ 
+Index: ggadget/logger.h
+===================================================================
+--- ggadget/logger.h	(revision 1038)
++++ ggadget/logger.h	(working copy)
+@@ -67,7 +67,8 @@
+ #define EXPECT_M(x, y)
+ #define VERIFY(x) (x)
+ #define VERIFY_M(x, y) (x)
+-#define DLOG  true ? (void) 0 : LOGT
++//#define DLOG  true ? (void) 0 : LOGT
++#define DLOG LOGT
+ #else // NDEBUG
+ 
+ /**
+Index: ggadget/scriptable_holder.h
+===================================================================
+--- ggadget/scriptable_holder.h	(revision 1038)
++++ ggadget/scriptable_holder.h	(working copy)
+@@ -33,8 +33,7 @@
+  private:
+   // Checks at compile time if the argument T is ScriptableInterface or
+   // derived from it.
+-  COMPILE_ASSERT((IsDerived<ScriptableInterface, T>::value),
+-                 T_must_be_ScriptableInterface_or_derived_from_it);
++//  COMPILE_ASSERT((IsDerived<ScriptableInterface, T>::value), T_must_be_ScriptableInterface_or_derived_from_it);
+  public:
+   explicit ScriptableHolder(T *p = NULL)
+       : ptr_(NULL), on_refchange_connection_(NULL) { Reset(p); }
+Index: gadgets/designer/designer_script_utils.cc
+===================================================================
+--- gadgets/designer/designer_script_utils.cc	(revision 1038)
++++ gadgets/designer/designer_script_utils.cc	(working copy)
+@@ -40,6 +40,8 @@
+ #include <ggadget/uuid.h>
+ #include <ggadget/view_interface.h>
+ 
++#include <unistd.h>
++
+ namespace ggadget {
+ namespace designer {
+ 
+--- configure.ac.orig	2009-01-08 10:51:11.000000000 +0800
++++ configure.ac	2009-01-12 16:22:11.593201434 +0800
+@@ -365,21 +365,26 @@
+ GGL_CHECK_STACK_PROTECTOR([has_stack_protector=yes], [has_stack_protector=no])
+ 
+ if test x$enable_debug = xyes; then
+-  DEFAULT_COMPILE_FLAGS="-g -O0 -Wall"
++#DEFAULT_COMPILE_FLAGS="-g -O0 -Wall"
++  DEFAULT_COMPILE_FLAGS="-g -xO0"
+   DEBUG_MACROS="_DEBUG";
+   if test x$has_stack_protector = xyes; then
+-    DEFAULT_COMPILE_FLAGS="$DEFAULT_COMPILE_FLAGS -fstack-protector-all"
++#    DEFAULT_COMPILE_FLAGS="$DEFAULT_COMPILE_FLAGS -fstack-protector-all"
++    DEFAULT_COMPILE_FLAGS="$DEFAULT_COMPILE_FLAGS"
+   fi
+ else
+-  DEFAULT_COMPILE_FLAGS="-O2 -Wall"
++#DEFAULT_COMPILE_FLAGS="-O2 -Wall"
++  DEFAULT_COMPILE_FLAGS="-xO2"
+   DEBUG_MACROS="NDEBUG";
+   if test x$has_stack_protector = xyes; then
+-    DEFAULT_COMPILE_FLAGS="$DEFAULT_COMPILE_FLAGS -fstack-protector"
++#    DEFAULT_COMPILE_FLAGS="$DEFAULT_COMPILE_FLAGS -fstack-protector"
++    DEFAULT_COMPILE_FLAGS="$DEFAULT_COMPILE_FLAGS"
+   fi
+ fi
+ 
+ if test x$use_werror = xyes; then
+-  DEFAULT_COMPILE_FLAGS="$DEFAULT_COMPILE_FLAGS -Werror"
++#DEFAULT_COMPILE_FLAGS="$DEFAULT_COMPILE_FLAGS -Werror"
++  DEFAULT_COMPILE_FLAGS="$DEFAULT_COMPILE_FLAGS"
+ fi
+ 
+ 
+@@ -427,6 +432,7 @@
+     PREDEFINED_MACROS="$PREDEFINED_MACROS -DGGL_HOST_SOLARIS=1"
+     SMJS_CFLAGS="-DXP_UNIX"
+     GGL_PLATFORM_SHORT="\"solaris\""
++    build_linux_system_framework=yes
+     GGL_PLATFORM="\"solaris\""
+     ;;
+   * )

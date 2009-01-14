@@ -1,3 +1,9 @@
+2009-01-14  Alfred Peng  <alfred.peng@sun.com>
+
+	* SFEgoogle-gadgets.spec: Added.
+	* patches/google-gadgets-01-solaris-build.diff: Added.
+	Google Gadgets - a platform for running desktop gadgets.
+
 2009-01-13 Erwann Chenede - <erwann.chenede@sun.com>
 
 	* SFEddd.spec: bumped to 3.3.12-test6 to support pydb
