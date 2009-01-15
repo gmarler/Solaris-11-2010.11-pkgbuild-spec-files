@@ -1,3 +1,8 @@
+2009-01-15  Brian Cameron  <brian.cameron@sun.com>
+
+	* SFEgst-plugins-bad.spec: Disable building the selector plugin
+	  since it is now built with gst-plugins-good in SUNWgnome-media.
+
 2009-01-15  Halton Huo <halton.huo@sun.com>
 
 	* SFErtorrent.spec: replace SFEncurses to SUNWncurses
@@ -20,7 +25,7 @@
 
 	* SFEgoogle-gadgets.spec: Added.
 	* patches/google-gadgets-01-solaris-build.diff: Added.
-	Google Gadgets - a platform for running desktop gadgets.
+	  Google Gadgets - a platform for running desktop gadgets.
 
 2009-01-13 Erwann Chenede - <erwann.chenede@sun.com>
 
@@ -30,10 +35,11 @@
 
 	* SFEsdl-perl.spec: Added.
 	* patches/sdl-perl-01-solaris.diff: Added.
-	Multimedia binding for Perl, using the Simple DirectMedia Layer and OpenGL.
+	  Multimedia binding for Perl, using the Simple DirectMedia Layer and
+	  OpenGL.
 	* SFEfrozen-bubble.spec: Added.
 	* patches/frozen-bubble-01-build-sun-studio.diff: Added.
-	Colorful 3D rendered bubble shooting game.
+	  Colorful 3D rendered bubble shooting game.
 
 2008-01-07  Thomas Wagner  <tom68@users.sourceforge.net>
 
@@ -67,7 +73,7 @@
 
 2009-01-08  Halton Huo <halton.huo@sun.com>
 
-	compile under sub-folder 'build'
+	Compile under sub-folder 'build'
 	* base-specs/libopensync-plugin-evo2.spec:
 	* base-specs/libopensync-plugin-file.spec:
 	* base-specs/libopensync-plugin-gcal.spec:

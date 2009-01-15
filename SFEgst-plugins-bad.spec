@@ -48,12 +48,17 @@ libtoolize --copy --force
 intltoolize --copy --force --automake
 autoheader
 autoconf
+
+# Do not build the selector plugin since it is now included in 
+# SUNWgnome-media.
+#
 automake -a -c -f
 ./configure \
   --prefix=%{_prefix}   \
   --sysconfdir=%{_sysconfdir} \
   --mandir=%{_mandir}   \
   %{gtk_doc_option}     \
+  --disable-selector \
   --enable-external --with-check=no
 
 # FIXME: hack: stop the build from looping
@@ -100,6 +105,9 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Thu Jan 15 2009 - Brian.Cameron@sun.com
+- Disable building the selector plugin since we build this with
+  SUNWgnome-media.
 * Thu Jan 08 2009 - Brian.Cameron@sun.com
 - Bump to 0.10.9.  Add patch
   gst-plugins-bad-05-gstapexraop.diff to fix compile issue.
