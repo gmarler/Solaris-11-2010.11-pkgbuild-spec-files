@@ -80,6 +80,7 @@ cp %{SOURCE2} $RPM_BUILD_ROOT/usr/dt/config
 cp %{SOURCE3} $RPM_BUILD_ROOT/usr/dt/config
 cp %{SOURCE4} $RPM_BUILD_ROOT/usr/dt/config/C/Xresources.d
 
+rm $RPM_BUILD_ROOT%{_libdir}/e16/*.la
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -108,6 +109,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/e16/*
 
 %changelog
+* Thu Jan 15 2008 - brian.cameron@sun.com
+- Remove .la files from libdir.
 * Sat Jan 10 2008 - brian.cameron@sun.com
 - Add patch enlightenment-01-bourneshell.diff so the startup script uses
   bourne shell syntax, so it works on Nevada.

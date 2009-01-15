@@ -1,5 +1,9 @@
 2009-01-15  Brian Cameron  <brian.cameron@sun.com>
 
+	* SFEenlightment.spec: Remove .la files.
+
+2009-01-15  Brian Cameron  <brian.cameron@sun.com>
+
 	* SFEgst-plugins-bad.spec: Disable building the selector plugin
 	  since it is now built with gst-plugins-good in SUNWgnome-media.
 
