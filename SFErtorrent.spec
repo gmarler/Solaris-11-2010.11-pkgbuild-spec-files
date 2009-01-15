@@ -29,8 +29,8 @@ BuildRequires: SUNWsigcpp-devel
 Requires: SFExmlrpc-c
 BuildRequires: SFExmlrpc-c-devel
 Requires: SUNWcurl
-Requires: SFEncurses
-BuildRequires: SFEncurses-devel
+Requires: SUNWncurses
+BuildRequires: SUNWncurses-devel
 
 %prep
 rm -rf %name-%version
@@ -46,7 +46,7 @@ LIBTORRENT_ROOT=%{_builddir}/%name-%version/%{base_arch}/%{rlibtorrent.name}-%{r
 export CC=/usr/sfw/bin/gcc
 export CXX=/usr/sfw/bin/g++
 export CXXFLAGS="%{gcc_cxx_optflags} \
- -I%{sfw_inc} -I%{gnu_inc} -I%{gnu_inc}/ncurses -I$LIBTORRENT_ROOT/src"
+ -I%{sfw_inc} -I/usr/include/ncurses -I$LIBTORRENT_ROOT/src"
 export LDFLAGS="%_ldflags %{sfw_lib_path} %{gnu_lib_path} \
  -L%{_cxx_libdir} -R%{_cxx_libdir} -L$LIBTORRENT_ROOT/src/.libs"
 %else
@@ -54,7 +54,7 @@ export LDFLAGS="%_ldflags %{sfw_lib_path} %{gnu_lib_path} \
 export CC="$CXX"
 # Need -xO2 to work around some sigc++ issues
 export CXXFLAGS="%cxx_optflags -xO2 \
- -I%{sfw_inc} -I%{gnu_inc} -I%{gnu_inc}/ncurses -I$LIBTORRENT_ROOT/src"
+ -I%{sfw_inc} -I/usr/include/ncurses -I$LIBTORRENT_ROOT/src"
 export LDFLAGS="%_ldflags %{sfw_lib_path} %{gnu_lib_path} \
  -L$LIBTORRENT_ROOT/src/.libs"
 %endif
@@ -65,7 +65,7 @@ export PKG_CONFIG_PATH="%{_cxx_libdir}/pkgconfig:%{_sfw_libdir}/pkgconfig:$LIBTO
 %else
 # Need -xO2 to work around some sigc++ issues
 export CXXFLAGS="%cxx_optflags -xO1 \
- -I%{sfw_inc} -I%{gnu_inc} -I%{gnu_inc}/ncurses -I$LIBTORRENT_ROOT/src"
+ -I%{sfw_inc} -I/usr/include/ncurses -I$LIBTORRENT_ROOT/src"
 %endif
 %rtorrent.build -d %name-%version/%{base_arch}
 

@@ -4,16 +4,17 @@
 # includes module(s): libtorrent
 #
 
-Name:		libtorrent
-Summary:	BitTorrent library written in C++
-Version:	0.12.2
-Source:		http://libtorrent.rakshasa.no/downloads/libtorrent-%{version}.tar.gz
+Name:           libtorrent
+Summary:        BitTorrent library written in C++
+URL:            http://libtorrent.rakshasa.no/
+Version:        0.12.2
+Source:         http://libtorrent.rakshasa.no/downloads/%{name}-%{version}.tar.gz
 Patch1:         rlibtorrent-01-madvise.diff
 Patch2:         rlibtorrent-02-event-ports.diff
 Patch3:         rlibtorrent-03-dh-generate.diff
 Patch4:         rlibtorrent-04-sunpro.diff
 Patch5:         rlibtorrent-05-tracker-usable.diff
-BuildRoot:	%{_tmppath}/%{name}-%{version}-build
+BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
 %prep
 %setup -q -n %{name}-%{version}

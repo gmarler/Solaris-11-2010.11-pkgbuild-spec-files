@@ -4,16 +4,17 @@
 # includes module(s): rtorrent
 #
 
-Name:		rtorrent
-Summary:	ncurses BitTorrent client
-Version:	0.8.2
-Source:		http://libtorrent.rakshasa.no/downloads/rtorrent-%{version}.tar.gz
+Name:           rtorrent
+Summary:        ncurses BitTorrent client
+URL:            http://libtorrent.rakshasa.no/
+Version:        0.8.2
+Source:         http://libtorrent.rakshasa.no/downloads/%{name}-%{version}.tar.gz
 Patch1:         rtorrent-01-solaris.diff
 Patch2:         rtorrent-02-event-ports.diff
 Patch3:         rtorrent-03-curl-event.diff
 Patch4:         rtorrent-04-sunpro.diff
 Patch5:         rtorrent-05-sunpro-crash.diff
-BuildRoot:	%{_tmppath}/%{name}-%{version}-build
+BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
 %prep
 %setup -q -n %{name}-%{version}

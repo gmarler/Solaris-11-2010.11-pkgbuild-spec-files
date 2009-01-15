@@ -5,17 +5,15 @@
 #
 %include Solaris.inc
 
-%define src_name	xmlrpc
-%define src_url		%{sf_download}/xmlrpc-c
-
 Name:                   xmlrpc-c
 Summary:                A lightweight RPC library based on XML and HTTP
-Version:                1.06.27
-Source:                 %{src_url}/%{src_name}-%{version}.tgz
+URL:                    http://xmlrpc-c.sourceforge.net/
+Version:                1.06.32
+Source:                 http://%{sf_mirror}/%{name}/%{name}-%{version}.tgz
 BuildRoot:              %{_tmppath}/%{name}-%{version}-build
 
 %prep
-%setup -q -n xmlrpc-c-%{version}
+%setup -q -n %{name}-%{version}
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -45,6 +43,8 @@ make install DESTDIR=$RPM_BUILD_ROOT
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Thu Jan 15 2009 - halton.huo@sun.com
+- Bump to 1.06.32
 * Tue Jun 24 2008 - trisk@acm.jhu.edu
 - Disable C++ compilation since results are not used
 - Disable parallel make

@@ -1,5 +1,12 @@
 2009-01-15  Halton Huo <halton.huo@sun.com>
 
+	* SFErtorrent.spec: replace SFEncurses to SUNWncurses
+	* base-specs/rlibtorrent.spec: Add URL
+	* base-specs/rtorrent.spec: Add URL
+	* base-specs/xmlrpc-c.spec: Bump to 1.06.32
+
+2009-01-15  Halton Huo <halton.huo@sun.com>
+
 	* SFEfreeciv.spec: Bump to 2.1.8, Add pkg -root
 	* SFEggz-gtk.spec: (new) ggz-gtk-client
 	* base-specs/ggz-gtk-client.spec: (new) ggz-gtk-client
