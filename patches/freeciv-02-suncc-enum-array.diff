@@ -1,0 +1,11 @@
+--- freeciv-2.1.8/client/gui-gtk-2.0/repodlgs.c.orig	2009-01-15 11:22:21.344107000 +0800
++++ freeciv-2.1.8/client/gui-gtk-2.0/repodlgs.c	2009-01-15 11:38:35.933275000 +0800
+@@ -1178,7 +1178,7 @@
+ {
+   struct repoinfo {
+     int active_count;
+-    int upkeep[O_COUNT];
++    int upkeep[O_LAST];
+     int building_count;
+   };
+ 

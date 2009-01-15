@@ -1,0 +1,24 @@
+--- freeciv-2.1.8/m4/ggz.m4.orig	2009-01-14 15:43:43.587571000 +0800
++++ freeciv-2.1.8/m4/ggz.m4	2009-01-14 15:43:53.521067000 +0800
+@@ -240,7 +240,8 @@
+ 	LDFLAGS=$LIBGGZ_LDFLAGS
+ 	LIBS=$LIB_GGZ
+ 	CPPFLAGS=$LIBGGZ_INCLUDES
+-	export LD_LIBRARY_PATH=$save_ldlibrary_path:$libggz_libraries
++	LD_LIBRARY_PATH=$save_ldlibrary_path:$libggz_libraries
++	export LD_LIBRARY_PATH
+ 
+ 	AC_MSG_CHECKING([for GGZ library version: $major.$minor.$micro])
+ 	AC_RUN_IFELSE(
+--- freeciv-2.1.8/configure.ac.orig	2009-01-14 15:43:02.130384000 +0800
++++ freeciv-2.1.8/configure.ac	2009-01-14 15:44:11.246354000 +0800
+@@ -193,7 +193,8 @@
+ 
+ dnl I18n support
+ ALL_LINGUAS="ar cs ca da de el en_GB eo es et fa fi fr he hu it ja ko lt nl 
+-nb no pl pt pt_BR ro ru sv tr uk zh_CN" AM_GNU_GETTEXT(,need-ngettext)
++nb no pl pt pt_BR ro ru sv tr uk zh_CN"
++AM_GNU_GETTEXT(,need-ngettext)
+ 
+ dnl AM_GNU_GETTEXT doesn't have all features we want
+ dnl or they don't behave correctly.

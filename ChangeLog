@@ -1,3 +1,14 @@
+2009-01-15  Halton Huo <halton.huo@sun.com>
+
+	* SFEfreeciv.spec: Bump to 2.1.8, Add pkg -root
+	* SFEggz-gtk.spec: (new) ggz-gtk-client
+	* base-specs/ggz-gtk-client.spec: (new) ggz-gtk-client
+	* patches/freeciv-01-signedchar.diff: remove unused patch
+	* patches/freeciv-01-solaris-sh.diff: add to fix bug 40659
+	* patches/freeciv-02-output_type.diff: rename to suncc-enum-array.diff
+	* patches/freeciv-02-suncc-enum-array.diff: add to fix bug 40660
+	* patches/freeciv-03-strlcpy.diff: rework
+
 2009-01-14  Alfred Peng  <alfred.peng@sun.com>
 
 	* SFEgoogle-gadgets.spec: Added.
@@ -20,8 +31,8 @@
 2008-01-07  Thomas Wagner  <tom68@users.sourceforge.net>
 
 	* SFEufraw.spec: temporarily force compiler to gcc,
-          add patch2 to change args to ctime_r, remove obsolete patch1
-          bump to 0.15
+	  add patch2 to change args to ctime_r, remove obsolete patch1
+	  bump to 0.15
 
 2009-01-09  Brian Cameron  <brian.cameron@sun.com>
 

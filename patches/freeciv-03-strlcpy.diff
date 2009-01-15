@@ -1,6 +1,5 @@
-diff -ur freeciv-2.1.0-beta1-orig/utility/support.h freeciv-2.1.0-beta1/utility/support.h
---- freeciv-2.1.0-beta1-orig/utility/support.h	2006-03-02 13:33:24.000000000 +0700
-+++ freeciv-2.1.0-beta1/utility/support.h	2006-05-18 16:19:41.157909385 +0700
+--- freeciv-2.1.8/utility/support.h.orig1	2009-01-15 11:40:48.387258000 +0800
++++ freeciv-2.1.8/utility/support.h	2009-01-15 11:41:30.332473000 +0800
 @@ -83,7 +83,11 @@
  size_t mystrlcat(char *dest, const char *src, size_t n);
  
