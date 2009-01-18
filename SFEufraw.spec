@@ -8,8 +8,23 @@
 
 ##TODO## look for "application" directory is left empty - missing BuildRequire diabling an extension?
 ##TODO## look for 64-bit build (might need reactivation of 64-bit SFElcms/other libs (in Nevada only older 32-bit version inluded)
-##TODO## check if SunStudio might be used
+##TODO## check if SunStudio might be used <<<--- any volunteers? feel free!
 ##TODO## check if gcc 4.2.3 is needed (C++)
+##TODO## fix (Build-)Requirements (tiff, png, jpeg, ...)
+##TODO## add more options:
+#configure: ====================== summary =====================
+#configure: build GIMP plug-in: yes
+#configure: build CinePaint plug-in: no
+#configure: EXIF support using exiv2: no
+#configure: JPEG support: yes
+#configure: PNG support: yes
+#configure: FITS support: no
+#configure: TIFF support: yes
+#configure: gzip compressed raw support: yes
+#configure: bzip2 compressed raw support: yes
+#configure: Scrolling in preview using GtkImageView: no
+#configure: Lens defects correction via lensfun: no
+
 
 %include Solaris.inc
 %define cc_is_gcc 1
@@ -39,6 +54,8 @@ Requires: SUNWmlib
 Requires: SUNWzlib
 Requires: SUNWlibms
 Requires: SUNWlibexif
+#I'm sorry for that:
+Obsoletes: SUNWdcraw
 BuildRequires: SUNWgnome-libs-devel
 BuildRequires: SUNWgnome-base-libs-devel
 BuildRequires: SUNWgnome-img-editor-devel
@@ -51,6 +68,14 @@ BuildRequires: SUNWlibexif-devel
 BuildRequires: SUNWesu
 # pod2man:
 BuildRequires: SUNWperl584usr
+
+%if %build_l10n
+%package l10n
+Summary:                 %{summary} - l10n files
+SUNW_BaseDir:            %{_basedir}
+%include default-depend.inc
+Requires:                %{name}
+%endif
 
 %prep
 %setup -q -n ufraw-%version
@@ -92,6 +117,12 @@ rm -rf $RPM_BUILD_ROOT
 make BASENAME=${RPM_BUILD_ROOT}%{_prefix}	\
      MANDIR=${RPM_BUILD_ROOT}%{_mandir} DESTDIR=$RPM_BUILD_ROOT install
 
+%if %{build_l10n}
+%else
+#rmdir $RPM_BUILD_ROOT/%{_datadir}/locale
+rm -rf $RPM_BUILD_ROOT/%{_datadir}/locale
+%endif
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -99,8 +130,6 @@ rm -rf $RPM_BUILD_ROOT
 %defattr (-, root, bin)
 %dir %attr (0755, root, bin) %{_bindir}
 %{_bindir}/*
-%dir %attr (0755, root, sys) %{_datadir}
-%attr (-, root, other) %{_datadir}/locale
 ##TODO## check applications directory
 #%dir %attr (0755, root, other) %{_datadir}/applications
 #%{_datadir}/applications/*
@@ -111,8 +140,18 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/*
 /usr/lib/gimp/2.0/plug-ins/*
 
+%if %build_l10n
+%files l10n
+%defattr (-, root, bin)
+%dir %attr (0755, root, sys) %{_datadir}
+%attr (-, root, other) %{_datadir}/locale
+%endif
 
 %changelog
+* Sun Jan 11 2008 - Thomas Wagner
+- adjust %doc
+- extra package build_l10n
+- Obsolete SUNWcdraw not optimal, should be Provides: SUNWcdraw
 * Fri Jan  9 2008 - Thomas Wagner
 - temporarily force compiler to gcc
 - add patch2 to change args to ctime_r ... needs check about patch1
