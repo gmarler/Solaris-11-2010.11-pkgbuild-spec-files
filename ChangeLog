@@ -1,7 +1,8 @@
-2008-01-07  Thomas Wagner  <tom68@users.sourceforge.net>
+2008-01-17  Thomas Wagner  <tom68@users.sourceforge.net>
 
         * SFEufraw.spec: adjust %doc, extra package build_l10n,
           Obsolete SUNWcdraw not optimal, should be Provides: SUNWcdraw ?
+        * SFElprng.spec: (new) LPRng Printing system - choose install-layout gnu or Solaris
 
 2009-01-15  Brian Cameron  <brian.cameron@sun.com>
 
