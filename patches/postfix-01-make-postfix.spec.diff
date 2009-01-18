@@ -1,0 +1,21 @@
+--- postfix-2.5.6/tmp/make-postfix.spec.orig	2008-10-26 08:44:42.000000000 +0100
++++ postfix-2.5.6/tmp/make-postfix.spec	2009-01-18 17:37:45.248395507 +0100
+@@ -1,4 +1,4 @@
+-#!/bin/sh
++#!/usr/bin/bash
+ #
+ # $Id: make-postfix.spec,v 2.23.2.1 2007/04/13 21:50:14 sjmudd Exp $
+ #
+@@ -82,8 +82,10 @@
+ TLSFIX=			# Apply "fixes" to TLS patches
+ 
+ # change location of spec/source dir so they can be referenced by "%{name}"
+-specdir=$(rpm --eval '%{_specdir}' | sed 's;%{name};postfix;')
+-sourcedir=$(rpm --eval '%{_sourcedir}' | sed 's;%{name};postfix;')
++#specdir=$(rpm --eval '%{_specdir}' | sed 's;%{name};postfix;')
++specdir=$(pwd)
++#sourcedir=$(rpm --eval '%{_sourcedir}' | sed 's;%{name};postfix;')
++sourcedir=$(pwd)
+ 
+ echo ""
+ echo "Creating Postfix spec file: ${specdir}/postfix.spec"
