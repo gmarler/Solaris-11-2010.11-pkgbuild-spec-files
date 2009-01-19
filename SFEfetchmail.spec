@@ -53,6 +53,7 @@ autoconf
             --libexecdir=%{_libexecdir}		\
             --sysconfdir=%{_sysconfdir}		\
 	    --enable-POP3 --enable-IMAP		\
+	    --enable-NTLM              		\
             --with-ssl-dir=/usr/sfw             \
 	    --disable-nls
 
@@ -93,6 +94,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Mon Jan 19 2009 - Thomas Wagner
+- --enable-NTLM (untested)
 * Mon Dec 15 2008 - halton.huo@sun.com
 - Remove attribute.diff since SS12 support __attribute__ (unused)
 * Wed May  7 2008 - Thomas Wagner

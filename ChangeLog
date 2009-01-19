@@ -1,3 +1,7 @@
+2008-01-19  Thomas Wagner  <tom68@users.sourceforge.net>
+
+	* SFEfetchmail.spec: --enable-NTLM (untested)
+
 2009-01-19  Halton Huo <halton.huo@sun.com>
 
 	* SFEanjuta.spec: Bump to 2.25.4, Remove gnome-build since it is
