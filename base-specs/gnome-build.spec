@@ -1,7 +1,7 @@
 #
 # spec file for package gnome-build
 #
-# Copyright 2008 Sun Microsystems, Inc.
+# Copyright 2009 Sun Microsystems, Inc.
 # This file and all modifications and additions to the pristine
 # package are under the same license as the package itself.
 #
@@ -11,13 +11,15 @@
 Name:		gnome-build
 License:	GPL
 Group:		Development/Libraries
-Version:	2.23.90
+Version:	2.24.1
 Release:	1
 Distribution:   Java Desktop System
 Vendor:         Sun Microsystems, Inc.
 URL:		http://www.gnome.org
 Summary:	GNOME Build Framework.
-Source:		http://ftp.gnome.org/pub/GNOME/sources/%{name}/2.23/%{name}-%{version}.tar.bz2
+Source:		http://download.gnome.org/sources/%{name}/2.24/%{name}-%{version}.tar.bz2
+# date:2009-01-16 owner:halton type:bug bugzilla:567967
+Patch1:         %{name}-01-suncc-empty-struct.diff
 BuildRoot:	%{_tmppath}/%{name}-%{version}-root
 
 Requires:	libglade >= 2.0.1
@@ -42,7 +44,7 @@ in your own programs.
 
 %prep
 %setup -q
-perl -pi -e 's/^AC_PROG_INTLTOOL$/IT_PROG_INTLTOOL/' configure.in
+%patch1 -p1
 
 %build
 %ifos linux
@@ -71,24 +73,17 @@ autoconf
 	    --sysconfdir=%{_sysconfdir} \
 	    %gtk_doc_option
 
-make
+make -j $CPU
 
 %install
-[ -n "$RPM_BUILD_ROOT" -a "$RPM_BUILD_ROOT" != / ] && rm -rf $RPM_BUILD_ROOT
-
-make prefix=$RPM_BUILD_ROOT%{_prefix} bindir=$RPM_BUILD_ROOT%{_bindir} \
-    mandir=$RPM_BUILD_ROOT%{_mandir} libdir=$RPM_BUILD_ROOT%{_libdir} \
-    localstatedir=$RPM_BUILD_ROOT%{_localstatedir} \
-    datadir=$RPM_BUILD_ROOT%{_datadir} \
-    includedir=$RPM_BUILD_ROOT%{_includedir} \
-    sysconfdir=$RPM_BUILD_ROOT%{_sysconfdir} install
-
+export GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1
+make -i install DESTDIR=$RPM_BUILD_ROOT
+unset GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL
 find $RPM_BUILD_ROOT -type f -name "*.la" -exec rm -f {} ';'
 find $RPM_BUILD_ROOT -type f -name "*.a" -exec rm -f {} ';'
 
-
 %clean
-[ -n "$RPM_BUILD_ROOT" -a "$RPM_BUILD_ROOT" != / ] && rm -rf $RPM_BUILD_ROOT
+rm -rf $RPM_BUILD_ROOT
 
 %files
 %doc AUTHORS COPYING ChangeLog NEWS README
@@ -108,6 +103,9 @@ find $RPM_BUILD_ROOT -type f -name "*.a" -exec rm -f {} ';'
 %{_libdir}/pkgconfig/*.pc
 
 %changelog
+* Fri Jan 16 2009 - halton.huo@sun.com
+- Bump to 2.24.1
+- Add patch suncc-empty-struct.diff to fix bugzilla #567967
 * Wed Aug 20 2008 - nonsea@users.sourceforge.net
 - Bump to 2.23.90
 * Tue Jan 03 2008 - nonsea@users.sourceforge.net

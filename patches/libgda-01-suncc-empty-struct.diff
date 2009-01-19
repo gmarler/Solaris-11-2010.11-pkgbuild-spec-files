@@ -1,0 +1,75 @@
+Index: trunk/libgda-report/RML/gda-report-rml-document.c
+===================================================================
+--- trunk/libgda-report/RML/gda-report-rml-document.c	(revision 3285)
++++ trunk/libgda-report/RML/gda-report-rml-document.c	(working copy)
+@@ -33,6 +33,7 @@
+ #include <libgda/binreloc/gda-binreloc.h>
+ 
+ struct _GdaReportRmlDocumentPrivate {
++	int foo;
+ };
+ 
+ /* properties */
+Index: trunk/providers/skel-implementation/models/gda-models.h
+===================================================================
+--- trunk/providers/skel-implementation/models/gda-models.h	(revision 3285)
++++ trunk/providers/skel-implementation/models/gda-models.h	(working copy)
+@@ -36,6 +36,7 @@
+ 	/* TO_ADD: this structure holds any information necessary to specialize the GdaConnection, usually a connection
+ 	 * handle from the C or C++ API
+ 	 */
++	int foo;
+ } ModelsConnectionData;
+ 
+ #endif
+Index: trunk/providers/skel-implementation/capi/gda-capi.h
+===================================================================
+--- trunk/providers/skel-implementation/capi/gda-capi.h	(revision 3285)
++++ trunk/providers/skel-implementation/capi/gda-capi.h	(working copy)
+@@ -37,6 +37,7 @@
+ 	/* TO_ADD: this structure holds any information necessary to specialize the GdaConnection, usually a connection
+ 	 * handle from the C or C++ API
+ 	 */
++	int foo;
+ } CapiConnectionData;
+ 
+ #endif
+Index: trunk/libgda/sqlite/virtual/gda-virtual-provider.c
+===================================================================
+--- trunk/libgda/sqlite/virtual/gda-virtual-provider.c	(revision 3285)
++++ trunk/libgda/sqlite/virtual/gda-virtual-provider.c	(working copy)
+@@ -30,7 +30,7 @@
+ #define CLASS(obj) (GDA_VIRTUAL_PROVIDER_CLASS (G_OBJECT_GET_CLASS (obj)))
+ 
+ struct _GdaVirtualProviderPrivate {
+-	
++	int foo;
+ };
+ 
+ /* properties */
+Index: trunk/libgda/sqlite/virtual/gda-vprovider-data-model.c
+===================================================================
+--- trunk/libgda/sqlite/virtual/gda-vprovider-data-model.c	(revision 3285)
++++ trunk/libgda/sqlite/virtual/gda-vprovider-data-model.c	(working copy)
+@@ -35,7 +35,7 @@
+ #include <sql-parser/gda-statement-struct-util.h>
+ 
+ struct _GdaVproviderDataModelPrivate {
+-	
++	int foo;
+ };
+ 
+ /* properties */
+Index: trunk/libgda/sqlite/virtual/gda-vprovider-hub.c
+===================================================================
+--- trunk/libgda/sqlite/virtual/gda-vprovider-hub.c	(revision 3285)
++++ trunk/libgda/sqlite/virtual/gda-vprovider-hub.c	(working copy)
+@@ -27,7 +27,7 @@
+ #include "gda-vconnection-hub.h"
+ 
+ struct _GdaVproviderHubPrivate {
+-	
++	int foo;
+ };
+ 
+ /* properties */

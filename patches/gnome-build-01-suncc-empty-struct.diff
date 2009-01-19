@@ -1,0 +1,13 @@
+Index: trunk/src/gbf/gbf-project-view.c
+===================================================================
+--- trunk/src/gbf/gbf-project-view.c	(revision 643)
++++ trunk/src/gbf/gbf-project-view.c	(working copy)
+@@ -41,7 +41,7 @@
+ #define ICON_SIZE 16
+ 
+ struct _GbfProjectViewPrivate {	
+-
++	int foo;
+ };
+ 
+ enum {

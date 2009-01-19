@@ -1,0 +1,22 @@
+Index: trunk/plugins/symbol-db/symbol-db-engine-core.c
+===================================================================
+--- trunk/plugins/symbol-db/symbol-db-engine-core.c	(revision 4605)
++++ trunk/plugins/symbol-db/symbol-db-engine-core.c	(working copy)
+@@ -220,7 +220,7 @@
+ sdb_engine_get_dyn_query_node_by_id (SymbolDBEngine *dbe, dyn_query_type query_id,
+ 									 SymExtraInfo sym_info, gsize other_parameters);
+ 
+-inline const DynChildQueryNode *
++const DynChildQueryNode *
+ sdb_engine_insert_dyn_query_node_by_id (SymbolDBEngine *dbe, dyn_query_type query_id,
+ 									 	SymExtraInfo sym_info, gsize other_parameters,
+ 										const gchar *sql);
+@@ -494,7 +494,7 @@
+  * sdb_engine_get_dyn_query_node_by_id () that the node we're going to add 
+  * isn't yet inserted.
+  */
+-inline const DynChildQueryNode *
++const DynChildQueryNode *
+ sdb_engine_insert_dyn_query_node_by_id (SymbolDBEngine *dbe, dyn_query_type query_id,
+ 									 	SymExtraInfo sym_info, gsize other_parameters,
+ 										const gchar *sql)

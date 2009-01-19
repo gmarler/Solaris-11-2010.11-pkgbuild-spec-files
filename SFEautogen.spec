@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008 Sun Microsystems, Inc.
+# Copyright 2009 Sun Microsystems, Inc.
 # This file and all modifications and additions to the pristine
 # package are under the same license as the package itself.
 
@@ -8,9 +8,8 @@
 Name:                SFEautogen
 Summary:             Templatized program/text generation system
 URL:                 http://autogen.sourceforge.net/
-Version:             5.9.5
+Version:             5.9.7
 Source:              %{sf_download}/autogen/autogen-%{version}.tar.bz2
-
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -18,6 +17,7 @@ BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 Requires: SUNWbash
 Requires: SUNWlxml
 Requires: SFEguile
+BuildRequires: SUNWgnu-mp
 
 %package devel
 Summary:                 %{summary} - development files
@@ -34,14 +34,14 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
      CPUS=1
 fi
 
-export CFLAGS="%optflags"
+export CFLAGS="%optflags -I/usr/include/gmp"
 export LDFLAGS="%_ldflags"
 
-./configure --prefix=%{_prefix}  \
+./configure --prefix=%{_prefix} \
             --mandir=%{_mandir} \
             --enable-static=no
 
-make
+make -j $CPU
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -103,6 +103,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/aclocal/*
 
 %changelog
+* Sun Jan 18 2009 - halton.huo@sun.com
+- Bump to 5.9.7
 * Wed Aug 20 2008 - nonsea@users.sourceforge.net
 - Bump to 5.9.5
 * Thu Jan 24 2008 - nonsea@users.sourceforge.net

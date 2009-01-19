@@ -1,5 +1,5 @@
 # 
-# Copyright 2008 Sun Microsystems, Inc.
+# Copyright 2009 Sun Microsystems, Inc.
 # This file and all modifications and additions to the pristine
 # package are under the same license as the package itself.
 #
@@ -13,16 +13,18 @@
 # or, depend on package SUNWevolution-bdb-devel, which is in jds spec-files/closed
 # now, use second way.
 Name:           SFEanjuta
-Version:        2.23.91
+Version:        2.25.4
 Summary:        GNOME IDE for C and C++
 Group:          Development/Tools
 License:        GPL
 URL:            http://anjuta.org/
-Source:         http://download.gnome.org/sources/anjuta/2.23/anjuta-%{version}.tar.bz2
-# date:2007-04-04 owner:nonsea type:branding
-Patch1:         anjuta-01-solaris-grep.diff
+Source:         http://download.gnome.org/sources/anjuta/2.25/anjuta-%{version}.tar.bz2
 # date:2007-05-14 owner:nonsea type:branding
-Patch2:         anjuta-02-ld-z-text.diff
+Patch1:         anjuta-01-ld-z-text.diff
+# date:2009-01-19 owner:halton type:bug bugzilla:567967
+Patch2:         anjuta-02-suncc-empty-struct.diff
+# date:2009-01-19 owner:halton type:bug bugzilla:568254
+Patch3:         anjuta-03-extern-inline.diff
 
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
@@ -44,24 +46,16 @@ Requires: SUNWlxsl
 Requires: SUNWperl584core
 Requires: SUNWpcre
 Requires: SUNWapch22u
-%if %(pkginfo -q SUNWneon && echo 1 || echo 0)
-Requires: SUNWneon
-%else
-Requires: SFEneon
-%endif
-Requires: SFEgdl
-Requires: SFEgnome-build
 Requires: SUNWgraphviz
-Requires: SFEautogen
-%if %(pkginfo -q SUNWsvn && echo 1 || echo 0)
 Requires: SUNWsvn
-%else
-Requires: SFEsubversion
-%endif
+Requires: SUNWneon
+Requires: SFEgdl
+Requires: SFElibgda
+Requires: SFEautogen
 BuildRequires: SFEgdl-devel
-BuildRequires: SFEgnome-build-devel
-BuildRequires: SUNWgraphviz-devel
+BuildRequires: SFElibgda-devel
 BuildRequires: SFEautogen-devel
+BuildRequires: SUNWgraphviz-devel
 BuildRequires: SUNWevolution-bdb-devel
 
 
@@ -99,7 +93,8 @@ Requires:                %{name}
 
 %prep
 %setup -q -n anjuta-%{version}
-%patch1 -p1
+%patch2 -p1
+%patch3 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -109,9 +104,8 @@ fi
 
 # FIXME: delete -I/usr/incldue/pcre when bug 6654493 is fixed.
 export CFLAGS="%optflags -I/usr/include/pcre"
-export CXXFLAGS="%cxx_optflags"
 export LDFLAGS="%_ldflags"
-export ACLOCAL_FLAGS="-I %{_datadir}/aclocal -I ."
+export ACLOCAL_FLAGS="-I ."
 
 #glib-gettextize -f
 libtoolize --copy --force
@@ -131,9 +125,9 @@ autoconf
 	--with-apu-config=%{_prefix}/apache2/2.2/bin/apu-1-config \
 	%gtk_doc_option
 
-%patch2 -p1
+%patch1 -p1
 
-make # -j$CPUS
+make -j$CPUS
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -287,6 +281,11 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 %endif
 
 %changelog
+* Sun Jan 18 2009 - halton.huo@sun.com
+- Bump to 2.25.4
+- Remove gnome-build since it is in anjuta's code base
+- Add patch suncc-empty-struct.diff to fix bugzilla #567967
+- Add patch extern-inline.diff to fix bugzilla #568254
 * Tue Sep 02 2008 - halton.huo@sun.com
 - Bump to 2.23.91
 - Remove upstreamed patch zero-array.diff and miss-vala-sgml.diff

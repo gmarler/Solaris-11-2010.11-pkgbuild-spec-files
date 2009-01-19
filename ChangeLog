@@ -1,9 +1,33 @@
+2009-01-19  Halton Huo <halton.huo@sun.com>
+
+	* SFEanjuta.spec: Bump to 2.25.4, Remove gnome-build since it is
+	  in anjuta's code base
+	* SFEautogen.spec: Bump to 5.9.7
+	* SFEguile.spec: Change SFEgmp to SUNWgnu-mp
+	* SFElibgda.spec: (new) Library for writing gnome database programs
+	* base-specs/gdl.spec: Bump to 2.24.0
+	* base-specs/gnome-build.spec: Bump to 2.24.1
+	* base-specs/libgda.spec: (new) Library for writing gnome database
+	  programs 
+	* patches/anjuta-01-solaris-grep.diff: remove unused patch
+	* patches/anjuta-02-suncc-empty-struct.diff: add to fix bugzilla #567967
+	* patches/anjuta-03-extern-inline.diff: add fix bugzilla #56825
+	* patches/anjuta-02-ld-z-text.diff: rename to -01
+	* patches/gnome-build-01-suncc-empty-struct.diff: add to fix
+	  bugzilla #567967
+	* patches/guile-01-autoconf.diff: add to fix AM_INTL_SUBDIR not found
+	  issue
+	* patches/libgda-01-suncc-empty-struct.diff: Add to fix bugzilla #568163
+	* patches/libgda-02-sys_errlist.diff: Add to fix bugzilla #568165
+
 2008-01-18  Thomas Wagner  <tom68@users.sourceforge.net>
 
-        * SFEufraw.spec: adjust %doc, extra package build_l10n,
-          Obsolete SUNWcdraw not optimal, should be Provides: SUNWcdraw ?
-        * SFElprng.spec: (new) LPRng Printing system - choose install-layout gnu or Solaris
-        * experimental/SFEpostfix.spec: (new) Postfix mailersystem. Compiles but doesn't install well. Feel free to comment.
+	* SFEufraw.spec: adjust %doc, extra package build_l10n,
+	Obsolete SUNWcdraw not optimal, should be Provides: SUNWcdraw ?
+	* SFElprng.spec: (new) LPRng Printing system - choose install-layout
+	gnu or Solaris
+	* experimental/SFEpostfix.spec: (new) Postfix mailersystem. Compiles
+	but doesn't install well. Feel free to comment.
 
 2009-01-15  Brian Cameron  <brian.cameron@sun.com>
 

@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008 Sun Microsystems, Inc.
+# Copyright 2009 Sun Microsystems, Inc.
 # This file and all modifications and additions to the pristine
 # package are under the same license as the package itself.
 
@@ -10,11 +10,12 @@ URL:                 http://www.gnu.org/software/guile/
 Summary:             Embeddable Scheme implementation written in C
 Version:             1.8.5
 Source:              http://ftp.gnu.org/pub/gnu/guile/guile-%{version}.tar.gz
+Patch1:              guile-01-autoconf.diff
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 
 %include default-depend.inc
-Requires: SFEgmp
+Requires: SUNWgnu-mp
 Requires: SUNWlibtool
 Requires: SUNWltdl
 Requires: SUNWlibm
@@ -27,6 +28,7 @@ Requires:      %{name}
 
 %prep
 %setup -q -n guile-%version
+%patch1 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -34,14 +36,15 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
      CPUS=1
 fi
 
-export CFLAGS="%optflags"
+export CFLAGS="%optflags -I/usr/include/gmp"
 export LDFLAGS="%_ldflags"
-export ACLOCAL_FLAGS="-I %{_datadir}/aclocal -I ."
+export ACLOCAL_FLAGS="-I . -I m4"
 
-libtoolize --copy --force
-aclocal $ACLOCAL_FLAGS
-autoheader
-automake -a -c -f
+#libtoolize --copy --force
+#aclocal $ACLOCAL_FLAGS
+#autoheader
+#automake -a -c -f
+#autoconf
 ./configure --prefix=%{_prefix}  \
             --mandir=%{_mandir} \
             --infodir=%{_datadir}/info \
@@ -108,6 +111,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*
 
 %changelog
+* Sun Jan 18 2009 - halton.huo@sun.com
+- Change SFEgmp to SUNWgnu-mp
+- Add patch autoconf.diff to fix AM_INTL_SUBDIR not found issue
 * Tue Sep 02 2008 - halton.huo@sun.com
 - Add /usr/share/aclocal to ACLOCAL_FLAGS to fix build issue
 * Tue Jun 24 2008 - nonsea@users.sourceforge.net

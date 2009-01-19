@@ -1,7 +1,7 @@
 #
 # spec file for package gdl
 #
-# Copyright 2008 Sun Microsystems, Inc.
+# Copyright 2009 Sun Microsystems, Inc.
 # This file and all modifications and additions to the pristine
 # package are under the same license as the package itself.
 #
@@ -12,13 +12,13 @@
 Name:		gdl
 License:	GPL
 Group:		Development/Libraries
-Version:	2.23.90
+Version:	2.24.0
 Release:	1
 Distribution:   Java Desktop System
 Vendor:         Sun Microsystems, Inc.
 URL:		http://www.gnome.org
 Summary:	Components and library for GNOME development tools.
-Source:		http://ftp.gnome.org/pub/GNOME/sources/%{name}/2.23/%{name}-%{version}.tar.bz2
+Source:		http://download.gnome.org/sources/%{name}/2.24/%{name}-%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-root
 
 Requires: 	gtk2 >= 2.4.0
@@ -110,6 +110,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_prefix}/lib/pkgconfig/*
 
 %changelog
+* Fri Jan 16 2009 - halton.huo@sun.com
+- Bump to 2.24.0
 * Wed Aug 20 2008 - nonsea@users.sourceforge.net
 - Bump to 2.23.90
 * Mon Mar 10 2008 - nonsea@users.sourceforge.net
