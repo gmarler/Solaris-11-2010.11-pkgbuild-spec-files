@@ -13,7 +13,7 @@
 # or, depend on package SUNWevolution-bdb-devel, which is in jds spec-files/closed
 # now, use second way.
 Name:           SFEanjuta
-Version:        2.25.4
+Version:        2.25.5
 Summary:        GNOME IDE for C and C++
 Group:          Development/Tools
 License:        GPL
@@ -21,10 +21,8 @@ URL:            http://anjuta.org/
 Source:         http://download.gnome.org/sources/anjuta/2.25/anjuta-%{version}.tar.bz2
 # date:2007-05-14 owner:nonsea type:branding
 Patch1:         anjuta-01-ld-z-text.diff
-# date:2009-01-19 owner:halton type:bug bugzilla:567967
-Patch2:         anjuta-02-suncc-empty-struct.diff
 # date:2009-01-19 owner:halton type:bug bugzilla:568254
-Patch3:         anjuta-03-extern-inline.diff
+Patch2:         anjuta-02-extern-inline.diff
 
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
@@ -94,7 +92,6 @@ Requires:                %{name}
 %prep
 %setup -q -n anjuta-%{version}
 %patch2 -p1
-%patch3 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -106,6 +103,9 @@ fi
 export CFLAGS="%optflags -I/usr/include/pcre"
 export LDFLAGS="%_ldflags"
 export ACLOCAL_FLAGS="-I ."
+# FIXME: subversion on snv_106 is 1.4.3, anjuta 2.25.x requires >= 1.5.0.
+# This cause anjuta does not have subversion support
+export PKG_CONFIG_PATH=%{_pkg_config_path}:/usr/apr/1.3/lib/pkgconfig:/usr/apr-util/1.3/lib/pkgconfig/
 
 #glib-gettextize -f
 libtoolize --copy --force
@@ -121,8 +121,6 @@ autoconf
 	--with-svn-include=%{_includedir}/svn			\
 	--with-svn-lib=%{_libdir}/svn				\
 	--disable-scrollkeeper					\
-	--with-apr-config=%{_prefix}/apache2/2.2/bin/apr-1-config \
-	--with-apu-config=%{_prefix}/apache2/2.2/bin/apu-1-config \
 	%gtk_doc_option
 
 %patch1 -p1
@@ -281,6 +279,8 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 %endif
 
 %changelog
+* Tue Jan 20 2009 - halton.huo@sun.com
+- Bump to 2.25.5
 * Sun Jan 18 2009 - halton.huo@sun.com
 - Bump to 2.25.4
 - Remove gnome-build since it is in anjuta's code base

@@ -1,3 +1,13 @@
+2009-01-20  Halton Huo <halton.huo@sun.com>
+
+	* SFEanjuta.spec: Bump to 2.25.5
+	* base-specs/libgda.spec: Bump to 3.99.9
+	* patches/anjuta-02-extern-inline.diff: reorder from -03
+	* patches/anjuta-02-suncc-empty-struct.diff: remove upstreamed patch
+	* patches/anjuta-03-extern-inline.diff: reorder to -03
+	* patches/libgda-01-suncc-empty-struct.diff: remove upstreamed patch
+	* patches/libgda-02-sys_errlist.diff: remove upstreamed patch
+
 2008-01-19  Thomas Wagner  <tom68@users.sourceforge.net>
 
 	* SFEfetchmail.spec: --enable-NTLM (untested)

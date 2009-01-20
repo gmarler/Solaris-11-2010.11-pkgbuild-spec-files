@@ -12,17 +12,14 @@
 Name:		libgda
 License:        LGPLv2
 Group:		Development/Libraries
-Version:	3.99.8
+Version:	3.99.9
 Release:	1
 Distribution:   Java Desktop System
 Vendor:         Sun Microsystems, Inc.
 URL:		http://www.gnome-db.org/
 Summary:	Library for writing gnome database programs
 Source:		http://download.gnome.org/sources/%{name}/3.99/%{name}-%{version}.tar.bz2
-# date:2009-01-18 owner:halton type:bug bugzilla:568163 state:upstream
-Patch1:         %{name}-01-suncc-empty-struct.diff
-# date:2009-01-18 owner:halton type:bug bugzilla:568165 state:upstream
-Patch2:         %{name}-02-sys_errlist.diff
+Source1:        libgda-jdbc-MANIFEST.MF
 BuildRoot:      %{_tmppath}/%{name}-%{version}-root
 
 BuildRequires:    pkgconfig >= 0.8
@@ -56,8 +53,8 @@ or compile programs that use libgda.
 
 %prep
 %setup -q
-%patch1 -p1
-%patch2 -p1
+# FIXME: remove SOURCE1 after bugzilla #568388 is fixed
+cp %SOURCE1 providers/jdbc/MANIFEST.MF
 
 %build
 %ifos linux
@@ -122,5 +119,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*
 
 %changelog
+* Tue Jan 20 2009 - halton.huo@sun.com
+- Bump to 3.99.9
+- Remove upstreamed patch suncc-empty-struct.diff
+- Remove upstreamed patch sys_errlist.diff
+- Add SOURCE1 to fix bugzilla #568388
 * Sun Jan 18 2009 - halton.huo@sun.com
 - Initial spec
