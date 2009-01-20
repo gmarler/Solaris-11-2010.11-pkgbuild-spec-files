@@ -116,8 +116,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr (-, root, bin)
-%dir %attr (0755, root, bin) %{_includedir}
-%{_includedir}/gstreamer-%{gst_minmaj}/gst
 %dir %attr (0755, root, sys) %{_datadir}
 %attr (-, root, other) %{_datadir}/locale
 %if %{!?_without_gtk_doc:1}%{?_without_gtk_doc:0}
