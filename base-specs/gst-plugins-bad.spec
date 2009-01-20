@@ -7,7 +7,7 @@
 #
 Name:           gst-plugins-bad
 License:        GPL
-Version:        0.10.9
+Version:        0.10.10
 Release:        1
 Distribution:   Java Desktop System
 Vendor:         Sun Microsystems, Inc.
@@ -17,11 +17,10 @@ URL:            http://gstreamer.freedesktop.org/
 Source0:        http://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-%{version}.tar.bz2
 Source1:        soundcard.h
 Patch1:         gst-plugins-bad-01-gettext.diff
-Patch2:         gst-plugins-bad-02-sunpro.diff
-Patch3:         gst-plugins-bad-03-modplug.diff
-Patch4:         gst-plugins-bad-04-byte-order.diff
-Patch5:         gst-plugins-bad-05-gstapexraop.diff
-Patch6:         gst-plugins-bad-06-ladspa.diff
+Patch2:         gst-plugins-bad-02-gstapexraop.diff
+Patch3:         gst-plugins-bad-03-dccp.diff
+Patch4:         gst-plugins-bad-04-makefile.diff
+Patch5:         gst-plugins-bad-05-deinterlace.diff
 BuildRoot:      %{_tmppath}/%{name}-%{version}-root
 Docdir:         %{_defaultdocdir}/doc
 Autoreqprov:    on
@@ -43,7 +42,6 @@ plug-ins.
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
-%patch6 -p1
 mkdir -p include/sys
 cp %{SOURCE1} include/sys
 
@@ -177,6 +175,8 @@ GStreamer support libraries header files.
 %{_datadir}/gtk-doc
 
 %changelog
+* Tue Jan 20 2009 - brian.cameron@sun.com
+- Bump to 0.10.10 and add patches needed to build.
 * Thu Jan 08 2008 - brian.cameron@sun.com
 - Add patch gst-plugins-bad-05-gstapexraop.diff to fix compile issue.
   Add patch gst-plugins-bad-06-ladspa.diff to fix crashing issue in plugin.

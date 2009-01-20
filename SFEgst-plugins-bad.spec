@@ -11,10 +11,10 @@ Version:                 0.10.10
 URL:                     http://gstreamer.freedesktop.org/
 Source:                  http://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-%{version}.tar.bz2
 Patch1:                  gst-plugins-bad-01-gettext.diff
-Patch5:                  gst-plugins-bad-05-gstapexraop.diff
-Patch6:                  gst-plugins-bad-06-dccp.diff
-Patch8:                  gst-plugins-bad-07-makefile.diff
-Patch7:                  gst-plugins-bad-08-deinterlace.diff
+Patch2:                  gst-plugins-bad-02-gstapexraop.diff
+Patch3:                  gst-plugins-bad-03-dccp.diff
+Patch4:                  gst-plugins-bad-04-makefile.diff
+Patch5:                  gst-plugins-bad-05-deinterlace.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -34,10 +34,10 @@ SUNW_BaseDir:            %{_basedir}
 %prep
 %setup -n gst-plugins-bad-%{version} -q
 %patch1 -p1
+%patch2 -p1
+%patch3 -p1
+%patch4 -p1
 %patch5 -p1
-%patch6 -p1
-%patch7 -p1
-%patch8 -p1
 
 %build
 # There seems to be an issue with the version of libtool that GStreamer is
@@ -126,9 +126,10 @@ rm -rf $RPM_BUILD_ROOT
 
 %changelog
 * Mon Jan 19 2009 - Brian.Cameron@sun.com
-- Bump to 0.10.10.  Add patches gst-plugins-bad-06-dccp.diff,
-  gst-plugins-bad-07-makefile.diff, and gst-plugins-bad-08-deinterlace.diff to
-  address compile issues.
+- Bump to 0.10.10.  Add patches gst-plugins-bad-03-dccp.diff,
+  gst-plugins-bad-04-makefile.diff, and gst-plugins-bad-05-deinterlace.diff to
+  address compile issues.  Rework older patches.  Now build plugins which use
+  C++, such as modplug.
 * Thu Jan 15 2009 - Brian.Cameron@sun.com
 - Disable building the selector plugin since we build this with
   SUNWgnome-media.

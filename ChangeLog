@@ -1,5 +1,15 @@
 2009-01-20  Brian Cameron  <brian.cameron@sun.com>
 
+	* SFEgst-plugins-bad.spec, base-specs/gst-plugins-bad.spec,
+	* patches/gst-plugins-bad-02-sunpro.diff,
+	  patches/gst-plugins-bad-03-modplug.diff: Merge these two
+	  patches into gst-plugins-bad-04-makefile.diff.
+	* patches/gst-plugins-bad-04-byteorder.diff:  Remove this patch
+	  since according to bugzill abug #568468 it was obviously wrong.
+	* patches/gst-plugins-bad-*.diff: Renumber patches.
+
+2009-01-20  Brian Cameron  <brian.cameron@sun.com>
+
 	* SFEgst-plugins-bad.spec: Update to
 	* patches/gst-plugins-bad-06-ladspa.diff: Remove upstream patch.
 	* patches/gst-plugins-bad-06-dccp.diff,
