@@ -12,7 +12,9 @@ URL:                     http://gstreamer.freedesktop.org/
 Source:                  http://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-%{version}.tar.bz2
 Patch1:                  gst-plugins-bad-01-gettext.diff
 Patch2:                  gst-plugins-bad-02-gstapexraop.diff
+# Reported upstream as bug #568480.
 Patch3:                  gst-plugins-bad-03-dccp.diff
+# Reported upstream as bug #568483.
 Patch4:                  gst-plugins-bad-04-makefile.diff
 Patch5:                  gst-plugins-bad-05-deinterlace.diff
 SUNW_BaseDir:            %{_basedir}
