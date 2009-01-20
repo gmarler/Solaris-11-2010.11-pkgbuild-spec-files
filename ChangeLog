@@ -1,3 +1,12 @@
+2009-01-20  Brian Cameron  <brian.cameron@sun.com>
+
+	* SFEgst-plugins-bad.spec: Update to
+	* patches/gst-plugins-bad-06-ladspa.diff: Remove upstream patch.
+	* patches/gst-plugins-bad-06-dccp.diff,
+	  patches/gst-plugins-bad-07-makefile.diff,
+	  patches/gst-plugins-bad-08-deinterlace.diff:  Add patched needed
+	  to compile.
+
 2009-01-20  Halton Huo <halton.huo@sun.com>
 
 	* SFEanjuta.spec: Bump to 2.25.5

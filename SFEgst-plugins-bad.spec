@@ -7,12 +7,14 @@
 
 Name:                    SFEgst-plugins-bad
 Summary:                 GStreamer bad plugins
-Version:                 0.10.9
+Version:                 0.10.10
 URL:                     http://gstreamer.freedesktop.org/
 Source:                  http://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-%{version}.tar.bz2
 Patch1:                  gst-plugins-bad-01-gettext.diff
 Patch5:                  gst-plugins-bad-05-gstapexraop.diff
-Patch6:                  gst-plugins-bad-06-ladspa.diff
+Patch6:                  gst-plugins-bad-06-dccp.diff
+Patch8:                  gst-plugins-bad-07-makefile.diff
+Patch7:                  gst-plugins-bad-08-deinterlace.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -34,19 +36,31 @@ SUNW_BaseDir:            %{_basedir}
 %patch1 -p1
 %patch5 -p1
 %patch6 -p1
+%patch7 -p1
+%patch8 -p1
 
 %build
-export CFLAGS="%optflags -I/usr/sfw/include -DANSICPP"
+# There seems to be an issue with the version of libtool that GStreamer is
+# now using.  The libtool script uses the echo and RM variables but does not
+# define them, so setting them here addresses this.
+export echo="/usr/bin/echo"
+export RM="/usr/bin/rm"
+
+export CFLAGS="%optflags -I%{sfw_inc} -DANSICPP"
+# gstmodplug needs C99 __func__
+export CXXFLAGS="%cxx_optflags -features=extensions -I%{sfw_inc}"
+export HAVE_CXX=yes
 export RPM_OPT_FLAGS="$CFLAGS"
 export ACLOCAL_FLAGS="-I %{_datadir}/aclocal"
 export PERL5LIB=%{_prefix}/perl5/site_perl/5.6.1/sun4-solaris-64int
-export LDFLAGS="%_ldflags"
+export LDFLAGS="%_ldflags %{sfw_lib_path}"
 
 glib-gettextize -f
 aclocal -I ./m4 -I ./common/m4 $ACLOCAL_FLAGS
 libtoolize --copy --force
 intltoolize --copy --force --automake
 autoheader
+automake -a -c -f
 autoconf
 
 # Do not build the selector plugin since it is now included in 
@@ -72,6 +86,12 @@ else
 fi
 
 %install
+# There seems to be an issue with the version of libtool that GStreamer is
+# now using.  The libtool script uses the echo and RM variables but does not
+# define them, so setting them here addresses this.
+export echo="/usr/bin/echo"
+export RM="/usr/bin/rm"
+
 [ -n "$RPM_BUILD_ROOT" -a "$RPM_BUILD_ROOT" != / ]
 export GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1
 make DESTDIR=$RPM_BUILD_ROOT install
@@ -105,6 +125,10 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Mon Jan 19 2009 - Brian.Cameron@sun.com
+- Bump to 0.10.10.  Add patches gst-plugins-bad-06-dccp.diff,
+  gst-plugins-bad-07-makefile.diff, and gst-plugins-bad-08-deinterlace.diff to
+  address compile issues.
 * Thu Jan 15 2009 - Brian.Cameron@sun.com
 - Disable building the selector plugin since we build this with
   SUNWgnome-media.
