@@ -38,7 +38,7 @@ Patch4:                  gdm-04-ICE-optionwidget.diff
 # Fix gconf-santiy-check-2 warning dialog.
 # date:2008-09-04 owner:yippi type:bug bugid:550832
 Patch5:			 gdm-05-gconfsanity.diff
-# date:2008-12-16 owner:yippi type:bug bugid:528663
+# date:2008-12-16 owner:yippi type:bug bugid:568323
 Patch6:                  gdm-06-hide-face-browser.diff
 # date:2008-12-16 owner:yippi type:bug bugid:564789 state:upstream
 Patch7:                  gdm-07-layout.diff

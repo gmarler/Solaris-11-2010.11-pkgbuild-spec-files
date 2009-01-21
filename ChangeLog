@@ -1,6 +1,13 @@
+2009-01-20  Brian Cameron  <brian.cameron@sun.com>
+
+	* SUNWgnome-display-mgr.spec: Update bug number.
+	* patches/gdm-07-hide-face-browser.diff: Improve patch based on
+	  bug #568323.
+
 2008-01-19  Thomas Wagner  <tom68@users.sourceforge.net>
 
-        * experimental/SFEpostfix.spec: updates in %files, now packages well, still untested binaries
+        * experimental/SFEpostfix.spec: updates in %files, now packages well,
+	  still untested binaries
 
 2009-01-20  Brian Cameron  <brian.cameron@sun.com>
 
