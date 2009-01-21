@@ -1,3 +1,7 @@
+2008-01-19  Thomas Wagner  <tom68@users.sourceforge.net>
+
+        * experimental/SFEpostfix.spec: updates in %files, now packages well, still untested binaries
+
 2009-01-20  Brian Cameron  <brian.cameron@sun.com>
 
 	* SFEgst-plugins-bad.spec, base-specs/gst-plugins-bad.spec,

@@ -2,11 +2,13 @@
 # spec file for package SFEpostfix
 #
 # prepared for SunStudio compiler
-# note: this spec derived partyl from the provided postfix.spec, you might update this by comparing with vimdiff SFEpostfix.spec BUILD/postfix-*/tmp/postfix.spec
+# note: this spec derived partly from the provided postfix.spec, you might update this by comparing with vimdiff SFEpostfix.spec BUILD/postfix-*/tmp/postfix.spec
+# note: it also takes several files from the original source-rpm line postfix.spec, make-postfix.spec, postfix-aliases
 
 %include Solaris.inc
 
-# see special variables below
+%define src_name	postfix
+# see much more special variables below
 
 Name:                    SFEpostfix
 Summary:                 postfix - Mailer System
@@ -16,7 +18,7 @@ Source:                  ftp://ftp.porcupine.org/mirrors/postfix-release/officia
 Source2:                 http://ftp.wl0.org/official/2.5/SRPMS/postfix-%{version}-1.src.rpm
 Patch1:			postfix-01-make-postfix.spec.diff
 
-SUNW_BaseDir:            %{_basedir}
+SUNW_BaseDir:            /
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 
 #TODO: BuildReqires:
@@ -30,6 +32,7 @@ BuildRequires: SUNWggrp
 %define docdir %{_docdir}/%{name}
 #probably not used directly, SMF is the way we should go
 %define initdir /etc/init.d
+%define	V_postfinger	1.30
 
 #original from postfix.spec
 %define readme_dir   %{docdir}/readme
@@ -99,7 +102,8 @@ BuildRequires: SUNWggrp
 
 mkdir tmp
 (cd tmp;
- rpm2cpio %{SOURCE2} | /usr/gnu/bin/cpio -iumdv  --no-absolute-filenames  postfix.spec.in make-postfix.spec 
+ #rpm2cpio %{SOURCE2} | /usr/gnu/bin/cpio -iumdv  --no-absolute-filenames  postfix.spec.in make-postfix.spec postfix-aliases
+ rpm2cpio %{SOURCE2} | /usr/gnu/bin/cpio -iumdv  --no-absolute-filenames 
 )
 
 %patch1 -p1
@@ -331,14 +335,16 @@ perl -pi -e "s/DEF_SASL_SERVER_TYPE/DEF_SERVER_SASL_TYPE/g" */SASL_README*
 
 # Install Sys V init script
 mkdir -p ${RPM_BUILD_ROOT}%{initdir}
-install -c %{_sourcedir}/postfix-etc-init.d-postfix \
-                  ${RPM_BUILD_ROOT}%{initdir}/postfix
+#install -c %{_sourcedir}/postfix-etc-init.d-postfix \
+install -c tmp/postfix-etc-init.d-postfix \
+                ${RPM_BUILD_ROOT}%{initdir}/postfix
 
 install -c auxiliary/rmail/rmail ${RPM_BUILD_ROOT}%{rmail_path}
 install -c auxiliary/qshape/qshape.pl ${RPM_BUILD_ROOT}/%{_sbindir}/qshape
 
 # copy new aliases files and generate a ghost aliases.db file
-cp -f %{_sourcedir}/postfix-aliases ${RPM_BUILD_ROOT}%{_sysconfdir}/postfix/aliases
+#cp -f %{_sourcedir}/postfix-aliases ${RPM_BUILD_ROOT}%{_sysconfdir}/postfix/aliases
+cp -f tmp/postfix-aliases ${RPM_BUILD_ROOT}%{_sysconfdir}/postfix/aliases
 chmod 644 ${RPM_BUILD_ROOT}%{_sysconfdir}/postfix/aliases
 
 touch ${RPM_BUILD_ROOT}/%{_sysconfdir}/postfix/aliases.db
@@ -355,12 +361,15 @@ done
 
 # install postfinger and postfix-chroot.sh scripts
 # - postfix-chroot.sh is placed in /etc/postfix to make it more visible
-install -c -m 755 %{_sourcedir}/postfinger-%{V_postfinger} ${RPM_BUILD_ROOT}%{_bindir}/postfinger
-install -c -m 755 %{_sourcedir}/postfix-chroot.sh ${RPM_BUILD_ROOT}%{_sysconfdir}/postfix/
+#install -c -m 755 %{_sourcedir}/postfinger-%{V_postfinger} ${RPM_BUILD_ROOT}%{_bindir}/postfinger
+install -c -m 755 tmp/postfinger-%{V_postfinger} ${RPM_BUILD_ROOT}%{_bindir}/postfinger
+#install -c -m 755 %{_sourcedir}/postfix-chroot.sh ${RPM_BUILD_ROOT}%{_sysconfdir}/postfix/
+install -c -m 755 tmp/postfix-chroot.sh ${RPM_BUILD_ROOT}%{_sysconfdir}/postfix/
 
 [ -d "${RPM_BUILD_ROOT}%{html_dir}" ]     || mkdir -p ${RPM_BUILD_ROOT}%{html_dir}
 [ -d "${RPM_BUILD_ROOT}%{readme_dir}" ]   || mkdir -p ${RPM_BUILD_ROOT}%{readme_dir}
-install -c -m 644 %{_sourcedir}/README-Postfix-SASL-RedHat.txt ${RPM_BUILD_ROOT}%{readme_dir}/
+#install -c -m 644 %{_sourcedir}/README-Postfix-SASL-RedHat.txt ${RPM_BUILD_ROOT}%{readme_dir}/
+install -c -m 644 tmp/README-Postfix-SASL-RedHat.txt ${RPM_BUILD_ROOT}%{readme_dir}/
 [ -d "${RPM_BUILD_ROOT}%{examples_dir}" ] || mkdir -p ${RPM_BUILD_ROOT}%{examples_dir}
 cp -pr examples/* ${RPM_BUILD_ROOT}%{examples_dir}/
 # disable execution permissions to avoid rpm generating dependencies
@@ -453,7 +462,8 @@ EOF
 # - used to build a newer version of the rpm with the same parameters
 #   as the current package.
 # - provides build instructions
-cat - %{_sourcedir}/postfix.spec.cf <<EOF | sed -e '/^# NOTE:/d' > ${RPM_BUILD_ROOT}%{_sysconfdir}/postfix/postfix.spec.cf
+#cat - %{_sourcedir}/postfix.spec.cf <<EOF | sed -e '/^# NOTE:/d' > ${RPM_BUILD_ROOT}%{_sysconfdir}/postfix/postfix.spec.cf
+cat - tmp/postfix.spec.cf <<EOF | sed -e '/^# NOTE:/d' > ${RPM_BUILD_ROOT}%{_sysconfdir}/postfix/postfix.spec.cf
 #
 # This file contains the following information:
 #
@@ -513,11 +523,334 @@ rm -rf $RPM_BUILD_ROOT
 %doc README ChangeLog CREDITS COPYING INSTALL NEWS AUTHORS TODO ABOUT-NLS
 %dir %attr (0755, root, bin) %{_bindir}
 %{_bindir}/*
+%dir %attr (0755, root, bin) %{_sbindir}
+%{_sbindir}/*
+%dir %attr (0755, root, bin) %{_libdir}
+%{_libdir}/*
 %dir %attr (0755, root, sys) %{_datadir}
+%dir %attr (0755, root, other) %{_docdir}
+%{_docdir}/*
 %dir %attr(0755, root, bin) %{_mandir}
 %dir %attr(0755, root, bin) %{_mandir}/*
 %{_mandir}/*/*
+%dir %attr (0755, root, sys) %{_localstatedir}
+%{_localstatedir}/*
+#%class(manifest) %attr(0444, root, sys)/var/svc/manifest/site/postfix.xml
 
+%attr (0755, root, bin) %dir %{_sysconfdir}
+%attr (0755, root, bin) %dir %{_sysconfdir}/%{src_name}
+%{_sysconfdir}/%{src_name}/*
+# only for oldtimers the original init.d/postfix script - *not* tested on Solaris
+# this is %{_sysconfdir}/init.d
+%attr (0755, root, bin) %dir %{initdir}
+%{initdir}/*
+
+
+# error: Installed (but unpackaged) file(s) found:
+#         /var
+#         /var/spool
+#         /var/spool/postfix
+#         /var/spool/postfix/maildrop
+#         /var/spool/postfix/public
+#         /var/spool/postfix/incoming
+#         /var/spool/postfix/hold
+#         /var/spool/postfix/flush
+#         /var/spool/postfix/private
+#         /var/spool/postfix/saved
+#         /var/spool/postfix/defer
+#         /var/spool/postfix/trace
+#         /var/spool/postfix/bounce
+#         /var/spool/postfix/active
+#         /var/spool/postfix/pid
+#         /var/spool/postfix/corrupt
+#         /var/spool/postfix/deferred
+#         /var/lib
+#         /var/lib/postfix
+#         /usr/sbin
+#         /usr/sbin/qshape
+#         /usr/sbin/postfix
+#         /usr/sbin/postqueue
+#         /usr/sbin/smtp-sink
+#         /usr/sbin/postlock
+#         /usr/sbin/postconf
+#         /usr/sbin/sendmail.postfix
+#         /usr/sbin/postcat
+#         /usr/sbin/postsuper
+#         /usr/sbin/postkick
+#         /usr/sbin/qmqp-source
+#         /usr/sbin/postalias
+#         /usr/sbin/postdrop
+#         /usr/sbin/smtp-source
+#         /usr/sbin/postmap
+#         /usr/sbin/postlog
+#         /usr/lib
+#         /usr/lib/sendmail.postfix
+#         /usr/lib/postfix
+#         /usr/lib/postfix/spawn
+#         /usr/lib/postfix/qmgr
+#         /usr/lib/postfix/nqmgr
+#         /usr/lib/postfix/smtp
+#         /usr/lib/postfix/trivial-rewrite
+#         /usr/lib/postfix/anvil
+#         /usr/lib/postfix/virtual
+#         /usr/lib/postfix/oqmgr
+#         /usr/lib/postfix/bounce
+#         /usr/lib/postfix/cleanup
+#         /usr/lib/postfix/verify
+#         /usr/lib/postfix/proxymap
+#         /usr/lib/postfix/master
+#         /usr/lib/postfix/error
+#         /usr/lib/postfix/qmqpd
+#         /usr/lib/postfix/tlsmgr
+#         /usr/lib/postfix/flush
+#         /usr/lib/postfix/pipe
+#         /usr/lib/postfix/scache
+#         /usr/lib/postfix/pickup
+#         /usr/lib/postfix/local
+#         /usr/lib/postfix/discard
+#         /usr/lib/postfix/smtpd
+#         /usr/lib/postfix/lmtp
+#         /usr/lib/postfix/showq
+#         /usr/share/doc
+#         /usr/share/doc/SFEpostfix
+#         /usr/share/doc/SFEpostfix/RELEASE_NOTES-2.2
+#         /usr/share/doc/SFEpostfix/RELEASE_NOTES-1.1
+#         /usr/share/doc/SFEpostfix/TLS_CHANGES
+#         /usr/share/doc/SFEpostfix/RELEASE_NOTES-2.1
+#         /usr/share/doc/SFEpostfix/SEE_ALSO
+#         /usr/share/doc/SFEpostfix/PORTING
+#         /usr/share/doc/SFEpostfix/COMPATIBILITY
+#         /usr/share/doc/SFEpostfix/readme
+#         /usr/share/doc/SFEpostfix/readme/LOCAL_RECIPIENT_README
+#         /usr/share/doc/SFEpostfix/readme/SMTPD_ACCESS_README
+#         /usr/share/doc/SFEpostfix/readme/SMTPD_POLICY_README
+#         /usr/share/doc/SFEpostfix/readme/ETRN_README
+#         /usr/share/doc/SFEpostfix/readme/ADDRESS_REWRITING_README
+#         /usr/share/doc/SFEpostfix/readme/STRESS_README
+#         /usr/share/doc/SFEpostfix/readme/SASL_README
+#         /usr/share/doc/SFEpostfix/readme/SCHEDULER_README
+#         /usr/share/doc/SFEpostfix/readme/QSHAPE_README
+#         /usr/share/doc/SFEpostfix/readme/DEBUG_README
+#         /usr/share/doc/SFEpostfix/readme/XFORWARD_README
+#         /usr/share/doc/SFEpostfix/readme/PGSQL_README
+#         /usr/share/doc/SFEpostfix/readme/IPV6_README
+#         /usr/share/doc/SFEpostfix/readme/BASIC_CONFIGURATION_README
+#         /usr/share/doc/SFEpostfix/readme/BUILTIN_FILTER_README
+#         /usr/share/doc/SFEpostfix/readme/CONNECTION_CACHE_README
+#         /usr/share/doc/SFEpostfix/readme/SMTPD_PROXY_README
+#         /usr/share/doc/SFEpostfix/readme/ADDRESS_CLASS_README
+#         /usr/share/doc/SFEpostfix/readme/STANDARD_CONFIGURATION_README
+#         /usr/share/doc/SFEpostfix/readme/MYSQL_README
+#         /usr/share/doc/SFEpostfix/readme/MAILDROP_README
+#         /usr/share/doc/SFEpostfix/readme/TLS_LEGACY_README
+#         /usr/share/doc/SFEpostfix/readme/INSTALL
+#         /usr/share/doc/SFEpostfix/readme/VIRTUAL_README
+#         /usr/share/doc/SFEpostfix/readme/DATABASE_README
+#         /usr/share/doc/SFEpostfix/readme/FILTER_README
+#         /usr/share/doc/SFEpostfix/readme/PCRE_README
+#         /usr/share/doc/SFEpostfix/readme/ADDRESS_VERIFICATION_README
+#         /usr/share/doc/SFEpostfix/readme/DB_README
+#         /usr/share/doc/SFEpostfix/readme/RESTRICTION_CLASS_README
+#         /usr/share/doc/SFEpostfix/readme/CONTENT_INSPECTION_README
+#         /usr/share/doc/SFEpostfix/readme/DSN_README
+#         /usr/share/doc/SFEpostfix/readme/README-Postfix-SASL-RedHat.txt
+#         /usr/share/doc/SFEpostfix/readme/VERP_README
+#         /usr/share/doc/SFEpostfix/readme/OVERVIEW
+#         /usr/share/doc/SFEpostfix/readme/PACKAGE_README
+#         /usr/share/doc/SFEpostfix/readme/XCLIENT_README
+#         /usr/share/doc/SFEpostfix/readme/BACKSCATTER_README
+#         /usr/share/doc/SFEpostfix/readme/CDB_README
+#         /usr/share/doc/SFEpostfix/readme/TUNING_README
+#         /usr/share/doc/SFEpostfix/readme/UUCP_README
+#         /usr/share/doc/SFEpostfix/readme/TLS_README
+#         /usr/share/doc/SFEpostfix/readme/ULTRIX_README
+#         /usr/share/doc/SFEpostfix/readme/LINUX_README
+#         /usr/share/doc/SFEpostfix/readme/LDAP_README
+#         /usr/share/doc/SFEpostfix/readme/RELEASE_NOTES
+#         /usr/share/doc/SFEpostfix/readme/NFS_README
+#         /usr/share/doc/SFEpostfix/readme/MILTER_README
+#         /usr/share/doc/SFEpostfix/readme/AAAREADME
+#         /usr/share/doc/SFEpostfix/HISTORY
+#         /usr/share/doc/SFEpostfix/RELEASE_NOTES-2.3
+#         /usr/share/doc/SFEpostfix/RELEASE_NOTES-1.0
+#         /usr/share/doc/SFEpostfix/RELEASE_NOTES-2.4
+#         /usr/share/doc/SFEpostfix/AAAREADME
+#         /usr/share/doc/SFEpostfix/US_PATENT_6321267
+#         /usr/share/doc/SFEpostfix/TLS_ACKNOWLEDGEMENTS
+#         /usr/share/doc/SFEpostfix/RELEASE_NOTES
+#         /usr/share/doc/SFEpostfix/RELEASE_NOTES-2.0
+#         /usr/share/doc/SFEpostfix/TLS_LICENSE
+#         /usr/share/doc/SFEpostfix/html
+#         /usr/share/doc/SFEpostfix/html/SMTPD_PROXY_README.html
+#         /usr/share/doc/SFEpostfix/html/header_checks.5.html
+#         /usr/share/doc/SFEpostfix/html/postfix.1.html
+#         /usr/share/doc/SFEpostfix/html/smtpd.8.html
+#         /usr/share/doc/SFEpostfix/html/PCRE_README.html
+#         /usr/share/doc/SFEpostfix/html/master.8.html
+#         /usr/share/doc/SFEpostfix/html/DATABASE_README.html
+#         /usr/share/doc/SFEpostfix/html/TUNING_README.html
+#         /usr/share/doc/SFEpostfix/html/LOCAL_RECIPIENT_README.html
+#         /usr/share/doc/SFEpostfix/html/qmqp-sink.1.html
+#         /usr/share/doc/SFEpostfix/html/VERP_README.html
+#         /usr/share/doc/SFEpostfix/html/BUILTIN_FILTER_README.html
+#         /usr/share/doc/SFEpostfix/html/aliases.5.html
+#         /usr/share/doc/SFEpostfix/html/RESTRICTION_CLASS_README.html
+#         /usr/share/doc/SFEpostfix/html/XFORWARD_README.html
+#         /usr/share/doc/SFEpostfix/html/lmtp.8.html
+#         /usr/share/doc/SFEpostfix/html/CDB_README.html
+#         /usr/share/doc/SFEpostfix/html/ADDRESS_CLASS_README.html
+#         /usr/share/doc/SFEpostfix/html/postalias.1.html
+#         /usr/share/doc/SFEpostfix/html/postqueue.1.html
+#         /usr/share/doc/SFEpostfix/html/INSTALL.html
+#         /usr/share/doc/SFEpostfix/html/verify.8.html
+#         /usr/share/doc/SFEpostfix/html/MAILDROP_README.html
+#         /usr/share/doc/SFEpostfix/html/pipe.8.html
+#         /usr/share/doc/SFEpostfix/html/showq.8.html
+#         /usr/share/doc/SFEpostfix/html/spawn.8.html
+#         /usr/share/doc/SFEpostfix/html/DSN_README.html
+#         /usr/share/doc/SFEpostfix/html/bounce.8.html
+#         /usr/share/doc/SFEpostfix/html/cleanup.8.html
+#         /usr/share/doc/SFEpostfix/html/master.5.html
+#         /usr/share/doc/SFEpostfix/html/postmap.1.html
+#         /usr/share/doc/SFEpostfix/html/qmgr.8.html
+#         /usr/share/doc/SFEpostfix/html/postcat.1.html
+#         /usr/share/doc/SFEpostfix/html/index.html
+#         /usr/share/doc/SFEpostfix/html/IPV6_README.html
+#         /usr/share/doc/SFEpostfix/html/SMTPD_ACCESS_README.html
+#         /usr/share/doc/SFEpostfix/html/FILTER_README.html
+#         /usr/share/doc/SFEpostfix/html/DEBUG_README.html
+#         /usr/share/doc/SFEpostfix/html/SCHEDULER_README.html
+#         /usr/share/doc/SFEpostfix/html/sendmail.1.html
+#         /usr/share/doc/SFEpostfix/html/ADDRESS_VERIFICATION_README.html
+#         /usr/share/doc/SFEpostfix/html/STANDARD_CONFIGURATION_README.html
+#         /usr/share/doc/SFEpostfix/html/mailq.1.html
+#         /usr/share/doc/SFEpostfix/html/trace.8.html
+#         /usr/share/doc/SFEpostfix/html/nisplus_table.5.html
+#         /usr/share/doc/SFEpostfix/html/proxymap.8.html
+#         /usr/share/doc/SFEpostfix/html/access.5.html
+#         /usr/share/doc/SFEpostfix/html/smtp-sink.1.html
+#         /usr/share/doc/SFEpostfix/html/NFS_README.html
+#         /usr/share/doc/SFEpostfix/html/ldap_table.5.html
+#         /usr/share/doc/SFEpostfix/html/oqmgr.8.html
+#         /usr/share/doc/SFEpostfix/html/trivial-rewrite.8.html
+#         /usr/share/doc/SFEpostfix/html/relocated.5.html
+#         /usr/share/doc/SFEpostfix/html/discard.8.html
+#         /usr/share/doc/SFEpostfix/html/qmqp-source.1.html
+#         /usr/share/doc/SFEpostfix/html/postfix-manuals.html
+#         /usr/share/doc/SFEpostfix/html/OVERVIEW.html
+#         /usr/share/doc/SFEpostfix/html/TLS_README.html
+#         /usr/share/doc/SFEpostfix/html/ADDRESS_REWRITING_README.html
+#         /usr/share/doc/SFEpostfix/html/VIRTUAL_README.html
+#         /usr/share/doc/SFEpostfix/html/TLS_LEGACY_README.html
+#         /usr/share/doc/SFEpostfix/html/pcre_table.5.html
+#         /usr/share/doc/SFEpostfix/html/CONNECTION_CACHE_README.html
+#         /usr/share/doc/SFEpostfix/html/generic.5.html
+#         /usr/share/doc/SFEpostfix/html/SASL_README.html
+#         /usr/share/doc/SFEpostfix/html/newaliases.1.html
+#         /usr/share/doc/SFEpostfix/html/postlock.1.html
+#         /usr/share/doc/SFEpostfix/html/postconf.5.html
+#         /usr/share/doc/SFEpostfix/html/QSHAPE_README.html
+#         /usr/share/doc/SFEpostfix/html/CONTENT_INSPECTION_README.html
+#         /usr/share/doc/SFEpostfix/html/PACKAGE_README.html
+#         /usr/share/doc/SFEpostfix/html/postfix-logo.jpg
+#         /usr/share/doc/SFEpostfix/html/XCLIENT_README.html
+#         /usr/share/doc/SFEpostfix/html/postsuper.1.html
+#         /usr/share/doc/SFEpostfix/html/flush.8.html
+#         /usr/share/doc/SFEpostfix/html/pgsql_table.5.html
+#         /usr/share/doc/SFEpostfix/html/LDAP_README.html
+#         /usr/share/doc/SFEpostfix/html/virtual.8.html
+#         /usr/share/doc/SFEpostfix/html/STRESS_README.html
+#         /usr/share/doc/SFEpostfix/html/postconf.1.html
+#         /usr/share/doc/SFEpostfix/html/LINUX_README.html
+#         /usr/share/doc/SFEpostfix/html/BACKSCATTER_README.html
+#         /usr/share/doc/SFEpostfix/html/qshape.1.html
+#         /usr/share/doc/SFEpostfix/html/pickup.8.html
+#         /usr/share/doc/SFEpostfix/html/error.8.html
+#         /usr/share/doc/SFEpostfix/html/smtp.8.html
+#         /usr/share/doc/SFEpostfix/html/qmqpd.8.html
+#         /usr/share/doc/SFEpostfix/html/defer.8.html
+#         /usr/share/doc/SFEpostfix/html/postlog.1.html
+#         /usr/share/doc/SFEpostfix/html/MILTER_README.html
+#         /usr/share/doc/SFEpostfix/html/BASIC_CONFIGURATION_README.html
+#         /usr/share/doc/SFEpostfix/html/tcp_table.5.html
+#         /usr/share/doc/SFEpostfix/html/postdrop.1.html
+#         /usr/share/doc/SFEpostfix/html/canonical.5.html
+#         /usr/share/doc/SFEpostfix/html/cidr_table.5.html
+#         /usr/share/doc/SFEpostfix/html/transport.5.html
+#         /usr/share/doc/SFEpostfix/html/postkick.1.html
+#         /usr/share/doc/SFEpostfix/html/regexp_table.5.html
+#         /usr/share/doc/SFEpostfix/html/smtp-source.1.html
+#         /usr/share/doc/SFEpostfix/html/virtual.5.html
+#         /usr/share/doc/SFEpostfix/html/anvil.8.html
+#         /usr/share/doc/SFEpostfix/html/mysql_table.5.html
+#         /usr/share/doc/SFEpostfix/html/SMTPD_POLICY_README.html
+#         /usr/share/doc/SFEpostfix/html/ETRN_README.html
+#         /usr/share/doc/SFEpostfix/html/PGSQL_README.html
+#         /usr/share/doc/SFEpostfix/html/DB_README.html
+#         /usr/share/doc/SFEpostfix/html/MYSQL_README.html
+#         /usr/share/doc/SFEpostfix/html/UUCP_README.html
+#         /usr/share/doc/SFEpostfix/html/local.8.html
+#         /usr/share/doc/SFEpostfix/examples
+#         /usr/share/doc/SFEpostfix/examples/chroot-setup
+#         /usr/share/doc/SFEpostfix/examples/chroot-setup/NETBSD1
+#         /usr/share/doc/SFEpostfix/examples/chroot-setup/AIX42
+#         /usr/share/doc/SFEpostfix/examples/chroot-setup/NEXTSTEP3
+#         /usr/share/doc/SFEpostfix/examples/chroot-setup/IRIX5
+#         /usr/share/doc/SFEpostfix/examples/chroot-setup/Solaris2.bak
+#         /usr/share/doc/SFEpostfix/examples/chroot-setup/OPENSTEP4
+#         /usr/share/doc/SFEpostfix/examples/chroot-setup/Solaris10
+#         /usr/share/doc/SFEpostfix/examples/chroot-setup/LINUX2.bak
+#         /usr/share/doc/SFEpostfix/examples/chroot-setup/BSDI2
+#         /usr/share/doc/SFEpostfix/examples/chroot-setup/IRIX6
+#         /usr/share/doc/SFEpostfix/examples/chroot-setup/HPUX10
+#         /usr/share/doc/SFEpostfix/examples/chroot-setup/LINUX2
+#         /usr/share/doc/SFEpostfix/examples/chroot-setup/HPUX9
+#         /usr/share/doc/SFEpostfix/examples/chroot-setup/Solaris8
+#         /usr/share/doc/SFEpostfix/examples/chroot-setup/Solaris2
+#         /usr/share/doc/SFEpostfix/examples/chroot-setup/OSF1
+#         /usr/share/doc/SFEpostfix/examples/chroot-setup/Solaris8.bak
+#         /usr/share/doc/SFEpostfix/examples/chroot-setup/Solaris10.bak
+#         /usr/share/doc/SFEpostfix/examples/chroot-setup/FREEBSD3
+#         /usr/share/doc/SFEpostfix/examples/chroot-setup/BSDI3
+#         /usr/share/doc/SFEpostfix/examples/chroot-setup/FreeBSD2
+#         /usr/share/doc/SFEpostfix/examples/qmail-local
+#         /usr/share/doc/SFEpostfix/examples/qmail-local/qmail-local.txt
+#         /usr/share/doc/SFEpostfix/examples/smtpd-policy
+#         /usr/share/doc/SFEpostfix/examples/smtpd-policy/README.SPF
+#         /usr/share/doc/SFEpostfix/examples/smtpd-policy/greylist.pl
+#         /usr/share/doc/SFEpostfix/COPYRIGHT
+#         /etc
+#         /etc/postfix
+#         /etc/postfix/aliases
+#         /etc/postfix/examples
+#         /etc/postfix/main.cf
+#         /etc/postfix/html
+#         /etc/postfix/main.cf.default
+#         /etc/postfix/relocated
+#         /etc/postfix/readme
+#         /etc/postfix/access
+#         /etc/postfix/canonical
+#         /etc/postfix/bounce.cf.default
+#         /etc/postfix/generic
+#         /etc/postfix/aliases.db
+#         /etc/postfix/post-install
+#         /etc/postfix/master.cf
+#         /etc/postfix/postfix-script
+#         /etc/postfix/makedefs.out
+#         /etc/postfix/transport
+#         /etc/postfix/postfix-files
+#         /etc/postfix/TLS_LICENSE
+#         /etc/postfix/postfix.spec.cf
+#         /etc/postfix/LICENSE
+#         /etc/postfix/postfix-chroot.sh
+#         /etc/postfix/header_checks
+#         /etc/postfix/virtual
+#         /etc/postfix/README.rpm
+#         /etc/init.d
+#         /etc/init.d/postfix
+# pkgbuild: SFEpostfix.spec(847): Installed (but unpackaged) file(s) found
+# ERROR: SFEpostfix FAILED
+# 
 
 %changelog
 * Sun Jan 2009 - Thomas Wagner
