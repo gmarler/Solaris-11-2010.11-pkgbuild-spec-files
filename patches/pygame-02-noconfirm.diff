@@ -1,0 +1,13 @@
+--- pygame-1.8.1release/config_unix.py-orig	2009-01-21 03:52:59.502756000 -0600
++++ pygame-1.8.1release/config_unix.py	2009-01-21 03:53:08.558273000 -0600
+@@ -14,10 +14,6 @@ origincdirs = ['/include', '/include/SDL
+ origlibdirs = ['/lib','/lib64','/X11R6/lib']
+ 
+ def confirm(message):
+-    "ask a yes/no question, return result"
+-    reply = raw_input('\n' + message + ' [Y/n]:')
+-    if reply and string.lower(reply[0]) == 'n':
+-        return 0
+     return 1
+ 
+ class DependencyProg:

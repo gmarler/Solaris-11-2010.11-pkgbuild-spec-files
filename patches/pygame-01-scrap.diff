@@ -1,0 +1,11 @@
+--- pygame-1.8.1release/src/scrap.c-orig	2009-01-21 03:44:12.423898000 -0600
++++ pygame-1.8.1release/src/scrap.c	2009-01-21 03:44:19.547157000 -0600
+@@ -52,7 +52,7 @@ static PyObject* _scrap_lost_scrap (PyOb
+ static PyObject* _scrap_set_mode (PyObject* self, PyObject* args);
+ 
+ /* Determine what type of clipboard we are using */
+-#if defined(__unix__) && !defined(DISABLE_X11)
++#if defined(__sun) && !defined(DISABLE_X11)
+ /*!defined(__QNXNTO__) &&*/
+     #define X11_SCRAP
+     #include <time.h> /* Needed for clipboard timeouts. */

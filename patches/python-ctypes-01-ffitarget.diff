@@ -1,0 +1,26 @@
+--- ctypes-1.0.2/source/libffi/src/x86/ffitarget.h-orig	2009-01-21 04:16:39.423661000 -0600
++++ ctypes-1.0.2/source/libffi/src/x86/ffitarget.h	2009-01-21 04:17:10.942637000 -0600
+@@ -51,10 +51,10 @@ typedef enum ffi_abi {
+ #endif
+ 
+   /* ---- Intel x86 and AMD x86-64 - */
+-#if !defined(X86_WIN32) && (defined(__i386__) || defined(__x86_64__)) 
++#if !defined(X86_WIN32) && (defined(__i386__) || defined (__i386) || defined(__x86_64__))
+   FFI_SYSV,
+   FFI_UNIX64,   /* Unix variants all use the same ABI for x86-64  */
+-#ifdef __i386__
++#if defined (__i386__) || defined (__i386)
+   FFI_DEFAULT_ABI = FFI_SYSV,
+ #else
+   FFI_DEFAULT_ABI = FFI_UNIX64,
+--- ctypes-1.0.2/source/callproc.c.alloca	2008-06-05 23:48:27.578970813 +1200
++++ ctypes-1.0.2/source/callproc.c	2008-06-05 23:48:41.677662640 +1200
+@@ -73,6 +73,8 @@
+ #include <malloc.h>
+ #endif
+ 
++#include <alloca.h>
++
+ #include <ffi.h>
+ #include "ctypes.h"
+ 

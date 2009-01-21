@@ -93,7 +93,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,bin)
-%doc README CHANGES COPYING
 %dir %attr (0755, root, bin) %{_libdir}
 %{_libdir}/lib*.so*
 %ifarch amd64 sparcv9
@@ -104,6 +103,9 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, bin) %{_libdir}/%{sse2_arch}
 %{_libdir}/%{sse2_arch}/lib*.so*
 %endif
+%doc -d %{base_arch}/SDL_ttf-%{version} README CHANGES COPYING
+%dir %attr (0755, root, sys) %{_datadir}
+%dir %attr (0755, root, other) %{_datadir}/doc
 
 %files devel
 %defattr(-,root,bin)

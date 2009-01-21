@@ -1,0 +1,25 @@
+--- pyglet-1.1.2/pyglet/lib.py-orig	2009-01-21 04:37:54.586130000 -0600
++++ pyglet-1.1.2/pyglet/lib.py	2009-01-21 04:38:21.296254000 -0600
+@@ -95,8 +95,7 @@ class LibraryLoader(object):
+         elif type(platform_names) is tuple:
+             platform_names = list(platform_names)
+ 
+-        if self.platform == 'linux2':
+-            platform_names.extend(['lib%s.so' % n for n in names])
++        platform_names.extend(['lib%s.so' % n for n in names])
+ 
+         platform_names.extend(names)
+         for name in platform_names:
+@@ -294,10 +293,6 @@ class LinuxLibraryLoader(LibraryLoader):
+ 
+         return self._ld_so_cache.get(path)
+ 
+-if sys.platform == 'darwin':
+-    loader = MachOLibraryLoader()
+-elif sys.platform == 'linux2':
+-    loader = LinuxLibraryLoader()
+-else:
+-    loader = LibraryLoader()
++loader = LinuxLibraryLoader()
++
+ load_library = loader.load_library
