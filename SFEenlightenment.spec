@@ -1,6 +1,9 @@
 # =========================================================================== 
 #                    Spec File for Geany
 # =========================================================================== 
+#
+# bugdb: http://trac.enlightenment.org/e/report 
+#
 %include Solaris.inc
 %include base.inc
 
@@ -29,6 +32,7 @@ Release:      	%{pkg_release}
 License:      	GPLv2
 Group:          User Interface/Desktops
 Source:         %{sf_download}/enlightenment/%{src_name}.%{version}.tar.gz
+# Reported as bug #199
 Patch1:         enlightenment-01-bourneshell.diff
 Vendor:       	Refer URL
 URL:            http://enlightenment.org
