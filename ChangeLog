@@ -23,7 +23,7 @@
 
 2008-01-19  Thomas Wagner  <tom68@users.sourceforge.net>
 
-        * experimental/SFEpostfix.spec: updates in %files, now packages well,
+	* experimental/SFEpostfix.spec: updates in %files, now packages well,
 	  still untested binaries
 
 2009-01-20  Brian Cameron  <brian.cameron@sun.com>
@@ -33,7 +33,7 @@
 	  patches/gst-plugins-bad-03-modplug.diff: Merge these two
 	  patches into gst-plugins-bad-04-makefile.diff.
 	* patches/gst-plugins-bad-04-byteorder.diff:  Remove this patch
-	  since according to bugzill abug #568468 it was obviously wrong.
+	  since according to bugzilla bug #568468 it was obviously wrong.
 	* patches/gst-plugins-bad-*.diff: Renumber patches.
 
 2009-01-20  Brian Cameron  <brian.cameron@sun.com>
@@ -84,11 +84,11 @@
 2008-01-18  Thomas Wagner  <tom68@users.sourceforge.net>
 
 	* SFEufraw.spec: adjust %doc, extra package build_l10n,
-	Obsolete SUNWcdraw not optimal, should be Provides: SUNWcdraw ?
+	  Obsolete SUNWcdraw not optimal, should be Provides: SUNWcdraw ?
 	* SFElprng.spec: (new) LPRng Printing system - choose install-layout
-	gnu or Solaris
+	  gnu or Solaris
 	* experimental/SFEpostfix.spec: (new) Postfix mailersystem. Compiles
-	but doesn't install well. Feel free to comment.
+	  but doesn't install well. Feel free to comment.
 
 2009-01-15  Brian Cameron  <brian.cameron@sun.com>
 
