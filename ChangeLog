@@ -38,7 +38,7 @@
 
 2009-01-20  Brian Cameron  <brian.cameron@sun.com>
 
-	* SFEgst-plugins-bad.spec: Update to
+	* SFEgst-plugins-bad.spec: Update to 0.10.10.
 	* patches/gst-plugins-bad-06-ladspa.diff: Remove upstream patch.
 	* patches/gst-plugins-bad-06-dccp.diff,
 	  patches/gst-plugins-bad-07-makefile.diff,
