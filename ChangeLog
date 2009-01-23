@@ -1,3 +1,7 @@
+2008-01-19  Thomas Wagner  <tom68@users.sourceforge.net>
+
+	* experimental/SFEpostfix.spec: %doc made monstrous, still untested binaries
+
 2009-01-21  Brian Cameron  <brian.cameron@sun.com>
 
 	* patches/gst-plugins-bad-03-dccp.diff,
