@@ -1,54 +1,20 @@
---- gst-plugins-bad-0.10.10/configure.ac-orig	2009-01-20 13:03:47.115098000 -0600
-+++ gst-plugins-bad-0.10.10/configure.ac	2009-01-20 13:07:52.933458000 -0600
-@@ -295,6 +295,16 @@ dnl disable experimental plug-ins
- #if test "x$BUILD_EXPERIMENTAL" != "xyes"; then
- #fi
- 
-+dnl check if msg_control exists in msghdr
-+AC_TRY_COMPILE([#include <stdio.h>
-+#include <stdlib.h>
-+#include <sys/types.h>
-+#include <sys/socket.h>], [int main() { struct msghdr msg; msg.msg_control = 0;}],
-+  [AC_MSG_RESULT(yes)
-+   AC_DEFINE(HAVE_CONTROL_IN_MSGHDR, 1, [Have control in msghdr])],
-+  [AC_MSG_RESULT(no)
-+  ])
-+
- dnl disable gst plugins we might not be able to build on this
- dnl platform: librfb (ugly but minimally invasive)
- dnl FIXME: maybe move to sys, or make work with winsock2
---- gst-plugins-bad-0.10.10/gst/dccp/Makefile.am-orig	2009-01-20 13:03:08.022547000 -0600
-+++ gst-plugins-bad-0.10.10/gst/dccp/Makefile.am	2009-01-20 13:03:40.584004000 -0600
-@@ -13,7 +13,7 @@ libgstdccp_la_SOURCES = gstdccpplugin.c 
- # flags used to compile this plugin
- libgstdccp_la_CFLAGS = $(GST_CFLAGS)
- libgstdccp_la_LIBADD = $(GST_BASE_LIBS) $(GST_LIBS)
--libgstdccp_la_LDFLAGS = $(GST_PLUGIN_LDFLAGS)
-+libgstdccp_la_LDFLAGS = $(GST_PLUGIN_LDFLAGS) -lsocket -lnsl
- libgstdccp_la_LIBTOOLFLAGS = --tag=disable-static
- 
- # headers we need but don't want installed
---- gst-plugins-bad-0.10.10/gst/dccp/gstdccp.c-orig	2009-01-20 12:57:58.444732000 -0600
-+++ gst-plugins-bad-0.10.10/gst/dccp/gstdccp.c	2009-01-20 13:09:31.895096000 -0600
-@@ -141,8 +141,10 @@ gst_dccp_read_buffer (GstElement * this,
+--- gst-plugins-bad-0.10.10/gst/dccp/gstdccp.c-orig	2009-01-22 14:47:02.910338000 -0600
++++ gst-plugins-bad-0.10.10/gst/dccp/gstdccp.c	2009-01-22 14:48:49.089313000 -0600
+@@ -141,8 +141,6 @@ gst_dccp_read_buffer (GstElement * this,
    iov.iov_len = readsize;
    mh.msg_iov = &iov;
    mh.msg_iovlen = 1;
-+#ifdef HAVE_CONTROL_IN_MSGHDR
-   mh.msg_control = NULL;
-   mh.msg_controllen = 0;
-+#endif
+-  mh.msg_control = NULL;
+-  mh.msg_controllen = 0;
  
    bytes_read = recvmsg (socket, &mh, 0);
  
-@@ -324,8 +326,10 @@ gst_dccp_socket_write (GstElement * elem
+@@ -324,8 +322,6 @@ gst_dccp_socket_write (GstElement * elem
        iov.iov_len = MIN (packet_size, size - bytes_written);
        mh.msg_iov = &iov;
        mh.msg_iovlen = 1;
-+#ifdef HAVE_CONTROL_IN_MSGHDR
-       mh.msg_control = NULL;
-       mh.msg_controllen = 0;
-+#endif
+-      mh.msg_control = NULL;
+-      mh.msg_controllen = 0;
  
        wrote = sendmsg (socket, &mh, 0);
      } while (wrote == -1 && errno == EAGAIN);

@@ -1,5 +1,11 @@
 2009-01-21  Brian Cameron  <brian.cameron@sun.com>
 
+	* patches/gst-plugins-bad-03-dccp.diff,
+	  patches/gst-plugins-bad-04-makefile.diff:  Rework based on upstream
+	  maintainer's comments.
+
+2009-01-21  Brian Cameron  <brian.cameron@sun.com>
+
 	* SFEsdl-ttf.spec: Fix packaging.
 	* SFepyglet.spec, patches/piglet-01-lib.diff: Add version 1.1.2
 	  and patch needed to build.

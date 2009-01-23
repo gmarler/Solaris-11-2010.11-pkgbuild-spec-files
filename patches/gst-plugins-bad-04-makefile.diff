@@ -1,43 +1,24 @@
---- gst-plugins-bad-0.10.10/gst/librfb/Makefile.am-orig	2009-01-20 13:26:39.075215000 -0600
-+++ gst-plugins-bad-0.10.10/gst/librfb/Makefile.am	2009-01-20 13:26:46.224924000 -0600
-@@ -6,7 +6,7 @@ plugin_LTLIBRARIES = libgstrfbsrc.la
- libgstrfbsrc_la_SOURCES = gstrfbsrc.c
- libgstrfbsrc_la_CFLAGS = $(GST_PLUGINS_BASE_CFLAGS) $(GST_CFLAGS) $(X11_CFLAGS) -I$(srcdir)/..
- libgstrfbsrc_la_LIBADD = $(GST_BASE_LIBS) $(X11_LIBS) librfb.la
--libgstrfbsrc_la_LDFLAGS = $(GST_PLUGIN_LDFLAGS)
-+libgstrfbsrc_la_LDFLAGS = $(GST_PLUGIN_LDFLAGS) -lsocket -lnsl
- libgstrfbsrc_la_LIBTOOLFLAGS = --tag=disable-static
+--- gst-plugins-bad-0.10.10/configure.ac-orig	2009-01-22 14:36:34.948180000 -0600
++++ gst-plugins-bad-0.10.10/configure.ac	2009-01-22 14:44:13.910072000 -0600
+@@ -155,6 +155,10 @@ AM_CONDITIONAL(HAVE_GCC_ASM, test "x$HAV
  
- librfb_la_SOURCES = \
---- gst-plugins-bad-0.10.10/gst/pcapparse/Makefile.am-orig	2009-01-20 13:28:17.240069000 -0600
-+++ gst-plugins-bad-0.10.10/gst/pcapparse/Makefile.am	2009-01-20 13:28:26.305947000 -0600
-@@ -15,6 +15,6 @@ noinst_HEADERS = \
+ dnl *** checks for library functions ***
  
- libgstpcapparse_la_CFLAGS = $(GST_CFLAGS) $(GST_BASE_CFLAGS)
- libgstpcapparse_la_LIBADD = $(GST_LIBS) $(GST_BASE_LIBS) $(WINSOCK2_LIBS)
--libgstpcapparse_la_LDFLAGS = $(GST_PLUGIN_LDFLAGS)
-+libgstpcapparse_la_LDFLAGS = $(GST_PLUGIN_LDFLAGS) -lsocket -lnsl
- libgstpcapparse_la_LIBTOOLFLAGS = --tag=disable-static
++dnl *** checks for socket and nsl libraries ***
++AC_CHECK_FUNC(socket,,[AC_CHECK_LIB(socket,socket)])
++AC_CHECK_FUNC(gethostbyname,,[AC_CHECK_LIB(nsl,gethostbyname)])
++
+ dnl *** checks for dependency libraries ***
  
---- gst-plugins-bad-0.10.10/gst/festival/Makefile.am-orig	2009-01-20 13:24:25.845910000 -0600
-+++ gst-plugins-bad-0.10.10/gst/festival/Makefile.am	2009-01-20 13:25:06.945387000 -0600
-@@ -13,7 +13,7 @@ libgstfestival_la_CFLAGS = $(GST_CFLAGS)
- # libgstfestival_la_LIBADD = $(FESTIVAL_LIBS)
- libgstfestival_la_LIBADD = $(GST_LIBS) $(GST_PLUGINS_BASE_LIBS) \
-                            -lgstaudio-0.10 $(WINSOCK2_LIBS)
--libgstfestival_la_LDFLAGS = $(GST_PLUGIN_LDFLAGS)
-+libgstfestival_la_LDFLAGS = $(GST_PLUGIN_LDFLAGS) -lsocket -lnsl
- libgstfestival_la_LIBTOOLFLAGS = --tag=disable-static
- 
- noinst_HEADERS = gstfestival.h 
---- gst-plugins-bad-0.10.10/gst/modplug/Makefile.am-orig	2009-01-20 14:17:00.936843000 -0600
-+++ gst-plugins-bad-0.10.10/gst/modplug/Makefile.am	2009-01-20 14:17:05.559512000 -0600
-@@ -4,7 +4,7 @@ plugin_LTLIBRARIES = libgstmodplug.la
- 
+ dnl GLib is required
+--- gst-plugins-bad-0.10.10/gst/modplug/Makefile.am-orig	2009-01-22 14:44:35.031703000 -0600
++++ gst-plugins-bad-0.10.10/gst/modplug/Makefile.am	2009-01-22 14:44:47.445448000 -0600
+@@ -5,7 +5,7 @@ plugin_LTLIBRARIES = libgstmodplug.la
  libgstmodplug_la_SOURCES = gstmodplug.cc
  libgstmodplug_la_CXXFLAGS = $(GST_PLUGINS_BASE_CFLAGS) $(GST_CXXFLAGS)
--libgstmodplug_la_LIBADD = $(top_builddir)/gst/modplug/libmodplug/libmodplug.la $(GST_PLUGINS_BASE_LIBS) -lstdc++
-+libgstmodplug_la_LIBADD = $(top_builddir)/gst/modplug/libmodplug/libmodplug.la $(GST_PLUGINS_BASE_LIBS) -lstdc++ -lm
- libgstmodplug_la_LDFLAGS = $(GST_PLUGIN_LDFLAGS)
+ libgstmodplug_la_LIBADD = $(top_builddir)/gst/modplug/libmodplug/libmodplug.la $(GST_PLUGINS_BASE_LIBS) -lstdc++
+-libgstmodplug_la_LDFLAGS = $(GST_PLUGIN_LDFLAGS)
++libgstmodplug_la_LDFLAGS = $(GST_PLUGIN_LDFLAGS) $(LIBM)
  libgstmodplug_la_LIBTOOLFLAGS = --tag=disable-static
  
+ noinst_HEADERS = gstmodplug.h
