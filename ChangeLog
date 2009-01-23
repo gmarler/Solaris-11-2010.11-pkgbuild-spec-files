@@ -7,7 +7,7 @@
 2009-01-21  Brian Cameron  <brian.cameron@sun.com>
 
 	* SFEsdl-ttf.spec: Fix packaging.
-	* SFepyglet.spec, patches/piglet-01-lib.diff: Add version 1.1.2
+	* SFEpyglet.spec, patches/piglet-01-lib.diff: Add version 1.1.2
 	  and patch needed to build.
 	* SFEpython-ctypes.spec, patches/python-ctypes-01-ffitarget.diff:
 	  Add version 1.0.2 and patch needed to build.
