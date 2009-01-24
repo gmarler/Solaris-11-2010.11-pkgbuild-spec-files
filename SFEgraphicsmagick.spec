@@ -12,7 +12,7 @@
 
 Name:                   SFEgraphicsmagick
 Summary:                GraphicsMagick - Image Manipulation Utilities and Libraries
-Version:                1.3.3
+Version:                1.3.4
 Source:                 %{sf_download}/graphicsmagick/GraphicsMagick-%{version}.tar.bz2
 SUNW_BaseDir:           %{_basedir}
 BuildRoot:              %{_tmppath}/%{name}-%{version}-build
@@ -49,7 +49,8 @@ export CFLAGS="%optflags -xCC"
             --libexecdir=%{_libexecdir} \
             --sysconfdir=%{_sysconfdir} \
             --enable-shared		\
-	    --disable-static
+	    --disable-static		\
+            --with-umem
 
 make -j$CPUS 
 
@@ -85,6 +86,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*
 
 %changelog
+* Thu Jan 24 2008 - bfriesen@simple.dallas.tx.us
+- Update for GraphicsMagick 1.3.4.  Allow use of Solaris umem library.
 * Thu Dec 11 2008 - bfriesen@simple.dallas.tx.us
 - Update for GraphicsMagick 1.3.3.
 * Tue Dec 2 2008 - bfriesen@simple.dallas.tx.us
