@@ -1,6 +1,9 @@
-2008-01-19  Thomas Wagner  <tom68@users.sourceforge.net>
+2008-01-25  Thomas Wagner  <tom68@users.sourceforge.net>
 
-	* experimental/SFEpostfix.spec: %doc made monstrous, still untested binaries
+	* SFEwine.spec: Bump to 1.1.13
+	* patches/wine-03-iphlpapi.diff: rework
+	* SFEgcc.spec: Bump to 4.2.4
+	* patches/gcc-02-handle_pragma_pack_push_pop.diff: (new) probably helps wine
 
 2009-01-21  Brian Cameron  <brian.cameron@sun.com>
 
