@@ -5,7 +5,9 @@
 	* patches/wine-02-acceptex.diff: refresh as suggested by David Blewett
 	* SFEgcc.spec: Bump to 4.2.4
 	* patches/gcc-02-handle_pragma_pack_push_pop.diff: (new) probably helps wine
-	* SFEpostfix.spec: %doc made monstrous (from 2009-01-19)
+        * SFEgcc.spec: new switch, default off: --with-handle_pragma_pack_push_pop
+	* experimental/SFEpostfix.spec: %doc made monstrous (from 2009-01-19)
+          fixes to %files, permisisons (from 2009-01-25)
 
 2009-01-21  Brian Cameron  <brian.cameron@sun.com>
 

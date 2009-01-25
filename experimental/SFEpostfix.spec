@@ -8,6 +8,8 @@
 %include Solaris.inc
 
 %define src_name	postfix
+%define runuser         postfix
+%define rungroup        postdrop
 # see much more special variables below
 
 Name:                    SFEpostfix
@@ -18,7 +20,7 @@ Source:                  ftp://ftp.porcupine.org/mirrors/postfix-release/officia
 Source2:                 http://ftp.wl0.org/official/2.5/SRPMS/postfix-%{version}-1.src.rpm
 Patch1:			postfix-01-make-postfix.spec.diff
 
-SUNW_BaseDir:            /
+SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 
 #TODO: BuildReqires:
@@ -26,6 +28,11 @@ BuildRequires: SFEcpio
 BuildRequires: SUNWrpm
 BuildRequires: SUNWggrp
 #TODO: Requires:
+
+%package root
+Summary:                 %{summary} - / filesystem
+SUNW_BaseDir:            /
+%include default-depend.inc
 
 #variables altered from postfix.spec
 %define rmail_patch %(which rmail)
@@ -257,10 +264,10 @@ rm -rf $RPM_BUILD_ROOT
 #%{?!debug:strip bin/* libexec/*}
 
 # rename man pages which may conflict with sendmail's
-mv man/man1/mailq.1      man/man1/mailq.postfix.1
-mv man/man1/newaliases.1 man/man1/newaliases.postfix.1
-mv man/man1/sendmail.1   man/man1/sendmail.postfix.1
-mv man/man5/aliases.5    man/man5/aliases.postfix.5
+[ -r man/man1/mailq.1 ]      && mv man/man1/mailq.1      man/man1/mailq.postfix.1
+[ -r man/man1/newaliases.1 ] && mv man/man1/newaliases.1 man/man1/newaliases.postfix.1
+[ -r man/man1/sendmail.1 ]   && mv man/man1/sendmail.1   man/man1/sendmail.postfix.1
+[ -r man/man5/aliases.5 ]    && mv man/man5/aliases.5    man/man5/aliases.postfix.5
 
 #adjust renamed manpages ./conf/postfix-files:$manpage_directory/man1/mailq.1:f:root:-:644
 perl -pi -e "s?/man(1|5)/(mailq|newaliases|sendmail|aliases).(1|5)?/man\1/\2.postfix.\3?; " \
@@ -272,12 +279,14 @@ mantools/srctoman src/smtpstone/smtp-source.c  >man/man1/smtp-source.1
 mantools/srctoman src/smtpstone/smtp-sink.c    >man/man1/smtp-sink.1
 
 # update conf/postfix-files
+if not `grep man1/qshape.1 conf/postfix-files`
+then
 cat <<EOF >> conf/postfix-files
 \$manpage_directory/man1/qshape.1:f:root:-:644
 \$manpage_directory/man1/smtp-sink.1:f:root:-:644
 \$manpage_directory/man1/smtp-source.1:f:root:-:644
 EOF
-
+fi
 
 # install postfix into build root
 sh postfix-install -non-interactive \
@@ -289,8 +298,8 @@ sh postfix-install -non-interactive \
        sendmail_path=%{sendmail_path} \
        newaliases_path=%{newaliases_path} \
        mailq_path=%{mailq_path} \
-       mail_owner=postfix \
-       setgid_group=postdrop \
+       mail_owner=%{runuser} \
+       setgid_group=%{rungroup} \
        html_directory=%{html_dir} \
        manpage_directory=%{_mandir} \
        readme_directory=%{readme_dir} || exit 1
@@ -520,33 +529,80 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-, root, bin)
-%doc AAAREADME COMPATIBILITY COPYRIGHT HISTORY INSTALL IPv6-ChangeLog LICENSE PORTING RELEASE_NOTES RELEASE_NOTES-1.0 RELEASE_NOTES-1.1 RELEASE_NOTES-2.0 RELEASE_NOTES-2.1 RELEASE_NOTES-2.2 RELEASE_NOTES-2.3 RELEASE_NOTES-2.4 TLS_ACKNOWLEDGEMENTS TLS_CHANGES TLS_LICENSE US_PATENT_6321267 README_FILES/AAAREADME README_FILES/ADDRESS_CLASS_README README_FILES/ADDRESS_REWRITING_README README_FILES/ADDRESS_VERIFICATION_README README_FILES/BACKSCATTER_README README_FILES/BASIC_CONFIGURATION_README README_FILES/BUILTIN_FILTER_README README_FILES/CDB_README README_FILES/CONNECTION_CACHE_README README_FILES/CONTENT_INSPECTION_README README_FILES/CYRUS_README README_FILES/DATABASE_README README_FILES/DB_README README_FILES/DEBUG_README README_FILES/DSN_README README_FILES/ETRN_README README_FILES/FILTER_README README_FILES/INSTALL README_FILES/IPV6_README README_FILES/LDAP_README README_FILES/LINUX_README README_FILES/LOCAL_RECIPIENT_README README_FILES/MAILDROP_README README_FILES/MILTER_README README_FILES/MYSQL_README README_FILES/NFS_README README_FILES/OVERVIEW README_FILES/PACKAGE_README README_FILES/PCRE_README README_FILES/PGSQL_README README_FILES/QMQP_README README_FILES/QSHAPE_README README_FILES/RELEASE_NOTES README_FILES/RESTRICTION_CLASS_README README_FILES/SASL_README README_FILES/SCHEDULER_README README_FILES/SMTPD_ACCESS_README README_FILES/SMTPD_POLICY_README README_FILES/SMTPD_PROXY_README README_FILES/SOHO_README README_FILES/STANDARD_CONFIGURATION_README README_FILES/STRESS_README README_FILES/TLS_LEGACY_README README_FILES/TLS_README README_FILES/TUNING_README README_FILES/ULTRIX_README README_FILES/UUCP_README README_FILES/VERP_README README_FILES/VIRTUAL_README README_FILES/XCLIENT_README README_FILES/XFORWARD_README
+#%doc AAAREADME COMPATIBILITY COPYRIGHT HISTORY INSTALL IPv6-ChangeLog LICENSE PORTING RELEASE_NOTES RELEASE_NOTES-1.0 RELEASE_NOTES-1.1 RELEASE_NOTES-2.0 RELEASE_NOTES-2.1 RELEASE_NOTES-2.2 RELEASE_NOTES-2.3 RELEASE_NOTES-2.4 TLS_ACKNOWLEDGEMENTS TLS_CHANGES TLS_LICENSE US_PATENT_6321267 README_FILES/AAAREADME README_FILES/ADDRESS_CLASS_README README_FILES/ADDRESS_REWRITING_README README_FILES/ADDRESS_VERIFICATION_README README_FILES/BACKSCATTER_README README_FILES/BASIC_CONFIGURATION_README README_FILES/BUILTIN_FILTER_README README_FILES/CDB_README README_FILES/CONNECTION_CACHE_README README_FILES/CONTENT_INSPECTION_README README_FILES/CYRUS_README README_FILES/DATABASE_README README_FILES/DB_README README_FILES/DEBUG_README README_FILES/DSN_README README_FILES/ETRN_README README_FILES/FILTER_README README_FILES/INSTALL README_FILES/IPV6_README README_FILES/LDAP_README README_FILES/LINUX_README README_FILES/LOCAL_RECIPIENT_README README_FILES/MAILDROP_README README_FILES/MILTER_README README_FILES/MYSQL_README README_FILES/NFS_README README_FILES/OVERVIEW README_FILES/PACKAGE_README README_FILES/PCRE_README README_FILES/PGSQL_README README_FILES/QMQP_README README_FILES/QSHAPE_README README_FILES/RELEASE_NOTES README_FILES/RESTRICTION_CLASS_README README_FILES/SASL_README README_FILES/SCHEDULER_README README_FILES/SMTPD_ACCESS_README README_FILES/SMTPD_POLICY_README README_FILES/SMTPD_PROXY_README README_FILES/SOHO_README README_FILES/STANDARD_CONFIGURATION_README README_FILES/STRESS_README README_FILES/TLS_LEGACY_README README_FILES/TLS_README README_FILES/TUNING_README README_FILES/ULTRIX_README README_FILES/UUCP_README README_FILES/VERP_README README_FILES/VIRTUAL_README README_FILES/XCLIENT_README README_FILES/XFORWARD_README
 %dir %attr (0755, root, bin) %{_bindir}
 %{_bindir}/*
 %dir %attr (0755, root, bin) %{_sbindir}
-%{_sbindir}/*
+%{_sbindir}/postalias
+%{_sbindir}/postcat
+%{_sbindir}/postconf
+%attr (2755, root, %{rungroup}) %{_sbindir}/postqueue
+%attr (2755, root, %{rungroup}) %{_sbindir}/postdrop
+%{_sbindir}/postfix
+%{_sbindir}/postkick
+%{_sbindir}/postlock
+%{_sbindir}/postlog
+%{_sbindir}/postmap
+%{_sbindir}/postsuper
+%{_sbindir}/smtp-sink
+%{_sbindir}/smtp-source
+%{_sbindir}/qmqp-source
+%{_sbindir}/qshape
+%{_sbindir}/sendmail.postfix
 %dir %attr (0755, root, bin) %{_libdir}
-%{_libdir}/*
+%{_libdir}/sendmail.postfix
+%dir %attr (0700, root, bin) %{_libdir}/%{src_name}
+%{_libdir}/%{src_name}/*
 %dir %attr (0755, root, sys) %{_datadir}
-%{_docdir}/[a-z]*
+%dir %attr (0755, root, other) %{_docdir}
+%{_docdir}/%{name}/*
 %dir %attr(0755, root, bin) %{_mandir}
 %dir %attr(0755, root, bin) %{_mandir}/*
 %{_mandir}/*/*
-%dir %attr (0755, root, sys) %{_localstatedir}
-%{_localstatedir}/*
-#%class(manifest) %attr(0444, root, sys)/var/svc/manifest/site/postfix.xml
 
-%attr (0755, root, bin) %dir %{_sysconfdir}
-%attr (0755, root, bin) %dir %{_sysconfdir}/%{src_name}
+
+
+%files root
+%defattr (-, root, bin)
+%attr (0755, root, sys) %dir %{_sysconfdir}
+%attr (0755, root, sys) %dir %{_sysconfdir}/%{src_name}
 %{_sysconfdir}/%{src_name}/*
 # only for oldtimers the original init.d/postfix script - *not* tested on Solaris
 # this is %{_sysconfdir}/init.d
-%attr (0755, root, bin) %dir %{initdir}
+%attr (0755, root, sys) %dir %{initdir}
 %{initdir}/*
+%defattr (-, root, sys)
+%dir %attr (0755, root, sys) %{_localstatedir}
+%dir %attr (0755, root, other) %{_localstatedir}/lib
+%dir %attr (0700, %{runuser}, root) %{_localstatedir}/lib/postfix
+%dir %attr (0755, root, bin) %{_localstatedir}/spool
+%dir %attr (0755, root, bin) %{_localstatedir}/spool/%{src_name}
+#%{_localstatedir}/spool/%{src_name}
+%dir %attr (0700, %{runuser}, bin) %{_localstatedir}/spool/%{src_name}/active
+%dir %attr (0700, %{runuser}, bin) %{_localstatedir}/spool/%{src_name}/bounce
+%dir %attr (0700, %{runuser}, bin) %{_localstatedir}/spool/%{src_name}/corrupt
+%dir %attr (0700, %{runuser}, bin) %{_localstatedir}/spool/%{src_name}/defer
+%dir %attr (0700, %{runuser}, bin) %{_localstatedir}/spool/%{src_name}/deferred
+%dir %attr (0700, %{runuser}, bin) %{_localstatedir}/spool/%{src_name}/flush
+%dir %attr (0700, %{runuser}, bin) %{_localstatedir}/spool/%{src_name}/hold
 
+%dir %attr (0700, %{runuser}, bin) %{_localstatedir}/spool/%{src_name}/incoming
+%dir %attr (0700, %{runuser}, bin) %{_localstatedir}/spool/%{src_name}/private
+%dir %attr (0700, %{runuser}, bin) %{_localstatedir}/spool/%{src_name}/saved
+%dir %attr (0700, %{runuser}, bin) %{_localstatedir}/spool/%{src_name}/trace
+%dir %attr (0730, %{runuser}, %{rungroup}) %{_localstatedir}/spool/%{src_name}/maildrop
+%dir %attr (0710, %{runuser}, %{rungroup}) %{_localstatedir}/spool/%{src_name}/public
+%dir %attr (0755, root, bin) %{_localstatedir}/spool/%{src_name}/pid
+
+
+
+#%class(manifest) %attr(0444, root, sys)/var/svc/manifest/site/postfix.xml
 
 
 %changelog
+* Sun Jan 25 2009 - Thomas Wagner
+- adjust %files permissions, globbing
+- tried to make %install repeatable...hopeless 
 * Thu Jan 22 2009 - Thomas Wagner
 - %doc made monstrous 
 * Sun Jan 2009 - Thomas Wagner
