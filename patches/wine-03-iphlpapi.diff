@@ -1,9 +1,9 @@
-diff -ur wine-0.9.59.orig/configure.ac wine-0.9.59/configure.ac
---- wine-0.9.59.orig/configure.ac	Fri Apr  4 10:55:13 2008
-+++ wine-0.9.59/configure.ac	Thu Apr 10 12:39:48 2008
-@@ -242,9 +242,11 @@
- 	fontconfig/fontconfig.h \
+diff -urN wine-1.1.13.orig/configure.ac wine-1.1.13/configure.ac
+--- wine-1.1.13.orig/configure.ac	2009-01-16 17:28:07.000000000 +0100
++++ wine-1.1.13/configure.ac	2009-01-24 18:49:24.000000000 +0100
+@@ -272,9 +272,11 @@
  	getopt.h \
+ 	grp.h \
  	ieeefp.h \
 +	inet/ip.h \
  	io.h \
@@ -13,7 +13,7 @@ diff -ur wine-0.9.59.orig/configure.ac wine-0.9.59/configure.ac
  	lber.h \
  	lcms.h \
  	lcms/lcms.h \
-@@ -288,6 +290,7 @@
+@@ -319,6 +321,7 @@
  	soundcard.h \
  	stdint.h \
  	strings.h \
@@ -21,23 +21,22 @@ diff -ur wine-0.9.59.orig/configure.ac wine-0.9.59/configure.ac
  	sys/asoundlib.h \
  	sys/cdio.h \
  	sys/elf32.h \
-@@ -319,11 +322,14 @@
+@@ -350,10 +353,13 @@
  	sys/sockio.h \
  	sys/soundcard.h \
  	sys/statvfs.h \
 +	sys/stream.h \
  	sys/strtio.h \
  	sys/syscall.h \
- 	sys/sysctl.h \
 +	sys/tihdr.h \
  	sys/time.h \
  	sys/times.h \
 +	sys/tiuser.h \
  	sys/uio.h \
  	sys/un.h \
- 	sys/vm86.h \
-@@ -922,6 +928,39 @@
-          RESOLVLIBS="-lresolv"])
+ 	sys/utsname.h \
+@@ -1040,6 +1046,39 @@
+     LIBS="$ac_save_LIBS"
  fi
  
 +dnl **** Check for Solaris kstat library ***
@@ -76,9 +75,9 @@ diff -ur wine-0.9.59.orig/configure.ac wine-0.9.59/configure.ac
  dnl **** Check for LittleCMS ***
  AC_SUBST(LCMSLIBS,"")
  if test "$ac_cv_header_lcms_h" = "yes" -o "$ac_cv_header_lcms_lcms_h" = "yes"
-diff -ur wine-0.9.59.orig/dlls/iphlpapi/Makefile.in wine-0.9.59/dlls/iphlpapi/Makefile.in
---- wine-0.9.59.orig/dlls/iphlpapi/Makefile.in	Fri Apr  4 10:55:13 2008
-+++ wine-0.9.59/dlls/iphlpapi/Makefile.in	Thu Apr 10 12:39:48 2008
+diff -urN wine-1.1.13.orig/dlls/iphlpapi/Makefile.in wine-1.1.13/dlls/iphlpapi/Makefile.in
+--- wine-1.1.13.orig/dlls/iphlpapi/Makefile.in	2009-01-16 17:28:07.000000000 +0100
++++ wine-1.1.13/dlls/iphlpapi/Makefile.in	2009-01-24 18:50:35.000000000 +0100
 @@ -5,7 +5,7 @@
  MODULE    = iphlpapi.dll
  IMPORTLIB = iphlpapi
@@ -88,8 +87,9 @@ diff -ur wine-0.9.59.orig/dlls/iphlpapi/Makefile.in wine-0.9.59/dlls/iphlpapi/Ma
  
  C_SRCS = \
  	icmp.c \
---- wine-1.1.0.orig/dlls/iphlpapi/ipstats.c	2008-06-27 10:24:42.000000000 -0400
-+++ wine-1.1.0/dlls/iphlpapi/ipstats.c	2008-07-08 23:55:20.355580812 -0400
+diff -urN wine-1.1.13.orig/dlls/iphlpapi/ipstats.c wine-1.1.13/dlls/iphlpapi/ipstats.c
+--- wine-1.1.13.orig/dlls/iphlpapi/ipstats.c	2009-01-16 17:28:07.000000000 +0100
++++ wine-1.1.13/dlls/iphlpapi/ipstats.c	2009-01-24 22:01:41.756459359 +0100
 @@ -1,5 +1,21 @@
  /* Copyright (C) 2003,2006 Juan Lang
   * Copyright (C) 2007 TransGaming Technologies Inc.
@@ -112,7 +112,7 @@ diff -ur wine-0.9.59.orig/dlls/iphlpapi/Makefile.in wine-0.9.59/dlls/iphlpapi/Ma
   *
   * This library is free software; you can redistribute it and/or
   * modify it under the terms of the GNU Lesser General Public
-@@ -16,10 +32,11 @@
+@@ -16,7 +32,7 @@
   * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
   *
   * This file implements statistics getting using the /proc filesystem exported
@@ -121,11 +121,7 @@ diff -ur wine-0.9.59.orig/dlls/iphlpapi/Makefile.in wine-0.9.59/dlls/iphlpapi/Ma
   */
  
  #include "config.h"
-+
- #include "wine/port.h"
- #include "wine/debug.h"
- 
-@@ -99,6 +116,32 @@
+@@ -102,6 +118,32 @@
  #include <sys/sysctl.h>
  #endif
  
@@ -158,7 +154,7 @@ diff -ur wine-0.9.59.orig/dlls/iphlpapi/Makefile.in wine-0.9.59/dlls/iphlpapi/Ma
  #ifndef ROUNDUP
  #define ROUNDUP(a) \
  	((a) > 0 ? (1 + (((a) - 1) | (sizeof(long) - 1))) : sizeof(long))
-@@ -129,6 +172,180 @@
+@@ -136,6 +178,180 @@
  
  WINE_DEFAULT_DEBUG_CHANNEL(iphlpapi);
  
@@ -339,7 +335,7 @@ diff -ur wine-0.9.59.orig/dlls/iphlpapi/Makefile.in wine-0.9.59/dlls/iphlpapi/Ma
  DWORD getInterfaceStatsByName(const char *name, PMIB_IFROW entry)
  {
  #if defined(HAVE_SYS_SYSCTL_H) && defined(NET_RT_IFLIST)
-@@ -178,7 +395,73 @@
+@@ -185,7 +401,73 @@
        }
        HeapFree (GetProcessHeap (), 0, buf);
        return ERROR_NOT_SUPPORTED;
@@ -414,7 +410,7 @@ diff -ur wine-0.9.59.orig/dlls/iphlpapi/Makefile.in wine-0.9.59/dlls/iphlpapi/Ma
    /* get interface stats from /proc/net/dev, no error if can't
       no inUnknownProtos, outNUcastPkts, outQLen */
    FILE *fp;
-@@ -325,7 +608,68 @@
+@@ -332,7 +614,68 @@
    stats->stats.icmpOutStats.dwAddrMaskReps = icmp_stat.icps_outhist[ICMP_MASKREPLY];
  
    return NO_ERROR;
@@ -484,7 +480,7 @@ diff -ur wine-0.9.59.orig/dlls/iphlpapi/Makefile.in wine-0.9.59/dlls/iphlpapi/Ma
    FILE *fp;
  
    if (!stats)
-@@ -510,7 +854,62 @@
+@@ -517,7 +860,62 @@
    stats->dwReasmReqds = ip_stat.ips_fragments;
  
    return NO_ERROR;
@@ -548,7 +544,7 @@ diff -ur wine-0.9.59.orig/dlls/iphlpapi/Makefile.in wine-0.9.59/dlls/iphlpapi/Ma
    FILE *fp;
  
    if (!stats)
-@@ -668,7 +1067,55 @@
+@@ -675,7 +1073,55 @@
  
    return NO_ERROR;
  
@@ -605,7 +601,7 @@ diff -ur wine-0.9.59.orig/dlls/iphlpapi/Makefile.in wine-0.9.59/dlls/iphlpapi/Ma
    FILE *fp;
  
    if (!stats)
-@@ -789,7 +1236,37 @@
+@@ -796,7 +1242,37 @@
    stats->dwNumAddrs = getNumUdpEntries();
  
    return NO_ERROR;
@@ -644,7 +640,7 @@ diff -ur wine-0.9.59.orig/dlls/iphlpapi/Makefile.in wine-0.9.59/dlls/iphlpapi/Ma
    FILE *fp;
  
    if (!stats)
-@@ -848,6 +1325,7 @@
+@@ -855,6 +1331,7 @@
  #endif
  }
  
@@ -652,7 +648,7 @@ diff -ur wine-0.9.59.orig/dlls/iphlpapi/Makefile.in wine-0.9.59/dlls/iphlpapi/Ma
  static DWORD getNumWithOneHeader(const char *filename)
  {
  #if defined(HAVE_SYS_SYSCTL_H) && defined(HAVE_NETINET_IN_PCB_H)
-@@ -968,6 +1446,7 @@
+@@ -975,6 +1452,7 @@
    return ret;
  #endif
  }
@@ -660,7 +656,7 @@ diff -ur wine-0.9.59.orig/dlls/iphlpapi/Makefile.in wine-0.9.59/dlls/iphlpapi/Ma
  
  DWORD getNumRoutes(void)
  {
-@@ -1016,8 +1495,46 @@
+@@ -1023,8 +1501,46 @@
  
     HeapFree (GetProcessHeap (), 0, buf);
     return RouteCount;
@@ -708,7 +704,7 @@ diff -ur wine-0.9.59.orig/dlls/iphlpapi/Makefile.in wine-0.9.59/dlls/iphlpapi/Ma
  #endif
  }
  
-@@ -1046,21 +1563,21 @@
+@@ -1053,21 +1569,21 @@
         if (sysctl (mib, 6, NULL, &needed, NULL, 0) < 0)
         {
            ERR ("sysctl 1 failed!\n");
@@ -733,7 +729,7 @@ diff -ur wine-0.9.59.orig/dlls/iphlpapi/Makefile.in wine-0.9.59/dlls/iphlpapi/Ma
            HeapFree (GetProcessHeap (), 0, buf);
            return NO_ERROR;
         }
-@@ -1151,7 +1668,76 @@
+@@ -1158,7 +1674,76 @@
  
         HeapFree (GetProcessHeap (), 0, buf);
         ret = NO_ERROR;
@@ -811,7 +807,7 @@ diff -ur wine-0.9.59.orig/dlls/iphlpapi/Makefile.in wine-0.9.59/dlls/iphlpapi/Ma
        FILE *fp;
  
        ret = NO_ERROR;
-@@ -1236,6 +1822,9 @@
+@@ -1243,6 +1828,9 @@
          ERR ("unimplemented!\n");
          return ERROR_NOT_SUPPORTED;
        }
@@ -821,7 +817,7 @@ diff -ur wine-0.9.59.orig/dlls/iphlpapi/Makefile.in wine-0.9.59/dlls/iphlpapi/Ma
  #endif
      }
      else
-@@ -1285,8 +1874,42 @@
+@@ -1292,8 +1880,42 @@
    }
    HeapFree (GetProcessHeap (), 0, buf);
    return arpEntries;
@@ -865,7 +861,7 @@ diff -ur wine-0.9.59.orig/dlls/iphlpapi/Makefile.in wine-0.9.59/dlls/iphlpapi/Ma
  }
  
  DWORD getArpTable(PMIB_IPNETTABLE *ppIpNetTable, HANDLE heap, DWORD flags)
-@@ -1368,8 +1991,76 @@
+@@ -1375,7 +1997,76 @@
      else
          ret = ERROR_OUTOFMEMORY;
    return ret;
@@ -877,7 +873,7 @@ diff -ur wine-0.9.59.orig/dlls/iphlpapi/Makefile.in wine-0.9.59/dlls/iphlpapi/Ma
 +      int sd;
 +      mib_item_t *head, *item;
 +      mib2_ipNetToMediaEntry_t *np;
- 
++ 
 +      if ((sd = mibopen()) < 0)
 +      {
 +        ERR ("Unable to open %s to count ARP entries!\n", mib_dev);
@@ -940,10 +936,10 @@ diff -ur wine-0.9.59.orig/dlls/iphlpapi/Makefile.in wine-0.9.59/dlls/iphlpapi/Ma
 +  }
 +  return ret;
 +#elif defined(__linux__)
+ 
      if (table) {
        FILE *fp;
-       *ppIpNetTable = table;
-@@ -1445,14 +2136,52 @@
+@@ -1452,14 +2143,52 @@
        ret = ERROR_OUTOFMEMORY;
    }
    return ret;
@@ -997,7 +993,7 @@ diff -ur wine-0.9.59.orig/dlls/iphlpapi/Makefile.in wine-0.9.59/dlls/iphlpapi/Ma
  #endif
  }
  
-@@ -1460,10 +2189,70 @@
+@@ -1467,10 +2196,70 @@
  {
    DWORD ret;
  
@@ -1072,7 +1068,7 @@ diff -ur wine-0.9.59.orig/dlls/iphlpapi/Makefile.in wine-0.9.59/dlls/iphlpapi/Ma
  
    if (!ppUdpTable)
      ret = ERROR_INVALID_PARAMETER;
-@@ -1522,6 +2311,10 @@
+@@ -1529,6 +2318,10 @@
        ret = ERROR_OUTOFMEMORY;
    }
    return ret;
@@ -1083,7 +1079,7 @@ diff -ur wine-0.9.59.orig/dlls/iphlpapi/Makefile.in wine-0.9.59/dlls/iphlpapi/Ma
  }
  
  
-@@ -1529,14 +2322,48 @@
+@@ -1536,14 +2329,48 @@
  {
  #if defined(HAVE_SYS_SYSCTL_H) && defined(HAVE_NETINET_IN_PCB_H)
     return getNumWithOneHeader ("net.inet.tcp.pcblist");
@@ -1133,7 +1129,7 @@ diff -ur wine-0.9.59.orig/dlls/iphlpapi/Makefile.in wine-0.9.59/dlls/iphlpapi/Ma
  static DWORD TCPStateToMIBState (int state)
  {
     switch (state)
-@@ -1555,6 +2382,7 @@
+@@ -1562,6 +2389,7 @@
        case TCPS_CLOSED: return MIB_TCP_STATE_CLOSED;
     }
  }
@@ -1141,7 +1137,7 @@ diff -ur wine-0.9.59.orig/dlls/iphlpapi/Makefile.in wine-0.9.59/dlls/iphlpapi/Ma
  
  
  DWORD getTcpTable(PMIB_TCPTABLE *ppTcpTable, DWORD maxEntries, HANDLE heap,
-@@ -1566,7 +2394,12 @@
+@@ -1573,7 +2401,12 @@
     size_t Len = 0;
     char *Buf;
     struct xinpgen *pXIG, *pOrigXIG;
@@ -1155,7 +1151,7 @@ diff -ur wine-0.9.59.orig/dlls/iphlpapi/Makefile.in wine-0.9.59/dlls/iphlpapi/Ma
     FILE *fp;
     char buf[512] = { 0 }, *ptr;
  #endif
-@@ -1677,7 +2510,47 @@
+@@ -1684,7 +2517,47 @@
     }
  
     HeapFree (GetProcessHeap (), 0, Buf);
@@ -1204,7 +1200,7 @@ diff -ur wine-0.9.59.orig/dlls/iphlpapi/Makefile.in wine-0.9.59/dlls/iphlpapi/Ma
     /* get from /proc/net/tcp, no error if can't */
     fp = fopen("/proc/net/tcp", "r");
     if (!fp)
-@@ -1728,6 +2601,9 @@
+@@ -1735,6 +2608,9 @@
        }
     }
     fclose(fp);

@@ -11,7 +11,7 @@
 
 Name:                   SFEwine
 Summary:                Windows compatibility
-Version:                1.1.10
+Version:                1.1.13
 URL:                    http://www.winehq.org/
 Source:                 %{src_url}/%{src_name}-%{version}.tar.bz2
 Source101:		http://trisk.acm.jhu.edu/winetricks-20080627
@@ -151,6 +151,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/aclocal/*
 
 %changelog
+* Sun Jan 25 2009 - Thomas Wagner
+- Bump to 1.1.13
+- rework patch3 wine-03-iphlpapi.diff for 1.1.13 - could update bug http://bugs.winehq.org/show_bug.cgi?id=14185
 * Mon Dec 15 2008 - halton.huo@sun.com
 - Bump to 1.1.10
 * Mon Nov 17 2008 - halton.huo@sun.com
