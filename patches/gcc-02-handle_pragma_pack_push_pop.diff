@@ -1,0 +1,9 @@
+--- gcc-4.2.3/gcc/config/sol2-10.h.orig	2009-01-23 22:52:36.811847756 +0100
++++ gcc-4.2.3/gcc/config/sol2-10.h	2009-01-23 23:01:22.694640931 +0100
+@@ -21,3 +21,6 @@
+ /* Solaris 10 has the float and long double forms of math functions.  */
+ #undef TARGET_C99_FUNCTIONS
+ #define TARGET_C99_FUNCTIONS 1
++
++/* Define this so we can compile MS code for use with WINE.  */
++#define HANDLE_PRAGMA_PACK_PUSH_POP

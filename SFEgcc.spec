@@ -20,9 +20,10 @@
 
 Name:                SFEgccruntime
 Summary:             GNU gcc runtime libraries required by applications
-Version:             4.2.3
+Version:             4.2.4
 Source:              ftp://ftp.gnu.org/pub/gnu/gcc/gcc-%{version}/gcc-%{version}.tar.bz2
 Patch1:              gcc-01-libtool-rpath.diff
+Patch2:              gcc-02-handle_pragma_pack_push_pop.diff
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -45,7 +46,7 @@ Requires: SUNWpostrun
 
 %package -n SFEgcc
 Summary:                 GNU gcc
-Version:                 4.2.3
+Version:                 %{version}
 SUNW_BaseDir:            %{_basedir}
 %include default-depend.inc
 Requires: %name
@@ -76,6 +77,7 @@ Requires:                %{name}
 mkdir gcc
 cd gcc-%{version}
 %patch1 -p1 -b .patch01
+%patch2 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -233,6 +235,9 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Sat Jan 24 2009 - Thomas Wagner
+- add HANDLE_PRAGMA_PACK_PUSH_POP (might help wine)
+- bump to 4.2.4, version SFEgcc wit %{version}
 * Wed Jan  7 2009 - Thomas Wagner
 - add conditional SUNWbinutils/SFEbinutils to SFEgcc package
 * Sun Dec 28 2008 - Thomas Wagner
