@@ -1,6 +1,7 @@
-diff -r 883bada062df dlls/mswsock/mswsock.spec
---- a/dlls/mswsock/mswsock.spec	Mon Nov 17 21:13:54 2008 +0800
-+++ b/dlls/mswsock/mswsock.spec	Mon Nov 17 21:23:39 2008 +0800
+diff --git a/dlls/mswsock/mswsock.spec b/dlls/mswsock/mswsock.spec
+index 1f2bd78..c0814fb 100644
+--- a/dlls/mswsock/mswsock.spec
++++ b/dlls/mswsock/mswsock.spec
 @@ -1,7 +1,7 @@
 -@ stdcall AcceptEx(long long ptr long long long ptr ptr)
 +@ stdcall AcceptEx(long long ptr long long long ptr ptr) ws2_32.AcceptEx
@@ -11,10 +12,11 @@ diff -r 883bada062df dlls/mswsock/mswsock.spec
  @ stub GetAddressByNameA
  @ stub GetAddressByNameW
  @ stub GetNameByTypeA
-diff -r 883bada062df dlls/ws2_32/socket.c
---- a/dlls/ws2_32/socket.c	Mon Nov 17 21:13:54 2008 +0800
-+++ b/dlls/ws2_32/socket.c	Mon Nov 17 21:23:39 2008 +0800
-@@ -192,6 +192,15 @@
+diff --git a/dlls/ws2_32/socket.c b/dlls/ws2_32/socket.c
+index 078c3be..4943473 100644
+--- a/dlls/ws2_32/socket.c
++++ b/dlls/ws2_32/socket.c
+@@ -196,6 +196,15 @@ typedef struct ws2_async
      {
          int val;     /* for send operations */
          int *ptr;    /* for recv operations */
@@ -30,20 +32,19 @@ diff -r 883bada062df dlls/ws2_32/socket.c
      }                                   addrlen;
      DWORD                               flags;
      unsigned int                        n_iovecs;
-@@ -237,6 +246,8 @@
+@@ -241,6 +250,8 @@ static FARPROC blocking_hook = (FARPROC)WSA_DefaultBlockingHook;
  static struct WS_hostent *WS_dup_he(const struct hostent* p_he);
  static struct WS_protoent *WS_dup_pe(const struct protoent* p_pe);
  static struct WS_servent *WS_dup_se(const struct servent* p_se);
-+static void WS_AddCompletion( SOCKET sock, ULONG_PTR CompletionValue, NTSTATUS CompletionStatus, ULONG_PTR Information );
++static void WS_AddCompletion( SOCKET sock, ULONG_PTR CompletionValue, NTSTATUS CompletionStatus, ULONG Information );
 +
  
  int WSAIOCTL_GetInterfaceCount(void);
  int WSAIOCTL_GetInterfaceName(int intNumber, char *intName);
-@@ -1065,6 +1076,245 @@
-                                                     iosb->Information, wsa->user_overlapped,
+@@ -1070,6 +1081,244 @@ static void WINAPI ws2_async_apc( void *arg, IO_STATUS_BLOCK *iosb, ULONG reserv
                                                      wsa->flags );
      HeapFree( GetProcessHeap(), 0, wsa );
-+}
+ }
 +/***********************************************************************
 + *              WS2_acceptex_data                (INTERNAL)
 + *
@@ -219,7 +220,6 @@ diff -r 883bada062df dlls/ws2_32/socket.c
 +		req->async.callback = WS2_async_accept;
 +		req->async.iosb     = iosb;
 +		req->async.arg      = wsa;
-+		req->async.apc      = NULL;
 +		req->async.event    = overlapped->hEvent;
 +		req->async.cvalue   = (ULONG_PTR)overlapped;
 +		status = wine_server_call( req );
@@ -282,128 +282,33 @@ diff -r 883bada062df dlls/ws2_32/socket.c
 +    }
 +    else
 +        *remote_addr_len = 0;
- }
++}
  
  /***********************************************************************
-diff -r 883bada062df dlls/ws2_32/ws2_32.spec
---- a/dlls/ws2_32/ws2_32.spec	Mon Nov 17 21:13:54 2008 +0800
-+++ b/dlls/ws2_32/ws2_32.spec	Mon Nov 17 21:23:39 2008 +0800
-@@ -117,3 +117,5 @@
- @ stdcall freeaddrinfo(ptr) WS_freeaddrinfo
+  *              WS2_recv                (INTERNAL)
+diff --git a/dlls/ws2_32/ws2_32.spec b/dlls/ws2_32/ws2_32.spec
+index 74e71be..90301bb 100644
+--- a/dlls/ws2_32/ws2_32.spec
++++ b/dlls/ws2_32/ws2_32.spec
+@@ -118,3 +118,5 @@
  @ stdcall getaddrinfo(str str ptr ptr) WS_getaddrinfo
  @ stdcall getnameinfo(ptr long ptr long ptr long long) WS_getnameinfo
+ @ stdcall inet_ntop(long ptr ptr long) WS_inet_ntop
 +@ stdcall AcceptEx(long long ptr long long long ptr ptr) 
 +@ stdcall GetAcceptExSockaddrs(ptr long long long ptr ptr ptr ptr)
-diff -r 883bada062df include/wine/server_protocol.h
---- a/include/wine/server_protocol.h	Mon Nov 17 21:13:54 2008 +0800
-+++ b/include/wine/server_protocol.h	Mon Nov 17 21:23:39 2008 +0800
-@@ -1154,6 +1154,7 @@
- {
-     struct request_header __header;
-     obj_handle_t lhandle;
-+    obj_handle_t ahandle;
-     unsigned int access;
-     unsigned int attributes;
- };
-@@ -1179,6 +1180,17 @@
-     struct reply_header __header;
- };
- 
-+
-+struct set_socket_listener_request
-+{
-+    struct request_header __header;
-+    obj_handle_t  handle;
-+    obj_handle_t  hListen;
-+};
-+struct set_socket_listener_reply
-+{
-+    struct reply_header __header;
-+};
- 
- 
- struct get_socket_event_request
-@@ -2692,6 +2704,20 @@
-     async_data_t async;
- };
- struct register_async_reply
-+{
-+    struct reply_header __header;
-+};
-+
-+struct register_async_l_request
-+{
-+    struct request_header __header;
-+    obj_handle_t handle;
-+    int          type;
-+    int          count;
-+    obj_handle_t locator;
-+    async_data_t async;
-+};
-+struct register_async_l_reply
- {
-     struct reply_header __header;
- };
-@@ -4390,6 +4416,7 @@
-     REQ_create_socket,
-     REQ_accept_socket,
-     REQ_set_socket_event,
-+    REQ_set_socket_listener,
-     REQ_get_socket_event,
-     REQ_enable_socket_event,
-     REQ_set_socket_deferred,
-@@ -4481,6 +4508,7 @@
-     REQ_get_serial_info,
-     REQ_set_serial_info,
-     REQ_register_async,
-+    REQ_register_async_l,
-     REQ_cancel_async,
-     REQ_ioctl,
-     REQ_get_ioctl_result,
-@@ -4634,6 +4662,7 @@
-     struct create_socket_request create_socket_request;
-     struct accept_socket_request accept_socket_request;
-     struct set_socket_event_request set_socket_event_request;
-+    struct set_socket_listener_request set_socket_listener_request;
-     struct get_socket_event_request get_socket_event_request;
-     struct enable_socket_event_request enable_socket_event_request;
-     struct set_socket_deferred_request set_socket_deferred_request;
-@@ -4725,6 +4754,7 @@
-     struct get_serial_info_request get_serial_info_request;
-     struct set_serial_info_request set_serial_info_request;
-     struct register_async_request register_async_request;
-+    struct register_async_l_request register_async_l_request;
-     struct cancel_async_request cancel_async_request;
-     struct ioctl_request ioctl_request;
-     struct get_ioctl_result_request get_ioctl_result_request;
-@@ -4876,6 +4906,7 @@
-     struct create_socket_reply create_socket_reply;
-     struct accept_socket_reply accept_socket_reply;
-     struct set_socket_event_reply set_socket_event_reply;
-+    struct set_socket_listener_reply set_socket_listener_reply;
-     struct get_socket_event_reply get_socket_event_reply;
-     struct enable_socket_event_reply enable_socket_event_reply;
-     struct set_socket_deferred_reply set_socket_deferred_reply;
-@@ -4967,6 +4998,7 @@
-     struct get_serial_info_reply get_serial_info_reply;
-     struct set_serial_info_reply set_serial_info_reply;
-     struct register_async_reply register_async_reply;
-+    struct register_async_l_reply register_async_l_reply;
-     struct cancel_async_reply cancel_async_reply;
-     struct ioctl_reply ioctl_reply;
-     struct get_ioctl_result_reply get_ioctl_result_reply;
-diff -r 883bada062df server/async.c
---- a/server/async.c	Mon Nov 17 21:13:54 2008 +0800
-+++ b/server/async.c	Mon Nov 17 21:23:39 2008 +0800
-@@ -45,6 +45,7 @@
+diff --git a/server/async.c b/server/async.c
+index 0a69f7a..40c1c36 100644
+--- a/server/async.c
++++ b/server/async.c
+@@ -45,6 +45,7 @@ struct async
      struct completion   *completion;
-     unsigned long        comp_key;
+     apc_param_t          comp_key;
      async_data_t         data;            /* data for async I/O call */
 +    obj_handle_t	 locator;	  /* handle used to locate this async */
  };
  
  static void async_dump( struct object *obj, int verbose );
-@@ -117,7 +118,6 @@
+@@ -117,7 +118,6 @@ static void async_destroy( struct object *obj )
  {
      struct async *async = (struct async *)obj;
      assert( obj->ops == &async_ops );
@@ -411,7 +316,7 @@ diff -r 883bada062df server/async.c
      list_remove( &async->queue_entry );
      async_reselect( async );
  
-@@ -192,6 +192,7 @@
+@@ -192,6 +192,7 @@ void free_async_queue( struct async_queue *queue )
      release_object( queue );
  }
  
@@ -419,20 +324,18 @@ diff -r 883bada062df server/async.c
  /* create an async on a given queue of a fd */
  struct async *create_async( struct thread *thread, struct async_queue *queue, const async_data_t *data )
  {
-@@ -214,6 +215,7 @@
+@@ -214,6 +215,7 @@ struct async *create_async( struct thread *thread, struct async_queue *queue, co
      async->timeout = NULL;
      async->queue   = (struct async_queue *)grab_object( queue );
      async->completion = NULL;
-+    async->locator = NULL;
++    async->locator = 0;
      if (queue->fd) fd_assign_completion( queue->fd, &async->completion, &async->comp_key );
  
      list_add_tail( &queue->queue, &async->queue_entry );
-@@ -222,6 +224,15 @@
-     if (queue->fd) set_fd_signaled( queue->fd, 0 );
-     if (event) reset_event( event );
+@@ -224,6 +226,15 @@ struct async *create_async( struct thread *thread, struct async_queue *queue, co
      return async;
-+}
-+
+ }
+ 
 +/* create an async that you can locate later */
 +struct async *create_async_l( struct thread *thread, struct async_queue *queue, const async_data_t *data, obj_handle_t l )
 +{
@@ -440,10 +343,12 @@ diff -r 883bada062df server/async.c
 +	out = create_async(thread,queue,data);
 +	out->locator = l;
 +	return out;
- }
- 
++}
++
  /* set the timeout of an async operation */
-@@ -279,26 +290,44 @@
+ void async_set_timeout( struct async *async, timeout_t timeout, unsigned int status )
+ {
+@@ -279,26 +290,44 @@ void async_set_result( struct object *obj, unsigned int status, unsigned int tot
  /* check if an async operation is waiting to be alerted */
  int async_waiting( struct async_queue *queue )
  {
@@ -464,46 +369,43 @@ diff -r 883bada062df server/async.c
 +		}
 +	}
 +    return FALSE; /*nothing is pending*/
-+}
-+
+ }
+ 
+-/* wake up async operations on the queue */
+-void async_wake_up( struct async_queue *queue, unsigned int status )
 +/* wakes up specific async operations on the queue */
 +void async_wake_up_l( struct async_queue *queue, unsigned int status, obj_handle_t l )
-+{
-+    struct list *ptr, *next;
-+    if (!queue) return;
-+    LIST_FOR_EACH_SAFE( ptr, next, &queue->queue )
-+    {
-+        struct async *async = LIST_ENTRY( ptr, struct async, queue_entry );
-+	if( (async->locator == l || NULL == l) && /*step one. are we locating?*/
+ {
+     struct list *ptr, *next;
+-
+     if (!queue) return;
+-
+     LIST_FOR_EACH_SAFE( ptr, next, &queue->queue )
+     {
+         struct async *async = LIST_ENTRY( ptr, struct async, queue_entry );
+-        async_terminate( async, status );
++	if( (async->locator == l || 0 == l) && /*step one. are we locating?*/
 +		(((status == STATUS_ALERTED) && (async->status != STATUS_ALERTED)) || /*don't alert one thats already alerted*/
 +		  (status != STATUS_ALERTED)) ) /*if we aren't alerting, notify everything*/
 +	{
 +		async_terminate( async, status );
-+        if (status == STATUS_ALERTED) break;  /* only wake up the first one */
+         if (status == STATUS_ALERTED) break;  /* only wake up the first one */
 +	}
-+    }
+     }
  }
- 
- /* wake up async operations on the queue */
- void async_wake_up( struct async_queue *queue, unsigned int status )
- {
--    struct list *ptr, *next;
-+    async_wake_up_l(queue,status,NULL);
++
++/* wake up async operations on the queue */
++void async_wake_up( struct async_queue *queue, unsigned int status )
++{
++    async_wake_up_l(queue,status,0);
 +}
- 
--    if (!queue) return;
- 
--    LIST_FOR_EACH_SAFE( ptr, next, &queue->queue )
--    {
--        struct async *async = LIST_ENTRY( ptr, struct async, queue_entry );
--        async_terminate( async, status );
--        if (status == STATUS_ALERTED) break;  /* only wake up the first one */
--    }
--}
-diff -r 883bada062df server/fd.c
---- a/server/fd.c	Mon Nov 17 21:13:54 2008 +0800
-+++ b/server/fd.c	Mon Nov 17 21:23:39 2008 +0800
-@@ -1857,6 +1857,7 @@
++
++
+diff --git a/server/fd.c b/server/fd.c
+index c8b6f7a..4c8c53d 100644
+--- a/server/fd.c
++++ b/server/fd.c
+@@ -1857,6 +1857,7 @@ void default_fd_cancel_async( struct fd *fd )
      async_wake_up( fd->wait_q, STATUS_CANCELLED );
  }
  
@@ -511,7 +413,7 @@ diff -r 883bada062df server/fd.c
  /* default flush() routine */
  void no_flush( struct fd *fd, struct event **event )
  {
-@@ -2048,6 +2049,32 @@
+@@ -2048,6 +2049,32 @@ DECL_HANDLER(register_async)
      }
  }
  
@@ -544,18 +446,19 @@ diff -r 883bada062df server/fd.c
  /* cancels all async I/O */
  DECL_HANDLER(cancel_async)
  {
-@@ -2059,6 +2086,7 @@
-         release_object( fd );
+@@ -2060,6 +2087,7 @@ DECL_HANDLER(cancel_async)
      }
  }
-+
  
++
  /* attach completion object to a fd */
  DECL_HANDLER(set_completion_info)
-diff -r 883bada062df server/file.h
---- a/server/file.h	Mon Nov 17 21:13:54 2008 +0800
-+++ b/server/file.h	Mon Nov 17 21:23:39 2008 +0800
-@@ -47,6 +47,9 @@
+ {
+diff --git a/server/file.h b/server/file.h
+index 0eac537..aa1dd84 100644
+--- a/server/file.h
++++ b/server/file.h
+@@ -47,6 +47,9 @@ struct fd_ops
      void (*reselect_async)( struct fd *, struct async_queue *queue );
      /* cancel an async operation */
      void (*cancel_async)(struct fd *);
@@ -565,7 +468,7 @@ diff -r 883bada062df server/file.h
  };
  
  /* file descriptor functions */
-@@ -136,11 +139,15 @@
+@@ -137,12 +140,16 @@ extern struct async_queue *create_async_queue( struct fd *fd );
  extern void free_async_queue( struct async_queue *queue );
  extern struct async *create_async( struct thread *thread, struct async_queue *queue,
                                     const async_data_t *data );
@@ -573,18 +476,29 @@ diff -r 883bada062df server/file.h
 +                                   const async_data_t *data, obj_handle_t l );
 +
  extern void async_set_timeout( struct async *async, timeout_t timeout, unsigned int status );
- extern void async_set_result( struct object *obj, unsigned int status, unsigned long total );
+ extern void async_set_result( struct object *obj, unsigned int status,
+                               unsigned int total, client_ptr_t apc );
  extern int async_waiting( struct async_queue *queue );
  extern void async_terminate( struct async *async, unsigned int status );
  extern void async_wake_up( struct async_queue *queue, unsigned int status );
 +extern void async_wake_up_l( struct async_queue *queue, unsigned int status, obj_handle_t l );
- extern void fd_assign_completion( struct fd *fd, struct completion **p_port, unsigned long *p_key );
+ extern void fd_assign_completion( struct fd *fd, struct completion **p_port, apc_param_t *p_key );
  
  /* access rights that require Unix read permission */
-diff -r 883bada062df server/protocol.def
---- a/server/protocol.def	Mon Nov 17 21:13:54 2008 +0800
-+++ b/server/protocol.def	Mon Nov 17 21:23:39 2008 +0800
-@@ -950,6 +950,7 @@
+diff --git a/server/protocol.def b/server/protocol.def
+index 6d6be5b..4ca7cab 100644
+--- a/server/protocol.def
++++ b/server/protocol.def
+@@ -62,7 +62,7 @@ struct reply_header
+ /* this is used to construct the generic_request union */
+ struct request_max_size
+ {
+-    int pad[16]; /* the max request size is 16 ints */
++    int pad[20]; /* the max request size is 16 ints */
+ };
+ 
+ #define FIRST_USER_HANDLE 0x0020  /* first possible value for low word of user handle */
+@@ -974,6 +974,7 @@ enum server_fd_type
  /* Accept a socket */
  @REQ(accept_socket)
      obj_handle_t lhandle;       /* handle to the listening socket */
@@ -592,7 +506,7 @@ diff -r 883bada062df server/protocol.def
      unsigned int access;        /* wanted access rights */
      unsigned int attributes;    /* object attributes */
  @REPLY
-@@ -966,6 +967,11 @@
+@@ -990,6 +991,11 @@ enum server_fd_type
      unsigned int  msg;           /* message to send */
  @END
  
@@ -604,69 +518,35 @@ diff -r 883bada062df server/protocol.def
  
  /* Get socket event parameters */
  @REQ(get_socket_event)
-@@ -1989,6 +1995,14 @@
-     obj_handle_t handle;        /* handle to comm port, socket or file */
-     int          type;          /* type of queue to look after */
+@@ -1998,6 +2004,14 @@ enum message_type
+     async_data_t async;         /* async I/O parameters */
      int          count;         /* count - usually # of bytes to be read/written */
-+    async_data_t async;         /* async I/O parameters */
-+@END
+ @END
 +/* Create a locatable async I/O */
 +@REQ(register_async_l)
 +    obj_handle_t handle;        /* handle to comm port, socket or file */
 +    int          type;          /* type of queue to look after */
 +    int          count;         /* count - usually # of bytes to be read/written */
 +    obj_handle_t locator;	/* used to locate a specific async request later */
-     async_data_t async;         /* async I/O parameters */
- @END
++    async_data_t async;         /* async I/O parameters */
++@END
  #define ASYNC_TYPE_READ  0x01
-diff -r 883bada062df server/request.h
---- a/server/request.h	Mon Nov 17 21:13:54 2008 +0800
-+++ b/server/request.h	Mon Nov 17 21:23:39 2008 +0800
-@@ -155,6 +155,7 @@
- DECL_HANDLER(create_socket);
- DECL_HANDLER(accept_socket);
- DECL_HANDLER(set_socket_event);
-+DECL_HANDLER(set_socket_listener);
- DECL_HANDLER(get_socket_event);
- DECL_HANDLER(enable_socket_event);
- DECL_HANDLER(set_socket_deferred);
-@@ -246,6 +247,7 @@
- DECL_HANDLER(get_serial_info);
- DECL_HANDLER(set_serial_info);
- DECL_HANDLER(register_async);
-+DECL_HANDLER(register_async_l);
- DECL_HANDLER(cancel_async);
- DECL_HANDLER(ioctl);
- DECL_HANDLER(get_ioctl_result);
-@@ -398,6 +400,7 @@
-     (req_handler)req_create_socket,
-     (req_handler)req_accept_socket,
-     (req_handler)req_set_socket_event,
-+    (req_handler)req_set_socket_listener,
-     (req_handler)req_get_socket_event,
-     (req_handler)req_enable_socket_event,
-     (req_handler)req_set_socket_deferred,
-@@ -489,6 +492,7 @@
-     (req_handler)req_get_serial_info,
-     (req_handler)req_set_serial_info,
-     (req_handler)req_register_async,
-+    (req_handler)req_register_async_l,
-     (req_handler)req_cancel_async,
-     (req_handler)req_ioctl,
-     (req_handler)req_get_ioctl_result,
-diff -r 883bada062df server/sock.c
---- a/server/sock.c	Mon Nov 17 21:13:54 2008 +0800
-+++ b/server/sock.c	Mon Nov 17 21:23:39 2008 +0800
-@@ -85,6 +85,8 @@
+ #define ASYNC_TYPE_WRITE 0x02
+ #define ASYNC_TYPE_WAIT  0x03
+diff --git a/server/sock.c b/server/sock.c
+index baaa9df..8ac5dbf 100644
+--- a/server/sock.c
++++ b/server/sock.c
+@@ -85,6 +85,8 @@ struct sock
      struct sock        *deferred;    /* socket that waits for a deferred accept */
      struct async_queue *read_q;      /* queue for asynchronous reads */
      struct async_queue *write_q;     /* queue for asynchronous writes */
-+    obj_handle_t       *hListen;     /* socket listening for connections for this one */
++    obj_handle_t       hListen;     /* socket listening for connections for this one */
 +	int					incCon;		 /* number of incomming connect attempts will will try to wake for */
  };
  
  static void sock_dump( struct object *obj, int verbose );
-@@ -96,8 +98,12 @@
+@@ -96,8 +98,12 @@ static int sock_get_poll_events( struct fd *fd );
  static void sock_poll_event( struct fd *fd, int event );
  static enum server_fd_type sock_get_fd_type( struct fd *fd );
  static void sock_queue_async( struct fd *fd, const async_data_t *data, int type, int count );
@@ -679,7 +559,7 @@ diff -r 883bada062df server/sock.c
  
  static int sock_get_error( int err );
  static void sock_set_error(void);
-@@ -118,7 +124,7 @@
+@@ -118,7 +124,7 @@ static const struct object_ops sock_ops =
      default_set_sd,               /* set_sd */
      no_lookup_name,               /* lookup_name */
      no_open_file,                 /* open_file */
@@ -688,7 +568,7 @@ diff -r 883bada062df server/sock.c
      sock_destroy                  /* destroy */
  };
  
-@@ -131,7 +137,8 @@
+@@ -131,7 +137,8 @@ static const struct fd_ops sock_fd_ops =
      default_fd_ioctl,             /* ioctl */
      sock_queue_async,             /* queue_async */
      sock_reselect_async,          /* reselect_async */
@@ -698,25 +578,25 @@ diff -r 883bada062df server/sock.c
  };
  
  
-@@ -247,11 +254,15 @@
+@@ -247,11 +254,15 @@ static void sock_wake_up( struct sock *sock, int pollev )
      unsigned int events = sock->pmask & sock->mask;
      int i;
      int async_active = 0;
 -
 +	
-+	//fprintf(stderr,"sock: %p. pollev & (POLLIN|POLLPRI):%d. async_waiting( sock->read_q ):%d,sock->read_q:%p\n",sock,pollev & (POLLIN|POLLPRI),async_waiting( sock->read_q ),sock->read_q);
-+		//	fflush(NULL);
++	/*fprintf(stderr,"sock: %p. pollev & (POLLIN|POLLPRI):%d. async_waiting( sock->read_q ):%d,sock->read_q:%p\n",sock,pollev & (POLLIN|POLLPRI),async_waiting( sock->read_q ),sock->read_q);*/
++		/*	fflush(NULL);*/
      if ( pollev & (POLLIN|POLLPRI) && async_waiting( sock->read_q ))
      {
-+	//	fprintf(stderr,"waking_read_queue pending:%d\n",sock->incCon);
-+	//		fflush(NULL);
++	/*	fprintf(stderr,"waking_read_queue pending:%d\n",sock->incCon);*/
++	/*		fflush(NULL);*/
          if (debug_level) fprintf( stderr, "activating read queue for socket %p\n", sock );
 -        async_wake_up( sock->read_q, STATUS_ALERTED );
 +		async_wake_up( sock->read_q, STATUS_ALERTED );
          async_active = 1;
      }
      if ( pollev & POLLOUT && async_waiting( sock->write_q ))
-@@ -332,10 +343,14 @@
+@@ -332,10 +343,14 @@ static void sock_poll_event( struct fd *fd, int event )
          /* listening */
          if (event & POLLIN)
          {
@@ -727,12 +607,12 @@ diff -r 883bada062df server/sock.c
              sock->pmask |= FD_ACCEPT;
              sock->errors[FD_ACCEPT_BIT] = 0;
              sock->hmask |= FD_ACCEPT;
-+		//	fprintf(stderr,"sock: %p. incomming connection. pending: %d\n",sock,sock->incCon);
-+		//	fflush(NULL);
++		/*	fprintf(stderr,"sock: %p. incomming connection. pending: %d\n",sock,sock->incCon);*/
++		/*	fflush(NULL);*/
          }
          else if (event & (POLLERR|POLLHUP))
          {
-@@ -435,10 +450,17 @@
+@@ -435,10 +450,17 @@ static void sock_poll_event( struct fd *fd, int event )
      }
      else
          sock_reselect( sock );
@@ -743,17 +623,17 @@ diff -r 883bada062df server/sock.c
 -
 +    if ( sock->pmask & sock->mask || sock->flags & WSA_FLAG_OVERLAPPED )
 +	{
-+//		fprintf(stderr,"sock: %p. pending: %d. 1st: %d. 2nd: %d.\n",sock,sock->incCon, sock->pmask & sock->mask, sock->flags & WSA_FLAG_OVERLAPPED);
-+//		fflush(NULL);
++/*		fprintf(stderr,"sock: %p. pending: %d. 1st: %d. 2nd: %d.\n",sock,sock->incCon, sock->pmask & sock->mask, sock->flags & WSA_FLAG_OVERLAPPED);*/
++/*		fflush(NULL);*/
 +		sock_wake_up( sock, event );
 +	} else{
-+//	fprintf(stderr,"sock: %p. pending: %d. 1st: %d. 2nd: %d.\n",sock,sock->incCon, sock->pmask & sock->mask, sock->flags & WSA_FLAG_OVERLAPPED);
-+//	fflush(NULL);
++/*	fprintf(stderr,"sock: %p. pending: %d. 1st: %d. 2nd: %d.\n",sock,sock->incCon, sock->pmask & sock->mask, sock->flags & WSA_FLAG_OVERLAPPED);*/
++/*	fflush(NULL);*/
 +	}
      /* if anyone is stupid enough to wait on the socket object itself,
       * maybe we should wake them up too, just in case? */
      wake_up( &sock->obj, 0 );
-@@ -466,7 +488,7 @@
+@@ -466,7 +488,7 @@ static int sock_get_poll_events( struct fd *fd )
      struct sock *sock = get_fd_user( fd );
      unsigned int mask = sock->mask & sock->state & ~sock->hmask;
      int ev = 0;
@@ -762,7 +642,7 @@ diff -r 883bada062df server/sock.c
      assert( sock->obj.ops == &sock_ops );
  
      if (sock->state & FD_CONNECT)
-@@ -490,7 +512,7 @@
+@@ -490,7 +512,7 @@ static enum server_fd_type sock_get_fd_type( struct fd *fd )
      return FD_TYPE_SOCKET;
  }
  
@@ -771,7 +651,7 @@ diff -r 883bada062df server/sock.c
  {
      struct sock *sock = get_fd_user( fd );
      struct async_queue *queue;
-@@ -514,7 +536,7 @@
+@@ -514,7 +536,7 @@ static void sock_queue_async( struct fd *fd, const async_data_t *data, int type,
          return;
      }
  
@@ -780,7 +660,7 @@ diff -r 883bada062df server/sock.c
           ( !( sock->state & FD_WRITE ) && type == ASYNC_TYPE_WRITE ) )
      {
          set_error( STATUS_PIPE_DISCONNECTED );
-@@ -522,13 +544,17 @@
+@@ -522,7 +544,7 @@ static void sock_queue_async( struct fd *fd, const async_data_t *data, int type,
      else
      {
          struct async *async;
@@ -789,25 +669,26 @@ diff -r 883bada062df server/sock.c
          release_object( async );
          set_error( STATUS_PENDING );
      }
- 
+@@ -530,6 +552,10 @@ static void sock_queue_async( struct fd *fd, const async_data_t *data, int type,
      pollev = sock_reselect( sock );
      if ( pollev ) sock_try_event( sock, pollev );
-+}
+ }
 +static void sock_queue_async( struct fd *fd, const async_data_t *data, int type, int count)
 +{
-+	sock_queue_async_l(fd,data,type,count,NULL);
- }
++	sock_queue_async_l(fd,data,type,count,0);
++}
  
  static void sock_reselect_async( struct fd *fd, struct async_queue *queue )
-@@ -542,9 +568,36 @@
+ {
+@@ -542,11 +568,38 @@ static void sock_cancel_async( struct fd *fd )
  {
      struct sock *sock = get_fd_user( fd );
      assert( sock->obj.ops == &sock_ops );
 -
      async_wake_up( sock->read_q, STATUS_CANCELLED );
      async_wake_up( sock->write_q, STATUS_CANCELLED );
-+}
-+
+ }
+ 
 +static int sock_close_handle( struct object *obj, struct process *process, obj_handle_t handle )
 +{
 +    struct sock *sock = (struct sock*) obj;
@@ -834,10 +715,12 @@ diff -r 883bada062df server/sock.c
 +{
 +    async_wake_up_l( sock->read_q, STATUS_HANDLES_CLOSED, locator );
 +    async_wake_up_l( sock->write_q, STATUS_HANDLES_CLOSED, locator );
- }
- 
++}
++
  static struct fd *sock_get_fd( struct object *obj )
-@@ -609,6 +662,7 @@
+ {
+     struct sock *sock = (struct sock *)obj;
+@@ -609,6 +662,7 @@ static struct object *create_socket( int family, int type, int protocol, unsigne
      sock->deferred = NULL;
      sock->read_q  = NULL;
      sock->write_q = NULL;
@@ -845,7 +728,7 @@ diff -r 883bada062df server/sock.c
      if (!(sock->fd = create_anonymous_fd( &sock_fd_ops, sockfd, &sock->obj,
                              (flags & WSA_FLAG_OVERLAPPED) ? 0 : FILE_SYNCHRONOUS_IO_NONALERT )))
      {
-@@ -621,16 +675,17 @@
+@@ -621,16 +675,17 @@ static struct object *create_socket( int family, int type, int protocol, unsigne
  }
  
  /* accept a socket (creates a new fd) */
@@ -867,7 +750,7 @@ diff -r 883bada062df server/sock.c
  
      if ( sock->deferred )
      {
-@@ -650,46 +705,62 @@
+@@ -650,46 +705,62 @@ static struct sock *accept_socket( obj_handle_t handle )
          {
              sock_set_error();
              release_object( sock );
@@ -880,25 +763,7 @@ diff -r 883bada062df server/sock.c
 -            release_object( sock );
 -            return NULL;
 -        }
-+		
-+		if(ahandle){
-+			acceptsock = (struct sock *)get_handle_obj(current->process, ahandle, FILE_READ_DATA | FILE_WRITE_DATA, &sock_ops );
-+			if(acceptsock){
-+				if(acceptsock->event)
-+					release_object( acceptsock->event );
-+				release_object( acceptsock->fd );
-+			}
-+		}else{
-+			acceptsock = alloc_object( &sock_ops );
-+		}
-+    	if (!acceptsock)
-+    	{
-+    	    close( acceptfd );
-+    	    release_object( sock );
-+    	    return NULL;
-+    	}
-+	
- 
+-
 -        /* newly created socket gets the same properties of the listening socket */
 -        fcntl(acceptfd, F_SETFL, O_NONBLOCK); /* make socket nonblocking */
 -        acceptsock->state  = FD_WINE_CONNECTED|FD_READ|FD_WRITE;
@@ -920,6 +785,25 @@ diff -r 883bada062df server/sock.c
 -        acceptsock->read_q  = NULL;
 -        acceptsock->write_q = NULL;
 -        if (!(acceptsock->fd = create_anonymous_fd( &sock_fd_ops, acceptfd, &acceptsock->obj,
++		
++		if(ahandle){
++			acceptsock = (struct sock *)get_handle_obj(current->process, ahandle, FILE_READ_DATA | FILE_WRITE_DATA, &sock_ops );
++			if(acceptsock){
++				if(acceptsock->event)
++					release_object( acceptsock->event );
++				release_object( acceptsock->fd );
++			}
++		}else{
++			acceptsock = alloc_object( &sock_ops );
++		}
++    	if (!acceptsock)
++    	{
++    	    close( acceptfd );
++    	    release_object( sock );
++    	    return NULL;
++    	}
++	
++
 +		fcntl(acceptfd, F_SETFL, O_NONBLOCK); /* make socket nonblocking */
 +		acceptsock->state  = FD_WINE_CONNECTED|FD_READ|FD_WRITE;
 +    	acceptsock->hmask   = 0;
@@ -965,7 +849,7 @@ diff -r 883bada062df server/sock.c
      sock_reselect( sock );
      release_object( sock );
      return acceptsock;
-@@ -787,13 +858,35 @@
+@@ -787,13 +858,35 @@ DECL_HANDLER(accept_socket)
      struct sock *sock;
  
      reply->handle = 0;
@@ -987,7 +871,7 @@ diff -r 883bada062df server/sock.c
 +        release_object( &sock->obj );//I think this needs togo in the else. But i want to check.
 +	//We can't release the object unless we allocate a handle for it.
 +	//Do we need to se the wparam? What is this? No... maybe... i dont know.
-     }
++    }
 +}
 +
 +/* Sets which socket is listening for connections for this socket */
@@ -998,7 +882,7 @@ diff -r 883bada062df server/sock.c
 +    if(!sock){
 +	set_error( STATUS_INVALID_HANDLE );
 +	return;
-+    }
+     }
 +    sock->hListen = req->hListen;
 +    release_object( &sock->obj );
 +    set_error( STATUS_SUCCESS );
@@ -1006,92 +890,16 @@ diff -r 883bada062df server/sock.c
  }
  
  /* set socket event parameters */
-diff -r 883bada062df server/trace.c
---- a/server/trace.c	Mon Nov 17 21:13:54 2008 +0800
-+++ b/server/trace.c	Mon Nov 17 21:23:39 2008 +0800
-@@ -1398,6 +1398,7 @@
- static void dump_accept_socket_request( const struct accept_socket_request *req )
- {
-     fprintf( stderr, " lhandle=%p,", req->lhandle );
-+    fprintf( stderr, " ahandle=%p,", req->ahandle );
-     fprintf( stderr, " access=%08x,", req->access );
-     fprintf( stderr, " attributes=%08x", req->attributes );
- }
-@@ -1414,6 +1415,12 @@
-     fprintf( stderr, " event=%p,", req->event );
-     fprintf( stderr, " window=%p,", req->window );
-     fprintf( stderr, " msg=%08x", req->msg );
-+}
-+
-+static void dump_set_socket_listener_request( const struct set_socket_listener_request *req )
-+{
-+    fprintf( stderr, " handle=%p,", req->handle );
-+    fprintf( stderr, " hListen=%p", req->hListen );
- }
+diff --git a/tools/make_requests b/tools/make_requests
+index 00a3420..8efc187 100755
+--- a/tools/make_requests
++++ b/tools/make_requests
+@@ -56,7 +56,7 @@ my %replies = ();
  
- static void dump_get_socket_event_request( const struct get_socket_event_request *req )
-@@ -2492,6 +2499,16 @@
-     fprintf( stderr, " handle=%p,", req->handle );
-     fprintf( stderr, " type=%d,", req->type );
-     fprintf( stderr, " count=%d,", req->count );
-+    fprintf( stderr, " async=" );
-+    dump_async_data( &req->async );
-+}
-+
-+static void dump_register_async_l_request( const struct register_async_l_request *req )
-+{
-+    fprintf( stderr, " handle=%p,", req->handle );
-+    fprintf( stderr, " type=%d,", req->type );
-+    fprintf( stderr, " count=%d,", req->count );
-+    fprintf( stderr, " locator=%p,", req->locator );
-     fprintf( stderr, " async=" );
-     dump_async_data( &req->async );
- }
-@@ -3869,6 +3886,7 @@
-     (dump_func)dump_create_socket_request,
-     (dump_func)dump_accept_socket_request,
-     (dump_func)dump_set_socket_event_request,
-+    (dump_func)dump_set_socket_listener_request,
-     (dump_func)dump_get_socket_event_request,
-     (dump_func)dump_enable_socket_event_request,
-     (dump_func)dump_set_socket_deferred_request,
-@@ -3960,6 +3978,7 @@
-     (dump_func)dump_get_serial_info_request,
-     (dump_func)dump_set_serial_info_request,
-     (dump_func)dump_register_async_request,
-+    (dump_func)dump_register_async_l_request,
-     (dump_func)dump_cancel_async_request,
-     (dump_func)dump_ioctl_request,
-     (dump_func)dump_get_ioctl_result_request,
-@@ -4109,6 +4128,7 @@
-     (dump_func)dump_create_socket_reply,
-     (dump_func)dump_accept_socket_reply,
-     NULL,
-+    NULL,
-     (dump_func)dump_get_socket_event_reply,
-     NULL,
-     NULL,
-@@ -4198,6 +4218,7 @@
-     NULL,
-     (dump_func)dump_is_window_hung_reply,
-     (dump_func)dump_get_serial_info_reply,
-+    NULL,
-     NULL,
-     NULL,
-     NULL,
-@@ -4349,6 +4370,7 @@
-     "create_socket",
-     "accept_socket",
-     "set_socket_event",
-+    "set_socket_listener",
-     "get_socket_event",
-     "enable_socket_event",
-     "set_socket_deferred",
-@@ -4440,6 +4462,7 @@
-     "get_serial_info",
-     "set_serial_info",
-     "register_async",
-+    "register_async_l",
-     "cancel_async",
-     "ioctl",
-     "get_ioctl_result",
+ my @trace_lines = ();
+ 
+-my $max_req_size = 64;
++my $max_req_size = 80;
+ 
+ my $warnings = scalar(@ARGV) && $ARGV[0] eq "-w";
+ 

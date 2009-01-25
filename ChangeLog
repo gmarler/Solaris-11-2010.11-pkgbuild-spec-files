@@ -1,9 +1,11 @@
-2008-01-25  Thomas Wagner  <tom68@users.sourceforge.net>
+2009-01-25  Thomas Wagner  <tom68@users.sourceforge.net>
 
 	* SFEwine.spec: Bump to 1.1.13
 	* patches/wine-03-iphlpapi.diff: rework
+	* patches/wine-02-acceptex.diff: refresh as suggested by David Blewett
 	* SFEgcc.spec: Bump to 4.2.4
 	* patches/gcc-02-handle_pragma_pack_push_pop.diff: (new) probably helps wine
+	* SFEpostfix.spec: %doc made monstrous (from 2009-01-19)
 
 2009-01-21  Brian Cameron  <brian.cameron@sun.com>
 
@@ -28,7 +30,7 @@
 	* patches/gdm-07-hide-face-browser.diff: Improve patch based on
 	  bug #568323.
 
-2008-01-19  Thomas Wagner  <tom68@users.sourceforge.net>
+2009-01-19  Thomas Wagner  <tom68@users.sourceforge.net>
 
 	* experimental/SFEpostfix.spec: updates in %files, now packages well,
 	  still untested binaries
@@ -62,7 +64,7 @@
 	* patches/libgda-01-suncc-empty-struct.diff: remove upstreamed patch
 	* patches/libgda-02-sys_errlist.diff: remove upstreamed patch
 
-2008-01-19  Thomas Wagner  <tom68@users.sourceforge.net>
+2009-01-19  Thomas Wagner  <tom68@users.sourceforge.net>
 
 	* SFEfetchmail.spec: --enable-NTLM (untested)
 
@@ -88,7 +90,7 @@
 	* patches/libgda-01-suncc-empty-struct.diff: Add to fix bugzilla #568163
 	* patches/libgda-02-sys_errlist.diff: Add to fix bugzilla #568165
 
-2008-01-18  Thomas Wagner  <tom68@users.sourceforge.net>
+2009-01-18  Thomas Wagner  <tom68@users.sourceforge.net>
 
 	* SFEufraw.spec: adjust %doc, extra package build_l10n,
 	  Obsolete SUNWcdraw not optimal, should be Provides: SUNWcdraw ?
@@ -144,7 +146,7 @@
 	* patches/frozen-bubble-01-build-sun-studio.diff: Added.
 	  Colorful 3D rendered bubble shooting game.
 
-2008-01-07  Thomas Wagner  <tom68@users.sourceforge.net>
+2009-01-07  Thomas Wagner  <tom68@users.sourceforge.net>
 
 	* SFEufraw.spec: temporarily force compiler to gcc,
 	  add patch2 to change args to ctime_r, remove obsolete patch1
@@ -222,7 +224,7 @@
 	* patches/wbxml2-01-Makefile.diff: remove unused patch
 	* patches/wbxml2-02-getopt.diff: reorder and rework
 
-2008-01-07  Thomas Wagner  <tom68@users.sourceforge.net>
+2009-01-07  Thomas Wagner  <tom68@users.sourceforge.net>
 
 	* SFEsamba.spec: remove %post, %preun, %postun,
 	  bump to version 3.2.7 to solve CVE-2009-0022 and CVE-2008-4314,
@@ -244,7 +246,7 @@
 	  patches/audacity-06-shuttlegui.diff: Remove upstream patches.
 	* base-specs/fftw3.spec: Bump to 3.2.
 
-2008-01-07  Thomas Wagner  <tom68@users.sourceforge.net>
+2009-01-07  Thomas Wagner  <tom68@users.sourceforge.net>
 
 	* SFEgcc.spec: gcc even on i386 builds 64-bit parts, include them.
 	  conditional for old OS w/o SUNWbinutils to Require SFEbinutils
