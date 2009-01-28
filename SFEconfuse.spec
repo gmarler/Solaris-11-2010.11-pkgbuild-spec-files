@@ -38,7 +38,9 @@ export CFLAGS="-O4 -fPIC -DPIC -Xlinker -i -fno-omit-frame-pointer"
 export LDFLAGS="%_ldflags"
 
 ./configure --prefix=%{_prefix}  \
-            --mandir=%{_mandir} 
+            --mandir=%{_mandir}  \
+            --disable-static \
+            --enable-shared
 
 make -j$CPUS
 
@@ -46,6 +48,8 @@ make -j$CPUS
 rm -rf $RPM_BUILD_ROOT
 
 make install DESTDIR=$RPM_BUILD_ROOT
+rm -f $RPM_BUILD_ROOT%{_libdir}/lib*.a
+rm -f $RPM_BUILD_ROOT%{_libdir}/lib*.la
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -53,12 +57,17 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr (-, root, bin)
 %dir %attr (0755, root, sys) %{_datadir}
-%{_datadir}/*
+%defattr (-, root, other)
+%attr (-, root, other) %{_datadir}/locale
 %dir %attr (0755, root, bin) %{_libdir}
-%{_libdir}/*
+%{_libdir}/lib*
+%dir %attr (0755, root, other) %{_libdir}/pkgconfig
+%{_libdir}/pkgconfig/*
 %dir %attr (0755, root, bin) %{_includedir}
 %{_includedir}/*
 
 %changelog
+* Wed Jan 28 2009 - Gilles Dauphin
+- change to shared libs, suggest from Thomas Wagner
 * Wed Dec 31 2008 - Gerard Henry
 - Initial spec
