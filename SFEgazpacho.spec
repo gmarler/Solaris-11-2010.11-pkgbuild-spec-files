@@ -47,6 +47,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gazpacho/*
 %{_datadir}/applications/*
 %{_datadir}/doc/*
+%{_datadir}/locale/*
 
 %changelog
 * Sun Sep 16 2007 - Ananth Shrinivas <ananth@sun.com>

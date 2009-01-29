@@ -9,7 +9,7 @@
 
 Name:			SFEkiwi
 Summary:		A framework for Python applications with graphical user interfaces
-Version:		1.9.18
+Version:		1.9.24
 Source:			http://ftp.gnome.org/pub/GNOME/sources/kiwi/1.9/kiwi-%{version}.tar.gz
 URL:			http://www.async.com.br/projects/kiwi/index.html
 BuildRoot:		%{_tmppath}/%{name}-%{version}-build
@@ -45,8 +45,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/doc/*
 %{_datadir}/kiwi/*
 %{_datadir}/gazpacho/*
+%{_datadir}/locale/*
 
 %changelog
+* Thu Jan 29 2009 - Erwann Chenede <erwann@sun.com>
+- Bumped to 1.9.24
 * Sun Sep 16 2007 - Ananth Shrinivas <ananth@sun.com>
 - Created new spec.
 

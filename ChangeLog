@@ -1,3 +1,8 @@
+2009-01-29 Erwann Chenede - <erwann.chenede@sun.com>
+
+	* SFEkiwi.spec: bump to 1.9.24
+	* SFEgazpacho.spec: added locale dir to %files
+
 2009-01-25  Thomas Wagner  <tom68@users.sourceforge.net>
 
 	* SFEwine.spec: Bump to 1.1.13
