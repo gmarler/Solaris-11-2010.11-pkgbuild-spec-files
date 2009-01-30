@@ -1,3 +1,7 @@
+2009-01-30  Albert Lee  <trisk@acm.jhu.edu>
+
+	* SFEpidgin-facebookchat.spec: *NEW* Facebook chat plugin for pidgin
+
 2009-01-29 Erwann Chenede - <erwann.chenede@sun.com>
 
 	* SFEkiwi.spec: bump to 1.9.24
