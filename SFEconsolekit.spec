@@ -150,6 +150,16 @@ find $RPM_BUILD_ROOT -type f -name "*.a" -exec rm -f {} ';'
 rm -rf $RPM_BUILD_ROOT/%{_mandir}
 %endif
 
+# These programs are intended to be used if you want ConsoleKit to be
+# like utmp/wtmp and log system start/restart/stop events.  There are
+# no plans to support using ConsoleKit like utmp/wtmp, so do not
+# install these for now.
+#
+rm $RPM_BUILD_ROOT/%{_sbindir}/ck-log-system-start
+rm $RPM_BUILD_ROOT/%{_sbindir}/ck-log-system-restart
+rm $RPM_BUILD_ROOT/%{_sbindir}/ck-log-system-stop
+
+
 install -d $RPM_BUILD_ROOT/var/svc/manifest/system
 install --mode=0444 %SOURCE1 $RPM_BUILD_ROOT/var/svc/manifest/system
 

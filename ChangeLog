@@ -1,3 +1,15 @@
+2009-01-30  Brian Cameron  <brian.cameron@sun.com>
+
+	* SUNWgnome-display-mgr.spec: Do not install gdm-factory-slave and
+	  gdm-product-slave since these are experimental and not yet
+	  functional.
+	* SFEconsolekit.spec: Do not install ck-log-system-start,
+	  ck-log-system-restart and ck-log-system-stop since these are
+	  intended to be used if you want ConsoleKit to be like utmp/wtmp
+	  and log system start, restart, and stop events.  On Solaris, we do
+	  not have plans to support using ConsoleKit like utmp/wtmp, so do
+	  not install these.
+	
 2009-01-30  Albert Lee  <trisk@acm.jhu.edu>
 
 	* SFEpidgin-facebookchat.spec: *NEW* Facebook chat plugin for pidgin
@@ -13,10 +25,12 @@
 	* patches/wine-03-iphlpapi.diff: rework
 	* patches/wine-02-acceptex.diff: refresh as suggested by David Blewett
 	* SFEgcc.spec: Bump to 4.2.4
-	* patches/gcc-02-handle_pragma_pack_push_pop.diff: (new) probably helps wine
-        * SFEgcc.spec: new switch, default off: --with-handle_pragma_pack_push_pop
+	* patches/gcc-02-handle_pragma_pack_push_pop.diff: (new) probably helps
+	  wine
+	* SFEgcc.spec: new switch, default off:
+	  --with-handle_pragma_pack_push_pop
 	* experimental/SFEpostfix.spec: %doc made monstrous (from 2009-01-19)
-          fixes to %files, permisisons (from 2009-01-25)
+	  fixes to %files, permisisons (from 2009-01-25)
 
 2009-01-21  Brian Cameron  <brian.cameron@sun.com>
 

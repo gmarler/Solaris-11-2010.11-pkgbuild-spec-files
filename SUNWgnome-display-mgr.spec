@@ -168,6 +168,12 @@ cp %SOURCE2 $RPM_BUILD_ROOT/lib/svc/method/
 
 rmdir $RPM_BUILD_ROOT/etc/pam.d
 
+# The gdm-factory-slave and the gdm-product-slave are non-functional and
+# under development.  Do not ship these until they are ready.
+#
+rm $RPM_BUILD_ROOT/%{_libexecdir}/gdm-factory-slave
+rm $RPM_BUILD_ROOT/%{_libexecdir}/gdm-product-slave
+
 install -d $RPM_BUILD_ROOT/%{_sysconfdir}/X11/xinit/xinitrc.d
 
 %if %build_l10n
@@ -286,9 +292,10 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 %{_sysconfdir}/gdm/*
 %dir %{_sysconfdir}/X11/xinit
 %dir %{_sysconfdir}/X11/xinit/xinitrc.d
-# don't use %_localstatedir for the /var/svc directory, because this
-# is an absolute path defined by another package, so it has to be
-# /var/svc even if this package has its %_localstatedir redefined.
+# don't use %_localstatedir for the /var/log and /var/svc directory,
+# because these are an absolute path defined by another package, so
+# it has to be /var/svc even if this package has its %_localstatedir
+# redefined.
 %dir %attr (0755, root, sys) /var
 %dir %attr (0755, root, sys) /var/log
 %dir %attr (1770, root, gdm) /var/log/gdm
