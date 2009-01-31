@@ -1,3 +1,6 @@
+2009-01-31  Thomas Wagner  <tom68@users.sourceforge.net>
+	* SFEmbuffer.spec: (new) yes we buffer
+
 2009-01-30  Brian Cameron  <brian.cameron@sun.com>
 
 	* SUNWgnome-display-mgr.spec: Do not install gdm-factory-slave and
