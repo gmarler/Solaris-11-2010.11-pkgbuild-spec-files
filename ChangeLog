@@ -1,3 +1,7 @@
+2009-02-02  Alfred Peng  <alfred.peng@sun.com>
+
+	* SFEazureus.spec: Bump to version 4.1.0.0.
+
 2009-02-02  Sergio Schvezov <sergiusens@ieee.org>
 	* SFEpython-hashlib.spec: hashlib backport for python2.4
 	* copyright/SFEpython-hashlib.copyright: copyright notice for hashlib
