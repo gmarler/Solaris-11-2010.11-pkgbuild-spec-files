@@ -1,3 +1,9 @@
+2009-02-01  Sergio Schvezov <sergiusens@ieee.org>
+	* SFEtwitux.spec: *NEW follow tweets
+	* patches/twitux-01-locale.diff: patch includes locale header in 
+	  code.
+	* copyright/SFEtwitux.copyright: twitux copyright notice
+
 2009-01-31  Thomas Wagner  <tom68@users.sourceforge.net>
 	* SFEmbuffer.spec: (new) yes we buffer
 

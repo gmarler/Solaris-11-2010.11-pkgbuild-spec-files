@@ -1,0 +1,11 @@
+--- src/twitux-parser.c.orig	Sun Feb  1 01:18:12 2009
++++ src/twitux-parser.c	Sun Feb  1 01:18:17 2009
+@@ -37,6 +37,8 @@
+ #include <libxml/parser.h>
+ #include <libxml/tree.h>
+ 
++#include <locale.h>
++
+ #include <libtwitux/twitux-debug.h>
+ #include <libtwitux/twitux-conf.h>
+ 
