@@ -1,3 +1,6 @@
+2009-01-31  Thomas Wagner  <tom68@users.sourceforge.net>
+	* SFEwebalizer.spec: bump to 2.21, switch to SUNWgd2
+
 2009-02-02  Alfred Peng  <alfred.peng@sun.com>
 
 	* SFEazureus.spec: Bump to version 4.1.0.0.

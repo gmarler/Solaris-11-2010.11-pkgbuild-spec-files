@@ -4,19 +4,19 @@
 # package are under the same license as the package itself.
 
 %include Solaris.inc
-%define tarball_version 2.01-10-src
+%define tarball_version 2.21-02-src
 
 Name:                SFEwebalizer
 Summary:             Web server log analysis program
-Version:             2.01
+Version:             2.21
 Source:              ftp://ftp.mrunix.net/pub/webalizer/webalizer-%{tarball_version}.tar.bz2
 
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 
-BuildRequires: SFEgd-devel
-Requires: SFEgd
+BuildRequires: SUNWgd2
+Requires: SUNWgd2
 BuildRequires: SUNWlexpt
 Requires: SUNWlexpt
 
@@ -38,7 +38,7 @@ SUNW_BaseDir:            /
 %include default-depend.inc
 
 %prep
-%setup -q -n webalizer-2.01-10
+%setup -q -n webalizer-%{version}-02
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -51,13 +51,13 @@ export LDFLAGS="%_ldflags"
 
 ./configure --prefix=%{_prefix}  \
             --mandir=%{_mandir} \
-            --sysconfdir=%{_sysconfdir}
+            --sysconfdir=%{_sysconfdir} \
+	    --with-gd=/usr/include/gd2 
 
 make -j$CPUS
 
 %install
 rm -rf $RPM_BUILD_ROOT
-
 install -D webalizer   $RPM_BUILD_ROOT%{_bindir}/webalizer
 install -D webalizer.1 $RPM_BUILD_ROOT%{_mandir}/man1/webalizer.1
 install -D sample.conf $RPM_BUILD_ROOT%{_sysconfdir}/webalizer.conf.sample
@@ -83,7 +83,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_sysconfdir}/webalizer.conf.sample
 
 %changelog
-* 
+* Mon Feb 02 2008 - Thomas Wagner
+- bump to 2.21
+- switch from SFEgd to SUNWgd2, add configure --with-gd
 * Sat Mar 31 2007 - Thomas Wagner
 - change Build-Requires to be SFEgd-devel
 *
