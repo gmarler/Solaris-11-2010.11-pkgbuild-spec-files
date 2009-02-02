@@ -1,3 +1,7 @@
+2009-02-02  Sergio Schvezov <sergiusens@ieee.org>
+	* SFEpython-hashlib.spec: hashlib backport for python2.4
+	* copyright/SFEpython-hashlib.copyright: copyright notice for hashlib
+
 2009-02-01  Sergio Schvezov <sergiusens@ieee.org>
 	* SFEtwitux.spec: *NEW follow tweets
 	* patches/twitux-01-locale.diff: patch includes locale header in 
