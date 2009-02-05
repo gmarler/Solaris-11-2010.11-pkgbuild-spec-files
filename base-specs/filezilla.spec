@@ -7,10 +7,10 @@
 # bugdb: http://trac.filezilla-project.org/wiki
 #
 
-%define version_str 3.1.6_src
+%define version_str 3.2.0_src
 Name:		filezilla
 Summary:	FileZilla FTP client
-Version:	3.1.6
+Version:	3.2.0
 License:	GPL
 URL:		http://filezilla.sourceforge.net/
 Source:	    http://superb-east.dl.sourceforge.net/sourceforge/filezilla/FileZilla_%{version_str}.tar.bz2
@@ -68,6 +68,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Feb 05 2009 - alfred.peng@sun.com
+- Bump to 3.2.0.
 * Tue Dec 30 2008 - alfred.peng@sun.com
 - Bump to 3.1.6.
   Remove two upstreamed patches: configure-in.diff and dirent-to-stat.diff.
