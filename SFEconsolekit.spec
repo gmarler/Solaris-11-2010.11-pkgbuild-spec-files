@@ -146,9 +146,17 @@ find $RPM_BUILD_ROOT -type f -name "*.la" -exec rm -f {} ';'
 find $RPM_BUILD_ROOT -type f -name "*.a" -exec rm -f {} ';'
 %if %build_pam_module
 %else
+
 # delete useless directory /usr/man/man8 which stores pam_ck_connector.8 
+#
 rm -rf $RPM_BUILD_ROOT/%{_mandir}
 %endif
+
+# The /var/run directory should not be included with the packages.
+# ConsoleKit will create it at run-time.
+#
+rmdir $RPM_BUILD_ROOT/var/run/ConsoleKit
+rmdir $RPM_BUILD_ROOT/var/run
 
 # These programs are intended to be used if you want ConsoleKit to be
 # like utmp/wtmp and log system start/restart/stop events.  There are
@@ -192,7 +200,6 @@ rm -rf $RPM_BUILD_ROOT
 /var/svc/*
 %dir %attr (0755, root, sys) %{_localstatedir}/log
 %dir %attr (0755, root, root) %{_localstatedir}/log/ConsoleKit
-%dir %attr (0755, root, root) %{_localstatedir}/run/ConsoleKit
 
 %files devel
 %defattr (-, root, bin)
@@ -209,6 +216,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Sat Feb 07 2009 - brian.cameron@sun.com
+- Package should not install anything to  /var/run.
 * Tue Dec 30 2008 - halton.huo@sun.com
 - Add patch ck-dynamic.diff to fix bug #19333
 * Tue Oct 21 2008 - halton.huo@sun.com

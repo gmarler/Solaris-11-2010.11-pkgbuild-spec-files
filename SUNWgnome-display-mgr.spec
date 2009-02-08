@@ -174,6 +174,12 @@ rmdir $RPM_BUILD_ROOT/etc/pam.d
 rm $RPM_BUILD_ROOT/%{_libexecdir}/gdm-factory-slave
 rm $RPM_BUILD_ROOT/%{_libexecdir}/gdm-product-slave
 
+# The /var/run directory should not be included with the packages.
+# GDM will create it at run-time.
+#
+rmdir $RPM_BUILD_ROOT/var/run/gdm
+rmdir $RPM_BUILD_ROOT/var/run
+
 install -d $RPM_BUILD_ROOT/%{_sysconfdir}/X11/xinit/xinitrc.d
 
 %if %build_l10n
@@ -311,8 +317,6 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 %dir %attr (1750, root, gdm) %{_localstatedir}/lib/gdm/.gconf.mandatory
 %attr (1640, root, gdm) %{_localstatedir}/lib/gdm/.gconf.path
 %attr (1640, root, gdm) %{_localstatedir}/lib/gdm/.gconf.mandatory/*
-%dir %attr (0755, root, sys) %{_localstatedir}/run
-%dir %attr (1775, root, gdm) %{_localstatedir}/run/gdm
 
 %if %build_l10n
 %files l10n
@@ -325,6 +329,8 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 %endif
 
 %changelog
+* Sat Feb 07 2009 - brian.cameron@sun.com
+- Package should not install anything to /var/run.
 * Mon Dec 22 2008 - brian.cameron@sun.com
 - Add call to intltoolize, needed when building on Nevada.
 * Wed Dec 17 2008 - brian.cameron@sun.com
