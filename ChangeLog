@@ -3,9 +3,10 @@
 	* base-specs/filezilla.spec: Bump to 3.2.0.
 	* patches/filezilla-02-multimap-const.diff:
 	* patches/filezilla-03-dirent-to-stat.diff:
-	Remove two upstreamed patches.
+	  Remove two upstreamed patches.
 
 2009-01-31  Thomas Wagner  <tom68@users.sourceforge.net>
+
 	* SFEwebalizer.spec: bump to 2.21, switch to SUNWgd2
 
 2009-02-02  Alfred Peng  <alfred.peng@sun.com>
@@ -13,16 +14,19 @@
 	* SFEazureus.spec: Bump to version 4.1.0.0.
 
 2009-02-02  Sergio Schvezov <sergiusens@ieee.org>
+
 	* SFEpython-hashlib.spec: hashlib backport for python2.4
 	* copyright/SFEpython-hashlib.copyright: copyright notice for hashlib
 
 2009-02-01  Sergio Schvezov <sergiusens@ieee.org>
+
 	* SFEtwitux.spec: *NEW follow tweets
 	* patches/twitux-01-locale.diff: patch includes locale header in 
 	  code.
 	* copyright/SFEtwitux.copyright: twitux copyright notice
 
 2009-01-31  Thomas Wagner  <tom68@users.sourceforge.net>
+
 	* SFEmbuffer.spec: (new) yes we buffer
 
 2009-01-30  Brian Cameron  <brian.cameron@sun.com>
