@@ -1,3 +1,7 @@
+2009-02-09  Alfred Peng  <alfred.peng@sun.com>
+
+	* SFEprism.spec: new spec.
+
 2009-02-07  Brian Cameron  <brian.cameron@sun.com>
 
 	* SFEgnome-display-mgr.spec, SFEconsolekit.spec:  Do not install files
