@@ -1,0 +1,725 @@
+--- blender-2.48a/source/blender/imbuf/intern/dds/BlockDXT.cpp	2008-10-23 00:36:49.000000000 +0800
++++ blender-2.48a.mod/source/blender/imbuf/intern/dds/BlockDXT.cpp	2008-11-17 15:29:32.292266873 +0800
+@@ -64,10 +64,10 @@
+ uint BlockDXT1::evaluatePalette(Color32 color_array[4]) const
+ {
+ 	// Does bit expansion before interpolation.
+-	color_array[0].b = (col0.b << 3) | (col0.b >> 2);
+-	color_array[0].g = (col0.g << 2) | (col0.g >> 4);
+-	color_array[0].r = (col0.r << 3) | (col0.r >> 2);
+-	color_array[0].a = 0xFF;
++	color_array[0].bgrau.bgra.b = (col0.bg16.rgb.b << 3) | (col0.bg16.rgb.b >> 2);
++	color_array[0].bgrau.bgra.g = (col0.bg16.rgb.g << 2) | (col0.bg16.rgb.g >> 4);
++	color_array[0].bgrau.bgra.r = (col0.bg16.rgb.r << 3) | (col0.bg16.rgb.r >> 2);
++	color_array[0].bgrau.bgra.a = 0xFF;
+ 	
+ 	// @@ Same as above, but faster?
+ //	Color32 c;
+@@ -76,10 +76,10 @@ uint BlockDXT1::evaluatePalette(Color32 
+ //	c.u |= (c.u >> 6) & 0x000300;
+ //	color_array[0].u = c.u;
+ 	
+-	color_array[1].r = (col1.r << 3) | (col1.r >> 2);
+-	color_array[1].g = (col1.g << 2) | (col1.g >> 4);
+-	color_array[1].b = (col1.b << 3) | (col1.b >> 2);
+-	color_array[1].a = 0xFF;
++	color_array[1].bgrau.bgra.r = (col1.bg16.rgb.r << 3) | (col1.bg16.rgb.r >> 2);
++	color_array[1].bgrau.bgra.g = (col1.bg16.rgb.g << 2) | (col1.bg16.rgb.g >> 4);
++	color_array[1].bgrau.bgra.b = (col1.bg16.rgb.b << 3) | (col1.bg16.rgb.b >> 2);
++	color_array[1].bgrau.bgra.a = 0xFF;
+ 	
+ 	// @@ Same as above, but faster?
+ //	c.u = ((col1.u << 3) & 0xf8) | ((col1.u << 5) & 0xfc00) | ((col1.u << 8) & 0xf80000);
+@@ -87,32 +87,32 @@ uint BlockDXT1::evaluatePalette(Color32 
+ //	c.u |= (c.u >> 6) & 0x000300;
+ //	color_array[1].u = c.u;
+ 	
+-	if( col0.u > col1.u ) {
++	if( col0.bg16.u > col1.bg16.u ) {
+ 		// Four-color block: derive the other two colors.
+-		color_array[2].r = (2 * color_array[0].r + color_array[1].r) / 3;
+-		color_array[2].g = (2 * color_array[0].g + color_array[1].g) / 3;
+-		color_array[2].b = (2 * color_array[0].b + color_array[1].b) / 3;
+-		color_array[2].a = 0xFF;
++		color_array[2].bgrau.bgra.r = (2 * color_array[0].bgrau.bgra.r + color_array[1].bgrau.bgra.r) / 3;
++		color_array[2].bgrau.bgra.g = (2 * color_array[0].bgrau.bgra.g + color_array[1].bgrau.bgra.g) / 3;
++		color_array[2].bgrau.bgra.b = (2 * color_array[0].bgrau.bgra.b + color_array[1].bgrau.bgra.b) / 3;
++		color_array[2].bgrau.bgra.a = 0xFF;
+ 		
+-		color_array[3].r = (2 * color_array[1].r + color_array[0].r) / 3;
+-		color_array[3].g = (2 * color_array[1].g + color_array[0].g) / 3;
+-		color_array[3].b = (2 * color_array[1].b + color_array[0].b) / 3;
+-		color_array[3].a = 0xFF;
++		color_array[3].bgrau.bgra.r = (2 * color_array[1].bgrau.bgra.r + color_array[0].bgrau.bgra.r) / 3;
++		color_array[3].bgrau.bgra.g = (2 * color_array[1].bgrau.bgra.g + color_array[0].bgrau.bgra.g) / 3;
++		color_array[3].bgrau.bgra.b = (2 * color_array[1].bgrau.bgra.b + color_array[0].bgrau.bgra.b) / 3;
++		color_array[3].bgrau.bgra.a = 0xFF;
+ 		
+ 		return 4;
+ 	}
+ 	else {
+ 		// Three-color block: derive the other color.
+-		color_array[2].r = (color_array[0].r + color_array[1].r) / 2;
+-		color_array[2].g = (color_array[0].g + color_array[1].g) / 2;
+-		color_array[2].b = (color_array[0].b + color_array[1].b) / 2;
+-		color_array[2].a = 0xFF;
++		color_array[2].bgrau.bgra.r = (color_array[0].bgrau.bgra.r + color_array[1].bgrau.bgra.r) / 2;
++		color_array[2].bgrau.bgra.g = (color_array[0].bgrau.bgra.g + color_array[1].bgrau.bgra.g) / 2;
++		color_array[2].bgrau.bgra.b = (color_array[0].bgrau.bgra.b + color_array[1].bgrau.bgra.b) / 2;
++		color_array[2].bgrau.bgra.a = 0xFF;
+ 		
+ 		// Set all components to 0 to match DXT specs.
+-		color_array[3].r = 0x00; // color_array[2].r;
+-		color_array[3].g = 0x00; // color_array[2].g;
+-		color_array[3].b = 0x00; // color_array[2].b;
+-		color_array[3].a = 0x00;
++		color_array[3].bgrau.bgra.r = 0x00; // color_array[2].r;
++		color_array[3].bgrau.bgra.g = 0x00; // color_array[2].g;
++		color_array[3].bgrau.bgra.b = 0x00; // color_array[2].b;
++		color_array[3].bgrau.bgra.a = 0x00;
+ 		
+ 		return 3;
+ 	}
+@@ -121,52 +121,53 @@ uint BlockDXT1::evaluatePalette(Color32 
+ // Evaluate palette assuming 3 color block.
+ void BlockDXT1::evaluatePalette3(Color32 color_array[4]) const
+ {
+-	color_array[0].b = (col0.b << 3) | (col0.b >> 2);
+-	color_array[0].g = (col0.g << 2) | (col0.g >> 4);
+-	color_array[0].r = (col0.r << 3) | (col0.r >> 2);
+-	color_array[0].a = 0xFF;
+-	
+-	color_array[1].r = (col1.r << 3) | (col1.r >> 2);
+-	color_array[1].g = (col1.g << 2) | (col1.g >> 4);
+-	color_array[1].b = (col1.b << 3) | (col1.b >> 2);
+-	color_array[1].a = 0xFF;
++	
++	color_array[0].bgrau.bgra.b = (col0.bg16.rgb.b << 3) | (col0.bg16.rgb.b >> 2);
++	color_array[0].bgrau.bgra.g = (col0.bg16.rgb.g << 2) | (col0.bg16.rgb.g >> 4);
++	color_array[0].bgrau.bgra.r = (col0.bg16.rgb.r << 3) | (col0.bg16.rgb.r >> 2);
++	color_array[0].bgrau.bgra.a = 0xFF;
++
++	color_array[1].bgrau.bgra.r = (col1.bg16.rgb.r << 3) | (col1.bg16.rgb.r >> 2);
++	color_array[1].bgrau.bgra.g = (col1.bg16.rgb.g << 2) | (col1.bg16.rgb.g >> 4);
++	color_array[1].bgrau.bgra.b = (col1.bg16.rgb.b << 3) | (col1.bg16.rgb.b >> 2);
++	color_array[1].bgrau.bgra.a = 0xFF;
+ 	
+ 	// Three-color block: derive the other color.
+-	color_array[2].r = (color_array[0].r + color_array[1].r) / 2;
+-	color_array[2].g = (color_array[0].g + color_array[1].g) / 2;
+-	color_array[2].b = (color_array[0].b + color_array[1].b) / 2;
+-	color_array[2].a = 0xFF;
++	color_array[2].bgrau.bgra.r = (color_array[0].bgrau.bgra.r + color_array[1].bgrau.bgra.r) / 2;
++	color_array[2].bgrau.bgra.g = (color_array[0].bgrau.bgra.g + color_array[1].bgrau.bgra.g) / 2;
++	color_array[2].bgrau.bgra.b = (color_array[0].bgrau.bgra.b + color_array[1].bgrau.bgra.b) / 2;
++	color_array[2].bgrau.bgra.a = 0xFF;
+ 		
+ 	// Set all components to 0 to match DXT specs.
+-	color_array[3].r = 0x00; // color_array[2].r;
+-	color_array[3].g = 0x00; // color_array[2].g;
+-	color_array[3].b = 0x00; // color_array[2].b;
+-	color_array[3].a = 0x00;
++	color_array[3].bgrau.bgra.r = 0x00; // color_array[2].r;
++	color_array[3].bgrau.bgra.g = 0x00; // color_array[2].g;
++	color_array[3].bgrau.bgra.b = 0x00; // color_array[2].b;
++	color_array[3].bgrau.bgra.a = 0x00;
+ }
+ 
+ // Evaluate palette assuming 4 color block.
+ void BlockDXT1::evaluatePalette4(Color32 color_array[4]) const
+ {
+-	color_array[0].b = (col0.b << 3) | (col0.b >> 2);
+-	color_array[0].g = (col0.g << 2) | (col0.g >> 4);
+-	color_array[0].r = (col0.r << 3) | (col0.r >> 2);
+-	color_array[0].a = 0xFF;
+-	
+-	color_array[1].r = (col1.r << 3) | (col1.r >> 2);
+-	color_array[1].g = (col1.g << 2) | (col1.g >> 4);
+-	color_array[1].b = (col1.b << 3) | (col1.b >> 2);
+-	color_array[1].a = 0xFF;
++	color_array[0].bgrau.bgra.b = (col0.bg16.rgb.b << 3) | (col0.bg16.rgb.b >> 2);
++	color_array[0].bgrau.bgra.g = (col0.bg16.rgb.g << 2) | (col0.bg16.rgb.g >> 4);
++	color_array[0].bgrau.bgra.r = (col0.bg16.rgb.r << 3) | (col0.bg16.rgb.r >> 2);
++	color_array[0].bgrau.bgra.a = 0xFF;
++
++	color_array[1].bgrau.bgra.r = (col1.bg16.rgb.r << 3) | (col1.bg16.rgb.r >> 2);
++	color_array[1].bgrau.bgra.g = (col1.bg16.rgb.g << 2) | (col1.bg16.rgb.g >> 4);
++	color_array[1].bgrau.bgra.b = (col1.bg16.rgb.b << 3) | (col1.bg16.rgb.b >> 2);
++	color_array[1].bgrau.bgra.a = 0xFF;
+ 	
+ 	// Four-color block: derive the other two colors.
+-	color_array[2].r = (2 * color_array[0].r + color_array[1].r) / 3;
+-	color_array[2].g = (2 * color_array[0].g + color_array[1].g) / 3;
+-	color_array[2].b = (2 * color_array[0].b + color_array[1].b) / 3;
+-	color_array[2].a = 0xFF;
++	color_array[2].bgrau.bgra.r = (2 * color_array[0].bgrau.bgra.r + color_array[1].bgrau.bgra.r) / 3;
++	color_array[2].bgrau.bgra.g = (2 * color_array[0].bgrau.bgra.g + color_array[1].bgrau.bgra.g) / 3;
++	color_array[2].bgrau.bgra.b = (2 * color_array[0].bgrau.bgra.b + color_array[1].bgrau.bgra.b) / 3;
++	color_array[2].bgrau.bgra.a = 0xFF;
+ 		
+-	color_array[3].r = (2 * color_array[1].r + color_array[0].r) / 3;
+-	color_array[3].g = (2 * color_array[1].g + color_array[0].g) / 3;
+-	color_array[3].b = (2 * color_array[1].b + color_array[0].b) / 3;
+-	color_array[3].a = 0xFF;
++	color_array[3].bgrau.bgra.r = (2 * color_array[1].bgrau.bgra.r + color_array[0].bgrau.bgra.r) / 3;
++	color_array[3].bgrau.bgra.g = (2 * color_array[1].bgrau.bgra.g + color_array[0].bgrau.bgra.g) / 3;
++	color_array[3].bgrau.bgra.b = (2 * color_array[1].bgrau.bgra.b + color_array[0].bgrau.bgra.b) / 3;
++	color_array[3].bgrau.bgra.a = 0xFF;
+ }
+ 
+ void BlockDXT1::decodeBlock(ColorBlock * block) const
+@@ -222,35 +223,35 @@ void BlockDXT3::decodeBlock(ColorBlock *
+ 
+ void AlphaBlockDXT3::decodeBlock(ColorBlock * block) const
+ {
+-	block->color(0x0).a = (alpha0 << 4) | alpha0;
+-	block->color(0x1).a = (alpha1 << 4) | alpha1;
+-	block->color(0x2).a = (alpha2 << 4) | alpha2;
+-	block->color(0x3).a = (alpha3 << 4) | alpha3;
+-	block->color(0x4).a = (alpha4 << 4) | alpha4;
+-	block->color(0x5).a = (alpha5 << 4) | alpha5;
+-	block->color(0x6).a = (alpha6 << 4) | alpha6;
+-	block->color(0x7).a = (alpha7 << 4) | alpha7;
+-	block->color(0x8).a = (alpha8 << 4) | alpha8;
+-	block->color(0x9).a = (alpha9 << 4) | alpha9;
+-	block->color(0xA).a = (alphaA << 4) | alphaA;
+-	block->color(0xB).a = (alphaB << 4) | alphaB;
+-	block->color(0xC).a = (alphaC << 4) | alphaC;
+-	block->color(0xD).a = (alphaD << 4) | alphaD;
+-	block->color(0xE).a = (alphaE << 4) | alphaE;
+-	block->color(0xF).a = (alphaF << 4) | alphaF;
++	block->color(0x0).bgrau.bgra.a = (alphrow.alph.alpha0 << 4) | alphrow.alph.alpha0;
++	block->color(0x1).bgrau.bgra.a = (alphrow.alph.alpha1 << 4) | alphrow.alph.alpha1;
++	block->color(0x2).bgrau.bgra.a = (alphrow.alph.alpha2 << 4) | alphrow.alph.alpha2;
++	block->color(0x3).bgrau.bgra.a = (alphrow.alph.alpha3 << 4) | alphrow.alph.alpha3;
++	block->color(0x4).bgrau.bgra.a = (alphrow.alph.alpha4 << 4) | alphrow.alph.alpha4;
++	block->color(0x5).bgrau.bgra.a = (alphrow.alph.alpha5 << 4) | alphrow.alph.alpha5;
++	block->color(0x6).bgrau.bgra.a = (alphrow.alph.alpha6 << 4) | alphrow.alph.alpha6;
++	block->color(0x7).bgrau.bgra.a = (alphrow.alph.alpha7 << 4) | alphrow.alph.alpha7;
++	block->color(0x8).bgrau.bgra.a = (alphrow.alph.alpha8 << 4) | alphrow.alph.alpha8;
++	block->color(0x9).bgrau.bgra.a = (alphrow.alph.alpha9 << 4) | alphrow.alph.alpha9;
++	block->color(0xA).bgrau.bgra.a = (alphrow.alph.alphaA << 4) | alphrow.alph.alphaA;
++	block->color(0xB).bgrau.bgra.a = (alphrow.alph.alphaB << 4) | alphrow.alph.alphaB;
++	block->color(0xC).bgrau.bgra.a = (alphrow.alph.alphaC << 4) | alphrow.alph.alphaC;
++	block->color(0xD).bgrau.bgra.a = (alphrow.alph.alphaD << 4) | alphrow.alph.alphaD;
++	block->color(0xE).bgrau.bgra.a = (alphrow.alph.alphaE << 4) | alphrow.alph.alphaE;
++	block->color(0xF).bgrau.bgra.a = (alphrow.alph.alphaF << 4) | alphrow.alph.alphaF;
+ }
+ 
+ /// Flip DXT3 alpha block vertically.
+ void AlphaBlockDXT3::flip4()
+ {
+-	swap(row[0], row[3]);
+-	swap(row[1], row[2]);
++	swap(alphrow.row[0], alphrow.row[3]);
++	swap(alphrow.row[1], alphrow.row[2]);
+ }
+ 
+ /// Flip half DXT3 alpha block vertically.
+ void AlphaBlockDXT3::flip2()
+ {
+-	swap(row[0], row[1]);
++	swap(alphrow.row[0], alphrow.row[1]);
+ }
+ 
+ /// Flip DXT3 block vertically.
+@@ -352,7 +353,7 @@ void AlphaBlockDXT5::decodeBlock(ColorBl
+ 	indices(index_array);
+ 	
+ 	for(uint i = 0; i < 16; i++) {
+-		block->color(i).a = alpha_array[index_array[i]];
++		block->color(i).bgrau.bgra.a = alpha_array[index_array[i]];
+ 	}
+ }
+ 
+@@ -418,8 +419,8 @@ void BlockATI1::decodeBlock(ColorBlock *
+ 	
+ 	for(uint i = 0; i < 16; i++) {
+ 		Color32 & c = block->color(i);
+-		c.b = c.g = c.r = alpha_array[index_array[i]];
+-		c.a = 255;
++		c.bgrau.bgra.b = c.bgrau.bgra.g = c.bgrau.bgra.r = alpha_array[index_array[i]];
++		c.bgrau.bgra.a = 255;
+ 	}
+ }
+ 
+@@ -447,7 +448,7 @@ void BlockATI2::decodeBlock(ColorBlock *
+ 	
+ 	for(uint i = 0; i < 16; i++) {
+ 		Color32 & c = block->color(i);
+-		c.r = alpha_array[index_array[i]];
++		c.bgrau.bgra.r = alpha_array[index_array[i]];
+ 	}
+ 
+ 	y.evaluatePalette(alpha_array);
+@@ -455,9 +456,9 @@ void BlockATI2::decodeBlock(ColorBlock *
+ 	
+ 	for(uint i = 0; i < 16; i++) {
+ 		Color32 & c = block->color(i);
+-		c.g = alpha_array[index_array[i]];
+-		c.b = 0;
+-		c.a = 255;
++		c.bgrau.bgra.g = alpha_array[index_array[i]];
++		c.bgrau.bgra.b = 0;
++		c.bgrau.bgra.a = 255;
+ 	}
+ }
+ 
+@@ -479,25 +480,25 @@ void BlockATI2::flip2()
+ void BlockCTX1::evaluatePalette(Color32 color_array[4]) const
+ {
+ 	// Does bit expansion before interpolation.
+-	color_array[0].b = 0x00;
+-	color_array[0].g = col0[1];
+-	color_array[0].r = col0[0];
+-	color_array[0].a = 0xFF;
+-	
+-	color_array[1].r = 0x00;
+-	color_array[1].g = col0[1];
+-	color_array[1].b = col1[0];
+-	color_array[1].a = 0xFF;
+-	
+-	color_array[2].r = 0x00;
+-	color_array[2].g = (2 * color_array[0].g + color_array[1].g) / 3;
+-	color_array[2].b = (2 * color_array[0].b + color_array[1].b) / 3;
+-	color_array[2].a = 0xFF;
++	color_array[0].bgrau.bgra.b = 0x00;
++	color_array[0].bgrau.bgra.g = col0[1];
++	color_array[0].bgrau.bgra.r = col0[0];
++	color_array[0].bgrau.bgra.a = 0xFF;
++
++	color_array[1].bgrau.bgra.r = 0x00;
++	color_array[1].bgrau.bgra.g = col0[1];
++	color_array[1].bgrau.bgra.b = col1[0];
++	color_array[1].bgrau.bgra.a = 0xFF;
++	
++	color_array[2].bgrau.bgra.r = 0x00;
++	color_array[2].bgrau.bgra.g = (2 * color_array[0].bgrau.bgra.g + color_array[1].bgrau.bgra.g) / 3;
++	color_array[2].bgrau.bgra.b = (2 * color_array[0].bgrau.bgra.b + color_array[1].bgrau.bgra.b) / 3;
++	color_array[2].bgrau.bgra.a = 0xFF;
+ 		
+-	color_array[3].r = 0x00;
+-	color_array[3].g = (2 * color_array[1].g + color_array[0].g) / 3;
+-	color_array[3].b = (2 * color_array[1].b + color_array[0].b) / 3;
+-	color_array[3].a = 0xFF;
++	color_array[3].bgrau.bgra.r = 0x00;
++	color_array[3].bgrau.bgra.g = (2 * color_array[1].bgrau.bgra.g + color_array[0].bgrau.bgra.g) / 3;
++	color_array[3].bgrau.bgra.b = (2 * color_array[1].bgrau.bgra.b + color_array[0].bgrau.bgra.b) / 3;
++	color_array[3].bgrau.bgra.a = 0xFF;
+ }
+ 
+ void BlockCTX1::decodeBlock(ColorBlock * block) const
+@@ -539,14 +540,14 @@ inline void BlockCTX1::flip2()
+ 
+ void mem_read(Stream & mem, BlockDXT1 & block)
+ {
+-	mem_read(mem, block.col0.u);
+-	mem_read(mem, block.col1.u);
++	mem_read(mem, block.col0.bg16.u);
++	mem_read(mem, block.col1.bg16.u);
+ 	mem_read(mem, block.indices);
+ }
+ 
+ void mem_read(Stream & mem, AlphaBlockDXT3 & block)
+ {
+-	for (unsigned int i = 0; i < 4; i++) mem_read(mem, block.row[i]);
++	for (unsigned int i = 0; i < 4; i++) mem_read(mem, block.alphrow.row[i]);
+ }
+ 
+ void mem_read(Stream & mem, BlockDXT3 & block)
+--- blender-2.48a/source/blender/imbuf/intern/dds/BlockDXT.h	2008-10-23 00:36:49.000000000 +0800
++++ blender-2.48a.mod/source/blender/imbuf/intern/dds/BlockDXT.h	2008-11-17 15:31:43.209082564 +0800
+@@ -88,7 +88,7 @@ struct BlockDXT1
+ /// Return true if the block uses four color mode, false otherwise.
+ inline bool BlockDXT1::isFourColorMode() const
+ {
+-	return col0.u > col1.u;
++	return col0.bg16.u > col1.bg16.u;
+ }
+ 
+ 
+@@ -113,9 +113,9 @@ struct AlphaBlockDXT3
+ 			uint alphaD : 4;
+ 			uint alphaE : 4;
+ 			uint alphaF : 4;
+-		};
++		} alph;
+ 		uint16 row[4];
+-	};
++	}alphrow;
+ 	
+ 	void decodeBlock(ColorBlock * block) const;
+ 	
+--- blender-2.48a/source/blender/imbuf/intern/dds/Color.h	2008-10-23 00:36:49.000000000 +0800
++++ blender-2.48a.mod/source/blender/imbuf/intern/dds/Color.h	2008-11-17 15:34:55.686388248 +0800
+@@ -38,41 +38,41 @@
+ class Color32
+ {
+ public:
++	union {
++		struct {
++			unsigned char b, g, r, a;
++		} bgra;
++		unsigned int u;
++	} bgrau;
+ 	Color32() { }
+-	Color32(const Color32 & c) : u(c.u) { }
++	Color32(const Color32 & c)  { bgrau.u = c.bgrau.u; }
+ 	Color32(unsigned char R, unsigned char G, unsigned char B) { setRGBA(R, G, B, 0xFF); }
+ 	Color32(unsigned char R, unsigned char G, unsigned char B, unsigned char A) { setRGBA( R, G, B, A); }
+ 	//Color32(unsigned char c[4]) { setRGBA(c[0], c[1], c[2], c[3]); }
+ 	//Color32(float R, float G, float B) { setRGBA(uint(R*255), uint(G*255), uint(B*255), 0xFF); }
+ 	//Color32(float R, float G, float B, float A) { setRGBA(uint(R*255), uint(G*255), uint(B*255), uint(A*255)); }
+-	Color32(unsigned int U) : u(U) { }
++	Color32(unsigned int U)  { bgrau.u = U ; }
+ 
+ 	void setRGBA(unsigned char R, unsigned char G, unsigned char B, unsigned char A)
+ 	{
+-		r = R;
+-		g = G;
+-		b = B;
+-		a = A;
++		bgrau.bgra.r = R;
++		bgrau.bgra.g = G;
++		bgrau.bgra.b = B;
++		bgrau.bgra.a = A;
+ 	}
+ 
+ 	void setBGRA(unsigned char B, unsigned char G, unsigned char R, unsigned char A = 0xFF)
+ 	{
+-		r = R;
+-		g = G;
+-		b = B;
+-		a = A;
++		 bgrau.bgra.r = R;
++		 bgrau.bgra.g = G;
++		 bgrau.bgra.b = B;
++		 bgrau.bgra.a = A;
+ 	}
+ 
+ 	operator unsigned int () const {
+-		return u;
++		return bgrau.u;
+ 	}
+ 	
+-	union {
+-		struct {
+-			unsigned char b, g, r, a;
+-		};
+-		unsigned int u;
+-	};
+ };
+ 
+ /// 16 bit 565 BGR color.
+@@ -80,17 +80,17 @@ class Color16
+ {
+ public:
+ 	Color16() { }
+-	Color16(const Color16 & c) : u(c.u) { }
+-	explicit Color16(unsigned short U) : u(U) { }
++	Color16(const Color16 & c) {bg16.u = c.bg16.u; }
++	explicit Color16(unsigned short U)  { bg16.u = U; }
+ 	
+ 	union {
+ 		struct {
+ 			unsigned short b : 5;
+ 			unsigned short g : 6;
+ 			unsigned short r : 5;
+-		};
++		} rgb;
+ 		unsigned short u;
+-	};
++	} bg16;
+ };
+ 
+ #endif // _DDS_COLOR_H
+--- blender-2.48a/source/blender/imbuf/intern/dds/ColorBlock.cpp	2008-10-23 00:36:49.000000000 +0800
++++ blender-2.48a.mod/source/blender/imbuf/intern/dds/ColorBlock.cpp	2008-11-17 16:52:56.233641643 +0800
+@@ -38,13 +38,13 @@
+ 	// Get approximate luminance.
+ 	inline static uint colorLuminance(Color32 c)
+ 	{
+-		return c.r + c.g + c.b;
++		return c.bgrau.bgra.r + c.bgrau.bgra.g + c.bgrau.bgra.b;
+ 	}
+ 	
+ 	// Get the euclidean distance between the given colors.
+ 	inline static uint colorDistance(Color32 c0, Color32 c1)
+ 	{
+-		return (c0.r - c1.r) * (c0.r - c1.r) + (c0.g - c1.g) * (c0.g - c1.g) + (c0.b - c1.b) * (c0.b - c1.b);
++		return (c0.bgrau.bgra.r - c1.bgrau.bgra.r) * (c0.bgrau.bgra.r - c1.bgrau.bgra.r) + (c0.bgrau.bgra.g - c1.bgrau.bgra.g) * (c0.bgrau.bgra.g - c1.bgrau.bgra.g) + (c0.bgrau.bgra.b - c1.bgrau.bgra.b) * (c0.bgrau.bgra.b - c1.bgrau.bgra.b);
+ 	}
+ 	
+ 
+@@ -108,7 +108,7 @@ void ColorBlock::swizzleDXT5n()
+ 	for(int i = 0; i < 16; i++)
+ 	{
+ 		Color32 c = m_color[i];
+-		m_color[i] = Color32(0xFF, c.g, 0, c.r);
++		m_color[i] = Color32(0xFF, c.bgrau.bgra.g, 0, c.bgrau.bgra.r);
+ 	}
+ }
+ 
+@@ -116,7 +116,7 @@ void ColorBlock::splatX()
+ {
+ 	for(int i = 0; i < 16; i++)
+ 	{
+-		uint8 x = m_color[i].r;
++		uint8 x = m_color[i].bgrau.bgra.r;
+ 		m_color[i] = Color32(x, x, x, x);
+ 	}
+ }
+@@ -125,7 +125,7 @@ void ColorBlock::splatY()
+ {
+ 	for(int i = 0; i < 16; i++)
+ 	{
+-		uint8 y = m_color[i].g;
++		uint8 y = m_color[i].bgrau.bgra.g;
+ 		m_color[i] = Color32(y, y, y, y);
+ 	}
+ }
+@@ -134,11 +134,11 @@ void ColorBlock::splatY()
+ bool ColorBlock::isSingleColor() const
+ {
+ 	Color32 mask(0xFF, 0xFF, 0xFF, 0x00);
+-	uint u = m_color[0].u & mask.u;
++	uint u = m_color[0].bgrau.u & mask.bgrau.u;
+ 	
+ 	for(int i = 1; i < 16; i++)
+ 	{
+-		if (u != (m_color[i].u & mask.u))
++		if (u != (m_color[i].bgrau.u & mask.bgrau.u))
+ 		{
+ 			return false;
+ 		}
+@@ -154,15 +154,15 @@ bool ColorBlock::isSingleColorNoAlpha() 
+ 	int i;
+ 	for(i = 0; i < 16; i++)
+ 	{
+-		if (m_color[i].a != 0) c = m_color[i];
++		if (m_color[i].bgrau.bgra.a != 0) c = m_color[i];
+ 	}
+ 
+ 	Color32 mask(0xFF, 0xFF, 0xFF, 0x00);
+-	uint u = c.u & mask.u;
++	uint u = c.bgrau.u & mask.bgrau.u;
+ 
+ 	for(; i < 16; i++)
+ 	{
+-		if (u != (m_color[i].u & mask.u))
++		if (u != (m_color[i].bgrau.u & mask.bgrau.u))
+ 		{
+ 			return false;
+ 		}
+@@ -201,10 +201,10 @@ Color32 ColorBlock::averageColor() const
+ 	r = g = b = a = 0;
+ 
+ 	for(uint i = 0; i < 16; i++) {
+-		r += m_color[i].r;
+-		g += m_color[i].g;
+-		b += m_color[i].b;
+-		a += m_color[i].a;
++		r += m_color[i].bgrau.bgra.r;
++		g += m_color[i].bgrau.bgra.g;
++		b += m_color[i].bgrau.bgra.b;
++		a += m_color[i].bgrau.bgra.a;
+ 	}
+ 	
+ 	return Color32(uint8(r / 16), uint8(g / 16), uint8(b / 16), uint8(a / 16));
+@@ -215,7 +215,7 @@ bool ColorBlock::hasAlpha() const
+ {
+ 	for (uint i = 0; i < 16; i++)
+ 	{
+-		if (m_color[i].a != 255) return true;
++		if (m_color[i].bgrau.bgra.a != 255) return true;
+ 	}
+ 	return false;
+ }
+@@ -276,27 +276,27 @@ void ColorBlock::boundsRange(Color32 * s
+ 
+ 	for(uint i = 0; i < 16; i++)
+ 	{
+-		if (m_color[i].r < minColor.r) { minColor.r = m_color[i].r; }
+-		if (m_color[i].g < minColor.g) { minColor.g = m_color[i].g; }
+-		if (m_color[i].b < minColor.b) { minColor.b = m_color[i].b; }
+-		if (m_color[i].r > maxColor.r) { maxColor.r = m_color[i].r; }
+-		if (m_color[i].g > maxColor.g) { maxColor.g = m_color[i].g; }
+-		if (m_color[i].b > maxColor.b) { maxColor.b = m_color[i].b; }
++		if (m_color[i].bgrau.bgra.r < minColor.bgrau.bgra.r) { minColor.bgrau.bgra.r = m_color[i].bgrau.bgra.r; }
++		if (m_color[i].bgrau.bgra.g < minColor.bgrau.bgra.g) { minColor.bgrau.bgra.g = m_color[i].bgrau.bgra.g; }
++		if (m_color[i].bgrau.bgra.b < minColor.bgrau.bgra.b) { minColor.bgrau.bgra.b = m_color[i].bgrau.bgra.b; }
++		if (m_color[i].bgrau.bgra.r > maxColor.bgrau.bgra.r) { maxColor.bgrau.bgra.r = m_color[i].bgrau.bgra.r; }
++		if (m_color[i].bgrau.bgra.g > maxColor.bgrau.bgra.g) { maxColor.bgrau.bgra.g = m_color[i].bgrau.bgra.g; }
++		if (m_color[i].bgrau.bgra.b > maxColor.bgrau.bgra.b) { maxColor.bgrau.bgra.b = m_color[i].bgrau.bgra.b; }
+ 	}
+ 
+ 	// Offset range by 1/16 of the extents
+ 	Color32 inset;
+-	inset.r = (maxColor.r - minColor.r) >> 4;
+-	inset.g = (maxColor.g - minColor.g) >> 4;
+-	inset.b = (maxColor.b - minColor.b) >> 4;
+-
+-	minColor.r = (minColor.r + inset.r <= 255) ? minColor.r + inset.r : 255;
+-	minColor.g = (minColor.g + inset.g <= 255) ? minColor.g + inset.g : 255;
+-	minColor.b = (minColor.b + inset.b <= 255) ? minColor.b + inset.b : 255;
+-
+-	maxColor.r = (maxColor.r >= inset.r) ? maxColor.r - inset.r : 0;
+-	maxColor.g = (maxColor.g >= inset.g) ? maxColor.g - inset.g : 0;
+-	maxColor.b = (maxColor.b >= inset.b) ? maxColor.b - inset.b : 0;
++	inset.bgrau.bgra.r = (maxColor.bgrau.bgra.r - minColor.bgrau.bgra.r) >> 4;
++	inset.bgrau.bgra.g = (maxColor.bgrau.bgra.g - minColor.bgrau.bgra.g) >> 4;
++	inset.bgrau.bgra.b = (maxColor.bgrau.bgra.b - minColor.bgrau.bgra.b) >> 4;
++
++	minColor.bgrau.bgra.r = (minColor.bgrau.bgra.r + inset.bgrau.bgra.r <= 255) ? minColor.bgrau.bgra.r + inset.bgrau.bgra.r : 255;
++	minColor.bgrau.bgra.g = (minColor.bgrau.bgra.g + inset.bgrau.bgra.g <= 255) ? minColor.bgrau.bgra.g + inset.bgrau.bgra.g : 255;
++	minColor.bgrau.bgra.b = (minColor.bgrau.bgra.b + inset.bgrau.bgra.b <= 255) ? minColor.bgrau.bgra.b + inset.bgrau.bgra.b : 255;
++
++	maxColor.bgrau.bgra.r = (maxColor.bgrau.bgra.r >= inset.bgrau.bgra.r) ? maxColor.bgrau.bgra.r - inset.bgrau.bgra.r : 0;
++	maxColor.bgrau.bgra.g = (maxColor.bgrau.bgra.g >= inset.bgrau.bgra.g) ? maxColor.bgrau.bgra.g - inset.bgrau.bgra.g : 0;
++	maxColor.bgrau.bgra.b = (maxColor.bgrau.bgra.b >= inset.bgrau.bgra.b) ? maxColor.bgrau.bgra.b - inset.bgrau.bgra.b : 0;
+ 
+ 	*start = minColor;
+ 	*end = maxColor;
+@@ -310,32 +310,32 @@ void ColorBlock::boundsRangeAlpha(Color3
+ 
+ 	for(uint i = 0; i < 16; i++)
+ 	{
+-		if (m_color[i].r < minColor.r) { minColor.r = m_color[i].r; }
+-		if (m_color[i].g < minColor.g) { minColor.g = m_color[i].g; }
+-		if (m_color[i].b < minColor.b) { minColor.b = m_color[i].b; }
+-		if (m_color[i].a < minColor.a) { minColor.a = m_color[i].a; }
+-		if (m_color[i].r > maxColor.r) { maxColor.r = m_color[i].r; }
+-		if (m_color[i].g > maxColor.g) { maxColor.g = m_color[i].g; }
+-		if (m_color[i].b > maxColor.b) { maxColor.b = m_color[i].b; }
+-		if (m_color[i].a > maxColor.a) { maxColor.a = m_color[i].a; }
++		if (m_color[i].bgrau.bgra.r < minColor.bgrau.bgra.r) { minColor.bgrau.bgra.r = m_color[i].bgrau.bgra.r; }
++		if (m_color[i].bgrau.bgra.g < minColor.bgrau.bgra.g) { minColor.bgrau.bgra.g = m_color[i].bgrau.bgra.g; }
++		if (m_color[i].bgrau.bgra.b < minColor.bgrau.bgra.b) { minColor.bgrau.bgra.b = m_color[i].bgrau.bgra.b; }
++		if (m_color[i].bgrau.bgra.a < minColor.bgrau.bgra.a) { minColor.bgrau.bgra.a = m_color[i].bgrau.bgra.a; }
++		if (m_color[i].bgrau.bgra.r > maxColor.bgrau.bgra.r) { maxColor.bgrau.bgra.r = m_color[i].bgrau.bgra.r; }
++		if (m_color[i].bgrau.bgra.g > maxColor.bgrau.bgra.g) { maxColor.bgrau.bgra.g = m_color[i].bgrau.bgra.g; }
++		if (m_color[i].bgrau.bgra.b > maxColor.bgrau.bgra.b) { maxColor.bgrau.bgra.b = m_color[i].bgrau.bgra.b; }
++		if (m_color[i].bgrau.bgra.a > maxColor.bgrau.bgra.a) { maxColor.bgrau.bgra.a = m_color[i].bgrau.bgra.a; }
+ 	}
+ 
+ 	// Offset range by 1/16 of the extents
+ 	Color32 inset;
+-	inset.r = (maxColor.r - minColor.r) >> 4;
+-	inset.g = (maxColor.g - minColor.g) >> 4;
+-	inset.b = (maxColor.b - minColor.b) >> 4;
+-	inset.a = (maxColor.a - minColor.a) >> 4;
+-
+-	minColor.r = (minColor.r + inset.r <= 255) ? minColor.r + inset.r : 255;
+-	minColor.g = (minColor.g + inset.g <= 255) ? minColor.g + inset.g : 255;
+-	minColor.b = (minColor.b + inset.b <= 255) ? minColor.b + inset.b : 255;
+-	minColor.a = (minColor.a + inset.a <= 255) ? minColor.a + inset.a : 255;
+-
+-	maxColor.r = (maxColor.r >= inset.r) ? maxColor.r - inset.r : 0;
+-	maxColor.g = (maxColor.g >= inset.g) ? maxColor.g - inset.g : 0;
+-	maxColor.b = (maxColor.b >= inset.b) ? maxColor.b - inset.b : 0;
+-	maxColor.a = (maxColor.a >= inset.a) ? maxColor.a - inset.a : 0;
++	inset.bgrau.bgra.r = (maxColor.bgrau.bgra.r - minColor.bgrau.bgra.r) >> 4;
++	inset.bgrau.bgra.g = (maxColor.bgrau.bgra.g - minColor.bgrau.bgra.g) >> 4;
++	inset.bgrau.bgra.b = (maxColor.bgrau.bgra.b - minColor.bgrau.bgra.b) >> 4;
++	inset.bgrau.bgra.a = (maxColor.bgrau.bgra.a - minColor.bgrau.bgra.a) >> 4;
++
++	minColor.bgrau.bgra.r = (minColor.bgrau.bgra.r + inset.bgrau.bgra.r <= 255) ? minColor.bgrau.bgra.r + inset.bgrau.bgra.r : 255;
++	minColor.bgrau.bgra.g = (minColor.bgrau.bgra.g + inset.bgrau.bgra.g <= 255) ? minColor.bgrau.bgra.g + inset.bgrau.bgra.g : 255;
++	minColor.bgrau.bgra.b = (minColor.bgrau.bgra.b + inset.bgrau.bgra.b <= 255) ? minColor.bgrau.bgra.b + inset.bgrau.bgra.b : 255;
++	minColor.bgrau.bgra.a = (minColor.bgrau.bgra.a + inset.bgrau.bgra.a <= 255) ? minColor.bgrau.bgra.a + inset.bgrau.bgra.a : 255;
++
++	maxColor.bgrau.bgra.r = (maxColor.bgrau.bgra.r >= inset.bgrau.bgra.r) ? maxColor.bgrau.bgra.r - inset.bgrau.bgra.r : 0;
++	maxColor.bgrau.bgra.g = (maxColor.bgrau.bgra.g >= inset.bgrau.bgra.g) ? maxColor.bgrau.bgra.g - inset.bgrau.bgra.g : 0;
++	maxColor.bgrau.bgra.b = (maxColor.bgrau.bgra.b >= inset.bgrau.bgra.b) ? maxColor.bgrau.bgra.b - inset.bgrau.bgra.b : 0;
++	maxColor.bgrau.bgra.a = (maxColor.bgrau.bgra.a >= inset.bgrau.bgra.a) ? maxColor.bgrau.bgra.a - inset.bgrau.bgra.a : 0;
+ 	
+ 	*start = minColor;
+ 	*end = maxColor;
+@@ -352,7 +352,7 @@ void ColorBlock::sortColorsByAbsoluteVal
+ 		for( uint b = a+1; b < 16; b++ ) {
+ 			Color16 cb(m_color[b]);
+ 			
+-			if( cb.u > cmax.u ) {
++			if( cb.bg16.u > cmax.bg16.u ) {
+ 				max = b;
+ 				cmax = cb;
+ 			}
+--- blender-2.48a/source/blender/imbuf/intern/dds/DirectDrawSurface.cpp	2008-10-23 00:36:49.000000000 +0800
++++ blender-2.48a.mod/source/blender/imbuf/intern/dds/DirectDrawSurface.cpp	2008-11-17 15:48:14.040411570 +0800
+@@ -921,10 +921,10 @@ void DirectDrawSurface::readLinearImage(
+ 			mem_read(stream, (unsigned char *)(&c), byteCount);
+ 
+ 			Color32 pixel(0, 0, 0, 0xFF);
+-			pixel.r = PixelFormat::convert(c >> rshift, rsize, 8);
+-			pixel.g = PixelFormat::convert(c >> gshift, gsize, 8);
+-			pixel.b = PixelFormat::convert(c >> bshift, bsize, 8);
+-			pixel.a = PixelFormat::convert(c >> ashift, asize, 8);
++			pixel.bgrau.bgra.r = PixelFormat::convert(c >> rshift, rsize, 8);
++			pixel.bgrau.bgra.g = PixelFormat::convert(c >> gshift, gsize, 8);
++			pixel.bgrau.bgra.b = PixelFormat::convert(c >> bshift, bsize, 8);
++			pixel.bgrau.bgra.a = PixelFormat::convert(c >> ashift, asize, 8);
+ 
+ 			img->pixel(x, y) = pixel;
+ 		}
+@@ -1015,9 +1015,9 @@ void DirectDrawSurface::readBlock(ColorB
+ 			for (int i = 0; i < 16; i++)
+ 			{
+ 				Color32 & c = rgba->color(i);
+-				uint tmp = c.r;
+-				c.r = c.a;
+-				c.a = tmp;
++				uint tmp = c.bgrau.bgra.r;
++				c.bgrau.bgra.r = c.bgrau.bgra.a;
++				c.bgrau.bgra.a = tmp;
+ 			}
+ 		}
+ 	}
+@@ -1042,7 +1042,7 @@ void DirectDrawSurface::readBlock(ColorB
+ 			for (int i = 0; i < 16; i++)
+ 			{
+ 				Color32 & c = rgba->color(i);
+-				c = buildNormal(c.r, c.g);
++				c = buildNormal(c.bgrau.bgra.r, c.bgrau.bgra.g);
+ 			}
+ 		}
+ 		else if (header.pf.fourcc == FOURCC_DXT5)
+@@ -1050,7 +1050,7 @@ void DirectDrawSurface::readBlock(ColorB
+ 			for (int i = 0; i < 16; i++)
+ 			{
+ 				Color32 & c = rgba->color(i);
+-				c = buildNormal(c.a, c.g);
++				c = buildNormal(c.bgrau.bgra.a, c.bgrau.bgra.g);
+ 			}
+ 		}
+ 	}
+--- blender-2.48a/source/blender/imbuf/intern/dds/Image.h	2008-10-23 00:36:49.000000000 +0800
++++ blender-2.48a.mod/source/blender/imbuf/intern/dds/Image.h	2008-11-17 15:48:48.610272569 +0800
+@@ -45,8 +45,8 @@ public:
+ 	enum Format 
+ 	{
+ 		Format_RGB,
+-		Format_ARGB,
+-	};
++		Format_ARGB
++	} ffff;
+ 	
+ 	Image();
+ 	~Image();
+--- blender-2.48a/source/blender/imbuf/intern/dds/dds_api.cpp	2008-10-23 00:36:49.000000000 +0800
++++ blender-2.48a.mod/source/blender/imbuf/intern/dds/dds_api.cpp	2008-11-17 15:49:47.271917474 +0800
+@@ -114,11 +114,11 @@ struct ImBuf *imb_load_dds(unsigned char
+ 
+ 		for (unsigned int i = 0; i < numpixels; i++) {
+ 			pixel = pixels[i];
+-			cp[0] = pixel.r; /* set R component of col */
+-			cp[1] = pixel.g; /* set G component of col */
+-			cp[2] = pixel.b; /* set B component of col */
++			cp[0] = pixel.bgrau.bgra.r; /* set R component of col */
++			cp[1] = pixel.bgrau.bgra.g; /* set G component of col */
++			cp[2] = pixel.bgrau.bgra.b; /* set B component of col */
+ 			if (bits_per_pixel == 32)
+-				cp[3] = pixel.a; /* set A component of col */
++				cp[3] = pixel.bgrau.bgra.a; /* set A component of col */
+ 			rect[i] = col;
+ 		}
+ 		IMB_flipy(ibuf);

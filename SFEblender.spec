@@ -7,17 +7,19 @@
 
 Name:           SFEblender
 Summary:        blender
-Version:        2.47
+Version:        2.48a
 Source:		http://download.blender.org/source/blender-%{version}.tar.gz
 Source1:	blender-01.sh
-Patch1:		blender-01.diff
-Patch2:		blender-install-02.diff
+Patch1:		blender-01-build.diff
+Patch2:		blender-02-install.diff
+Patch3:		blender-03-union.diff
 SUNW_BaseDir:   %{_basedir}
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %include	default-depend.inc
 #Requires:	%name-root
 Requires: 	SUNWlibsdl
 Requires: 	SUNWopenexr
+Requires: 	SUNWilmbase
 Requires: 	SUNWxorg-mesa
 Requires: 	SUNWfreetype2
 Requires: 	SUNWpng
@@ -50,6 +52,7 @@ Requires:        %{name}
 #cd blender-%{version}
 %patch1 -p0
 %patch2 -p0
+%patch3 -p0
 
 %build
 
@@ -112,11 +115,11 @@ rm -rf $RPM_BUILD_ROOT
 #mkdir -p $RPM_BUILD_ROOT%{_libdir}/pkgconfig
 cd blender-%{version}
 gmake release
-cd obj/blender-2.47.0-solaris-2.11-x86_64-py2.4
+cd obj/blender-2.48.1-solaris-2.11-x86_64-py2.4
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/blender
 #chown root:bin $RPM_BUILD_ROOT%{_datadir}/blender
 
-for f in blender.html BlenderQuickStart.pdf copyright.txt GPL-license.txt Python-license.txt release_247.txt ; do
+for f in blender.html BlenderQuickStart.pdf copyright.txt GPL-license.txt Python-license.txt release_248.txt ; do
    install -m 0644 $f $RPM_BUILD_ROOT%{_datadir}/blender
 done
 
@@ -161,6 +164,10 @@ rm -rf $RPM_BUILD_ROOT
 #%endif
 
 %changelog
+* Sun 18 Jan 2009 - Henry Zhang
+- Bump to 2.48a, and update the patch and blender-01.sh.
+* Thu 27 Nov 2008 - Henry Zhang
+- Add dependency SUNWilmbase
 * Sun 09 Nov 2008 - Gilles Dauphin
 - depend SUNWopenexr
 * Sept 16 2008 - Gilles Dauphin ( Gilles DOT Dauphin AT enst DOT fr)

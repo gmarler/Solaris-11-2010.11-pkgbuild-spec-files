@@ -1,0 +1,13 @@
+--- blender-2.48a/release/Makefile	2008-10-23 00:35:32.000000000 +0800
++++ blender-2.48a.mod/release/Makefile	2008-11-17 15:51:20.575967560 +0800
+@@ -190,8 +190,8 @@ pkg: install
+ 	@echo "----> Compressing distribution to $(BLENDNAME)$(EXT1)$(EXT2)"
+ 	@$(COMPRESS) $(COMPRESSFLAGS) $(NAN_OBJDIR)/$(VERSION)/$(BLENDNAME)$(EXT1)
+     endif
+-	@#echo "****> Clean up temporary distribution directory"
+-	@rm -fr $(DISTDIR)
++	#@#echo "****> Clean up temporary distribution directory"
++	#@rm -fr $(DISTDIR)
+ 	@echo "****> $(NAN_OBJDIR)/$(VERSION)/$(BLENDNAME)$(EXT1)$(EXT2) is ready"
+ 
+ version: FORCE

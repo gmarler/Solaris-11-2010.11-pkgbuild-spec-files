@@ -1,0 +1,274 @@
+--- blender-2.48a/extern/bullet2/src/LinearMath/btScalar.h	2008-10-23 00:38:18.000000000 +0800
++++ blender-2.48a.mod/extern/bullet2/src/LinearMath/btScalar.h	2008-11-17 14:14:11.925252209 +0800
+@@ -20,8 +20,8 @@ subject to the following restrictions:
+ #include <math.h>
+ #include <stdlib.h>//size_t for MSVC 6.0
+ 
+-#include <cstdlib>
+-#include <cfloat>
++//#include <cstdlib>
++//#include <cfloat>
+ #include <float.h>
+ 
+ #define BT_BULLET_VERSION 272
+@@ -226,11 +226,11 @@ SIMD_FORCE_INLINE btScalar btPow(btScala
+ 	
+ #endif
+ 
+-#define SIMD_2_PI         btScalar(6.283185307179586232)
+-#define SIMD_PI           (SIMD_2_PI * btScalar(0.5))
+-#define SIMD_HALF_PI      (SIMD_2_PI * btScalar(0.25))
+-#define SIMD_RADS_PER_DEG (SIMD_2_PI / btScalar(360.0))
+-#define SIMD_DEGS_PER_RAD  (btScalar(360.0) / SIMD_2_PI)
++#define SIMD_2_PI         (btScalar)(6.283185307179586232)
++#define SIMD_PI           (SIMD_2_PI * (btScalar)(0.5))
++#define SIMD_HALF_PI      (SIMD_2_PI * (btScalar)(0.25))
++#define SIMD_RADS_PER_DEG (SIMD_2_PI / (btScalar)(360.0))
++#define SIMD_DEGS_PER_RAD  ((btScalar)(360.0) / SIMD_2_PI)
+ 
+ #ifdef BT_USE_DOUBLE_PRECISION
+ #define SIMD_EPSILON      DBL_EPSILON
+@@ -256,6 +256,8 @@ SIMD_FORCE_INLINE btScalar btAtan2Fast(b
+ 	return (y < 0.0f) ? -angle : angle;
+ }
+ 
++#define bool int
++
+ SIMD_FORCE_INLINE bool      btFuzzyZero(btScalar x) { return btFabs(x) < SIMD_EPSILON; }
+ 
+ SIMD_FORCE_INLINE bool	btEqual(btScalar a, btScalar eps) {
+@@ -267,7 +269,7 @@ SIMD_FORCE_INLINE bool	btGreaterEqual (b
+ 
+ 
+ SIMD_FORCE_INLINE int       btIsNegative(btScalar x) {
+-    return x < btScalar(0.0) ? 1 : 0;
++    return x < (btScalar)(0.0) ? 1 : 0;
+ }
+ 
+ SIMD_FORCE_INLINE btScalar btRadians(btScalar x) { return x * SIMD_RADS_PER_DEG; }
+--- blender-2.48a/intern/memutil/MEM_Allocator.h	2008-10-23 00:35:42.000000000 +0800
++++ blender-2.48a.mod/intern/memutil/MEM_Allocator.h	2008-11-17 14:16:18.991341197 +0800
+@@ -83,7 +83,9 @@ struct MEM_Allocator
+ 
+ #ifndef MS_VISUALC_6_0_WORKAROUND
+ 	// __p is not permitted to be a null pointer.
+-	void deallocate(pointer __p, size_type){ 
++	// Sun Studio CC want Void* like MS_VISUAL !!!
++	// void deallocate(pointer __p, size_type){ 
++	 void deallocate(void* __p, size_type){ 
+ 		MEM_freeN(__p);
+ 	}
+ #else
+--- blender-2.48a/source/Makefile	2008-10-23 00:36:53.000000000 +0800
++++ blender-2.48a.mod/source/Makefile	2008-11-17 14:18:14.161805683 +0800
+@@ -104,7 +104,7 @@ COMLIB += $(NAN_IKSOLVER)/lib/libiksolve
+ COMLIB += $(NAN_OPENNL)/lib/$(DEBUG_DIR)libopennl.a
+ COMLIB += $(NAN_SUPERLU)/lib/$(DEBUG_DIR)libsuperlu.a	
+ COMLIB += $(OCGDIR)/blender/avi/$(DEBUG_DIR)libavi.a
+-COMLIB += $(NAN_JPEG)/lib/libjpeg.a
++COMLIB += $(NAN_JPEG)/lib/libjpeg.so
+ COMLIB += $(OCGDIR)/blender/gpu/$(DEBUG_DIR)libgpu.a
+ COMLIB += $(NAN_GLEW)/lib/libglew.a
+ 
+@@ -157,7 +157,7 @@ endif
+ COMLIB += $(NAN_GUARDEDALLOC)/lib/libguardedalloc.a
+ COMLIB += $(NAN_MEMUTIL)/lib/libmemutil.a
+ COMLIB += $(NAN_BMFONT)/lib/$(DEBUG_DIR)libbmfont.a
+-COMLIB += $(NAN_PNG)/lib/libpng.a
++COMLIB += $(NAN_PNG)/lib/libpng.so
+ COMLIB += $(OCGDIR)/blender/yafray/$(DEBUG_DIR)libyafrayexport.a
+ COMLIB += $(OCGDIR)/blender/blenlib/$(DEBUG_DIR)libblenlib.a
+ 
+@@ -328,8 +328,8 @@ ifeq ($(WITH_BF_WEBPLUGIN), true)
+ endif
+ 
+ ifeq ($(OS),solaris)
+-    PULIB += $(NAN_ZLIB)/lib/libz.a
+-    SPLIB += $(NAN_ZLIB)/lib/libz.a
++    PULIB += $(NAN_ZLIB)/lib/libz.so
++    SPLIB += $(NAN_ZLIB)/lib/libz.so
+ endif
+ 
+ # OpenAL libs are already compiled as shared code! Check FMod if we switch to that. (nzc)
+--- blender-2.48a/source/nan_compile.mk	2008-10-23 00:36:53.000000000 +0800
++++ blender-2.48a.mod/source/nan_compile.mk	2008-11-17 14:20:47.174621922 +0800
+@@ -174,22 +174,22 @@ endif
+ 
+ ifeq ($(OS),solaris)
+     # Adding gcc flag to $CC is not good, however if its not there makesdna wont build - Campbell
+-    ifeq (x86_64, $(findstring x86_64, $(CPU)))
+-        CC  = gcc -m64
+-        CCC = g++ -m64
+-    else
+-        CC  = gcc
+-        CCC = g++
+-        #CC  = cc
+-        #CCC = CC
+-    endif
++    #ifeq (x86_64, $(findstring x86_64, $(CPU)))
++    #    CC  = gcc -m64
++    #    CCC = g++ -m64
++    #else
++        #CC  = gcc
++        #CCC = g++
++        CC  = cc
++        CCC = CC
++    #endif
+     
+     JAVAC = javac
+     JAVAH = javah
+-    CFLAGS	+= -pipe -fPIC -funsigned-char -fno-strict-aliasing
+-    CCFLAGS	+= -pipe -fPIC -funsigned-char -fno-strict-aliasing
+-#    CFLAGS	+= "-fast -xdepend -xarch=v8plus -xO3 -xlibmil -KPIC -DPIC -xchar=unsigned"
+-#    CCFLAGS	+= "-fast -xdepend -xarch=v8plus -xO3 -xlibmil -xlibmopt -features=tmplife -norunpath -KPIC -DPIC -xchar=unsigned"
++    #CFLAGS	+= -pipe -fPIC -funsigned-char -fno-strict-aliasing
++    #CCFLAGS	+= -pipe -fPIC -funsigned-char -fno-strict-aliasing
++    CFLAGS	+= -KPIC -DPIC -xchar=unsigned
++    CCFLAGS	+= -KPIC -DPIC -xchar=unsigned -D_RWSTD_NO_STATIC_CAST=1
+ 
+     # Note, you might still want to compile a 32 bit binary if you have a 64bit system. if so remove the following lines
+ #    ifeq ($(findstring 64,$(CPU)), 64)
+@@ -197,8 +197,8 @@ ifeq ($(OS),solaris)
+ #        CCFLAGS	+= -m64
+ #    endif
+ 
+-    REL_CFLAGS	+= -O2
+-    REL_CCFLAGS	+= -O2
++    #REL_CFLAGS	+= -O2
++    #REL_CCFLAGS	+= -O2
+ 
+     NAN_DEPEND = true
+ #    ifeq ($(CPU),sparc)
+--- blender-2.48a/source/nan_warn.mk	2008-10-23 00:36:53.000000000 +0800
++++ blender-2.48a.mod/source/nan_warn.mk	2008-11-17 14:29:38.816645630 +0800
+@@ -32,11 +32,11 @@
+ #
+ 
+ # Force the correct redefinition
+-LEVEL_1_C_WARNINGS = -FIX_NAN_WARN
+-LEVEL_1_CPP_WARNINGS = -FIX_NAN_WARN
+-LEVEL_2_C_WARNINGS = -FIX_NAN_WARN
+-LEVEL_2_CPP_WARNINGS = -FIX_NAN_WARN
+-FIX_STUBS_WARNINGS = -FIX_NAN_WARN
++#LEVEL_1_C_WARNINGS = -FIX_NAN_WARN
++#LEVEL_1_CPP_WARNINGS = -FIX_NAN_WARN
++#LEVEL_2_C_WARNINGS = -FIX_NAN_WARN
++#LEVEL_2_CPP_WARNINGS = -FIX_NAN_WARN
++#FIX_STUBS_WARNINGS = -FIX_NAN_WARN
+ 
+ ########################################################################
+ # Level 1: basic C warnings.
+--- blender-2.48a/config/sunos5-config.py	2008-10-23 00:38:22.000000000 +0800
++++ blender-2.48a.mod/config/sunos5-config.py	2009-01-15 17:31:30.467569828 +0800
+@@ -33,7 +33,7 @@ BF_FMOD = LIBDIR + '/fmod'
+ 
+ WITH_BF_OPENEXR = True
+ WITH_BF_STATICOPENEXR = False
+-BF_OPENEXR = '/usr/local'
++BF_OPENEXR = '/usr'
+ BF_OPENEXR_INC = ['${BF_OPENEXR}/include', '${BF_OPENEXR}/include/OpenEXR' ]
+ BF_OPENEXR_LIBPATH = '${BF_OPENEXR}/lib'
+ BF_OPENEXR_LIB = 'Half IlmImf Iex Imath '
+@@ -43,18 +43,18 @@ BF_OPENEXR_LIB_STATIC = '${BF_OPENEXR}/l
+ WITH_BF_DDS = True
+ 
+ WITH_BF_JPEG = True
+-BF_JPEG = '/usr/local'
++BF_JPEG = '/usr'
+ BF_JPEG_INC = '${BF_JPEG}/include'
+ BF_JPEG_LIBPATH = '${BF_JPEG}/lib'
+ BF_JPEG_LIB = 'jpeg'
+ 
+ WITH_BF_PNG = True
+-BF_PNG = '/usr/local'
++BF_PNG = '/usr'
+ BF_PNG_INC = '${BF_PNG}/include'
+ BF_PNG_LIBPATH = '${BF_PNG}/lib'
+ BF_PNG_LIB = 'png'
+ 
+-BF_TIFF = '/usr/local'
++BF_TIFF = '/usr'
+ BF_TIFF_INC = '${BF_TIFF}/include'
+ 
+ WITH_BF_ZLIB = True
+@@ -63,7 +63,7 @@ BF_ZLIB_INC = '${BF_ZLIB}/include'
+ BF_ZLIB_LIBPATH = '${BF_ZLIB}/lib'
+ BF_ZLIB_LIB = 'z'
+ 
+-WITH_BF_INTERNATIONAL = True
++WITH_BF_INTERNATIONAL = False
+ 
+ BF_GETTEXT = '/usr/local'
+ BF_GETTEXT_INC = '${BF_GETTEXT}/include'
+@@ -75,6 +75,7 @@ BF_FTGL = '#extern/bFTGL'
+ BF_FTGL_INC = '${BF_FTGL}/include'
+ BF_FTGL_LIB = 'extern_ftgl'
+ 
++#WITH_BF_GAMEENGINE=True
+ WITH_BF_GAMEENGINE=False
+ 
+ WITH_BF_ODE = False
+@@ -111,7 +112,7 @@ WITH_BF_YAFRAY = True
+ #BF_PARANOID = True
+ 
+ # enable freetype2 support for text objects
+-BF_FREETYPE = '/usr/local'
++BF_FREETYPE = '/usr'
+ BF_FREETYPE_INC = '${BF_FREETYPE}/include ${BF_FREETYPE}/include/freetype2'
+ BF_FREETYPE_LIBPATH = '${BF_FREETYPE}/lib'
+ BF_FREETYPE_LIB = 'freetype'
+@@ -120,7 +121,7 @@ WITH_BF_QUICKTIME = False # -DWITH_QUICK
+ BF_QUICKTIME = '/usr/local'
+ BF_QUICKTIME_INC = '${BF_QUICKTIME}/include'
+ 
+-WITH_BF_ICONV = True
++WITH_BF_ICONV = False
+ BF_ICONV = "/usr"
+ BF_ICONV_INC = '${BF_ICONV}/include'
+ BF_ICONV_LIB = 'iconv'
+--- blender-2.48a/source/nan_definitions.mk	2008-10-23 00:36:53.000000000 +0800
++++ blender-2.48a.mod/source/nan_definitions.mk	2009-01-15 18:03:04.886302375 +0800
+@@ -147,10 +147,10 @@ endif
+               # this only exists at the moment for i386-64 CPU Types at the moment
+               export NAN_OPENEXR ?= $(LCGDIR)/openexr
+ 
+-              export NAN_OPENEXR_LIBS ?= $(NAN_OPENEXR)/lib/libIlmImf.a $(NAN_OPENEXR)/lib/libHalf.a $(NAN_OPENEXR)/lib/libIex.a $(NAN_OPENEXR)/lib/libIlmThread.a -lrt
++              export NAN_OPENEXR_LIBS ?= $(NAN_OPENEXR)/lib/libIlmImf.so $(NAN_OPENEXR)/lib/libHalf.so $(NAN_OPENEXR)/lib/libIex.so $(NAN_OPENEXR)/lib/libIlmThread.so -lrt
+           else
+-            export NAN_OPENEXR ?= /usr/local
+-	    export NAN_OPENEXR_LIBS ?= $(NAN_OPENEXR)/lib/libIlmImf.a $(NAN_OPENEXR)/lib/libHalf.a $(NAN_OPENEXR)/lib/libIex.a
++           export NAN_OPENEXR ?= /usr
++	   export NAN_OPENEXR_LIBS ?= $(NAN_OPENEXR)/lib/libIlmImf.so $(NAN_OPENEXR)/lib/libHalf.so $(NAN_OPENEXR)/lib/libIex.so
+           endif
+         endif
+       endif
+@@ -478,7 +478,8 @@ endif
+     export NAN_PYTHON ?= $(LCGDIR)/python
+     export NAN_PYTHON_VERSION ?= 2.5
+     export NAN_PYTHON_BINARY ?= $(NAN_PYTHON)/bin/python$(NAN_PYTHON_VERSION)
+-    export NAN_PYTHON_LIB ?= $(NAN_PYTHON)/lib/python$(NAN_PYTHON_VERSION)/config/libpython$(NAN_PYTHON_VERSION).a
++    #export NAN_PYTHON_LIB ?= $(NAN_PYTHON)/lib/python$(NAN_PYTHON_VERSION)/config/libpython$(NAN_PYTHON_VERSION).so
++    export NAN_PYTHON_LIB ?= $(NAN_PYTHON)/lib/libpython$(NAN_PYTHON_VERSION).so
+     export NAN_OPENAL ?= $(LCGDIR)/openal 
+     export NAN_FMOD ?= $(LCGDIR)/fmod
+     export NAN_JPEG ?= $(LCGDIR)/jpeg
+@@ -494,7 +495,7 @@ endif
+     export NAN_GETTEXT_LIB ?= $(NAN_GETTEXT)/lib/libintl.a $(NAN_GETTEXT)/lib/libiconv.a
+     export NAN_SDL ?= $(LCGDIR)/sdl
+     export NAN_SDLCFLAGS ?= -I$(NAN_SDL)/include/SDL
+-    export NAN_SDLLIBS ?= $(NAN_SDL)/lib/libSDL.a
++    export NAN_SDLLIBS ?= $(NAN_SDL)/lib/libSDL.so
+ 
+     # Uncomment the following line to use Mozilla inplace of netscape
+     # CPPFLAGS +=-DMOZ_NOT_NET
+@@ -514,6 +515,10 @@ endif
+     # enable freetype2 support for text objects
+     #export WITH_FREETYPE2 ?= true
+ 
++    #export NAN_GHOST = $(LCGDIR)/ghost/lib/
++    export WITH_BF_BLENDERGAMEENGINE = false
++    export WITH_BF_BLENDERPLAYER = false
++
+   else
+   ifeq ($(OS),windows)
+ 
