@@ -1,3 +1,8 @@
+2009-02-10  Wang Xin  <jedy.wang@sun.com>
+
+	* SFEtalloc.spec: new spec.
+	* SFEtdb.spec: new spec.
+
 2009-02-09  Alfred Peng  <alfred.peng@sun.com>
 
 	* SFEprism.spec: new spec.
