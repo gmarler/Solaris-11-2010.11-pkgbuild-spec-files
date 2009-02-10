@@ -1,3 +1,7 @@
+2009-02-10  Alfred Peng  <alfred.peng@sun.com>
+
+	* SFEspicebird.spec: new spec.
+
 2009-02-10  Wang Xin  <jedy.wang@sun.com>
 
 	* SFEtalloc.spec: new spec.
