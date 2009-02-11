@@ -1,0 +1,125 @@
+--- samba-4.0.0alpha6-orig/nsswitch/winbind_nss_solaris.h	2009-02-11 14:43:50.384744961 +0800
++++ samba-4.0.0alpha6/nsswitch/winbind_nss_solaris.h	2009-02-11 14:54:22.423744447 +0800
+@@ -37,17 +37,6 @@
+ 
+ #include <nss_common.h>
+ 
+-#ifndef __cplusplus
+-#define class #error DONT_USE_CPLUSPLUS_RESERVED_NAMES
+-#define private #error DONT_USE_CPLUSPLUS_RESERVED_NAMES
+-#define public #error DONT_USE_CPLUSPLUS_RESERVED_NAMES
+-#define protected #error DONT_USE_CPLUSPLUS_RESERVED_NAMES
+-#define template #error DONT_USE_CPLUSPLUS_RESERVED_NAMES
+-#define this #error DONT_USE_CPLUSPLUS_RESERVED_NAMES
+-#define new #error DONT_USE_CPLUSPLUS_RESERVED_NAMES
+-#define delete #error DONT_USE_CPLUSPLUS_RESERVED_NAMES
+-#define friend #error DONT_USE_CPLUSPLUS_RESERVED_NAMES
+-#endif
+ 
+ #include <nss_dbdefs.h>
+ #include <nsswitch.h>
+diff -uprN samba-4.0.0alpha6-orig/source4/heimdal/lib/krb5/error_string.c samba-4.0.0alpha6-new/source4/heimdal/lib/krb5/error_string.c
+--- samba-4.0.0alpha6-orig/source4/heimdal/lib/krb5/error_string.c	2009-02-09 14:33:31.311608187 +0800
++++ samba-4.0.0alpha6-new/source4/heimdal/lib/krb5/error_string.c	2009-02-09 16:21:08.846631080 +0800
+@@ -271,7 +271,7 @@ void KRB5_LIB_FUNCTION
+ krb5_clear_error_string(krb5_context context)
+      __attribute__((deprecated))
+ {
+-    return krb5_clear_error_message(context);
++    krb5_clear_error_message(context);
+ }
+ 
+ #endif /* !HEIMDAL_SMALLER */
+diff -uprN samba-4.0.0alpha6-orig/source4/heimdal/lib/krb5/get_addrs.c samba-4.0.0alpha6-new/source4/heimdal/lib/krb5/get_addrs.c
+--- samba-4.0.0alpha6-orig/source4/heimdal/lib/krb5/get_addrs.c	2009-02-09 14:33:31.310436767 +0800
++++ samba-4.0.0alpha6-new/source4/heimdal/lib/krb5/get_addrs.c	2009-02-09 16:22:25.039852588 +0800
+@@ -43,7 +43,6 @@ struct mbuf;
+ #ifdef HAVE_NET_IF_H
+ #include <net/if.h>
+ #endif
+-#include <ifaddrs.h>
+ 
+ static krb5_error_code
+ gethostname_fallback (krb5_context context, krb5_addresses *res)
+diff -uprN samba-4.0.0alpha6-orig/source4/heimdal/lib/roken/getarg.c samba-4.0.0alpha6-new/source4/heimdal/lib/roken/getarg.c
+--- samba-4.0.0alpha6-orig/source4/heimdal/lib/roken/getarg.c	2009-02-09 14:33:31.322643042 +0800
++++ samba-4.0.0alpha6-new/source4/heimdal/lib/roken/getarg.c	2009-02-09 15:31:35.130465222 +0800
+@@ -216,7 +216,7 @@ arg_printusage (struct getargs *args,
+ 		const char *progname,
+ 		const char *extra_string)
+ {
+-    return arg_printusage_i18n(args, num_args, "Usage",
++    arg_printusage_i18n(args, num_args, "Usage",
+ 			       progname, extra_string, builtin_i18n);
+ }
+ 
+diff -uprN samba-4.0.0alpha6-orig/source4/heimdal/lib/roken/vis.c samba-4.0.0alpha6-new/source4/heimdal/lib/roken/vis.c
+--- samba-4.0.0alpha6-orig/source4/heimdal/lib/roken/vis.c	2009-02-09 14:33:31.321963897 +0800
++++ samba-4.0.0alpha6-new/source4/heimdal/lib/roken/vis.c	2009-02-09 15:37:57.599902538 +0800
+@@ -226,8 +226,8 @@ do_svis(char *dst, int c, int flag, int 
+ 	}
+ 	if (isextra || ((c & 0177) == ' ') || (flag & VIS_OCTAL)) {
+ 		*dst++ = '\\';
+-		*dst++ = (u_char)(((u_int32_t)(u_char)c >> 6) & 03) + '0';
+-		*dst++ = (u_char)(((u_int32_t)(u_char)c >> 3) & 07) + '0';
++		*dst++ = (u_char)(((uint32_t)(u_char)c >> 6) & 03) + '0';
++		*dst++ = (u_char)(((uint32_t)(u_char)c >> 3) & 07) + '0';
+ 		*dst++ =			     (c	      & 07) + '0';
+ 	} else {
+ 		if ((flag & VIS_NOSLASH) == 0) *dst++ = '\\';
+diff -uprN samba-4.0.0alpha6-orig/source4/heimdal/lib/roken/vis.hin samba-4.0.0alpha6-new/source4/heimdal/lib/roken/vis.hin
+--- samba-4.0.0alpha6-orig/source4/heimdal/lib/roken/vis.hin	2009-02-09 14:33:31.323030655 +0800
++++ samba-4.0.0alpha6-new/source4/heimdal/lib/roken/vis.hin	2009-02-09 15:35:20.189573151 +0800
+@@ -80,9 +80,7 @@
+  */
+ #define	UNVIS_END	1	/* no more characters */
+ 
+-#include <sys/cdefs.h>
+ 
+-__BEGIN_DECLS
+ char * ROKEN_LIB_FUNCTION
+ 	rk_vis(char *, int, int, int);
+ char * ROKEN_LIB_FUNCTION
+@@ -101,7 +100,6 @@ int ROKEN_LIB_FUNCTION
+ 	rk_strunvisx(char *, const char *, int);
+ int ROKEN_LIB_FUNCTION
+ 	rk_unvis(char *, int, int *, int);
+-__END_DECLS
+ 
+ #undef vis
+ #define vis(a,b,c,d) rk_vis(a,b,c,d)
+diff -uprN samba-4.0.0alpha6-orig/source4/heimdal_build/internal.mk samba-4.0.0alpha6-new/source4/heimdal_build/internal.mk
+--- samba-4.0.0alpha6-orig/source4/heimdal_build/internal.mk	2009-02-09 14:33:31.260935366 +0800
++++ samba-4.0.0alpha6-new/source4/heimdal_build/internal.mk	2009-02-09 15:43:45.685443907 +0800
+@@ -681,8 +681,7 @@ dist:: $(heimdalsrcdir)/lib/asn1/lex.c
+ asn1_compile_OBJ_FILES = \
+ 	$(asn1_compile_ASN1_OBJ_FILES) \
+ 	$(heimdalsrcdir)/lib/vers/print_version.ho \
+-	$(socketwrappersrcdir)/socket_wrapper.ho \
+-	$(heimdalbuildsrcdir)/replace.ho
++	$(socketwrappersrcdir)/socket_wrapper.ho
+ 
+ $(asn1_compile_OBJ_FILES): CFLAGS+=-I$(heimdalbuildsrcdir) -I$(heimdalsrcdir)/lib/asn1 -I$(heimdalsrcdir)/lib/roken -I$(socketwrappersrcdir)
+ 
+@@ -710,8 +709,7 @@ compile_et_OBJ_FILES = $(heimdalsrcdir)/
+ 	$(heimdalsrcdir)/lib/com_err/parse.ho \
+ 	$(heimdalsrcdir)/lib/com_err/lex.ho \
+ 	$(heimdalsrcdir)/lib/com_err/compile_et.ho \
+-	$(socketwrappersrcdir)/socket_wrapper.ho \
+-	$(heimdalbuildsrcdir)/replace.ho
++	$(socketwrappersrcdir)/socket_wrapper.ho
+ 
+ $(compile_et_OBJ_FILES): CFLAGS+=-I$(heimdalbuildsrcdir) -I$(heimdalsrcdir)/lib/com_err -I$(heimdalsrcdir)/lib/roken  -I$(socketwrappersrcdir)
+ 
+diff -uprN samba-4.0.0alpha6-orig/source4/lib/socket/socket_ip.c samba-4.0.0alpha6-new/source4/lib/socket/socket_ip.c
+--- samba-4.0.0alpha6-orig/source4/lib/socket/socket_ip.c	2009-02-09 14:33:31.185942245 +0800
++++ samba-4.0.0alpha6-new/source4/lib/socket/socket_ip.c	2009-02-09 16:35:26.213090690 +0800
+@@ -557,7 +557,7 @@ static struct in6_addr interpret_addr6(c
+ 		name = "::1";
+ 	}
+ 
+-	he = gethostbyname2(name, PF_INET6);
++	he = gethostbyname(name);
+ 
+ 	if (he == NULL) return in6addr_any;
+ 
