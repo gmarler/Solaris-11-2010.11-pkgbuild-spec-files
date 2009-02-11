@@ -1,5 +1,9 @@
 2009-02-11  Wang Xin  <jedy.wang@sun.com>
 
+	* SFEsamba4.spec: Updated to fix file attribute problem of /usr/share.
+
+2009-02-11  Wang Xin  <jedy.wang@sun.com>
+
 	* SFEsamba4.spec: New spec.
 	* patches/samba4-01-solaris.diff: New patch to fix build problem.
 

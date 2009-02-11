@@ -92,7 +92,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/*
 %dir %attr (0755, root, bin) %{_includedir}
 %{_includedir}/*
-%dir %attr (0755, root, other) %{_datadir}
+%dir %attr (0755, root, sys) %{_datadir}
 %{_datadir}/perl5/*
 %{_datadir}/samba/*
 %dir %attr(0755, root, bin) %{_mandir}
@@ -110,5 +110,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0775, root, sys) /var/log/samba
 
 %changelog
+* Tue Feb 11 2009 - jedy.wang@sun.com
+- Fix file attribute problem of /usr/share.
 * Tue Feb 11 2009 - jedy.wang@sun.com
 - Initial spec
