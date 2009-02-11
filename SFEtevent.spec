@@ -5,9 +5,9 @@
 
 %include Solaris.inc
 
-Name:                SFEtalloc
-Summary:             A hierarchical pool based memory system with destructors.
-Version:             1.2.0
+Name:                SFEtevent
+Summary:             An event system library.
+Version:             0.9.2
 Source:              http://us5.samba.org/samba/ftp/samba4/samba-4.0.0alpha6.tar.gz
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
@@ -15,7 +15,7 @@ BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 
 
 %prep
-%setup -q -n samba-4.0.0alpha6/lib/talloc
+%setup -q -n samba-4.0.0alpha6/lib/tevent
 
 %build
 
@@ -38,8 +38,8 @@ rm -rf $RPM_BUILD_ROOT
 
 make install DESTDIR=$RPM_BUILD_ROOT
 cd $RPM_BUILD_ROOT/%{_libdir}
-ln -s -f libtalloc.so.%{version} libtalloc.so.1
-ln -s libtalloc.so.%{version} libtalloc.so
+ln -s -f libtevent.so.%{version} libtevent.so.0
+ln -s libtevent.so.%{version} libtevent.so
 cd -
 
 find $RPM_BUILD_ROOT -type f -name "*.la" -exec rm -f {} ';'
@@ -55,12 +55,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/*
 %dir %attr (0755, root, bin) %{_includedir}
 %{_includedir}/*
-%dir %attr (0755, root, sys) %{_datadir}
-%{_datadir}/swig/*
-%dir %attr(0755, root, bin) %{_mandir}
-%dir %attr(0755, root, bin) %{_mandir}/*
-%{_mandir}/*/*
 
 %changelog
-* Tue Feb 10 2009 - jedy.wang@sun.com
+* Tue Feb 11 2009 - jedy.wang@sun.com
 - Initial spec

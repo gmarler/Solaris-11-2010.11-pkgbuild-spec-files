@@ -6,7 +6,7 @@
 %include Solaris.inc
 
 Name:                SFEtdb
-Summary:             TDB is a simple database API.
+Summary:             A trivial database used by samba.
 Version:             1.1.3
 Source:              http://us5.samba.org/samba/ftp/samba4/samba-4.0.0alpha6.tar.gz
 SUNW_BaseDir:        %{_basedir}
