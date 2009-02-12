@@ -1,3 +1,10 @@
+2009-02-12  Wang Xin  <jedy.wang@sun.com>
+
+	* SFElibmapi.spec: New spec.
+	* patches/libmapi-01-solaris.diff: New patch to fix build problem.
+	* patches/samba4-01-solaris.diff: Updated to fix problems found when
+	building libmapi.
+
 2009-02-11  Wang Xin  <jedy.wang@sun.com>
 
 	* SFEsamba4.spec: Updated to fix file attribute problem of /usr/share.
