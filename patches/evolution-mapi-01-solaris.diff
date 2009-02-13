@@ -1,0 +1,15 @@
+Index: evolution-mapi-0.25.91/src/addressbook/e-book-backend-mapi.c
+===================================================================
+--- evolution-mapi-0.25.91/src/addressbook/e-book-backend-mapi.c	(revision 110)
++++ evolution-mapi-0.25.91/src/addressbook/e-book-backend-mapi.c	(working copy)
+@@ -1049,7 +1049,9 @@
+ 				nt = nt << 32;
+ 				nt |= t->dwLowDateTime;
+ 				time = nt_time_to_unix (nt);
+-				e_contact_set (contact, mappings[i].field_id, ctime_r (&time, buff));
++				e_contact_set (contact, mappings[i].field_id,
++						ctime_r (&time, buff,
++							sizeof (buff)));
+ 			} else
+ 				printf("Nothing is printed\n");
+ 		} else if (mappings[i].contact_type == ELEMENT_TYPE_COMPLEX) {

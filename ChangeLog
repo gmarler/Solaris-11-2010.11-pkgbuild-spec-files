@@ -1,3 +1,8 @@
+2009-02-13  Wang Xin  <jedy.wang@sun.com>
+
+	* SFEevolution-mapi.spec: New spec.
+	* patches/evolution-mapi-01-solaris.diff: New patch to fix build problem.
+
 2009-02-12  Brian Cameron  <brian.cameron@sun.com>
 
 	* SFEpyopenssl.spec, SFEpyopenssl26.spec: Add a Python 2.6 bindings
