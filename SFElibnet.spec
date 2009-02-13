@@ -8,7 +8,7 @@
 Name:                SFElibnet
 Summary:             Packet Construction Library
 Version:             1.1.2.1
-Source:              http://www.mirrors.wiretapped.net/security/packet-construction/libnet/libnet-%{version}.tar.gz
+Source:              http://download2us.softpedia.com/dl/d9db9a5960f231f8eb12d82e2848a28d/49956ff9/500010275/linux/libnet-%{version}.tar.gz
 
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
@@ -80,6 +80,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/*
 
 %changelog
+* Fri Feb 13 2009 - alfred.peng@sun.com
+- Fix the broken download url
 * Mon Mar 19 2007 - dougs@truemail.co.th
 - Fixed -fno-omit-frame-pointer flag
 * Sun Nov 05 2006 - Eric Boutilier

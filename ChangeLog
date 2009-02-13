@@ -1,3 +1,7 @@
+2009-02-13  Alfred Peng  <alfred.peng@sun.com>
+
+	* SFElibnet.spec: Fix the broken download url.
+
 2009-02-13  Wang Xin  <jedy.wang@sun.com>
 
 	* SFEevolution-mapi.spec: New spec.
