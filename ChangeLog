@@ -1,9 +1,20 @@
+2009-02-13  Brian Cameron  <brian.cameron@sun.com>
+
+	* SUNWgnome-display-mgr.spec, gdm-01-branding.diff:  Add new patch
+	  so that it is possible to define a different default PATH and set
+	  the PATH to just include "/usr/bin".  Set default value of
+	  DisallowTCP to "false" to match the branding used in Solaris already.
+	* patches/gdm-02-sdtlogin-devperm.diff: Update patch with improvements
+	  that were made to GDM 2.20.  Now it will recreate the /var/dt
+	  directory if it is not present, which is needed on OpenSolaris.
+	* patches/gdm*diff.  Renumber patches.
+
 2009-02-13  Willie Walker <william.walker@sun.com>
 
-        * SFEliblouis.spec:
-          base-specs/liblouis.spec:
-          copyright/SFEliblouis.copyright:
-          New spec for liblouis (support for contracted braille)
+	* SFEliblouis.spec:
+	  base-specs/liblouis.spec:
+	  copyright/SFEliblouis.copyright:
+	  New spec for liblouis (support for contracted braille)
 
 2009-02-13  Alfred Peng  <alfred.peng@sun.com>
 
@@ -12,7 +23,8 @@
 2009-02-13  Wang Xin  <jedy.wang@sun.com>
 
 	* SFEevolution-mapi.spec: New spec.
-	* patches/evolution-mapi-01-solaris.diff: New patch to fix build problem.
+	* patches/evolution-mapi-01-solaris.diff: New patch to fix build
+	  problem.
 
 2009-02-12  Brian Cameron  <brian.cameron@sun.com>
 

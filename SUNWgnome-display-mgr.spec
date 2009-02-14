@@ -18,30 +18,32 @@ Release:                 1
 Source:                  http://download.gnome.org/sources/gdm/2.25/gdm-%{version}.tar.bz2
 Source1:                 gdm.xml
 Source2:                 svc-gdm
+# date:2009-02-13 owner:yippi type:branding
+Patch1:                  gdm-01-branding.diff
 # Patch1 adds SDTLOGIN interface, which drops the Xserver to user
 # perms rather than running as root, for added security on Solaris.
 # It also adds logindevperm support.  Refer to bug #531651.  My
 # hope is to get logindevperm support upstream.
 # date:2008-05-06 owner:yippi type:bug bugid:531651
-Patch1:                  gdm-01-sdtlogin-devperm.diff
+Patch2:                  gdm-02-sdtlogin-devperm.diff
 # Add ctrun support when running the user session.  Otherwise, any
 # core dump in the user session will cause GDM to restart.
-Patch2:                  gdm-02-ctrun.diff
+Patch3:                  gdm-03-ctrun.diff
 # Manage displays on the fly
 # date:2008-06-03 owner:yippi type:bug bugid:536355
-Patch3:                  gdm-03-dynamic-display.diff
+Patch4:                  gdm-04-dynamic-display.diff
 # Possible fix for unwritable gdm user $HOME. gnome-session
 # tries to update ~/.ICEAuthority and gdm-simple-greeter crashes
 # when looking up option widgets.
 # date:2008-09-29 owner:yippi type:bug bugid:554242
-Patch4:                  gdm-04-ICE-optionwidget.diff
+Patch5:                  gdm-05-ICE-optionwidget.diff
 # Fix gconf-santiy-check-2 warning dialog.
 # date:2008-09-04 owner:yippi type:bug bugid:550832
-Patch5:			 gdm-05-gconfsanity.diff
+Patch6:			 gdm-06-gconfsanity.diff
 # date:2008-12-16 owner:yippi type:bug bugid:568323
-Patch6:                  gdm-06-hide-face-browser.diff
+Patch7:                  gdm-07-hide-face-browser.diff
 # date:2008-12-16 owner:yippi type:bug bugid:564789 state:upstream
-Patch7:                  gdm-07-layout.diff
+Patch8:                  gdm-08-layout.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 
@@ -97,13 +99,14 @@ Requires:                %{name}
 
 %prep
 %setup -q -n gdm-%version
-%patch1 -p0
-%patch2 -p1
+%patch1 -p1
+%patch2 -p0
 %patch3 -p1
-%patch4 -p0
+%patch4 -p1
 %patch5 -p0
-%patch6 -p1
+%patch6 -p0
 %patch7 -p1
+%patch8 -p1
 
 %build
 export LDFLAGS="%_ldflags"
@@ -149,6 +152,7 @@ autoconf
         --sysconfdir=%{_sysconfdir} \
         --localstatedir=%{_localstatedir} \
         --mandir=%{_mandir} \
+        --with-path="/usr/bin" \
         --with-pam-prefix=%{_sysconfdir} \
         --with-ctrun \
         --libexecdir=%{_libexecdir} \
@@ -329,6 +333,10 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 %endif
 
 %changelog
+* Fri Feb 13 2009 - brian.cameron@sun.com
+- Add patch gdm-01-branding.diff to change default setting of DisallowTCP
+  to false.  Add patch gdm-09-default-path.diff to set the default PATH
+  via configuration value.
 * Sat Feb 07 2009 - brian.cameron@sun.com
 - Package should not install anything to /var/run.
 * Mon Dec 22 2008 - brian.cameron@sun.com

@@ -1,20 +1,56 @@
+--- common/gdm-common.h-orig	2009-02-13 17:48:07.419434000 -0600
++++ common/gdm-common.h	2009-02-13 17:48:27.657672000 -0600
+@@ -25,6 +25,11 @@
+ 
+ #include "gdm-common-unknown-origin.h"
+ 
++#ifdef __sun
++#define GDM_DT_DIR "/var/dt"
++#define GDM_SDTLOGIN_DIR "/var/dt/sdtlogin"
++#endif
++
+ G_BEGIN_DECLS
+ 
+ gboolean       gdm_is_version_unstable            (void);
+--- daemon/main.c-orig	2009-02-13 17:43:24.076166000 -0600
++++ daemon/main.c	2009-02-13 17:44:38.445569000 -0600
+@@ -521,6 +521,21 @@ main (int    argc,
+                 { NULL }
+         };
+ 
++#ifdef __sun
++        {
++                struct stat statbuf;
++                int r;
++
++                r = stat (GDM_DT_DIR, &statbuf);
++                if (r < 0) {
++                        g_mkdir (GDM_DT_DIR, 0755);
++                }
++
++                g_remove (GDM_SDTLOGIN_DIR);
++                g_mkdir (GDM_SDTLOGIN_DIR, 0700);
++        }
++#endif
++
+         bindtextdomain (GETTEXT_PACKAGE, GNOMELOCALEDIR);
+         textdomain (GETTEXT_PACKAGE);
+         setlocale (LC_ALL, "");
 Index: daemon/gdm-server.c
 ===================================================================
 --- daemon/gdm-server.c	(revision 5828)
 +++ daemon/gdm-server.c	(working copy)
-@@ -34,6 +34,11 @@
+@@ -33,6 +33,9 @@
+ #include <grp.h>
  #include <signal.h>
  #include <sys/resource.h>
- 
 +#ifdef __sun
 +#include <sys/param.h>
-+#define SDTLOGIN_DIR "/var/dt/sdtlogin"
 +#endif
-+
+ 
  #include <glib.h>
  #include <glib/gi18n.h>
- #include <glib/gstdio.h>
-@@ -621,6 +626,25 @@
+@@ -624,6 +627,25 @@ gdm_server_spawn (GdmServer  *server,
                  _exit (SERVER_ABORT);
          }
  
@@ -30,7 +66,7 @@ Index: daemon/gdm-server.c
 +                        display_num = g_ascii_strtod (tmp, &p);
 +
 +                        if (errno == 0) {
-+                                sprintf (old_pipe, "%s/%d", SDTLOGIN_DIR, display_num);
++                                sprintf (old_pipe, "%s/%d", GDM_SDTLOGIN_DIR, display_num);
 +                                g_unlink (old_pipe);
 +                        }
 +                }
@@ -44,7 +80,7 @@ Index: daemon/gdm-session-worker.c
 ===================================================================
 --- daemon/gdm-session-worker.c	(revision 5828)
 +++ daemon/gdm-session-worker.c	(working copy)
-@@ -32,6 +32,18 @@
+@@ -32,6 +32,17 @@
  #include <grp.h>
  #include <pwd.h>
  
@@ -54,7 +90,6 @@ Index: daemon/gdm-session-worker.c
 +
 +#if __sun
 +#include <sys/param.h>
-+#define SDTLOGIN_DIR "/var/dt/sdtlogin"
 +#define GDM_PAM_QUAL
 +#else
 +#define GDM_PAM_QUAL const
@@ -63,7 +98,15 @@ Index: daemon/gdm-session-worker.c
  #include <security/pam_appl.h>
  
  #include <glib.h>
-@@ -137,12 +149,115 @@
+@@ -59,6 +70,7 @@
+ #endif
+ 
+ #include "gdm-session-settings.h"
++#include "gdm-common.h"
+ 
+ #define GDM_SESSION_WORKER_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), GDM_TYPE_SESSION_WORKER, GdmSessionWorkerPrivate))
+ 
+@@ -146,12 +158,115 @@ static void     gdm_session_worker_final
  static void     queue_state_change              (GdmSessionWorker      *worker);
  
  typedef int (* GdmSessionWorkerPamNewMessagesFunc) (int,
@@ -105,16 +148,16 @@ Index: daemon/gdm-session-worker.c
 +                }
 +        }
 +
-+        sprintf (pipe, "%s/%d", SDTLOGIN_DIR, display_number);
++        sprintf (pipe, "%s/%d", GDM_SDTLOGIN_DIR, display_number);
 +
-+        if (g_stat (SDTLOGIN_DIR, &statbuf) == 0) {
++        if (g_stat (GDM_SDTLOGIN_DIR, &statbuf) == 0) {
 +                if (! statbuf.st_mode & S_IFDIR) {
 +                        g_debug ("solaris_xserver_cred: %s is not a directory\n",
-+                                 SDTLOGIN_DIR);
++                                 GDM_SDTLOGIN_DIR);
 +                        return;
 +                }
 +        } else {
-+                g_debug ("solaris_xserver_cred: %s does not exist\n", SDTLOGIN_DIR);
++                g_debug ("solaris_xserver_cred: %s does not exist\n", GDM_SDTLOGIN_DIR);
 +                return;
 +        }
 +
@@ -180,7 +223,7 @@ Index: daemon/gdm-session-worker.c
  GQuark
  gdm_session_worker_error_quark (void)
  {
-@@ -469,7 +584,11 @@
+@@ -566,7 +681,11 @@ static gboolean
  gdm_session_worker_get_username (GdmSessionWorker  *worker,
                                   char             **username)
  {
@@ -192,7 +235,7 @@ Index: daemon/gdm-session-worker.c
  
          g_assert (worker->priv->pam_handle != NULL);
  
-@@ -760,7 +879,7 @@
+@@ -865,7 +984,7 @@ gdm_session_worker_process_pam_message (
  
  static int
  gdm_session_worker_pam_new_messages_handler (int                        number_of_messages,
@@ -201,7 +244,7 @@ Index: daemon/gdm-session-worker.c
                                               struct pam_response      **responses,
                                               GdmSessionWorker          *worker)
  {
-@@ -872,6 +991,22 @@
+@@ -977,6 +1096,22 @@ gdm_session_worker_uninitialize_pam (Gdm
          if (worker->priv->state >= GDM_SESSION_WORKER_STATE_SESSION_OPENED) {
                  pam_close_session (worker->priv->pam_handle, 0);
                  gdm_session_auditor_report_logout (worker->priv->auditor);
@@ -224,7 +267,7 @@ Index: daemon/gdm-session-worker.c
          } else {
                  gdm_session_auditor_report_login_failure (worker->priv->auditor,
                                                            status,
-@@ -1523,6 +1658,7 @@
+@@ -1821,6 +1956,7 @@ static gboolean
  gdm_session_worker_open_user_session (GdmSessionWorker  *worker,
                                        GError           **error)
  {
@@ -232,7 +275,7 @@ Index: daemon/gdm-session-worker.c
          int error_code;
  
          g_assert (worker->priv->state == GDM_SESSION_WORKER_STATE_ACCREDITED);
-@@ -1549,6 +1685,32 @@
+@@ -1847,6 +1983,32 @@ gdm_session_worker_open_user_session (Gd
  
          gdm_session_auditor_report_login (worker->priv->auditor);
  
@@ -267,9 +310,9 @@ Index: daemon/gdm-session-worker.c
  
 --- configure.ac-orig	2008-08-07 03:05:23.833583000 -0500
 +++ configure.ac	2008-08-07 03:05:45.508204000 -0500
-@@ -1006,6 +1006,12 @@ else
-    AC_MSG_RESULT(no)
- fi
+@@ -1006,6 +1006,12 @@ fi
+ AC_SUBST(XEVIE_OPTION)
+ AC_DEFINE_UNQUOTED(XEVIE_OPTION,"$XEVIE_OPTION",[Define xevie option])
  
 +# Check for Solaris logindevperm support
 +#

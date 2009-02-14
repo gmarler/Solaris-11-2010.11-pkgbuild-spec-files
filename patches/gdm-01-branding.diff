@@ -1,0 +1,196 @@
+--- gdm-2.25.2/data/gdm.schemas.in.in-orig	2009-02-13 17:05:22.882473000 -0600
++++ gdm-2.25.2/data/gdm.schemas.in.in	2009-02-13 17:05:36.562490000 -0600
+@@ -40,7 +40,7 @@
+     <schema>
+       <key>security/DisallowTCP</key>
+       <signature>b</signature>
+-      <default>true</default>
++      <default>false</default>
+     </schema>
+ 
+     <schema>
+--- gdm-2.25.2/acconfig.h-orig	2009-02-13 17:02:16.999162000 -0600
++++ gdm-2.25.2/acconfig.h	2009-02-13 17:03:47.941850000 -0600
+@@ -8,7 +8,6 @@
+ #undef ENABLE_IPV6
+ #undef ENABLE_NLS
+ #undef ALWAYS_RESTART_SERVER
+-#undef GDM_USER_PATH
+ #undef HAVE_ADT
+ #undef HAVE_CATGETS
+ #undef HAVE_CHKAUTHATTR
+@@ -16,7 +15,6 @@
+ #undef HAVE_CLEARENV
+ #undef HAVE_CRYPT
+ #undef HAVE_DEFOPEN
+-#undef HAVE_FBCONSOLE
+ #undef HAVE_GETTEXT
+ #undef HAVE_LC_MESSAGES
+ #undef HAVE_LIBSM
+--- gdm-2.25.2/configure.ac-orig	2009-02-13 17:00:13.394915000 -0600
++++ gdm-2.25.2/configure.ac	2009-02-13 17:02:52.715655000 -0600
+@@ -244,31 +244,22 @@ AC_ARG_WITH(at-spi-registryd-directory,
+ AT_SPI_REGISTRYD_DIR=$with_at_spi_registryd_directory
+ AC_SUBST(AT_SPI_REGISTRYD_DIR)
+ 
+-# On Solaris, Xnest is only shipped in /usr/openwin/, but your
+-# should use "--with-post-path=/usr/openwin/bin" for full
+-# Xserver support (such as access to Xnest and other X executables
+-# that are only in /usr/openwin/bin and not yet in /usr/X11/bin).
+-# Someday the Xserver team at Sun may fix this, then you don't
+-# have to do this anymore.
+-#
+-# For other platforms it may be useful to add stuff you want to the
+-# end of the default path, if your distribution provider has
+-# specific directories for branded applications or whatever or
+-# clever directories like /usr/sfw/bin or whatever that OpenView
+-# binary directory is for those OpenView users forced to use GDM.
+-# OpenView users like to recompile code anyway.
++# Allow configuration of default PATH
+ #
+ withval=""
+-AC_ARG_WITH(post-path,
+-            AS_HELP_STRING([--with-post-path=<PATH>],
+-	                   [add PATH to end of user's PATH when logging in]),
++AC_ARG_WITH(path,
++            AS_HELP_STRING([--with-path=<PATH>],
++	                   [PATH GDM will use as the user's default PATH]),
+             [if test x$withval != x; then
+-               AC_MSG_RESULT("PATH ${withval} will be added to end of user's PATH when logging in.")
++               AC_MSG_RESULT("PATH ${withval} will be the default PATH.")
+              fi])
+ 
+ if test x$withval != x; then
+-	USER_POST_PATH="$withval"
++	GDM_SESSION_DEFAULT_PATH="$withval"
++else
++	GDM_SESSION_DEFAULT_PATH="/usr/local/bin:/usr/bin:/bin"
+ fi
++AC_SUBST(GDM_SESSION_DEFAULT_PATH)
+ 
+ dnl
+ dnl file that sets LANG
+@@ -1017,19 +1008,6 @@ fi
+ AC_SUBST(XEVIE_OPTION)
+ AC_DEFINE_UNQUOTED(XEVIE_OPTION,"$XEVIE_OPTION",[Define xevie option])
+ 
+-
+-dnl ---------------------------------------------------------------------------
+-dnl - Check for Solaris fbconsole
+-dnl ---------------------------------------------------------------------------
+-
+-AC_MSG_CHECKING(for Solaris fbconsole)
+-if test -x /usr/openwin/bin/fbconsole; then
+-   AC_DEFINE(HAVE_FBCONSOLE, 1, [Define if have fbconsole])
+-   AC_MSG_RESULT(yes)
+-else
+-   AC_MSG_RESULT(no)
+-fi
+-
+ dnl ---------------------------------------------------------------------------
+ dnl - Check for audit framework
+ dnl ---------------------------------------------------------------------------
+@@ -1111,25 +1089,21 @@ if test -x /usr/X11/bin/Xserver; then
+    X_PATH="/usr/X11/bin"
+    X_SERVER_PATH="/usr/X11/bin"
+    X_SERVER="/usr/X11/bin/Xserver"
+-   GDM_USER_PATH="$GDM_USER_PATH:/usr/X11/bin"
+    X_CONFIG_OPTIONS="-audit 0"
+ elif test ! -h /usr/X11R6 -a -x /usr/X11R6/bin/X; then
+    X_PATH="/usr/X11R6/bin"
+    X_SERVER_PATH="/usr/X11R6/bin"
+    X_SERVER="/usr/X11R6/bin/X"
+-   GDM_USER_PATH="$GDM_USER_PATH:/usr/X11R6/bin"
+    X_CONFIG_OPTIONS="-audit 0"
+ elif test ! -h /usr/X11 -a -x /usr/X11/bin/X; then
+    X_PATH="/usr/X11/bin"
+    X_SERVER_PATH="/usr/X11/bin"
+    X_SERVER="/usr/X11/bin/X"
+-   GDM_USER_PATH="$GDM_USER_PATH:/usr/X11/bin"
+    X_CONFIG_OPTIONS="-audit 0"
+ elif test -x /usr/X11R6/bin/X; then
+    X_PATH="/usr/X11R6/bin"
+    X_SERVER_PATH="/usr/X11R6/bin"
+    X_SERVER="/usr/X11R6/bin/X"
+-   GDM_USER_PATH="$GDM_USER_PATH:/usr/X11R6/bin"
+    X_CONFIG_OPTIONS="-audit 0"
+ elif test -x /usr/bin/Xorg; then
+    X_PATH="/usr/bin"
+@@ -1140,7 +1114,6 @@ elif test -x /usr/X11/bin/X; then
+    X_PATH="/usr/X11/bin"
+    X_SERVER_PATH="/usr/X11/bin"
+    X_SERVER="/usr/X11/bin/X"
+-   GDM_USER_PATH="$GDM_USER_PATH:/usr/X11/bin"
+    X_CONFIG_OPTIONS="-audit 0"
+ elif test -x /usr/openwin/bin/Xsun; then
+    # Do not add /usr/openwin/bin here because on Solaris you need
+@@ -1154,7 +1127,6 @@ elif test -x /opt/X11R6/bin/X; then
+    X_PATH="/opt/X11R6/bin"
+    X_SERVER_PATH="/opt/X11R6/bin"
+    X_SERVER="/opt/X11R6/bin/X"
+-   GDM_USER_PATH="$GDM_USER_PATH:/opt/X11R6/bin"
+    X_CONFIG_OPTIONS="-audit 0"
+ elif test -x /usr/bin/X; then
+    X_PATH="/usr/bin"
+@@ -1167,16 +1139,9 @@ else
+    X_PATH="/usr/bin/X11:/usr/X11R6/bin:/opt/X11R6/bin"
+    X_SERVER_PATH="/usr/X11R6/bin"
+    X_SERVER="/usr/X11R6/bin/X"
+-   GDM_USER_PATH="$GDM_USER_PATH:/usr/bin/X11:/usr/X11R6/bin:/usr/local/bin:/opt/X11R6/bin"
+    X_CONFIG_OPTIONS="-audit 0"
+ fi
+ 
+-# Don't add bindir to GDM_USER_PATH if it is already in the PATH.
+-# If it is /bin or /usr/bin, for example.
+-if test "x$real_gdm_prefix" != "x/" -a "x$real_gdm_prefix" != "x/usr"; then
+-    GDM_USER_PATH="$GDM_USER_PATH:${bindir}"
+-fi
+-
+ dnl ---------------------------------------------------------------------------
+ dnl - Check for Xnest / Xephyr support
+ dnl ---------------------------------------------------------------------------
+@@ -1204,14 +1169,6 @@ else
+     fi
+ fi
+ 
+-# Set POST_PATH after doing system specific case above just in case
+-# any platforms want to update the PATH for a specific OS or distro.
+-# None currently, but might be useful.
+-#
+-if test "x$USER_POST_PATH" != "x"; then
+-   GDM_USER_PATH="$GDM_USER_PATH:$USER_POST_PATH"
+-fi
+-
+ dnl ---------------------------------------------------------------------------
+ dnl - Expand vars
+ dnl ---------------------------------------------------------------------------
+@@ -1363,8 +1320,6 @@ fi
+ #
+ AC_SUBST(XSESSION_SHELL)
+ AC_DEFINE_UNQUOTED(XSESSION_SHELL,"$XSESSION_SHELL",[xsession shell])
+-AC_SUBST(GDM_USER_PATH)
+-AC_DEFINE_UNQUOTED(GDM_USER_PATH,"$GDM_USER_PATH",[])
+ AC_SUBST(SOUND_PROGRAM)
+ AC_DEFINE_UNQUOTED(SOUND_PROGRAM,"$SOUND_PROGRAM",[])
+ 
+--- gdm-2.25.2/daemon/Makefile.am-orig	2009-02-13 16:54:52.816093000 -0600
++++ gdm-2.25.2/daemon/Makefile.am	2009-02-13 16:56:58.451086000 -0600
+@@ -9,17 +9,13 @@ AM_CPPFLAGS = \
+ 	-DDATADIR=\"$(datadir)\"			\
+ 	-DDMCONFDIR=\"$(dmconfdir)\"			\
+ 	-DGDMCONFDIR=\"$(gdmconfdir)\"			\
+-	-DGDMLOCALEDIR=\"$(gdmlocaledir)\"		\
+ 	-DLIBDIR=\"$(libdir)\"				\
+ 	-DLIBEXECDIR=\"$(libexecdir)\"			\
+ 	-DLOGDIR=\"$(logdir)\"				\
+-	-DPIXMAPDIR=\"$(pixmapdir)\"			\
+ 	-DSBINDIR=\"$(sbindir)\"			\
+ 	-DGNOMELOCALEDIR=\""$(datadir)/locale"\"	\
+ 	-DGDM_XAUTH_DIR=\"$(GDM_XAUTH_DIR)\"		\
+-	-DGDM_DEFAULTS_CONF=\"$(GDM_DEFAULTS_CONF)\"	\
+-	-DGDM_CUSTOM_CONF=\"$(GDM_CUSTOM_CONF)\"	\
+-	-DGDM_OLD_CONF=\"$(GDM_OLD_CONF)\"		\
++        -DGDM_SESSION_DEFAULT_PATH=\"$(GDM_SESSION_DEFAULT_PATH)\" \
+ 	$(DISABLE_DEPRECATED_CFLAGS)			\
+ 	$(DAEMON_CFLAGS)				\
+ 	$(XLIB_CFLAGS)					\
