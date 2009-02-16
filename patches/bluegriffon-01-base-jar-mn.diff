@@ -1,0 +1,98 @@
+--- mozilla/bluegriffon/base/jar.mn.orig	2009-02-13 18:06:30.899033728 +0800
++++ mozilla/bluegriffon/base/jar.mn	2009-02-13 18:07:38.259557528 +0800
+@@ -1,14 +1,14 @@
+-bluegriffon.jar:
+-% content   bluegriffon          %content/bluegriffon/
+-% style  chrome://global/content/customizeToolbar.xul    chrome://global/skin/
+-% style  chrome://global/content/customizeToolbar.xul    chrome://bluegriffon/skin/bluegriffon.css
+-% style  chrome://global/content/customizeToolbar.xul    chrome://bluegriffon/skin/editorFormat.css
+-% content venkman jar:venkman.jar!/content/venkman/ contentaccessible=yes
+-% locale venkman en-US jar:venkman.jar!/locale/en-US/venkman/
++bluegriffon.jar:
++% content   bluegriffon          %content/bluegriffon/
++% style  chrome://global/content/customizeToolbar.xul    chrome://global/skin/
++% style  chrome://global/content/customizeToolbar.xul    chrome://bluegriffon/skin/bluegriffon.css
++% style  chrome://global/content/customizeToolbar.xul    chrome://bluegriffon/skin/editorFormat.css
++% content venkman jar:venkman.jar!/content/venkman/ contentaccessible=yes
++% locale venkman en-US jar:venkman.jar!/locale/en-US/venkman/
+   content/bluegriffon/about-logo.png  (content/bluegriffon/about-logo.png)
+   content/bluegriffon/aboutDialog.css  (content/bluegriffon/aboutDialog.css)
+   content/bluegriffon/bindings/cssToggler.xml  (content/bluegriffon/bindings/cssToggler.xml)
+-  content/bluegriffon/bindings/ecolorpicker.xml  (content/bluegriffon/bindings/ecolorpicker.xml)
++  content/bluegriffon/bindings/ecolorpicker.xml  (content/bluegriffon/bindings/ecolorpicker.xml)
+   content/bluegriffon/bindings/filepickerbutton.css  (content/bluegriffon/bindings/filepickerbutton.css)
+   content/bluegriffon/bindings/filepickerbutton.xml  (content/bluegriffon/bindings/filepickerbutton.xml)
+   content/bluegriffon/bindings/multistate.css  (content/bluegriffon/bindings/multistate.css)
+@@ -37,7 +37,7 @@
+   content/bluegriffon/dialogs/openLocation.js  (content/bluegriffon/dialogs/openLocation.js)
+   content/bluegriffon/dialogs/openLocation.xul  (content/bluegriffon/dialogs/openLocation.xul)
+   content/bluegriffon/dialogs/newPageWizard.js  (content/bluegriffon/dialogs/newPageWizard.js)
+-* content/bluegriffon/dialogs/newPageWizard.xul  (content/bluegriffon/dialogs/newPageWizard.xul)
++* content/bluegriffon/dialogs/newPageWizard.xul  (content/bluegriffon/dialogs/newPageWizard.xul)
+   content/bluegriffon/dialogs/standaloneSidebar.js  (content/bluegriffon/dialogs/standaloneSidebar.js)
+   content/bluegriffon/dialogs/standaloneSidebar.xul  (content/bluegriffon/dialogs/standaloneSidebar.xul)
+   content/bluegriffon/EditorContent.css  (content/bluegriffon/EditorContent.css)
+@@ -57,9 +57,9 @@
+   content/bluegriffon/js/recentPages.js  (content/bluegriffon/js/recentPages.js)
+   content/bluegriffon/js/toolbars.js  (content/bluegriffon/js/toolbars.js)
+   content/bluegriffon/js/zoomManager.js  (content/bluegriffon/js/zoomManager.js)
+-#ifdef TOOLBAR_CUSTOMIZATION_SHEET
+-*  content/bluegriffon/js/customizeToolbarSheet.js          (content/bluegriffon/js/customizeToolbarSheet.js)
+-#endif
++#ifdef TOOLBAR_CUSTOMIZATION_SHEET
++*  content/bluegriffon/js/customizeToolbarSheet.js          (content/bluegriffon/js/customizeToolbarSheet.js)
++#endif
+   content/bluegriffon/sourceViewTemplate.html  (content/bluegriffon/sourceViewTemplate.html)
+   content/bluegriffon/utils/colors.js  (content/bluegriffon/utils/colors.js)
+   content/bluegriffon/utils/css.js  (content/bluegriffon/utils/css.js)
+@@ -74,12 +74,12 @@
+ * content/bluegriffon/xul/aboutDialog.xul  (content/bluegriffon/xul/aboutDialog.xul)
+ * content/bluegriffon/xul/bluegriffon.xul  (content/bluegriffon/xul/bluegriffon.xul)
+   content/bluegriffon/xul/colourPicker.xul  (content/bluegriffon/xul/colourPicker.xul)
+-  content/bluegriffon/xul/propertiesDeck.xul  (content/bluegriffon/xul/propertiesDeck.xul)
+-  content/bluegriffon/utils/login.js  (content/bluegriffon/utils/login.js)
+-
+-bluegriffon-locale.jar:
+-% locale    bluegriffon    en-US    %locale/en-US/bluegriffon/
+-% locale  branding  en-US    %locale/en-US/branding/
++  content/bluegriffon/xul/propertiesDeck.xul  (content/bluegriffon/xul/propertiesDeck.xul)
++  content/bluegriffon/utils/login.js  (content/bluegriffon/utils/login.js)
++
++bluegriffon-locale.jar:
++% locale    bluegriffon    en-US    %locale/en-US/bluegriffon/
++% locale  branding  en-US    %locale/en-US/branding/
+   locale/en-US/bluegriffon/aboutDialog.dtd  (locale/en-US/bluegriffon/aboutDialog.dtd)
+   locale/en-US/bluegriffon/bluegriffon.dtd  (locale/en-US/bluegriffon/bluegriffon.dtd)
+   locale/en-US/bluegriffon/bluegriffon.properties  (locale/en-US/bluegriffon/bluegriffon.properties)
+@@ -94,21 +94,20 @@
+   locale/en-US/bluegriffon/markupCleaner.dtd  (locale/en-US/bluegriffon/markupCleaner.dtd)
+   locale/en-US/bluegriffon/openLocation.dtd  (locale/en-US/bluegriffon/openLocation.dtd)
+   locale/en-US/bluegriffon/openLocation.properties  (locale/en-US/bluegriffon/openLocation.properties)
+-  locale/en-US/bluegriffon/newPageWizard.dtd  (locale/en-US/bluegriffon/newPageWizard.dtd)
+-  locale/en-US/bluegriffon/newPageWizard.properties  (locale/en-US/bluegriffon/newPageWizard.properties)
++  locale/en-US/bluegriffon/newPageWizard.dtd  (locale/en-US/bluegriffon/newPageWizard.dtd)
++  locale/en-US/bluegriffon/newPageWizard.properties  (locale/en-US/bluegriffon/newPageWizard.properties)
+   locale/en-US/bluegriffon/propertiesDeck.dtd  (locale/en-US/bluegriffon/propertiesDeck.dtd)
+   locale/en-US/bluegriffon/sidebar.dtd  (locale/en-US/bluegriffon/sidebar.dtd)
+   locale/en-US/bluegriffon/standaloneSidebar.dtd  (locale/en-US/bluegriffon/standaloneSidebar.dtd)
+   locale/en-US/bluegriffon/structurebar.dtd  (locale/en-US/bluegriffon/structurebar.dtd)
+   locale/en-US/bluegriffon/tabeditor.dtd  (locale/en-US/bluegriffon/tabeditor.dtd)
+-  locale/en-US/bluegriffon/tabeditor.properties  (locale/en-US/bluegriffon/tabeditor.properties)
+-	locale/en-US/bluegriffon/masterPasswordQuery.properties (locale/en-US/bluegriffon/masterPasswordQuery.properties)
+-  
++  locale/en-US/bluegriffon/tabeditor.properties  (locale/en-US/bluegriffon/tabeditor.properties)
++	locale/en-US/bluegriffon/masterPasswordQuery.properties (locale/en-US/bluegriffon/masterPasswordQuery.properties)
+ * locale/en-US/branding/brand.dtd  (locale/en-US/branding/brand.dtd)
+   locale/en-US/branding/brand.properties  (locale/en-US/branding/brand.properties)
+-
+-#ifdef TOOLBAR_CUSTOMIZATION_SHEET
+-toolkit.jar:
+-*+      content/global/customizeToolbar.xul           (content/bluegriffon/xul/customizeToolbarSheet.xul)
+-#endif
+-
++
++#ifdef TOOLBAR_CUSTOMIZATION_SHEET
++toolkit.jar:
++*+      content/global/customizeToolbar.xul           (content/bluegriffon/xul/customizeToolbarSheet.xul)
++#endif
++

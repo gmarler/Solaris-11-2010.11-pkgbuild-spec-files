@@ -1,3 +1,9 @@
+2009-02-16  Alfred Peng  <alfred.peng@sun.com>
+
+	* SFEprism.spec: bump the XULRunner version to 3.0.6.
+	* SFEbluegriffon.spec: new spec for the web editor based on Gecko.
+	* patches/bluegriffon-01-base-jar-mn.diff: patch for bluegriffon to build.
+
 2009-02-13  Brian Cameron  <brian.cameron@sun.com>
 
 	* SUNWgnome-display-mgr.spec, gdm-01-branding.diff:  Add new patch
