@@ -1,0 +1,70 @@
+--- Coherence-0.6.0/Coherence.egg-info/SOURCES.txt.orig	2009-02-16 16:44:02.054542152 +0800
++++ Coherence-0.6.0/Coherence.egg-info/SOURCES.txt	2009-02-16 16:44:37.491564711 +0800
+@@ -162,25 +162,25 @@
+ misc/coherence-initscript.sh
+ misc/org.Coherence.service
+ misc/upnp-tester.py
+-misc/Desktop Applet/applet-coherence
+-misc/Desktop Applet/tango-system-file-manager-32x32.png
+-misc/Desktop Applet/tango-system-file-manager.png
+-misc/EOG Plugin/upnp-coherence.eog-plugin
+-misc/EOG Plugin/upnp-coherence.py
++misc/Desktop-Applet/applet-coherence
++misc/Desktop-Applet/tango-system-file-manager-32x32.png
++misc/Desktop-Applet/tango-system-file-manager.png
++misc/EOG-Plugin/upnp-coherence.eog-plugin
++misc/EOG-Plugin/upnp-coherence.py
+ misc/Nautilus/coherence_upnp_export_extension.py
+ misc/Nautilus/coherence_upnp_play_extension.py
+ misc/Nautilus/coherence_upnp_upload_extension.py
+-misc/Rhythmbox Plugin/Makefile.am
+-misc/Rhythmbox Plugin/coherence.rb-plugin.in
+-misc/Rhythmbox Plugin/upnp_coherence/Makefile.am
+-misc/Rhythmbox Plugin/upnp_coherence/MediaPlayer.py
+-misc/Rhythmbox Plugin/upnp_coherence/MediaStore.py
+-misc/Rhythmbox Plugin/upnp_coherence/UpnpSource.py
+-misc/Rhythmbox Plugin/upnp_coherence/__init__.py
+-misc/Totem Plugin/upnp-coherence.py
+-misc/Totem Plugin/upnp-coherence.totem-plugin
+-misc/device icons/ampache-icon.png
+-misc/device icons/coherence-icon.png
+-misc/device icons/elisa-icon.png
+-misc/device icons/flickr-icon.png
+-tests/rpc_client.py
+\ No newline at end of file
++misc/Rhythmbox-Plugin/Makefile.am
++misc/Rhythmbox-Plugin/coherence.rb-plugin.in
++misc/Rhythmbox-Plugin/upnp_coherence/Makefile.am
++misc/Rhythmbox-Plugin/upnp_coherence/MediaPlayer.py
++misc/Rhythmbox-Plugin/upnp_coherence/MediaStore.py
++misc/Rhythmbox-Plugin/upnp_coherence/UpnpSource.py
++misc/Rhythmbox-Plugin/upnp_coherence/__init__.py
++misc/Totem-Plugin/upnp-coherence.py
++misc/Totem-Plugin/upnp-coherence.totem-plugin
++misc/device-icons/ampache-icon.png
++misc/device-icons/coherence-icon.png
++misc/device-icons/elisa-icon.png
++misc/device-icons/flickr-icon.png
++tests/rpc_client.py
+--- Coherence-0.6.0/setup.py.orig	2009-02-16 16:42:20.401743122 +0800
++++ Coherence-0.6.0/setup.py	2009-02-16 16:42:55.789335177 +0800
+@@ -48,7 +48,7 @@
+     author_email='coherence@beebits.net',
+     license = "MIT",
+     packages=packages,
+-    scripts = ['bin/coherence','misc/Desktop Applet/applet-coherence'],
++    scripts = ['bin/coherence','misc/Desktop-Applet/applet-coherence'],
+     url = "http://coherence.beebits.net",
+     download_url = 'http://coherence.beebits.net/download/Coherence-%s.tar.gz' % __version__,
+     keywords=['UPnP', 'DLNA', 'multimedia', 'gstreamer'],
+@@ -96,8 +96,8 @@
+         'coherence': ['upnp/core/xml-service-descriptions/*.xml',
+                       'ui/icons/*.png',
+                       'web/static/*.css','web/static/*.js'],
+-        'misc': ['Desktop Applet/*.png',
+-                 'device icons/*.png'],
++        'misc': ['Desktop-Applet/*.png',
++                 'device-icons/*.png'],
+     },
+     install_requires=[
+     'ConfigObj >= 4.3'

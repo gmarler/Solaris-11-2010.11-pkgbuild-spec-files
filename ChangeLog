@@ -1,5 +1,10 @@
 2009-02-16  Alfred Peng  <alfred.peng@sun.com>
 
+	* SFEcoherence.spec: bump to 0.6.0.
+	* patches/coherence-01-path-blank.diff: Add to fix packaging problem.
+
+2009-02-16  Alfred Peng  <alfred.peng@sun.com>
+
 	* SFEprism.spec: bump the XULRunner version to 3.0.6.
 	* SFEbluegriffon.spec: new spec for the web editor based on Gecko.
 	* patches/bluegriffon-01-base-jar-mn.diff: patch for bluegriffon to build.
