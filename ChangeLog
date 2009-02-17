@@ -1,3 +1,14 @@
+2009-02-17  Wang Xin  <jedy.wang@sun.com>
+
+	Fix file attribute problem in the spec files.
+
+	* SFEevolution-mapi.spec:
+	* SFElibmapi.spec:
+	* SFEsamba4.spec:
+	* SFEtalloc.spec:
+	* SFEtdb.spec:
+	* SFEtevent.spec:
+
 2009-02-16  Alfred Peng  <alfred.peng@sun.com>
 
 	* SFEcoherence.spec: bump to 0.6.0.

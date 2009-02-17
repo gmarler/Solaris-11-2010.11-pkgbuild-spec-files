@@ -58,12 +58,18 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr (-, root, bin)
 %dir %attr (0755, root, bin) %{_libdir}
-%{_libdir}/*
+%attr (0755, root, other) %{_libdir}/pkgconfig
+%{_libdir}/evolution
+%{_libdir}/evolution-data-server-1.2
+%{_libdir}/*.so*
 %dir %attr (0755, root, bin) %{_includedir}
 %{_includedir}/*
 %dir %attr (0755, root, sys) %{_datadir}
-%{_datadir}/*
+%{_datadir}/evolution-data-server-2.26
+%attr (0755, root, other) %{_datadir}/locale
 
 %changelog
+* Tue Feb 17 2009 - jedy.wang@sun.com
+- Fixes file attribute problem.
 * Fri Feb 13 2009 - jedy.wang@sun.com
 - Initial spec

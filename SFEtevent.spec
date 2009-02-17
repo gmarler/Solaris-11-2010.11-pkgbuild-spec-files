@@ -52,10 +52,14 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr (-, root, bin)
 %dir %attr (0755, root, bin) %{_libdir}
-%{_libdir}/*
+%attr (0755, root, other) %{_libdir}/pkgconfig
+%{_libdir}/*.so*
+%{_libdir}/python2.6
 %dir %attr (0755, root, bin) %{_includedir}
 %{_includedir}/*
 
 %changelog
+* Tue Feb 17 2009 - jedy.wang@sun.com
+- Fixes file attribute problem.
 * Tue Feb 11 2009 - jedy.wang@sun.com
 - Initial spec

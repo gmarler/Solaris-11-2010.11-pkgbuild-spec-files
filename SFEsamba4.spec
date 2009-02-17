@@ -89,7 +89,12 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, bin) %{_sbindir}
 %{_sbindir}/samba
 %dir %attr (0755, root, bin) %{_libdir}
-%{_libdir}/*
+%attr (0755, root, other) %{_libdir}/pkgconfig
+%{_libdir}/*.so*
+%{_libdir}/python2.4
+%{_libdir}/5.8.4
+%{_libdir}/i86pc-solaris-64int
+%{_libdir}/samba
 %dir %attr (0755, root, bin) %{_includedir}
 %{_includedir}/*
 %dir %attr (0755, root, sys) %{_datadir}
@@ -103,13 +108,15 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, sys) %{_sysconfdir}
 %{_sysconfdir}/*
 %dir %attr (0755, root, sys) /var
-%dir %attr (0775, root, other) /var/lib
+%dir %attr (0755, root, other) /var/lib
 %dir %attr (0775, root, sys) /var/lib/samba/private
 %dir %attr (0775, root, sys) /var/lib/samba/private/tls
 %dir %attr (0755, root, sys) /var/log
 %dir %attr (0775, root, sys) /var/log/samba
 
 %changelog
+* Tue Feb 17 2009 - jedy.wang@sun.com
+- Fix file attribute problem of /usr/lib/*.
 * Tue Feb 11 2009 - jedy.wang@sun.com
 - Fix file attribute problem of /usr/share.
 * Tue Feb 11 2009 - jedy.wang@sun.com

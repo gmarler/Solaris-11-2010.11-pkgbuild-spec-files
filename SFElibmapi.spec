@@ -58,7 +58,10 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, bin) %{_bindir}
 %{_bindir}/*
 %dir %attr (0755, root, bin) %{_libdir}
-%{_libdir}/*
+%attr (0755, root, other) %{_libdir}/pkgconfig
+%{_libdir}/*.so*
+%{_libdir}/python2.4
+%{_libdir}/nagios
 %dir %attr (0755, root, bin) %{_includedir}
 %{_includedir}/*
 %dir %attr (0755, root, sys) %{_datadir}
@@ -66,5 +69,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/modules/*
 
 %changelog
+* Tue Feb 17 2009 - jedy.wang@sun.com
+- Fix file attribute problem.
 * Thu Feb 12 2009 - jedy.wang@sun.com
 - Initial spec

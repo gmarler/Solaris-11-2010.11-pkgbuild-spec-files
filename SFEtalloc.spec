@@ -52,7 +52,8 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr (-, root, bin)
 %dir %attr (0755, root, bin) %{_libdir}
-%{_libdir}/*
+%attr (0755, root, other) %{_libdir}/pkgconfig
+%{_libdir}/*.so*
 %dir %attr (0755, root, bin) %{_includedir}
 %{_includedir}/*
 %dir %attr (0755, root, sys) %{_datadir}
@@ -62,5 +63,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/*/*
 
 %changelog
+* Tue Feb 17 2009 - jedy.wang@sun.com
+- Fix file attribute problem.
 * Tue Feb 10 2009 - jedy.wang@sun.com
 - Initial spec
