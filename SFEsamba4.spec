@@ -32,7 +32,8 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
      CPUS=1
 fi
 
-export CFLAGS="%optflags"
+#export CFLAGS="%optflags"
+export CFLAGS="-g"
 export LDFLAGS="%_ldflags"
 
 cd source4/
@@ -115,6 +116,8 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0775, root, sys) /var/log/samba
 
 %changelog
+* Wed Feb 18 2009 - jedy.wang@sun.com
+- Do not use optimization option for now.
 * Tue Feb 17 2009 - jedy.wang@sun.com
 - Fix file attribute problem of /usr/lib/*.
 * Tue Feb 11 2009 - jedy.wang@sun.com

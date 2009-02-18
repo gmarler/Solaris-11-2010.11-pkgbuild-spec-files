@@ -26,7 +26,8 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
      CPUS=1
 fi
 
-export CFLAGS="%optflags -features=extensions"
+#export CFLAGS="%optflags -features=extensions"
+export CFLAGS="-g -features=extensions"
 export LDFLAGS="%_ldflags"
 
 autoheader
@@ -69,6 +70,8 @@ rm -rf $RPM_BUILD_ROOT
 %attr (0755, root, other) %{_datadir}/locale
 
 %changelog
+* Wed Feb 18 2009 - jedy.wang@sun.com
+- Do not use optimization option for now.
 * Tue Feb 17 2009 - jedy.wang@sun.com
 - Fixes file attribute problem.
 * Fri Feb 13 2009 - jedy.wang@sun.com

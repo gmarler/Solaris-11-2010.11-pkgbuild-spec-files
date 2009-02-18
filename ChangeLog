@@ -1,3 +1,16 @@
+2009-02-18  Wang Xin  <jedy.wang@sun.com>
+
+	Do not use optimization option for now.
+
+	* SFEevolution-mapi.spec:
+	* SFElibmapi.spec:
+	* SFEsamba4.spec:
+	* SFEtalloc.spec:
+	* SFEtdb.spec:
+	* SFEtevent.spec:
+	* patches/samba4-01-solaris.diff: Remove HAVE_IMMEDIATE_STRUCTURES
+	because sun cc do not support immidiate structures.
+
 2009-02-17  Wang Xin  <jedy.wang@sun.com>
 
 	Fix file attribute problem in the spec files.

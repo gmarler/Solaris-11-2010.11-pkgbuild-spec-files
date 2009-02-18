@@ -24,7 +24,8 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
      CPUS=1
 fi
 
-export CFLAGS="%optflags"
+#export CFLAGS="%optflags"
+export CFLAGS="-g"
 export LDFLAGS="%_ldflags"
 
 ./autogen.sh
@@ -61,6 +62,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/*
 
 %changelog
+* Wed Feb 18 2009 - jedy.wang@sun.com
+- Do not use optimization option for now.
 * Tue Feb 17 2009 - jedy.wang@sun.com
 - Fixes file attribute problem.
 * Tue Feb 10 2009 - jedy.wang@sun.com
