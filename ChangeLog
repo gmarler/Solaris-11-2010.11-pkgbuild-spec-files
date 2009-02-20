@@ -1,3 +1,8 @@
+2009-02-20 Ke Wang <ke.wang@sun.com>
+	* patches/python-ctypes-02-util-find-library.diff: Added to fix
+	  find_library problem under Solaris.
+	* SFEpython-ctypes.spec: Add patch2
+
 2009-02-18  Wang Xin  <jedy.wang@sun.com>
 
 	Do not use optimization option for now.

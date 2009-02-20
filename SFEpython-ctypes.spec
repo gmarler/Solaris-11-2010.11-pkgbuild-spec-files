@@ -13,6 +13,7 @@ URL:                     http://python.net/crew/theller/ctypes/
 Version:                 1.0.2
 Source:                  %{sf_download}/ctypes/ctypes-1.0.2.tar.gz
 Patch1:                  python-ctypes-01-ffitarget.diff
+Patch2:                  python-ctypes-02-util-find-library.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 
@@ -26,6 +27,7 @@ Requires:                SFEsdl-ttf
 %prep
 %setup -q -n ctypes-%{version}
 %patch1 -p1
+%patch2 -p1
 
 %build
 
@@ -50,6 +52,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/python%{python_version}/vendor-packages/
 
 %changelog
+* Fri Feb 20 2009 - Ke Wang <ke.wang@sun.com>
+- Added patch2 for find_library in util.py
 * Wed Jan 21 2009 - Brian Cameron  <brian.cameron@sun.com>
 - Created with version 1.0.2.
 
