@@ -1,21 +1,23 @@
 #
 # spec file for package SFEcscope
 #
-# includes module(s): scsope
+# includes module(s): cscope
 #
 %include Solaris.inc
 
 Name:                    SFEcscope
 License:                 BSD
 Summary:                 Cscope - interactive source code examiner
-Version:                 15.6
-Source:                  %{sf_download}/cscope/cscope-%{version}.tar.gz
+Version:                 15.7
+Source:                  %{sf_download}/cscope/cscope-%{version}.tar.bz2
 URL:                     http://cscope.sourceforge.net/
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 BuildConflicts:      SPROsslnk
 BuildRequires:       SUNWbison
+BuildRequires:       SUNWncurses-devel
+Requires:            SUNWncurses
 Requires:            SFEctags
 
 %prep
@@ -26,8 +28,8 @@ CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
 if test "x$CPUS" = "x" -o $CPUS = 0; then
     CPUS=1
 fi
-export CFLAGS="%optflags"
-export LDFLAGS="%_ldflags"
+export CFLAGS="%optflags -I/usr/include/ncurses"
+export LDFLAGS="%_ldflags -L/usr/gnu/lib -R/usr/gnu/lib"
 ./configure --prefix=%{_prefix}			\
 	    --mandir=%{_mandir}
 	    
@@ -51,6 +53,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/*/*
 
 %changelog
+* Fri Feb 20 2009 - halton.huo@sun.com
+- Bump to 15.7
+- Add ncurses dependency.
 * Sat Feb 02 2008 - moinak.ghosh@sun.com
 - Slight tweaks and add dependency on ctags and bison.
 * Sat Apr 21 2007 - dougs@truemail.co.th

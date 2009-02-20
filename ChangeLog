@@ -1,3 +1,7 @@
+2009-02-20  Halton Huo <halton.huo@sun.com>
+
+	* SFEcscope.spec: Bump to 15.7
+
 2009-02-20 Ke Wang <ke.wang@sun.com>
 	* patches/python-ctypes-02-util-find-library.diff: Added to fix
 	  find_library problem under Solaris.
