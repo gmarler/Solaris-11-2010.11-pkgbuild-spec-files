@@ -1,3 +1,16 @@
+2009-01-31  Thomas Wagner  <tom68@users.sourceforge.net>
+
+	* SFEjack.spec: add contitional SFElibsndfile (Build-)Require
+        * encumbered/SFEgnome-media-extras.spec: add contitional SFElibsndfile (Build-)Require
+	* encumbered/SFEsox.spec: add contitional SFElibsndfile (Build-)Require
+	* SFElibsamplerate.spec: add contitional SFElibsndfile (Build-)Require
+	* encumbered/SFElame.spec: add contitional SFElibsndfile (Build-)Require
+	* encumbered/SFEtwolame.spec: add contitional SFElibsndfile (Build-)Require
+	* SFEoctave.spec: add contitional SFElibsndfile (Build-)Require
+	* encumbered/SFElibmpcdec.spec: add contitional SFElibsndfile (Build-)Require
+	* SFEpulseaudio.spec: add contitional SFElibsndfile (Build-)Require
+	* encumbered/SFEmplayer.spec: add contitional SFElibsndfile (Build-)Require
+
 2009-02-20  Halton Huo <halton.huo@sun.com>
 
 	* SFEcscope.spec: Bump to 15.7
