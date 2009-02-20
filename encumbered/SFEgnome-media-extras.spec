@@ -12,6 +12,7 @@
 %include Solaris.inc
 
 %define with_hal %(pkginfo -q SUNWhal && echo 1 || echo 0)
+%define SFElibsndfile   %(/usr/bin/pkginfo -q SFElibsndfile && echo 1 || echo 0)
 
 %use gst_ffmpeg = gst-ffmpeg.spec
 %use gst_plugins_ugly = gst-plugins-ugly.spec
@@ -26,6 +27,15 @@ SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 
 %include default-depend.inc
+
+%if %SFElibsndfile
+BuildRequires: SFElibsndfile-devel
+Requires: SFElibsndfile
+%else
+BuildRequires:	SUNWlibsndfile
+Requires:	SUNWlibsndfile
+%endif
+
 Requires: SUNWgnome-vfs
 Requires: SUNWlibms
 Requires: SUNWlxml
@@ -87,8 +97,6 @@ BuildRequires: SFEfaad2-devel
 #Requires: SFElibmms
 #BuildRequires: SFElibmms-devel
 Requires: SFElibofa
-Requires: SFElibsndfile
-BuildRequires: SFElibsndfile-devel
 Requires: SFEwildmidi
 BuildRequires: SFEwildmidi-devel
 Requires: SFExvid
@@ -200,6 +208,8 @@ rm -rf $RPM_BUILD_ROOT
 %attr (-, root, other) %{_datadir}/locale
 %endif
 %changelog
+* Tue Feb 17 2009 - Thomas Wagner
+- make (Build-)Requires conditional SUNWlibsndfile|SFElibsndfile(-devel)
 * Fri Dec 12 2008 - trisk@acm.jhu.edu
 - Bump gst-plugins-ugly to 0.10.10
 - Bump gst-plugins-bad to 0.10.9

@@ -5,6 +5,8 @@
 
 %include Solaris.inc
 
+%define SFElibsndfile   %(/usr/bin/pkginfo -q SFElibsndfile && echo 1 || echo 0)
+
 Name:           SFEoctave
 Summary:        octave High-level language, intended for numerical computations
 Group:		Math
@@ -15,11 +17,19 @@ SUNW_BaseDir:   %{_basedir}
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %include	default-depend.inc
 #Requires:	%name-root
+
+%if %SFElibsndfile
+BuildRequires: 	SFElibsndfile-devel
+Requires: 	SFElibsndfile
+%else
+BuildRequires:	SUNWlibsndfile
+Requires:	SUNWlibsndfile
+%endif
+
 Requires: 	SUNWgsed
 Requires: 	SUNWgmake
 Requires: 	SUNWgnu-gperf
 Requires: 	SFEgnuplot
-Requires: 	SFElibsndfile
 Requires:	SUNWncurses
 Requires:	SFEfftw
 Requires:	SFEblas
@@ -137,6 +147,8 @@ rm -rf $RPM_BUILD_ROOT
 #%endif
 
 %changelog
+* Tue Feb 17 2009 - Thomas Wagner
+- make (Build-)Requires conditional SUNWlibsndfile|SFElibsndfile(-devel)
 * Dec 18 2008 - Gilles Dauphin
 - Add SFEreadline as Requires
 * Dec 10 2008 - Gilles Dauphin ( Gilles DOT Dauphin AT enst DOT fr)

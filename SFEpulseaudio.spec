@@ -9,6 +9,8 @@
 %define src_name pulseaudio
 %define src_url http://0pointer.de/lennart/projects/%{src_name}
 
+%define SFElibsndfile   %(/usr/bin/pkginfo -q SFElibsndfile && echo 1 || echo 0)
+
 Name:		SFEpulseaudio
 Summary:	pulseaudio - stream audio to clients
 Version:	0.9.5
@@ -28,10 +30,16 @@ BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 
 #TODO are dependencies complete? 
+%if %SFElibsndfile
 BuildRequires: SFElibsndfile-devel
+Requires: SFElibsndfile
+%else
+BuildRequires:	SUNWlibsndfile
+Requires:	SUNWlibsndfile
+%endif
+
 BuildRequires: SUNWliboil-devel
 BuildRequires: SFElibsamplerate-devel
-Requires: SFElibsndfile
 Requires: SUNWliboil
 Requires: SFElibsamplerate
 
@@ -114,6 +122,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_sysconfdir}/pulse/*
 
 %changelog
+* Tue Feb 17 2009 - Thomas Wagner
+- make (Build-)Requires conditional SUNWlibsndfile|SFElibsndfile(-devel)
 * Tue Mar 04 2008 - trisk@acm.jhu.edu
 - Add patch6 to fix pactl crash
 * Sat Sep 22 2007 - Thomas Wagner

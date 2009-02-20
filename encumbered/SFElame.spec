@@ -22,6 +22,9 @@
 %use lame = lame.spec
 %use toolame = toolame.spec
 
+%define SFElibsndfile   %(/usr/bin/pkginfo -q SFElibsndfile && echo 1 || echo 0)
+
+
 Name:                    SFElame
 Summary:                 MP3 Encoders - lame and toolame
 Version:                 3.97
@@ -29,7 +32,15 @@ SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 Requires: SUNWlibms
-Requires: SFElibsndfile
+
+%if %SFElibsndfile
+BuildRequires:	SFElibsndfile-devel
+Requires:	SFElibsndfile
+%else
+BuildRequires:	SUNWlibsndfile
+Requires:	SUNWlibsndfile
+%endif
+
 BuildRequires: SUNWncurses-devel
 Requires: SUNWncurses
 
@@ -147,6 +158,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/doc/*
 
 %changelog
+* Tue Feb 17 2009 - Thomas Wagner
+- make (Build-)Requires conditional SUNWlibsndfile|SFElibsndfile(-devel)
 * Sat Nov 29 2008 - dauphin@enst.fr
 - SUNWncurses exist in b101
 * Thu Oct 23 2008 - dick@nagual.nl

@@ -7,6 +7,8 @@
 #
 %include Solaris.inc
 
+%define SFElibsndfile   %(/usr/bin/pkginfo -q SFElibsndfile && echo 1 || echo 0)
+
 Name:                    SFEtwolame
 Summary:                 twolame - MP3 Encoder
 Version:                 0.3.12
@@ -16,16 +18,22 @@ Patch1:			 twolame-01-configure.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
-Requires: SFElibsndfile
-Requires: SUNWlibms
+
+%if %SFElibsndfile
 BuildRequires: SFElibsndfile-devel
+Requires: SFElibsndfile
+%else
+BuildRequires:	SUNWlibsndfile
+Requires:	SUNWlibsndfile
+%endif
+
+Requires: SUNWlibms
 
 %package devel
 Summary:                 %{summary} - development files
 SUNW_BaseDir:            %{_basedir}
 %include default-depend.inc
 Requires: %name
-Requires: SFElibsndfile-devel
 
 %prep
 %setup -q -n twolame-%version
@@ -83,6 +91,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*
 
 %changelog
+* Tue Feb 17 2009 - Thomas Wagner
+- make (Build-)Requires conditional SUNWlibsndfile|SFElibsndfile(-devel)
+- removed BuildRequires: SFElibsndfiles-devel from package -devel
 * Tue Sep 02 2008 - nonsea@users.sourceforge.net
 - Add libtoolize/aclocal/autoheader/automake/autoconf before ./configure
 * Sat Aug 16 2008 - nonsea@users.sourceforge.net

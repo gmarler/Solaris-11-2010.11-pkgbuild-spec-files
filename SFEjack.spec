@@ -13,6 +13,7 @@
 %use jack = jack.spec
 
 %define SFEdoxygen      %(/usr/bin/pkginfo -q SFEdoxygen && echo 1 || echo 0)
+%define SFElibsndfile   %(/usr/bin/pkginfo -q SFElibsndfile && echo 1 || echo 0)
 
 Name:		SFEjack
 Summary:	%{jack.summary}
@@ -20,8 +21,14 @@ Version:	%{jack.version}
 SUNW_BaseDir:	%{_basedir}
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
+%if %SFElibsndfile
 BuildRequires:	SFElibsndfile-devel
 Requires:	SFElibsndfile
+%else
+BuildRequires:	SUNWlibsndfile
+Requires:	SUNWlibsndfile
+%endif
+
 Requires:	oss
 
 %package devel
@@ -112,6 +119,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Tue Feb 17 2009 - Thomas Wagner
+- make (Build-)Requires conditional SUNWlibsndfile|SFElibsndfile(-devel)
 * Tue Aug 28 2007 - dougs@truemail.co.th
 - Added doc package if doxygen is installed
 * Mon Aug 13 2007 - dougs@truemail.co.th

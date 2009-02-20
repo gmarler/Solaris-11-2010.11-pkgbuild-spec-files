@@ -15,6 +15,9 @@
 %define src_url http://%{sf_mirror}/sox
 
 
+%define SFElibsndfile   %(/usr/bin/pkginfo -q SFElibsndfile && echo 1 || echo 0)
+
+
 Name:                    SFEsox
 Summary:                 The swiss army knife of sound processing programs
 Version:                 %{src_ver}
@@ -24,11 +27,17 @@ SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 
+%if %SFElibsndfile
+BuildRequires:    SFElibsndfile-devel
 Requires:    SFElibsndfile
+%else
+BuildRequires:	SUNWlibsndfile
+Requires:	SUNWlibsndfile
+%endif
+
 Requires:    SUNWltdl
 Requires:    SFEffmpeg
 BuildRequires:    SFEffmpeg-devel
-BuildRequires:    SFElibsndfile-devel
 BuildRequires:    SUNWflac-devel
 BuildRequires:    SFElibmad-devel
 
@@ -85,5 +94,7 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Feb 17 2009 - Thomas Wagner
+- make (Build-)Requires conditional SUNWlibsndfile|SFElibsndfile(-devel)
 * Mon Jun 30 2008 - Andras Barna (andras.barna@gmail.com)
 - Initial spec

@@ -16,6 +16,8 @@
 %define with_twolame %(pkginfo -q SFEtwolame && echo 1 || echo 0)
 %define with_mpcdec %(pkginfo -q SFElibmpcdec && echo 1 || echo 0)
 
+%define SFElibsndfile   %(/usr/bin/pkginfo -q SFElibsndfile && echo 1 || echo 0)
+
 Name:                    SFEmplayer
 Summary:                 mplayer - The Movie Player
 Version:                 1.0
@@ -54,8 +56,15 @@ Requires: SUNWsmbau
 Requires: SFEliveMedia
 Requires: SFElibcdio
 BuildRequires: SFElibcdio-devel
-Requires: SFElibsndfile
+
+%if %SFElibsndfile
 BuildRequires: SFElibsndfile-devel
+Requires: SFElibsndfile
+%else
+BuildRequires:	SUNWlibsndfile
+Requires:	SUNWlibsndfile
+%endif
+
 Requires: SFElame
 BuildRequires: SFElame-devel
 Requires: SFEtwolame
@@ -190,6 +199,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/pixmaps/*
 
 %changelog
+* Tue Feb 17 2009 - Thomas Wagner
+- make (Build-)Requires conditional SUNWlibsndfile|SFElibsndfile(-devel)
 * Wed Nov 29 2008 - dauphin@enst.fr
 - change to SUNWgawk is in b101
 * Wed Oct 22 2008 - dick@nagual.nl
