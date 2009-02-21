@@ -1,4 +1,11 @@
-2009-01-31  Thomas Wagner  <tom68@users.sourceforge.net>
+2009-02-21  Thomas Wagner  <tom68@users.sourceforge.net>
+	* SFExosd.spec: add patch1 configure needs bash, fix attributs %{_docdir}
+        * SFEgmpc-plugin*.spec: add (Build-)Requires: SFEgmpc(-devel) into spec, had no effect in %use base-spec/gmpc-plugin.spec,
+          removed %doc section from %files
+        * SFEgmpc-plugin-lastfm.spec: add %{plugindownloadfile} to work around "dot" in download-filename not allowed in SVR4 packagename
+        * base-specs/gmpc-plugin.spec: add case for last.fm isn't lastfm and SVR4 packaging doesn't manage "." in packagenames
+
+2009-02-20  Thomas Wagner  <tom68@users.sourceforge.net>
 
 	* SFEjack.spec: add contitional SFElibsndfile (Build-)Require
         * encumbered/SFEgnome-media-extras.spec: add contitional SFElibsndfile (Build-)Require
