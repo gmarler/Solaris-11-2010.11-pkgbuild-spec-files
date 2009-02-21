@@ -1,3 +1,7 @@
+2009-02-21  Petr Sobotka  <sobotkap@gmail.com>
+
+	* SFEscons.spec: Bump to version 1.2.0.
+
 2009-02-21  Thomas Wagner  <tom68@users.sourceforge.net>
 	* SFExosd.spec: add patch1 configure needs bash, fix attributs %{_docdir}
         * SFEgmpc-plugin*.spec: add (Build-)Requires: SFEgmpc(-devel) into spec, had no effect in %use base-spec/gmpc-plugin.spec,
