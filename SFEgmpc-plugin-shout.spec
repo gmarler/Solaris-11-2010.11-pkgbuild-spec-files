@@ -10,6 +10,8 @@ Version:                %{gmpcplugin.version}
  
 BuildRequires: SFElibshout-devel
 Requires: SFElibshout
+BuildRequires: SFEgmpc-devel
+Requires: SFEgmpc
 
 %prep
 %gmpcplugin.prep
@@ -25,7 +27,7 @@ Requires: SFElibshout
 
 %files
 %defattr(-, root, bin)
-%doc README ChangeLog CREDITS COPYING INSTALL NEWS AUTHORS TODO ABOUT-NLS
+#%doc README ChangeLog CREDITS COPYING INSTALL NEWS AUTHORS TODO ABOUT-NLS
 %dir %attr (0755, root, sys) %{_prefix}
 %dir %attr (0755, root, sys) %{_datadir}
 %dir %attr (0755, root, other) %{_datadir}/gmpc
@@ -34,6 +36,9 @@ Requires: SFElibshout
 
 
 %changelog
+* Sat Feb 21 2009 - Thomas Wagner
+- add (Build-)Requires: SFEgmpc(-devel) (moved from base-specs/gmpc-plugin.spec)
+- removed %doc from %files (usually no docs contained in plugins)
 * Sun Dec 02 2007 - Thomas Wagner
 - rework into base-spec
 - bump to 0.15.5.0

@@ -6,22 +6,25 @@
 
 %define gmpcmainversion 0.15.5
 
+%if %{!?plugindownloadname:0}%{?plugindownloadname:1}
+%else
+%define plugindownloadname %{pluginname}
+%endif
+
 Name:			gmpc-plugin-%{pluginname}
 URL:                     http://sarine.nl/gmpc
 Version:                 0.15.5.0
 #Source:                  http://download.sarine.nl/gmpc-%{gmpcmainversion}/plugins/gmpc-%{pluginname}-%{version}.tar.gz
-Source:			 http://download.qballcow.nl/gmpc-%{gmpcmainversion}/gmpc-%{pluginname}-%{version}.tar.gz
+#Source:			 http://download.qballcow.nl/gmpc-%{gmpcmainversion}/gmpc-%{pluginname}-%{version}.tar.gz
+Source:			 http://download.qballcow.nl/gmpc-%{gmpcmainversion}/gmpc-%{plugindownloadname}-%{version}.tar.gz
 
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 
-BuildRequires:           SFEgmpc-devel
-Requires:                SFEgmpc
-
 %include default-depend.inc
 
 %prep
-%setup -q -n gmpc-%{pluginname}-%{version}
+%setup -q -n gmpc-%{plugindownloadname}-%{version}
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -62,5 +65,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sat Feb 21 2009 - Thomas Wagner
+- moveed (Build-)Requiremens SFEgmpc(-devel) over to the plugin specs to be effective
+- add case for last.fm isn't lastfm -> plugindownloadname which defaults to pluginname
 * Sun Dec 02 2007 - Thomas Wagner
 - initial base-spec for gmpc-plugin
