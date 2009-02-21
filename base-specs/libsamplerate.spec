@@ -8,7 +8,7 @@
 
 Name:		SFElibsamplerate
 Summary:	libsamplerate - Sample Rate Converter for audio
-Version:	0.1.4
+Version:	0.1.6
 Source:		%{src_url}/%{src_name}-%{version}.tar.gz
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 
@@ -40,6 +40,8 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/*.la
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Fri Jan 20 2009 - Thomas Wagner
+- Bump to 0.1.6
 * Thu Sep 18 2008 - Jijun.yu@sun.com
 - Bump to 0.1.4.
 * Mon May 05 2008 - brian.cameron@sun.com

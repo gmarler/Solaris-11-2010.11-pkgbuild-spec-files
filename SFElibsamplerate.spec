@@ -26,8 +26,6 @@ BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %if %SFElibsndfile
 BuildRequires: SFElibsndfile-devel
 Requires: SFElibsndfile
-#BuildConflicts: SUNWlibsndfile
-Conflicts: SUNWlibsndfile
 %else
 BuildRequires:	SUNWlibsndfile
 Requires:	SUNWlibsndfile
@@ -94,8 +92,6 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
-* Fri Feb 20 2009 - Thomas Wagner
-- add Conflicts: SUNWlibsndfile if SFElibsndfile if present (usually on older system)
 * Tue Feb 17 2009 - Thomas Wagner
 - make (Build-)Requires conditional SUNWlibsndfile|SFElibsndfile(-devel)
 * Thu Sep 06 2007 - Thomas Wagner
