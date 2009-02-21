@@ -1,3 +1,26 @@
+2009-02-21  Albert Lee  <trisk@acm.jhu.edu>
+
+	* SFEcuetools: *NEW* cuetools - utilities for working with cue files and TOC files
+	* SFElogjam.spec: *NEW* LogJam - graphical client for LiveJournal-based sites
+	* SFEnicdrv.spec: Update to vfe-2.6.4, rf-2.6.2, alta-2.6.3, bfe-2.6.1,
+	  ife-2.6.1, epfe-2.6.1, ae-2.6.1, gani-2.6.3, vel-2.6.4, nfo-2.6.3,
+	  myk-2.6.6, atge-2.6.3. Add jmge driver. Update GLD headers for
+	  Crossbow - requires b106 or later due to 6784639. Fix GLDv3/Crossbow
+	  support for several drivers. Update patch8 to fix GEM 2.4 and 2.6
+	  bugs.
+	* patches/logjam-01-debian.diff: Misc fixes from Debian
+	* patches/logjam-02-timegm.diff: Fix timegm() usage
+	* patches/nicdrv-02-rf.diff: Update for rf-2.6.2
+	* patches/nicdrv-03-tu.diff: Add GLDv3 fix
+	* patches/nicdrv-04-gani.diff: Update for gani-2.6.3, add misc fixes
+	* patches/nicdrv-05-myk.diff: Update for myk-2.6.6
+	* patches/nicdrv-06-ife.diff: Update for ife-2.6.1, add misc fixes
+	* patches/nicdrv-08-gldv3.diff: Fix GEM 2.4 and 2.6 bugs
+	* patches/nicdrv-09-nfo.diff, patches/nicdrv-10-atge.diff,
+	  patches/nicdrv-11-jmge.diff: Fix adddrv.sh
+	* patches/nicdrv-12-ae.diff, patches/nicdrv-13-sige.diff:
+	  Update GLDv3 support
+
 2009-02-21  Petr Sobotka  <sobotkap@gmail.com>
 
 	* SFEscons.spec: Bump to version 1.2.0.
