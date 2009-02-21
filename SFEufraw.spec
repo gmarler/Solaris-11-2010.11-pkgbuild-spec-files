@@ -56,6 +56,9 @@ Requires: SUNWlibms
 Requires: SUNWlibexif
 #I'm sorry for that:
 Obsoletes: SUNWdcraw
+Provides:  SUNWdcraw
+Conflicts: SUNWdcraw
+
 BuildRequires: SUNWgnome-libs-devel
 BuildRequires: SUNWgnome-base-libs-devel
 BuildRequires: SUNWgnome-img-editor-devel
@@ -68,6 +71,7 @@ BuildRequires: SUNWlibexif-devel
 BuildRequires: SUNWesu
 # pod2man:
 BuildRequires: SUNWperl584usr
+
 
 %if %build_l10n
 %package l10n
@@ -135,6 +139,7 @@ rm -rf $RPM_BUILD_ROOT
 #%{_datadir}/applications/*
 %dir %attr (0755, root, other) %{_datadir}/pixmaps
 %{_datadir}/pixmaps/*
+%dir %attr (0755, root, sys) %{_datadir}
 %dir %attr (0755, root, bin) %{_mandir}
 %dir %attr (0755, root, bin) %{_mandir}/man1
 %{_mandir}/man1/*
@@ -148,10 +153,13 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Mon Feb 09 2009 - Thomas Wagner
+- add %dir %attr (0755, root, sys) %{_datadir} - otherwise share permission conflict
+- try flags Obsoletes Provides Conflicts SUNWdcraw
 * Sun Jan 11 2008 - Thomas Wagner
 - adjust %doc
 - extra package build_l10n
-- Obsolete SUNWcdraw not optimal, should be Provides: SUNWcdraw
+- Obsolete SUNWdcraw not optimal, should be Provides: SUNWdcraw
 * Fri Jan  9 2008 - Thomas Wagner
 - temporarily force compiler to gcc
 - add patch2 to change args to ctime_r ... needs check about patch1
