@@ -1,0 +1,80 @@
+--- logjam-4.5.3.orig/protocol/liblivejournal/livejournal/entry.c
++++ logjam-4.5.3/protocol/liblivejournal/livejournal/entry.c
+@@ -138,7 +138,7 @@
+ 		lj_request_add(request, "prop_current_moodid", "");
+ 	lj_request_add(request, 
+ 			"prop_current_music", entry->music ? entry->music : "");
+-	lj_request_add(request, 
++	lj_request_add(request,
+ 			"prop_taglist", entry->taglist ? entry->taglist : "");
+ 	lj_request_add(request, 
+ 			"prop_picture_keyword", entry->pickeyword ? entry->pickeyword : "");
+--- logjam-4.5.3.orig/src/settings.c
++++ logjam-4.5.3/src/settings.c
+@@ -498,13 +498,7 @@
+ 
+ 	music = music_detect(&err);
+ 	if (!music) {
+-		if (source == MUSIC_SOURCE_XMMS &&
+-				err->domain == G_SPAWN_ERROR && err->code == G_SPAWN_ERROR_NOENT) {
+-			jam_warning(dlg, _("LogJam XMMS helper not found.  "
+-						"Did you install LogJam's XMMS support?"));
+-		} else {
+-			jam_warning(dlg, _("Error detecting music: %s"), err->message);
+-		}
++		jam_warning(dlg, _("Error detecting music: %s"), err->message);
+ 		g_error_free(err);
+ 		return;
+ 	}
+--- logjam-4.5.3.orig/src/music.c
++++ logjam-4.5.3/src/music.c
+@@ -14,9 +14,10 @@
+ const CommandList music_commands[] = {
+ 	{ N_("None"), NULL },
+ 	{ "Music Player Daemon", "sh -c \"mpc | grep -v '^volume: .* repeat: .* random: .*'\"" },
+-	{ "Rhythmbox", "rhythmbox --print-playing" },
+-	{ "XMMS / Beep", "logjam-xmms-client" },
++	{ "Rhythmbox", "rhythmbox-client --print-playing" },
+ 	{ "amaroK", "dcop amarok player nowPlaying" },
++	{ "Audacious", "audtool current-song" },
++	{ "Quod Libet", "quodlibet --print-playing" },
+ 	{ NULL, NULL }
+ };
+ 
+--- logjam-4.5.3.orig/src/music.h
++++ logjam-4.5.3/src/music.h
+@@ -11,8 +11,11 @@
+ 
+ typedef enum {
+ 	MUSIC_SOURCE_NONE,
+-	MUSIC_SOURCE_XMMS,
++	MUSIC_SOURCE_MPD,
+ 	MUSIC_SOURCE_RHYTHMBOX,
++	MUSIC_SOURCE_AMAROK,
++	MUSIC_SOURCE_AUDACIOUS,
++	MUSIC_SOURCE_QUODLIBET,
+ 	MUSIC_SOURCE_CUSTOM,
+ 	MUSIC_SOURCE_COUNT
+ } MusicSource;
+--- logjam-4.5.3.orig/src/menu.c
++++ logjam-4.5.3/src/menu.c
+@@ -339,6 +339,11 @@
+ 		return;
+ 	}
+ 
++	/* Hack: destroy the submenu in case it's still displayed while this is
++	 * called (e.g. user presses Space), since otherwise GTK will crap itself
++	 * while an input lock is held */
++	if (GTK_IS_WIDGET(gtk_menu_item_get_submenu(GTK_MENU_ITEM(musejournal))))
++		gtk_widget_destroy(gtk_menu_item_get_submenu(GTK_MENU_ITEM(musejournal)));
+ 	menu = usejournal_build_menu(u->username,
+ 	                             jam_doc_get_usejournal(jw->doc),
+ 	                             u->usejournals,
+@@ -444,7 +449,6 @@
+ 
+ };
+ 	int itemcount = sizeof(menu_items) / sizeof(menu_items[0]);
+-	int i;
+ 	JamView *view;
+ 
+ 	accelgroup = gtk_accel_group_new();

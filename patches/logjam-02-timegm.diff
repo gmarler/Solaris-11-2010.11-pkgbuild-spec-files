@@ -1,0 +1,11 @@
+--- logjam-4.5.3.orig/src/journalstore-sqlite.c	2006-01-10 02:39:01.000000000 -0500
++++ logjam-4.5.3/src/journalstore-sqlite.c	2009-02-20 16:52:48.149931998 -0500
+@@ -403,7 +403,7 @@
+ 		SQLCHECK(sqlite3_bind_int(stmt, 13, entry->time.tm_year+1900));
+ 		SQLCHECK(sqlite3_bind_int(stmt, 14, entry->time.tm_mon+1));
+ 		SQLCHECK(sqlite3_bind_int(stmt, 15, entry->time.tm_mday));
+-		SQLCHECK(sqlite3_bind_int(stmt, 16, timegm(&entry->time)));
++		SQLCHECK(sqlite3_bind_int(stmt, 16, lj_timegm(&entry->time)));
+ 	}
+ 	if (entry->security.type != LJ_SECURITY_PUBLIC) {
+ 		int sec = -1;

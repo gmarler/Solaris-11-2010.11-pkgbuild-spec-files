@@ -12,29 +12,30 @@
 %include arch64.inc
 %endif
 
-%define vfe_version 2.6.2a
-%define rf_version 2.4.0
+%define vfe_version 2.6.4
+%define rf_version 2.6.2
 %define ni_version 0.8.11
-%define alta_version 2.6.0
+%define alta_version 2.6.3
 %define tu_version 2.6.0b
-%define bfe_version 2.6.0a
+%define bfe_version 2.6.1
 %define tne_version 2.4.0a
-%define ife_version 2.6.0a
-%define epfe_version 2.4.0
+%define ife_version 2.6.1
+%define epfe_version 2.6.1
 %define mtd_version 2.4.0
-%define ae_version 2.6.0a
+%define ae_version 2.6.1
 %define tcfe_version 2.4.0
-%define gani_version 2.4.4
-%define vel_version 2.6.0
-%define nfo_version 2.6.0
+%define gani_version 2.6.3
+%define vel_version 2.6.4
+%define nfo_version 2.6.3
 %define icpt_version 2.4.0
 %define sige_version 2.6.2
 %define em_version 2.4.0
-%define myk_version 2.6.0
+%define myk_version 2.6.6
+%define atge_version 2.6.3
+%define jmge_version 2.6.1
 %define urf_version 0.8.2
 %define axf_version 0.8.2
 %define upf_version 0.8.2
-%define atge_version 2.6.2
 
 %define src_url http://homepage2.nifty.com/mrym3/taiyodo
 
@@ -43,6 +44,8 @@ Summary:             Base package for Masayuki Murayama's Solaris NIC drivers
 Version:             1.0
 Source0:             %{src_url}/vfe-%{vfe_version}.tar.gz
 Source1:             %{src_url}/rf-%{rf_version}.tar.gz
+
+# ni may not work on sparc
 Source2:             %{src_url}/ni-%{ni_version}.tar.gz
 Source3:             %{src_url}/alta-%{alta_version}.tar.gz
 
@@ -73,6 +76,7 @@ Source20:            %{src_url}/em-%{em_version}.tar.gz
 # Replaces nge and supports newer nForce chipsets
 Source21:            %{src_url}/nfo-%{nfo_version}.tar.gz
 Source22:            %{src_url}/atge-%{atge_version}.tar.gz
+Source23:            %{src_url}/jmge-%{jmge_version}.tar.gz
 
 # Template script used to generate post-install scripts for each driver.
 Source100:           drvtestadd
@@ -88,7 +92,7 @@ Source102:           drvrm
 Source103:           etc_system
 
 # Headers for building GLDv3 drivers outside of ON tree.
-Source104:           http://trisk.acm.jhu.edu/src/gldv3-headers-0.2.tar.bz2
+Source104:           http://trisk.acm.jhu.edu/src/gldv3-headers-0.20090219.tar.bz2
 Patch1:              nicdrv-01-em.diff
 Patch2:              nicdrv-02-rf.diff
 Patch3:              nicdrv-03-tu.diff
@@ -97,6 +101,11 @@ Patch5:              nicdrv-05-myk.diff
 Patch6:              nicdrv-06-ife.diff
 Patch7:              nicdrv-07-tcfe.diff
 Patch8:              nicdrv-08-gldv3.diff
+Patch9:              nicdrv-09-nfo.diff
+Patch10:             nicdrv-10-atge.diff
+Patch11:             nicdrv-11-jmge.diff
+Patch12:             nicdrv-12-ae.diff
+Patch13:             nicdrv-13-sige.diff
 
 URL:                 http://homepage2.nifty.com/mrym3/taiyodo/eng/
 SUNW_BaseDir:        /
@@ -333,6 +342,16 @@ Requires: SUNWcakr
 Requires: SUNWckr
 Requires: SUNWcnetr
 
+%package jmge
+Summary:       NIC driver for JMicron JMC250/260 PCI-E ethernet controller
+Version:       %{jmge_version}
+SUNW_BaseDir:  /
+%include default-depend.inc
+Requires: %{name}
+Requires: SUNWcakr
+Requires: SUNWckr
+Requires: SUNWcnetr
+
 %prep
 %setup -c -n %{name}-%{version}
 %setup -T -D -a 1
@@ -357,6 +376,7 @@ Requires: SUNWcnetr
 %setup -T -D -a 20
 %setup -T -D -a 21
 %setup -T -D -a 22
+%setup -T -D -a 23
 %setup -T -D -a 104
 %patch1 -p0
 %patch2 -p0
@@ -366,16 +386,22 @@ Requires: SUNWcnetr
 %patch6 -p0
 %patch7 -p0
 %patch8 -p0
+%patch9 -p0
+%patch10 -p0
+%patch11 -p0
+%patch12 -p0
+%patch13 -p0
 
 for src in %{SOURCE0} %{SOURCE1} %{SOURCE2} %{SOURCE3} %{SOURCE4} %{SOURCE5} \
 	%{SOURCE6} %{SOURCE7} %{SOURCE8} %{SOURCE9} %{SOURCE10} %{SOURCE11} \
 	%{SOURCE12} %{SOURCE13} %{SOURCE14} %{SOURCE15} %{SOURCE16} %{SOURCE17} \
-	%{SOURCE18} %{SOURCE19} %{SOURCE20} %{SOURCE21} %{SOURCE22}
+	%{SOURCE18} %{SOURCE19} %{SOURCE20} %{SOURCE21} %{SOURCE22} %{SOURCE23}
 do
 	drvdir=`basename ${src} | sed 's/\.tar\.gz//'`
 	# use newest GEM 2.6 code if possible, else 2.4 from em
 	case "$drvdir" in
-		em-*|myk-*|atge-*) # GEM code donors
+		em-*|bfe-*) # GEM code donors
+		# WARNING: update patch8 if changing donors!
 		;;
 		# these drivers have a GEM 2.4 interface, consider updating
 		*-2.4.*)
@@ -384,7 +410,7 @@ do
 		;;
 		*-2.6.*)
 		rm -f $drvdir/gem.c $drvdir/gem.h
-		cp myk-*/gem.c myk-*/gem.h $drvdir
+		cp bfe-*/gem.c bfe-*/gem.h $drvdir
 		;;
 	esac
 done
@@ -412,7 +438,7 @@ cp %{SOURCE101} .
 for src in %{SOURCE0} %{SOURCE1} %{SOURCE2} %{SOURCE3} %{SOURCE4} %{SOURCE5} \
 	%{SOURCE6} %{SOURCE7} %{SOURCE8} %{SOURCE9} %{SOURCE10} %{SOURCE11} \
 	%{SOURCE12} %{SOURCE13} %{SOURCE14} %{SOURCE15} %{SOURCE16} %{SOURCE17} \
-	%{SOURCE18} %{SOURCE19} %{SOURCE20} %{SOURCE21} %{SOURCE22}
+	%{SOURCE18} %{SOURCE19} %{SOURCE20} %{SOURCE21} %{SOURCE22} %{SOURCE23}
 do
 	drvdir=`basename ${src} | sed 's/\.tar\.gz//'`
 	cd $drvdir
@@ -420,7 +446,7 @@ do
 	if [ -f Makefile.config_gld3 -a "$gld" = "3" ]; then
 		rm -f Makefile.config
 		# some configs don't use ONUTSDIR
-		cat Makefile.config_gld3 | sed "s,/home/mrym/opensolaris/usr/src/uts,`pwd`/../gldv3-headers,g" > Makefile.config
+		cat Makefile.config_gld3 | sed "s,/home/mrym/opensolaris/usr/src/uts,${PWD}/../gldv3-headers,g" > Makefile.config
 		# some configs don't have all the new magic
 		cat >> Makefile.config <<EOF
 CFGFLAGS += \
@@ -438,7 +464,7 @@ EOF
 	cat Makefile.%{_arch64}_${ccext} | sed 's/\/etc\/system/system/g' > Makefile
 	make clean
 	make \
-	 ONUTSDIR="`pwd`/../gldv3-headers" \
+	 ONUTSDIR="${PWD}/../gldv3-headers" \
 	 OFLAGS_GCC="-O2 -march=pentium -D__INLINE__=inline" \
 	 OFLAGS_SUNCC="-xO4 -xprefetch=auto -D__INLINE__=inline -Wu,-xmodel=kernel" \
 	 AFLAGS_SUNCC_AMD64="-m64 -Di86pc -xchip=opteron -xmodel=kernel"
@@ -498,7 +524,7 @@ cp %{SOURCE102} ${RPM_BUILD_ROOT}/%{_localstatedir}/nicdrv/scripts
 for src in %{SOURCE0} %{SOURCE1} %{SOURCE2} %{SOURCE3} %{SOURCE4} %{SOURCE5} \
 	%{SOURCE6} %{SOURCE7} %{SOURCE8} %{SOURCE9} %{SOURCE10} %{SOURCE11} \
 	%{SOURCE12} %{SOURCE13} %{SOURCE14} %{SOURCE15} %{SOURCE16} %{SOURCE17} \
-	%{SOURCE18} %{SOURCE19} %{SOURCE20} %{SOURCE21} %{SOURCE22}
+	%{SOURCE18} %{SOURCE19} %{SOURCE20} %{SOURCE21} %{SOURCE22} %{SOURCE23}
 do
 	drvdir=`basename ${src} | sed 's/\.tar\.gz//'`
 	cd $drvdir
@@ -724,6 +750,14 @@ ${BASEDIR}%{_localstatedir}/nicdrv/scripts/drvrm ${BASEDIR} em
 BASEDIR=${BASEDIR:=/}
 ${BASEDIR}%{_localstatedir}/nicdrv/scripts/drvrm ${BASEDIR} atge
 
+%post jmge
+. ${BASEDIR:=}%{_localstatedir}/nicdrv/scripts/jmge.postinst
+
+%postun jmge
+BASEDIR=${BASEDIR:=/}
+${BASEDIR}%{_localstatedir}/nicdrv/scripts/drvrm ${BASEDIR} jmge
+
+
 %files
 %defattr (-, root, bin)
 %dir %attr (0755, root, sys) %{_prefix}
@@ -896,7 +930,22 @@ ${BASEDIR}%{_localstatedir}/nicdrv/scripts/drvrm ${BASEDIR} atge
 %dir %attr (0755, root, bin) %{_localstatedir}/nicdrv/scripts
 %attr (0644, root, bin) %{_localstatedir}/nicdrv/scripts/atge.postinst
 
+
+%files jmge -f jmge.files
+%defattr (-, root, sys)
+%dir %attr (0755, root, sys) %{_localstatedir}
+%dir %attr (0755, root, bin) %{_localstatedir}/nicdrv
+%dir %attr (0755, root, bin) %{_localstatedir}/nicdrv/scripts
+%attr (0644, root, bin) %{_localstatedir}/nicdrv/scripts/jmge.postinst
+
 %changelog
+* Thu Feb 19 2009 - Albert Lee
+- Update to vfe-2.6.4, rf-2.6.2, alta-2.6.3, bfe-2.6.1, ife-2.6.1, epfe-2.6.1,
+  ae-2.6.1, gani-2.6.3, vel-2.6.4, nfo-2.6.3, myk-2.6.6, atge-2.6.3
+- Add jmge driver
+- Update GLD headers for Crossbow - requires b106 or later due to 6784639
+- Fix GLDv3/Crossbow support for several drivers
+- Update patch8 to fix GEM 2.4 and 2.6 bugs
 * Sat Dec 20 2008 - Thomas Wagner
 - corrected package name for atge (was Intel -> now Attansic L1/L2 and Atheros AR81)
 * Sun Nov 30 2008 - Thomas Wagner

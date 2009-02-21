@@ -1,0 +1,33 @@
+--- atge-2.6.3.orig/adddrv.sh	2009-01-01 08:32:37.000000000 -0500
++++ atge-2.6.3/adddrv.sh	2009-02-20 00:27:42.307530469 -0500
+@@ -7,29 +7,5 @@
+ set DEVLIST = ($DEVLIST '"pciex1969,1026"')	# athros L1E/L2E
+ set DEVLIST = ($DEVLIST '"pciex1969,2048"')	# attansic L2
+ 
+-#echo $DEVLIST
+-
+-set DEVLIST2 = ( )
+-foreach i ($DEVLIST)
+-	set pcidev = `grep $i /etc/driver_aliases`
+-	echo $pcidev
+-	if ("$pcidev" == "") then
+-		set DEVLIST2 = ( $DEVLIST2 "$i" )
+-	endif
+-end
+-
+-#echo $DEVLIST2
+-if ("$DEVLIST2" == "") then
+-	echo nothing to do.
+-	exit 1
+-endif
+-
+-set existing = `grep "atge " /etc/driver_aliases`
+-#echo $existing
+-
+-if ("$existing" == "") then
+-	/usr/sbin/add_drv -n -v -m '* 0600 root sys' -i "$DEVLIST2" atge
+-else 
+-	/usr/sbin/update_drv -a -v -m '* 0600 root sys' -i "$DEVLIST2" atge
+-endif
++/usr/sbin/add_drv -n -v -m '* 0600 root sys' -i "$DEVLIST" atge
+ sync

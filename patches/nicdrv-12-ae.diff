@@ -1,0 +1,12 @@
+--- ae-2.6.1.orig/ae_gem.c	2008-04-22 16:29:03.000000000 -0400
++++ ae-2.6.1/ae_gem.c	2009-02-20 00:17:57.480624791 -0500
+@@ -1559,8 +1559,7 @@
+  */
+ /* ======================================================== */
+ #ifdef GEM_CONFIG_GLDv3
+-DDI_DEFINE_STREAM_OPS(ae_ops, nulldev, nulldev, aeattach, aedetach,
+-    nodev, NULL, D_MP, NULL);
++GEM_STREAM_OPS(ae_ops, aeattach, aedetach);
+ #else
+ static	struct module_info aeminfo = {
+ 	0,			/* mi_idnum */

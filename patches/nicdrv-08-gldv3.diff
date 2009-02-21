@@ -1,19 +1,123 @@
---- myk-2.6.0/gem.h.orig	Sat Feb  2 21:41:18 2008
-+++ myk-2.6.0/gem.h	Sat Mar 22 23:00:26 2008
-@@ -672,7 +672,15 @@
- int gem_pci_set_power_state(dev_info_t *, ddi_acc_handle_t, uint_t);
- int gem_pci_regs_map_setup(dev_info_t *, uint32_t, uint32_t,
- 	struct ddi_device_acc_attr *, caddr_t *, ddi_acc_handle_t *);
--#ifndef GEM_CONFIG_GLDv3
-+#ifdef GEM_CONFIG_GLDv3
-+#define	gem_getinfo	nulldev
-+#define	gem_open	NULL
-+#define	gem_close	NULL
-+#define	gem_wput	NULL
-+#define	gem_wsrv	NULL
-+#define	gem_rsrv	NULL
-+#define	gem_power	NULL
+--- em-2.4.0.orig/gem.h	2009-02-19 23:21:04.447918000 -0500
++++ em-2.4.0/gem.h	2009-02-19 23:57:50.777478000 -0500
+@@ -10,6 +10,9 @@
+ 
+ #ifdef GEM_CONFIG_GLDv3
+ #include <sys/mac.h>
++#ifndef MAC_VERSION
++#include <sys/mac_provider.h>
++#endif
+ #include <sys/mac_ether.h>
+ #else
+ #include <sys/gld.h>
+--- em-2.4.0.orig/gem.c	2009-02-19 23:21:04.447837000 -0500
++++ em-2.4.0/gem.c	2009-02-20 00:03:35.580587000 -0500
+@@ -4340,7 +4340,11 @@
+ static void		gem_mc_ioctl(void *, queue_t *, mblk_t *);
+ static boolean_t	gem_mc_getcapab(void *, mac_capab_t, void *);
+ 
++#ifdef _SYS_MAC_PROVIDER_H
++#define	GEM_M_CALLBACK_FLAGS	(MC_IOCTL | MC_GETCAPAB)
 +#else
- #define	gem_getinfo	gld_getinfo
- #define	gem_open	gld_open
- #define	gem_close	gld_close
+ #define	GEM_M_CALLBACK_FLAGS	(MC_RESOURCES | MC_IOCTL | MC_GETCAPAB)
++#endif
+ 
+ static mac_callbacks_t gem_m_callbacks = {
+ 	GEM_M_CALLBACK_FLAGS,
+@@ -4351,7 +4355,9 @@
+ 	gem_mc_multicst,
+ 	gem_mc_unicst,
+ 	gem_mc_tx,
++#ifndef _SYS_MAC_PROVIDER_H
+ 	gem_mc_resources,
++#endif
+ 	gem_mc_ioctl,
+ 	gem_mc_getcapab,
+ };
+@@ -4994,7 +5000,7 @@
+ 	}
+ #endif /* notyet */
+ }
+-
++#ifndef _SYS_MAC_PROVIDER_H
+ static void
+ gem_set_coalease(void *arg, time_t ticks, uint_t count)
+ {
+@@ -5034,7 +5040,7 @@
+ 	mutex_exit(&dp->xmitlock);
+ 	mutex_exit(&dp->intrlock);
+ }
+-
++#endif /* _SYS_MAC_PROVIDER_H */
+ static boolean_t
+ gem_mc_getcapab(void *arg, mac_capab_t cap, void *cap_data)
+ {
+@@ -5065,9 +5071,11 @@
+ 		ret = B_TRUE;
+ 		break;
+ 
++#ifndef _SYS_MAC_PROVIDER_H
+ 	case MAC_CAPAB_POLL:
+ 		ret = B_TRUE;
+ 		break;
++#endif
+ 	}
+ 	return (ret);
+ }
+@@ -5778,6 +5786,7 @@
+ 	mac_register_t		*macp = NULL;
+ #else
+ 	gld_mac_info_t		*macinfo;
++	void			*tmp;
+ #endif
+ 	int			ret;
+ 	int			unit;
+@@ -5849,6 +5858,18 @@
+ 	gc->gc_rx_buf_align = max(gc->gc_rx_buf_align, IOC_LINESIZE - 1); 
+ 	gc->gc_dma_attr_rxbuf.dma_attr_align = gc->gc_rx_buf_align + 1;
+ 
++	/* fix descriptor boundary for cache line size */
++	gc->gc_dma_attr_desc.dma_attr_align =
++	    max(gc->gc_dma_attr_desc.dma_attr_align, IOC_LINESIZE);
++
++#ifndef GEM_CONFIG_GLDv3
++	/* workaround: fix dma attribute for solaris bug */
++	gc->gc_dma_attr_txbuf.dma_attr_count_max =
++	    max(gc->gc_dma_attr_txbuf.dma_attr_count_max, PAGEOFFSET);
++	gc->gc_dma_attr_rxbuf.dma_attr_count_max =
++	    max(gc->gc_dma_attr_rxbuf.dma_attr_count_max, PAGEOFFSET);
++#endif
++
+ 	/* fix get_packet method */
+ 	if (gc->gc_get_packet == NULL) {
+ 		gc->gc_get_packet = &gem_get_packet_default;
+@@ -5971,11 +5992,16 @@
+ 	mac_free(macp);
+ 	macp = NULL;
+ #else
++	/* gld_register will corrupts driver_private */
++	tmp = ddi_get_driver_private(dip);
+ 	if (gld_register(dip,
+ 			(char *)ddi_driver_name(dip), macinfo) != DDI_SUCCESS) {
+ 		cmn_err(CE_WARN, "!%s: gld_register failed", dp->name);
++		ddi_set_driver_private(dip, tmp);
+ 		goto err_stop_mii;
+ 	}
++	/* restore driver private */
++	ddi_set_driver_private(dip, tmp);
+ #endif
+ 	if ((dp->misc_flag & GEM_NOINTR) == 0) {
+ #ifdef GEM_CONFIG_GLDv3
+--- bfe-2.6.1.orig/gem.c	2009-02-13 10:00:03.000000000 -0500
++++ bfe-2.6.1/gem.c	2009-02-20 00:11:05.696196250 -0500
+@@ -7637,8 +7637,8 @@
+ 		}
+ #else
+ 		if (ddi_add_intr(dip, 0, NULL, NULL,
+-		    (uint_t (*)(caddr_t))gem_intr,
+-		    (caddr_t)dp) != DDI_SUCCESS) {
++		    gld_intr,
++		    (caddr_t)macinfo) != DDI_SUCCESS) {
+ 			cmn_err(CE_WARN, "!%s: ddi_add_intr failed", dp->name);
+ 			goto err_unregister;
+ 		}

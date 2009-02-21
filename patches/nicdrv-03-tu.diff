@@ -29,3 +29,24 @@
 -endif
 +/usr/sbin/add_drv -n -v -m '* 0600 root sys' -i "$DEVLIST" tu
  sync
+--- tu-2.6.0b/tu_gem.c.orig	2007-09-25 07:07:00.000000000 -0400
++++ tu-2.6.0b/tu_gem.c	2009-02-19 23:10:01.232578853 -0500
+@@ -4918,6 +4918,9 @@
+  * OS depend (loadable streams driver) routine
+  */
+ /* ======================================================== */
++#ifdef GEM_CONFIG_GLDv3
++GEM_STREAM_OPS(tu_ops, tuattach, tudetach);
++#else
+ static	struct module_info tuminfo = {
+ 	0,			/* mi_idnum */
+ 	"tu",			/* mi_idname */
+@@ -4985,7 +4988,7 @@
+ 	NULL,		/* devo_bus_ops */
+ 	gem_power	/* devo_power */
+ };
+-
++#endif /* GEM_CONFIG_GLDv3 */
+ static struct modldrv modldrv = {
+ 	&mod_driverops,	/* Type of module.  This one is a driver */
+ 	ident,

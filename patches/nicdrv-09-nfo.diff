@@ -1,0 +1,28 @@
+--- nfo-2.6.3.orig/adddrv.sh	2009-01-01 08:47:52.000000000 -0500
++++ nfo-2.6.3/adddrv.sh	2009-02-20 00:25:59.774507101 -0500
+@@ -55,24 +55,5 @@
+ set DEVLIST = ( $DEVLIST '"pci10de,ab3"' )	# MCP79
+ 
+ 
+-#echo $DEVLIST
+-
+-set DEVLIST2 = ( )
+-foreach i ($DEVLIST)
+-	set pcidev = `grep $i /etc/driver_aliases`
+-	echo $pcidev
+-	if ("$pcidev" == "") then
+-		set DEVLIST2 = ( $DEVLIST2 "$i" )
+-	endif
+-end
+-
+-#echo $DEVLIST2
+-
+-set existing = `grep "nfo " /etc/driver_aliases`
+-echo $existing
+-if ("$existing" == "") then
+-	/usr/sbin/add_drv -n -v -m '* 0600 root sys' -i "$DEVLIST2" nfo
+-else 
+-	/usr/sbin/update_drv -a -v -m '* 0600 root sys' -i "$DEVLIST2" nfo
+-endif
++/usr/sbin/add_drv -n -v -m '* 0600 root sys' -i "$DEVLIST" nfo
+ sync

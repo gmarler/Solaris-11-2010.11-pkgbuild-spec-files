@@ -1,8 +1,8 @@
---- gani-2.4.4/adddrv.sh.orig	2008-02-09 23:51:40.157104110 +0530
-+++ gani-2.4.4/adddrv.sh	2008-02-09 23:51:56.097672914 +0530
-@@ -11,28 +11,5 @@
- set DEVLIST = ( $DEVLIST '"pci10ec,8136"' )	# PCI-E 810xE
- set DEVLIST = ( $DEVLIST '"pci1186,4300"' )	# D-Link DGE-528T
+--- gani-2.6.3.orig/adddrv.sh	2009-02-06 07:22:17.000000000 -0500
++++ gani-2.6.3/adddrv.sh	2009-02-20 00:35:04.139529355 -0500
+@@ -11,29 +11,5 @@
+ set DEVLIST = ( $DEVLIST '"pciex10ec,8168"' )	# PCI-E 8168/811x
+ set DEVLIST = ( $DEVLIST '"pciex10ec,8136"' )	# PCI-E 810xE
  
 -#echo $DEVLIST
 -
@@ -22,7 +22,8 @@
 -endif
 -
 -set existing = `grep "gani " /etc/driver_aliases`
--echo $existing
+-#echo $existing
+-
 -if ("$existing" == "") then
 -	/usr/sbin/add_drv -n -v -m '* 0600 root sys' -i "$DEVLIST2" gani
 -else 
@@ -30,3 +31,24 @@
 -endif
 +/usr/sbin/add_drv -n -v -m '* 0600 root sys' -i "$DEVLIST" gani
  sync
+--- gani-2.6.3.orig/gani_gem.c	2009-02-06 07:22:17.000000000 -0500
++++ gani-2.6.3/gani_gem.c	2009-02-20 00:42:09.275518309 -0500
+@@ -1837,7 +1837,7 @@
+ #ifdef GEM_CONFIG_VLAN_HW
+ 	if ((vtag = LE_32(rdp->rxd1)) & RXD1_TAVA) {
+ 		/* fix vlan tag format */
+-		flags |= BSWAP_16(vtag & 0xffff) << GEM_RX_VTAG_SHIFT;
++		flags |= (uint64_t)BSWAP_16(vtag & 0xffff) << GEM_RX_VTAG_SHIFT;
+ 		DPRINTF(2, (CE_CONT, "%s: %s: vtag detected %llx",
+ 		    dp->name, __func__, (unsigned long long)flags));
+ 	}
+@@ -3349,8 +3349,7 @@
+  */
+ /* ======================================================== */
+ #ifdef GEM_CONFIG_GLDv3
+-DDI_DEFINE_STREAM_OPS(gani_ops, nulldev, nulldev, ganiattach, ganidetach,
+-    nodev, NULL, D_MP, NULL);
++GEM_STREAM_OPS(gani_ops, ganiattach, ganidetach);
+ #else
+ static	struct module_info ganiminfo = {
+ 	0,			/* mi_idnum */
