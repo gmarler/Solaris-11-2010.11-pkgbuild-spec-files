@@ -58,6 +58,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man3/*
 
 %changelog
+* Wed Feb 25 2009 - alfred.peng@sun.com
+- Bump to 1.4.9 and build with Sun Studio.
 * Mon Mar 19 2007 - dougs@truemail.co.th
 - Fixed -fno-omit-frame-pointer flag
 * DOW MMM DD 2006 - Eric Boutilier
