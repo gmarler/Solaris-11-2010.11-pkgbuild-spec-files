@@ -9,6 +9,8 @@
 %define with_handle_pragma_pack_push_pop %{?_with_handle_pragma_pack_push_pop:1}%{?!_with_handle_pragma_pack_push_pop:0}
 
 %include Solaris.inc
+#%define cc_is_gcc 1
+#%define _gpp /usr/sfw/bin/g++
 %include usr-gnu.inc
 %include base.inc
 
@@ -22,10 +24,12 @@
 
 
 %define SUNWbinutils    %(/usr/bin/pkginfo -q SUNWbinutils && echo 1 || echo 0)
+%define SFEgmp          %(/usr/bin/pkginfo -q SFEgmp && echo 1 || echo 0)
+%define SFEmpfr         %(/usr/bin/pkginfo -q SFEmpfr && echo 1 || echo 0)
 
 Name:                SFEgccruntime
 Summary:             GNU gcc runtime libraries required by applications
-Version:             4.2.4
+Version:             4.3.3
 Source:              ftp://ftp.gnu.org/pub/gnu/gcc/gcc-%{version}/gcc-%{version}.tar.bz2
 Patch1:              gcc-01-libtool-rpath.diff
 %if %with_handle_pragma_pack_push_pop
@@ -35,7 +39,22 @@ Patch2:              gcc-02-handle_pragma_pack_push_pop.diff
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
+
+%if %SFEgmp
 BuildRequires: SFEgmp-devel
+Requires: SFEgmp
+%else
+BuildRequires: SUNWgnu-mp
+Requires: SUNWgnu-mp
+%endif
+
+%if %SFEmpfr
+BuildRequires: SFEmpfr-devel
+Requires: SFEmpfr
+%else
+BuildRequires: SUNWgnu-mpfr
+Requires: SUNWgnu-mpfr
+%endif
 
 #chicken-egg-problem
 #also add configure switch below
@@ -47,9 +66,6 @@ BuildRequires: SFEbinutils
 Requires: SFEbinutils
 %endif
 
-BuildRequires: SFEmpfr-devel
-Requires: SFEmpfr
-Requires: SFEgmp
 Requires: SUNWpostrun
 
 %package -n SFEgcc
@@ -58,7 +74,23 @@ Version:                 %{version}
 SUNW_BaseDir:            %{_basedir}
 %include default-depend.inc
 Requires: %name
+
+%if %SFEgmp
 BuildRequires: SFEgmp-devel
+Requires: SFEgmp
+%else
+BuildRequires: SUNWgnu-mp
+Requires: SUNWgnu-mp
+%endif
+
+%if %SFEmpfr
+BuildRequires: SFEmpfr-devel
+Requires: SFEmpfr
+%else
+BuildRequires: SUNWgnu-mpfr
+Requires: SUNWgnu-mpfr
+%endif
+
 %if %SUNWbinutils
 BuildRequires: SUNWbinutils
 Requires: SUNWbinutils
@@ -66,9 +98,6 @@ Requires: SUNWbinutils
 BuildRequires: SFEbinutils
 Requires: SFEbinutils
 %endif
-BuildRequires: SFEmpfr-devel
-Requires: SFEmpfr
-Requires: SFEgmp
 Requires: SUNWpostrun
 
 
@@ -83,8 +112,11 @@ Requires:                %{name}
 %prep
 %setup -q -c -n %{name}-%version
 mkdir gcc
+#with 4.3.3 in new directory libjava/classpath/
+cd gcc-%{version}/libjava/classpath/
+%patch1 -p1
+cd ../../..
 cd gcc-%{version}
-%patch1 -p1 -b .patch01
 %if %with_handle_pragma_pack_push_pop
 %patch2 -p1
 %else
@@ -144,6 +176,14 @@ export LD="/usr/gnu/bin/ld"
 	--enable-shared				\
 	--disable-static			\
 	--enable-decimal-float			\
+%if %SFEgmp
+%else
+        --with-gmp_include=/usr/include/gmp \
+%endif
+%if %SFEmpfr
+%else
+        --with-mpfr_include=/usr/include/mpfr \
+%endif
 	$nlsopt
 
 make -j$CPUS bootstrap
@@ -246,6 +286,11 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Sat Feb 21 2009 - Thomas Wagner
+- bump to 4.3.3
+- make conditional SFEgmp  / SUNWgnu-mp
+- make conditional SFEmpfr / SUNWgnu-mpfr
+- add extra configure switch if SUNWgnu-mp and/or SUNWgnu-mpfr is used
 * Sun Jan 25 2009 - Thomas Wagner
 - make default without HANDLE_PRAGMA_PACK_PUSH_POP. switch on with:
   --with-handle_pragma_pack_push_pop
