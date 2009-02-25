@@ -1,3 +1,8 @@
+2009-02-25  Thomas Wagner  <tom68@users.sourceforge.net>
+
+	* SFEgcc.spec: bump to 4.3.3, conditional SFEgmp/SUNWgnu-mp and SFEmpfr/SUNWgnu-mpfr, adjust patches
+        * SFEgrip.spec: fix permissions with %doc and newer pkgbuild, add (Build-)Requires (by check-deps.pl)
+
 2009-02-25  Alfred Peng  <alfred.peng@sun.com>
 
 	* SFElibevent.spec: Update the changelog for the spec file.
