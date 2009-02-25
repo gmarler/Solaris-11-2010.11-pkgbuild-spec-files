@@ -1,0 +1,11 @@
+--- istanbul-0.2.2/gst/gstximagesrc.c-orig	2009-02-24 20:58:40.121630000 -0600
++++ istanbul-0.2.2/gst/gstximagesrc.c	2009-02-24 21:00:34.164417000 -0600
+@@ -648,7 +648,7 @@ gst_istximage_src_create (GstPushSrc * b
+ 
+   if (!gst_istximage_src_recalc (s)) {
+     GST_ELEMENT_ERROR (s, RESOURCE, FAILED,
+-        ("Changing resolution at runtime is not yet supported."), NULL);
++        ("Changing resolution at runtime is not yet supported."), (NULL));
+     return GST_FLOW_ERROR;
+   }
+ 

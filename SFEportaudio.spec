@@ -16,7 +16,6 @@ Patch1:			portaudio-01-pthread.diff
 SUNW_BaseDir:           %{_basedir}
 BuildRoot:              %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
-Requires: oss
 
 %package devel
 Summary:                 %{summary} - development files

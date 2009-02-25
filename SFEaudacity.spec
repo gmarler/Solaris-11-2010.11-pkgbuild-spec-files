@@ -13,8 +13,8 @@
 
 Name:                SFEaudacity
 Summary:             Free, Cross-Platform Sound Editor
-Version:             1.3.6
-Source:              %{sf_download}/audacity/%{src_name}-src-%{version}.tar.bz2
+Version:             1.3.7
+Source:              %{sf_download}/audacity/%{src_name}-minsrc-%{version}.tar.bz2
 # bug 1910678
 Patch1:		     audacity-01-solaris.diff
 # bug 1910685
@@ -32,7 +32,6 @@ BuildRequires: SFEportaudio-devel
 Requires: SFEportaudio
 BuildRequires: SFEladspa-devel
 Requires: SFEladspa
-Requires: SFEladspa-swh-plugins
 BuildRequires: SFEsoundtouch-devel
 Requires: SFEsoundtouch
 
@@ -207,7 +206,9 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
-* Wed Jan 07 2008 - brian.cameron@sun.com
+* Tue Feb 24 2009 - brian.cameron@sun.com
+- Bump to 1.3.7.
+* Wed Jan 07 2009 - brian.cameron@sun.com
 - Bump to 1.3.6.  Remove upstream patch audacity-06-shuttlegui.diff.
 * Sat Nov 29 2008 - gilles.dauphin@enst.fr
 - SUNWwxidgets is now in B101

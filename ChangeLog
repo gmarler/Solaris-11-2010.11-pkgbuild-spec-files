@@ -1,7 +1,21 @@
+2009-02-24  Brian Cameron  <brian.cameron@sun.com>
+
+	* SFEsoundtouch, patches/soundtouch-03-fixconst.diff: Bump to 1.4.0.  
+	  Remove upstream patche.
+	* patches/soundtouch-01-noopt.diff, patches/soundtouch-02-fixpow.diff,
+	  patches/soundtouch-03-nomsse.diff: Rework so they apply.
+	* base/specs/libsamplerate.spec: Bump to 0.1.7.
+	* base-specs/fftw3.spec: Bump to 3.2.1.
+	* SFEaudacity.spec: Bump to 1.3.7.
+	* SFEistanbul.spec, patches/istanbul-01-fixgst.diff: Added new spec
+	  file.
+
 2009-02-21  Albert Lee  <trisk@acm.jhu.edu>
 
-	* SFEcuetools: *NEW* cuetools - utilities for working with cue files and TOC files
-	* SFElogjam.spec: *NEW* LogJam - graphical client for LiveJournal-based sites
+	* SFEcuetools: *NEW* cuetools - utilities for working with cue files
+	  and TOC files
+	* SFElogjam.spec: *NEW* LogJam - graphical client for LiveJournal-based
+	  sites
 	* SFEnicdrv.spec: Update to vfe-2.6.4, rf-2.6.2, alta-2.6.3, bfe-2.6.1,
 	  ife-2.6.1, epfe-2.6.1, ae-2.6.1, gani-2.6.3, vel-2.6.4, nfo-2.6.3,
 	  myk-2.6.6, atge-2.6.3. Add jmge driver. Update GLD headers for
@@ -26,35 +40,45 @@
 	* SFEscons.spec: Bump to version 1.2.0.
 
 2009-02-21  Thomas Wagner  <tom68@users.sourceforge.net>
-	* SFExosd.spec: add patch1 configure needs bash, fix attributs %{_docdir}
-        * SFEgmpc-plugin*.spec: add (Build-)Requires: SFEgmpc(-devel) into spec, had no effect in %use base-spec/gmpc-plugin.spec,
-          removed %doc section from %files
-        * SFEgmpc-plugin-lastfm.spec: add %{plugindownloadfile} to work around "dot" in download-filename not allowed in SVR4 packagename
-        * base-specs/gmpc-plugin.spec: add case for last.fm isn't lastfm and SVR4 packaging doesn't manage "." in packagenames
-        * SFEufraw.spec: add %dir %attr (0755, root, sys) %{_datadir} - otherwise share permission conflict,
-          try flags Obsoletes Provides Conflicts SUNWdcraw
-        * SFElibsamplerate.spec: remove Conflicts (mistake)
-        * base-specs/libsamplerate.spec: bump to version 0.1.6
+	* SFExosd.spec: add patch1 configure needs bash, fix attributs
+	  %{_docdir}
+	* SFEgmpc-plugin*.spec: add (Build-)Requires: SFEgmpc(-devel) into
+	  spec, had no effect in %use base-spec/gmpc-plugin.spec,
+	  removed %doc section from %files
+	* SFEgmpc-plugin-lastfm.spec: add %{plugindownloadfile} to work around
+	  "dot" in download-filename not allowed in SVR4 packagename
+	* base-specs/gmpc-plugin.spec: add case for last.fm isn't lastfm and
+	  SVR4 packaging doesn't manage "." in packagenames
+	* SFEufraw.spec: add %dir %attr (0755, root, sys) %{_datadir} -
+	  otherwise share permission conflict,
+	  try flags Obsoletes Provides Conflicts SUNWdcraw
+	* SFElibsamplerate.spec: remove Conflicts (mistake)
+	* base-specs/libsamplerate.spec: bump to version 0.1.6
 
 
 2009-02-20  Thomas Wagner  <tom68@users.sourceforge.net>
 
 	* SFEjack.spec: add contitional SFElibsndfile (Build-)Require
-        * encumbered/SFEgnome-media-extras.spec: add contitional SFElibsndfile (Build-)Require
+	* encumbered/SFEgnome-media-extras.spec: add contitional SFElibsndfile
+	  (Build-)Require
 	* encumbered/SFEsox.spec: add contitional SFElibsndfile (Build-)Require
 	* SFElibsamplerate.spec: add contitional SFElibsndfile (Build-)Require
 	* encumbered/SFElame.spec: add contitional SFElibsndfile (Build-)Require
-	* encumbered/SFEtwolame.spec: add contitional SFElibsndfile (Build-)Require
+	* encumbered/SFEtwolame.spec: add contitional SFElibsndfile
+	  (Build-)Require
 	* SFEoctave.spec: add contitional SFElibsndfile (Build-)Require
-	* encumbered/SFElibmpcdec.spec: add contitional SFElibsndfile (Build-)Require
+	* encumbered/SFElibmpcdec.spec: add contitional SFElibsndfile
+	  (Build-)Require
 	* SFEpulseaudio.spec: add contitional SFElibsndfile (Build-)Require
-	* encumbered/SFEmplayer.spec: add contitional SFElibsndfile (Build-)Require
+	* encumbered/SFEmplayer.spec: add contitional SFElibsndfile
+	  (Build-)Require
 
 2009-02-20  Halton Huo <halton.huo@sun.com>
 
 	* SFEcscope.spec: Bump to 15.7
 
 2009-02-20 Ke Wang <ke.wang@sun.com>
+
 	* patches/python-ctypes-02-util-find-library.diff: Added to fix
 	  find_library problem under Solaris.
 	* SFEpython-ctypes.spec: Add patch2
@@ -62,7 +86,6 @@
 2009-02-18  Wang Xin  <jedy.wang@sun.com>
 
 	Do not use optimization option for now.
-
 	* SFEevolution-mapi.spec:
 	* SFElibmapi.spec:
 	* SFEsamba4.spec:
@@ -70,7 +93,7 @@
 	* SFEtdb.spec:
 	* SFEtevent.spec:
 	* patches/samba4-01-solaris.diff: Remove HAVE_IMMEDIATE_STRUCTURES
-	because sun cc do not support immidiate structures.
+	  because sun cc do not support immidiate structures.
 
 2009-02-17  Wang Xin  <jedy.wang@sun.com>
 
@@ -92,7 +115,8 @@
 
 	* SFEprism.spec: bump the XULRunner version to 3.0.6.
 	* SFEbluegriffon.spec: new spec for the web editor based on Gecko.
-	* patches/bluegriffon-01-base-jar-mn.diff: patch for bluegriffon to build.
+	* patches/bluegriffon-01-base-jar-mn.diff: patch for bluegriffon to
+	  build.
 
 2009-02-13  Brian Cameron  <brian.cameron@sun.com>
 
@@ -133,7 +157,7 @@
 	* SFElibmapi.spec: New spec.
 	* patches/libmapi-01-solaris.diff: New patch to fix build problem.
 	* patches/samba4-01-solaris.diff: Updated to fix problems found when
-	building libmapi.
+	  building libmapi.
 
 2009-02-11  Wang Xin  <jedy.wang@sun.com>
 

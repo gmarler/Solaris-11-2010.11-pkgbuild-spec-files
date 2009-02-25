@@ -1,0 +1,11 @@
+--- soundtouch/source/SoundTouch/Makefile.am-orig	2009-02-24 13:20:30.019662000 -0600
++++ soundtouch/source/SoundTouch/Makefile.am	2009-02-24 13:20:42.282047000 -0600
+@@ -36,7 +36,7 @@ libSoundTouch_la_SOURCES=AAFilter.cpp FI
+ # Note by authore: '-msse2' might not work in non-X86 compilations. If someone can
+ # fix this script to automatically check for CPU architecture, please submit a patch 
+ # to me.
+-AM_CXXFLAGS=-O3 -msse2 -fcheck-new -I../../include
++AM_CXXFLAGS=-O3 -fcheck-new -I../../include
+ 
+ 
+ # other linking flags to add

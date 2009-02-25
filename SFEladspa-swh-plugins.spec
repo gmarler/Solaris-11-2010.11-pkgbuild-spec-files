@@ -20,8 +20,8 @@ BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 
 BuildRequires: SFEladspa-devel
 Requires: SFEladspa
-BuildRequires: SFEfftw-devel
-Requires: SFEfftw
+BuildRequires: SUNWfftw3
+Requires: SUNWfftw3
 
 %prep
 %setup -q -n swh-plugins-%version
