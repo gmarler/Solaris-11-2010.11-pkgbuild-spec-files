@@ -1,3 +1,7 @@
+2009-02-25  Alfred Peng  <alfred.peng@sun.com>
+
+	* SFElibevent.spec: Bump to 1.4.9 and build with Sun Studio.
+
 2009-02-24  Brian Cameron  <brian.cameron@sun.com>
 
 	* SFEsoundtouch, patches/soundtouch-03-fixconst.diff: Bump to 1.4.0.  
