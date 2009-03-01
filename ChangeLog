@@ -1,11 +1,19 @@
+2009-03-01  Brian Cameron  <brian.cameron@sun.com>
+
+	* SFEgnonlin.spec: Bump to 0.10.10.
+	* SFEjokosher.spec: Bump to 0.11.
+
 2009-02-28  Thomas Wagner  <tom68@users.sourceforge.net>
- 
-        * SFErrdtool.spec: (new) initial version 1.3.6, added perl, ruby, python support
+
+	* SFErrdtool.spec: (new) initial version 1.3.6, added perl, ruby,
+	  python support
 
 2009-02-25  Thomas Wagner  <tom68@users.sourceforge.net>
 
-	* SFEgcc.spec: bump to 4.3.3, conditional SFEgmp/SUNWgnu-mp and SFEmpfr/SUNWgnu-mpfr, adjust patches
-        * SFEgrip.spec: fix permissions with %doc and newer pkgbuild, add (Build-)Requires (by check-deps.pl)
+	* SFEgcc.spec: bump to 4.3.3, conditional SFEgmp/SUNWgnu-mp and
+	  SFEmpfr/SUNWgnu-mpfr, adjust patches
+	* SFEgrip.spec: fix permissions with %doc and newer pkgbuild, add
+	  (Build-)Requires (by check-deps.pl)
 
 2009-02-25  Alfred Peng  <alfred.peng@sun.com>
 

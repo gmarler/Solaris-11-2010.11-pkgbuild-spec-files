@@ -9,9 +9,9 @@
 
 Name:		SFEjokosher
 Summary:	Jokosher is a multi-track studio application
-Version:	0.10.1
+Version:	0.11
 URL:		http://jokosher.org
-Source0:	http://launchpad.net/jokosher/0.10/%{version}/+download/jokosher-%{version}.tar.gz
+Source0:	http://launchpad.net/jokosher/0.11/%{version}/+download/jokosher-%{version}.tar.gz
 SUNW_BaseDir:   %{_basedir}
 BuildRoot:      %{_tmppath}/jokosher-%{version}-build
 Requires:	SUNWgnome-python-libs
@@ -126,6 +126,8 @@ test -x $BASEDIR/lib/postrun || exit 0
 %endif
 
 %changelog
+* Sun Mar 01 2009 - brian.cameron@sun.com
+- Bump to 0.11.
 * Tue Sep 30 2008 - brian.cameron@sun.com
 - Bump to 0.10.1
 * Fri Aug 29 2008 - brian.cameron@sun.com
