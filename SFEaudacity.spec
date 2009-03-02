@@ -15,13 +15,15 @@ Name:                SFEaudacity
 Summary:             Free, Cross-Platform Sound Editor
 Version:             1.3.7
 Source:              %{sf_download}/audacity/%{src_name}-minsrc-%{version}.tar.bz2
+Source1:             soundcard.h
 # bug 1910678
 Patch1:		     audacity-01-solaris.diff
-# bug 1910685
+# bug 1910685/
 Patch2:              audacity-02-fixsed.diff
 # bug 1910699
 Patch3:              audacity-03-addgtklibs.diff
 Patch4:              audacity-04-allegrord.diff
+Patch5:              audacity-05-m4.diff
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -82,6 +84,9 @@ Requires:                %{name}
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
+%patch5 -p1
+mkdir -p lib-src/portaudio-v19/include/sys
+cp %{SOURCE1} lib-src/portaudio-v19/include/sys
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -99,15 +104,17 @@ AU_DEBUG_CONFIG=-disable-debug
 %endif
 %endif
 
-export CPPFLAGS="-I/usr/gnu/include -I/usr/X11/include -I/usr/sfw/include"
+export CPPFLAGS="-I${PWD}/lib-src/portaudio-v19/include -I/usr/gnu/include -I/usr/X11/include -I/usr/sfw/include"
 export PATH=/usr/gnu/bin:$PATH
 export LDFLAGS="-L/usr/gnu/lib -L/usr/X11/lib -R/usr/gnu/lib -R/usr/X11/lib -R/usr/sfw/lib"
 %if %with_wxw_gcc
 export CC=gcc
 export CXX=g++
 %endif
+%if %cc_is_gcc
 CFLAGS="$CFLAGS -fPIC -DPIC -fno-omit-frame-pointer"
 CXXFLAGS="$CFLAGS -fPIC -DPIC -fno-omit-frame-pointer"
+%endif
 
 %if %with_libmad
 AU_LIBMAD_CONFIG="--with-libmad"
@@ -136,6 +143,11 @@ libtoolize -f -c
 aclocal $ACLOCAL_FLAGS
 autoheader
 autoconf -f
+
+cd ./lib-src/lib-widget-extra
+aclocal $ACLOCAL_FLAGS
+autoconf -f
+cd ../..
 
 ./configure --prefix=%{_prefix}         \
             --bindir=%{_bindir}         \
@@ -206,6 +218,9 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Wed Feb 25 2009 - Albert Lee
+- Use included soundcard.h
+- Add patch5
 * Tue Feb 24 2009 - brian.cameron@sun.com
 - Bump to 1.3.7.
 * Wed Jan 07 2009 - brian.cameron@sun.com

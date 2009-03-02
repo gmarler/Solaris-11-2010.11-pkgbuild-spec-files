@@ -12,6 +12,7 @@ Name:                   SFEportaudio
 Summary:                Portable cross-platform Audio API
 Version:                v19_20071207
 Source:                 %{src_url}/pa_stable_%{version}.tar.gz
+Source1:                soundcard.h
 Patch1:			portaudio-01-pthread.diff
 SUNW_BaseDir:           %{_basedir}
 BuildRoot:              %{_tmppath}/%{name}-%{version}-build
@@ -25,6 +26,8 @@ SUNW_BaseDir:            %{_prefix}
 %prep
 %setup -q -n %{src_name}
 %patch1 -p1
+mkdir -p src/os/unix/sys
+cp %{SOURCE1} src/os/unix/sys
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -39,6 +42,7 @@ autoconf --force
 
 export CFLAGS="%optflags"
 export CXXFLAGS="%cxx_optflags"
+export CPPFLAGS="-I${PWD}/src/os/unix"
 export LDFLAGS="%_ldflags"
 ./configure --prefix=%{_prefix}		\
 	    --bindir=%{_bindir}		\
@@ -75,6 +79,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*
 
 %changelog
+* Tue Feb 24 2009 - Albert Lee
+- Use included sys/soundcard.h
 * Fri Mar 14 2008 - brian.cameron@sun.com
 - Bump to the new 20071207 version.  Remove upstream portaudio-01-oss.diff.
 * Sat Sep 22 2007 - dougs@truemail.co.th

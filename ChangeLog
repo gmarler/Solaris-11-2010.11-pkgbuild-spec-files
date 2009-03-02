@@ -1,3 +1,13 @@
+2009-03-02  Albert Lee  <trisk@acm.jhu.edu>
+
+	* SFEalpine.spec: Fix SSL support
+	* SFEportaudio.spec: Use included sys/soundcard.h
+	* SFEaudacity.spec: Use included soundcard.h. Add patch5.
+	* SFExorg-input-synaptics.spec, base-specs/xf86-input-synaptics.spec:
+	  *NEW* Synaptics input driver for X.org
+	* patches/audacity-05-m4.diff: Fix bashism in macros
+	* patches/ffmpeg-01-BE_16.diff: Patch update (forgot to commit)
+
 2009-03-02  Alfred Peng  <alfred.peng@sun.com>
 
 	* SFEcoherence.spec, patches/coherence-01-path-blank.diff: Bump to

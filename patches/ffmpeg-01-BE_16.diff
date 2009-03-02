@@ -9,15 +9,3 @@
  /* from http://www.iana.org/assignments/rtp-parameters last updated 05 January 2005 */
  static const struct
  {
-diff -ur ffmpeg-export-2007-07-31-orig/libavformat/rtp_h264.c ffmpeg-export-2007-07-31/libavformat/rtp_h264.c
---- ffmpeg-export-2007-07-31-orig/libavformat/rtp_h264.c	2007-07-31 13:16:43.000000000 +0700
-+++ ffmpeg-export-2007-07-31/libavformat/rtp_h264.c	2007-07-31 13:27:32.036904445 +0700
-@@ -49,6 +49,8 @@
- #include "base64.h"
- #include "avstring.h"
- 
-+#define BE_16(x)  ((((uint8_t*)(x))[0] << 8) | ((uint8_t*)(x))[1])
-+
- /**
-     RTP/H264 specific private data.
- */

@@ -36,7 +36,7 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
 fi
 
 export CFLAGS="%optflags"
-export LDFLAGS="%_ldflags -mt -L/usr/sfw/lib -R/usr/sfw/lib"
+export LDFLAGS="%_ldflags -mt %{sfw_lib_path}"
 
 #%if %tcl_8_3
 #TCL_OPTS="--with-tcl-lib=tcl8.3"
@@ -45,6 +45,13 @@ export LDFLAGS="%_ldflags -mt -L/usr/sfw/lib -R/usr/sfw/lib"
 #%endif
 # Disable Tcl until we figure out what to do with Web Alpine
 TCL_OPTS=--without-tcl
+
+SSL_CERTS_DIR=/etc/sfw/openssl/certs
+SSL_INCLUDE_DIR=%{sfw_inc}
+SSL_LIB_DIR=/usr/sfw/lib
+if [ ! -d "$SSL_INCLUDE_DIR/openssl" ]; then
+	SSL_INCLUDE_DIR=/usr/include
+fi
 
 autoconf
 
@@ -59,6 +66,9 @@ autoconf
             --with-passfile=.pine-passfile \
             --disable-debug \
             --with-debug-level=0 \
+	    --with-ssl-certs-dir=$SSL_CERTS_DIR \
+	    --with-ssl-include-dir=$SSL_INCLUDE_DIR \
+	    --with-ssl-lib-dir=$SSL_LIB_DIR \
             $TCL_OPTS
 
 make -j $CPUS
@@ -85,6 +95,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/*
 
 %changelog
+* Mon Mar 02 2009 - Albert Lee
+- Fix SSL support
 * Tue Oct 21 2008  - Pradhap Devarajan <pradhap (at) gmail.com>
 - Fix link
 * Fri Aug 15 2008 - glynn.foster@sun.com
