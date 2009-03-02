@@ -1,3 +1,8 @@
+2009-03-02  Alfred Peng  <alfred.peng@sun.com>
+
+	* SFEcoherence.spec, patches/coherence-01-path-blank.diff: Bump to
+	  0.6.2. Remove upstream patch.
+
 2009-03-01  Brian Cameron  <brian.cameron@sun.com>
 
 	* SFEgnonlin.spec: Bump to 0.10.10.

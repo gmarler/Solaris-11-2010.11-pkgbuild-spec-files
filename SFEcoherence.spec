@@ -13,11 +13,8 @@
 Name:                    SFEcoherence
 Summary:                 DLNA/UPnP framework for the digital living 
 URL:                     http://coherence.beebits.net
-Version:                 0.6.0
+Version:                 0.6.2
 Source:                  http://coherence.beebits.net/download/Coherence-%{version}.tar.gz
-
-# date:2009-02-16 owner:alfred type:bug bugid:190
-Patch1:                  coherence-01-path-blank.diff
 
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -29,8 +26,6 @@ Requires:                SUNWPython
 
 %prep
 %setup -q -n Coherence-%{version}
-mv misc/Desktop\ Applet/ misc/Desktop-Applet
-%patch1 -p1
 
 %build
 python%{pythonver} setup.py build
@@ -53,6 +48,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/python%{pythonver}/site-packages/misc/*
 
 %changelog
+* Mon Mar 02 2009 - alfred.peng@sun.com
+* Bump to 0.6.2. Remove the upstream patch path-blank.diff.
 * Mon Feb 16 2009 - alfred.peng@sun.com
 * Add patch path-blank.diff to fix packaging problem.
   Bump to 0.6.0.
