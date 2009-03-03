@@ -1,0 +1,49 @@
+Index: trunk/plugins/symbol-db/symbol-db-engine-core.c
+===================================================================
+--- trunk/plugins/symbol-db/symbol-db-engine-core.c	(revision 4824)
++++ trunk/plugins/symbol-db/symbol-db-engine-core.c	(working copy)
+@@ -223,7 +223,7 @@
+ sdb_engine_get_dyn_query_node_by_id (SymbolDBEngine *dbe, dyn_query_type query_id,
+ 									 SymExtraInfo sym_info, gsize other_parameters);
+ 
+-inline const DynChildQueryNode *
++const DynChildQueryNode *
+ sdb_engine_insert_dyn_query_node_by_id (SymbolDBEngine *dbe, dyn_query_type query_id,
+ 									 	SymExtraInfo sym_info, gsize other_parameters,
+ 										const gchar *sql);
+@@ -403,7 +403,7 @@
+  * these queries are time-critical.
+  * A GdaSet will also be populated once, avoiding so to create again later on.
+  */
+-inline const GdaStatement *
++const GdaStatement *
+ sdb_engine_get_statement_by_query_id (SymbolDBEngine * dbe, static_query_type query_id)
+ {
+ 	static_query_node *node;
+@@ -440,7 +440,7 @@
+ /**
+  *
+  */
+-inline const DynChildQueryNode *
++const DynChildQueryNode *
+ sdb_engine_get_dyn_query_node_by_id (SymbolDBEngine *dbe, dyn_query_type query_id,
+ 									 SymExtraInfo sym_info, gsize other_parameters)
+ {
+@@ -612,7 +612,7 @@
+  * Return a GdaSet of parameters calculated from the statement. It does not check
+  * if it's null. You *must* be sure to have called sdb_engine_get_statement_by_query_id () first.
+  */
+-inline const GdaSet *
++const GdaSet *
+ sdb_engine_get_query_parameters_list (SymbolDBEngine *dbe, static_query_type query_id)
+ {
+ 	SymbolDBEnginePriv *priv;
+@@ -720,7 +720,7 @@
+  *
+  * @return -1 on error. Otherwise the id of tuple.
+  */
+-inline gint
++gint
+ sdb_engine_get_tuple_id_by_unique_name (SymbolDBEngine * dbe, static_query_type qtype,
+ 										gchar * param_key,
+ 										GValue * param_value)

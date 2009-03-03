@@ -12,7 +12,7 @@
 Name:		libgda
 License:        LGPLv2
 Group:		Development/Libraries
-Version:	3.99.9
+Version:	3.99.12
 Release:	1
 Distribution:   Java Desktop System
 Vendor:         Sun Microsystems, Inc.
@@ -119,6 +119,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*
 
 %changelog
+* Tue Mar 03 2009 - halton.huo@sun.com
+- Bump to 3.99.12
 * Tue Jan 20 2009 - halton.huo@sun.com
 - Bump to 3.99.9
 - Remove upstreamed patch suncc-empty-struct.diff

@@ -8,17 +8,16 @@
 # Owner:halton
 #
 
-
 Name:		gdl
 License:	GPL
 Group:		Development/Libraries
-Version:	2.24.0
+Version:	2.25.92
 Release:	1
 Distribution:   Java Desktop System
 Vendor:         Sun Microsystems, Inc.
 URL:		http://www.gnome.org
 Summary:	Components and library for GNOME development tools.
-Source:		http://download.gnome.org/sources/%{name}/2.24/%{name}-%{version}.tar.bz2
+Source:		http://download.gnome.org/sources/%{name}/2.25/%{name}-%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-root
 
 Requires: 	gtk2 >= 2.4.0
@@ -110,6 +109,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_prefix}/lib/pkgconfig/*
 
 %changelog
+* Tue Mar 03 2009 - halton.huo@sun.com
+- Bump to 2.25.92
 * Fri Jan 16 2009 - halton.huo@sun.com
 - Bump to 2.24.0
 * Wed Aug 20 2008 - nonsea@users.sourceforge.net

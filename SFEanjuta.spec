@@ -13,16 +13,14 @@
 # or, depend on package SUNWevolution-bdb-devel, which is in jds spec-files/closed
 # now, use second way.
 Name:           SFEanjuta
-Version:        2.25.5
+Version:        2.25.903.0
 Summary:        GNOME IDE for C and C++
 Group:          Development/Tools
 License:        GPL
 URL:            http://anjuta.org/
 Source:         http://download.gnome.org/sources/anjuta/2.25/anjuta-%{version}.tar.bz2
-# date:2007-05-14 owner:nonsea type:branding
-Patch1:         anjuta-01-ld-z-text.diff
-# date:2009-01-19 owner:halton type:bug bugzilla:568254
-Patch2:         anjuta-02-extern-inline.diff
+# date:2009-02-03 owner:halton type:bug bugzilla:573858
+Patch1:         anjuta-01-inline.diff
 
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
@@ -50,6 +48,7 @@ Requires: SUNWneon
 Requires: SFEgdl
 Requires: SFElibgda
 Requires: SFEautogen
+BuildRequires: SFEperl-gettext
 BuildRequires: SFEgdl-devel
 BuildRequires: SFElibgda-devel
 BuildRequires: SFEautogen-devel
@@ -91,7 +90,7 @@ Requires:                %{name}
 
 %prep
 %setup -q -n anjuta-%{version}
-%patch2 -p1
+%patch1 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -99,8 +98,7 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
      CPUS=1
 fi
 
-# FIXME: delete -I/usr/incldue/pcre when bug 6654493 is fixed.
-export CFLAGS="%optflags -I/usr/include/pcre"
+export CFLAGS="%optflags"
 export LDFLAGS="%_ldflags"
 export ACLOCAL_FLAGS="-I ."
 # FIXME: subversion on snv_106 is 1.4.3, anjuta 2.25.x requires >= 1.5.0.
@@ -122,8 +120,6 @@ autoconf
 	--with-svn-lib=%{_libdir}/svn				\
 	--disable-scrollkeeper					\
 	%gtk_doc_option
-
-%patch1 -p1
 
 make -j$CPUS
 
@@ -279,6 +275,13 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 %endif
 
 %changelog
+* Tue Mar 03 2009 - halton.huo@sun.com
+- Bump to 2.25.903.0
+- Add patch inline.diff to fix bugzilla #573858
+- Add BuildRequires:SFEperl-gettext
+- Remove hack code since CR 6654493 is fixed in snv_100
+- Remove upstreamed patch extern-inline.diff
+- Remove unused patch ld-z-text.diff 
 * Tue Jan 20 2009 - halton.huo@sun.com
 - Bump to 2.25.5
 * Sun Jan 18 2009 - halton.huo@sun.com
