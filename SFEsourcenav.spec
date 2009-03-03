@@ -2,21 +2,24 @@
 # spec file for package SFEsourcenav
 #
 # includes module(s): sourcenav
+# bugdb: http://developer.berlios.de/patch/index.php?func=detailpatch&group_id=8334&patch_id=
 #
 %include Solaris.inc
 
 Name:                    SFEsourcenav
 Summary:                 sourcenav - source code analysis tool
-Version:                 5.2
-%define tarball_version  5.2b2
-Source:                  %{sf_download}/sourcenav/sourcenav-%{tarball_version}.tar.gz
-URL:                     http://sourcenav.sourceforge.net/
+Version:                 6.0
+Source:                  %{sf_download}/sourcenav/sourcenav-%{version}.tar.gz
+#date:2009-02-03 owner:halton type:bug bugid:2705
+Patch1:                  sourcenav-01-solaris-ld.diff
+URL:                     http://sourcenav.berlios.de/
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 
 %prep
-%setup -q -n sourcenav-%{tarball_version}
+%setup -q -n sourcenav-%{version}
+%patch1 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -63,6 +66,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/*/*
 
 %changelog
+* Tue Mar 03 2009 - halton.huo@sun.com
+- Bump to 6.0
+- Add patch solaris-ld.diff to fix Solaris ld issue 
 * Fri Feb 22 2007 - jijun.yu@sun.com
 - Fix build issue caused by rm
 * Sat Oct 14 2006 - laca@sun.com

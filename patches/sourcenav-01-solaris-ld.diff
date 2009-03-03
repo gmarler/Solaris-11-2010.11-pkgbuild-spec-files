@@ -1,0 +1,11 @@
+--- sourcenav-6.0/db4/PORT/configure.orig	2009-03-03 15:45:59.457343000 +0800
++++ sourcenav-6.0/db4/PORT/configure	2009-03-03 15:45:41.329763000 +0800
+@@ -21057,7 +21057,7 @@
+ 
+ 
+ 
+-SOFLAGS="-rpath \$(libdir)"
++SOFLAGS="rpath \$(libdir)"
+ LIBTOOL_PROG="${SHELL} ./libtool"
+ 
+ # Set SOSUFFIX and friends
