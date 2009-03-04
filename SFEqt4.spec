@@ -50,8 +50,10 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
      CPUS=1
 fi
 
-export CC=/usr/bin/cc
-export CXX=/usr/bin/CC
+##TODO## this might be omitted, if pkgbuild/environment was installed with SunStudio as default compiler
+export CC=cc
+export CXX=CC
+##TODO## check build flags if they better be jds cbe default and make sure they are honored by configure
 export CFLAGS=""
 export CXXFLAGS="-library=stlport4"
 export LDFLAGS="%_ldflags"
@@ -65,6 +67,7 @@ echo yes | ./configure -prefix %{_prefix} \
            -translationdir %{_datadir}/qt/translations \
            -examplesdir %{_datadir}/qt/examples \
            -demosdir %{_datadir}/qt/demos \
+           -no-exceptions \
            -sysconfdir %{_sysconfdir}
 
 make -j$CPUS
@@ -106,6 +109,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/doc/*
 
 %changelog
+* Wed Mar 04 2009 - Thomas Wagner
+- fix path to SunStudio compiler. Tested with SunStudioExpress November 2008 in /opt/SUNWspro/bin
+- enable configure's hint -no-exceptions (smaller code, less memory)
 * Sat Nov 29 2008 - dauphin@enst.fr
 - Try to compile with studio12
 * Mon Nov 24 2008 - alexander@skwar.name
