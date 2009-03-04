@@ -17,7 +17,8 @@ SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 
-Requires: SUNWgccruntime
+Requires: SFEgccruntime
+BuildRequires: SFEgcc
 #FIXME: Requires: SUNWxorg-mesa
 # Guarantee X/freetype environment concisely (hopefully):
 Requires: SUNWGtku
@@ -42,8 +43,8 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
      CPUS=1
 fi
 
-export CC=/usr/sfw/bin/gcc
-export CXX=/usr/sfw/bin/g++
+export CC=/usr/gnu/bin/gcc
+export CXX=/usr/gnu/bin/g++
 export CFLAGS="-O4 -fPIC -DPIC -Xlinker -i -fno-omit-frame-pointer"
 export LDFLAGS="%_ldflags"
 
@@ -56,7 +57,10 @@ echo yes | ./configure -prefix %{_prefix} \
            -translationdir %{_datadir}/qt/translations \
            -examplesdir %{_datadir}/qt/examples \
            -demosdir %{_datadir}/qt/demos \
-           -sysconfdir %{_sysconfdir}
+           -sysconfdir %{_sysconfdir} \
+           -no-exceptions \
+           -L /usr/gnu/lib \
+           -R /usr/gnu/lib 
 
 make -j$CPUS
 
@@ -97,6 +101,15 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/doc/*
 
 %changelog
+* Wed Mar 04 2009 - Thomas Wagner
+- can't find libcstd++.6.*, add to configure:
+  -L /usr/gnu/lib -R /usr/gnu/lib (gcc4, for gcc3 this would be sfw instead gnu)
+- enable configure's hint -no-exceptions (smaller code, less memory)
+- force to SFEgcc 4.x because sfw/gcc3 failed to compile qdrawhelper_mmx3dnow.cpp
+  with missing mm3dnow.h (to be found only in gcc4)
+  (change Requires from SUNWgccruntime to SFEgcc(runtime),
+   <CC|CXX>=/usr/gnu/bin/<gcc|g++>)
+  ##TODO## is this a failure of configure/something else to depend on a *.h not present?
 * Mon Nov 24 2008 - alexander@skwar.name
 - Add qt-01-use_bash.diff, which replaces all calls to sh with bash,
   because Qt won't build when sh isn't bash.
