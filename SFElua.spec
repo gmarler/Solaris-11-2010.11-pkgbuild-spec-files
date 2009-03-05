@@ -6,11 +6,10 @@
 
 Name:                    SFElua
 Summary:                 Lua - fast, simple scripting language
-Version:                 5.1.2
+Version:                 5.1.4
 Source:                  http://www.lua.org/ftp/%{source_name}-%{version}.tar.gz
 URL:                     http://www.lua.org/
-Patch1:                  lua-01-installdir.diff
-Patch2:                  lua-02-suncc.diff
+Patch1:                  lua-01-fixcc.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{source_name}-%{version}-build
 %include default-depend.inc
@@ -18,7 +17,6 @@ BuildRoot:               %{_tmppath}/%{source_name}-%{version}-build
 %prep
 %setup -q -n %{source_name}-%{version}
 %patch1 -p1
-%patch2 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -30,7 +28,7 @@ make solaris
 
 %install
 rm -rf $RPM_BUILD_ROOT
-make DESTDIR=$RPM_BUILD_ROOT install
+make INSTALL_TOP=$RPM_BUILD_ROOT/usr install
 mv ${RPM_BUILD_ROOT}/usr/man ${RPM_BUILD_ROOT}/usr/share/man
 
 %clean
@@ -52,6 +50,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/lua/*
 
 %changelog
+* Thu Mar 05 2009 - sobotkap@gmail.com
+- Fix patch and bump to version 5.1.4
 * Tue Sep 11 2007 - Petr Sobotka sobotkap@centum.cz
 - Initial version
 
