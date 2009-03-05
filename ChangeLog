@@ -1,5 +1,10 @@
 2009-03-05  Petr Sobotka  <sobotkap@gmail.com>
 
+	* SFEliveMedia.spec: Bump to 2009.02.23 version and polite main version tag 
+				to be compatible with IPS
+
+2009-03-05  Petr Sobotka  <sobotkap@gmail.com>
+
 	* SFElua.spec: Fix patch and bump to version 5.1.4
 	* patches/lua-01-fixcc.diff:
 

@@ -11,14 +11,16 @@
 
 %include Solaris.inc
 
+%define src_version 2009.02.23
+
 Name:                    SFEliveMedia
 Summary:                 liveMedia - live555 Streaming Media
-Version:                 2008.12.20
-Source:                  http://www.live555.com/liveMedia/public/live.%{version}.tar.gz
+Version:                 2009.2.23
+Source:                  http://www.live555.com/liveMedia/public/live.%{src_version}.tar.gz
 Patch1:                  liveMedia-01-SOLARIS-macro.diff
 Patch2:                  liveMedia-02-config.diff
 SUNW_BaseDir:            %{_basedir}
-BuildRoot:               %{_tmppath}/%{name}-%{version}-build
+BuildRoot:               %{_tmppath}/%{name}-%{src_version}-build
 %include default-depend.inc
 
 %prep
@@ -49,6 +51,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/*
 
 %changelog
+* Thu Mar 05 2009 - sobotkap@gmail.com
+- Bump to 2009.02.23 version and polite main version tag to be 
+-		compatible with IPS
 * Sun Dec 21 2008 - Thomas Wagner
 - bump to 2008.12.20
 * Wed Oct 22 2008 - dick@nagual.nl
