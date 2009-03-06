@@ -1,0 +1,11 @@
+--- Coherence-0.6.2/coherence/upnp/core/utils.py.orig	2009-03-06 17:02:17.163934871 +0800
++++ Coherence-0.6.2/coherence/upnp/core/utils.py	2009-03-06 17:02:27.921099382 +0800
+@@ -106,7 +106,7 @@
+ 
+     system_type = uname()[0]
+ 
+-    if system_type == "Linux":
++    if system_type == "Linux" or "SunOS":
+         SIOCGIFADDR = 0x8915
+     else:
+         SIOCGIFADDR = 0xc0206921

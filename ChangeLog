@@ -1,3 +1,10 @@
+2009-03-06  Alfred Peng  <alfred.peng@sun.com>
+
+	* SFEcoherence.spec, SFEpython24-coherence.spec, base-specs/coherence.spec:
+	  Create SFEpython24-coherence.spec and coherence.spec to replace
+	  SFEcoherence.spec.
+	* patches/coherence-01-solaris.diff: Added for coherence webserver.
+
 2009-03-05  Petr Sobotka  <sobotkap@gmail.com>
 
 	* SFEliveMedia.spec: Bump to 2009.02.23 version and polite main version tag 
