@@ -7,7 +7,7 @@
 Name:                    SFEpidgin-musictracker
 Summary:                 Now playing plugin for pidgin
 Group:                   System/GUI/GNOME
-Version:                 0.4.11
+Version:                 0.4.16
 Source:                  http://pidgin-musictracker.googlecode.com/files/pidgin-musictracker-%{version}.tar.bz2
 Patch1:                  pidgin-musictracker-01-solaris.diff
 SUNW_BaseDir:            %{_basedir}
@@ -35,10 +35,11 @@ export LDFLAGS="%_ldflags       "
 
 touch README
 
-aclocal
-automake -a -f
-autoconf -f
+#aclocal -I m4
+#automake -a -f
+#autoconf -f
 
+./reconf
 
 ./configure --prefix=%{_prefix} \
             --mandir=%{_mandir} \
@@ -47,6 +48,7 @@ autoconf -f
             --infodir=%{_infodir} \
             --sysconfdir=%{_sysconfdir} \
             --datadir=%{_datadir} \
+            --disable-werror
 
 make -j$CPUS
 

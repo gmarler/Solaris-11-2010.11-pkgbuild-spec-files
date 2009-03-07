@@ -1,3 +1,10 @@
+2009-03-07  Andras Barna  <andras.barna@gmail.com>
+
+	* SFEpidgin-musictracker.spec: bump version
+	* SFErecordmysolaris-gtk.spec: bump version
+	* SFErecordmysolaris.spec: bump version
+	* patches/pidgin-musictracker-01-solaris.diff: rework
+
 2009-03-06  Alfred Peng  <alfred.peng@sun.com>
 
 	* SFEcoherence.spec, SFEpython24-coherence.spec, base-specs/coherence.spec:

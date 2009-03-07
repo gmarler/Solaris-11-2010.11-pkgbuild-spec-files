@@ -7,7 +7,7 @@
 
 Name:                SFErecordmysolaris
 Summary:             Recordmysolaris - Desktop recording tool
-Version:             0.1
+Version:             0.2
 Source:              http://recordmysolaris.googlecode.com/files/recordmysolaris-%{version}.tar.gz
 URL:                 http://code.google.com/p/recordmysolaris/
 
@@ -15,9 +15,9 @@ SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}_%{version}-build
 BuildRequires:            SUNWogg-vorbis
 BuildRequires:            SUNWlibtheora
-BuildRequires:            oss
+BuildRequires:            /usr/include/sys/soundcard.h
 
-Requires:            oss
+Requires:            /usr/include/sys/soundcard.h
 Requires:            SUNWxwplt
 Requires:            SUNWogg-vorbis
 Requires:            SUNWlibtheora
@@ -25,7 +25,7 @@ Requires:            SUNWlibtheora
 %include default-depend.inc
 
 %prep
-%setup -q -n recordmysolaris-%version
+%setup -q -n recordmysolaris
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -69,5 +69,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/*
 
 %changelog
+* Sat Mar 07 2009 - (andras.barna@gmail.com)
+- new version
 * Mon Aug 25 2008 - (andras.barna@gmail.com)
 - Initial spec

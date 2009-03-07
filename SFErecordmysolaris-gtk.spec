@@ -7,7 +7,7 @@
 
 Name:                SFErecordmysolaris-gtk
 Summary:             Recordmysolaris-gtk - Desktop recording tool, gtk frontend
-Version:             0.1
+Version:             0.2
 Source:              http://recordmysolaris.googlecode.com/files/gtk-recordmysolaris-%{version}.tar.gz
 URL:                 http://code.google.com/p/recordmysolaris/
 
@@ -31,7 +31,7 @@ Requires:                %{name}
 %define pythonver 2.4
 
 %prep
-%setup -q -n gtk-recordmysolaris-%version
+%setup -q -n gtk-recordmysolaris
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -112,5 +112,7 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sat Mar 07 2009 - (andras.barna@gmail.com)
+- new version
 * Mon Aug 25 2008 - (andras.barna@gmail.com)
 - Initial spec
