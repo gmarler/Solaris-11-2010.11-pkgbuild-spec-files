@@ -1,0 +1,18 @@
+--- xf86-input-synaptics-1.0.0.orig/include/synaptics.h	Mon Jan 26 05:45:41 2009
++++ xf86-input-synaptics-1.0.0/include/synaptics.h	Sun Mar  8 16:03:02 2009
+@@ -121,6 +121,7 @@
+     int tap_action[MAX_TAP];		    /* Button to report on tap events */
+     int click_action[MAX_CLICK];	    /* Button to report on click with fingers */
+     Bool circular_scrolling;		    /* Enable circular scrolling */
++    char _pad0[4];
+     double scroll_dist_circ;		    /* Scrolling angle radians */
+     int circular_trigger;		    /* Trigger area for circular scrolling */
+     Bool circular_pad;			    /* Edge has an oval or circular shape */
+@@ -127,6 +128,7 @@
+     Bool palm_detect;			    /* Enable Palm Detection */
+     int palm_min_width;			    /* Palm detection width */
+     int palm_min_z;			    /* Palm detection depth */
++    char _pad1[4];
+     double coasting_speed;		    /* Coasting threshold scrolling speed */
+     int press_motion_min_z;		    /* finger pressure at which minimum pressure motion factor is applied */
+     int press_motion_max_z;		    /* finger pressure at which maximum pressure motion factor is applied */

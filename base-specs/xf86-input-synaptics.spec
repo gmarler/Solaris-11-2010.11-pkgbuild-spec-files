@@ -4,17 +4,25 @@
 # includes module(s): xf86-input-synaptics
 #
 
-%define src_name         xf86-input-synaptics	
+%define src_name         xf86-input-synaptics
 
-Summary:                 Synaptics input device driver for X.org
+Summary:                 Synaptics/ALPS input device driver for X.org
 Version:                 1.0.0
 Source:                  http://xorg.freedesktop.org/archive/individual/driver/%{src_name}-%{version}.tar.bz2
+Patch1:                  xf86-input-synaptics-01-alps-tap.diff
+Patch2:                  xf86-input-synaptics-02-synclient.diff
+Patch3:                  xf86-input-synaptics-03-alignment.diff
+Patch4:                  xf86-input-synaptics-04-syndaemon.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 Autoreqprov:             on
 
 %prep
 %setup -q -n%{src_name}-%{version}
+%patch1 -p1
+%patch2 -p1
+%patch3 -p1
+%patch4 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -59,5 +67,7 @@ fi
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Mon Mar 09 2009 - Albert Lee
+- Add patch1, patch2, patch3, patch4
 * Mon Mar 02 2009 - Albert Lee
 - Initial spec

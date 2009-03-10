@@ -1,3 +1,15 @@
+2009-03-10  Albert Lee  <trisk@acm.jhu.edu>
+
+	* base-specs/xf86-input-synaptics.spec: Add patch1, patch2, patch3,
+	  patch4
+	* patches/xf86-input-synaptics-01-alps-tap.diff: Support ALPS hardware
+	  tap
+	* patches/xf86-input-synaptics-02-synclient.diff: Fix crash in synclient
+	* patches/xf86-input-synaptics-03-alignment.diff: Make shared memory
+	  struct aligned consistently for both 64 and 32-bit
+	* patches/xf86-input-synaptics-04-syndaemon.diff: Prevent signal
+	  handler from looping
+
 2009-03-07  Andras Barna  <andras.barna@gmail.com>
 
 	* SFEpidgin-musictracker.spec: bump version

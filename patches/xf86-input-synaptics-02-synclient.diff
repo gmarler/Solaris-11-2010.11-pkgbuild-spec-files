@@ -1,0 +1,23 @@
+--- xf86-input-synaptics-1.0.0.orig/tools/synclient.c	Mon Jan 26 05:45:41 2009
++++ xf86-input-synaptics-1.0.0/tools/synclient.c	Sun Mar  8 12:45:45 2009
+@@ -36,6 +36,7 @@
+ #include <sys/time.h>
+ #include <unistd.h>
+ #include <string.h>
++#include <strings.h>
+ #include <stddef.h>
+ #include <math.h>
+ 
+@@ -174,9 +175,10 @@
+ 	if (eqp) {
+ 	    int j;
+ 	    int found = 0;
+-	    *eqp = 0;
++	    int len = eqp - cmd;
+ 	    for (j = 0; params[j].name; j++) {
+-		if (strcasecmp(cmd, params[j].name) == 0) {
++		if ((strncasecmp(cmd, params[j].name, len) == 0) &&
++		    (params[j].name[len] == '\0')) {
+ 		    found = 1;
+ 		    break;
+ 		}
