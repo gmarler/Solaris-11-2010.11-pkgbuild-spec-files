@@ -8,7 +8,7 @@
 
 Name:          SFEldtp
 Summary:       Linux Desktop Testing Project
-Version:       1.5.0
+Version:       1.5.1
 SUNW_BaseDir:  %{_basedir}
 BuildRoot:     %{_tmppath}/%{name}-%{version}-build
 Source:        http://download.freedesktop.org/ldtp/1.x/1.5.x/ldtp-%{version}.tar.gz

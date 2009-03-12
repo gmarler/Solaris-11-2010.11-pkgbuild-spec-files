@@ -1,3 +1,8 @@
+2009-03-12  Tim Miao  <Tim.Miao@Sun.COM>
+
+	* SFEldtp.spec: Update ldtp to 1.5.1
+
+
 2009-03-10  Albert Lee  <trisk@acm.jhu.edu>
 
 	* base-specs/xf86-input-synaptics.spec: Add patch1, patch2, patch3,
