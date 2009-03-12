@@ -1,3 +1,12 @@
+2009-03-12  Elaine Xiong  <elaine.xiong@sun.com>
+
+	* SUNWlibtelepathy.spec:
+	* SUNWmission-control.spec:
+	* SUNWtelepathy-glib.spec:
+	* base-specs/telepathy-glib.spec:
+	* base-specs/telepathy-mission-control.spec:
+	* base-specs/libtelepathy.spec: Move from spec-files/trunk.
+
 2009-03-12  Tim Miao  <Tim.Miao@Sun.COM>
 
 	* SFEldtp.spec: Update ldtp to 1.5.1
