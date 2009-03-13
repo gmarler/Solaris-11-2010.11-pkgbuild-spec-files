@@ -145,7 +145,7 @@ autoconf
         --with-pam-prefix=%{_sysconfdir} \
         --disable-scrollkeeper \
         --with-ctrun=yes \
-        --with-default-path=/usr/bin:/usr/X11/bin:/usr/openwin/bin \
+        --with-default-path=/usr/bin \
         --enable-rbac-shutdown=solaris.system.shutdown
 
 make -j $CPUS
@@ -323,6 +323,9 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 %endif
 
 %changelog
+* Fri Mar 13 2009 - brian.cameron@sun.com
+- Change --with-path to just "/usr/bin".  That's the only directory that
+  should be in the default GDM path.
 * Fri Mar 13 2009 - halton.huo@sun.com
 - Bump to 2.25.92
 - Remove patch upstreamed layout.diff
