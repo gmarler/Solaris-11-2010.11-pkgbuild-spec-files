@@ -1,3 +1,17 @@
+2009-03-13  Halton Huo <halton.huo@sun.com>
+
+	* SUNWgnome-display-mgr.spec: Bump to 2.25.92,
+	  disable patch dynamic-display.diff for now,
+	  use --with-default-path=/usr/bin:/usr/X11/bin:/usr/openwin/bin
+	  instead of --with-path=/usr/openwin/bin
+	* patches/gdm-01-branding.diff: rework
+	* patches/gdm-02-sdtlogin-devperm.diff: rework
+	* patches/gdm-03-ctrun.diff: rework
+	* patches/gdm-05-ICE-optionwidget.diff: rework
+	* patches/gdm-06-gconfsanity.diff: rework
+	* patches/gdm-07-hide-face-browser.diff: rework
+	* patches/gdm-08-layout.diff: remove upstreamed patch
+
 2009-03-13  Wang Xin  <jedy.wang@sun.com>
 
 	* SFEvim.spec: Bump to release 141.

@@ -1,6 +1,8 @@
---- daemon/gdm-welcome-session.c.orig	2008-09-06 18:40:04.753453000 +0800
-+++ daemon/gdm-welcome-session.c	2008-09-06 18:42:20.633895000 +0800
-@@ -278,6 +278,8 @@
+diff --git a/daemon/gdm-welcome-session.c b/daemon/gdm-welcome-session.c
+index 4f5b4e1..a356cd4 100644
+--- a/daemon/gdm-welcome-session.c
++++ b/daemon/gdm-welcome-session.c
+@@ -280,6 +280,8 @@ get_welcome_environment (GdmWelcomeSession *welcome_session)
  
          g_hash_table_insert (hash, g_strdup ("XAUTHORITY"), g_strdup (welcome_session->priv->x11_authority_file));
          g_hash_table_insert (hash, g_strdup ("DISPLAY"), g_strdup (welcome_session->priv->x11_display_name));
@@ -9,9 +11,11 @@
  
  #if 0
          /* hackish ain't it */
---- gui/simple-greeter/gdm-option-widget.c.orig	2008-09-08 16:25:23.929558000 +0800
-+++ gui/simple-greeter/gdm-option-widget.c	2008-09-08 16:30:11.180315000 +0800
-@@ -281,9 +281,10 @@
+diff --git a/gui/simple-greeter/gdm-option-widget.c b/gui/simple-greeter/gdm-option-widget.c
+index 15b7340..9afb5e2 100644
+--- a/gui/simple-greeter/gdm-option-widget.c
++++ b/gui/simple-greeter/gdm-option-widget.c
+@@ -282,9 +282,10 @@ gdm_option_widget_set_default_item (GdmOptionWidget *widget,
                                      const char      *item)
  {
          g_return_if_fail (GDM_IS_OPTION_WIDGET (widget));

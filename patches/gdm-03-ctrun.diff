@@ -1,6 +1,20 @@
---- gdm-2.23.2/configure.ac-orig	2008-08-07 03:08:26.740642000 -0500
-+++ gdm-2.23.2/configure.ac	2008-08-07 03:10:55.180085000 -0500
-@@ -836,6 +836,23 @@ AC_SUBST(XINERAMA_LIBS)
+diff --git a/acconfig.h b/acconfig.h
+index dad371b..4307fd3 100644
+--- a/acconfig.h
++++ b/acconfig.h
+@@ -14,6 +14,7 @@
+ #undef HAVE_CHPASS
+ #undef HAVE_CLEARENV
+ #undef HAVE_CRYPT
++#undef HAVE_CTRUN
+ #undef HAVE_DEFOPEN
+ #undef HAVE_GETTEXT
+ #undef HAVE_LC_MESSAGES
+diff --git a/configure.ac b/configure.ac
+index ff0449b..75b6771 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -843,6 +843,23 @@ AC_SUBST(XINERAMA_LIBS)
  CPPFLAGS="$xinerama_save_cppflags"
  
  dnl ---------------------------------------------------------------------------
@@ -24,19 +38,11 @@
  dnl - Check for SELinux
  dnl ---------------------------------------------------------------------------
  
---- gdm-2.22.0/acconfig.h-orig	2008-05-05 16:13:25.816994000 -0500
-+++ gdm-2.22.0/acconfig.h	2008-05-05 16:13:36.748865000 -0500
-@@ -14,6 +14,7 @@
- #undef HAVE_CHPASS
- #undef HAVE_CLEARENV
- #undef HAVE_CRYPT
-+#undef HAVE_CTRUN
- #undef HAVE_DEFOPEN
- #undef HAVE_GETTEXT
- #undef HAVE_LC_MESSAGES
---- gdm-2.22.0/daemon/gdm-session-worker.c-orig	2008-05-05 21:12:04.392592000 -0500
-+++ gdm-2.22.0/daemon/gdm-session-worker.c	2008-05-05 21:12:09.040528000 -0500
-@@ -289,17 +289,25 @@ script_execute (const gchar *file,
+diff --git a/daemon/gdm-session-worker.c b/daemon/gdm-session-worker.c
+index a6ac9d3..7623ee5 100644
+--- a/daemon/gdm-session-worker.c
++++ b/daemon/gdm-session-worker.c
+@@ -371,17 +371,25 @@ script_execute (const gchar *file,
  
          /* Construct an argument list for the shell.  */
          {
@@ -66,7 +72,7 @@
                  /* Execute the shell. */
                  if (envp) {
                          execve (new_argv[0], new_argv, envp);
-@@ -307,7 +315,8 @@ script_execute (const gchar *file,
+@@ -389,7 +397,8 @@ script_execute (const gchar *file,
                          execv (new_argv[0], new_argv);
                  }
  
@@ -76,7 +82,7 @@
          }
  }
  
-@@ -2261,8 +2270,16 @@ on_start_program (GdmSessionWorker *work
+@@ -2480,8 +2489,16 @@ on_start_program (GdmSessionWorker *worker,
                                       DBUS_TYPE_INVALID);
          if (res) {
                  GError *parse_error;
@@ -94,7 +100,7 @@
  
                  if (worker->priv->arguments != NULL) {
                          g_strfreev (worker->priv->arguments);
-@@ -2270,12 +2287,13 @@ on_start_program (GdmSessionWorker *work
+@@ -2489,12 +2506,13 @@ on_start_program (GdmSessionWorker *worker,
                  }
  
                  parse_error = NULL;

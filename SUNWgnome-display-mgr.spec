@@ -13,7 +13,7 @@
 
 Summary:                 GNOME display manager
 Name:                    SUNWgnome-display-mgr
-Version:                 2.25.2
+Version:                 2.25.92
 Release:                 1
 Source:                  http://download.gnome.org/sources/gdm/2.25/gdm-%{version}.tar.bz2
 Source1:                 gdm.xml
@@ -42,8 +42,6 @@ Patch5:                  gdm-05-ICE-optionwidget.diff
 Patch6:			 gdm-06-gconfsanity.diff
 # date:2008-12-16 owner:yippi type:bug bugid:568323
 Patch7:                  gdm-07-hide-face-browser.diff
-# date:2008-12-16 owner:yippi type:bug bugid:564789 state:upstream
-Patch8:                  gdm-08-layout.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 
@@ -100,13 +98,14 @@ Requires:                %{name}
 %prep
 %setup -q -n gdm-%version
 %patch1 -p1
-%patch2 -p0
+%patch2 -p1
 %patch3 -p1
-%patch4 -p1
-%patch5 -p0
-%patch6 -p0
+# disable dynamic patch for now, since we're working new ways for it, refer to
+# http://wiki.genunix.org/wiki/index.php/design_for_newgdm_consolekit_multiseat_multidisplay
+#%patch4 -p1
+%patch5 -p1
+%patch6 -p1
 %patch7 -p1
-%patch8 -p1
 
 %build
 export LDFLAGS="%_ldflags"
@@ -128,22 +127,12 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
   CPUS=1
 fi
 
-ENABLE_CONSOLE_HELPER=
-%ifos linux
-ENABLE_CONSOLE_HELPER="--enable-console-helper"
-%endif
-
-BINDIR_CONFIG=""
-CTRUN_CONFIG=""
-%ifos solaris
-BINDIR_CONFIG="--with-post-path=/usr/openwin/bin"
-RBAC_CONFIG="--enable-rbac-shutdown=solaris.system.shutdown"
-%endif
-
 glib-gettextize -f
-libtoolize --copy --force
+# FIXME: create m4 dir as workaround for bugzilla #575218
+mkdir m4
 intltoolize --force --copy --automake
-aclocal $ACLOCAL_FLAGS
+aclocal $ACLOCAL_FLAGS -I . -I ./m4
+libtoolize --copy --force
 autoheader
 automake -a -c -f
 autoconf
@@ -152,12 +141,13 @@ autoconf
         --sysconfdir=%{_sysconfdir} \
         --localstatedir=%{_localstatedir} \
         --mandir=%{_mandir} \
-        --with-path="/usr/bin" \
-        --with-pam-prefix=%{_sysconfdir} \
-        --with-ctrun \
         --libexecdir=%{_libexecdir} \
+        --with-pam-prefix=%{_sysconfdir} \
         --disable-scrollkeeper \
-        $ENABLE_CONSOLE_HELPER $BINDIR_CONFIG $RBAC_CONFIG
+        --with-ctrun=yes \
+        --with-default-path=/usr/bin:/usr/X11/bin:/usr/openwin/bin \
+        --enable-rbac-shutdown=solaris.system.shutdown
+
 make -j $CPUS
 
 %install
@@ -286,7 +276,7 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 %dir %attr (-, root, other) %{_datadir}/icons/hicolor/32x32/
 %dir %attr (-, root, other) %{_datadir}/icons/hicolor/*/apps
 %{_datadir}/icons/hicolor/*/apps/*
-#%{_datadir}/omf/gdm/*-C.omf
+%{_datadir}/omf/gdm/*-C.omf
 %dir %attr (0755, root, other) %{_datadir}/pixmaps
 %{_datadir}/gnome-2.0/*
 %{_datadir}/pixmaps/*
@@ -333,6 +323,12 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 %endif
 
 %changelog
+* Fri Mar 13 2009 - halton.huo@sun.com
+- Bump to 2.25.92
+- Remove patch upstreamed layout.diff
+- Disable patch dynamic-display.diff for now
+- Use --with-default-path=/usr/bin:/usr/X11/bin:/usr/openwin/bin
+  instead of --with-path=/usr/openwin/bin
 * Fri Feb 13 2009 - brian.cameron@sun.com
 - Add patch gdm-01-branding.diff to change default setting of DisallowTCP
   to false.  Add patch gdm-09-default-path.diff to set the default PATH

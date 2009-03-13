@@ -1,5 +1,7 @@
---- common/gdm-common.h-orig	2009-02-13 17:48:07.419434000 -0600
-+++ common/gdm-common.h	2009-02-13 17:48:27.657672000 -0600
+diff --git a/common/gdm-common.h b/common/gdm-common.h
+index 328d511..169e64a 100644
+--- a/common/gdm-common.h
++++ b/common/gdm-common.h
 @@ -25,6 +25,11 @@
  
  #include "gdm-common-unknown-origin.h"
@@ -12,34 +14,27 @@
  G_BEGIN_DECLS
  
  gboolean       gdm_is_version_unstable            (void);
---- daemon/main.c-orig	2009-02-13 17:43:24.076166000 -0600
-+++ daemon/main.c	2009-02-13 17:44:38.445569000 -0600
-@@ -521,6 +521,21 @@ main (int    argc,
-                 { NULL }
-         };
+diff --git a/configure.ac b/configure.ac
+index 8390f8f..ff0449b 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -1008,6 +1008,12 @@ fi
+ AC_SUBST(XEVIE_OPTION)
+ AC_DEFINE_UNQUOTED(XEVIE_OPTION,"$XEVIE_OPTION",[Define xevie option])
  
-+#ifdef __sun
-+        {
-+                struct stat statbuf;
-+                int r;
++# Check for Solaris logindevperm support
++#
++AC_CHECK_LIB(devinfo, di_devperm_login, [
++                        AC_DEFINE(HAVE_LOGINDEVPERM)
++                            PAM_LIBS="$PAM_LIBS -ldevinfo" ])
 +
-+                r = stat (GDM_DT_DIR, &statbuf);
-+                if (r < 0) {
-+                        g_mkdir (GDM_DT_DIR, 0755);
-+                }
-+
-+                g_remove (GDM_SDTLOGIN_DIR);
-+                g_mkdir (GDM_SDTLOGIN_DIR, 0700);
-+        }
-+#endif
-+
-         bindtextdomain (GETTEXT_PACKAGE, GNOMELOCALEDIR);
-         textdomain (GETTEXT_PACKAGE);
-         setlocale (LC_ALL, "");
-Index: daemon/gdm-server.c
-===================================================================
---- daemon/gdm-server.c	(revision 5828)
-+++ daemon/gdm-server.c	(working copy)
+ dnl ---------------------------------------------------------------------------
+ dnl - Check for audit framework
+ dnl ---------------------------------------------------------------------------
+diff --git a/daemon/gdm-server.c b/daemon/gdm-server.c
+index ca37a2a..0dd1afe 100644
+--- a/daemon/gdm-server.c
++++ b/daemon/gdm-server.c
 @@ -33,6 +33,9 @@
  #include <grp.h>
  #include <signal.h>
@@ -76,10 +71,10 @@ Index: daemon/gdm-server.c
          env = get_server_environment (server);
  
          freeme = g_strjoinv (" ", argv);
-Index: daemon/gdm-session-worker.c
-===================================================================
---- daemon/gdm-session-worker.c	(revision 5828)
-+++ daemon/gdm-session-worker.c	(working copy)
+diff --git a/daemon/gdm-session-worker.c b/daemon/gdm-session-worker.c
+index 6761736..a6ac9d3 100644
+--- a/daemon/gdm-session-worker.c
++++ b/daemon/gdm-session-worker.c
 @@ -32,6 +32,17 @@
  #include <grp.h>
  #include <pwd.h>
@@ -106,7 +101,7 @@ Index: daemon/gdm-session-worker.c
  
  #define GDM_SESSION_WORKER_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), GDM_TYPE_SESSION_WORKER, GdmSessionWorkerPrivate))
  
-@@ -146,12 +158,115 @@ static void     gdm_session_worker_final
+@@ -146,12 +158,115 @@ static void     gdm_session_worker_finalize     (GObject               *object);
  static void     queue_state_change              (GdmSessionWorker      *worker);
  
  typedef int (* GdmSessionWorkerPamNewMessagesFunc) (int,
@@ -235,7 +230,7 @@ Index: daemon/gdm-session-worker.c
  
          g_assert (worker->priv->pam_handle != NULL);
  
-@@ -865,7 +984,7 @@ gdm_session_worker_process_pam_message (
+@@ -865,7 +984,7 @@ gdm_session_worker_process_pam_message (GdmSessionWorker          *worker,
  
  static int
  gdm_session_worker_pam_new_messages_handler (int                        number_of_messages,
@@ -244,7 +239,7 @@ Index: daemon/gdm-session-worker.c
                                               struct pam_response      **responses,
                                               GdmSessionWorker          *worker)
  {
-@@ -977,6 +1096,22 @@ gdm_session_worker_uninitialize_pam (Gdm
+@@ -977,6 +1096,22 @@ gdm_session_worker_uninitialize_pam (GdmSessionWorker *worker,
          if (worker->priv->state >= GDM_SESSION_WORKER_STATE_SESSION_OPENED) {
                  pam_close_session (worker->priv->pam_handle, 0);
                  gdm_session_auditor_report_logout (worker->priv->auditor);
@@ -267,7 +262,7 @@ Index: daemon/gdm-session-worker.c
          } else {
                  gdm_session_auditor_report_login_failure (worker->priv->auditor,
                                                            status,
-@@ -1821,6 +1956,7 @@ static gboolean
+@@ -1817,6 +1952,7 @@ static gboolean
  gdm_session_worker_open_user_session (GdmSessionWorker  *worker,
                                        GError           **error)
  {
@@ -275,7 +270,7 @@ Index: daemon/gdm-session-worker.c
          int error_code;
  
          g_assert (worker->priv->state == GDM_SESSION_WORKER_STATE_ACCREDITED);
-@@ -1847,6 +1983,32 @@ gdm_session_worker_open_user_session (Gd
+@@ -1843,6 +1979,32 @@ gdm_session_worker_open_user_session (GdmSessionWorker  *worker,
  
          gdm_session_auditor_report_login (worker->priv->auditor);
  
@@ -308,18 +303,29 @@ Index: daemon/gdm-session-worker.c
          return TRUE;
  }
  
---- configure.ac-orig	2008-08-07 03:05:23.833583000 -0500
-+++ configure.ac	2008-08-07 03:05:45.508204000 -0500
-@@ -1006,6 +1006,12 @@ fi
- AC_SUBST(XEVIE_OPTION)
- AC_DEFINE_UNQUOTED(XEVIE_OPTION,"$XEVIE_OPTION",[Define xevie option])
+diff --git a/daemon/main.c b/daemon/main.c
+index 9d7ab5e..de4515a 100644
+--- a/daemon/main.c
++++ b/daemon/main.c
+@@ -521,6 +521,21 @@ main (int    argc,
+                 { NULL }
+         };
  
-+# Check for Solaris logindevperm support
-+#
-+AC_CHECK_LIB(devinfo, di_devperm_login, [
-+                        AC_DEFINE(HAVE_LOGINDEVPERM)
-+                            PAM_LIBS="$PAM_LIBS -ldevinfo" ])
++#ifdef __sun
++        {
++                struct stat statbuf;
++                int r;
 +
- dnl ---------------------------------------------------------------------------
- dnl - Check for audit framework
- dnl ---------------------------------------------------------------------------
++                r = stat (GDM_DT_DIR, &statbuf);
++                if (r < 0) {
++                        g_mkdir (GDM_DT_DIR, 0755);
++                }
++
++                g_remove (GDM_SDTLOGIN_DIR);
++                g_mkdir (GDM_SDTLOGIN_DIR, 0700);
++        }
++#endif
++
+         bindtextdomain (GETTEXT_PACKAGE, GNOMELOCALEDIR);
+         textdomain (GETTEXT_PACKAGE);
+         setlocale (LC_ALL, "");

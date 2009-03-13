@@ -1,5 +1,7 @@
---- data/gconf.path.orig	2008-09-08 14:11:27.378093000 +0800
-+++ data/gconf.path	2008-09-08 14:11:35.518684000 +0800
+diff --git a/data/gconf.path b/data/gconf.path
+index beaa55a..d5106f2 100644
+--- a/data/gconf.path
++++ b/data/gconf.path
 @@ -1,5 +1,5 @@
  # treat system-wide settings as mandatory
 -xml:readonly:/etc/gconf/gconf.xml.system
