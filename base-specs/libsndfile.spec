@@ -8,7 +8,7 @@
 %define src_url http://www.mega-nerd.com/%{src_name}
 Name:		libsndfile
 Summary:	libsndfile  - a library of C routines for reading and writing files containing sampled audio data
-Version:	1.0.17
+Version:	1.0.19
 Source:		%{src_url}/%{src_name}-%{version}.tar.gz
 Patch1:		libsndfile-01-flac-1.1.3.diff
 Patch2:		libsndfile-02-cpp_test.diff
@@ -55,6 +55,8 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/lib*a
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Tue Mar 03 2009 - Thomas Wagner
+- bump to 1.0.19
 * Tue Oct 16 2007 - laca@sun.com
 - disable use of sqlite for now -- no 64-bit version
 - disable alsa support for now -- breaks the build

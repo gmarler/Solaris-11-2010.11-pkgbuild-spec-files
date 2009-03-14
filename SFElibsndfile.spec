@@ -109,6 +109,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Tue Mar 03 2009 - Thomas Wagner
+- bump to 1.0.19  in base-specs/libsndfile.spec
 * Sat Aug 16 2008 - nonsea@users.sourceforge.net
 - Add BuildRequires: SUNWaudh
 * Fri Jun 13 2008 - trisk@acm.jhu.edu
