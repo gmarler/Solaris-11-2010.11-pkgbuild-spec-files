@@ -37,23 +37,29 @@ make
 rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
 
+# for older pkgbuild/pkgtool
+test -d $RPM_BUILD_ROOT%{_docdir} || mkdir $RPM_BUILD_ROOT%{_docdir}
+
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-, root, bin)
-%doc CHANGES COPYING CREDITS README html/
+%doc CHANGES COPYING CREDITS README
 %dir %attr (0755, root, bin) %{_bindir}
 %{_bindir}/*
 %dir %attr (0755, root, bin) %{_libdir}
 %{_libdir}/*
 %dir %attr (0755, root, sys) %{_datadir}
+%dir %attr (0755, root, other) %{_docdir}
 %dir %attr(0755, root, bin) %{_mandir}
 %dir %attr(0755, root, bin) %{_mandir}/*
 %{_mandir}/*/*
 
 
 %changelog
-* Weg Jan 07 2008  - Thomas Wagner
+* Sun Jan 25 2009 - Thomas Wagner
+- adjust %doc and %files permissions
+* Wed Jan 07 2009  - Thomas Wagner
 - Initial spec inspired by a tweet from davetong
