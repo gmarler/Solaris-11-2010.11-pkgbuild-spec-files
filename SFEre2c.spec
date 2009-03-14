@@ -6,7 +6,7 @@
 Name:                    SFEre2c
 Summary:                 re2c - tool for writing very fast and very flexible scanners
 URL:                     http://re2c.org/
-Version:                 0.12.0
+Version:                 0.13.5
 Source:                  %{sf_download}/re2c/re2c-%{version}.tar.gz
 
 
@@ -54,5 +54,7 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sat Mar 12 2009  - Thomas Wagner
+- bump to 0.13.5
 * Sat May 12 2007  - Thomas Wagner
 - Initial spec
