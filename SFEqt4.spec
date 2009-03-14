@@ -109,6 +109,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/doc/*
 
 %changelog
+* Mar 07 2009 - Thomas Wagner
+- rework shared patch qt-01-use_bash.diff (to be more independent of qt version SFEqt SFEqt4 in verison 4.x / 4.5)
 * Wed Mar 04 2009 - Thomas Wagner
 - fix path to SunStudio compiler. Tested with SunStudioExpress November 2008 in /opt/SUNWspro/bin
 - enable configure's hint -no-exceptions (smaller code, less memory)

@@ -101,6 +101,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/doc/*
 
 %changelog
+* Mar 07 2009 - Thomas Wagner
+- rework shared patch qt-01-use_bash.diff (to be more independent of qt version SFEqt SFEqt4 in verison 4.x / 4.5)
 * Wed Mar 04 2009 - Thomas Wagner
 - can't find libcstd++.6.*, add to configure:
   -L /usr/gnu/lib -R /usr/gnu/lib (gcc4, for gcc3 this would be sfw instead gnu)
