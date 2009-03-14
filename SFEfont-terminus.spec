@@ -6,7 +6,7 @@
 Name:                    SFEfont-terminus
 Summary:                 terminus - font terminus
 URL:                     http://www.is-vn.bg/hamster
-Version:                 4.20
+Version:                 4.28
 Source:                  http://www.is-vn.bg/hamster/terminus-font-%{version}.tar.gz
 Patch1:                  terminus-font-01-x11dir.diff
 SUNW_BaseDir:            %{_basedir}
@@ -47,6 +47,9 @@ make install DESTDIR=$RPM_BUILD_ROOT
 make install-pcf DESTDIR=$RPM_BUILD_ROOT
 #make install-12b DESTDIR=$RPM_BUILD_ROOT
 
+#in case old pkgbuild does not automaticly place %doc files there
+test -d $RPM_BUILD_ROOT%{_docdir} || mkdir $RPM_BUILD_ROOT%{_docdir}
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -57,14 +60,20 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-, root, bin)
-%doc README ChangeLog CREDITS COPYING INSTALL NEWS AUTHORS TODO ABOUT-NLS
-%dir %attr (0755, root, bin) %{_basedir}/openwin/lib/X11/fonts/pcf
-%{_basedir}/openwin/lib/X11/fonts/pcf/*
+%doc README
+%dir %attr (0755, root, bin) %{_basedir}/X11/lib/X11/fonts
+%{_basedir}/X11/lib/X11/fonts/*
 %dir %attr (0755, root, sys) %{_datadir}
-%{_datadir}/*
+%{_datadir}/consolefonts/*
+%dir %attr (0755, root, other) %{_docdir}
 
 
 %changelog
+* Sat May 07 2009 - Thomas Wagner
+- bump to 4.28
+- rework patch1 new font path, adjust %files
+- create %{_docdir} in case old pkgbuild doesn't
+- adjust %doc files
 * Sun Oct 14 2007 - laca@sun.com
 - add /usr/X11/bin to PATH for FOX build
 * Sat May 12 2007 - Thomas Wagner
