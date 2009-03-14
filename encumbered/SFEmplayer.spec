@@ -15,6 +15,7 @@
 %define with_lame %(pkginfo -q SFElame && echo 1 || echo 0)
 %define with_twolame %(pkginfo -q SFEtwolame && echo 1 || echo 0)
 %define with_mpcdec %(pkginfo -q SFElibmpcdec && echo 1 || echo 0)
+%define with_xvid %(pkginfo -q SFExvid && echo 1 || echo 0)
 
 %define SFElibsndfile   %(/usr/bin/pkginfo -q SFElibsndfile && echo 1 || echo 0)
 
@@ -29,6 +30,15 @@ Patch1:                  mplayer-01-cddb.diff
 #Patch3:                 mplayer-03-asmrules_20061231.diff
 Patch4:                  mplayer-04-cabac-asm.diff
 Patch5:                  mplayer-05-configure.diff
+Patch10:                 mplayer-10-configure.diff
+Patch11:                 mplayer-11-cpudetect.diff
+Patch12:                 mplayer-12-realplayer.diff
+Patch15:                 mplayer-15-demux_vqf.diff
+Patch16:                 mplayer-16-demux-real.diff
+Patch17:                 mplayer-17-demux-audio.diff
+Patch18:                 mplayer-18-demux-mov.diff
+Patch19:                 mplayer-19-cddb-stream.diff
+Patch20:                 mplayer-20-url-fix.diff
 Source3:                 http://www.mplayerhq.hu/MPlayer/skins/Blue-1.7.tar.bz2
 Source4:                 http://www.mplayerhq.hu/MPlayer/skins/Abyss-1.7.tar.bz2
 Source5:                 http://www.mplayerhq.hu/MPlayer/skins/neutron-1.5.tar.bz2
@@ -91,6 +101,10 @@ BuildRequires: SFEliba52-devel
 Requires: SFEopenal
 BuildRequires: SFEopenal-devel
 %endif
+%if %with_xvid
+Requires: SFExvid
+BuildRequires: SFExvid-devel
+%endif
 #latest CDE include gawk, so remove SFEgawk depedency 
 #BuildRequires: SFEgawk
 
@@ -106,6 +120,15 @@ BuildRequires: SFEopenal-devel
 #%patch3 -p1
 %patch4 -p1
 %patch5 -p1
+%patch10 -p1
+%patch11 -p1
+%patch12 -p1
+%patch15 -p2
+%patch16 -p0
+%patch17 -p0
+%patch18 -p0
+%patch19 -p0
+%patch20 -p0
 
 #unzip %SOURCE7
 #unzip 26104-610_ANSI_C_source_code.zip
@@ -146,7 +169,7 @@ bash ./configure				\
             --enable-menu			\
             --with-extraincdir=/usr/lib/live/liveMedia/include:/usr/lib/live/groupsock/include:/usr/lib/live/UsageEnvironment/include:/usr/lib/live/BasicUsageEnvironment/include:%{x11}/include:/usr/sfw/include \
             --with-extralibdir=/usr/lib/live/liveMedia:/usr/lib/live/groupsock:/usr/lib/live/UsageEnvironment:/usr/lib/live/BasicUsageEnvironment:%{x11}/lib:/usr/gnu/lib:/usr/sfw/lib \
-            --extra-libs='-lBasicUsageEnvironment -lUsageEnvironment -lgroupsock -lliveMedia -lsocket -lnsl -lstdc++ -liconv' \
+            --extra-libs='-lBasicUsageEnvironment -lUsageEnvironment -lgroupsock -lliveMedia -lstdc++ -liconv' \
             --codecsdir=%{_libdir}/mplayer/codecs \
 %if %with_faad
             --enable-faad-external		\
@@ -156,6 +179,7 @@ bash ./configure				\
 	    --enable-rpath			\
             --enable-largefiles			\
 	    --enable-crash-debug		\
+            --enable-dynamic-plugins            \
             --disable-directfb			\
 	    $dbgflag
 
@@ -199,6 +223,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/pixmaps/*
 
 %changelog
+* Sat Mar 14 2009 - Milan Jurik
+- Xvid support
+- Dynamic plugin support
+- SSE(2) autodetection support
+- CVE-2008-5616, CVE-2008-5276, CVE-2008-0486, CVE-2008-0485, CVE 2007-2948, CVE-2008-0630
 * Tue Feb 17 2009 - Thomas Wagner
 - make (Build-)Requires conditional SUNWlibsndfile|SFElibsndfile(-devel)
 * Wed Nov 29 2008 - dauphin@enst.fr

@@ -1,0 +1,41 @@
+--- MPlayer-1.0rc2/configure	ne říj  7 21:49:33 2007
++++ MPlayer-1.0rc2-patch/configure	so pro 20 20:08:15 2008
+@@ -1,4 +1,4 @@
+-#! /bin/sh
++#! /bin/ksh
+ #
+ # Original version (C) 2000 Pontscho/fresh!mindworkz
+ #                      pontscho@makacs.poliod.hu
+@@ -2711,6 +2711,15 @@
+ fi
+ echores "$_builtin_expect"
+ 
++echocheck "rpath"
++netbsd &&_rpath=yes
++if test "$_rpath" = yes ; then
++  for I in `echo $_ld_extra | sed 's/-L//g'` ; do
++    tmp="$tmp ` echo $I | sed 's/.*/ -L& -R&/'`"
++  done
++_ld_extra=$tmp
++fi
++echores "$_rpath"
+ 
+ echocheck "kstat"
+ cat > $TMPC << EOF
+@@ -3097,16 +3106,6 @@
+ test "$_w32threads" = yes && _def_threads='#define HAVE_THREADS 1'
+ echores "$_w32threads"
+ 
+-echocheck "rpath"
+-netbsd &&_rpath=yes
+-if test "$_rpath" = yes ; then
+-  for I in `echo $_ld_extra | sed 's/-L//g'` ; do
+-    tmp="$tmp ` echo $I | sed 's/.*/ -L& -Wl,-R&/'`"
+-  done
+-_ld_extra=$tmp
+-fi
+-echores "$_rpath"
+-
+ echocheck "iconv"
+ if test "$_iconv" = auto ; then
+   cat > $TMPC << EOF
