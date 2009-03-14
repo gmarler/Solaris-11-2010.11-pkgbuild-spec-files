@@ -2,17 +2,15 @@
 # spec file for package SFEurxvt
 #
 
+##TODO## needs rework for IPS: %{version} is not truly numeric: 9.06 .. needs workaround for IPS
 #TODO# urxvt does not set terminal-size. have to use: stty rows 50; stty columns 132; export LINES=50 COLUMNS=132
-#TODO# cleanup environment setting CFLAGS/CXXFLAGS/LDFLAGS...
+##DONE## #TODO# cleanup environment setting CFLAGS/CXXFLAGS/LDFLAGS...
 #TODO# solve build errors with --enable-perl 
 #TODO# something like infocmp -C rxvt-unicode >> /etc/termcap as postinstall script (safely) - "screen" needs this
 #TODO# put nice descrition of features into %description
 #TODO# really need fix the terminfo entries, "tic" issues warnings....
 #TODO# check libafterimage - if usefull, add
 
-#   IMPORTANT:
-#   compile with:   CC=/usr/sfw/bin/gcc CXX=/usr/sfw/bin/g++ pkgtool --interactive build SFEurxvt.spec
-#
 #   tested with: SFEgcc (older version gcc 4.0.0) and /usr/sfw/bin/gcc
 #
 #   NOT working with: sunstudio 12,  SFEgcc 4.2 (incl. gnu ld)
@@ -21,22 +19,27 @@
 #
 
 %include Solaris.inc
-
+%define cc_is_gcc 1
+%define _gpp /usr/sfw/bin/g++
 %include base.inc
 
 
 Name:                    SFEurxvt
 Summary:                 urxvt - X Terminal Client (+multiscreen Server) with unicode support, derived from rxvt
 URL:                     http://software.schmorp.de
-Version:                 9.02
+Version:                 9.06
 Source:                  http://dist.schmorp.de/rxvt-unicode/rxvt-unicode-%{version}.tar.bz2
 Patch10:		 urxvt-10-terminfo_enacs.diff
 Patch11:		 urxvt-11-remove-tic.diff
+Patch12:		 urxvt-12-configure-bash.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 
 
 %include default-depend.inc
+
+BuildRequires: SFEgcc
+Requires:      SFEgccruntime
 
 
 %description
@@ -49,20 +52,20 @@ backgrounds (unmodified or shaded background inside the Terminal window)
 %setup -q -n rxvt-unicode-%{version}
 %patch10 -p1
 %patch11 -p1
+%patch12 -p1
 
 
 %build
+export CC=gcc
+export CXX=g++
 export LDFLAGS="%_ldflags"
-export LD_OPTIONS="-i -L/usr/X11/lib -R/usr/X11/lib -L/usr/openwin/lib -R/usr/openwin/lib"
-export LD=/opt/jdsbld/bin/ld-wrapper
+#export LD_OPTIONS="-i -L/usr/X11/lib -R/usr/X11/lib -L/usr/openwin/lib -R/usr/openwin/lib"
+#export LD=/opt/jdsbld/bin/ld-wrapper
 #export CFLAGS="%optflags -D_XPG5 -D_XOPEN_SOURCE=500 -D__EXTENSIONS__"
 #export CXXFLAGS="%cxx_optflags -D_XPG5 -D_XOPEN_SOURCE=500 -D__EXTENSIONS__"
 export CFLAGS="%optflags -L/usr/X11/lib -R/usr/X11/lib -lX11 -lXext -lXrender"
 export CXXFLAGS="%cxx_optflags"
 
-
-
-# Note: Use CC=/usr/sfw/bin/gcc CXX=/usr/sfw/bin/g++
 
 ./configure \
             --prefix=%{_prefix} \
@@ -129,6 +132,9 @@ make install DESTDIR=$RPM_BUILD_ROOT
 mkdir -p "$RPM_BUILD_ROOT/%{_datadir}/terminfo/"
 TERMINFO=$RPM_BUILD_ROOT/%{_datadir}/terminfo/  tic -v doc/etc/rxvt-unicode.terminfo
 
+#in case old pkgbuild does not automaticly place %doc files there
+test -d $RPM_BUILD_ROOT%{_docdir} || mkdir $RPM_BUILD_ROOT%{_docdir}
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -139,11 +145,12 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-, root, bin)
-%doc README* ChangeLog CREDITS COPYING INSTALL NEWS AUTHORS TODO ABOUT-NLS
+%doc README.FAQ README.configure Changes COPYING INSTALL MANIFEST
 %dir %attr (0755, root, bin) %{_bindir}
 %{_bindir}/*
 %dir %attr (0755, root, sys) %{_datadir}
 %{_datadir}/terminfo/r/*
+%dir %attr (0755, root, other) %{_docdir}
 %dir %attr (0755, root, bin) %{_mandir}
 %{_mandir}/*
 
@@ -158,6 +165,16 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Feb 06 2009 - Thomas Wagner
+- set compiler to gcc in any case
+- (Build)Requires: SFEgcc(runtime)
+- removed SunStudio left overs
+- bump to 9.06
+- rework patch10 for 9.06
+- add patch12 bash for configure
+- ##TODO## needs version textstring reworked for OS2008.xx/IPS
+- create %{_docdir} in case old pkgbuild doesn't
+- %doc adjusted files to be included - pkgbuild starting with 1.3.2 honours %doc and all files must be listed exactly
 * Sat Mar 15 2008 Thomas Wagner
 - reworked patch 10
 - added patch 11 remove "tic" vom doc/Makfile 
