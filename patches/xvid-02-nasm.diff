@@ -1,0 +1,13 @@
+--- xvidcore-orig/build/generic/configure.in	Sun Mar  8 13:46:48 2009
++++ xvidcore/build/generic/configure.in	Sun Mar  8 13:53:04 2009
+@@ -364,8 +364,8 @@
+            dnl Checking nasm version
+            dnl
+            AC_MSG_CHECKING([for nasm version])
+-           nasm_minor=`$nasm_prog -v | cut -d '.' -f 2 | cut -d ' ' -f 1`
+-           nasm_major=`$nasm_prog -v | cut -d '.' -f 1 | cut -d ' ' -f 3`
++           nasm_minor=`$nasm_prog -v 2>&1 | cut -d '.' -f 2 | cut -d ' ' -f 1`
++           nasm_major=`$nasm_prog -v 2>&1 | cut -d '.' -f 1 | cut -d ' ' -f 3`
+            if test -z $nasm_minor ; then
+               nasm_minor=-1
+            fi

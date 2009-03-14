@@ -2,6 +2,7 @@
 
 	* SFEnasm.spec: upgrade to 2.06rc1
 	* encumbered/SFElame.spec: upgrade to 3.98.2
+	* encumbered/SFExvid.spec: upgrade to 1.2.1, nasm build support
 
 2009-03-14  Thomas Wagner  <tom68@users.sourceforge.net>
 

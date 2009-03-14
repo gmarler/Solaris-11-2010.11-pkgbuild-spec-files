@@ -5,7 +5,7 @@
 #
 %include Solaris.inc
 
-%define	src_ver 1.1.3
+%define	src_ver 1.2.1
 %define	src_name xvidcore
 %define	src_url	http://downloads.xvid.org/downloads
 
@@ -15,6 +15,7 @@ Version:	%{src_ver}
 License:	GPL
 Source:		%{src_url}/%{src_name}-%{version}.tar.bz2
 Patch1:		xvid-01-solaris.diff
+Patch2:		xvid-02-nasm.diff
 SUNW_BaseDir:	%{_basedir}
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 BuildConflicts: SFEyasm
@@ -33,8 +34,9 @@ SUNW_BaseDir:            %{_basedir}
 Requires: %name
 
 %prep
-%setup -q -n %{src_name}-%version
+%setup -q -n %{src_name}
 %patch1 -p1
+%patch2 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -68,8 +70,8 @@ make install DESTDIR=$RPM_BUILD_ROOT
 rm -f $RPM_BUILD_ROOT%{_libdir}/lib*.*a
 (
    cd $RPM_BUILD_ROOT%{_libdir}
-   ln -s libxvidcore.so.4.1 libxvidcore.so.4
-   ln -s libxvidcore.so.4.1 libxvidcore.so
+   ln -s libxvidcore.so.4.2 libxvidcore.so.4
+   ln -s libxvidcore.so.4.2 libxvidcore.so
 )
 
 %clean
@@ -84,6 +86,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}
 
 %changelog
+* Sat Mar 14 2009 - Milan Jurik
+- upgrade to 1.2.1, nasm build support
 * Mon Jun 30 2008 - andras.barna@gmail.com
 - Force SFWgcc, Remove non-standard CFLAGS (pentiumpro,sse2)
 * Sat May 31 2008 - trisk@acm.jhu.edu
