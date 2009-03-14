@@ -1,3 +1,8 @@
+2009-03-14  Thomas Wagner  <tom68@users.sourceforge.net>
+
+	* experimental/SFEqt45-gcc.spec: *new* version QT 4.5, derived from SFEqt4.spec, patch2 temporarily 
+          disables setuid/setguid safetychecks
+
 2009-03-13  Brian Cameron  <brian.cameron@sun.com>
 
 	* SUNWgnome-display-mgr.spec, patches/gdm-08-fixcrash.diff: Add patch
@@ -72,6 +77,14 @@
 
 	* SFElua.spec: Fix patch and bump to version 5.1.4
 	* patches/lua-01-fixcc.diff:
+
+2009-03-04  Thomas Wagner  <tom68@users.sourceforge.net>
+
+	* SFEqt.spec: can't find libcstd++.6.*, add to configure: -L /usr/gnu/lib -R /usr/gnu/lib 
+          (gcc4, for gcc3 this would be sfw instead gnu),  enable configure's hint -no-exceptions,
+          force to SFEgcc 4.x because sfw/gcc3 missing mm3dnow.h, change Requires from SUNWgccruntime to SFEgcc(runtime),
+          <CC|CXX>=/usr/gnu/bin/<gcc|g++>)
+        * SFEqt4.spec: fix path to SunStudio compiler, enable configure's hint -no-exceptions (smaller code, less memory)
 
 2009-03-03  Halton Huo <halton.huo@sun.com>
 
