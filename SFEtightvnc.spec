@@ -21,6 +21,8 @@ Requires: SUNWxwplt
 Requires: SUNWzlib
 BuildRequires: SUNWxwopt
 Conflicts: SFErealvnc
+Conflicts: SUNWxvnc
+Conflicts: SUNWvncviewer
 
 %prep
 %setup -q -n vnc_unixsrc
@@ -71,6 +73,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/*
 
 %changelog
+* Sun Feb 22 2009 - Thomas Wagner
+- add Conflicts: SUNWxvnc, Conflicts: SUNWvncviewer
 * Fri Jun 22 2007 - laca@sun.com
 - re-rename to SFEtightvnc, leaving the clean-ups in and re-adding the
   viewer
