@@ -8,6 +8,23 @@
 # includes module(s): GNU gmp
 #
 %include Solaris.inc
+%include usr-gnu.inc
+
+
+
+##TODO## need propper integration of arch64.inc
+%ifarch amd64
+%define opt_amd64 1
+%define bld_arch        amd64
+%else
+%define opt_sparcv9 1
+%define bld_arch        sparcv9
+%endif
+
+
+##TODO## think on usr-gnu.inc define infodir inside /usr/gnu/share to avoid conflicts
+%define _infodir           %{_datadir}/info
+
 
 Name:                    SFEgmp
 Summary:                 GNU Multiple Presicion Arithmetic Library
@@ -19,15 +36,14 @@ Source1:                 http://www.loria.fr/~gaudry/mpn_AMD64/mpn_amd64.42.tgz
 %endif
 Patch1:                  gmp-01-solaris.diff
 URL:                     http://gmplib.org/
-SUNW_BaseDir:            %{_basedir}
+SUNW_BaseDir:            %{_basedir}/%{_subdir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 
 %include default-depend.inc
-Requires: SUNWgccruntime
 
 %package devel
 Summary:                 %{summary} - development files
-SUNW_BaseDir:            %{_basedir}
+SUNW_BaseDir:            %{_basedir}/%{_subdir}
 %include default-depend.inc
 Requires: %name
 
@@ -49,13 +65,14 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
 fi
 
 export CC32=${CC32:-$CC}
-export CFLAGS32="%optflags"
-export CFLAGS64="%optflags64"
-export CXXFLAGS32="%cxx_optflags"
-export CXXFLAGS64="%cxx_optflags64"
-export LDFLAGS32="%_ldflags"
-export LDFLAGS64="%_ldflags"
-export ACLOCAL_FLAGS="-I %{_datadir}/aclocal -I ."
+export CFLAGS32="%optflags  -L/usr/gnu/lib -R/usr/gnu/lib"
+export CFLAGS64="%optflags64 -L/usr/gnu/lib/%{bld_arch} -R/usr/gnu/lib/%{bld_arch}"
+export CXXFLAGS32="%cxx_optflags  -L/usr/gnu/lib -R/usr/gnu/lib"
+export CXXFLAGS64="%cxx_optflags64 -L/usr/gnu/lib/%{bld_arch} -R/usr/gnu/lib/%{bld_arch}"
+export LDFLAGS32="%_ldflags -L/usr/gnu/lib -R/usr/gnu/lib"
+export LDFLAGS64="%_ldflags -L/usr/gnu/lib/%{bld_arch} -R/usr/gnu/lib/%{bld_arch}"
+export ACLOCAL_FLAGS="                       -I ."
+#export ACLOCAL_FLAGS="-I %{_datadir}/aclocal -I ."
 
 %ifarch sparcv9
 export CC=${CC64:-$CC}
@@ -85,9 +102,10 @@ autoconf
 export ABI=64
 ./configure --prefix=%{_prefix}				\
 	    --mandir=%{_mandir}				\
-            --libdir=%{_libdir}/%{_arch64}		\
+            --libdir=%{_libdir}/%{bld_arch}		\
             --infodir=%{_infodir}			\
-            --libexecdir=%{_libexecdir}/%{_arch64}      \
+            --datadir=%{_datadir}			\
+            --libexecdir=%{_libexecdir}/%{bld_arch}      \
             --sysconfdir=%{_sysconfdir}      		\
             --disable-cxx %{?host}
 make -j$CPUS 
@@ -169,6 +187,16 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/*
 
 %changelog
+* Sat Mar 14 2009 - Thomas Wagner
+- shorten ACLOCAL flags by removing -I %{_datadir}/aclocal (fails if diry not present)
+- fix packaging error by adding %_datadir to configure
+- redefine %{_infodir} to be in /usr/gnu
+- configure add %{bld_arch}
+- add subdir to SUNW_BaseDir:            %{_basedir}/%{_subdir}
+* Sun Feb 22 2009 - Thomas Wagner
+- move to /usr/gnu and remove Conflicts: SUNWgnu-mp
+* Sat Feb 21 2009 - Thomas Wagner
+- add Conflicts: SUNWgnu-mp
 * Tue Sep 02 2008 - halton.huo@sun.com
 - Add /usr/share/aclocal to ACLOCAL_FLAGS to fix build issue
 * Mon Feb 25 2008 - laca@sun.com
