@@ -98,6 +98,7 @@ make install DESTDIR=$RPM_BUILD_ROOT
 #eliminate this one here %{_libdir}/i86pc-solaris-64int/perllocal.pod
 [ -d $RPM_BUILD_ROOT%{_libdir}/i86pc-solaris-64int/perllocal.pod ] && rm -rf $RPM_BUILD_ROOT%{_libdir}/i86pc-solaris-64int/
 
+#in case old pkgbuild does not automaticly place %doc files there
 test -d $RPM_BUILD_ROOT%{_docdir} || mkdir $RPM_BUILD_ROOT%{_docdir}
 
 
