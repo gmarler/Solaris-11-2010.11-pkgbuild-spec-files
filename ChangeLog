@@ -1,3 +1,7 @@
+2009-03-14  Milan Jurik <sfnet@xylab.cz>
+
+	* SFEnasm.spec: upgrade to 2.06rc1
+
 2009-03-14  Thomas Wagner  <tom68@users.sourceforge.net>
 
 	* experimental/SFEqt45-gcc.spec: *new* version QT 4.5, derived from SFEqt4.spec, patch2 temporarily 

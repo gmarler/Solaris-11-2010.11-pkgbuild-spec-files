@@ -5,17 +5,19 @@
 
 %include Solaris.inc
 
+%define src_version 2.06rc1
+
 Name:                SFEnasm
 Summary:             Portable, modular 80x86 assembler
-Version:             0.98.39
-Source:              %{sf_download}/nasm/nasm-%{version}.tar.bz2
+Version:             2.6.0.1
+Source:              %{sf_download}/nasm/nasm-%{src_version}.tar.bz2
 
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 
 %prep
-%setup -q -n nasm-%version
+%setup -q -n nasm-%src_version
 
 %build
 
@@ -63,6 +65,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/doc/nasm/*
 
 %changelog
-* 
+* Sat Mar 14 2006 - Milan Jurik
+- upgrade to 2.06rc1
 * Thu Dec 14 2006 - Eric Boutilier
 - Initial spec
