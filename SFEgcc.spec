@@ -24,8 +24,8 @@
 
 
 %define SUNWbinutils    %(/usr/bin/pkginfo -q SUNWbinutils && echo 1 || echo 0)
-%define SFEgmp          %(/usr/bin/pkginfo -q SFEgmp && echo 1 || echo 0)
-%define SFEmpfr         %(/usr/bin/pkginfo -q SFEmpfr && echo 1 || echo 0)
+%define SFEgmp          %(/usr/bin/pkginfo -q SUNWgnu-mp && echo 0 || echo 1)
+%define SFEmpfr         %(/usr/bin/pkginfo -q SUNWgnu-mpfr && echo 0 || echo 1)
 
 Name:                SFEgccruntime
 Summary:             GNU gcc runtime libraries required by applications
@@ -40,9 +40,13 @@ SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 
+BuildRequires: SFElibiconv-devel
+Requires:      SFElibiconv
+
 %if %SFEgmp
 BuildRequires: SFEgmp-devel
 Requires: SFEgmp
+%define SFEgmpbasedir %(pkgparam SFEgmp BASEDIR)
 %else
 BuildRequires: SUNWgnu-mp
 Requires: SUNWgnu-mp
@@ -51,6 +55,7 @@ Requires: SUNWgnu-mp
 %if %SFEmpfr
 BuildRequires: SFEmpfr-devel
 Requires: SFEmpfr
+%define SFEmpfrbasedir %(pkgparam SFEmpfr BASEDIR)
 %else
 BuildRequires: SUNWgnu-mpfr
 Requires: SUNWgnu-mpfr
@@ -177,10 +182,12 @@ export LD="/usr/gnu/bin/ld"
 	--disable-static			\
 	--enable-decimal-float			\
 %if %SFEgmp
+	--with-gmp=%{SFEgmpbasedir}             \
 %else
         --with-gmp_include=/usr/include/gmp \
 %endif
 %if %SFEmpfr
+	--with-mpfr=%{SFEmpfrbasedir}           \
 %else
         --with-mpfr_include=/usr/include/mpfr \
 %endif
@@ -286,6 +293,11 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Sat Mar 14 2009 - Thomas Wagner
+- change logic to require SFEgmp/SFEmpfr only if *no* SUNWgnu-mp/SUNWgnu-mpfr is present (this is on old OS builds)
+- make SFEgcc use of new SUNWgnu-mp/SUNWgnu-mpfr (replacement for SFEgmp/SFEmpfr, SFE-versions still work with SFEgcc)
+- detect new location of SFEgmp/SFEmpfr now in /usr/gnu and use them only if missing SUNWgnu-mp/SUNWgnu-mpfr
+- add (Build)Requires: SFElibiconv(-devel) (thanks to check-deps.pl)
 * Sat Feb 21 2009 - Thomas Wagner
 - bump to 4.3.3
 - make conditional SFEgmp  / SUNWgnu-mp
