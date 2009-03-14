@@ -61,7 +61,10 @@ make
 rm -rf $RPM_BUILD_ROOT
 cd %{src_name}-%{version}
 cd build
-make install DESTDIR=$RPM_BUILD_ROOT
+#make install DESTDIR=$RPM_BUILD_ROOT
+make install
+mkdir $RPM_BUILD_ROOT
+mv ./sfw_stage $RPM_BUILD_ROOT/%{_prefix}
 #rm $RPM_BUILD_ROOT/%{_libdir}/lib*.*a
 
 %clean
@@ -81,6 +84,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*
 
 %changelog
+* Sun Feb  8 2009 - Thomas Wagner
+- quick fix for complaining make install about already defined "relative" installtarget (./sfw_stage)
 * Mon Dec 22 2008 - Thomas Wagner
 - make conditional BuildRequirement SUNWcmake / SFEcmake
 * Sat Nov 15 2008 - dauphin@enst.fr
