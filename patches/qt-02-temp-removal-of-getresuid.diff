@@ -1,0 +1,37 @@
+--- qt-x11-opensource-src-4.5.0/src/gui/styles/gtksymbols.cpp.orig	Wed Feb 25 22:09:23 2009
++++ qt-x11-opensource-src-4.5.0/src/gui/styles/gtksymbols.cpp	Sat Mar 14 02:02:17 2009
+@@ -638,20 +638,20 @@
+ void QGtk::initGtkWidgets()
+ {
+     // From gtkmain.c
+-    uid_t ruid, rgid, euid, egid, suid, sgid;
+-    if (getresuid (&ruid, &euid, &suid) != 0 || getresgid (&rgid, &egid, &sgid) != 0) {
+-        suid = ruid = getuid ();
+-        sgid = rgid = getgid ();
+-        euid = geteuid ();
+-        egid = getegid ();
+-    }
+-    if (ruid != euid || ruid != suid || rgid != egid || rgid != sgid) {
+-        qWarning("\nThis process is currently running setuid or setgid.\nGTK+ does not allow this "
+-                 "therefore Qt cannot use the GTK+ integration.\nTry launching your app using \'gksudo\', "
+-                 "\'kdesudo\' or a similar tool.\n\n"
+-                 "See http://www.gtk.org/setuid.html for more information.\n");
+-        return;
+-    }
++    // uid_t ruid, rgid, euid, egid, suid, sgid;
++    // if (getresuid (&ruid, &euid, &suid) != 0 || getresgid (&rgid, &egid, &sgid) != 0) {
++    //     suid = ruid = getuid ();
++    //     sgid = rgid = getgid ();
++    //     euid = geteuid ();
++    //     egid = getegid ();
++    // }
++    // if (ruid != euid || ruid != suid || rgid != egid || rgid != sgid) {
++    //     qWarning("\nThis process is currently running setuid or setgid.\nGTK+ does not allow this "
++    //              "therefore Qt cannot use the GTK+ integration.\nTry launching your app using \'gksudo\', "
++    //              "\'kdesudo\' or a similar tool.\n\n"
++    //              "See http://www.gtk.org/setuid.html for more information.\n");
++    //     return;
++    // }
+   
+     init_gtk_window();
+ 
