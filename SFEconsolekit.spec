@@ -47,10 +47,10 @@ BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 BuildRequires: SUNWgnome-libs-devel
 BuildRequires: SUNWPython
 BuildRequires: SUNWdbus-devel
-BuildRequires: SUNWdbus-bindings-devel
+BuildRequires: SUNWdbus-glib-devel
 Requires: SUNWgnome-libs
 Requires: SUNWdbus
-Requires: SUNWdbus-bindings
+Requires: SUNWdbus-glib
 Requires: %name-root
 
 %if %option_with_gnu_iconv

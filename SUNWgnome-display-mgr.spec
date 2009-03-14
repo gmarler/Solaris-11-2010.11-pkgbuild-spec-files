@@ -42,6 +42,8 @@ Patch5:                  gdm-05-ICE-optionwidget.diff
 Patch6:			 gdm-06-gconfsanity.diff
 # date:2008-12-16 owner:yippi type:bug bugid:568323
 Patch7:                  gdm-07-hide-face-browser.diff
+# date:2009-03-13 owner:yippi type:bug state:upstream
+Patch8:                  gdm-08-fixcrash.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 
@@ -106,6 +108,7 @@ Requires:                %{name}
 %patch5 -p1
 %patch6 -p1
 %patch7 -p1
+%patch8 -p0
 
 %build
 export LDFLAGS="%_ldflags"
@@ -323,6 +326,8 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 %endif
 
 %changelog
+* Fri Mar 13 2009 - brian.cameron@sun.com
+- Add patch gdm-08-fixcrash.diff to address crashing problem.
 * Fri Mar 13 2009 - brian.cameron@sun.com
 - Change --with-path to just "/usr/bin".  That's the only directory that
   should be in the default GDM path.

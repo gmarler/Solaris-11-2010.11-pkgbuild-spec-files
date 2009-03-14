@@ -1,3 +1,10 @@
+2009-03-13  Brian Cameron  <brian.cameron@sun.com>
+
+	* SUNWgnome-display-mgr.spec, patches/gdm-08-fixcrash.diff: Add patch
+	  to fix GDM crashing issue.
+	* SFEconsolekit.spec: Refer to SUNWdbus-glib instead of
+	  SUNWdbus-bindings in Requires/BuildRequires.
+
 2009-03-13  Halton Huo <halton.huo@sun.com>
 
 	* SUNWgnome-display-mgr.spec: Bump to 2.25.92,
