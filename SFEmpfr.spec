@@ -4,21 +4,46 @@
 # includes module(s): GNU mpfr
 #
 %include Solaris.inc
+%include usr-gnu.inc
+
+##TODO## need propper integration of arch64.inc
+%ifarch amd64
+%define opt_amd64 1
+%define bld_arch        amd64
+%else
+%define opt_sparcv9 1
+%define bld_arch        sparcv9
+%endif
+
+##TODO## think on usr-gnu.inc define infodir inside /usr/gnu/share to avoid conflicts
+%define _infodir           %{_datadir}/info
+
+%define SFEgmp   %(/usr/bin/pkginfo -q SFEgmp && echo 1 || echo 0)
+
 
 Name:                SFEmpfr
 Summary:             C library for multiple-precision floating-point computations
-Version:             2.3.2
+Version:             2.4.1
 Source:              http://www.mpfr.org/mpfr-current/mpfr-%{version}.tar.bz2
-SUNW_BaseDir:        %{_basedir}
+SUNW_BaseDir:        %{_basedir}/%{_subdir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
+
+%if %SFEgmp
 BuildRequires: SFEgmp-devel
 Requires: SFEgmp
+Conflicts: SUNWgnu-mpfr
+%define SFEgmpbasedir %(pkgparam SFEgmp BASEDIR)
+%else
+BuildRequires: SUNWgnu-mp
+Requires: SUNWgnu-mp
+%endif
+
 Requires: SUNWpostrun
 
 %package devel
 Summary:                 %{summary} - developer files
-SUNW_BaseDir:            %{_basedir}
+SUNW_BaseDir:            %{_basedir}/%{_subdir}
 %include default-depend.inc
 Requires: %name
 
@@ -34,12 +59,12 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
      CPUS=1
 fi
 
-export CFLAGS32="%optflags"
-export CFLAGS64="%optflags64"
-export CXXFLAGS32="%cxx_optflags"
-export CXXFLAGS64="%cxx_optflags64"
-export LDFLAGS32="%_ldflags"
-export LDFLAGS64="%_ldflags"
+export CFLAGS32="%optflags  -L/usr/gnu/lib -R/usr/gnu/lib"
+export CFLAGS64="%optflags64 -L/usr/gnu/lib/%{bld_arch} -R/usr/gnu/lib/%{bld_arch}"
+export CXXFLAGS32="%cxx_optflags  -L/usr/gnu/lib -R/usr/gnu/lib"
+export CXXFLAGS64="%cxx_optflags64 -L/usr/gnu/lib/%{bld_arch} -R/usr/gnu/lib/%{bld_arch}"
+export LDFLAGS32="%_ldflags -L/usr/gnu/lib -R/usr/gnu/lib"
+export LDFLAGS64="%_ldflags -L/usr/gnu/lib/%{bld_arch} -R/usr/gnu/lib/%{bld_arch}"
 
 %ifarch amd64 sparcv9
 export CC=${CC64:-$CC}
@@ -57,6 +82,10 @@ cd mpfr-%{version}-64
 	    --without-emacs			\
 	    --enable-shared			\
 	    --disable-static			\
+%if %SFEgmp
+            --with-gmp=%{SFEgmpbasedir}         \
+%else
+%endif
 	    $nlsopt
 
 make -j$CPUS
@@ -73,11 +102,16 @@ export LDFLAGS="$LDFLAGS32"
 
 ./configure --prefix=%{_prefix}		\
             --libdir=%{_libdir}		\
+            --datadir=%{_datadir}       \
             --mandir=%{_mandir}		\
 	    --infodir=%{_infodir}	\
 	    --without-emacs		\
 	    --enable-shared		\
 	    --disable-static		\
+%if %SFEgmp
+            --with-gmp=%{SFEgmpbasedir}         \
+%else
+%endif
 	    $nlsopt
 
 make -j$CPUS
@@ -142,6 +176,17 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/*
 
 %changelog
+* Sat Mar 07 2009 - Thomas Wagner
+- Bumped up the version to 2.4.1
+- fix packaging error by adding %_datadir to configure
+- redefine %{_infodir} to be in /usr/gnu
+- add subdir to SUNW_BaseDir:            %{_basedir}/%{_subdir}
+- add configure --with-gmp to set gmp basedir
+* Sun Feb 22 2009 - Thomas Wagner
+- move to /usr/gnu and remove Conflicts: SUNWgnu-mpfr
+* Sat Feb 21 2009 - Thomas Wagner
+- make SFEgmp / SUNWgnu-mpfr conditional
+- add Conflicts: SUNWgnu-mpfr
 * Wed Jan  7 2009 - Thomas Wagner
 - Bumped up the version to 2.3.2
 * Tue Feb 12 2008 <pradhap (at) gmail.com>
