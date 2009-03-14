@@ -65,7 +65,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/doc/nasm/*
 
 %changelog
-* Sat Mar 14 2006 - Milan Jurik
+* Sat Mar 14 2009 - Milan Jurik
 - upgrade to 2.06rc1
 * Thu Dec 14 2006 - Eric Boutilier
 - Initial spec

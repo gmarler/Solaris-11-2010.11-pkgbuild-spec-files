@@ -27,7 +27,7 @@
 
 Name:                    SFElame
 Summary:                 MP3 Encoders - lame and toolame
-Version:                 3.97
+Version:                 3.98.2
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -158,6 +158,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/doc/*
 
 %changelog
+* Sat Mar 14 2009 - Milan Jurik
+- upgrade to 3.98.2 
 * Tue Feb 17 2009 - Thomas Wagner
 - make (Build-)Requires conditional SUNWlibsndfile|SFElibsndfile(-devel)
 * Sat Nov 29 2008 - dauphin@enst.fr
