@@ -1,0 +1,40 @@
+--- wesnoth-1.4.7.orig/m4/boost.m4	2009-03-12 22:14:25.514636390 +0100
++++ wesnoth-1.4.7/m4/boost.m4	2009-03-12 23:07:40.435468189 +0100
+@@ -92,11 +92,11 @@
+              /opt/local/include /usr/local/include /opt/include /usr/include \
+              "$with_boost" C:/Boost/include
+     do
+-      test -e "$boost_inc" || continue
++      test -d "$boost_inc" || continue
+       # Ensure that version.hpp exists: we're going to read it.  Moreover,
+       # Boost could be reachable thanks to the default include path so we can
+       # mistakenly accept a wrong include path without this check.
+-      test -e "$boost_inc/boost/version.hpp" || continue
++      test -f "$boost_inc/boost/version.hpp" || continue
+       boost_save_CPPFLAGS=$CPPFLAGS
+       test x"$boost_inc" != x && CPPFLAGS="$CPPFLAGS -I$boost_inc"
+ m4_pattern_allow([^BOOST_VERSION$])dnl
+@@ -141,7 +141,7 @@
+     boost_cv_lib_version=unknown
+     boost_sed_version='/^.*BOOST_LIB_VERSION.*"\([[^"]]*\)".*$/!d;s//\1/'
+     boost_version_hpp="$boost_inc/boost/version.hpp"
+-    test -e "$boost_version_hpp" \
++    test -f "$boost_version_hpp" \
+       && boost_cv_lib_version=`sed "$boost_sed_version" "$boost_version_hpp"`
+     ])
+ m4_popdef([BOOST_VERSION_REQ])dnl
+@@ -267,12 +267,12 @@
+     # If with_boost is empty, we'll search in /lib first, which is not quite
+     # right so instead we'll try to a location based on where the headers are.
+     boost_tmp_lib=$with_boost
+-    test x"$with_boost" = x && boost_tmp_lib=${boost_cv_inc_path%/include}
++    test x"$with_boost" = x && boost_tmp_lib=`dirname ${boost_cv_inc_path}`
+     for boost_ldpath in "$boost_tmp_lib/lib" '' \
+              /opt/local/lib /usr/local/lib /opt/lib /usr/lib \
+              "$with_boost" C:/Boost/lib /lib /usr/lib64 /lib64
+     do
+-      test -e "$boost_ldpath" || continue
++      test -d "$boost_ldpath" || continue
+       boost_save_LDFLAGS=$LDFLAGS
+       test x"$boost_ldpath" != x && LDFLAGS="$LDFLAGS -L$boost_ldpath"
+ dnl First argument of AC_LINK_IFELSE left empty because the test file is

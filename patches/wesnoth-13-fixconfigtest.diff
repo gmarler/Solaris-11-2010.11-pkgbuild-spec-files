@@ -1,0 +1,29 @@
+--- wesnoth-1.4.7.orig/configure.ac	Thu Mar 12 22:00:40 2009
++++ wesnoth-1.4.7/configure.ac	Sat Mar 14 13:42:55 2009
+@@ -894,7 +894,7 @@
+ #######################################################################
+ 
+ if test "x$lite" = "xno"; then
+-    if test -e "data/core/music/main_menu.ogg" ; then
++    if test -f "data/core/music/main_menu.ogg" ; then
+         AC_LANG([C])
+ 	AC_MSG_CHECKING([for OGG support in SDL_mixer])
+ 
+@@ -1008,7 +1008,7 @@
+ /*) topdir=$srcdir ;;
+ *)  topdir=`pwd`/$srcdir ;;
+ esac
+-for domain in `grep ^SUBDIRS $srcdir/po/Makefile.am | cut -d= -f2`
++for domain in `grep '^SUBDIRS' $srcdir/po/Makefile.am | cut -d= -f2`
+ do
+     # Symlinks to the single copy of Makefile.in.in
+     echo "creating po/$domain/Makefile.in.in"
+@@ -1023,7 +1023,7 @@
+ /*) topdir=$srcdir ;;
+ *)  topdir=`pwd`/$srcdir ;;
+ esac
+-for domain in `grep ^SUBDIRS $srcdir/po/Makefile.am | cut -d= -f2`
++for domain in `grep '^SUBDIRS' $srcdir/po/Makefile.am | cut -d= -f2`
+ do
+     # Symlinks that allow message catalogs to be used from build tree
+     if test -w $srcdir; then

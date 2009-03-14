@@ -16,7 +16,7 @@
 
 Name:                    	SFEwesnoth
 Summary:                 	Battle for Wesnoth is a fantasy turn-based strategy game
-Version:                 	1.4.5
+Version:                 	1.4.7
 Source:                  	%{sf_download}/wesnoth/wesnoth-%{version}.tar.bz2
 #Patch1:                         wesnoth-01-fixheaders.diff
 #Patch2:                         wesnoth-02-fixgccextension.diff
@@ -26,6 +26,8 @@ Patch5:                         wesnoth-05-fixconfigure.diff
 #Patch6:                         wesnoth-06-fixundefsymbol.diff
 #Patch7:                         wesnoth-07-fixundef2.diff
 #Patch8:                          wesnoth-08-fixconst.diff
+Patch13:			wesnoth-13-fixconfigtest.diff
+Patch14:			wesnoth-14-testboost.diff
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 %if %SUNWlibsdl
@@ -56,6 +58,8 @@ Requires:		SUNWPython
 #%patch6 -p1
 #%patch7 -p1
 #%patch8 -p1
+%patch13 -p1
+%patch14 -p1
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
 if test "x$CPUS" = "x" -o $CPUS = 0; then
@@ -86,7 +90,7 @@ export MSGFMT=/usr/gnu/bin/msgfmt
             --libdir=%{_libdir}				\
             --htmldir=%{_docdir}			\
             --enable-editor                     	\
-			--enable-shared						\
+            --enable-shared			\
             --with-preferences-dir=".wesnoth" 	\
             --enable-python-install     \
     	    --disable-static
@@ -126,6 +130,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sat Mar 14 2009 - Milan Jurik
+- Bump to 1.4.7
 * Sun Oct 12 2008 - Petr Sobotka <sobotkap@gmail.com>
 - Bump to 1.4.5
 * Mon Jul 28 2008 - Petr Sobotka <sobotkap@gmail.com>
