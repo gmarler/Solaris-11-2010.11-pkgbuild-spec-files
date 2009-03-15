@@ -16,7 +16,7 @@
 
 Name:                   SFEopenal
 Summary:                OpenAL is a cross-platform 3D audio API
-Version:                1.5.304
+Version:                1.7.411
 Source:                 %{src_url}/%{src_name}-%{version}.tar.bz2
 Patch1:			openal-new-01.diff
 SUNW_BaseDir:           %{_basedir}
@@ -42,7 +42,9 @@ SUNW_BaseDir:            %{_prefix}
 
 %prep
 %setup -q -c -n %{name}
-%patch1 -p0
+cd openal-soft*
+%patch1 -p1
+cd ..
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -84,6 +86,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*
 
 %changelog
+* Sun Feb 15 2009 - Thomas Wagner
+- bump to 1.7.411
+- rework patch openal-new-01.diff and "cd" into sourcedir to patch version independently
 * Sun Mar 15 2009 - Milan Jurik
 - original source URL
 * Sun Feb  8 2009 - Thomas Wagner

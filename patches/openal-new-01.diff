@@ -1,16 +1,15 @@
-diff -ur openal-soft-1.5.304.orig/CMakeLists.txt openal-soft-1.5.304/CMakeLists.txt
---- openal-soft-1.5.304.orig/CMakeLists.txt	Mon Jul 28 04:54:52 2008
-+++ openal-soft-1.5.304/CMakeLists.txt	Sun Nov 16 16:39:29 2008
-@@ -70,7 +70,7 @@
+--- openal-soft-1.7.411/CMakeLists.txt.orig	2009-03-15 06:21:22.000000000 +0100
++++ openal-soft-1.7.411/CMakeLists.txt	2009-03-15 15:49:26.525682284 +0100
+@@ -78,7 +78,7 @@
      SET(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -DNDEBUG")
      SET(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -D_DEBUG")
  ELSE()
 -    ADD_DEFINITIONS(-Wall)
 +    ADD_DEFINITIONS(-D__inline="")
      CHECK_C_COMPILER_FLAG(-Wextra HAVE_W_EXTRA)
-     IF("${HAVE_W_EXTRA}")
+     IF(HAVE_W_EXTRA)
          ADD_DEFINITIONS(-Wextra)
-@@ -80,16 +80,16 @@
+@@ -88,16 +88,16 @@
          ADD_DEFINITIONS(-Werror)
      ENDIF()
  
