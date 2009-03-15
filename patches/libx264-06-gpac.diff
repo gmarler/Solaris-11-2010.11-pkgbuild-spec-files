@@ -1,0 +1,11 @@
+--- x264-snapshot-20090314-2245.orig/configure	Sun Mar 15 11:42:09 2009
++++ x264-snapshot-20090314-2245/configure	Sun Mar 15 11:42:26 2009
+@@ -359,7 +359,7 @@
+     LDFLAGS="$LDFLAGS $libpthread"
+ fi
+ 
+-MP4_LDFLAGS="-lgpac_static"
++MP4_LDFLAGS="-lgpac"
+ if [ $SYS = MINGW ]; then
+     MP4_LDFLAGS="$MP4_LDFLAGS -lwinmm"
+ fi

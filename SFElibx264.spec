@@ -6,22 +6,28 @@
 
 %include Solaris.inc
 
-%define         snap    20071119
+%define         snap    20090314
 %define         snaph   2245
 %define src_name x264-snapshot
 %define src_url	 http://download.videolan.org/pub/videolan/x264/snapshots/
 
 Name:                    SFElibx264
 Summary:                 H264 encoder library
-Version:                 20070728
+Version:                 20090314
 Source:                  %{src_url}/%{src_name}-%{snap}-%{snaph}.tar.bz2
 URL:                     http://www.videolan.org/developers/x264.html
-Patch1:			 libx264-01-gccisms.diff
+#Patch1:			 libx264-01-gccisms.diff
+Patch2:                  libx264-02-version.diff
+Patch3:                  libx264-03-ld.diff
+Patch4:                  libx264-04-ginstall.diff
+Patch5:                  libx264-05-ssse3.diff
+Patch6:                  libx264-06-gpac.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 BuildRequires: SFEgpac-devel
 Requires: SFEgpac
+BuildRequires: SFEyasm
 
 %package devel
 Summary:                 %{summary} - development files
@@ -29,17 +35,14 @@ SUNW_BaseDir:            %{_basedir}
 %include default-depend.inc
 Requires: %name
 
-%if %build_l10n
-%package l10n
-Summary:                 %{summary} - l10n files
-SUNW_BaseDir:            %{_basedir}
-%include default-depend.inc
-Requires:                %{name}
-%endif
-
 %prep
 %setup -q -n %{src_name}-%{snap}-%{snaph}
-%patch1 -p1
+#%patch1 -p1
+%patch2 -p1
+%patch3 -p1
+%patch4 -p1
+%patch5 -p1
+%patch6 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -47,23 +50,15 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
     CPUS=1
 fi
 
-%if %build_l10n
-nlsopt=-enable-nls
-%else
-nlsopt=-disable-nls
-%endif
-
 export CC=/usr/sfw/bin/gcc
 export CFLAGS="-D__C99FEATURES__"
 export LDFLAGS="%_ldflags -lm"
 bash ./configure	\
     --prefix=%{_prefix} \
     --enable-mp4-output	\
-    --enable-gtk	\
     --enable-pthread	\
     --enable-pic	\
-    --enable-shared	\
-    $nlsopt
+    --enable-shared
 
 make
 
@@ -71,12 +66,6 @@ make
 rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
 rm -f $RPM_BUILD_ROOT%{_libdir}/lib*.*a
-
-%if %build_l10n
-%else
-# REMOVE l10n FILES
-rm -rf $RPM_BUILD_ROOT%{_datadir}/locale
-%endif
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -87,8 +76,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/*
 %dir %attr (0755, root, bin) %{_libdir}
 %{_libdir}/lib*.so*
-%dir %attr (0755, root, sys) %{_datadir}
-%{_datadir}/x264
 
 %files devel
 %defattr (-, root, bin)
@@ -97,14 +84,9 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, other) %{_libdir}/pkgconfig
 %{_libdir}/pkgconfig/*
 
-%if %build_l10n
-%files l10n
-%defattr (-, root, bin)
-%dir %attr (0755, root, sys) %{_datadir}
-%attr (-, root, other) %{_datadir}/locale
-%endif
-
 %changelog
+* Sun Mar 15 2009 - Milan Jurik
+- the latest snapshot
 * Mon Jun 30 2008 - andras.barna@gmail.com
 - Force SFWgcc
 * Fri May 23 2008 - michal.bielicki <at> voiceworks.pl

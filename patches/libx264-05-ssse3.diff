@@ -1,0 +1,58 @@
+--- x264-snapshot-20090305-2245/common/x86/predict-c.c	pá bře  6 18:01:25 2009
++++ x264-snapshot-20090305-2245-patch/common/x86/predict-c.c	pá bře  6 18:00:57 2009
+@@ -110,6 +110,7 @@
+ #endif
+ PREDICT_16x16_P( sse2   )
+ 
++#if 0
+ #ifdef __GNUC__
+ static void predict_16x16_p_ssse3( uint8_t *src )
+ {
+@@ -146,6 +147,7 @@
+     predict_16x16_p_core_sse2( src, i00, b, c );
+ }
+ #endif
++#endif
+ 
+ #define PREDICT_8x8_P(name)\
+ static void predict_8x8c_p_##name( uint8_t *src )\
+@@ -170,6 +172,7 @@
+ #endif
+ PREDICT_8x8_P( sse2   )
+ 
++#if 0
+ #ifdef __GNUC__
+ static void predict_8x8c_p_ssse3( uint8_t *src )
+ {
+@@ -199,6 +202,7 @@
+     predict_8x8c_p_core_sse2( src, i00, b, c );
+ }
+ #endif
++#endif
+ 
+ #define PREDICT_16x16_DC(name)\
+ static void predict_16x16_dc_##name( uint8_t *src )\
+@@ -394,9 +398,11 @@
+     if( !(cpu&X264_CPU_SSSE3) )
+         return;
+     pf[I_PRED_16x16_H]      = predict_16x16_h_ssse3;
++#if 0
+ #ifdef __GNUC__
+     pf[I_PRED_16x16_P]      = predict_16x16_p_ssse3;
+ #endif
++#endif
+ }
+ 
+ void x264_predict_8x8c_init_mmx( int cpu, x264_predict_t pf[7] )
+@@ -421,9 +427,11 @@
+     if( !(cpu&X264_CPU_SSSE3) )
+         return;
+     pf[I_PRED_CHROMA_H]       = predict_8x8c_h_ssse3;
++#if 0
+ #ifdef __GNUC__
+     pf[I_PRED_CHROMA_P]       = predict_8x8c_p_ssse3;
+ #endif
++#endif
+ }
+ 
+ void x264_predict_8x8_init_mmx( int cpu, x264_predict8x8_t pf[12], x264_predict_8x8_filter_t *predict_8x8_filter )

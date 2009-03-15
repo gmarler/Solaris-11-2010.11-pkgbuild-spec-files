@@ -1,3 +1,7 @@
+2009-03-15  Milan Jurik <sfnet@xylab.cz>
+
+	* SFElibx264.spec: the latest snapshot
+
 2009-03-14  Milan Jurik <sfnet@xylab.cz>
 
 	* SFEnasm.spec: upgrade to 2.06rc1
