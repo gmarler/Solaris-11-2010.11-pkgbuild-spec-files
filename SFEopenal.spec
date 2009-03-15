@@ -9,8 +9,8 @@
 
 %define src_name	openal-soft
 %define src_url		http://www.openal.org/openal_webstf/downloads
-%define src_url		http://connect.creativelabs.com/openal/Downloads
-#http://connect.creativelabs.com/openal/Downloads/openal-soft-1.5.304.tar.bz2
+%define src_url		http://kcat.strangesoft.net/openal-releases
+#http://kcat.strangesoft.net/openal-releases/openal-soft-1.5.304.tar.bz2
 
 %define SUNWcmake      %(/usr/bin/pkginfo -q SUNWcmake && echo 1 || echo 0)
 
@@ -84,6 +84,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*
 
 %changelog
+* Sun Mar 15 2009 - Milan Jurik
+- original source URL
 * Sun Feb  8 2009 - Thomas Wagner
 - quick fix for complaining make install about already defined "relative" installtarget (./sfw_stage)
 * Mon Dec 22 2008 - Thomas Wagner
