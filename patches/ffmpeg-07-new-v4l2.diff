@@ -1,0 +1,52 @@
+--- ffmpeg-0.5.orig/configure	Sun Mar 15 12:26:13 2009
++++ ffmpeg-0.5/configure	Sun Mar 15 12:28:54 2009
+@@ -1115,7 +1115,7 @@
+ rtsp_demuxer_deps="sdp_demuxer"
+ sdp_demuxer_deps="rtp_protocol mpegts_demuxer"
+ v4l_demuxer_deps="linux_videodev_h"
+-v4l2_demuxer_deps_any="linux_videodev2_h sys_videoio_h"
++v4l2_demuxer_deps_any="sys_videodev2_h"
+ vfwcap_demuxer_deps="capCreateCaptureWindow"
+ vfwcap_demuxer_extralibs="-lvfw32"
+ x11_grab_device_demuxer_deps="x11grab XShmCreateImage"
+@@ -2099,6 +2099,7 @@
+ 
+ check_header linux/videodev.h
+ check_header linux/videodev2.h
++check_header sys/videodev2.h
+ check_header sys/videoio.h
+ 
+ check_func_headers "windows.h vfw.h" capCreateCaptureWindow -lvfw32
+--- ffmpeg-0.5.orig/libavdevice/v4l2.c	Sun Mar 15 12:29:45 2009
++++ ffmpeg-0.5/libavdevice/v4l2.c	Sun Mar 15 12:31:13 2009
+@@ -38,9 +38,14 @@
+ #if HAVE_SYS_VIDEOIO_H
+ #include <sys/videoio.h>
+ #else
++#ifdef __linux__
+ #include <asm/types.h>
+ #include <linux/videodev2.h>
++#else
++#include <sys/ioccom.h>
++#include <sys/videodev2.h>
+ #endif
++#endif
+ #include <time.h>
+ #include <strings.h>
+ 
+@@ -572,12 +577,9 @@
+ 
+     st->codec->pix_fmt = fmt_v4l2ff(desired_format);
+     s->frame_size = avpicture_get_size(st->codec->pix_fmt, width, height);
+-    if (capabilities & V4L2_CAP_STREAMING) {
+-        s->io_method = io_mmap;
+-        res = mmap_init(s1);
+-        if (res == 0) {
+-            res = mmap_start(s1);
+-        }
++    s->io_method = io_mmap;
++    if (capabilities & V4L2_CAP_STREAMING && (mmap_init(s1) == 0)) {
++        res = mmap_start(s1);
+     } else {
+         s->io_method = io_read;
+         res = read_init(s1);

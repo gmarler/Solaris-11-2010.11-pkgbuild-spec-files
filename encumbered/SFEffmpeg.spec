@@ -59,8 +59,6 @@ Requires: SFExvid
 BuildRequires: SFElibx264-devel
 Requires: SFElibx264
 BuildRequires: SFEfaad2-devel
-Requires: SFEliba52
-BuildRequires: SFEliba52-devel
 # libamr-* ihave 3GPP code with unclear licencing
 #BuildRequires: SFEamrnb-devel
 #Requires: SFEamrnb
@@ -72,6 +70,8 @@ BuildRequires: SUNWogg-vorbis-devel
 Requires: SUNWogg-vorbis
 BuildRequires: SUNWlibtheora-devel
 Requires: SUNWlibtheora
+BuildRequires: SUNWspeex-devel
+Requires: SUNWspeex
 
 %package devel
 Summary:                 %{summary} - development files
@@ -121,6 +121,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/%{sse2_arch}/lib*.so*
 %endif
 %dir %attr (0755, root, sys) %dir %{_datadir}
+%dir %attr(0755, root, bin) %{_datadir}/ffmpeg
+%{_datadir}/ffmpeg/*.ffpreset
 %dir %attr(0755, root, bin) %{_mandir}/man1
 %{_mandir}/man1/*
 
@@ -140,11 +142,14 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, bin) %{_includedir}
 %{_includedir}/libavutil
 %{_includedir}/libavcodec
+%{_includedir}/libavfilter
 %{_includedir}/libavformat
 %{_includedir}/libavdevice
 %{_includedir}/libpostproc
 %{_includedir}/libswscale
 
 %changelog
+* Mon Mar 16 2009 - Milan Jurik
+- version 0.5
 * Fri Jun 13 2008 - trisk@acm.jhu.edu
 - New spec for base-spec

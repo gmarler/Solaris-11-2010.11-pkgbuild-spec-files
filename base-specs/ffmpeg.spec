@@ -6,34 +6,35 @@
 
 Summary:                 FFmpeg - a very fast video and audio converter
 
-%define year 2008
-%define month  03
-%define day    26
-
-Version:                 0.4.9-p%{year}%{month}%{day}
+Version:                 0.5
 #Source:                  http://pkgbuild.sf.net/spec-files-extra/tarballs/ffmpeg-export-%{year}-%{month}-%{day}.tar.bz2
-Source:                  http://electricsheep.org/ffmpeg-0.4.9-p%{year}%{month}%{day}.tar.bz2
+#Source:                  http://electricsheep.org/ffmpeg-0.4.9-p%{year}%{month}%{day}.tar.bz2
+Source:                  http://ffmpeg.mplayerhq.hu/releases/ffmpeg-%{version}.tar.bz2
 URL:                     http://ffmpeg.mplayerhq.hu/index.html
-Patch1:                  ffmpeg-01-BE_16.diff
+#Patch1:                  ffmpeg-01-BE_16.diff
 Patch2:                  ffmpeg-02-configure.diff
-Patch3:                  ffmpeg-03-v4l2.diff
+#Patch3:                  ffmpeg-03-v4l2.diff
 Patch4:                  ffmpeg-04-options.diff
 Patch5:                  ffmpeg-05-mlib.diff
 # Security: CVE-2008-3162
-Patch6:                  ffmpeg-06-cve-2008-3162.diff
+#Patch6:                  ffmpeg-06-cve-2008-3162.diff
+Patch7:                  ffmpeg-07-new-v4l2.diff
+Patch8:                  ffmpeg-08-versionsh.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 Autoreqprov:             on
 
 %prep
 #%setup -q -n ffmpeg-export-%{year}-%{month}-%{day}
-%setup -q -n ffmpeg
-%patch1 -p1
+%setup -q -n ffmpeg-%version
+#%patch1 -p1
 %patch2 -p1
-%patch3 -p1
+#%patch3 -p1
 %patch4 -p1
 %patch5 -p1
-%patch6 -p1
+#%patch6 -p1
+%patch7 -p1
+%patch8 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -61,13 +62,12 @@ bash ./configure	\
     --disable-debug	\
     --enable-gpl	\
     --enable-postproc	\
+    --enable-avfilter   \
     --enable-swscale	\
     --disable-vhook	\
     --enable-libgsm	\
     --enable-libxvid	\
     --enable-libx264	\
-    --enable-liba52	\
-    --enable-liba52bin	\
     --enable-libfaad	\
     --enable-libfaadbin	\
     --enable-libtheora	\
@@ -76,11 +76,13 @@ bash ./configure	\
     --disable-libamr-nb	\
     --disable-libamr-wb	\
     --enable-x11grab	\
+    --enable-libspeex   \
     --enable-pthreads	\
     --disable-static	\
+    --extra-ldflags=-mimpure-text \
     --enable-shared
 
-make -j $CPUS
+make 
 
 %install
 make install DESTDIR=$RPM_BUILD_ROOT BINDIR=$RPM_BUILD_ROOT%{_bindir}
@@ -107,6 +109,8 @@ EOM
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Mon Mar 16 2009 - Milan Jurik
+- version 0.5
 * Thu Aug 07 2008 - trisk@acm.jhu.edu
 - Add patch6, update CFLAGS
 * Thu Mar 27 2008 - trisk@acm.jhu.edu

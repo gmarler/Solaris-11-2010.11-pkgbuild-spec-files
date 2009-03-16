@@ -1,3 +1,7 @@
+2009-03-16  Milan Jurik <sfnet@xylab.cz>
+
+	* encumbered/SFEffmpeg.spec: upgrade to 0.5
+
 2009-03-16  Andras Barna  <andras.barna@gmail.com>
 
 	* SFEwine.spec: version bump,disable patch3

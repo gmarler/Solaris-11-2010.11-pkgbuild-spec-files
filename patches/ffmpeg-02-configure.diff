@@ -1,6 +1,12 @@
---- ffmpeg.orig/configure	2008-03-25 19:34:49.000000000 -0400
-+++ ffmpeg/configure	2008-07-20 14:29:01.034274478 -0400
-@@ -967,7 +967,7 @@
+--- ffmpeg-0.5/configure	Mon Mar 16 21:05:16 2009
++++ ffmpeg-0.5-patch/configure	Mon Mar 16 22:00:40 2009
+@@ -1,4 +1,4 @@
+-#!/bin/sh
++#!/bin/ksh
+ #
+ # FFmpeg configure script
+ #
+@@ -1227,7 +1227,7 @@
      thing=$1
      pattern=$2
      file=$source_path/$3
@@ -9,17 +15,7 @@
  }
  
  ENCODER_LIST=$(find_things  encoder  ENC      libavcodec/allcodecs.c)
-@@ -1157,7 +1157,8 @@
-         fi ;;
-     sunos)
-         FFSERVERLDFLAGS=""
--        SHFLAGS='-shared -Wl,-h,$@'
-+        SHFLAGS='-shared -mimpure-text -Wl,-h,$@'
-+        VHOOKSHFLAGS='$(SHFLAGS)'
-         network_extralibs="-lsocket -lnsl"
-         ;;
-     netbsd)
-@@ -1682,7 +1683,7 @@
+@@ -2026,7 +2026,7 @@
      echo
  fi
  
@@ -28,17 +24,17 @@
      check_ldflags -rdynamic
      check_ldflags -export-dynamic
  fi
-@@ -1721,7 +1722,8 @@
+@@ -2063,7 +2063,8 @@
      restore_flags
  fi
  
--texi2html -version >/dev/null 2>&1 && enable texi2html || disable texi2html
-+(texi2html -version >/dev/null 2>&1 || texi2html /dev/null >/dev/null 2>&1) && enable texi2html || disable texi2html
+-texi2html -version > /dev/null 2>&1 && enable texi2html || disable texi2html
++(texi2html -version > /dev/null 2>&1 || texi2html /dev/null > /dev/null 2>&1) && enable texi2html || disable texi2html
 +pod2man /dev/null >/dev/null 2>&1 && enable pod2man || disable pod2man
  
- check_type sys/socket.h socklen_t
- 
-@@ -2008,7 +2010,7 @@
+ ##########################################
+ # Network check
+@@ -2407,7 +2408,7 @@
      echo "SDL_LIBS=`"${SDL_CONFIG}" --libs`" >> config.mak
      echo "SDL_CFLAGS=`"${SDL_CONFIG}" --cflags`" >> config.mak
  fi
