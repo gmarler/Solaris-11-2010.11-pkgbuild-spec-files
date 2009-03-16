@@ -11,7 +11,7 @@
 
 Name:                   SFEwine
 Summary:                Windows compatibility
-Version:                1.1.13
+Version:                1.1.17
 URL:                    http://www.winehq.org/
 Source:                 %{src_url}/%{src_name}-%{version}.tar.bz2
 Source101:		http://trisk.acm.jhu.edu/winetricks-20080627
@@ -19,7 +19,7 @@ Patch1:			wine-01-shell.diff
 # http://bugs.winehq.org/show_bug.cgi?id=9787
 Patch2:			wine-02-acceptex.diff
 # Implement network statistics in iphlpapi via libkstat and STREAMS TPI
-Patch3:			wine-03-iphlpapi.diff
+#Patch3:			wine-03-iphlpapi.diff
 # Wine assumes libraries are mapped to contiguous memory regions.
 # Use less restrictive alignment for data section to avoid "holes" between
 # sections that the OS is allowed to use for an anonymous mmap:
@@ -151,6 +151,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/aclocal/*
 
 %changelog
+* Mon Mar 16 2009 - andras.barna@gmail.com
+- Bump to 1.1.17, disable patch3
 * Sun Jan 25 2009 - Thomas Wagner
 - Bump to 1.1.13
 - rework patch3 wine-03-iphlpapi.diff for 1.1.13 - could update bug http://bugs.winehq.org/show_bug.cgi?id=14185

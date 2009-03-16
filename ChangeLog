@@ -1,5 +1,9 @@
 2009-03-16  Andras Barna  <andras.barna@gmail.com>
 
+	* SFEwine.spec: version bump,disable patch3
+
+2009-03-16  Andras Barna  <andras.barna@gmail.com>
+
 	* SFEgeany.spec: new version
 	* SFElibx264.spec: add patch7
 	* SFErecordmysolaris.spec: fix Requires
