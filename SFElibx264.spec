@@ -22,6 +22,7 @@ Patch3:                  libx264-03-ld.diff
 Patch4:                  libx264-04-ginstall.diff
 Patch5:                  libx264-05-ssse3.diff
 Patch6:                  libx264-06-gpac.diff
+Patch7:                  libx264-07-soname.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -43,6 +44,7 @@ Requires: %name
 %patch4 -p1
 %patch5 -p1
 %patch6 -p1
+%patch7 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -85,6 +87,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*
 
 %changelog
+* Mon Mar 16 2009 - andras.barna@gmail.com
+- Add patch7
 * Sun Mar 15 2009 - Milan Jurik
 - the latest snapshot
 * Mon Jun 30 2008 - andras.barna@gmail.com

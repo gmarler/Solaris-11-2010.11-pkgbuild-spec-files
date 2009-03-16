@@ -1,0 +1,11 @@
+--- x264-snapshot-20090314-2245/configure.old	2009-03-16 05:32:16.811571879 +0200
++++ x264-snapshot-20090314-2245/configure	2009-03-16 05:32:47.092026530 +0200
+@@ -457,7 +457,7 @@
+     elif [ "$SYS" = "SunOS" ]; then
+         echo "SOSUFFIX=so" >> config.mak
+         echo "SONAME=libx264.so.$API" >> config.mak
+-        echo 'SOFLAGS=-Wl,-h,$(SONAME)' >> config.mak
++        echo 'SOFLAGS=-Wl,-h$(SONAME)' >> config.mak
+     else
+         echo "SOSUFFIX=so" >> config.mak
+         echo "SONAME=libx264.so.$API" >> config.mak

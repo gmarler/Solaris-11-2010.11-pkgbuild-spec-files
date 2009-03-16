@@ -1,3 +1,10 @@
+2009-03-16  Andras Barna  <andras.barna@gmail.com>
+
+	* SFEgeany.spec: new version
+	* SFElibx264.spec: add patch7
+	* SFErecordmysolaris.spec: fix Requires
+	* patches/libx264-07-soname.diff: added
+
 2009-03-17  Alfred Peng  <alfred.peng@sun.com>
 
 	* SFEgdata-python.spec: Bump to 1.2.4

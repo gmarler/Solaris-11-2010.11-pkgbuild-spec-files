@@ -11,7 +11,7 @@
 
 Name:                SFEgeany
 Summary:             A small and lightweight integrated developer environment
-Version:             0.15
+Version:             0.16
 Source:              %{src_url}/%{src_name}-%{version}.tar.bz2
 URL:                 http://geany.uvena.de/Main/HomePage
 SUNW_BaseDir:        %{_basedir}
@@ -41,6 +41,7 @@ Requires:                %{name}
 
 glib-gettextize -f
 libtoolize --copy --force
+intltoolize --force
 aclocal $ACLOCAL_FLAGS
 autoheader
 automake -a -c -f 
@@ -114,6 +115,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/geany/*
 
 %changelog
+* Mon Mar 16 2009 - andras.barna@gmail.com
+- Bumped to 0.16
 * Sun May 28 2008 - Ananth Shrinivas <ananth@sun.com>
 - Complete revamp of the spec file
 - Cleaned up all file and directory attributes

@@ -13,11 +13,9 @@ URL:                 http://code.google.com/p/recordmysolaris/
 
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}_%{version}-build
-BuildRequires:            SUNWogg-vorbis
-BuildRequires:            SUNWlibtheora
-BuildRequires:            /usr/include/sys/soundcard.h
+BuildRequires:       SUNWogg-vorbis
+BuildRequires:       SUNWlibtheora
 
-Requires:            /usr/include/sys/soundcard.h
 Requires:            SUNWxwplt
 Requires:            SUNWogg-vorbis
 Requires:            SUNWlibtheora
@@ -69,6 +67,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/*
 
 %changelog
+* Mon Mar 16 2009 - (andras.barna@gmail.com)
+- fix Requires
 * Sat Mar 07 2009 - (andras.barna@gmail.com)
 - new version
 * Mon Aug 25 2008 - (andras.barna@gmail.com)
