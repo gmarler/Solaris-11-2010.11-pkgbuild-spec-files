@@ -1,3 +1,11 @@
+2009-03-17  Alfred Peng  <alfred.peng@sun.com>
+
+	* SFEgdata-python.spec: Bump to 1.2.4
+	* SFEpython-axiom.spec: Added.
+	* SFEpython-epsilon.spec: Added.
+	* SFEpython-id3lib.spec: Added.
+	* patches/python-id3lib-01-const-char.diff: Added.
+
 2009-03-16  Alfred Peng  <alfred.peng@sun.com>
 
 	* SFEgpicview.spec, SFEgtknetcat.spec, SFElxappearance.spec,

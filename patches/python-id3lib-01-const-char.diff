@@ -1,0 +1,22 @@
+--- pyid3lib-0.5.1/pyid3lib.cc.orig	2009-03-17 00:17:28.680202256 +0800
++++ pyid3lib-0.5.1/pyid3lib.cc	2009-03-17 00:17:44.873489902 +0800
+@@ -1013,7 +1013,7 @@
+     {
+         ID3_Frame* frame;
+ 	const char* str;
+-	char* slash;
++	const char* slash;
+         ID3_Field* fld;
+ 	int i;
+ 
+--- pyid3lib-0.5.1/setup.py.orig	2009-03-17 00:19:12.089453351 +0800
++++ pyid3lib-0.5.1/setup.py	2009-03-17 00:19:19.196346379 +0800
+@@ -10,7 +10,7 @@
+ 
+        ext_modules = [Extension( 'pyid3lib',
+                                  ['pyid3lib.cc'],
+-                                 libraries=['stdc++','id3','z'] )]
++                                 libraries=['Cstd','id3','z'] )]
+        )
+ 
+        
