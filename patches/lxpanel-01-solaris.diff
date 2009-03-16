@@ -1,0 +1,25 @@
+--- lxpanel-0.3.999/src/plugins/volume/volume-impl.c.orig	2009-03-13 02:25:12.181839706 +0800
++++ lxpanel-0.3.999/src/plugins/volume/volume-impl.c	2009-03-13 02:24:44.336693442 +0800
+@@ -35,7 +35,10 @@
+ #elif defined(__linux__) || defined(__Linux__)
+ #include <linux/soundcard.h>
+ #else
+-#error "Not supported platform"
++//#define MIXER_READ(dev) _IOR('M', dev, int)
++//#define MIXER_WRITE(dev) _IOWR('M', dev, int)
++#define SOUND_MIXER_VOLUME 0
++//#error "Not supported platform"
+ #endif
+ 
+ #include <fcntl.h>
+--- lxpanel-0.3.999/src/plugins/cpu/cpu.c.orig	2009-03-13 10:44:19.880558170 +0800
++++ lxpanel-0.3.999/src/plugins/cpu/cpu.c	2009-03-13 10:44:25.876404977 +0800
+@@ -25,7 +25,7 @@
+ #include <string.h>
+ #include <sys/time.h>
+ #include <time.h>
+-#include <sys/sysinfo.h>
++//#include <sys/sysinfo.h>
+ #include <stdlib.h>
+ #include <glib/gi18n.h>
+ 

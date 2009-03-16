@@ -1,0 +1,19 @@
+--- pcmanfm-0.5/src/vfs/vfs-volume-hal.c.orig	2009-03-16 11:17:42.181196352 +0800
++++ pcmanfm-0.5/src/vfs/vfs-volume-hal.c	2009-03-16 11:20:21.884533143 +0800
+@@ -1542,6 +1542,16 @@
+     }
+ 
+     return fstab ? fstab->fs_spec : NULL;
++#elif defined(sun)
++    struct mnttab *mnt;
++
++    getmntent (handle, mnt);
++
++    if (mount_point != NULL && mnt != NULL) {
++        *mount_point = mnt->mnt_mountp;
++    }
++
++    return mnt ? mnt->mnt_fstype : NULL;
+ #else
+     struct mntent *mnt;
+ 

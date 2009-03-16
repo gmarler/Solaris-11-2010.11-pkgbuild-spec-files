@@ -1,3 +1,14 @@
+2009-03-16  Alfred Peng  <alfred.peng@sun.com>
+
+	* SFEgpicview.spec, SFEgtknetcat.spec, SFElxappearance.spec,
+	  SFElxde-common.spec, SFElxlauncher.spec, SFElxmenu-data.spec,
+	  SFElxpanel.spec, SFElxrandr.spec, SFElxsession-edit.spec,
+	  SFElxsession-lite.spec, SFElxsession.spec, SFEopenbox.spec,
+	  SFEpcmanfm.spec, patches/lxpanel-01-solaris.diff,
+	  patches/lxsession-01-docbook2man.diff, patches/pcmanfm-01-mnttab.diff,
+	  patches/pcmanfm-04-crash.diff: Add the initial specs and patches for
+	  LXDE (Lightweight X11 Desktop Environment).
+
 2009-03-15  Thomas Wagner  <tom68@users.sourceforge.net>
 
         * SFEopenal.spec: bump to 1.7.411, make patch1 version independent and rework patch openal-new-01.diff
