@@ -1,3 +1,11 @@
+2009-03-17  Halton Huo <halton.huo@sun.com>
+
+	* SUNWgnome-display-mgr.spec: Bump to 2.26.0
+	* patches/gdm-05-ICE-optionwidget.diff,
+	  patches/gdm-06-gconfsanity.diff:
+	  removed because PSARC/2008/662 is integrated in snv_110.
+	* patches/gdm-08-fixcrash.diff: Remove upstreamed patch
+
 2009-03-16  Milan Jurik <sfnet@xylab.cz>
 
 	* encumbered/SFEffmpeg.spec: upgrade to 0.5

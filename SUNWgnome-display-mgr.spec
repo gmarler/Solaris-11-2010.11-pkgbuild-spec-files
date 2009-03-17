@@ -13,9 +13,9 @@
 
 Summary:                 GNOME display manager
 Name:                    SUNWgnome-display-mgr
-Version:                 2.25.92
+Version:                 2.26.0
 Release:                 1
-Source:                  http://download.gnome.org/sources/gdm/2.25/gdm-%{version}.tar.bz2
+Source:                  http://download.gnome.org/sources/gdm/2.26/gdm-%{version}.tar.bz2
 Source1:                 gdm.xml
 Source2:                 svc-gdm
 # date:2009-02-13 owner:yippi type:branding
@@ -32,18 +32,8 @@ Patch3:                  gdm-03-ctrun.diff
 # Manage displays on the fly
 # date:2008-06-03 owner:yippi type:bug bugid:536355
 Patch4:                  gdm-04-dynamic-display.diff
-# Possible fix for unwritable gdm user $HOME. gnome-session
-# tries to update ~/.ICEAuthority and gdm-simple-greeter crashes
-# when looking up option widgets.
-# date:2008-09-29 owner:yippi type:bug bugid:554242
-Patch5:                  gdm-05-ICE-optionwidget.diff
-# Fix gconf-santiy-check-2 warning dialog.
-# date:2008-09-04 owner:yippi type:bug bugid:550832
-Patch6:			 gdm-06-gconfsanity.diff
 # date:2008-12-16 owner:yippi type:bug bugid:568323
 Patch7:                  gdm-07-hide-face-browser.diff
-# date:2009-03-13 owner:yippi type:bug state:upstream
-Patch8:                  gdm-08-fixcrash.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 
@@ -98,19 +88,17 @@ Requires:                %{name}
 %endif
 
 %prep
-%setup -q -n gdm-%version
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
+#%setup -q -n gdm-%version
+#%patch1 -p1
+#%patch2 -p1
+#%patch3 -p1
 # disable dynamic patch for now, since we're working new ways for it, refer to
 # http://wiki.genunix.org/wiki/index.php/design_for_newgdm_consolekit_multiseat_multidisplay
 #%patch4 -p1
-%patch5 -p1
-%patch6 -p1
-%patch7 -p1
-%patch8 -p0
+#%patch7 -p1
 
 %build
+cd gdm-%version
 export LDFLAGS="%_ldflags"
 export PKG_CONFIG_PATH=%{_pkg_config_path}
 export CFLAGS="%optflags"
@@ -130,9 +118,9 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
   CPUS=1
 fi
 
-glib-gettextize -f
 # FIXME: create m4 dir as workaround for bugzilla #575218
-mkdir m4
+test ! -d ./m4 && mkdir ./m4
+glib-gettextize -f
 intltoolize --force --copy --automake
 aclocal $ACLOCAL_FLAGS -I . -I ./m4
 libtoolize --copy --force
@@ -154,6 +142,7 @@ autoconf
 make -j $CPUS
 
 %install
+cd gdm-%version
 rm -rf $RPM_BUILD_ROOT
 
 make install DESTDIR=$RPM_BUILD_ROOT
@@ -326,6 +315,11 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 %endif
 
 %changelog
+* Tue Mar 17 2009 - halton.huo@sun.com
+- Bump to 2.26.0
+- Remove upstreamed patch gdm-08-fixcrash.diff
+- Remove patches gdm-05-ICE-optionwidget.diff and gdm-06-gconfsanity.diff
+  because PSARC/2008/662 is integrated in snv_110.
 * Fri Mar 13 2009 - brian.cameron@sun.com
 - Add patch gdm-08-fixcrash.diff to address crashing problem.
 * Fri Mar 13 2009 - brian.cameron@sun.com
