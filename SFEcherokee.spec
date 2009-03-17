@@ -3,16 +3,21 @@
 #
 # includes module(s): cherokee
 #
+# http://code.google.com/p/cherokee/issues/detail?id=$bugid
+#
 
 %include Solaris.inc
 
 Name:                    SFEcherokee
 Summary:                 cherokee - Fast, flexible, lightweight web server
-Version:                 0.6.0b700
-Source:                  http://www.cherokee-project.com/download/0.6/0.6.0/cherokee-%{version}.tar.gz
+Version:                 0.99.4
+Source:                  http://www.cherokee-project.com/download/0.99/%{version}/cherokee-%{version}.tar.gz
 URL:                     http://www.cherokee-project.com/
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
+
+# date:2009-03-17 owner:alfred type:bug bugid:402
+Patch1:                  cherokee-01-print-error.diff
 
 %include default-depend.inc
 
@@ -29,6 +34,7 @@ Requires: %name
 
 %prep
 %setup -q -n cherokee-%version
+%patch1 -p1
 
 %build
 export CFLAGS="%optflags -I%{_includedir}"
@@ -56,6 +62,8 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/lib*.a
 rm -f $RPM_BUILD_ROOT%{_libdir}/lib*.la
 rm -f $RPM_BUILD_ROOT%{_libdir}/cherokee/lib*.a
 rm -f $RPM_BUILD_ROOT%{_libdir}/cherokee/lib*.la
+rm -rf $RPM_BUILD_ROOT/var/log
+rm -rf $RPM_BUILD_ROOT/var/run
 
 mkdir -p ${RPM_BUILD_ROOT}/var/svc/manifest/network/
 cp http-cherokee.xml ${RPM_BUILD_ROOT}/var/svc/manifest/network/http-cherokee.xml
@@ -141,9 +149,14 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*
 %dir %attr (0755, root, bin) %{_includedir}
 %{_includedir}/*
+%dir %attr (0755, root, sys) %{_datadir}
+%dir %attr (0755, root, other) %{_datadir}/doc
+%{_datadir}/doc/*
 
 
 %changelog
+* Tue Mar 17 2009 - alfred.peng@sun.com
+- Bump to 0.99.4.
 * Sat Apr 21 2007 - dougs@truemail.co.th
 - Fixed sbin to find cherokee-admin
 * Sat Apr 07 2007 - alvaro@sun.com

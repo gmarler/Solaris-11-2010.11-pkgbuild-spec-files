@@ -1,0 +1,11 @@
+--- cherokee-0.99.4/cherokee/bind.c.orig	2009-03-17 16:39:42.760767886 +0800
++++ cherokee-0.99.4/cherokee/bind.c	2009-03-17 16:36:55.152916486 +0800
+@@ -127,7 +127,7 @@
+ 
+ 	ret = cherokee_config_node_read_int (conf, "port", &listener->port);
+ 	if (ret != ret_ok) {
+-		PRINT_ERROR ("ERROR: A port entry is need.");
++		PRINT_ERROR_S ("ERROR: A port entry is need.");
+ 		return ret_error;
+ 	}
+ 
