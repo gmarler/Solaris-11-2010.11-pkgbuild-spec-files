@@ -1,3 +1,16 @@
+2009-03-18  Jeff Cai <jeff.cai@sun.com>
+
+	* SFEgnome-python25-libs.spec: Moved from spec-files
+	* base-specs/gnome-python.spec: Copied from spec-files
+	* base-specs/pycairo.spec: Copied from spec-files
+	* base-specs/pygobject.spec: Copied from spec-files
+	* base-specs/pygtk2.spec: Copied from spec-files
+	* base-specs/pygtksourceview.spec: Copied from spec-files
+	* base-specs/pyorbit.spec: Copied from spec-files
+	* base-specs/pyspi.spec: Copied from spec-files
+	Since Python 2.5 will be obsolete, we will not ship the 
+	2.5 bindings.
+
 2009-03-17  Alfred Peng  <alfred.peng@sun.com>
 
 	* SFEcherokee.spec, patches/cherokee-01-print-error.diff: Bump to
