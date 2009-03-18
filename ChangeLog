@@ -1,5 +1,15 @@
 2009-03-18  Jeff Cai <jeff.cai@sun.com>
 
+	* SFEpython25-imaging.spec:
+	* SFEpython25-xdg.spec:
+	* SFEpython25-zope-interface.spec:
+	* base-specs/python-imaging.spec:
+	* base-specs/python-xdg.spec:
+	* base-specs/python-zope-interface.spec:
+	Move packages from spec-files-other
+
+2009-03-18  Jeff Cai <jeff.cai@sun.com>
+
 	* SUNWpython25-setuptools.spec: Copied from spec-files
 	* base-specs/python-setuptools.spec: Copied from spec-files
 	Since this spec will be closed.
