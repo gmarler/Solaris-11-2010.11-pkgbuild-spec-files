@@ -1,7 +1,9 @@
 2009-03-17  Alfred Peng  <alfred.peng@sun.com>
 
-	* SFEcherokee.spec, patches/cherokee-01-print-error.diff: Bump to 0.99.4.
-	* SFEcoherence.spec: Move to SFEpython24-coherence.spec and coherence.spec.
+	* SFEcherokee.spec, patches/cherokee-01-print-error.diff: Bump to
+	  0.99.4.
+	* SFEcoherence.spec: Move to SFEpython24-coherence.spec and
+	  coherence.spec.
 
 2009-03-17  Halton Huo <halton.huo@sun.com>
 
@@ -47,7 +49,8 @@
 
 2009-03-15  Thomas Wagner  <tom68@users.sourceforge.net>
 
-        * SFEopenal.spec: bump to 1.7.411, make patch1 version independent and rework patch openal-new-01.diff
+        * SFEopenal.spec: bump to 1.7.411, make patch1 version independent and
+	  rework patch openal-new-01.diff
 
 2009-03-15  Milan Jurik <sfnet@xylab.cz>
 
@@ -64,23 +67,33 @@
 
 2009-03-14  Thomas Wagner  <tom68@users.sourceforge.net>
 
-	* experimental/SFEqt45-gcc.spec: *new* version QT 4.5, derived from SFEqt4.spec, patch2 temporarily 
-          disables setuid/setguid safetychecks
-	* SFEurxvt.spec: use gcc in any case, (Build)Requires: SFEgcc(runtime), removed SunStudio left overs, 
-          bump to 9.06, rework patch10 for 9.06, add patch12 bash, %doc adjusted
+	* experimental/SFEqt45-gcc.spec: *new* version QT 4.5, derived from
+	  SFEqt4.spec, patch2 temporarily disables setuid/setguid safetychecks
+	* SFEurxvt.spec: use gcc in any case, (Build)Requires: SFEgcc(runtime),
+	  removed SunStudio left overs, 
+          bump to 9.06, rework patch10 for 9.06, add patch12 bash, %doc
+	  adjusted
         * SFElibsndfile.spec base-specs/libsndfile.spec:  bump to 1.0.19
         * SFEbvi.spec: adjust %doc and %files permissions
         * SFEtightvnc.spec: add Conflicts: SUNWxvnc, Conflicts: SUNWvncviewer
-        * SFEfont-terminus.spec: bump to 4.28, rework patch1 new font path, adjust %doc files
-        * SFEopenal.spec: quick fix for complaining make install about already defined "relative" installtarget (./sfw_stage)
+        * SFEfont-terminus.spec: bump to 4.28, rework patch1 new font path,
+	  adjust %doc files
+        * SFEopenal.spec: quick fix for complaining make install about already
+	  defined "relative" installtarget (./sfw_stage)
         * SFErrdtool.spec: document %doc changes
         * SFEre2c.spec: bump to 0.13.5
-        * SFEqt.spec SFEqt4.spec: reworked shared patch qt-01-use_bash.diff to fit 4.x and 4.5 versions of QT
-        * SFEgmp.spec: move to /usr/gnu to avoid conflict with SUNWgnu-mp (consumers might want --with-gmp=/usr/gnu (SFEgmp) or
-          --with-gmp-include=/usr/include/gmp (SUNWgnu-mp) , see examples in SFEgcc.spec
-        * SFEmpfr.spec: move to /usr/gnu to avoid conflict with SUNWgnu-mpfr (consumers might want --with-mpfr=/usr/gnu (SFEgmp) or 
-          --with-mpfr-include=/usr/include/mpfr (SUNWgnu-mp) , see examples in SFEgcc.spec
-        * SFEgcc.spec: fix detection to use SUNWgnu-mp/SUNWgnu-mpfr otherwise require SFEgmp/SFEmpfr, add (Build)Requires: 
+        * SFEqt.spec SFEqt4.spec: reworked shared patch qt-01-use_bash.diff to
+	  fit 4.x and 4.5 versions of QT
+        * SFEgmp.spec: move to /usr/gnu to avoid conflict with SUNWgnu-mp
+	  (consumers might want --with-gmp=/usr/gnu (SFEgmp) or
+          --with-gmp-include=/usr/include/gmp (SUNWgnu-mp) , see examples in
+	  SFEgcc.spec
+        * SFEmpfr.spec: move to /usr/gnu to avoid conflict with SUNWgnu-mpfr
+	  (consumers might want --with-mpfr=/usr/gnu (SFEgmp) or 
+          --with-mpfr-include=/usr/include/mpfr (SUNWgnu-mp) , see examples in
+	  SFEgcc.spec
+        * SFEgcc.spec: fix detection to use SUNWgnu-mp/SUNWgnu-mpfr otherwise
+	  require SFEgmp/SFEmpfr, add (Build)Requires: 
           SFElibiconv(-devel)
 
 2009-03-13  Brian Cameron  <brian.cameron@sun.com>
@@ -143,15 +156,15 @@
 
 2009-03-06  Alfred Peng  <alfred.peng@sun.com>
 
-	* SFEcoherence.spec, SFEpython24-coherence.spec, base-specs/coherence.spec:
-	  Create SFEpython24-coherence.spec and coherence.spec to replace
-	  SFEcoherence.spec.
+	* SFEcoherence.spec, SFEpython24-coherence.spec,
+	  base-specs/coherence.spec: Create SFEpython24-coherence.spec and
+	  coherence.spec to replace SFEcoherence.spec.
 	* patches/coherence-01-solaris.diff: Added for coherence webserver.
 
 2009-03-05  Petr Sobotka  <sobotkap@gmail.com>
 
-	* SFEliveMedia.spec: Bump to 2009.02.23 version and polite main version tag 
-				to be compatible with IPS
+	* SFEliveMedia.spec: Bump to 2009.02.23 version and polite main version
+	  tag to be compatible with IPS
 
 2009-03-05  Petr Sobotka  <sobotkap@gmail.com>
 
@@ -160,11 +173,14 @@
 
 2009-03-04  Thomas Wagner  <tom68@users.sourceforge.net>
 
-	* SFEqt.spec: can't find libcstd++.6.*, add to configure: -L /usr/gnu/lib -R /usr/gnu/lib 
-          (gcc4, for gcc3 this would be sfw instead gnu),  enable configure's hint -no-exceptions,
-          force to SFEgcc 4.x because sfw/gcc3 missing mm3dnow.h, change Requires from SUNWgccruntime to SFEgcc(runtime),
+	* SFEqt.spec: can't find libcstd++.6.*, add to configure:
+	  -L /usr/gnu/lib -R /usr/gnu/lib 
+          (gcc4, for gcc3 this would be sfw instead gnu),  enable configure's
+	  hint -no-exceptions, force to SFEgcc 4.x because sfw/gcc3 missing
+	  mm3dnow.h, change Requires from SUNWgccruntime to SFEgcc(runtime),
           <CC|CXX>=/usr/gnu/bin/<gcc|g++>)
-        * SFEqt4.spec: fix path to SunStudio compiler, enable configure's hint -no-exceptions (smaller code, less memory)
+        * SFEqt4.spec: fix path to SunStudio compiler, enable configure's hint
+	  -no-exceptions (smaller code, less memory)
 
 2009-03-03  Halton Huo <halton.huo@sun.com>
 
@@ -262,21 +278,21 @@
 	* SFEscons.spec: Bump to version 1.2.0.
 
 2009-02-21  Thomas Wagner  <tom68@users.sourceforge.net>
-	* SFExosd.spec: add patch1 configure needs bash, fix attributs
+
+	* SFExosd.spec: add patch1 configure needs bash, fix attributes
 	  %{_docdir}
 	* SFEgmpc-plugin*.spec: add (Build-)Requires: SFEgmpc(-devel) into
-	  spec, had no effect in %use base-spec/gmpc-plugin.spec,
-	  removed %doc section from %files
+	  spec, had no effect in %use base-spec/gmpc-plugin.spec, removed %doc
+	  section from %files
 	* SFEgmpc-plugin-lastfm.spec: add %{plugindownloadfile} to work around
 	  "dot" in download-filename not allowed in SVR4 packagename
 	* base-specs/gmpc-plugin.spec: add case for last.fm isn't lastfm and
 	  SVR4 packaging doesn't manage "." in packagenames
 	* SFEufraw.spec: add %dir %attr (0755, root, sys) %{_datadir} -
-	  otherwise share permission conflict,
-	  try flags Obsoletes Provides Conflicts SUNWdcraw
+	  otherwise share permission conflict, try flags Obsoletes Provides
+	  Conflicts SUNWdcraw
 	* SFElibsamplerate.spec: remove Conflicts (mistake)
 	* base-specs/libsamplerate.spec: bump to version 0.1.6
-
 
 2009-02-20  Thomas Wagner  <tom68@users.sourceforge.net>
 
