@@ -108,6 +108,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/pygobject/*
 
 %changelog -n pygobject
+* Wed Mar 18 2009 - jeff.cai@sun.com
+- Copied from spec-files
 * Thu Feb 26 2009 - dave.lin@sun.com
 - Bump to 2.16.1
 * Mon Nov 24 2008 - laca@sun.com

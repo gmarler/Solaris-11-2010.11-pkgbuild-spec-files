@@ -52,7 +52,7 @@ BuildRequires: SUNWgnome-base-libs-devel
 BuildRequires: SUNWgnome-file-mgr-devel
 BuildRequires: SUNWgnome-print-devel
 BuildRequires: SUNWgnome-a11y-libs-devel
-BuildRequires: SUNWPython25-extra
+BuildRequires: SFEPython25-extra
 BuildRequires: SUNWgnome-component-devel
 BuildRequires: SUNWgnome-config-devel
 BuildRequires: SUNWgnome-gtksourceview-devel
@@ -170,6 +170,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_prefix}/demo/jds/bin/pygtk-demo-2.5
 
 %changelog
+* Wed Mar 18 2009 - jeff.cai@sun.com
+- Moved from spec-files
 * Tue Feb 17 2009 - dave.lin@sun.com
 - Reworked %file/-devel.
 * Fri Feb 13 2009 - laca@sun.com

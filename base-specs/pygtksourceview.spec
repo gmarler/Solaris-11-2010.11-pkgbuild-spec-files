@@ -75,6 +75,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-doc
 
 %changelog
+* Wed Mar 18 2009 - jeff.cai@sun.com
+- Copied from spec-files
 * Fri Mar 13 2009 - dave.lin@sun.com
 - Bump to 2.5.0
 - Run libtoolize to ensure configured correctly for (Open)Solaris.

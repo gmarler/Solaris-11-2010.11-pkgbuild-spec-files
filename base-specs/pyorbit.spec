@@ -82,6 +82,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*
 
 %changelog
+* Wed Mar 18 2009 - jeff.cai@sun.com
+- Copied from spec-files
 * Mon Nov 24 2008 - laca@sun.com
 - use %{pythonver} macro to select which version of Python to build with
 * Mon Sep 29 2008 - christian.kelly@sun.com

@@ -107,6 +107,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/pygtk/*
 
 %changelog -n pygtk2
+* Wed Mar 18 2009 - jeff.cai@sun.com
+- Copied from spec-files
 * Fri Mar 13 2009 - dave.lin@sun.com
 - Bump to 2.14.1
 * Thu Feb 12 2009 - brian.cameron@sun.com

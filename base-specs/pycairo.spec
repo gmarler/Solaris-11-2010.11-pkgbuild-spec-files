@@ -81,6 +81,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/pycairo/*
 
 %changelog -n pycairo
+* Wed Mar 18 2009 - jeff.cai@sun.com
+- Copied from spec-files
 * Mon Nov 24 2008 - laca@sun.com
 - use %{python_version} macro to select which version of Python to build with
 * Thu Mar 15 2007 - damien.carbery@sun.com

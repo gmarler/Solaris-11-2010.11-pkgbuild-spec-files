@@ -51,6 +51,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/python?.?/vendor-packages
 
 %changelog
+* Wed Mar 18 2009 - jeff.cai@sun.com
+- Copied from spec-files
 * Mon Nov 24 2008 - laca@sun.com
 - use %{pythonver} macro to select with version of Python to build which
 * Mon Nov 17 2007 - jedy.wang@sun.com

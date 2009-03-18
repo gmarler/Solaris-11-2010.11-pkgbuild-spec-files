@@ -105,6 +105,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/*
 
 %changelog -n gnome-python
+* Wed Mar 18 2009 - jeff.cai@sun.com
+- Copied from spec-files
 * Mon Feb 16 2009 - dave.lin@sun.com
 - Bump to 2.25.90
 * Mon Nov 24 2008 - laca@sun.com

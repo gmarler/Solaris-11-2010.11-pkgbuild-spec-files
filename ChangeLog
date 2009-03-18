@@ -1,5 +1,20 @@
 2009-03-18  Jeff Cai <jeff.cai@sun.com>
 
+	* SFEPython25-extra.spec: Moved from spec-files.
+	* SFEgnome-python25-libs.spec: Add changelog.
+	* base-specs/Pyrex.spec: Copied from spec-files
+	* base-specs/elementtree.spec: Copied from spec-files
+	* base-specs/gnome-python.spec: Add changelog
+	* base-specs/numpy.spec: Copied from spec-fiels
+	* base-specs/pycairo.spec: Add changelog
+	* base-specs/pygobject.spec: Add changelog
+	* base-specs/pygtk2.spec: Add changelog
+	* base-specs/pygtksourceview.spec: Add changelog
+	* base-specs/pyorbit.spec: Add changelog
+	* base-specs/pyspi.spec: Add changelog
+
+2009-03-18  Jeff Cai <jeff.cai@sun.com>
+
 	* SFEgnome-python25-libs.spec: Moved from spec-files
 	* base-specs/gnome-python.spec: Copied from spec-files
 	* base-specs/pycairo.spec: Copied from spec-files
