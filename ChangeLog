@@ -1,5 +1,14 @@
 2009-03-18  Jeff Cai <jeff.cai@sun.com>
 
+	* SFEpython25-zope-interface.spec:
+	* SUNWpython25-setuptools.spec:
+	* base-specs/python-setuptools.spec:
+	* base-specs/python-zope-interface.spec:
+	Remove them since other packages depend on them.
+	Bring them back to spec-files and spec-files-other
+
+2009-03-18  Jeff Cai <jeff.cai@sun.com>
+
 	* SFEpython25-imaging.spec:
 	* SFEpython25-xdg.spec:
 	* SFEpython25-zope-interface.spec:
