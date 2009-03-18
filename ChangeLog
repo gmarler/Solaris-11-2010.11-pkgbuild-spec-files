@@ -1,5 +1,11 @@
 2009-03-18  Jeff Cai <jeff.cai@sun.com>
 
+	* SUNWpython25-setuptools.spec: Copied from spec-files
+	* base-specs/python-setuptools.spec: Copied from spec-files
+	Since this spec will be closed.
+
+2009-03-18  Jeff Cai <jeff.cai@sun.com>
+
 	* SFEgst-python25.spec: Moved from spec-files
 	* base-specs/gst-python.spec: Copied from spec-files
 
