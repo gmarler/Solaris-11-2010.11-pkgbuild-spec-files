@@ -1,5 +1,10 @@
 2009-03-18  Jeff Cai <jeff.cai@sun.com>
 
+	* SFEgst-python25.spec: Moved from spec-files
+	* base-specs/gst-python.spec: Copied from spec-files
+
+2009-03-18  Jeff Cai <jeff.cai@sun.com>
+
 	* SFEPython25-extra.spec: Moved from spec-files.
 	* SFEgnome-python25-libs.spec: Add changelog.
 	* base-specs/Pyrex.spec: Copied from spec-files
