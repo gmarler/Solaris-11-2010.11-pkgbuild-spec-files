@@ -21,6 +21,7 @@
 %include Solaris.inc
 
 %define with_hal %(pkginfo -q SUNWhal && echo 1 || echo 0)
+%define osbuild %(uname -v | sed -e 's/[A-z_]//g')
 
 %use libcdio = libcdio.spec
 
@@ -39,7 +40,15 @@ Requires: SUNWlibms
 Requires: SUNWdbus
 Requires: SFElibcddb
 Requires: SFElibiconv
+
+%if %(expr %{osbuild} '>=' 100)
+BuildRequires: SUNWncurses-devel
 Requires: SUNWncurses
+%else
+BuildRequires: SFEncurses-devel
+Requires: SFEncurses
+%endif
+
 %if %with_hal
 Requires: SUNWhal
 %endif
@@ -48,7 +57,6 @@ BuildRequires: SUNWgcc
 BuildRequires: SUNWdbus-devel
 BuildRequires: SFElibcddb-devel
 BuildRequires: SFElibiconv-devel
-BuildRequires: SUNWncurses-devel
 
 %package devel
 Summary:                 %{summary} - development files
@@ -114,6 +122,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/cdio
 
 %changelog
+* Wed Mar 18 2009 - Thomas Wagner
+- add os build conditional SUNWncurses/SFEncurses to re-enable build on old OS < snv_100
 * Sat Nov 29 2008 - dauphin@enst.fr
 - s/SFEncurses/SUNWncurses is available in build 101
 * date unknow
