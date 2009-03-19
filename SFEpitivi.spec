@@ -5,10 +5,13 @@
 #
 
 %include Solaris.inc
+
+%define pythonver 2.6
+
 Name:                    SFEpitivi
 Summary:                 Non-Linear video editor
 URL:                     http://ftp.gnome.org/pub/GNOME/sources/pitivi
-Version:                 0.11.2
+Version:                 0.11.3
 Source:                  http://ftp.gnome.org/pub/GNOME/sources/pitivi/0.11/pitivi-%{version}.tar.bz2
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -32,6 +35,7 @@ Requires:                %{name}
 %setup -q -n pitivi-%version
 
 %build
+export PYTHON=/usr/bin/python%{pythonver}
 ./configure --prefix=%{_prefix} \
             --enable-gstreamer
 make
@@ -71,8 +75,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr (-, root, other) %{_datadir}/locale
 %endif
 
-
 %changelog
+* Thu Mar 19 2009 - brian.cameron@sun.com
+- Bump to 0.11.3.
 * Mon Oct 27 2008 - brian.cameron@sun.com
 - Bump to 0.11.2.
 * Thu Apr 10 2008 - brian.cameron@sun.com

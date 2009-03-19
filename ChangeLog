@@ -1,6 +1,12 @@
+2009-03-15  Brian Cameron  <brian.cameron@sun.com>
+
+	* SFEjokosher.spec: Bump to 0.11.1.
+	* SFEpitivi.spec: Bump to 0.11.3.  Now depends on Python 2.6.
+
 2009-03-15  Thomas Wagner  <tom68@users.sourceforge.net>
 
-        * SFElibcdio.spec: make SFEncurses/SUNWncurses conditional on osbuild <100
+	* SFElibcdio.spec: make SFEncurses/SUNWncurses conditional on osbuild
+	  <100
 
 2009-03-18  Jeff Cai <jeff.cai@sun.com>
 
@@ -8,8 +14,8 @@
 	* SUNWpython25-setuptools.spec:
 	* base-specs/python-setuptools.spec:
 	* base-specs/python-zope-interface.spec:
-	Remove them since other packages depend on them.
-	Bring them back to spec-files and spec-files-other
+	  Remove them since other packages depend on them.
+	  Bring them back to spec-files and spec-files-other
 
 2009-03-18  Jeff Cai <jeff.cai@sun.com>
 
@@ -19,13 +25,13 @@
 	* base-specs/python-imaging.spec:
 	* base-specs/python-xdg.spec:
 	* base-specs/python-zope-interface.spec:
-	Move packages from spec-files-other
+	  Move packages from spec-files-other
 
 2009-03-18  Jeff Cai <jeff.cai@sun.com>
 
 	* SUNWpython25-setuptools.spec: Copied from spec-files
 	* base-specs/python-setuptools.spec: Copied from spec-files
-	Since this spec will be closed.
+	  Since this spec will be closed.
 
 2009-03-18  Jeff Cai <jeff.cai@sun.com>
 
@@ -57,8 +63,8 @@
 	* base-specs/pygtksourceview.spec: Copied from spec-files
 	* base-specs/pyorbit.spec: Copied from spec-files
 	* base-specs/pyspi.spec: Copied from spec-files
-	Since Python 2.5 will be obsolete, we will not ship the 
-	2.5 bindings.
+	  Since Python 2.5 will be obsolete, we will not ship the 
+	  2.5 bindings.
 
 2009-03-17  Alfred Peng  <alfred.peng@sun.com>
 
@@ -111,7 +117,7 @@
 
 2009-03-15  Thomas Wagner  <tom68@users.sourceforge.net>
 
-        * SFEopenal.spec: bump to 1.7.411, make patch1 version independent and
+	* SFEopenal.spec: bump to 1.7.411, make patch1 version independent and
 	  rework patch openal-new-01.diff
 
 2009-03-15  Milan Jurik <sfnet@xylab.cz>
@@ -133,30 +139,30 @@
 	  SFEqt4.spec, patch2 temporarily disables setuid/setguid safetychecks
 	* SFEurxvt.spec: use gcc in any case, (Build)Requires: SFEgcc(runtime),
 	  removed SunStudio left overs, 
-          bump to 9.06, rework patch10 for 9.06, add patch12 bash, %doc
+	  bump to 9.06, rework patch10 for 9.06, add patch12 bash, %doc
 	  adjusted
-        * SFElibsndfile.spec base-specs/libsndfile.spec:  bump to 1.0.19
-        * SFEbvi.spec: adjust %doc and %files permissions
-        * SFEtightvnc.spec: add Conflicts: SUNWxvnc, Conflicts: SUNWvncviewer
-        * SFEfont-terminus.spec: bump to 4.28, rework patch1 new font path,
+	* SFElibsndfile.spec base-specs/libsndfile.spec:  bump to 1.0.19
+	* SFEbvi.spec: adjust %doc and %files permissions
+	* SFEtightvnc.spec: add Conflicts: SUNWxvnc, Conflicts: SUNWvncviewer
+	* SFEfont-terminus.spec: bump to 4.28, rework patch1 new font path,
 	  adjust %doc files
-        * SFEopenal.spec: quick fix for complaining make install about already
+	* SFEopenal.spec: quick fix for complaining make install about already
 	  defined "relative" installtarget (./sfw_stage)
-        * SFErrdtool.spec: document %doc changes
-        * SFEre2c.spec: bump to 0.13.5
-        * SFEqt.spec SFEqt4.spec: reworked shared patch qt-01-use_bash.diff to
+	* SFErrdtool.spec: document %doc changes
+	* SFEre2c.spec: bump to 0.13.5
+	* SFEqt.spec SFEqt4.spec: reworked shared patch qt-01-use_bash.diff to
 	  fit 4.x and 4.5 versions of QT
-        * SFEgmp.spec: move to /usr/gnu to avoid conflict with SUNWgnu-mp
+	* SFEgmp.spec: move to /usr/gnu to avoid conflict with SUNWgnu-mp
 	  (consumers might want --with-gmp=/usr/gnu (SFEgmp) or
-          --with-gmp-include=/usr/include/gmp (SUNWgnu-mp) , see examples in
+	  --with-gmp-include=/usr/include/gmp (SUNWgnu-mp) , see examples in
 	  SFEgcc.spec
-        * SFEmpfr.spec: move to /usr/gnu to avoid conflict with SUNWgnu-mpfr
+	* SFEmpfr.spec: move to /usr/gnu to avoid conflict with SUNWgnu-mpfr
 	  (consumers might want --with-mpfr=/usr/gnu (SFEgmp) or 
-          --with-mpfr-include=/usr/include/mpfr (SUNWgnu-mp) , see examples in
+	  --with-mpfr-include=/usr/include/mpfr (SUNWgnu-mp) , see examples in
 	  SFEgcc.spec
-        * SFEgcc.spec: fix detection to use SUNWgnu-mp/SUNWgnu-mpfr otherwise
+	* SFEgcc.spec: fix detection to use SUNWgnu-mp/SUNWgnu-mpfr otherwise
 	  require SFEgmp/SFEmpfr, add (Build)Requires: 
-          SFElibiconv(-devel)
+	  SFElibiconv(-devel)
 
 2009-03-13  Brian Cameron  <brian.cameron@sun.com>
 
@@ -237,11 +243,11 @@
 
 	* SFEqt.spec: can't find libcstd++.6.*, add to configure:
 	  -L /usr/gnu/lib -R /usr/gnu/lib 
-          (gcc4, for gcc3 this would be sfw instead gnu),  enable configure's
+	  (gcc4, for gcc3 this would be sfw instead gnu),  enable configure's
 	  hint -no-exceptions, force to SFEgcc 4.x because sfw/gcc3 missing
 	  mm3dnow.h, change Requires from SUNWgccruntime to SFEgcc(runtime),
-          <CC|CXX>=/usr/gnu/bin/<gcc|g++>)
-        * SFEqt4.spec: fix path to SunStudio compiler, enable configure's hint
+	  <CC|CXX>=/usr/gnu/bin/<gcc|g++>)
+	* SFEqt4.spec: fix path to SunStudio compiler, enable configure's hint
 	  -no-exceptions (smaller code, less memory)
 
 2009-03-03  Halton Huo <halton.huo@sun.com>
