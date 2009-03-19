@@ -1,5 +1,12 @@
 2009-03-15  Brian Cameron  <brian.cameron@sun.com>
 
+	* SFEpitivi.spec, patches/pitivi-01-solaris.diff:  Add patch so that
+	  pitivi works.
+	* SFEpy26goocanvas.spec: Add Python 2.6 bindings for pygoocanvas,
+	  needed by pitivi.
+
+2009-03-15  Brian Cameron  <brian.cameron@sun.com>
+
 	* SFEjokosher.spec: Bump to 0.11.1.
 	* SFEpitivi.spec: Bump to 0.11.3.  Now depends on Python 2.6.
 

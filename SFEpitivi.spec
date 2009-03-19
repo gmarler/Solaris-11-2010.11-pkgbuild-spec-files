@@ -13,13 +13,18 @@ Summary:                 Non-Linear video editor
 URL:                     http://ftp.gnome.org/pub/GNOME/sources/pitivi
 Version:                 0.11.3
 Source:                  http://ftp.gnome.org/pub/GNOME/sources/pitivi/0.11/pitivi-%{version}.tar.bz2
+Patch1:                  pitivi-01-solaris.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
-BuildRequires:           SFEgnonlin
 BuildRequires:           SUNWgnome-python-extras
 BuildRequires:           SUNWgst-python
-Requires:                SUNWpython-zope-interface
+BuildRequires:           SFEgnonlin
+Requires:                SUNWgnome-python-extras
+Requires:                SUNWgst-python
 Requires:                SUNWpython-setuptools
+Requires:                SUNWpython-zope-interface
+Requires:                SFEpy26goocanvas
+Requires:                SFEgnonlin
 
 %include default-depend.inc
 
@@ -33,6 +38,7 @@ Requires:                %{name}
 
 %prep
 %setup -q -n pitivi-%version
+%patch1 -p1
 
 %build
 export PYTHON=/usr/bin/python%{pythonver}
