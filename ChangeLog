@@ -1,3 +1,8 @@
+2009-03-19  Alfred Peng  <alfred.peng@sun.com>
+
+	* patches/lxterminal-01-function-declaration.diff, SFElxterminal.spec,
+	  SFElxshortcut.spec: Added for LXDE initial spec/patch set.
+
 2009-03-15  Brian Cameron  <brian.cameron@sun.com>
 
 	* SFEpitivi.spec, patches/pitivi-01-solaris.diff:  Add patch so that

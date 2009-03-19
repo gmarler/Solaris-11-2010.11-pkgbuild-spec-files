@@ -1,0 +1,10 @@
+--- lxterminal-0.1.4/src/lxterminal.c.orig	2009-03-19 21:13:17.455313568 +0800
++++ lxterminal-0.1.4/src/lxterminal.c	2009-03-19 21:12:55.988325852 +0800
+@@ -56,6 +56,7 @@
+ };
+ 
+ LXTerminal *lxterminal_init(LXTermWindow *lxtermwin, gint argc, gchar **argv, Setting *setting);
++void terminal_childexit(VteTerminal *vte, Term *term);
+ 
+ static gchar helpmsg[] = {
+ 	"Usage:\n"
