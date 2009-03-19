@@ -16,13 +16,13 @@ Source:                  http://ftp.gnome.org/pub/GNOME/sources/pitivi/0.11/piti
 Patch1:                  pitivi-01-solaris.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
-BuildRequires:           SUNWgnome-python-extras
-BuildRequires:           SUNWgst-python
+BuildRequires:           SUNWgnome-python26-extras
+BuildRequires:           SUNWgst-python26
 BuildRequires:           SFEgnonlin
-Requires:                SUNWgnome-python-extras
-Requires:                SUNWgst-python
-Requires:                SUNWpython-setuptools
-Requires:                SUNWpython-zope-interface
+Requires:                SUNWgnome-python26-extras
+Requires:                SUNWgst-python26
+Requires:                SUNWpython26-setuptools
+Requires:                SUNWpython26-zope-interface
 Requires:                SFEpy26goocanvas
 Requires:                SFEgnonlin
 
