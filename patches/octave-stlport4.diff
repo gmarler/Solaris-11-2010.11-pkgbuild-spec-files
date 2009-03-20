@@ -1,0 +1,2737 @@
+diff -bur octave-3.0.3.orig/BUGS octave-3.0.3/BUGS
+--- octave-3.0.3.orig/BUGS	2008-10-03 10:27:15.000000000 +0200
++++ octave-3.0.3/BUGS	2009-03-20 12:56:36.764809000 +0100
+@@ -124,7 +124,7 @@
+ 1.5 How to Report Bugs
+ ======================
+ 
+-Send bug reports for Octave to one of the addresses listed in *note Bug
++Send bug reports for Octave to one of the addresses listed in *Note Bug
+ Lists::.
+ 
+    The fundamental principle of reporting bugs usefully is this:
+diff -bur octave-3.0.3.orig/config.h.in octave-3.0.3/config.h.in
+--- octave-3.0.3.orig/config.h.in	2008-09-24 09:14:11.000000000 +0200
++++ octave-3.0.3/config.h.in	2009-03-18 17:36:21.092844000 +0100
+@@ -1019,7 +1019,9 @@
+ #endif
+ 
+ /* sigsetjmp is a macro, not a function. */
+-#if defined (sigsetjmp) && defined (HAVE_SIGLONGJMP)
++/* not on Solaris!!! */
++/* #if defined (sigsetjmp) && defined (HAVE_SIGLONGJMP) */
++#if defined (HAVE_SIGLONGJMP)
+ #define OCTAVE_HAVE_SIG_JUMP
+ #endif
+ 
+diff -bur octave-3.0.3.orig/doc/conf.texi octave-3.0.3/doc/conf.texi
+--- octave-3.0.3.orig/doc/conf.texi	2008-09-24 10:31:16.000000000 +0200
++++ octave-3.0.3/doc/conf.texi	2009-03-20 12:46:57.761686000 +0100
+@@ -18,10 +18,10 @@
+ 
+ @set OCTAVE_MANUAL
+ @set top_srcdir ..
+-@set abs_top_srcdir /home/hajek/devel/octave/release-3-0-x-build
+-@set OCTAVEHOME /usr/local
++@set abs_top_srcdir /home/jdsbld/packages/BUILD/SFEoctave/octave-3.0.3
++@set OCTAVEHOME /usr
+ @set VERSION 3.0.3
+-@set HAVE_COLAMD
+-@set HAVE_CHOLMOD
+-@set HAVE_UMFPACK
+-@set HAVE_QHULL
++
++
++
++
+diff -bur octave-3.0.3.orig/doc/interpreter/munge-texi.cc octave-3.0.3/doc/interpreter/munge-texi.cc
+--- octave-3.0.3.orig/doc/interpreter/munge-texi.cc	2008-09-24 09:13:46.000000000 +0200
++++ octave-3.0.3/doc/interpreter/munge-texi.cc	2009-03-20 12:54:39.606817000 +0100
+@@ -32,6 +32,8 @@
+ 
+ #include <cstdlib>
+ #include <cstring>
++#include <stdlib.h>
++#include <strings.h>
+ 
+ static const char doc_delim = '';
+ 
+diff -bur octave-3.0.3.orig/libcruft/misc/quit.h octave-3.0.3/libcruft/misc/quit.h
+--- octave-3.0.3.orig/libcruft/misc/quit.h	2008-09-24 09:13:47.000000000 +0200
++++ octave-3.0.3/libcruft/misc/quit.h	2009-03-20 10:41:20.241450000 +0100
+@@ -23,10 +23,10 @@
+ #if !defined (octave_quit_h)
+ #define octave_quit_h 1
+ 
+-#ifdef __cplusplus
+-#include <new>
+-extern "C" {
+-#endif
++//#ifdef __cplusplus
++//#include <new>
++//extern "C" {
++//#endif
+ 
+ #include <stdio.h>
+ 
+@@ -60,6 +60,10 @@
+ 
+ #endif
+ 
++#ifdef __cplusplus
++//#include <new>
++extern "C" {
++#endif
+ CRUFT_API extern octave_jmp_buf current_context;
+ 
+ CRUFT_API extern void octave_save_current_context (void *);
+@@ -98,6 +102,10 @@
+ 
+ CRUFT_API extern void octave_throw_bad_alloc (void) GCC_ATTR_NORETURN;
+ 
++#ifdef __cplusplus
++}
++#endif
++
+ #define OCTAVE_QUIT \
+   do \
+     { \
+@@ -180,8 +188,8 @@
+   octave_interrupt_immediately = saved_octave_interrupt_immediately
+ #endif
+ 
+-#ifdef __cplusplus
+-}
++//#ifdef __cplusplus
++//}
+ 
+ /* These should only be declared for C++ code, and should also be
+    outside of any extern "C" block.  */
+@@ -190,7 +198,7 @@
+ extern CRUFT_API void (*octave_interrupt_hook) (void);
+ extern CRUFT_API void (*octave_bad_alloc_hook) (void);
+ 
+-#endif
++//#endif
+ 
+ #endif
+ 
+diff -bur octave-3.0.3.orig/liboctave/Array.cc octave-3.0.3/liboctave/Array.cc
+--- octave-3.0.3.orig/liboctave/Array.cc	2008-09-29 08:03:08.000000000 +0200
++++ octave-3.0.3/liboctave/Array.cc	2009-03-17 16:09:00.567572000 +0100
+@@ -163,12 +163,12 @@
+ {
+   static int nl;
+   static double dl
+-    = frexp (static_cast<double> 
++    = std::frexp (static_cast<double> 
+ 	(std::numeric_limits<octave_idx_type>::max() - MALLOC_OVERHEAD) / sizeof (T), &nl);
+ 
+   int nr, nc;
+-  double dr = frexp (static_cast<double> (r), &nr);   // r = dr * 2^nr
+-  double dc = frexp (static_cast<double> (c), &nc);   // c = dc * 2^nc
++  double dr = std::frexp (static_cast<double> (r), &nr);   // r = dr * 2^nr
++  double dc = std::frexp (static_cast<double> (c), &nc);   // c = dc * 2^nc
+ 
+   int nt = nr + nc;
+   double dt = dr * dc;
+@@ -194,13 +194,13 @@
+ {
+   static int nl;
+   static double dl
+-    = frexp (static_cast<double>
++    = std::frexp (static_cast<double>
+ 	(std::numeric_limits<octave_idx_type>::max() - MALLOC_OVERHEAD) / sizeof (T), &nl);
+ 
+   int nr, nc, np;
+-  double dr = frexp (static_cast<double> (r), &nr);
+-  double dc = frexp (static_cast<double> (c), &nc);
+-  double dp = frexp (static_cast<double> (p), &np);
++  double dr = std::frexp (static_cast<double> (r), &nr);
++  double dc = std::frexp (static_cast<double> (c), &nc);
++  double dp = std::frexp (static_cast<double> (p), &np);
+ 
+   int nt = nr + nc + np;
+   double dt = dr * dc * dp;
+@@ -232,7 +232,7 @@
+ {
+   static int nl;
+   static double dl
+-    = frexp (static_cast<double>
++    = std::frexp (static_cast<double>
+ 	(std::numeric_limits<octave_idx_type>::max() - MALLOC_OVERHEAD) / sizeof (T), &nl);
+ 
+   int n = ra_idx.length ();
+@@ -243,7 +243,7 @@
+   for (int i = 0; i < n; i++)
+     {
+       int nra_idx;
+-      double dra_idx = frexp (static_cast<double> (ra_idx(i)), &nra_idx);
++      double dra_idx = std::frexp (static_cast<double> (ra_idx(i)), &nra_idx);
+ 
+       nt += nra_idx;
+       dt *= dra_idx;
+diff -bur octave-3.0.3.orig/liboctave/CMatrix.cc octave-3.0.3/liboctave/CMatrix.cc
+--- octave-3.0.3.orig/liboctave/CMatrix.cc	2008-09-24 09:13:47.000000000 +0200
++++ octave-3.0.3/liboctave/CMatrix.cc	2009-03-18 09:42:31.486141000 +0100
+@@ -30,6 +30,7 @@
+ 
+ #include <iostream>
+ #include <vector>
++#include <math.h>
+ 
+ // FIXME
+ #ifdef HAVE_SYS_TYPES_H
+@@ -2887,7 +2888,7 @@
+     }
+ 
+   int sqpow = (inf_norm > 0.0
+-	       ? static_cast<int> (1.0 + log (inf_norm) / log (2.0)) : 0);
++	       ? static_cast<int> (1.0 + std::log (inf_norm) / std::log (2.0)) : 0);
+ 
+   // Check whether we need to square at all.
+ 
+@@ -3382,9 +3383,9 @@
+ 	double i_val = std::imag (val);
+ 
+ 	if ((! (xisnan (r_val) || xisinf (r_val))
+-	     && fabs (r_val) > FLT_MAX)
++	     && std::fabs (r_val) > FLT_MAX)
+ 	    || (! (xisnan (i_val) || xisinf (i_val))
+-		&& fabs (i_val) > FLT_MAX))
++		&& std::fabs (i_val) > FLT_MAX))
+ 	  return true;
+       }
+ 
+diff -bur octave-3.0.3.orig/liboctave/CNDArray.cc octave-3.0.3/liboctave/CNDArray.cc
+--- octave-3.0.3.orig/liboctave/CNDArray.cc	2008-09-24 09:13:47.000000000 +0200
++++ octave-3.0.3/liboctave/CNDArray.cc	2009-03-18 09:45:03.829065000 +0100
+@@ -594,9 +594,9 @@
+       double i_val = std::imag (val);
+ 
+       if ((! (xisnan (r_val) || xisinf (r_val))
+-	   && fabs (r_val) > FLT_MAX)
++	   && std::fabs (r_val) > FLT_MAX)
+ 	  || (! (xisnan (i_val) || xisinf (i_val))
+-	      && fabs (i_val) > FLT_MAX))
++	      && std::fabs (i_val) > FLT_MAX))
+ 	return true;
+     }
+ 
+diff -bur octave-3.0.3.orig/liboctave/CmplxDET.cc octave-3.0.3/liboctave/CmplxDET.cc
+--- octave-3.0.3.orig/liboctave/CmplxDET.cc	2008-09-24 09:13:47.000000000 +0200
++++ octave-3.0.3/liboctave/CmplxDET.cc	2009-03-18 09:55:24.348721000 +0100
+@@ -38,7 +38,7 @@
+ {
+   return base2
+     ? (e2 + 1 > xlog2 (DBL_MAX) ? 1 : 0)
+-    : (e10 + 1 > log10 (DBL_MAX) ? 1 : 0);
++    : (e10 + 1 > std::log10 (DBL_MAX) ? 1 : 0);
+ }
+ 
+ bool
+@@ -46,7 +46,7 @@
+ {
+   return base2
+     ? (e2 - 1 < xlog2 (DBL_MIN) ? 1 : 0)
+-    : (e10 - 1 < log10 (DBL_MIN) ? 1 : 0);
++    : (e10 - 1 < std::log10 (DBL_MIN) ? 1 : 0);
+ }
+ 
+ void
+@@ -57,7 +57,7 @@
+       double etmp = e2 / xlog2 (10);
+       e10 = static_cast<int> (xround (etmp));
+       etmp -= e10;
+-      c10 = c2 * pow (10.0, etmp);
++      c10 = c2 * std::pow (10.0, etmp);
+     }
+ }
+ 
+@@ -66,7 +66,7 @@
+ {
+   if (c10 != 0.0)
+     {
+-      double etmp = e10 / log10 (2.0);
++      double etmp = e10 / std::log10 (2.0);
+       e2 = static_cast<int> (xround (etmp));
+       etmp -= e2;
+       c2 = c10 * xexp2 (etmp);
+@@ -76,7 +76,7 @@
+ Complex
+ ComplexDET::value (void) const
+ {
+-  return base2 ? c2 * xexp2 (e2) : c10 * pow (10.0, e10);
++  return base2 ? c2 * xexp2 (e2) : c10 * std::pow (10.0, e10);
+ }
+ 
+ /*
+diff -bur octave-3.0.3.orig/liboctave/DASPK-opts.h octave-3.0.3/liboctave/DASPK-opts.h
+--- octave-3.0.3.orig/liboctave/DASPK-opts.h	2008-09-24 09:26:49.000000000 +0200
++++ octave-3.0.3/liboctave/DASPK-opts.h	2009-03-17 16:21:38.150258000 +0100
+@@ -32,15 +32,15 @@
+   void init (void)
+     {
+       x_absolute_tolerance.resize (1);
+-      x_absolute_tolerance(0) = ::sqrt (DBL_EPSILON);
++      x_absolute_tolerance(0) = std::sqrt (DBL_EPSILON);
+       x_relative_tolerance.resize (1);
+-      x_relative_tolerance(0) = ::sqrt (DBL_EPSILON);
++      x_relative_tolerance(0) = std::sqrt (DBL_EPSILON);
+       x_initial_condition_heuristics.resize (6);
+       x_initial_condition_heuristics(0) = 5.0;
+       x_initial_condition_heuristics(1) = 6.0;
+       x_initial_condition_heuristics(2) = 5.0;
+       x_initial_condition_heuristics(3) = 0.0;
+-      x_initial_condition_heuristics(4) = ::pow (DBL_EPSILON, 2.0/3.0);
++      x_initial_condition_heuristics(4) = std::pow (DBL_EPSILON, 2.0/3.0);
+       x_initial_condition_heuristics(5) = 0.01;
+       x_algebraic_variables.resize (1);
+       x_algebraic_variables(0) = 0;
+@@ -77,7 +77,7 @@
+   void set_absolute_tolerance (double val)
+     {
+       x_absolute_tolerance.resize (1);
+-      x_absolute_tolerance(0) = (val > 0.0) ? val : ::sqrt (DBL_EPSILON);
++      x_absolute_tolerance(0) = (val > 0.0) ? val : std::sqrt (DBL_EPSILON);
+       reset = true;
+     }
+ 
+@@ -87,7 +87,7 @@
+   void set_relative_tolerance (double val)
+     {
+       x_relative_tolerance.resize (1);
+-      x_relative_tolerance(0) = (val > 0.0) ? val : ::sqrt (DBL_EPSILON);
++      x_relative_tolerance(0) = (val > 0.0) ? val : std::sqrt (DBL_EPSILON);
+       reset = true;
+     }
+ 
+diff -bur octave-3.0.3.orig/liboctave/DASPK-opts.in octave-3.0.3/liboctave/DASPK-opts.in
+--- octave-3.0.3.orig/liboctave/DASPK-opts.in	2008-09-24 09:13:47.000000000 +0200
++++ octave-3.0.3/liboctave/DASPK-opts.in	2009-03-17 16:21:30.180225000 +0100
+@@ -31,13 +31,13 @@
+   SET_ARG_TYPE = "const $TYPE&"
+   INIT_BODY
+     $OPTVAR.resize (1);
+-    $OPTVAR(0) = ::sqrt (DBL_EPSILON);
++    $OPTVAR(0) = std::sqrt (DBL_EPSILON);
+   END_INIT_BODY
+   SET_CODE
+     void set_$OPT (double val)
+       {
+         $OPTVAR.resize (1);
+-        $OPTVAR(0) = (val > 0.0) ? val : ::sqrt (DBL_EPSILON);
++        $OPTVAR(0) = (val > 0.0) ? val : std::sqrt (DBL_EPSILON);
+         reset = true;
+       }
+ 
+@@ -64,13 +64,13 @@
+   SET_ARG_TYPE = "const $TYPE&"
+   INIT_BODY
+     $OPTVAR.resize (1);
+-    $OPTVAR(0) = ::sqrt (DBL_EPSILON);
++    $OPTVAR(0) = std::sqrt (DBL_EPSILON);
+   END_INIT_BODY
+   SET_CODE
+     void set_$OPT (double val)
+       {
+         $OPTVAR.resize (1);
+-        $OPTVAR(0) = (val > 0.0) ? val : ::sqrt (DBL_EPSILON);
++        $OPTVAR(0) = (val > 0.0) ? val : std::sqrt (DBL_EPSILON);
+         reset = true;
+       }
+ 
+@@ -159,7 +159,7 @@
+     $OPTVAR(1) = 6.0;
+     $OPTVAR(2) = 5.0;
+     $OPTVAR(3) = 0.0;
+-    $OPTVAR(4) = ::pow (DBL_EPSILON, 2.0/3.0);
++    $OPTVAR(4) = std::pow (DBL_EPSILON, 2.0/3.0);
+     $OPTVAR(5) = 0.01;
+   END_INIT_BODY
+   SET_EXPR = "val"
+diff -bur octave-3.0.3.orig/liboctave/DASPK.cc octave-3.0.3/liboctave/DASPK.cc
+--- octave-3.0.3.orig/liboctave/DASPK.cc	2008-09-24 09:13:47.000000000 +0200
++++ octave-3.0.3/liboctave/DASPK.cc	2009-03-17 16:12:41.473739000 +0100
+@@ -21,6 +21,7 @@
+ 
+ */
+ 
++#include <stdlib.h>
+ #ifdef HAVE_CONFIG_H
+ #include <config.h>
+ #endif
+diff -bur octave-3.0.3.orig/liboctave/DASRT-opts.h octave-3.0.3/liboctave/DASRT-opts.h
+--- octave-3.0.3.orig/liboctave/DASRT-opts.h	2008-09-24 09:26:49.000000000 +0200
++++ octave-3.0.3/liboctave/DASRT-opts.h	2009-03-17 16:17:31.307232000 +0100
+@@ -32,9 +32,9 @@
+   void init (void)
+     {
+       x_absolute_tolerance.resize (1);
+-      x_absolute_tolerance(0) = ::sqrt (DBL_EPSILON);
++      x_absolute_tolerance(0) = std::sqrt (DBL_EPSILON);
+       x_relative_tolerance.resize (1);
+-      x_relative_tolerance(0) = ::sqrt (DBL_EPSILON);
++      x_relative_tolerance(0) = std::sqrt (DBL_EPSILON);
+       x_initial_step_size = -1.0;
+       x_maximum_order = -1;
+       x_maximum_step_size = -1.0;
+@@ -60,7 +60,7 @@
+   void set_absolute_tolerance (double val)
+     {
+       x_absolute_tolerance.resize (1);
+-      x_absolute_tolerance(0) = (val > 0.0) ? val : ::sqrt (DBL_EPSILON);
++      x_absolute_tolerance(0) = (val > 0.0) ? val : std::sqrt (DBL_EPSILON);
+       reset = true;
+     }
+ 
+@@ -70,7 +70,7 @@
+   void set_relative_tolerance (double val)
+     {
+       x_relative_tolerance.resize (1);
+-      x_relative_tolerance(0) = (val > 0.0) ? val : ::sqrt (DBL_EPSILON);
++      x_relative_tolerance(0) = (val > 0.0) ? val : std::sqrt (DBL_EPSILON);
+       reset = true;
+     }
+ 
+diff -bur octave-3.0.3.orig/liboctave/DASRT-opts.in octave-3.0.3/liboctave/DASRT-opts.in
+--- octave-3.0.3.orig/liboctave/DASRT-opts.in	2008-09-24 09:13:47.000000000 +0200
++++ octave-3.0.3/liboctave/DASRT-opts.in	2009-03-17 16:17:25.327761000 +0100
+@@ -31,13 +31,13 @@
+   SET_ARG_TYPE = "const $TYPE&"
+   INIT_BODY
+     $OPTVAR.resize (1);
+-    $OPTVAR(0) = ::sqrt (DBL_EPSILON);
++    $OPTVAR(0) = std::sqrt (DBL_EPSILON);
+   END_INIT_BODY
+   SET_CODE
+     void set_$OPT (double val)
+       {
+         $OPTVAR.resize (1);
+-        $OPTVAR(0) = (val > 0.0) ? val : ::sqrt (DBL_EPSILON);
++        $OPTVAR(0) = (val > 0.0) ? val : std::sqrt (DBL_EPSILON);
+         reset = true;
+       }
+ 
+@@ -63,13 +63,13 @@
+   SET_ARG_TYPE = "const $TYPE&"
+   INIT_BODY
+     $OPTVAR.resize (1);
+-    $OPTVAR(0) = ::sqrt (DBL_EPSILON);
++    $OPTVAR(0) = std::sqrt (DBL_EPSILON);
+   END_INIT_BODY
+   SET_CODE
+     void set_$OPT (double val)
+       {
+         $OPTVAR.resize (1);
+-        $OPTVAR(0) = (val > 0.0) ? val : ::sqrt (DBL_EPSILON);
++        $OPTVAR(0) = (val > 0.0) ? val : std::sqrt (DBL_EPSILON);
+         reset = true;
+       }
+ 
+diff -bur octave-3.0.3.orig/liboctave/DASSL-opts.h octave-3.0.3/liboctave/DASSL-opts.h
+--- octave-3.0.3.orig/liboctave/DASSL-opts.h	2008-09-24 09:26:49.000000000 +0200
++++ octave-3.0.3/liboctave/DASSL-opts.h	2009-03-17 16:20:46.685555000 +0100
+@@ -32,9 +32,9 @@
+   void init (void)
+     {
+       x_absolute_tolerance.resize (1);
+-      x_absolute_tolerance(0) = ::sqrt (DBL_EPSILON);
++      x_absolute_tolerance(0) = std::sqrt (DBL_EPSILON);
+       x_relative_tolerance.resize (1);
+-      x_relative_tolerance(0) = ::sqrt (DBL_EPSILON);
++      x_relative_tolerance(0) = std::sqrt (DBL_EPSILON);
+       x_initial_step_size = -1.0;
+       x_maximum_order = -1;
+       x_maximum_step_size = -1.0;
+@@ -62,7 +62,7 @@
+   void set_absolute_tolerance (double val)
+     {
+       x_absolute_tolerance.resize (1);
+-      x_absolute_tolerance(0) = (val > 0.0) ? val : ::sqrt (DBL_EPSILON);
++      x_absolute_tolerance(0) = (val > 0.0) ? val : std::sqrt (DBL_EPSILON);
+       reset = true;
+     }
+ 
+@@ -72,7 +72,7 @@
+   void set_relative_tolerance (double val)
+     {
+       x_relative_tolerance.resize (1);
+-      x_relative_tolerance(0) = (val > 0.0) ? val : ::sqrt (DBL_EPSILON);
++      x_relative_tolerance(0) = (val > 0.0) ? val : std::sqrt (DBL_EPSILON);
+       reset = true;
+     }
+ 
+diff -bur octave-3.0.3.orig/liboctave/DASSL-opts.in octave-3.0.3/liboctave/DASSL-opts.in
+--- octave-3.0.3.orig/liboctave/DASSL-opts.in	2008-09-24 09:13:47.000000000 +0200
++++ octave-3.0.3/liboctave/DASSL-opts.in	2009-03-17 16:19:56.215336000 +0100
+@@ -31,13 +31,13 @@
+   SET_ARG_TYPE = "const $TYPE&"
+   INIT_BODY
+     $OPTVAR.resize (1);
+-    $OPTVAR(0) = ::sqrt (DBL_EPSILON);
++    $OPTVAR(0) = std::sqrt (DBL_EPSILON);
+   END_INIT_BODY
+   SET_CODE
+     void set_$OPT (double val)
+       {
+         $OPTVAR.resize (1);
+-        $OPTVAR(0) = (val > 0.0) ? val : ::sqrt (DBL_EPSILON);
++        $OPTVAR(0) = (val > 0.0) ? val : std::sqrt (DBL_EPSILON);
+         reset = true;
+       }
+ 
+@@ -64,13 +64,13 @@
+   SET_ARG_TYPE = "const $TYPE&"
+   INIT_BODY
+     $OPTVAR.resize (1);
+-    $OPTVAR(0) = ::sqrt (DBL_EPSILON);
++    $OPTVAR(0) = std::sqrt (DBL_EPSILON);
+   END_INIT_BODY
+   SET_CODE
+     void set_$OPT (double val)
+       {
+         $OPTVAR.resize (1);
+-        $OPTVAR(0) = (val > 0.0) ? val : ::sqrt (DBL_EPSILON);
++        $OPTVAR(0) = (val > 0.0) ? val : std::sqrt (DBL_EPSILON);
+         reset = true;
+       }
+ 
+diff -bur octave-3.0.3.orig/liboctave/LSODE-opts.h octave-3.0.3/liboctave/LSODE-opts.h
+--- octave-3.0.3.orig/liboctave/LSODE-opts.h	2008-09-24 09:26:49.000000000 +0200
++++ octave-3.0.3/liboctave/LSODE-opts.h	2009-03-17 16:20:46.731711000 +0100
+@@ -32,8 +32,8 @@
+   void init (void)
+     {
+       x_absolute_tolerance.resize (1);
+-      x_absolute_tolerance(0) = ::sqrt (DBL_EPSILON);
+-      x_relative_tolerance = ::sqrt (DBL_EPSILON);
++      x_absolute_tolerance(0) = std::sqrt (DBL_EPSILON);
++      x_relative_tolerance = std::sqrt (DBL_EPSILON);
+       x_integration_method = "stiff";
+       x_initial_step_size = -1.0;
+       x_maximum_order = -1;
+@@ -63,7 +63,7 @@
+   void set_absolute_tolerance (double val)
+     {
+       x_absolute_tolerance.resize (1);
+-      x_absolute_tolerance(0) = (val > 0.0) ? val : ::sqrt (DBL_EPSILON);
++      x_absolute_tolerance(0) = (val > 0.0) ? val : std::sqrt (DBL_EPSILON);
+       reset = true;
+     }
+ 
+@@ -71,7 +71,7 @@
+     { x_absolute_tolerance = val; reset = true; }
+ 
+   void set_relative_tolerance (double val)
+-    { x_relative_tolerance = (val > 0.0) ? val : ::sqrt (DBL_EPSILON); reset = true; }
++    { x_relative_tolerance = (val > 0.0) ? val : std::sqrt (DBL_EPSILON); reset = true; }
+ 
+   void set_integration_method (const std::string& val)
+     {
+diff -bur octave-3.0.3.orig/liboctave/LSODE-opts.in octave-3.0.3/liboctave/LSODE-opts.in
+--- octave-3.0.3.orig/liboctave/LSODE-opts.in	2008-09-24 09:13:47.000000000 +0200
++++ octave-3.0.3/liboctave/LSODE-opts.in	2009-03-17 16:20:16.424267000 +0100
+@@ -30,13 +30,13 @@
+   SET_ARG_TYPE = "const $TYPE&"
+   INIT_BODY
+     $OPTVAR.resize (1);
+-    $OPTVAR(0) = ::sqrt (DBL_EPSILON);
++    $OPTVAR(0) = std::sqrt (DBL_EPSILON);
+   END_INIT_BODY
+   SET_CODE
+     void set_$OPT (double val)
+       {
+         $OPTVAR.resize (1);
+-        $OPTVAR(0) = (val > 0.0) ? val : ::sqrt (DBL_EPSILON);
++        $OPTVAR(0) = (val > 0.0) ? val : std::sqrt (DBL_EPSILON);
+         reset = true;
+       }
+ 
+@@ -59,8 +59,8 @@
+ @end example
+   END_DOC_ITEM
+   TYPE = "double"
+-  INIT_VALUE = "::sqrt (DBL_EPSILON)"
+-  SET_EXPR = "(val > 0.0) ? val : ::sqrt (DBL_EPSILON)"
++  INIT_VALUE = "std::sqrt (DBL_EPSILON)"
++  SET_EXPR = "(val > 0.0) ? val : std::sqrt (DBL_EPSILON)"
+ END_OPTION
+ 
+ OPTION
+diff -bur octave-3.0.3.orig/liboctave/MArray-defs.h octave-3.0.3/liboctave/MArray-defs.h
+--- octave-3.0.3.orig/liboctave/MArray-defs.h	2008-09-24 09:13:47.000000000 +0200
++++ octave-3.0.3/liboctave/MArray-defs.h	2009-03-17 17:55:44.931699000 +0100
+@@ -376,7 +376,7 @@
+ 	      retval += d_abs * d_abs; \
+ 	    } \
+  \
+-	  retval = ::sqrt (retval) * inf_norm; \
++	  retval = std::sqrt (retval) * inf_norm; \
+ 	} \
+       else if (p == 2) \
+ 	F77_FCN (blas_norm, BLAS_NORM) (len, d, 1, retval); \
+@@ -418,10 +418,10 @@
+ 	  for (octave_idx_type i = 0; i < len; i++) \
+ 	    { \
+ 	      double d_abs = std::abs (d[i]); \
+-	      retval += pow (d_abs, p); \
++	      retval += std::pow (d_abs, p); \
+ 	    } \
+  \
+-	  retval = pow (retval, 1/p); \
++	  retval = std::pow (retval, 1/p); \
+ 	} \
+     } \
+  \
+diff -bur octave-3.0.3.orig/liboctave/Makefile.in octave-3.0.3/liboctave/Makefile.in
+--- octave-3.0.3.orig/liboctave/Makefile.in	2008-09-24 09:13:47.000000000 +0200
++++ octave-3.0.3/liboctave/Makefile.in	2009-03-18 10:30:12.042138000 +0100
+@@ -38,7 +38,7 @@
+   -L../libcruft -L. $(RLD_FLAG) \
+   $(LIBCRUFT) $(CHOLMOD_LIBS) $(UMFPACK_LIBS)  $(AMD_LIBS) \
+   $(CAMD_LIBS) $(COLAMD_LIBS) $(CCOLAMD_LIBS) $(CXSPARSE_LIBS) \
+-  $(BLAS_LIBS) $(FFTW_LIBS) $(LIBREADLINE) $(LIBGLOB) $(LIBS) $(FLIBS)
++  $(BLAS_LIBS) $(FFTW_LIBS) $(LIBREADLINE) $(LIBGLOB) $(LIBS) $(FLIBS) -library=stlport4
+ 
+ MATRIX_INC := Array.h Array2.h Array3.h ArrayN.h DiagArray2.h \
+ 	Array-util.h ArrayN-idx.h MArray-defs.h \
+diff -bur octave-3.0.3.orig/liboctave/NLEqn-opts.h octave-3.0.3/liboctave/NLEqn-opts.h
+--- octave-3.0.3.orig/liboctave/NLEqn-opts.h	2008-09-24 09:26:49.000000000 +0200
++++ octave-3.0.3/liboctave/NLEqn-opts.h	2009-03-17 16:20:46.775664000 +0100
+@@ -32,7 +32,7 @@
+ 
+   void init (void)
+     {
+-      x_tolerance = ::sqrt (DBL_EPSILON);
++      x_tolerance = std::sqrt (DBL_EPSILON);
+       reset = true;
+     }
+ 
+@@ -47,7 +47,7 @@
+   void set_default_options (void) { init (); }
+ 
+   void set_tolerance (double val)
+-    { x_tolerance = (val > 0.0) ? val : ::sqrt (DBL_EPSILON); reset = true; }
++    { x_tolerance = (val > 0.0) ? val : std::sqrt (DBL_EPSILON); reset = true; }
+   double tolerance (void) const
+     { return x_tolerance; }
+ 
+diff -bur octave-3.0.3.orig/liboctave/NLEqn-opts.in octave-3.0.3/liboctave/NLEqn-opts.in
+--- octave-3.0.3.orig/liboctave/NLEqn-opts.in	2008-09-24 09:13:47.000000000 +0200
++++ octave-3.0.3/liboctave/NLEqn-opts.in	2009-03-17 16:20:27.432544000 +0100
+@@ -38,6 +38,6 @@
+ Nonnegative relative tolerance.
+   END_DOC_ITEM
+   TYPE = "double"
+-  INIT_VALUE = "::sqrt (DBL_EPSILON)"
+-  SET_EXPR = "(val > 0.0) ? val : ::sqrt (DBL_EPSILON)"
++  INIT_VALUE = "std::sqrt (DBL_EPSILON)"
++  SET_EXPR = "(val > 0.0) ? val : std::sqrt (DBL_EPSILON)"
+ END_OPTION
+diff -bur octave-3.0.3.orig/liboctave/Quad-opts.h octave-3.0.3/liboctave/Quad-opts.h
+--- octave-3.0.3.orig/liboctave/Quad-opts.h	2008-09-24 09:26:49.000000000 +0200
++++ octave-3.0.3/liboctave/Quad-opts.h	2009-03-17 16:20:46.819782000 +0100
+@@ -30,8 +30,8 @@
+ 
+   void init (void)
+     {
+-      x_absolute_tolerance = ::sqrt (DBL_EPSILON);
+-      x_relative_tolerance = ::sqrt (DBL_EPSILON);
++      x_absolute_tolerance = std::sqrt (DBL_EPSILON);
++      x_relative_tolerance = std::sqrt (DBL_EPSILON);
+       reset = true;
+     }
+ 
+diff -bur octave-3.0.3.orig/liboctave/Quad-opts.in octave-3.0.3/liboctave/Quad-opts.in
+--- octave-3.0.3.orig/liboctave/Quad-opts.in	2008-09-24 09:13:47.000000000 +0200
++++ octave-3.0.3/liboctave/Quad-opts.in	2009-03-17 16:20:38.457130000 +0100
+@@ -24,7 +24,7 @@
+ Absolute tolerance; may be zero for pure relative error test.
+   END_DOC_ITEM
+   TYPE = "double"
+-  INIT_VALUE = "::sqrt (DBL_EPSILON)"
++  INIT_VALUE = "std::sqrt (DBL_EPSILON)"
+   SET_EXPR = "val"
+ END_OPTION
+ 
+@@ -36,6 +36,6 @@
+ @code{max (50*eps, 0.5e-28)}.
+   END_DOC_ITEM
+   TYPE = "double"
+-  INIT_VALUE = "::sqrt (DBL_EPSILON)"
++  INIT_VALUE = "std::sqrt (DBL_EPSILON)"
+   SET_EXPR = "val"
+ END_OPTION
+diff -bur octave-3.0.3.orig/liboctave/Range.cc octave-3.0.3/liboctave/Range.cc
+--- octave-3.0.3.orig/liboctave/Range.cc	2008-09-24 09:13:47.000000000 +0200
++++ octave-3.0.3/liboctave/Range.cc	2009-03-17 16:35:02.196289000 +0100
+@@ -222,11 +222,11 @@
+ 
+   double rmax = q / (2.0 - ct);
+ 
+-  double t1 = 1.0 + floor (x);
++  double t1 = 1.0 + std::floor (x);
+   t1 = (ct / q) * (t1 < 0.0 ? -t1 : t1);
+   t1 = rmax < t1 ? rmax : t1;
+   t1 = ct > t1 ? ct : t1;
+-  t1 = floor (x + t1);
++  t1 = std::floor (x + t1);
+ 
+   if (x <= 0.0 || (t1 - x) < rmax)
+     return t1;
+@@ -243,10 +243,10 @@
+ static inline bool
+ teq (double u, double v, double ct = 3.0 * DBL_EPSILON)
+ {
+-  double tu = fabs (u);
+-  double tv = fabs (v);
++  double tu = std::fabs (u);
++  double tv = std::fabs (v);
+ 
+-  return fabs (u - v) < ((tu > tv ? tu : tv) * ct);
++  return std::fabs (u - v) < ((tu > tv ? tu : tv) * ct);
+ }
+ 
+ octave_idx_type
+diff -bur octave-3.0.3.orig/liboctave/chMatrix.cc octave-3.0.3/liboctave/chMatrix.cc
+--- octave-3.0.3.orig/liboctave/chMatrix.cc	2008-09-24 09:13:47.000000000 +0200
++++ octave-3.0.3/liboctave/chMatrix.cc	2009-03-18 09:56:40.320862000 +0100
+@@ -30,6 +30,7 @@
+ 
+ #include <iostream>
+ #include <string>
++#include <strings.h>
+ 
+ #include "lo-error.h"
+ #include "str-vec.h"
+diff -bur octave-3.0.3.orig/liboctave/cmd-edit.cc octave-3.0.3/liboctave/cmd-edit.cc
+--- octave-3.0.3.orig/liboctave/cmd-edit.cc	2008-09-24 09:13:47.000000000 +0200
++++ octave-3.0.3/liboctave/cmd-edit.cc	2009-03-18 10:20:16.865956000 +0100
+@@ -29,6 +29,8 @@
+ #include <cstring>
+ 
+ #include <string>
++#include <stdlib.h>
++#include <string.h>
+ 
+ #ifdef HAVE_UNISTD_H
+ #ifdef HAVE_SYS_TYPES_H
+diff -bur octave-3.0.3.orig/liboctave/cmd-edit.h octave-3.0.3/liboctave/cmd-edit.h
+--- octave-3.0.3.orig/liboctave/cmd-edit.h	2008-09-24 09:13:47.000000000 +0200
++++ octave-3.0.3/liboctave/cmd-edit.h	2009-03-17 17:50:53.925055000 +0100
+@@ -24,6 +24,8 @@
+ #if !defined (octave_cmd_edit_h)
+ #define octave_cmd_edit_h 1
+ 
++#include <stdio.h>
++
+ #include <cstdio>
+ 
+ #include <set>
+diff -bur octave-3.0.3.orig/liboctave/cmd-hist.cc octave-3.0.3/liboctave/cmd-hist.cc
+--- octave-3.0.3.orig/liboctave/cmd-hist.cc	2008-09-24 09:13:47.000000000 +0200
++++ octave-3.0.3/liboctave/cmd-hist.cc	2009-03-18 10:20:56.219398000 +0100
+@@ -29,6 +29,9 @@
+ 
+ #include <iostream>
+ #include <string>
++#include <stdlib.h>
++#include <string.h>
++
+ 
+ #include "cmd-edit.h"
+ #include "cmd-hist.h"
+diff -bur octave-3.0.3.orig/liboctave/dMatrix.cc octave-3.0.3/liboctave/dMatrix.cc
+--- octave-3.0.3.orig/liboctave/dMatrix.cc	2008-09-24 09:13:47.000000000 +0200
++++ octave-3.0.3/liboctave/dMatrix.cc	2009-03-18 09:58:53.618433000 +0100
+@@ -1336,13 +1336,13 @@
+ 		      if (c == 0.0)
+ 			break;
+ 
+-		      while (fabs (c) < 0.5)
++		      while (std::fabs (c) < 0.5)
+ 			{
+ 			  c *= 2.0;
+ 			  e--;
+ 			}
+ 
+-		      while (fabs (c) >= 2.0)
++		      while (std::fabs (c) >= 2.0)
+ 			{
+ 			  c /= 2.0;
+ 			  e++;
+@@ -2446,7 +2446,7 @@
+   Matrix m = *this;
+ 
+   if (numel () == 1)
+-    return Matrix (1, 1, exp (m(0)));
++    return Matrix (1, 1, std::exp (m(0)));
+ 
+   octave_idx_type nc = columns ();
+ 
+@@ -2513,7 +2513,7 @@
+     }
+ 
+   octave_idx_type sqpow = static_cast<octave_idx_type> (inf_norm > 0.0
+-		     ? (1.0 + log (inf_norm) / log (2.0))
++		     ? (1.0 + std::log (inf_norm) / std::log (2.0))
+ 		     : 0.0);
+   
+   // Check whether we need to square at all.
+@@ -2647,7 +2647,7 @@
+   // Reverse preconditioning step 1: fix trace normalization.
+   
+   if (trshift > 0.0)
+-    retval = exp (trshift) * retval;
++    retval = std::exp (trshift) * retval;
+ 
+   return retval;
+ }
+@@ -2889,7 +2889,7 @@
+       double val = elem (i);
+ 
+       if (! (xisnan (val) || xisinf (val))
+-	  && fabs (val) > FLT_MAX)
++	  && std::fabs (val) > FLT_MAX)
+ 	return true;
+     }
+ 
+@@ -2962,7 +2962,7 @@
+ 
+   for (octave_idx_type j = 0; j < nc; j++)
+     for (octave_idx_type i = 0; i < nr; i++)
+-      retval (i, j) = fabs (elem (i, j));
++      retval (i, j) = std::fabs (elem (i, j));
+ 
+   return retval;
+ }
+diff -bur octave-3.0.3.orig/liboctave/dNDArray.cc octave-3.0.3/liboctave/dNDArray.cc
+--- octave-3.0.3.orig/liboctave/dNDArray.cc	2008-09-24 09:13:47.000000000 +0200
++++ octave-3.0.3/liboctave/dNDArray.cc	2009-03-18 09:59:48.634593000 +0100
+@@ -616,7 +616,7 @@
+       double val = elem (i);
+ 
+       if (! (xisnan (val) || xisinf (val))
+-	  && fabs (val) > FLT_MAX)
++	  && std::fabs (val) > FLT_MAX)
+ 	return true;
+     }
+ 
+@@ -920,7 +920,7 @@
+   octave_idx_type nel = nelem ();
+ 
+   for (octave_idx_type i = 0; i < nel; i++)
+-    retval(i) = fabs (elem (i));
++    retval(i) = std::fabs (elem (i));
+ 
+   return retval;
+ }
+diff -bur octave-3.0.3.orig/liboctave/dSparse.cc octave-3.0.3/liboctave/dSparse.cc
+--- octave-3.0.3.orig/liboctave/dSparse.cc	2008-09-24 09:13:47.000000000 +0200
++++ octave-3.0.3/liboctave/dSparse.cc	2009-03-18 10:06:16.687868000 +0100
+@@ -586,11 +586,11 @@
+     {
+       // Its going to be basically full, so this is probably the
+       // best way to handle it.
+-      Matrix tmp (nr, nc, atan2 (x, 0.));
++      Matrix tmp (nr, nc, std::atan2 (x, 0.));
+ 
+       for (octave_idx_type j = 0; j < nc; j++)
+ 	for (octave_idx_type i = y.cidx (j); i < y.cidx (j+1); i++)
+-	  tmp.elem (y.ridx(i), j) = atan2 (x, y.data(i));
++	  tmp.elem (y.ridx(i), j) = std::atan2 (x, y.data(i));
+ 
+       return SparseMatrix (tmp);
+     }
+@@ -611,7 +611,7 @@
+     {
+       for (octave_idx_type j = x.cidx(i); j < x.cidx(i+1); j++)
+ 	{
+-	  double tmp = atan2 (x.data(j), y);
++	  double tmp = std::atan2 (x.data(j), y);
+ 	  if (tmp != 0.)
+ 	    {
+ 	      retval.xdata (ii) = tmp;
+@@ -675,7 +675,7 @@
+                       (ja_lt_max && (x.ridx(ja) < y.ridx(jb))))
+ 		    {
+ 		      r.ridx(jx) = x.ridx(ja);
+-		      r.data(jx) = atan2 (x.data(ja), 0.);
++		      r.data(jx) = std::atan2 (x.data(ja), 0.);
+ 		      jx++;
+ 		      ja++;
+ 		      ja_lt_max= ja < ja_max;
+@@ -688,7 +688,7 @@
+ 		    }
+ 		  else
+ 		    {
+-		      double tmp = atan2 (x.data(ja), y.data(jb));
++		      double tmp = std::atan2 (x.data(ja), y.data(jb));
+ 		      if (tmp != 0.)
+ 			{
+                           r.data(jx) = tmp;
+@@ -772,7 +772,7 @@
+ 	      double dmax = 0., dmin = octave_Inf; 
+ 	      for (octave_idx_type i = 0; i < nr; i++)
+ 		{
+-		  double tmp = fabs(v[i]);
++		  double tmp = std::fabs(v[i]);
+ 		  if (tmp > dmax)
+ 		    dmax = tmp;
+ 		  if (tmp < dmin)
+@@ -823,7 +823,7 @@
+ 		{
+ 		  double atmp = 0.;
+ 		  for (octave_idx_type i = cidx(j); i < cidx(j+1); i++)
+-		    atmp += fabs(data(i));
++		    atmp += std::fabs(data(i));
+ 		  if (atmp > anorm)
+ 		    anorm = atmp;
+ 		}
+@@ -1050,7 +1050,7 @@
+ 		  double atmp = 0.;
+ 		  for (octave_idx_type i = retval.cidx(j); 
+ 		       i < retval.cidx(j+1); i++)
+-		    atmp += fabs(retval.data(i));
++		    atmp += std::fabs(retval.data(i));
+ 		  if (atmp > ainvnorm)
+ 		    ainvnorm = atmp;
+ 		}
+@@ -1309,7 +1309,7 @@
+ 	      double dmax = 0., dmin = octave_Inf; 
+ 	      for (octave_idx_type i = 0; i < nm; i++)
+ 		{
+-		  double tmp = fabs(data(i));
++		  double tmp = std::fabs(data(i));
+ 		  if (tmp > dmax)
+ 		    dmax = tmp;
+ 		  if (tmp < dmin)
+@@ -1399,7 +1399,7 @@
+ 	      double dmax = 0., dmin = octave_Inf; 
+ 	      for (octave_idx_type i = 0; i < nm; i++)
+ 		{
+-		  double tmp = fabs(data(i));
++		  double tmp = std::fabs(data(i));
+ 		  if (tmp > dmax)
+ 		    dmax = tmp;
+ 		  if (tmp < dmin)
+@@ -1459,7 +1459,7 @@
+ 	      double dmax = 0., dmin = octave_Inf; 
+ 	      for (octave_idx_type i = 0; i < nm; i++)
+ 		{
+-		  double tmp = fabs(data(i));
++		  double tmp = std::fabs(data(i));
+ 		  if (tmp > dmax)
+ 		    dmax = tmp;
+ 		  if (tmp < dmin)
+@@ -1549,7 +1549,7 @@
+ 	      double dmax = 0., dmin = octave_Inf; 
+ 	      for (octave_idx_type i = 0; i < nm; i++)
+ 		{
+-		  double tmp = fabs(data(i));
++		  double tmp = std::fabs(data(i));
+ 		  if (tmp > dmax)
+ 		    dmax = tmp;
+ 		  if (tmp < dmin)
+@@ -1606,7 +1606,7 @@
+ 		{
+ 		  double atmp = 0.;
+ 		  for (octave_idx_type i = cidx(j); i < cidx(j+1); i++)
+-		    atmp += fabs(data(i));
++		    atmp += std::fabs(data(i));
+ 		  if (atmp > anorm)
+ 		    anorm = atmp;
+ 		}
+@@ -1682,7 +1682,7 @@
+ 		      double atmp = 0;
+ 		      for (octave_idx_type i = 0; i < j+1; i++)
+ 			{
+-			  atmp += fabs(work[i]);
++			  atmp += std::fabs(work[i]);
+ 			  work[i] = 0.;
+ 			}
+ 		      if (atmp > ainvnorm)
+@@ -1754,7 +1754,7 @@
+ 		      double atmp = 0;
+ 		      for (octave_idx_type i = 0; i < j+1; i++)
+ 			{
+-			  atmp += fabs(work[i]);
++			  atmp += std::fabs(work[i]);
+ 			  work[i] = 0.;
+ 			}
+ 		      if (atmp > ainvnorm)
+@@ -1840,7 +1840,7 @@
+ 		{
+ 		  double atmp = 0.;
+ 		  for (octave_idx_type i = cidx(j); i < cidx(j+1); i++)
+-		    atmp += fabs(data(i));
++		    atmp += std::fabs(data(i));
+ 		  if (atmp > anorm)
+ 		    anorm = atmp;
+ 		}
+@@ -1948,7 +1948,7 @@
+ 		      double atmp = 0;
+ 		      for (octave_idx_type i = 0; i < j+1; i++)
+ 			{
+-			  atmp += fabs(work[i]);
++			  atmp += std::fabs(work[i]);
+ 			  work[i] = 0.;
+ 			}
+ 		      if (atmp > ainvnorm)
+@@ -2042,7 +2042,7 @@
+ 		      double atmp = 0;
+ 		      for (octave_idx_type i = 0; i < j+1; i++)
+ 			{
+-			  atmp += fabs(work[i]);
++			  atmp += std::fabs(work[i]);
+ 			  work[i] = 0.;
+ 			}
+ 		      if (atmp > ainvnorm)
+@@ -2128,7 +2128,7 @@
+ 		{
+ 		  double atmp = 0.;
+ 		  for (octave_idx_type i = cidx(j); i < cidx(j+1); i++)
+-		    atmp += fabs(data(i));
++		    atmp += std::fabs(data(i));
+ 		  if (atmp > anorm)
+ 		    anorm = atmp;
+ 		}
+@@ -2205,7 +2205,7 @@
+ 		      double atmp = 0;
+ 		      for (octave_idx_type i = 0; i < j+1; i++)
+ 			{
+-			  atmp += fabs(work[i]);
++			  atmp += std::fabs(work[i]);
+ 			  work[i] = 0.;
+ 			}
+ 		      if (atmp > ainvnorm)
+@@ -2279,7 +2279,7 @@
+ 		      double atmp = 0;
+ 		      for (octave_idx_type i = 0; i < j+1; i++)
+ 			{
+-			  atmp += fabs(work[i]);
++			  atmp += std::fabs(work[i]);
+ 			  work[i] = 0.;
+ 			}
+ 		      if (atmp > ainvnorm)
+@@ -2365,7 +2365,7 @@
+ 		{
+ 		  double atmp = 0.;
+ 		  for (octave_idx_type i = cidx(j); i < cidx(j+1); i++)
+-		    atmp += fabs(data(i));
++		    atmp += std::fabs(data(i));
+ 		  if (atmp > anorm)
+ 		    anorm = atmp;
+ 		}
+@@ -2474,7 +2474,7 @@
+ 		      double atmp = 0;
+ 		      for (octave_idx_type i = 0; i < j+1; i++)
+ 			{
+-			  atmp += fabs(work[i]);
++			  atmp += std::fabs(work[i]);
+ 			  work[i] = 0.;
+ 			}
+ 		      if (atmp > ainvnorm)
+@@ -2569,7 +2569,7 @@
+ 		      double atmp = 0;
+ 		      for (octave_idx_type i = 0; i < j+1; i++)
+ 			{
+-			  atmp += fabs(work[i]);
++			  atmp += std::fabs(work[i]);
+ 			  work[i] = 0.;
+ 			}
+ 		      if (atmp > ainvnorm)
+@@ -2656,7 +2656,7 @@
+ 		{
+ 		  double atmp = 0.;
+ 		  for (octave_idx_type i = cidx(j); i < cidx(j+1); i++)
+-		    atmp += fabs(data(i));
++		    atmp += std::fabs(data(i));
+ 		  if (atmp > anorm)
+ 		    anorm = atmp;
+ 		}
+@@ -2755,7 +2755,7 @@
+ 		      double atmp = 0;
+ 		      for (octave_idx_type i = j; i < nc; i++)
+ 			{
+-			  atmp += fabs(work[i]);
++			  atmp += std::fabs(work[i]);
+ 			  work[i] = 0.;
+ 			}
+ 		      if (atmp > ainvnorm)
+@@ -2829,7 +2829,7 @@
+ 		      double atmp = 0;
+ 		      for (octave_idx_type i = j; i < nc; i++)
+ 			{
+-			  atmp += fabs(work[i]);
++			  atmp += std::fabs(work[i]);
+ 			  work[i] = 0.;
+ 			}
+ 		      if (atmp > ainvnorm)
+@@ -2915,7 +2915,7 @@
+ 		{
+ 		  double atmp = 0.;
+ 		  for (octave_idx_type i = cidx(j); i < cidx(j+1); i++)
+-		    atmp += fabs(data(i));
++		    atmp += std::fabs(data(i));
+ 		  if (atmp > anorm)
+ 		    anorm = atmp;
+ 		}
+@@ -3041,7 +3041,7 @@
+ 		      double atmp = 0;
+ 		      for (octave_idx_type i = j; i < nr; i++)
+ 			{
+-			  atmp += fabs(work[i]);
++			  atmp += std::fabs(work[i]);
+ 			  work[i] = 0.;
+ 			}
+ 		      if (atmp > ainvnorm)
+@@ -3136,7 +3136,7 @@
+ 		      double atmp = 0;
+ 		      for (octave_idx_type i = j; i < nc; i++)
+ 			{
+-			  atmp += fabs(work[i]);
++			  atmp += std::fabs(work[i]);
+ 			  work[i] = 0.;
+ 			}
+ 		      if (atmp > ainvnorm)
+@@ -3223,7 +3223,7 @@
+ 		{
+ 		  double atmp = 0.;
+ 		  for (octave_idx_type i = cidx(j); i < cidx(j+1); i++)
+-		    atmp += fabs(data(i));
++		    atmp += std::fabs(data(i));
+ 		  if (atmp > anorm)
+ 		    anorm = atmp;
+ 		}
+@@ -3322,7 +3322,7 @@
+ 		      double atmp = 0;
+ 		      for (octave_idx_type i = j; i < nc; i++)
+ 			{
+-			  atmp += fabs(work[i]);
++			  atmp += std::fabs(work[i]);
+ 			  work[i] = 0.;
+ 			}
+ 		      if (atmp > ainvnorm)
+@@ -3397,7 +3397,7 @@
+ 		      double atmp = 0;
+ 		      for (octave_idx_type i = j; i < nc; i++)
+ 			{
+-			  atmp += fabs(work[i]);
++			  atmp += std::fabs(work[i]);
+ 			  work[i] = 0.;
+ 			}
+ 		      if (atmp > ainvnorm)
+@@ -3483,7 +3483,7 @@
+ 		{
+ 		  double atmp = 0.;
+ 		  for (octave_idx_type i = cidx(j); i < cidx(j+1); i++)
+-		    atmp += fabs(data(i));
++		    atmp += std::fabs(data(i));
+ 		  if (atmp > anorm)
+ 		    anorm = atmp;
+ 		}
+@@ -3610,7 +3610,7 @@
+ 		      double atmp = 0;
+ 		      for (octave_idx_type i = j; i < nc; i++)
+ 			{
+-			  atmp += fabs(work[i]);
++			  atmp += std::fabs(work[i]);
+ 			  work[i] = 0.;
+ 			}
+ 		      if (atmp > ainvnorm)
+@@ -3706,7 +3706,7 @@
+ 		      double atmp = 0;
+ 		      for (octave_idx_type i = j; i < nc; i++)
+ 			{
+-			  atmp += fabs(work[i]);
++			  atmp += std::fabs(work[i]);
+ 			  work[i] = 0.;
+ 			}
+ 		      if (atmp > ainvnorm)
+@@ -4606,7 +4606,7 @@
+ 		{
+ 		  double atmp = 0.;
+ 		  for (octave_idx_type i = cidx(j); i < cidx(j+1); i++)
+-		    atmp += fabs(data(i));
++		    atmp += std::fabs(data(i));
+ 		  if (atmp > anorm)
+ 		    anorm = atmp;
+ 		}
+@@ -4921,7 +4921,7 @@
+ 		{
+ 		  double atmp = 0.;
+ 		  for (octave_idx_type i = cidx(j); i < cidx(j+1); i++)
+-		    atmp += fabs(data(i));
++		    atmp += std::fabs(data(i));
+ 		  if (atmp > anorm)
+ 		    anorm = atmp;
+ 		}
+@@ -5280,7 +5280,7 @@
+ 		{
+ 		  double atmp = 0.;
+ 		  for (octave_idx_type i = cidx(j); i < cidx(j+1); i++)
+-		    atmp += fabs(data(i));
++		    atmp += std::fabs(data(i));
+ 		  if (atmp > anorm)
+ 		    anorm = atmp;
+ 		}
+@@ -5660,7 +5660,7 @@
+ 		{
+ 		  double atmp = 0.;
+ 		  for (octave_idx_type i = cidx(j); i < cidx(j+1); i++)
+-		    atmp += fabs(data(i));
++		    atmp += std::fabs(data(i));
+ 		  if (atmp > anorm)
+ 		    anorm = atmp;
+ 		}
+@@ -7751,7 +7751,7 @@
+   SparseMatrix retval (*this);
+ 
+   for (octave_idx_type i = 0; i < nz; i++)
+-    retval.data(i) = fabs(retval.data(i));
++    retval.data(i) = std::fabs(retval.data(i));
+ 
+   return retval;
+ }
+diff -bur octave-3.0.3.orig/liboctave/data-conv.cc octave-3.0.3/liboctave/data-conv.cc
+--- octave-3.0.3.orig/liboctave/data-conv.cc	2008-09-24 09:13:47.000000000 +0200
++++ octave-3.0.3/liboctave/data-conv.cc	2009-03-17 16:36:11.840346000 +0100
+@@ -21,6 +21,7 @@
+ 
+ */
+ 
++#include <stdlib.h>
+ #ifdef HAVE_CONFIG_H
+ #include <config.h>
+ #endif
+diff -bur octave-3.0.3.orig/liboctave/dbleDET.cc octave-3.0.3/liboctave/dbleDET.cc
+--- octave-3.0.3.orig/liboctave/dbleDET.cc	2008-09-24 09:13:47.000000000 +0200
++++ octave-3.0.3/liboctave/dbleDET.cc	2009-03-18 10:00:56.597768000 +0100
+@@ -36,7 +36,7 @@
+ {
+   return base2
+     ? (e2 + 1 > xlog2 (DBL_MAX) ? 1 : 0)
+-    : (e10 + 1 > log10 (DBL_MAX) ? 1 : 0);
++    : (e10 + 1 > std::log10 (DBL_MAX) ? 1 : 0);
+ }
+ 
+ bool
+@@ -44,7 +44,7 @@
+ {
+   return base2
+     ? (e2 - 1 < xlog2 (DBL_MIN) ? 1 : 0)
+-    : (e10 - 1 < log10 (DBL_MIN) ? 1 : 0);
++    : (e10 - 1 < std::log10 (DBL_MIN) ? 1 : 0);
+ }
+ 
+ void
+@@ -55,7 +55,7 @@
+       double etmp = e2 / xlog2 (10);
+       e10 = static_cast<int> (xround (etmp));
+       etmp -= e10;
+-      c10 = c2 * pow (10.0, etmp);
++      c10 = c2 * std::pow (10.0, etmp);
+     }
+ }
+ 
+@@ -64,7 +64,7 @@
+ {
+   if (c10 != 0.0)
+     {
+-      double etmp = e10 / log10 (2.0);
++      double etmp = e10 / std::log10 (2.0);
+       e2 = static_cast<int> (xround (etmp));
+       etmp -= e2;
+       c2 = c10 * xexp2 (etmp);
+@@ -74,7 +74,7 @@
+ double
+ DET::value (void) const
+ {
+-  return base2 ? c2 * xexp2 (e2) : c10 * pow (10.0, e10);
++  return base2 ? c2 * xexp2 (e2) : c10 * std::pow (10.0, e10);
+ }
+ 
+ /*
+diff -bur octave-3.0.3.orig/liboctave/dbleSCHUR.cc octave-3.0.3/liboctave/dbleSCHUR.cc
+--- octave-3.0.3.orig/liboctave/dbleSCHUR.cc	2008-09-24 09:13:47.000000000 +0200
++++ octave-3.0.3/liboctave/dbleSCHUR.cc	2009-03-18 10:01:54.257132000 +0100
+@@ -56,7 +56,7 @@
+ static octave_idx_type
+ select_dig (const double& a, const double& b)
+ {
+-  return (hypot (a, b) < 1.0);
++  return (std::hypot (a, b) < 1.0);
+ }
+ 
+ octave_idx_type
+diff -bur octave-3.0.3.orig/liboctave/file-ops.cc octave-3.0.3/liboctave/file-ops.cc
+--- octave-3.0.3.orig/liboctave/file-ops.cc	2008-09-24 09:13:47.000000000 +0200
++++ octave-3.0.3/liboctave/file-ops.cc	2009-03-17 16:40:14.324346000 +0100
+@@ -21,6 +21,8 @@
+ 
+ */
+ 
++#include <stdlib.h>
++
+ #ifdef HAVE_CONFIG_H
+ #include <config.h>
+ #endif
+@@ -41,6 +43,10 @@
+ #include <unistd.h>
+ #endif
+ 
++#include <strings.h>
++#include <string.h>
++
++
+ #include "dir-ops.h"
+ #include "file-ops.h"
+ #include "file-stat.h"
+diff -bur octave-3.0.3.orig/liboctave/idx-vector.cc octave-3.0.3/liboctave/idx-vector.cc
+--- octave-3.0.3.orig/liboctave/idx-vector.cc	2008-09-24 09:13:47.000000000 +0200
++++ octave-3.0.3/liboctave/idx-vector.cc	2009-03-17 17:03:09.272086000 +0100
+@@ -21,6 +21,7 @@
+ 
+ */
+ 
++#include <stdlib.h>
+ #ifdef HAVE_CONFIG_H
+ #include <config.h>
+ #endif
+diff -bur octave-3.0.3.orig/liboctave/kpse.cc octave-3.0.3/liboctave/kpse.cc
+--- octave-3.0.3.orig/liboctave/kpse.cc	2008-09-24 09:13:47.000000000 +0200
++++ octave-3.0.3/liboctave/kpse.cc	2009-03-18 10:21:47.618921000 +0100
+@@ -25,6 +25,9 @@
+ #if defined (HAVE_CONFIG_H)
+ #include <config.h>
+ #endif
++#include <stdlib.h>
++#include <string.h>
++#include <stdio.h>
+ 
+ #include <map>
+ #include <string>
+diff -bur octave-3.0.3.orig/liboctave/lo-mappers.cc octave-3.0.3/liboctave/lo-mappers.cc
+--- octave-3.0.3.orig/liboctave/lo-mappers.cc	2008-09-24 09:13:47.000000000 +0200
++++ octave-3.0.3/liboctave/lo-mappers.cc	2009-03-17 17:19:15.039655000 +0100
+@@ -21,6 +21,7 @@
+ 
+ */
+ 
++
+ #ifdef HAVE_CONFIG_H
+ #include <config.h>
+ #endif
+@@ -42,7 +43,7 @@
+ double
+ arg (double x)
+ {
+-  return atan2 (0.0, x);
++  return std::atan2 (0.0, x);
+ }
+ 
+ double
+@@ -54,7 +55,7 @@
+ double
+ fix (double x)
+ {
+-  return x > 0 ? floor (x) : ceil (x);
++  return x > 0 ? std::floor (x) : std::ceil (x);
+ }
+ 
+ double
+@@ -72,12 +73,12 @@
+ double
+ xround (double x)
+ {
+-#if defined (HAVE_ROUND)
+-  return round (x);
+-#else
++//#if defined (HAVE_ROUND)
++//  return round (x);
++//#else
+   if (x >= 0)
+     {
+-      double y = floor (x);
++      double y = std::floor (x);
+ 
+       if ((x - y) >= 0.5)
+ 	y += 1.0;
+@@ -86,14 +87,14 @@
+     }
+   else
+     {
+-      double y = ceil (x);
++      double y = std::ceil (x);
+ 
+       if ((y - x) >= 0.5)
+ 	y -= 1.0;
+ 
+       return y;
+     }
+-#endif
++//#endif
+ }
+ 
+ double
+@@ -262,7 +263,7 @@
+ Complex
+ ceil (const Complex& x)
+ {
+-  return Complex (ceil (real (x)), ceil (imag (x)));
++  return Complex (std::ceil (real (x)), std::ceil (imag (x)));
+ }
+ 
+ Complex
+@@ -274,7 +275,7 @@
+ Complex
+ floor (const Complex& x)
+ {
+-  return Complex (floor (real (x)), floor (imag (x)));
++  return Complex (std::floor (real (x)), std::floor (imag (x)));
+ }
+ 
+ Complex
+diff -bur octave-3.0.3.orig/liboctave/lo-specfun.cc octave-3.0.3/liboctave/lo-specfun.cc
+--- octave-3.0.3.orig/liboctave/lo-specfun.cc	2008-09-24 09:13:47.000000000 +0200
++++ octave-3.0.3/liboctave/lo-specfun.cc	2009-03-17 17:29:37.799221000 +0100
+@@ -160,7 +160,7 @@
+ double
+ xgamma (double x)
+ {
+-#if defined (HAVE_TGAMMA)
++#if defined (HAVE_TGAMMA) && 0
+   return tgamma (x);
+ #else
+   double result;
+@@ -179,7 +179,7 @@
+ double
+ xlgamma (double x)
+ {
+-#if defined (HAVE_LGAMMA)
++#if defined (HAVE_LGAMMA) && 0
+   return lgamma (x);
+ #else
+   double result;
+@@ -266,7 +266,7 @@
+ 
+       if (kode != 2)
+ 	{
+-	  double expz = exp (std::abs (zi)); 
++	  double expz = std::exp (std::abs (zi)); 
+ 	  yr *= expz;
+ 	  yi *= expz;
+ 	}
+@@ -289,11 +289,11 @@
+     {
+       alpha = -alpha;
+ 
+-      Complex tmp = cos (M_PI * alpha) * zbesj (z, alpha, kode, ierr);
++      Complex tmp = std::cos (M_PI * alpha) * zbesj (z, alpha, kode, ierr);
+ 
+       if (ierr == 0 || ierr == 3)
+ 	{
+-	  tmp -= sin (M_PI * alpha) * zbesy (z, alpha, kode, ierr);
++	  tmp -= std::sin (M_PI * alpha) * zbesy (z, alpha, kode, ierr);
+ 
+ 	  retval = bessel_return_value (tmp, ierr);
+ 	}
+@@ -335,7 +335,7 @@
+ 
+ 	  if (kode != 2)
+ 	    {
+-	      double expz = exp (std::abs (zi));
++	      double expz = std::exp (std::abs (zi));
+ 	      yr *= expz;
+ 	      yi *= expz;
+ 	    }
+@@ -359,11 +359,11 @@
+     {
+       alpha = -alpha;
+ 
+-      Complex tmp = cos (M_PI * alpha) * zbesy (z, alpha, kode, ierr);
++      Complex tmp = std::cos (M_PI * alpha) * zbesy (z, alpha, kode, ierr);
+ 
+       if (ierr == 0 || ierr == 3)
+ 	{
+-	  tmp += sin (M_PI * alpha) * zbesj (z, alpha, kode, ierr);
++	  tmp += std::sin (M_PI * alpha) * zbesj (z, alpha, kode, ierr);
+ 
+ 	  retval = bessel_return_value (tmp, ierr);
+ 	}
+@@ -393,7 +393,7 @@
+ 
+       if (kode != 2)
+ 	{
+-	  double expz = exp (std::abs (zr));
++	  double expz = std::exp (std::abs (zr));
+ 	  yr *= expz;
+ 	  yi *= expz;
+ 	}
+@@ -411,7 +411,7 @@
+ 
+       if (ierr == 0 || ierr == 3)
+ 	{
+-	  tmp += (2.0 / M_PI) * sin (M_PI * alpha)
++	  tmp += (2.0 / M_PI) * std::sin (M_PI * alpha)
+ 	    * zbesk (z, alpha, kode, ierr);
+ 
+ 	  retval = bessel_return_value (tmp, ierr);
+@@ -854,7 +854,7 @@
+ 
+   if (! scaled)
+     {
+-      Complex expz = exp (std::abs (real (2.0 / 3.0 * z * sqrt (z))));
++      Complex expz = std::exp (std::abs (real (2.0 / 3.0 * z * sqrt (z))));
+ 
+       double rexpz = real (expz);
+       double iexpz = imag (expz);
+diff -bur octave-3.0.3.orig/liboctave/lo-utils.cc octave-3.0.3/liboctave/lo-utils.cc
+--- octave-3.0.3.orig/liboctave/lo-utils.cc	2008-09-24 09:13:47.000000000 +0200
++++ octave-3.0.3/liboctave/lo-utils.cc	2009-03-17 17:32:18.526168000 +0100
+@@ -21,6 +21,7 @@
+ <http://www.gnu.org/licenses/>.
+ 
+ */
++#include <stdlib.h>
+ 
+ #ifdef HAVE_CONFIG_H
+ #include <config.h>
+@@ -33,6 +34,8 @@
+ 
+ #include <limits>
+ #include <string>
++#include <strings.h>
++#include <stdio.h>
+ 
+ #ifdef HAVE_UNISTD_H
+ #ifdef HAVE_SYS_TYPES_H
+@@ -79,7 +82,7 @@
+   if (xisinf (x) || xisnan (x))
+     return x;
+   else
+-    return floor (x + 0.5);
++    return std::floor (x + 0.5);
+ }
+ 
+ // Save a string.
+diff -bur octave-3.0.3.orig/liboctave/oct-env.cc octave-3.0.3/liboctave/oct-env.cc
+--- octave-3.0.3.orig/liboctave/oct-env.cc	2008-09-24 09:13:47.000000000 +0200
++++ octave-3.0.3/liboctave/oct-env.cc	2009-03-17 17:34:02.275563000 +0100
+@@ -459,7 +459,7 @@
+ std::string
+ octave_env::do_getenv (const std::string& name) const
+ {
+-  char *value = ::getenv (name.c_str ());
++  char *value = std::getenv (name.c_str ());
+ 
+   return value ? value : "";
+ }
+@@ -533,7 +533,7 @@
+ void
+ octave_env::error (int err_num) const
+ {
+-  (*current_liboctave_error_handler) ("%s", strerror (err_num));
++  (*current_liboctave_error_handler) ("%s", std::strerror (err_num));
+ }
+ 
+ void
+diff -bur octave-3.0.3.orig/liboctave/oct-inttypes.h octave-3.0.3/liboctave/oct-inttypes.h
+--- octave-3.0.3.orig/liboctave/oct-inttypes.h	2008-09-24 09:13:47.000000000 +0200
++++ octave-3.0.3/liboctave/oct-inttypes.h	2009-03-18 09:40:08.430522000 +0100
+@@ -386,7 +386,7 @@
+ pow (double a, const octave_int<T>& b)
+ {
+   double tb = static_cast<double> (b.value ());
+-  double r = pow (a, tb);
++  double r = std::pow (a, tb);
+   r = lo_ieee_isnan (r) ? 0 : xround (r);
+   return OCTAVE_INT_FIT_TO_RANGE (r, T);
+ }
+@@ -396,7 +396,7 @@
+ pow (const octave_int<T>& a, double b)
+ {
+   double ta = static_cast<double> (a.value ());
+-  double r = pow (ta, b);
++  double r = std::pow (ta, b);
+   r = lo_ieee_isnan (r) ? 0 : xround (r);
+   return OCTAVE_INT_FIT_TO_RANGE (r, T);
+ }
+diff -bur octave-3.0.3.orig/liboctave/oct-md5.cc octave-3.0.3/liboctave/oct-md5.cc
+--- octave-3.0.3.orig/liboctave/oct-md5.cc	2008-09-24 09:13:47.000000000 +0200
++++ octave-3.0.3/liboctave/oct-md5.cc	2009-03-17 17:37:23.540928000 +0100
+@@ -20,13 +20,16 @@
+ 
+ */
+ 
+-#include <string>
+-#include <vector>
+-
+ #ifdef HAVE_CONFIG_H
+ #include "config.h"
+ #endif
+ 
++#include <stdio.h>
++#include <cstdio>
++#include <string>
++#include <vector>
++
++
+ #include "lo-error.h"
+ #include "oct-md5.h"
+ #include "md5.h"
+diff -bur octave-3.0.3.orig/liboctave/oct-sort.cc octave-3.0.3/liboctave/oct-sort.cc
+--- octave-3.0.3.orig/liboctave/oct-sort.cc	2008-09-24 09:13:47.000000000 +0200
++++ octave-3.0.3/liboctave/oct-sort.cc	2009-03-18 09:30:05.582471000 +0100
+@@ -79,12 +79,14 @@
+   Agreement.
+ */
+ 
++#include <stdlib.h>
+ #ifdef HAVE_CONFIG_H
+ #include <config.h>
+ #endif
+ 
+ #include <cassert>
+ #include <cstdlib>
++#include <string.h>
+ 
+ #include "lo-mappers.h"
+ #include "quit.h"
+diff -bur octave-3.0.3.orig/liboctave/oct-syscalls.cc octave-3.0.3/liboctave/oct-syscalls.cc
+--- octave-3.0.3.orig/liboctave/oct-syscalls.cc	2008-09-24 09:13:47.000000000 +0200
++++ octave-3.0.3/liboctave/oct-syscalls.cc	2009-03-17 17:39:31.707839000 +0100
+@@ -25,6 +25,7 @@
+ #include <config.h>
+ #endif
+ 
++#include <stdlib.h>
+ #include <cerrno>
+ #include <cstdlib>
+ 
+@@ -75,7 +76,7 @@
+   if (status < 0)
+     {
+       using namespace std;
+-      msg = ::strerror (errno);
++      msg = std::strerror (errno);
+     }
+ #else
+   msg = NOT_SUPPORTED ("dup2");
+diff -bur octave-3.0.3.orig/liboctave/oct-uname.cc octave-3.0.3/liboctave/oct-uname.cc
+--- octave-3.0.3.orig/liboctave/oct-uname.cc	2008-09-24 09:13:47.000000000 +0200
++++ octave-3.0.3/liboctave/oct-uname.cc	2009-03-17 17:40:03.061236000 +0100
+@@ -44,7 +44,7 @@
+   if (err < 0)
+     {
+       using namespace std;
+-      msg = ::strerror (errno);
++      msg = std::strerror (errno);
+     }
+   else
+     {
+diff -bur octave-3.0.3.orig/liboctave/sparse-sort.cc octave-3.0.3/liboctave/sparse-sort.cc
+--- octave-3.0.3.orig/liboctave/sparse-sort.cc	2008-09-24 09:13:47.000000000 +0200
++++ octave-3.0.3/liboctave/sparse-sort.cc	2009-03-17 17:49:42.657376000 +0100
+@@ -21,12 +21,14 @@
+ 
+ */
+ 
++#include <stdlib.h>
+ #ifdef HAVE_CONFIG_H
+ #include <config.h>
+ #endif
+ 
+ #include <cassert>
+ #include <cstring>
++#include <string.h>
+ 
+ #include "oct-sort.cc"
+ #include "quit.h"
+diff -bur octave-3.0.3.orig/scripts/DOCSTRINGS octave-3.0.3/scripts/DOCSTRINGS
+--- octave-3.0.3.orig/scripts/DOCSTRINGS	2008-09-29 07:57:17.000000000 +0200
++++ octave-3.0.3/scripts/DOCSTRINGS	2009-03-20 12:46:57.731613000 +0100
+@@ -3074,6 +3074,22 @@
+ 
+ If no output argument is given, the p-value of the test is displayed.
+ @end deftypefn
++manova
++-*- texinfo -*-
++@deftypefn {Function File} {} manova (@var{y}, @var{g})
++Perform a one-way multivariate analysis of variance (MANOVA). The
++goal is to test whether the p-dimensional population means of data
++taken from @var{k} different groups are all equal.  All data are
++assumed drawn independently from p-dimensional normal distributions
++with the same covariance matrix.
++
++The data matrix is given by @var{y}.  As usual, rows are observations
++and columns are variables.  The vector @var{g} specifies the
++corresponding group labels (e.g., numbers from 1 to @var{k}).
++
++The LR test statistic (Wilks' Lambda) and approximate p-values are
++computed and displayed.
++@end deftypefn
+ kolmogorov_smirnov_test_2
+ -*- texinfo -*-
+ @deftypefn {Function File} {[@var{pval}, @var{ks}, @var{d}] =} kolmogorov_smirnov_test_2 (@var{x}, @var{y}, @var{alt})
+@@ -3100,22 +3116,6 @@
+ 
+ If no output argument is given, the p-value is displayed.
+ @end deftypefn
+-manova
+--*- texinfo -*-
+-@deftypefn {Function File} {} manova (@var{y}, @var{g})
+-Perform a one-way multivariate analysis of variance (MANOVA). The
+-goal is to test whether the p-dimensional population means of data
+-taken from @var{k} different groups are all equal.  All data are
+-assumed drawn independently from p-dimensional normal distributions
+-with the same covariance matrix.
+-
+-The data matrix is given by @var{y}.  As usual, rows are observations
+-and columns are variables.  The vector @var{g} specifies the
+-corresponding group labels (e.g., numbers from 1 to @var{k}).
+-
+-The LR test statistic (Wilks' Lambda) and approximate p-values are
+-computed and displayed.
+-@end deftypefn
+ sign_test
+ -*- texinfo -*-
+ @deftypefn {Function File} {[@var{pval}, @var{b}, @var{n}] =} sign_test (@var{x}, @var{y}, @var{alt})
+@@ -3411,13 +3411,6 @@
+ function (CDF) at @var{x} of a univariate discrete distribution which
+ assumes the values in @var{v} with equal probability.
+ @end deftypefn
+-empirical_cdf
+--*- texinfo -*-
+-@deftypefn {Function File} {} empirical_cdf (@var{x}, @var{data})
+-For each element of @var{x}, compute the cumulative distribution
+-function (CDF) at @var{x} of the empirical distribution obtained from
+-the univariate sample @var{data}.
+-@end deftypefn
+ normrnd
+ -*- texinfo -*-
+ @deftypefn {Function File} {} normrnd (@var{m}, @var{s}, @var{r}, @var{c})
+@@ -3430,6 +3423,13 @@
+ If @var{r} and @var{c} are omitted, the size of the result matrix is
+ the common size of @var{m} and @var{s}.
+ @end deftypefn
++empirical_cdf
++-*- texinfo -*-
++@deftypefn {Function File} {} empirical_cdf (@var{x}, @var{data})
++For each element of @var{x}, compute the cumulative distribution
++function (CDF) at @var{x} of the empirical distribution obtained from
++the univariate sample @var{data}.
++@end deftypefn
+ exppdf
+ -*- texinfo -*-
+ @deftypefn {Function File} {} exppdf (@var{x}, @var{lambda})
+@@ -9257,6 +9257,12 @@
+ The @var{files} includes the entire path to the output files.
+ @seealso{bzip2,bunzip2,tar,untar,gzip,gunzip,zip,unzip}
+ @end deftypefn
++paren
++-*- texinfo -*-
++@deffn {Operator} (
++@deffnx {Operator} )
++Array index or function argument delimeter.
++@end deffn
+ version
+ -*- texinfo -*-
+ @deftypefn {Function File} {} version ()
+@@ -9277,12 +9283,6 @@
+ to double precision because Octave does not yet have a single-precision
+ numeric data type.
+ @end deftypefn
+-paren
+--*- texinfo -*-
+-@deffn {Operator} (
+-@deffnx {Operator} )
+-Array index or function argument delimeter.
+-@end deffn
+ semicolon
+ -*- texinfo -*-
+ @deffn {Operator} ;
+@@ -13092,6 +13092,44 @@
+ If no continuous path exists, @var{csys} will be empty.
+ @end table
+ @end deftypefn
++tf2ss
++-*- texinfo -*-
++@deftypefn {Function File} {[@var{a}, @var{b}, @var{c}, @var{d}] =} tf2ss (@var{num}, @var{den})
++Conversion from transfer function to state-space.
++The state space system:
++@iftex
++@tex
++$$ \dot x = Ax + Bu $$
++$$ y = Cx + Du $$
++@end tex
++@end iftex
++@ifinfo
++@example
++      .
++      x = Ax + Bu
++      y = Cx + Du
++@end example
++@end ifinfo
++is obtained from a transfer function:
++@iftex
++@tex
++$$ G(s) = { { \rm num }(s) \over { \rm den }(s) } $$
++@end tex
++@end iftex
++@ifinfo
++@example
++                num(s)
++          G(s)=-------
++                den(s)
++@end example
++@end ifinfo
++
++The vector @var{den} must contain only one row, whereas the vector 
++@var{num} may contain as many rows as there are outputs @var{y} of 
++the system. The state space system matrices obtained from this function 
++will be in controllable canonical form as described in @cite{Modern Control 
++Theory}, (Brogan, 1991).
++@end deftypefn
+ __sysdefstname__
+ Undocumented internal function.
+ fir2sys
+@@ -13236,44 +13274,6 @@
+ outputs, respectively.
+ @end table
+ @end deftypefn
+-tf2ss
+--*- texinfo -*-
+-@deftypefn {Function File} {[@var{a}, @var{b}, @var{c}, @var{d}] =} tf2ss (@var{num}, @var{den})
+-Conversion from transfer function to state-space.
+-The state space system:
+-@iftex
+-@tex
+-$$ \dot x = Ax + Bu $$
+-$$ y = Cx + Du $$
+-@end tex
+-@end iftex
+-@ifinfo
+-@example
+-      .
+-      x = Ax + Bu
+-      y = Cx + Du
+-@end example
+-@end ifinfo
+-is obtained from a transfer function:
+-@iftex
+-@tex
+-$$ G(s) = { { \rm num }(s) \over { \rm den }(s) } $$
+-@end tex
+-@end iftex
+-@ifinfo
+-@example
+-                num(s)
+-          G(s)=-------
+-                den(s)
+-@end example
+-@end ifinfo
+-
+-The vector @var{den} must contain only one row, whereas the vector 
+-@var{num} may contain as many rows as there are outputs @var{y} of 
+-the system. The state space system matrices obtained from this function 
+-will be in controllable canonical form as described in @cite{Modern Control 
+-Theory}, (Brogan, 1991).
+-@end deftypefn
+ abcddim
+ -*- texinfo -*-
+ @deftypefn {Function File} {[@var{n}, @var{m}, @var{p}] =} abcddim (@var{a}, @var{b}, @var{c}, @var{d})
+@@ -16063,6 +16063,13 @@
+ @deftypefn {Function File} {} is_scalar (@var{a})
+ This function has been deprecated.  Use isscalar instead.
+ @end deftypefn
++t_cdf
++-*- texinfo -*-
++@deftypefn {Function File} {} t_cdf (@var{x}, @var{n})
++For each element of @var{x}, compute the CDF at @var{x} of the
++t (Student) distribution with @var{n} degrees of freedom, i.e.,
++PROB (t(@var{n}) <= @var{x}).
++@end deftypefn
+ exponential_pdf
+ -*- texinfo -*-
+ @deftypefn {Function File} {} exponential_pdf (@var{x}, @var{lambda})
+@@ -16075,13 +16082,6 @@
+ For each element of @var{x}, compute the probability density function
+ (PDF) at @var{x} of the geometric distribution with parameter @var{p}.
+ @end deftypefn
+-t_cdf
+--*- texinfo -*-
+-@deftypefn {Function File} {} t_cdf (@var{x}, @var{n})
+-For each element of @var{x}, compute the CDF at @var{x} of the
+-t (Student) distribution with @var{n} degrees of freedom, i.e.,
+-PROB (t(@var{n}) <= @var{x}).
+-@end deftypefn
+ is_matrix
+ -*- texinfo -*-
+ @deftypefn {Function File} {} is_matrix (@var{a})
+diff -bur octave-3.0.3.orig/src/DLD-FUNCTIONS/__contourc__.cc octave-3.0.3/src/DLD-FUNCTIONS/__contourc__.cc
+--- octave-3.0.3.orig/src/DLD-FUNCTIONS/__contourc__.cc	2008-09-24 09:13:49.000000000 +0200
++++ octave-3.0.3/src/DLD-FUNCTIONS/__contourc__.cc	2009-03-20 12:04:17.603078000 +0100
+@@ -145,7 +145,7 @@
+   // Calculate contour segment start if first of contour.
+   if (first)
+     {
+-      tmp = fabs (pz[pt[1]]) / fabs (pz[pt[0]]);
++      tmp = std::fabs (pz[pt[1]]) / std::fabs (pz[pt[0]]);
+ 
+       if (xisnan (tmp))
+         ct_x = ct_y = 0.5;
+@@ -172,7 +172,7 @@
+ 
+   pt[0] = stop_edge;
+   pt[1] = (pt[0] + 1) % 4;
+-  tmp = fabs (pz[pt[1]]) / fabs (pz[pt[0]]);
++  tmp = std::fabs (pz[pt[1]]) / std::fabs (pz[pt[0]]);
+ 
+   if (xisnan (tmp))
+     ct_x = ct_y = 0.5;
+@@ -228,7 +228,7 @@
+         f[2] = Z(r+1, c+1) - lvl;
+ 
+         for (unsigned int i = 0; i < 4; i++)
+-          if (fabs(f[i]) < DBL_EPSILON)
++          if (std::fabs(f[i]) < DBL_EPSILON)
+             f[i] = DBL_EPSILON;
+ 
+         if (f[1] * f[2] < 0)
+@@ -247,7 +247,7 @@
+         f[2] = Z(r+1, c+1) - lvl;
+ 
+         for (unsigned int i = 0; i < 4; i++)
+-          if (fabs(f[i]) < DBL_EPSILON)
++          if (std::fabs(f[i]) < DBL_EPSILON)
+             f[i] = DBL_EPSILON;
+ 
+         if (f[0] * f[1] < 0)
+diff -bur octave-3.0.3.orig/src/DLD-FUNCTIONS/__dsearchn__.cc octave-3.0.3/src/DLD-FUNCTIONS/__dsearchn__.cc
+--- octave-3.0.3.orig/src/DLD-FUNCTIONS/__dsearchn__.cc	2008-09-24 09:13:49.000000000 +0200
++++ octave-3.0.3/src/DLD-FUNCTIONS/__dsearchn__.cc	2009-03-20 12:06:58.730867000 +0100
+@@ -72,7 +72,7 @@
+      double yd = y[k] - yi[k]; \
+      dd += yd * yd; \
+    } \
+-  dd = sqrt (dd);
++  dd = std::sqrt (dd);
+ 
+ 	  const double *pxi = xi.fortran_vec ();
+ 	  for (octave_idx_type i = 0; i < nxi; i++)
+diff -bur octave-3.0.3.orig/src/DLD-FUNCTIONS/__glpk__.cc octave-3.0.3/src/DLD-FUNCTIONS/__glpk__.cc
+--- octave-3.0.3.orig/src/DLD-FUNCTIONS/__glpk__.cc	2008-09-24 09:13:49.000000000 +0200
++++ octave-3.0.3/src/DLD-FUNCTIONS/__glpk__.cc	2009-03-20 12:08:11.470969000 +0100
+@@ -24,6 +24,7 @@
+ #include <config.h>
+ #endif
+ 
++#include <setjmp.h>
+ #include <cfloat>
+ #include <csetjmp>
+ #include <ctime>
+diff -bur octave-3.0.3.orig/src/DLD-FUNCTIONS/__qp__.cc octave-3.0.3/src/DLD-FUNCTIONS/__qp__.cc
+--- octave-3.0.3.orig/src/DLD-FUNCTIONS/__qp__.cc	2008-09-24 09:13:49.000000000 +0200
++++ octave-3.0.3/src/DLD-FUNCTIONS/__qp__.cc	2009-03-20 12:45:31.084356000 +0100
+@@ -94,7 +94,7 @@
+ 
+   iter = 0;
+ 
+-  double rtol = sqrt (DBL_EPSILON);
++  double rtol = std::sqrt (DBL_EPSILON);
+ 
+   // Problem dimension.
+   octave_idx_type n = x.length ();
+diff -bur octave-3.0.3.orig/src/DLD-FUNCTIONS/fftw.cc octave-3.0.3/src/DLD-FUNCTIONS/fftw.cc
+--- octave-3.0.3.orig/src/DLD-FUNCTIONS/fftw.cc	2008-09-24 09:13:49.000000000 +0200
++++ octave-3.0.3/src/DLD-FUNCTIONS/fftw.cc	2009-03-20 11:27:30.791697000 +0100
+@@ -24,6 +24,7 @@
+ #include <config.h>
+ #endif
+ 
++#include <stdlib.h>
+ #include <algorithm>
+ #include "ov.h"
+ #include "defun-dld.h"
+diff -bur octave-3.0.3.orig/src/DLD-FUNCTIONS/qz.cc octave-3.0.3/src/DLD-FUNCTIONS/qz.cc
+--- octave-3.0.3.orig/src/DLD-FUNCTIONS/qz.cc	2008-09-24 09:13:49.000000000 +0200
++++ octave-3.0.3/src/DLD-FUNCTIONS/qz.cc	2009-03-20 11:33:44.249869000 +0100
+@@ -173,9 +173,9 @@
+   octave_idx_type retval;
+ 
+   if (lsize == 1)
+-    retval = (fabs (alpha) < fabs (beta) ? 1 : -1);
++    retval = (std::fabs (alpha) < std::fabs (beta) ? 1 : -1);
+   else
+-    retval = (fabs (p) < 1 ? 1 : -1);
++    retval = (std::fabs (p) < 1 ? 1 : -1);
+ 
+ #ifdef DEBUG
+   std::cout << "qz: fin: retval=" << retval << std::endl;
+@@ -199,9 +199,9 @@
+       const double& beta, const double&, const double& p)
+ {
+   if (lsize == 1)
+-    return (fabs (alpha) >= fabs (beta) ? 1 : -1);
++    return (std::fabs (alpha) >= std::fabs (beta) ? 1 : -1);
+   else
+-    return (fabs (p) >= 1 ? 1 : -1);
++    return (std::fabs (p) >= 1 ? 1 : -1);
+ }
+ 
+ DEFUN_DLD (qz, args, nargout,
+diff -bur octave-3.0.3.orig/src/DLD-FUNCTIONS/sparse.cc octave-3.0.3/src/DLD-FUNCTIONS/sparse.cc
+--- octave-3.0.3.orig/src/DLD-FUNCTIONS/sparse.cc	2008-09-24 09:13:49.000000000 +0200
++++ octave-3.0.3/src/DLD-FUNCTIONS/sparse.cc	2009-03-20 11:38:27.168625000 +0100
+@@ -828,7 +828,7 @@
+       b = args(1).sparse_matrix_value ();
+ 
+     if (is_double_a && is_double_b)
+-      retval = Matrix (1, 1, atan2(da, db));
++      retval = Matrix (1, 1, std::atan2(da, db));
+     else if (is_double_a)
+       retval = atan2 (da, b);
+     else if (is_double_b)
+diff -bur octave-3.0.3.orig/src/DLD-FUNCTIONS/sqrtm.cc octave-3.0.3/src/DLD-FUNCTIONS/sqrtm.cc
+--- octave-3.0.3.orig/src/DLD-FUNCTIONS/sqrtm.cc	2008-09-24 09:13:49.000000000 +0200
++++ octave-3.0.3/src/DLD-FUNCTIONS/sqrtm.cc	2009-03-20 12:01:27.339060000 +0100
+@@ -56,7 +56,7 @@
+     for (octave_idx_type j = 0; j < A.columns (); j++)
+       sum += real (A(i,j) * conj (A(i,j)));
+ 
+-  return sqrt (sum);
++  return std::sqrt (sum);
+ }
+ 
+ static double
+@@ -67,7 +67,7 @@
+     for (octave_idx_type j = 0; j < A.columns (); j++)
+       sum += A(i,j) * A(i,j);
+ 
+-  return sqrt (sum);
++  return std::sqrt (sum);
+ }
+ 
+ 
+@@ -79,9 +79,9 @@
+   ComplexMatrix R (n, n, 0.0);
+ 
+   for (octave_idx_type j = 0; j < n; j++)
+-    R(j,j) = sqrt (T(j,j));
++    R(j,j) = std::sqrt (T(j,j));
+ 
+-  const double fudge = sqrt (DBL_MIN);
++  const double fudge = std::sqrt (DBL_MIN);
+ 
+   for (octave_idx_type p = 0; p < n-1; p++)
+     {
+@@ -155,19 +155,19 @@
+       double d = arg.double_value ();
+       if (d > 0.0)
+ 	{
+-	  retval(0) = sqrt (d);
++	  retval(0) = std::sqrt (d);
+ 	  retval(1) = 0.0;
+ 	}
+       else
+ 	{
+-	  retval(0) = Complex (0.0, sqrt (d));
++	  retval(0) = Complex (0.0, std::sqrt (d));
+ 	  retval(1) = 0.0;
+ 	}
+     }
+   else if (arg.is_complex_scalar ())
+     {
+       Complex c = arg.complex_value ();
+-      retval(0) = sqrt (c);
++      retval(0) = std::sqrt (c);
+       retval(1) = 0.0;
+     }
+   else if (arg.is_matrix_type ())
+@@ -260,7 +260,7 @@
+ 	    {
+ 	      if (minT == 0.0)
+ 		error ("sqrtm: A is singular, sqrt may not exist");
+-	      else if (minT <= sqrt (DBL_MIN))
++	      else if (minT <= std::sqrt (DBL_MIN))
+ 		error ("sqrtm: A is nearly singular, failed to find sqrt");
+ 	      else
+ 		error ("sqrtm: failed to find sqrt");
+diff -bur octave-3.0.3.orig/src/DOCSTRINGS octave-3.0.3/src/DOCSTRINGS
+--- octave-3.0.3.orig/src/DOCSTRINGS	2008-09-24 10:31:10.000000000 +0200
++++ octave-3.0.3/src/DOCSTRINGS	2009-03-20 12:46:18.406251000 +0100
+@@ -4936,6 +4936,8 @@
+ Note that Octave can read HDF5 files not created by itself, but may
+ skip some datasets in formats that it cannot support.
+ 
++HDF5 load and save are not available, as this Octave executable was
++not linked with the HDF5 library.
+ @item -import
+ The @samp{-import} is accepted but ignored for backward compatibility.
+ Octave can now support multi-dimensional HDF data and automatically
+@@ -5002,6 +5004,8 @@
+ (HDF5 is a free, portable binary format developed by the National
+ Center for Supercomputing Applications at the University of Illinois.)
+ 
++HDF5 load and save are not available, as this Octave executable was
++not linked with the HDF5 library.
+ @item -float-hdf5
+ Save the data in HDF5 format but only using single precision.
+ You should use this format only if you know that all the
+@@ -9412,13 +9416,6 @@
+ returned by @code{fcntl} to indicate each write operation appends,
+ or that may be passed to @code{fcntl} to set the write mode to append.@seealso{fcntl, O_ASYNC, O_CREAT, O_EXCL, O_NONBLOCK, O_RDONLY, O_RDWR, O_SYNC, O_TRUNC, O_WRONLY}
+ @end deftypefn
+-O_ASYNC
+--*- texinfo -*-
+-@deftypefn {Built-in Function} {} O_ASYNC ()
+-Return the numerical value of the file status flag that may be
+-returned by @code{fcntl} to indicate asynchronous I/O.
+-@seealso{fcntl, O_APPEND, O_CREAT, O_EXCL, O_NONBLOCK, O_RDONLY, O_RDWR, O_SYNC, O_TRUNC, O_WRONLY}
+-@end deftypefn
+ O_CREAT
+ -*- texinfo -*-
+ @deftypefn {Built-in Function} {} O_CREAT ()
+diff -bur octave-3.0.3.orig/src/Makefile.in octave-3.0.3/src/Makefile.in
+--- octave-3.0.3.orig/src/Makefile.in	2008-09-24 09:13:49.000000000 +0200
++++ octave-3.0.3/src/Makefile.in	2009-03-20 11:31:11.595296000 +0100
+@@ -50,10 +50,10 @@
+ ifeq ($(ENABLE_DYNAMIC_LINKING), true)
+   ifdef CXXPICFLAG
+     %.oct : pic/%.o octave$(EXEEXT)
+-	  $(DL_LD) $(DL_LDFLAGS) -o $@ $< $(OCT_LINK_DEPS)
++	  $(DL_LD) $(DL_LDFLAGS) -o $@ $< $(OCT_LINK_DEPS) -library=stlport4
+   else
+     %.oct : %.o octave$(EXEEXT)
+-	  $(DL_LD) $(DL_LDFLAGS) -o $@ $< $(OCT_LINK_DEPS)
++	  $(DL_LD) $(DL_LDFLAGS) -o $@ $< $(OCT_LINK_DEPS) -library=stlport4
+   endif
+ endif
+ 
+@@ -327,7 +327,7 @@
+ 
+ $(LIBPRE)octinterp.$(SHLEXT): $(PICOBJ) $(PIC_XERBLA)
+ 	rm -f $@
+-	$(SH_LD) $(SH_LDFLAGS) $(SONAME_FLAGS) -o $@ $^ $(OCTINTERP_LINK_DEPS)
++	$(SH_LD) $(SH_LDFLAGS) $(SONAME_FLAGS) -o $@ $^ $(OCTINTERP_LINK_DEPS) -library=stlport4
+ 
+ stamp-prereq: defaults.h graphics.h oct-conf.h oct-gperf.h parse.cc lex.cc __gnuplot_raw__.cc $(OPT_HANDLERS)
+ 	touch stamp-prereq
+diff -bur octave-3.0.3.orig/src/__gnuplot_raw__.cc octave-3.0.3/src/__gnuplot_raw__.cc
+--- octave-3.0.3.orig/src/__gnuplot_raw__.cc	2008-09-24 09:39:36.000000000 +0200
++++ octave-3.0.3/src/__gnuplot_raw__.cc	2009-03-18 10:54:34.258295000 +0100
+@@ -350,7 +350,7 @@
+ 
+ /* Begin user sect3 */
+ 
+-#define gptwrap(n) 1
++#define gptwrap() 1
+ #define YY_SKIP_YYWRAP
+ 
+ typedef unsigned char YY_CHAR;
+diff -bur octave-3.0.3.orig/src/c-file-ptr-stream.h octave-3.0.3/src/c-file-ptr-stream.h
+--- octave-3.0.3.orig/src/c-file-ptr-stream.h	2008-09-24 09:13:49.000000000 +0200
++++ octave-3.0.3/src/c-file-ptr-stream.h	2009-03-18 11:02:04.669385000 +0100
+@@ -26,6 +26,7 @@
+ 
+ #include <iostream>
+ #include <cstdio>
++#include <stdio.h>
+ 
+ class
+ c_file_ptr_buf : public std::streambuf
+diff -bur octave-3.0.3.orig/src/data.cc octave-3.0.3/src/data.cc
+--- octave-3.0.3.orig/src/data.cc	2008-09-24 09:13:49.000000000 +0200
++++ octave-3.0.3/src/data.cc	2009-03-18 15:57:57.726646000 +0100
+@@ -235,7 +235,7 @@
+ 		  double x = arg_x.double_value ();
+ 
+ 		  if (! error_state)
+-		    retval = atan2 (y, x);
++		    retval = std::atan2 (y, x);
+ 		}
+ 	    }
+ 	  else if (y_is_scalar)
+@@ -247,7 +247,7 @@
+ 		  Matrix x = arg_x.matrix_value ();
+ 
+ 		  if (! error_state)
+-		    retval = map_d_m (atan2, y, x);
++		    retval = map_d_m (std::atan2, y, x);
+ 		}
+ 	    }
+ 	  else if (x_is_scalar)
+@@ -259,7 +259,7 @@
+ 		  double x = arg_x.double_value ();
+ 
+ 		  if (! error_state)
+-		    retval = map_m_d (atan2, y, x);
++		    retval = map_m_d (std::atan2, y, x);
+ 		}
+ 	    }
+ 	  else if (y_nr == x_nr && y_nc == x_nc)
+@@ -271,7 +271,7 @@
+ 		  Matrix x = arg_x.matrix_value ();
+ 
+ 		  if (! error_state)
+-		    retval = map_m_m (atan2, y, x);
++		    retval = map_m_m (std::atan2, y, x);
+ 		}
+ 	    }
+ 	  else
+@@ -327,7 +327,7 @@
+ 	      double x = arg_x.double_value ();
+ 
+ 	      if (! error_state)
+-		retval = fmod (x, y);
++		retval = std::fmod (x, y);
+ 	    }
+ 	}
+       else if (y_is_scalar)
+@@ -339,7 +339,7 @@
+ 	      Matrix x = arg_x.matrix_value ();
+ 
+ 	      if (! error_state)
+-		retval = map_m_d (fmod, x, y);
++		retval = map_m_d (std::fmod, x, y);
+ 	    }
+ 	}
+       else if (x_is_scalar)
+@@ -351,7 +351,7 @@
+ 	      double x = arg_x.double_value ();
+ 
+ 	      if (! error_state)
+-		retval = map_d_m (fmod, x, y);
++		retval = map_d_m (std::fmod, x, y);
+ 	    }
+ 	}
+       else if (y_nr == x_nr && y_nc == x_nc)
+@@ -363,7 +363,7 @@
+ 	      Matrix x = arg_x.matrix_value ();
+ 
+ 	      if (! error_state)
+-		retval = map_m_m (fmod, x, y);
++		retval = map_m_m (std::fmod, x, y);
+ 	    }
+ 	}
+       else
+@@ -2212,7 +2212,7 @@
+ #if defined (M_E)
+   double e_val = M_E;
+ #else
+-  double e_val = exp (1.0);
++  double e_val = std::exp (1.0);
+ #endif
+ 
+   return fill_matrix (args, e_val, "e");
+@@ -2257,7 +2257,7 @@
+ #if defined (M_PI)
+   double pi_val = M_PI;
+ #else
+-  double pi_val = 4.0 * atan (1.0);
++  double pi_val = 4.0 * std::atan (1.0);
+ #endif
+ 
+   return fill_matrix (args, pi_val, "pi");
+diff -bur octave-3.0.3.orig/src/debug.cc octave-3.0.3/src/debug.cc
+--- octave-3.0.3.orig/src/debug.cc	2008-09-29 07:36:19.000000000 +0200
++++ octave-3.0.3/src/debug.cc	2009-03-18 15:59:22.816588000 +0100
+@@ -28,6 +28,7 @@
+ #include <fstream>
+ #include <string>
+ #include <set>
++#include <stdlib.h>
+ 
+ 
+ #include "defun.h"
+diff -bur octave-3.0.3.orig/src/error.cc octave-3.0.3/src/error.cc
+--- octave-3.0.3.orig/src/error.cc	2008-09-24 09:13:49.000000000 +0200
++++ octave-3.0.3/src/error.cc	2009-03-18 16:02:02.625389000 +0100
+@@ -30,6 +30,7 @@
+ 
+ #include <sstream>
+ #include <string>
++#include <stdlib.h>
+ 
+ #include "defun.h"
+ #include "error.h"
+diff -bur octave-3.0.3.orig/src/error.h octave-3.0.3/src/error.h
+--- octave-3.0.3.orig/src/error.h	2008-09-24 09:13:49.000000000 +0200
++++ octave-3.0.3/src/error.h	2009-03-18 10:40:21.597092000 +0100
+@@ -26,6 +26,7 @@
+ 
+ #include <cstdarg>
+ #include <string>
++#include <sys/varargs.h>
+ 
+ #define panic_impossible() \
+   panic ("impossible state reached in file `%s' at line %d", \
+diff -bur octave-3.0.3.orig/src/file-io.cc octave-3.0.3/src/file-io.cc
+--- octave-3.0.3.orig/src/file-io.cc	2008-09-24 09:13:49.000000000 +0200
++++ octave-3.0.3/src/file-io.cc	2009-03-18 16:03:35.334514000 +0100
+@@ -42,6 +42,7 @@
+ #include <cerrno>
+ #include <climits>
+ #include <cstdio>
++#include <stdlib.h>
+ 
+ #include <iostream>
+ #include <vector>
+diff -bur octave-3.0.3.orig/src/graphics.cc octave-3.0.3/src/graphics.cc
+--- octave-3.0.3.orig/src/graphics.cc	2008-09-24 09:13:49.000000000 +0200
++++ octave-3.0.3/src/graphics.cc	2009-03-18 16:22:27.023470000 +0100
+@@ -27,6 +27,7 @@
+ #include <cctype>
+ #include <cfloat>
+ #include <cstdlib>
++#include <stdlib.h>
+ 
+ #include <algorithm>
+ #include <list>
+@@ -460,7 +461,7 @@
+ 
+ 	  retval = graphics_handle (next_handle);
+ 
+-	  next_handle = ceil (next_handle) - 1.0 - (rand () + 1.0) / maxrand;
++	  next_handle = std::ceil (next_handle) - 1.0 - (std::rand () + 1.0) / maxrand;
+ 	}
+     }
+ 
+@@ -1897,13 +1898,13 @@
+ 	      min_val = min_pos;
+ 	    }
+ 	  // FIXME -- maybe this test should also be relative?
+-	  if (std::abs (min_val - max_val) < sqrt (DBL_EPSILON))
++	  if (std::abs (min_val - max_val) < std::sqrt (DBL_EPSILON))
+ 	    {
+ 	      min_val *= 0.9;
+ 	      max_val *= 1.1;
+ 	    }
+-	  min_val = pow (10, floor (log10 (min_val)));
+-	  max_val = pow (10, ceil (log10 (max_val)));
++	  min_val = std::pow (10, std::floor (std::log10 (min_val)));
++	  max_val = std::pow (10, std::ceil (std::log10 (max_val)));
+ 	}
+       else
+ 	{
+@@ -1913,15 +1914,15 @@
+ 	      max_val = 1;
+ 	    }
+ 	  // FIXME -- maybe this test should also be relative?
+-	  else if (std::abs (min_val - max_val) < sqrt (DBL_EPSILON))
++	  else if (std::abs (min_val - max_val) < std::sqrt (DBL_EPSILON))
+ 	    {
+ 	      min_val -= 0.1 * std::abs (min_val);
+ 	      max_val += 0.1 * std::abs (max_val);
+ 	    }
+ 	  // FIXME -- to do a better job, we should consider the tic spacing.
+-	  double scale = pow (10, floor (log10 (max_val - min_val) - 1));
+-	  min_val = scale * floor (min_val / scale);
+-	  max_val = scale * ceil (max_val / scale);
++	  double scale = std::pow (10, std::floor (std::log10 (max_val - min_val) - 1));
++	  min_val = scale * std::floor (min_val / scale);
++	  max_val = scale * std::ceil (max_val / scale);
+ 	}
+     }
+ 
+@@ -3010,7 +3011,7 @@
+ // scalar values for the first argument.
+ gh_manager::gh_manager (void)
+   : handle_map (), handle_free_list (),
+-    next_handle (-1.0 - (rand () + 1.0) / (RAND_MAX + 2.0))
++    next_handle (-1.0 - (std::rand () + 1.0) / (RAND_MAX + 2.0))
+ {
+   handle_map[0] = graphics_object (new root_figure ());
+ }
+diff -bur octave-3.0.3.orig/src/ls-mat5.cc octave-3.0.3/src/ls-mat5.cc
+--- octave-3.0.3.orig/src/ls-mat5.cc	2008-09-24 09:13:49.000000000 +0200
++++ octave-3.0.3/src/ls-mat5.cc	2009-03-18 16:24:44.341094000 +0100
+@@ -1639,7 +1639,7 @@
+ 	      double tmp = val [i];
+ 
+ 	      if (! (xisnan (tmp) || xisinf (tmp))
+-		  && fabs (tmp) > FLT_MAX)
++		  && std::fabs (tmp) > FLT_MAX)
+ 		{
+ 		  too_large_for_float = true;
+ 		  break;
+diff -bur octave-3.0.3.orig/src/mappers.cc octave-3.0.3/src/mappers.cc
+--- octave-3.0.3.orig/src/mappers.cc	2008-09-24 09:13:49.000000000 +0200
++++ octave-3.0.3/src/mappers.cc	2009-03-18 17:03:32.414654000 +0100
+@@ -27,6 +27,7 @@
+ 
+ #include <cctype>
+ #include <cfloat>
++#include <math.h>
+ 
+ #include "lo-ieee.h"
+ #include "lo-specfun.h"
+@@ -175,7 +176,7 @@
+ void
+ install_mapper_functions (void)
+ {
+-  DEFUN_MAPPER (abs, xabs, 0, 0, fabs, xabs, 0, 0.0, 0.0, 1, 0,
++  DEFUN_MAPPER (abs, xabs, 0, 0, std::fabs, xabs, 0, 0.0, 0.0, 1, 0,
+     "-*- texinfo -*-\n\
+ @deftypefn {Mapping Function} {} abs (@var{z})\n\
+ Compute the magnitude of @var{z}, defined as\n\
+@@ -198,7 +199,7 @@
+ @end example\n\
+ @end deftypefn");
+ 
+-  DEFUN_MAPPER (acos, 0, 0, 0, acos, 0, acos, -1.0, 1.0, 0, 1,
++  DEFUN_MAPPER (acos, 0, 0, 0, std::acos, 0, acos, -1.0, 1.0, 0, 1,
+     "-*- texinfo -*-\n\
+ @deftypefn {Mapping Function} {} acos (@var{x})\n\
+ Compute the inverse cosine of each element of @var{x}.\n\
+@@ -242,7 +243,7 @@
+ @end example\n\
+ @end deftypefn");
+ 
+-  DEFUN_MAPPER (asin, 0, 0, 0, asin, 0, asin, -1.0, 1.0, 0, 1,
++  DEFUN_MAPPER (asin, 0, 0, 0, std::asin, 0, asin, -1.0, 1.0, 0, 1,
+     "-*- texinfo -*-\n\
+ @deftypefn {Mapping Function} {} asin (@var{x})\n\
+ Compute the inverse sine of each element of @var{x}.\n\
+@@ -254,7 +255,7 @@
+ Compute the inverse hyperbolic sine of each element of @var{x}.\n\
+ @end deftypefn");
+ 
+-  DEFUN_MAPPER (atan, 0, 0, 0, atan, 0, atan, 0.0, 0.0, 0, 0,
++  DEFUN_MAPPER (atan, 0, 0, 0, std::atan, 0, atan, 0.0, 0.0, 0, 0,
+     "-*- texinfo -*-\n\
+ @deftypefn {Mapping Function} {} atan (@var{x})\n\
+ Compute the inverse tangent of each element of @var{x}.\n\
+@@ -266,7 +267,7 @@
+ Compute the inverse hyperbolic tangent of each element of @var{x}.\n\
+ @end deftypefn");
+ 
+-  DEFUN_MAPPER (ceil, 0, 0, 0, ceil, 0, ceil, 0.0, 0.0, 0, 0,
++  DEFUN_MAPPER (ceil, 0, 0, 0, std::ceil, 0, ceil, 0.0, 0.0, 0, 0,
+     "-*- texinfo -*-\n\
+ @deftypefn {Mapping Function} {} ceil (@var{x})\n\
+ Return the smallest integer not less than @var{x}.  If @var{x} is\n\
+@@ -288,13 +289,13 @@
+ @seealso{real, imag}\n\
+ @end deftypefn");
+ 
+-  DEFUN_MAPPER (cos, 0, 0, 0, cos, 0, std::cos, 0.0, 0.0, 0, 0,
++  DEFUN_MAPPER (cos, 0, 0, 0, std::cos, 0, std::cos, 0.0, 0.0, 0, 0,
+     "-*- texinfo -*-\n\
+ @deftypefn {Mapping Function} {} cos (@var{x})\n\
+ Compute the cosine of each element of @var{x}.\n\
+ @end deftypefn");
+ 
+-  DEFUN_MAPPER (cosh, 0, 0, 0, cosh, 0, std::cosh, 0.0, 0.0, 0, 0,
++  DEFUN_MAPPER (cosh, 0, 0, 0, std::cosh, 0, std::cosh, 0.0, 0.0, 0, 0,
+     "-*- texinfo -*-\n\
+ @deftypefn {Mapping Function} {} cosh (@var{x})\n\
+ Compute the hyperbolic cosine of each element of @var{x}.\n\
+@@ -339,7 +340,7 @@
+ @seealso{erf, erfinv}\n\
+ @end deftypefn");
+ 
+-  DEFUN_MAPPER (exp, 0, 0, 0, exp, 0, std::exp, 0.0, 0.0, 0, 0,
++  DEFUN_MAPPER (exp, 0, 0, 0, std::exp, 0, std::exp, 0.0, 0.0, 0, 0,
+     "-*- texinfo -*-\n\
+ @deftypefn {Mapping Function} {} exp (@var{x})\n\
+ Compute the exponential of @var{x}.  To compute the matrix exponential,\n\
+@@ -367,7 +368,7 @@
+ @code{fix (real (@var{x})) + fix (imag (@var{x})) * I}.\n\
+ @end deftypefn");
+ 
+-  DEFUN_MAPPER (floor, 0, 0, 0, floor, 0, floor, 0.0, 0.0, 0, 0,
++  DEFUN_MAPPER (floor, 0, 0, 0, std::floor, 0, floor, 0.0, 0.0, 0, 0,
+     "-*- texinfo -*-\n\
+ @deftypefn {Mapping Function} {} floor (@var{x})\n\
+ Return the largest integer not greater than @var{x}.  If @var{x} is\n\
+diff -bur octave-3.0.3.orig/src/mex.cc octave-3.0.3/src/mex.cc
+--- octave-3.0.3.orig/src/mex.cc	2008-09-24 09:13:49.000000000 +0200
++++ octave-3.0.3/src/mex.cc	2009-03-18 17:48:25.292394000 +0100
+@@ -20,8 +20,11 @@
+ 
+ */
+ 
++#include <setjmp.h>
++
+ #include <config.h>
+ 
++#include <stdlib.h>
+ #include <cfloat>
+ #include <csetjmp>
+ #include <cstdarg>
+diff -bur octave-3.0.3.orig/src/mxarray.h octave-3.0.3/src/mxarray.h
+--- octave-3.0.3.orig/src/mxarray.h	2008-09-24 09:48:10.000000000 +0200
++++ octave-3.0.3/src/mxarray.h	2009-03-18 10:38:44.896555000 +0100
+@@ -91,6 +91,7 @@
+ #if ! defined (MXARRAY_TYPEDEFS_ONLY)
+ 
+ #include <cstring>
++#include <strings.h>
+ 
+ class octave_value;
+ 
+diff -bur octave-3.0.3.orig/src/mxarray.h.in octave-3.0.3/src/mxarray.h.in
+--- octave-3.0.3.orig/src/mxarray.h.in	2008-09-24 09:13:49.000000000 +0200
++++ octave-3.0.3/src/mxarray.h.in	2009-03-18 10:38:21.087330000 +0100
+@@ -91,6 +91,7 @@
+ #if ! defined (MXARRAY_TYPEDEFS_ONLY)
+ 
+ #include <cstring>
++#include <strings.h>
+ 
+ class octave_value;
+ 
+diff -bur octave-3.0.3.orig/src/oct-hist.cc octave-3.0.3/src/oct-hist.cc
+--- octave-3.0.3.orig/src/oct-hist.cc	2008-09-24 09:13:49.000000000 +0200
++++ octave-3.0.3/src/oct-hist.cc	2009-03-18 17:50:01.511100000 +0100
+@@ -35,6 +35,7 @@
+ #ifdef HAVE_CONFIG_H
+ #include <config.h>
+ #endif
++#include <stdlib.h>
+ 
+ #include <cstdlib>
+ #include <cstring>
+diff -bur octave-3.0.3.orig/src/oct-procbuf.cc octave-3.0.3/src/oct-procbuf.cc
+--- octave-3.0.3.orig/src/oct-procbuf.cc	2008-09-24 09:13:49.000000000 +0200
++++ octave-3.0.3/src/oct-procbuf.cc	2009-03-18 17:51:44.138404000 +0100
+@@ -25,6 +25,7 @@
+ #include <config.h>
+ #endif
+ 
++#include <stdlib.h>
+ #include <cerrno>
+ 
+ #include <iostream>
+diff -bur octave-3.0.3.orig/src/oct-stream.cc octave-3.0.3/src/oct-stream.cc
+--- octave-3.0.3.orig/src/oct-stream.cc	2008-09-24 09:13:49.000000000 +0200
++++ octave-3.0.3/src/oct-stream.cc	2009-03-18 10:32:47.524534000 +0100
+@@ -982,8 +982,32 @@
+ 	    {
+ 	      char_count++;
+ 
++	      // Handle CRLF, CR, or LF as line ending.
++
++	      if (c == '\r')
++		{
++		  if (! strip_newline)
++		    buf << static_cast<char> (c);
++
++		  c = is.get ();
++
++		  if (c != EOF)
++		    {
+ 	      if (c == '\n')
+ 		{
++			  char_count++;
++
++			  if (! strip_newline)
++			    buf << static_cast<char> (c);
++			}
++		      else
++			is.putback (c);
++		    }
++
++		  break;
++		}
++	      else if (c == '\n')
++		{
+ 		  if (! strip_newline)
+ 		    buf << static_cast<char> (c);
+ 
+diff -bur octave-3.0.3.orig/src/octave.cc octave-3.0.3/src/octave.cc
+--- octave-3.0.3.orig/src/octave.cc	2008-09-24 09:13:49.000000000 +0200
++++ octave-3.0.3/src/octave.cc	2009-03-18 17:53:21.169024000 +0100
+@@ -27,6 +27,7 @@
+ #include <config.h>
+ #endif
+ 
++#include <stdlib.h>
+ #include <cassert>
+ #include <cstdlib>
+ #include <cstring>
+diff -bur octave-3.0.3.orig/src/ov-cell.cc octave-3.0.3/src/ov-cell.cc
+--- octave-3.0.3.orig/src/ov-cell.cc	2008-09-24 09:13:49.000000000 +0200
++++ octave-3.0.3/src/ov-cell.cc	2009-03-18 18:14:59.736724000 +0100
+@@ -25,6 +25,7 @@
+ #include <config.h>
+ #endif
+ 
++#include <stdlib.h>
+ #include <iomanip>
+ #include <iostream>
+ #include <sstream>
+diff -bur octave-3.0.3.orig/src/ov.cc octave-3.0.3/src/ov.cc
+--- octave-3.0.3.orig/src/ov.cc	2008-09-24 09:13:49.000000000 +0200
++++ octave-3.0.3/src/ov.cc	2009-03-18 18:17:51.337656000 +0100
+@@ -25,6 +25,7 @@
+ #include <config.h>
+ #endif
+ 
++#include <stdlib.h>
+ #include "data-conv.h"
+ #include "quit.h"
+ #include "str-vec.h"
+diff -bur octave-3.0.3.orig/src/pr-output.cc octave-3.0.3/src/pr-output.cc
+--- octave-3.0.3.orig/src/pr-output.cc	2008-09-24 09:13:49.000000000 +0200
++++ octave-3.0.3/src/pr-output.cc	2009-03-18 17:57:59.344265000 +0100
+@@ -297,7 +297,7 @@
+ 	  s = buf.str();
+ 
+ 	  // Have we converged to 1/intmax ?
+-	  if (m > 100 || fabs (frac) < 1 / static_cast<double>(INT_MAX))
++	  if (m > 100 || std::fabs (frac) < 1 / static_cast<double>(INT_MAX))
+ 	    {
+ 	      lastn = n;
+ 	      lastd = d;
+@@ -528,7 +528,7 @@
+   double d_abs = d < 0.0 ? -d : d;
+ 
+   int digits = (inf_or_nan || d_abs == 0.0)
+-    ? 0 : static_cast<int> (floor (log10 (d_abs) + 1.0));
++    ? 0 : static_cast<int> (std::floor (std::log10 (d_abs) + 1.0));
+ 
+   set_real_format (digits, inf_or_nan, int_only, fw);
+ }
+@@ -675,10 +675,10 @@
+   double min_abs = pr_min_internal (m_abs);
+ 
+   int x_max = max_abs == 0.0
+-    ? 0 : static_cast<int> (floor (log10 (max_abs) + 1.0));
++    ? 0 : static_cast<int> (std::floor (std::log10 (max_abs) + 1.0));
+ 
+   int x_min = min_abs == 0.0
+-    ? 0 : static_cast<int> (floor (log10 (min_abs) + 1.0));
++    ? 0 : static_cast<int> (std::floor (std::log10 (min_abs) + 1.0));
+ 
+   scale = (x_max == 0 || int_or_inf_or_nan) ? 1.0 : std::pow (10.0, x_max - 1);
+ 
+@@ -852,10 +852,10 @@
+   double i_abs = ip < 0.0 ? -ip : ip;
+ 
+   int r_x = r_abs == 0.0
+-    ? 0 : static_cast<int> (floor (log10 (r_abs) + 1.0));
++    ? 0 : static_cast<int> (std::floor (std::log10 (r_abs) + 1.0));
+ 
+   int i_x = i_abs == 0.0
+-    ? 0 : static_cast<int> (floor (log10 (i_abs) + 1.0));
++    ? 0 : static_cast<int> (std::floor (std::log10 (i_abs) + 1.0));
+ 
+   int x_max, x_min;
+ 
+@@ -1059,16 +1059,16 @@
+   double i_min_abs = pr_min_internal (i_m_abs);
+ 
+   int r_x_max = r_max_abs == 0.0
+-    ? 0 : static_cast<int> (floor (log10 (r_max_abs) + 1.0));
++    ? 0 : static_cast<int> (std::floor (std::log10 (r_max_abs) + 1.0));
+ 
+   int r_x_min = r_min_abs == 0.0
+-    ? 0 : static_cast<int> (floor (log10 (r_min_abs) + 1.0));
++    ? 0 : static_cast<int> (std::floor (std::log10 (r_min_abs) + 1.0));
+ 
+   int i_x_max = i_max_abs == 0.0
+-    ? 0 : static_cast<int> (floor (log10 (i_max_abs) + 1.0));
++    ? 0 : static_cast<int> (std::floor (std::log10 (i_max_abs) + 1.0));
+ 
+   int i_x_min = i_min_abs == 0.0
+-    ? 0 : static_cast<int> (floor (log10 (i_min_abs) + 1.0));
++    ? 0 : static_cast<int> (std::floor (std::log10 (i_min_abs) + 1.0));
+ 
+   int x_max = r_x_max > i_x_max ? r_x_max : i_x_max;
+   int x_min = r_x_min > i_x_min ? r_x_min : i_x_min;
+@@ -1220,10 +1220,10 @@
+   double min_abs = r_min < 0.0 ? -r_min : r_min;
+ 
+   int x_max = max_abs == 0.0
+-    ? 0 : static_cast<int> (floor (log10 (max_abs) + 1.0));
++    ? 0 : static_cast<int> (std::floor (std::log10 (max_abs) + 1.0));
+ 
+   int x_min = min_abs == 0.0
+-    ? 0 : static_cast<int> (floor (log10 (min_abs) + 1.0));
++    ? 0 : static_cast<int> (std::floor (std::log10 (min_abs) + 1.0));
+ 
+   scale = (x_max == 0 || all_ints) ? 1.0 : std::pow (10.0, x_max - 1);
+ 
+@@ -2564,7 +2564,7 @@
+ 	  for (octave_idx_type i = 0; i < dims.numel (); i++)
+ 	    {
+ 	      int new_digits = static_cast<int> 
+-		(floor (log10 (double (abs (nda(i).value ()))) + 1.0));
++		(std::floor (std::log10 (double (abs (nda(i).value ()))) + 1.0));
+ 
+ 	      if (new_digits > digits)
+ 		digits = new_digits;
+diff -bur octave-3.0.3.orig/src/sighandlers.cc octave-3.0.3/src/sighandlers.cc
+--- octave-3.0.3.orig/src/sighandlers.cc	2008-09-24 09:13:49.000000000 +0200
++++ octave-3.0.3/src/sighandlers.cc	2009-03-18 18:00:25.317640000 +0100
+@@ -25,6 +25,7 @@
+ #include <config.h>
+ #endif
+ 
++#include <stdlib.h>
+ #include <cstdlib>
+ 
+ #include <iostream>
+diff -bur octave-3.0.3.orig/src/toplev.cc octave-3.0.3/src/toplev.cc
+--- octave-3.0.3.orig/src/toplev.cc	2008-09-24 09:13:49.000000000 +0200
++++ octave-3.0.3/src/toplev.cc	2009-03-18 18:01:57.786723000 +0100
+@@ -25,6 +25,7 @@
+ #include <config.h>
+ #endif
+ 
++#include <stdlib.h>
+ #include <cassert>
+ #include <cerrno>
+ #include <cstdlib>
+diff -bur octave-3.0.3.orig/src/unwind-prot.cc octave-3.0.3/src/unwind-prot.cc
+--- octave-3.0.3.orig/src/unwind-prot.cc	2008-09-24 09:13:49.000000000 +0200
++++ octave-3.0.3/src/unwind-prot.cc	2009-03-18 18:07:15.505301000 +0100
+@@ -27,6 +27,7 @@
+ 
+ #include <cstddef>
+ #include <cstring>
++#include <string.h>
+ 
+ #include "CMatrix.h"
+ 
+diff -bur octave-3.0.3.orig/src/utils.cc octave-3.0.3/src/utils.cc
+--- octave-3.0.3.orig/src/utils.cc	2008-09-24 09:13:49.000000000 +0200
++++ octave-3.0.3/src/utils.cc	2009-03-18 18:09:11.767749000 +0100
+@@ -1114,7 +1114,7 @@
+       double t;
+ 
+       unsigned int usec
+-	= static_cast<unsigned int> (modf (seconds, &t) * 1000000);
++	= static_cast<unsigned int> (std::modf (seconds, &t) * 1000000);
+ 
+       unsigned int sec
+ 	= (t > UINT_MAX) ? UINT_MAX : static_cast<unsigned int> (t);
+diff -bur octave-3.0.3.orig/src/variables.cc octave-3.0.3/src/variables.cc
+--- octave-3.0.3.orig/src/variables.cc	2008-09-29 07:36:19.000000000 +0200
++++ octave-3.0.3/src/variables.cc	2009-03-18 18:11:05.918548000 +0100
+@@ -25,6 +25,8 @@
+ #include <config.h>
+ #endif
+ 
++#include <stdlib.h>
++
+ #include <cstdio>
+ #include <cstring>
+ 
+diff -bur octave-3.0.3.orig/src/zfstream.cc octave-3.0.3/src/zfstream.cc
+--- octave-3.0.3.orig/src/zfstream.cc	2008-09-24 09:13:49.000000000 +0200
++++ octave-3.0.3/src/zfstream.cc	2009-03-18 17:55:07.581945000 +0100
+@@ -33,6 +33,8 @@
+ 
+ #include "zfstream.h"
+ 
++#include <string.h>
++
+ #ifdef HAVE_ZLIB
+ 
+ #include <cstring>          // for strcpy, strcat, strlen (mode strings)

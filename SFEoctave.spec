@@ -12,7 +12,7 @@ Summary:        octave High-level language, intended for numerical computations
 Group:		Math
 Version:        3.0.3
 Source:		ftp://ftp.octave.org/pub/octave/octave-%{version}.tar.bz2
-#Patch1:		octave-01.diff
+Patch1:		octave-stlport4.diff
 SUNW_BaseDir:   %{_basedir}
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %include	default-depend.inc
@@ -36,7 +36,7 @@ Requires:	SFEblas
 Requires:	SFEgnuplot
 Requires:	SFElapack
 Requires:	SUNWzlib
-Requires:	SFEreadline.spec
+Requires:	SFEreadline
 BuildRequires: 	SUNWPython
 #TODO
 #Requires: suitesparse examples/octave.desktop
@@ -61,11 +61,11 @@ C++, C, Fortran, or other languages.
 
 %prep
 %setup -q -c -n %{name}
-#%patch1 -p0
+%patch1 -p0
 
 %build
 %define enable64 no
-export CFLAGS="%optflags"
+#export CFLAGS="%optflags"
 #export LDFLAGS="%_ldflags"
 export LDFLAGS=" "
 export CC=cc 
@@ -74,6 +74,9 @@ export F77=f77
 export FC=f77
 export EXTERN_CXXFLAGS="-library=stlport4"
 export EXTERN_CFLAGS=" "
+export CXXFLAGS="-library=stlport4"
+export CFLAGS=" "
+export XTRA_CRUFT_SH_LDFLAGS="-library=stlport4"
 cd octave-%{version}
 ./configure --enable-shared --disable-static --enable-64=%enable64 --with-f77=f77 \
 	--with-blas=-lblas		\
@@ -147,6 +150,8 @@ rm -rf $RPM_BUILD_ROOT
 #%endif
 
 %changelog
+* Mars 20 2009 - Gilles Dauphin
+- stlport4 , patch, bug about reading files
 * Tue Feb 17 2009 - Thomas Wagner
 - make (Build-)Requires conditional SUNWlibsndfile|SFElibsndfile(-devel)
 * Dec 18 2008 - Gilles Dauphin
