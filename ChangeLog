@@ -1,3 +1,26 @@
+2009-03-22  Petr Sobotka 	<sobotkap@gmail.com>
+
+	* SFEwesnoth-dev.spec: Bump to 1.6a version, which is new stable release.
+												 But because there were several bug sunCC problems,
+												 I'll keep it in dev spec file, until it will show
+												 as stable enough. Also from this release autotools 
+												 should not be used at all, which is not the case for
+												 this spec file (testing Scons, if there is any cmake 
+												 specialist I would welcome help to get cmake
+												 working;-).    
+	* patches/wesnoth-10-fixstd.diff:
+	* patches/wesnoth-12-fixmisshpp.diff:
+	* patches/wesnoth-13-fixstd2.diff:
+	* patches/wesnoth-14-fixpointer.diff:
+	* patches/wesnoth-15-fixfunc.diff:
+	* patches/wesnoth-dev-01-fixconfigure.diff:
+	* patches/wesnoth-dev-02-fixusleep.diff:
+	* patches/wesnoth-dev-03-fixtolower.diff:
+	* patches/wesnoth-dev-04-fixatoi.diff:
+	* patches/wesnoth-dev-05-fixround.diff:
+	* patches/wesnoth-dev-06-fixreturn.diff:
+	* patches/wesnoth-dev-07-fixbadalloc.diff:
+
 2009-03-15  Thomas Wagner  <tom68@users.sourceforge.net>
 
 	* SFEwebalizer.spec: add %doc

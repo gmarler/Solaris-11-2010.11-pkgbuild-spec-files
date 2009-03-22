@@ -1,0 +1,10 @@
+--- wesnoth-1.6a/src/clipboard.cpp.fixusleep	2009-03-21 14:18:11.658930130 +0100
++++ wesnoth-1.6a/src/clipboard.cpp	2009-03-21 14:18:41.221762529 +0100
+@@ -24,6 +24,7 @@
+ 
+ 
+ #include "SDL_syswm.h"
++#include <unistd.h>
+ 
+ /**
+  The following are two classes which wrap the SDL's interface to X,

@@ -1,10 +1,10 @@
---- wesnoth-1.5.0/src/formula_ai.cpp.fixmisshpp	2008-05-01 11:25:31.070498628 +0200
-+++ wesnoth-1.5.0/src/formula_ai.cpp	2008-05-01 11:46:10.154748580 +0200
-@@ -14,6 +14,7 @@
- 
+--- wesnoth-1.5.3/src/formula_ai.cpp.fixmisshpp	2008-08-30 15:56:34.974769697 +0200
++++ wesnoth-1.5.3/src/formula_ai.cpp	2008-08-30 15:56:52.675611772 +0200
+@@ -15,6 +15,7 @@
  #include <boost/regex.hpp>
+ #include <boost/lexical_cast.hpp>
  
 +#include "ai.hpp"
  #include "actions.hpp"
- #include "callable_objects.hpp"
- #include "formula.hpp"
+ #include "menu_events.hpp"
+ #include "formula_ai.hpp"

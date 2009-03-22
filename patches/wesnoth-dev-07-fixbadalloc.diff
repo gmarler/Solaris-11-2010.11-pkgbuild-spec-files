@@ -1,0 +1,16 @@
+--- wesnoth-1.6a/src/unit_animation.cpp.fixbadalloc	2009-03-22 17:44:19.994594972 +0100
++++ wesnoth-1.6a/src/unit_animation.cpp	2009-03-22 19:19:44.282518608 +0100
+@@ -554,7 +554,12 @@
+ 					.duration(225)
+ 					.blend("0.0,0.5:75,0.0:75,0.5:75,0.0",game_display::rgb(255,0,0)));
+ 		} else {
+-			foreach(std::string hit_type, utils::split((**anim_itor)["hits"])) {
++			std::vector<std::string> pom = utils::split((**anim_itor)["hits"]);
++			// Following foreach causes runtime crash when compiled by suncc (5.9 and 5.10)
++			// It throws std::bad_alloc
++			// foreach(std::string hit_type, utils::split((**anim_itor)["hits"])) {
++			// Please don't use foreach on r-value. (Many thanks) 
++			foreach(std::string hit_type, pom) {
+ 				config tmp = **anim_itor;
+ 				tmp["hits"]=hit_type;
+ 				animations.push_back(unit_animation(tmp));

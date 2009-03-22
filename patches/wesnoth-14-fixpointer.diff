@@ -1,0 +1,11 @@
+--- wesnoth-1.5.3/src/marked-up_text.cpp.fixpointer	2008-08-31 11:09:39.801009454 +0200
++++ wesnoth-1.5.3/src/marked-up_text.cpp	2008-08-31 11:20:15.717152608 +0200
+@@ -246,7 +246,7 @@
+                    const SDL_Color& colour, const std::string& txt,
+                    int x, int y, bool use_tooltips, int style)
+ {
+-	return draw_text(gui != NULL ? gui->getSurface() : NULL, area, size, colour, txt, x, y, use_tooltips, style);
++	return draw_text(gui != NULL ? gui->getSurface() : surface(NULL), area, size, colour, txt, x, y, use_tooltips, style);
+ }
+ 
+ //! Determine if char is one of the special chars used as markup.
