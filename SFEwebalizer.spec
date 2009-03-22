@@ -10,6 +10,7 @@ Name:                SFEwebalizer
 Summary:             Web server log analysis program
 Version:             2.21
 Source:              ftp://ftp.mrunix.net/pub/webalizer/webalizer-%{tarball_version}.tar.bz2
+URL:		     http://www.webalizer.org
 
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
@@ -65,14 +66,19 @@ install -D sample.conf $RPM_BUILD_ROOT%{_sysconfdir}/webalizer.conf.sample
 cd $RPM_BUILD_ROOT%{_bindir}
 ln -s webalizer webazolver
 
+#in case old pkgbuild does not automaticly place %doc files there
+test -d $RPM_BUILD_ROOT%{_docdir} || mkdir $RPM_BUILD_ROOT%{_docdir}
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr (-, root, bin)
+%doc README CHANGES COPYING Copyright DNS.README INSTALL README.FIRST
 %dir %attr (0755, root, bin) %{_bindir}
 %{_bindir}/*
 %dir %attr (0755, root, sys) %{_datadir}
+%dir %attr (0755, root, other) %{_docdir}
 %dir %attr (0755, root, bin) %{_mandir}
 %dir %attr (0755, root, bin) %{_mandir}/man1
 %{_mandir}/man1/*
@@ -83,6 +89,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_sysconfdir}/webalizer.conf.sample
 
 %changelog
+* Sun Mar 22 2009 - Thomas Wagner
+- add %doc
 * Mon Feb 02 2008 - Thomas Wagner
 - bump to 2.21
 - switch from SFEgd to SUNWgd2, add configure --with-gd
