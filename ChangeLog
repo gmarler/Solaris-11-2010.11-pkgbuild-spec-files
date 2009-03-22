@@ -1,7 +1,11 @@
+2009-03-15  Thomas Wagner  <tom68@users.sourceforge.net>
+
+	* SFEwebalizer.spec: add %doc
+
 2009-03-20  Gilles Dauphin
 
-	* Octave compile with stlport4
-	* bug in reading files
+	* SFEoctave.spc: Octave compile with stlport4
+	  bug in reading files
 
 2009-03-19  Alfred Peng  <alfred.peng@sun.com>
 
