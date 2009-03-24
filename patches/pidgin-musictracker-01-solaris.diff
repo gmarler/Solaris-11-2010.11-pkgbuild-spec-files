@@ -47,7 +47,7 @@
  
                          char regexp[100];
 -                        sprintf(regexp, "^(.*)\\%s(.*)\\%s(.*)$", sep, sep);
-+                        sprintf(regexp, "^(.*)\\%s(.*)$", sep, sep);
++                        sprintf(regexp, "^(.*)\\%s(.*)$", sep);
                          pcre *re = regex(regexp, 0);
 -                        capture(re, title, strlen(title), ti->artist, ti->album, ti->track);
 +                        capture(re, title, strlen(title), ti->artist, ti->track);

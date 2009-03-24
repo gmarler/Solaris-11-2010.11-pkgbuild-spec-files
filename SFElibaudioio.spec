@@ -5,16 +5,17 @@
 #
 
 %include Solaris.inc
+%define src_version 0.6.1alpha
 
 Name:         SFElibaudioio
 License:      Other
 Group:        System/Libraries
-Version:      0.6.1alpha
+Version:      0.6.1
 Summary:      LibAudioIO - audio foundation library
 URL:          http://libaudioio.sourceforge.net/
-Source:       http://pkgbuild.sf.net/spec-files-extra/tarballs/libaudioio-%{version}.tar.gz
+Source:       http://pkgbuild.sf.net/spec-files-extra/tarballs/libaudioio-%{src_version}.tar.gz
 Patch1:       libaudioio-01-sunpro.diff
-BuildRoot:    %{_tmppath}/%{name}-%{version}-build
+BuildRoot:    %{_tmppath}/%{name}-%{src_version}-build
 Docdir:	      %{_defaultdocdir}/doc
 SUNW_BaseDir: %{_basedir}
 Autoreqprov:  on
@@ -29,7 +30,7 @@ SUNW_BaseDir:  %{_basedir}
 Requires:      %name
 
 %prep
-%setup -q -n libaudioio-%version
+%setup -q -n libaudioio-%src_version
 %patch1 -p1
 for release in 2.10 2.11; do
 	ln -s sys_i386solaris2.9.cc system/sys_%{base_arch}solaris$release.cc
@@ -72,5 +73,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/*
 
 %changelog
+* Tue Mar 24 2009 - andras.barna@gmail.com
+- IPSize version
 * Mon Mar 10 2008 - trisk@acm.jhu.edu
 - Initial spec

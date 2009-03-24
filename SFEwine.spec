@@ -17,7 +17,7 @@ Source:                 %{src_url}/%{src_name}-%{version}.tar.bz2
 Source101:		http://trisk.acm.jhu.edu/winetricks-20080627
 Patch1:			wine-01-shell.diff
 # http://bugs.winehq.org/show_bug.cgi?id=9787
-Patch2:			wine-02-acceptex.diff
+#Patch2:			wine-02-acceptex.diff
 # Implement network statistics in iphlpapi via libkstat and STREAMS TPI
 #Patch3:			wine-03-iphlpapi.diff
 # Wine assumes libraries are mapped to contiguous memory regions.
@@ -51,8 +51,9 @@ Requires:	SUNWcupsu
 Requires:	SUNWsane-backendu
 BuildRequires:	SUNWopenssl-include
 Requires:	SUNWopenssl-libraries
-BuildRequires:	SFEfreetype-devel
-Requires:	SFEfreetype
+#BuildRequires:	SFEfreetype-devel
+#Requires:	SFEfreetype
+Requires:	SUNWfreetype2
 BuildRequires:	SFElibaudioio-devel
 Requires:	SFElibaudioio
 
@@ -65,8 +66,8 @@ Requires: %name
 %prep
 %setup -q -n %{src_name}-%{version}
 %patch1 -p1
-%patch2 -p1
-%patch3 -p1
+#%patch2 -p1
+#%patch3 -p1
 cp %{SOURCE101} winetricks
 %patch101 -p1
 
@@ -151,8 +152,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/aclocal/*
 
 %changelog
+* Tue Mar 24 2009 - andras.barna@gmail.com
+- fix Requires, disable patch2 (needs rework?)
 * Mon Mar 16 2009 - andras.barna@gmail.com
-- Bump to 1.1.17, disable patch3
+- Bump to 1.1.17, disable patch3, it's fixed upstream
 * Sun Jan 25 2009 - Thomas Wagner
 - Bump to 1.1.13
 - rework patch3 wine-03-iphlpapi.diff for 1.1.13 - could update bug http://bugs.winehq.org/show_bug.cgi?id=14185

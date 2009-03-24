@@ -1,3 +1,12 @@
+2009-03-24  Andras Barna  <andras.barna@gmail.com>
+
+	* SFElibaudioio.spec: IPSize version
+	* SFEntfs-3g.spec: bump version
+	* SFEperl-gettext.spec: IPSize version
+	* SFEsdl-pango.spec: remove %doc
+	* SFEwine.spec: fix Requires, disable patch2 (needs rework?)
+	* patches/pidgin-musictracker-01-solaris.diff: rework
+
 2009-03-22  Petr Sobotka 	<sobotkap@gmail.com>
 
 	* SFEwesnoth-dev.spec: Bump to 1.6a version, which is new stable release.

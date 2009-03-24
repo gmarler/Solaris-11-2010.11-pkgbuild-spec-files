@@ -85,7 +85,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,bin)
-%doc README CHANGES COPYING
 %dir %attr (0755, root, bin) %{_libdir}
 %{_libdir}/lib*.so*
 %ifarch amd64 sparcv9
@@ -113,5 +112,7 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Tue Mar 24 2009 - andras.barna@gmail.com
+- remove %doc
 * Wed Aug 15 2007 - dougs@truemail.co.th
 - Initial version

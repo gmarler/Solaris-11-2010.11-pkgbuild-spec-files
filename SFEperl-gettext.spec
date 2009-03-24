@@ -15,7 +15,7 @@
 
 Name:                    SFEperl-gettext
 Summary:                 Gettext-%{gettext_version} PERL module
-Version:                 %{perl_version}.%{gettext_version}
+Version:                 105
 Source:                  http://www.cpan.org/modules/by-module/Locale/gettext-%{gettext_version}.tar.gz
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -76,5 +76,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/*/*
 
 %changelog
+* Tue Mar 24 2009 - andras.barna@gmail.com
+- IPSize version
 * Wed Sep 12 2007 - nonsea@users.sourceforge.net
 - Initial spec
