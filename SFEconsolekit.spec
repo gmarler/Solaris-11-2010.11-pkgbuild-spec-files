@@ -188,8 +188,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files root
 %defattr (-, root, sys)
-%{_sysconfdir}/ConsoleKit/seats.d/00-primary.seat
-%{_sysconfdir}/ConsoleKit/run-session.d
+%{_sysconfdir}/ConsoleKit
 %dir %attr (0755, root, bin) %{_sysconfdir}/dbus-1
 %dir %attr (0755, root, bin) %{_sysconfdir}/dbus-1/system.d
 %{_sysconfdir}/dbus-1/system.d/ConsoleKit.conf
@@ -216,6 +215,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Thu Mar 26 2009 - halton.huo@sun.com
+- Add all files under etc/ConsoleKit/ to %files root
 * Sat Feb 07 2009 - brian.cameron@sun.com
 - Package should not install anything to  /var/run.
 * Tue Dec 30 2008 - halton.huo@sun.com

@@ -88,17 +88,16 @@ Requires:                %{name}
 %endif
 
 %prep
-#%setup -q -n gdm-%version
-#%patch1 -p1
-#%patch2 -p1
-#%patch3 -p1
+%setup -q -n gdm-%version
+%patch1 -p1
+%patch2 -p1
+%patch3 -p1
 # disable dynamic patch for now, since we're working new ways for it, refer to
 # http://wiki.genunix.org/wiki/index.php/design_for_newgdm_consolekit_multiseat_multidisplay
-#%patch4 -p1
-#%patch7 -p1
+%patch4 -p1
+%patch7 -p1
 
 %build
-cd gdm-%version
 export LDFLAGS="%_ldflags"
 export PKG_CONFIG_PATH=%{_pkg_config_path}
 export CFLAGS="%optflags"
@@ -142,7 +141,6 @@ autoconf
 make -j $CPUS
 
 %install
-cd gdm-%version
 rm -rf $RPM_BUILD_ROOT
 
 make install DESTDIR=$RPM_BUILD_ROOT
@@ -315,6 +313,9 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 %endif
 
 %changelog
+* Thu Mar 26 2009 - halton.huo@sun.com
+- Enable patch dynamic-display.diff
+- Revert my last testing commit
 * Tue Mar 17 2009 - halton.huo@sun.com
 - Bump to 2.26.0
 - Remove upstreamed patch gdm-08-fixcrash.diff

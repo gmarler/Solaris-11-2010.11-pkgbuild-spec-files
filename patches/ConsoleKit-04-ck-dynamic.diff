@@ -1,8 +1,115 @@
+diff --git a/data/00-primary.seat b/data/00-primary.seat
+index 6e61db4..e23e733 100644
+--- a/data/00-primary.seat
++++ b/data/00-primary.seat
+@@ -1,5 +1,38 @@
+ [Seat Entry]
+-Version=1.0
+-Name=Primary seat
++Description=start one static local display at :0
++
+ Hidden=false
+-Devices=
+\ No newline at end of file
++# Indicate whether create this seat or not. If it is set TRUE, then CK will not create this seat. Default value is false.
++
++DisplayType=Local
++# Indicate display type which defined in <etc>/ConsoleKit/displays-types.conf
++
++Devices=
++# Indicate input/output devices including keyboard-pointer-video card-monitor-sound-usb devices,
++# This key is inherited from ConsoleKit-0.3.0, With discussing on http://mail.gnome.org/archives/gdm-list/2009-March/msg00003.html
++# This key might need be divided into several keys:
++# Pointer=
++# Monitor=
++# VideoCard=
++# Monitor=
++# UsbHub=
++# This key will not implemented in phase I
++
++DisplayNumbers=0
++# Display numbers list, separated by a separator character, typically ';' or ','. If want to automatically choose next available display number, indicate -1
++
++IsConsoles=true
++# Values list to indicate whether the give DisplayNumbers are on console or not , separated by a separator character, typically ';' or ','.
++
++TtyDevices=
++# Values list to indicate the tty device number, separated by a separator character, typically ';' or ','.
++# Zero or negative number or no value means choose next available vt number
++#
++# The real TtyDevice is decided at run time.
++# If vt is available
++#   TtyDevice should be "/dev/vt/#" for Solaris and "vt#" for Linux.
++#   No value means choose next available vt.
++# If vt is not available (Only happen on Solaris by running 'svcadm disable vtdaemon')
++#  If a display is on console (IsConsole == TRUE), This one display must have the value "/dev/console".
++#  Only a single display can run on the console Seat.
++#  If a display not on the console like Sunray, then the value is "/dev/dtlocal"
+diff --git a/data/Makefile.am b/data/Makefile.am
+index ca51570..8d65ab1 100644
+--- a/data/Makefile.am
++++ b/data/Makefile.am
+@@ -6,6 +6,9 @@ dbusconf_DATA = ConsoleKit.conf
+ seatdir = $(sysconfdir)/ConsoleKit/seats.d
+ seat_DATA = 00-primary.seat
+ 
++display_typedir = $(sysconfdir)/ConsoleKit
++display_type_DATA = display-types.conf
++
+ if HAVE_POLKIT
+ polkit_policydir = $(datadir)/PolicyKit/policy
+ dist_polkit_policy_DATA =	\
+@@ -29,6 +32,7 @@ edit = sed \
+ EXTRA_DIST =						\
+ 	$(dbusconf_DATA)				\
+ 	$(seat_DATA)					\
++	$(display_type_DATA)				\
+ 	$(service_in_files)				\
+ 	$(NULL)
+ 
+diff --git a/data/display-types.conf b/data/display-types.conf
+new file mode 100644
+index 0000000..5c48d93
+--- /dev/null
++++ b/data/display-types.conf
+@@ -0,0 +1,28 @@
++[Local]
++Command=/usr/X11/bin/Xorg
++Arguments=-br -verbose -nolisten tcp
++Chooser=false
++UseAuth=true
++Priority=0
++
++[RemoteMachine]
++Command=/usr/bin/Xorg
++Arguments=-br -verbose -indirect
++Chooser=true
++UseAuth=true
++Priority=0
++
++[LocalVNC]
++Command=/usr/bin/Xvnc
++Arguments=-query localhost
++Chooser=false
++UseAuth=true
++Priority=0
++
++[Headless]
++Command=/usr/X11/bin/Xvfb
++Chooser=false
++Arguments=
++UseAuth=true
++Priority=0
++
 diff --git a/libck-connector/ck-connector.c b/libck-connector/ck-connector.c
-index 7f6f87f..fc03e2b 100644
+index 7f6f87f..ad8a111 100644
 --- a/libck-connector/ck-connector.c
 +++ b/libck-connector/ck-connector.c
-@@ -79,6 +79,7 @@ static struct {
+@@ -76,9 +76,11 @@ static struct {
+         { "display-device",     DBUS_TYPE_STRING },
+         { "x11-display-device", DBUS_TYPE_STRING },
+         { "x11-display",        DBUS_TYPE_STRING },
++        { "seat-id",            DBUS_TYPE_STRING },
          { "remote-host-name",   DBUS_TYPE_STRING },
          { "session-type",       DBUS_TYPE_STRING },
          { "is-local",           DBUS_TYPE_BOOLEAN },
@@ -10,6 +117,529 @@ index 7f6f87f..fc03e2b 100644
          { "unix-user",          DBUS_TYPE_INT32 },
  };
  
+diff --git a/src/Makefile.am b/src/Makefile.am
+index cbe8a09..bd3ec70 100644
+--- a/src/Makefile.am
++++ b/src/Makefile.am
+@@ -107,6 +107,8 @@ console_kit_daemon_SOURCES =	\
+ 	ck-file-monitor.h	\
+ 	ck-job.h		\
+ 	ck-job.c		\
++	ck-display-type.h	\
++	ck-display-type.c	\
+ 	ck-seat.h		\
+ 	ck-seat.c		\
+ 	ck-session-leader.h	\
+diff --git a/src/ck-display-type.c b/src/ck-display-type.c
+new file mode 100644
+index 0000000..e3c5d13
+--- /dev/null
++++ b/src/ck-display-type.c
+@@ -0,0 +1,438 @@
++/* -*- Mode: C; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 8 -*-
++ *
++ * Authors: halton.huo@sun.com
++ * Copyright (C) 2009 Sun Microsystems, Inc.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
++ *
++ */
++
++#include "config.h"
++
++#include <glib.h>
++#include <glib-object.h>
++
++#include "ck-display-type.h"
++
++#define CK_DISPLAY_TYPE_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), CK_TYPE_DISPLAY_TYPE, CkDisplayTypePrivate))
++
++#define CK_DISPLAY_TYPES_FILE     SYSCONFDIR "/ConsoleKit/display-types.conf"
++
++struct CkDisplayTypePrivate
++{
++        char            *name;
++        char            *command;
++        char            *arguments;
++        gboolean         chooser;
++        gboolean         use_auth;
++        int              priority;
++};
++
++enum {
++        PROP_0,
++        PROP_NAME,
++        PROP_COMMAND,
++        PROP_ARGUMENTS,
++        PROP_CHOOSER,
++        PROP_USE_AUTH,
++        PROP_PRIORITY,
++};
++
++static void     ck_display_type_class_init  (CkDisplayTypeClass *klass);
++static void     ck_display_type_init        (CkDisplayType      *display);
++static void     ck_display_type_finalize    (GObject     *object);
++
++G_DEFINE_TYPE (CkDisplayType, ck_display_type, G_TYPE_OBJECT)
++
++static void
++_ck_display_type_set_name (CkDisplayType  *display,
++                           const char     *name)
++{
++        g_free (display->priv->name);
++        display->priv->name = g_strdup (name);
++}
++
++static void
++_ck_display_type_set_command (CkDisplayType  *display,
++                              const char     *command)
++{
++        g_free (display->priv->command);
++        display->priv->command = g_strdup (command);
++}
++
++static void
++_ck_display_type_set_arguments (CkDisplayType  *display,
++                                const char     *arguments)
++{
++        g_free (display->priv->arguments);
++        display->priv->arguments = g_strdup (arguments);
++}
++
++static void
++_ck_display_type_set_chooser (CkDisplayType  *display,
++                              gboolean        chooser)
++{
++        display->priv->chooser = chooser;
++}
++
++static void
++_ck_display_type_set_use_auth (CkDisplayType  *display,
++                               gboolean        use_auth)
++{
++        display->priv->use_auth = use_auth;
++}
++
++static void
++_ck_display_type_set_priority (CkDisplayType  *display,
++                               int             priority)
++{
++        display->priv->priority = priority;
++}
++
++static void
++ck_display_type_set_property (GObject      *object,
++                              guint         prop_id,
++                              const GValue *value,
++                              GParamSpec   *pspec)
++{
++        CkDisplayType *self;
++
++        self = CK_DISPLAY_TYPE (object);
++
++        switch (prop_id) {
++        case PROP_NAME:
++                _ck_display_type_set_name (self, g_value_get_string (value));
++                break;
++        case PROP_COMMAND:
++                _ck_display_type_set_command (self, g_value_get_string (value));
++                break;
++        case PROP_ARGUMENTS:
++                _ck_display_type_set_arguments (self, g_value_get_string (value));
++                break;
++        case PROP_CHOOSER:
++                _ck_display_type_set_chooser (self, g_value_get_boolean (value));
++                break;
++        case PROP_USE_AUTH:
++                _ck_display_type_set_use_auth (self, g_value_get_boolean (value));
++                break;
++        case PROP_PRIORITY:
++                _ck_display_type_set_priority (self, g_value_get_int (value));
++                break;
++        default:
++                G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
++                break;
++        }
++}
++
++static void
++ck_display_type_get_property (GObject    *object,
++                              guint       prop_id,
++                              GValue     *value,
++                              GParamSpec *pspec)
++{
++        CkDisplayType *self;
++
++        self = CK_DISPLAY_TYPE (object);
++
++        switch (prop_id) {
++        case PROP_NAME:
++                g_value_set_string (value, self->priv->name);
++                break;
++        case PROP_COMMAND:
++                g_value_set_string (value, self->priv->command);
++                break;
++        case PROP_ARGUMENTS:
++                g_value_set_string (value, self->priv->arguments);
++                break;
++        case PROP_CHOOSER:
++                g_value_set_boolean (value, self->priv->chooser);
++                break;
++        case PROP_USE_AUTH:
++                g_value_set_boolean (value, self->priv->use_auth);
++                break;
++        case PROP_PRIORITY:
++                g_value_set_int (value, self->priv->priority);
++                break;
++        default:
++                G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
++                break;
++        }
++}
++
++static void
++ck_display_type_class_init (CkDisplayTypeClass *klass)
++{
++        GObjectClass   *object_class = G_OBJECT_CLASS (klass);
++
++        object_class->get_property = ck_display_type_get_property;
++        object_class->set_property = ck_display_type_set_property;
++        object_class->finalize = ck_display_type_finalize;
++
++        g_object_class_install_property (object_class,
++                                         PROP_NAME,
++                                         g_param_spec_string ("name",
++                                                              "display type name",
++                                                              "display type name",
++                                                              NULL,
++                                                              G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
++        g_object_class_install_property (object_class,
++                                         PROP_COMMAND,
++                                         g_param_spec_string ("command",
++                                                              "X11 command",
++                                                              "kind",
++                                                              NULL,
++                                                              G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
++        g_object_class_install_property (object_class,
++                                         PROP_ARGUMENTS,
++                                         g_param_spec_string ("arguments",
++                                                              "X11 arguments",
++                                                              "X11 arguments",
++                                                              NULL,
++                                                              G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
++        g_object_class_install_property (object_class,
++                                         PROP_CHOOSER,
++                                         g_param_spec_boolean ("chooser",
++                                                              "start a chooser",
++                                                              "start a chooser",
++                                                              FALSE,
++                                                              G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
++        g_object_class_install_property (object_class,
++                                         PROP_USE_AUTH,
++                                         g_param_spec_boolean ("use-auth",
++                                                              "use auth",
++                                                              "use auth",
++                                                              TRUE,
++                                                              G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
++        g_object_class_install_property (object_class,
++                                         PROP_PRIORITY,
++                                         g_param_spec_int    ("priority",
++                                                              "priority",
++                                                              "priority",
++                                                              -20,
++                                                              20,
++                                                              0,
++                                                              G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
++
++        g_type_class_add_private (klass, sizeof (CkDisplayTypePrivate));
++}
++
++static void
++ck_display_type_init (CkDisplayType *display)
++{
++        display->priv = CK_DISPLAY_TYPE_GET_PRIVATE (display);
++
++        display->priv->name = NULL;
++        display->priv->command = NULL;
++        display->priv->arguments = NULL;
++        display->priv->use_auth = TRUE;
++        display->priv->priority = 0;
++}
++
++static void
++ck_display_type_finalize (GObject *object)
++{
++        CkDisplayType *display;
++
++        g_return_if_fail (object != NULL);
++        g_return_if_fail (CK_IS_DISPLAY_TYPE (object));
++
++        display = CK_DISPLAY_TYPE (object);
++
++        g_return_if_fail (display->priv != NULL);
++
++        g_free (display->priv->name);
++        g_free (display->priv->command);
++        g_free (display->priv->arguments);
++
++        G_OBJECT_CLASS (ck_display_type_parent_class)->finalize (object);
++}
++
++CkDisplayType *
++ck_display_type_new (const char *name)
++{
++        GObject   *object;
++        GKeyFile  *key_file;
++        char     **groups;
++        gsize      group_len;
++        gsize      i;
++        gboolean   res;
++        GError    *error;
++
++        g_return_val_if_fail ((name && !g_str_equal (name, "")), NULL);
++
++        key_file = g_key_file_new ();
++
++        error = NULL;
++        res = g_key_file_load_from_file (key_file,
++                                         CK_DISPLAY_TYPES_FILE,
++                                         G_KEY_FILE_NONE,
++                                         &error);
++        if (! res) {
++                g_warning ("Unable to load static display types from file %s: %s", CK_DISPLAY_TYPES_FILE, error->message);
++                g_error_free (error);
++                return NULL;
++        }
++
++        groups = g_key_file_get_groups (key_file, &group_len);
++        for(i=0; i<group_len; i++) {
++                if (g_str_equal (groups[i], name)) {
++                        char      *command;
++                        char      *arguments;
++                        gboolean   chooser;
++                        gboolean   use_auth ;
++                        int        priority;
++
++                        error = NULL;
++                        command = g_key_file_get_string (key_file, name, "Command", &error);
++                        if (error) {
++                                /* Use NULL if key Command is not defined */
++                                g_warning ("Unable to load key Command for display type %s, use default value NULL: %s", name, error->message);
++                                g_error_free (error);
++                        }
++
++                        error = NULL;
++                        arguments = g_key_file_get_string (key_file, name, "Arguments", &error);
++                        if (error) {
++                                /* Use NULL if key Arguments is not defined */
++                                g_warning ("Unable to load key Command for display type %s, use default value NULL: %s", name, error->message);
++                                g_error_free (error);
++                        }
++
++                        error = NULL;
++                        chooser = g_key_file_get_boolean (key_file, name, "Chooser", &error);
++                        if (error) {
++                                /* Use NULL if key UseAuth is not defined or invalid value is set */
++                                g_warning ("Unable to load key UseAuth for display type %s, use default value 'true': %s", name, error->message);
++                                g_error_free (error);
++                                chooser = FALSE;
++                        }
++
++                        error = NULL;
++                        use_auth = g_key_file_get_boolean (key_file, name, "UseAuth", &error);
++                        if (error) {
++                                /* Use NULL if key UseAuth is not defined or invalid value is set */
++                                g_warning ("Unable to load key UseAuth for display type %s, use default value 'true': %s", name, error->message);
++                                g_error_free (error);
++                                use_auth = TRUE;
++                        }
++
++                        error = NULL;
++                        priority = g_key_file_get_integer (key_file, name, "Priority", &error);
++                        if (error) {
++                                /* Use NULL if key Priority is not defined or invalid value is set */
++                                g_warning ("Unable to load key Priority for display type %s, use default value '0' : %s", name, error->message);
++                                g_error_free (error);
++                                priority = 0;
++                        }
++
++                        object = g_object_new (CK_TYPE_DISPLAY_TYPE,
++                                               "name", name,
++                                               "command", command,
++                                               "arguments", arguments,
++                                               "chooser", chooser,
++                                               "use-auth", use_auth,
++                                               "priority", priority,
++                                               NULL);
++                        g_free (command);
++                        g_free (arguments);
++
++                        break;
++                }
++        }
++
++        g_strfreev (groups);
++        return CK_DISPLAY_TYPE (object);
++}
++
++CkDisplayType *
++ck_display_type_dup (CkDisplayType   *display)
++{
++        GObject   *object;
++        char      *name;
++        char      *command;
++        char      *arguments;
++        gboolean   chooser;
++        gboolean   use_auth ;
++        int        priority;
++        gboolean   res;
++
++        g_object_get (G_OBJECT (display), 
++                      "name", &name,
++                      "command", &command,
++                      "arguments", &arguments,
++                      "chooser", &chooser,
++                      "use-auth", &use_auth,
++                      "priority", &priority,
++                      NULL);
++                      
++        object = g_object_new (CK_TYPE_DISPLAY_TYPE,
++                               "name", name,
++                               "command", command,
++                               "arguments", arguments,
++                               "chooser", chooser,
++                               "use-auth", use_auth,
++                               "priority", priority,
++                               NULL);
++
++        return CK_DISPLAY_TYPE (object);
++}
++
++G_CONST_RETURN char*
++ck_display_type_get_name (CkDisplayType   *display)
++{
++        g_return_val_if_fail (CK_IS_DISPLAY_TYPE (display), NULL);
++
++        return display->priv->name;
++}
++
++G_CONST_RETURN char*
++ck_display_type_get_command (CkDisplayType   *display)
++{
++        g_return_val_if_fail (CK_IS_DISPLAY_TYPE (display), NULL);
++
++        return display->priv->command;
++}
++
++G_CONST_RETURN char*
++ck_display_type_get_arguments (CkDisplayType   *display)
++{
++        g_return_val_if_fail (CK_IS_DISPLAY_TYPE (display), NULL);
++
++        return display->priv->arguments;
++}
++
++gboolean
++ck_display_type_get_chooser (CkDisplayType   *display)
++{
++        g_return_val_if_fail (CK_IS_DISPLAY_TYPE (display), FALSE);
++
++        return display->priv->chooser;
++}
++
++gboolean
++ck_display_type_get_use_auth (CkDisplayType   *display)
++{
++        g_return_val_if_fail (CK_IS_DISPLAY_TYPE (display), TRUE);
++
++        return display->priv->use_auth;
++}
++
++int
++ck_display_type_get_priority (CkDisplayType   *display)
++{
++        g_return_val_if_fail (CK_IS_DISPLAY_TYPE (display), 0);
++
++        return display->priv->priority;
++}
+diff --git a/src/ck-display-type.h b/src/ck-display-type.h
+new file mode 100644
+index 0000000..05d2394
+--- /dev/null
++++ b/src/ck-display-type.h
+@@ -0,0 +1,60 @@
++/* -*- Mode: C; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 8 -*-
++ *
++ * Authors: halton.huo@sun.com
++ * Copyright (C) 2009 Sun Microsystems, Inc.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
++ *
++ */
++
++#ifndef __CK_DISPLAY_TYPE_H
++#define __CK_DISPLAY_TYPE_H
++
++#include <glib-object.h>
++
++G_BEGIN_DECLS
++
++#define CK_TYPE_DISPLAY_TYPE         (ck_display_type_get_type ())
++#define CK_DISPLAY_TYPE(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), CK_TYPE_DISPLAY_TYPE, CkDisplayType))
++#define CK_DISPLAY_TYPE_CLASS(k)     (G_TYPE_CHECK_CLASS_CAST((k), CK_TYPE_DISPLAY_TYPE, CkDisplayTypeClass))
++#define CK_IS_DISPLAY_TYPE(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), CK_TYPE_DISPLAY_TYPE))
++#define CK_IS_DISPLAY_TYPE_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), CK_TYPE_DISPLAY_TYPE))
++#define CK_DISPLAY_TYPE_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), CK_TYPE_DISPLAY_TYPE, CkDisplayTypeClass))
++
++typedef struct CkDisplayTypePrivate CkDisplayTypePrivate;
++
++typedef struct
++{
++        GObject        parent;
++        CkDisplayTypePrivate *priv;
++} CkDisplayType;
++
++typedef struct
++{
++        GObjectClass   parent_class;
++} CkDisplayTypeClass;
++
++GType                 ck_display_type_get_type            (void);
++CkDisplayType       * ck_display_type_new                 (const char      *name);
++G_CONST_RETURN char * ck_display_type_get_name            (CkDisplayType   *display);
++G_CONST_RETURN char * ck_display_type_get_command         (CkDisplayType   *display);
++G_CONST_RETURN char * ck_display_type_get_arguments       (CkDisplayType   *display);
++gboolean              ck_display_type_get_chooser         (CkDisplayType   *display);
++gboolean              ck_display_type_get_use_auth        (CkDisplayType   *display);
++int                   ck_display_type_get_priority        (CkDisplayType   *display);
++
++G_END_DECLS
++
++#endif /* __CK_DISPLAY_TYPE_H */
 diff --git a/src/ck-log-event.c b/src/ck-log-event.c
 index 7e8ce10..398c570 100644
 --- a/src/ck-log-event.c
@@ -133,21 +763,34 @@ index a54a34e..f95fb37 100644
          char    *session_creation_time;
  } CkLogSeatSessionRemovedEvent;
 diff --git a/src/ck-manager.c b/src/ck-manager.c
-index bcb9350..7b85c90 100644
+index bcb9350..62e54b6 100644
 --- a/src/ck-manager.c
 +++ b/src/ck-manager.c
-@@ -64,6 +64,10 @@
- #define CK_MANAGER_DBUS_PATH CK_DBUS_PATH "/Manager"
- #define CK_MANAGER_DBUS_NAME "org.freedesktop.ConsoleKit.Manager"
+@@ -49,6 +49,7 @@
+ #include "ck-manager.h"
+ #include "ck-manager-glue.h"
+ #include "ck-seat.h"
++#include "ck-display-type.h"
+ #include "ck-session-leader.h"
+ #include "ck-session.h"
+ #include "ck-marshal.h"
+@@ -97,6 +98,15 @@ static guint signals [LAST_SIGNAL] = { 0, };
+ static void     ck_manager_class_init  (CkManagerClass *klass);
+ static void     ck_manager_init        (CkManager      *manager);
+ static void     ck_manager_finalize    (GObject        *object);
++static gboolean create_display_with_parameters (CkManager *manager,
++                                                gint32     display_number,
++                                                gint32     seat_number,
++                                                char      *display_type,
++                                                gint32     priority,
++                                                gboolean   is_console,
++                                                char      *tty_device,
++                                                gboolean   is_dynamic,
++                                                char      **id);
  
-+#define GDM_DBUS_NAME                            "org.gnome.DisplayManager"
-+#define GDM_DBUS_LOCAL_DISPLAY_FACTORY_PATH      "/org/gnome/DisplayManager/LocalDisplayFactory"
-+#define GDM_DBUS_LOCAL_DISPLAY_FACTORY_INTERFACE "org.gnome.DisplayManager.LocalDisplayFactory"
-+
- struct CkManagerPrivate
- {
- #ifdef HAVE_POLKIT
-@@ -522,6 +526,7 @@ log_seat_session_added_event (CkManager  *manager,
+ static gpointer manager_object = NULL;
+ 
+@@ -522,6 +532,7 @@ log_seat_session_added_event (CkManager  *manager,
                                "display-device", &event.event.seat_session_added.session_display_device,
                                "remote-host-name", &event.event.seat_session_added.session_remote_host_name,
                                "is-local", &event.event.seat_session_added.session_is_local,
@@ -155,7 +798,7 @@ index bcb9350..7b85c90 100644
                                "unix-user", &event.event.seat_session_added.session_unix_user,
                                NULL);
                  ck_session_get_creation_time (session, &event.event.seat_session_added.session_creation_time, NULL);
-@@ -577,6 +582,7 @@ log_seat_session_removed_event (CkManager  *manager,
+@@ -577,6 +588,7 @@ log_seat_session_removed_event (CkManager  *manager,
                                "display-device", &event.event.seat_session_removed.session_display_device,
                                "remote-host-name", &event.event.seat_session_removed.session_remote_host_name,
                                "is-local", &event.event.seat_session_removed.session_is_local,
@@ -163,7 +806,7 @@ index bcb9350..7b85c90 100644
                                "unix-user", &event.event.seat_session_removed.session_unix_user,
                                NULL);
                  ck_session_get_creation_time (session, &event.event.seat_session_removed.session_creation_time, NULL);
-@@ -779,6 +785,7 @@ new_polkit_session_from_session (CkManager *manager,
+@@ -779,6 +791,7 @@ new_polkit_session_from_session (CkManager *manager,
          uid_t          uid;
          gboolean       is_active;
          gboolean       is_local;
@@ -171,7 +814,7 @@ index bcb9350..7b85c90 100644
          char          *sid;
          char          *ssid;
          char          *remote_host;
-@@ -792,6 +799,7 @@ new_polkit_session_from_session (CkManager *manager,
+@@ -792,6 +805,7 @@ new_polkit_session_from_session (CkManager *manager,
          g_object_get (ck_session,
                        "active", &is_active,
                        "is-local", &is_local,
@@ -179,7 +822,149 @@ index bcb9350..7b85c90 100644
                        "id", &ssid,
                        "unix-user", &uid,
                        "remote-host-name", &remote_host,
-@@ -2660,6 +2668,147 @@ ck_manager_get_sessions (CkManager  *manager,
+@@ -1596,57 +1610,63 @@ find_seat_for_session (CkManager *manager,
+                        CkSession *session)
+ {
+         CkSeat  *seat;
+-        gboolean is_static_x11;
+-        gboolean is_static_text;
+-        char    *display_device;
+-        char    *x11_display_device;
+-        char    *x11_display;
+-        char    *remote_host_name;
+-        gboolean is_local;
+-
+-        is_static_text = FALSE;
+-        is_static_x11 = FALSE;
+-
+-        seat = NULL;
+-        display_device = NULL;
+-        x11_display_device = NULL;
+-        x11_display = NULL;
+-        remote_host_name = NULL;
+-        is_local = FALSE;
+-
+-        /* FIXME: use matching to group entries? */
+-
+-        ck_session_get_display_device (session, &display_device, NULL);
+-        ck_session_get_x11_display_device (session, &x11_display_device, NULL);
+-        ck_session_get_x11_display (session, &x11_display, NULL);
+-        ck_session_get_remote_host_name (session, &remote_host_name, NULL);
+-        ck_session_is_local (session, &is_local, NULL);
+-
+-        if (IS_STR_SET (x11_display)
+-            && IS_STR_SET (x11_display_device)
+-            && ! IS_STR_SET (remote_host_name)
+-            && is_local == TRUE) {
+-                is_static_x11 = TRUE;
+-        } else if (! IS_STR_SET (x11_display)
+-                   && ! IS_STR_SET (x11_display_device)
+-                   && IS_STR_SET (display_device)
+-                   && ! IS_STR_SET (remote_host_name)
+-                   && is_local == TRUE) {
+-                is_static_text = TRUE;
+-        }
+-
+-        if (is_static_x11 || is_static_text) {
+-                char *sid;
+-                sid = g_strdup_printf ("%s/Seat%u", CK_DBUS_PATH, 1);
+-                seat = g_hash_table_lookup (manager->priv->seats, sid);
+-                g_free (sid);
++        char    *sid = NULL;
++
++        ck_session_get_seat_id (session, &sid, NULL);
++
++        if (! IS_STR_SET (sid)) {
++
++                /* FIXME: use matching to group entries? */
++                gboolean is_static_x11;
++                gboolean is_static_text;
++                char    *display_device;
++                char    *x11_display_device;
++                char    *x11_display;
++                char    *remote_host_name;
++                gboolean is_local;
++
++                is_static_text = FALSE;
++                is_static_x11 = FALSE;
++
++
++                seat = NULL;
++                display_device = NULL;
++                x11_display_device = NULL;
++                x11_display = NULL;
++                remote_host_name = NULL;
++                is_local = FALSE;
++
++                ck_session_get_display_device (session, &display_device, NULL);
++                ck_session_get_x11_display_device (session, &x11_display_device, NULL);
++                ck_session_get_x11_display (session, &x11_display, NULL);
++                ck_session_get_remote_host_name (session, &remote_host_name, NULL);
++                ck_session_is_local (session, &is_local, NULL);
++
++                if (IS_STR_SET (x11_display)
++                    && IS_STR_SET (x11_display_device)
++                    && ! IS_STR_SET (remote_host_name)
++                    && is_local == TRUE) {
++                        is_static_x11 = TRUE;
++                } else if (! IS_STR_SET (x11_display)
++                           && ! IS_STR_SET (x11_display_device)
++                           && IS_STR_SET (display_device)
++                           && ! IS_STR_SET (remote_host_name)
++                           && is_local == TRUE) {
++                        is_static_text = TRUE;
++                }
++
++                if (is_static_x11 || is_static_text) {
++                        sid = g_strdup_printf ("%s/Seat%u", CK_DBUS_PATH, 1);
++                }
++                g_free (display_device);
++                g_free (x11_display_device);
++                g_free (x11_display);
++                g_free (remote_host_name);
+         }
+ 
+-        g_free (display_device);
+-        g_free (x11_display_device);
+-        g_free (x11_display);
+-        g_free (remote_host_name);
++        seat = g_hash_table_lookup (manager->priv->seats, sid);
+ 
++        g_free (sid);
+         return seat;
+ }
+ 
+@@ -2146,6 +2166,29 @@ ck_manager_get_current_session (CkManager             *manager,
+         return res;
+ }
+ 
++static void
++_create_static_displays_per_seat (gpointer key,
++                                  gpointer value,
++                                  gpointer user_data)
++{
++        ck_seat_create_static_sessions (CK_SEAT (value));
++}
++
++/*
++  Example:
++  dbus-send --system --dest=org.freedesktop.ConsoleKit \
++  --type=method_call --print-reply --reply-timeout=2000 \
++  /org/freedesktop/ConsoleKit/Manager \
++  org.freedesktop.ConsoleKit.Manager.CreateStaticSessions
++*/
++gboolean
++ck_manager_create_static_sessions (CkManager             *manager,
++                                   DBusGMethodInvocation *context)
++{
++        g_hash_table_foreach (manager->priv->seats, _create_static_displays_per_seat, NULL);
++        return TRUE;
++}
++
+ gboolean
+ ck_manager_open_session (CkManager             *manager,
+                          DBusGMethodInvocation *context)
+@@ -2660,6 +2703,159 @@ ck_manager_get_sessions (CkManager  *manager,
          return TRUE;
  }
  
@@ -189,56 +974,60 @@ index bcb9350..7b85c90 100644
 +  --type=method_call --print-reply --reply-timeout=2000 \
 +  /org/freedesktop/ConsoleKit/Manager \
 +  org.freedesktop.ConsoleKit.Manager.CreateSession \
-+  int32:101 string:"/usr/X11/bin/Xvfb"
++  int32:101 string:"Headless" string:"/dev/local"
 +*/
 +gboolean
-+ck_manager_create_session (CkManager             *manager,
-+                           gint32                 display_number,
-+                           char                  *xserver_command,
-+                           char                 **id,
-+                           DBusGMethodInvocation *context)
++ck_manager_create_session (CkManager              *manager,
++                           gint32                  display_number,
++                           char                   *display_type,
++                           char                   *tty_device,
++                           char                  **id,
++                           DBusGMethodInvocation  *context)
 +{
-+        DBusGProxy      *proxy;
-+        gboolean         ret = TRUE;
-+        GError          *error = NULL;
++        CkSeat        *seat;
 +
-+        g_return_val_if_fail (CK_IS_MANAGER (manager), FALSE);
-+        g_return_val_if_fail (xserver_command != NULL, FALSE);
++        seat = add_new_seat (manager, CK_SEAT_KIND_DYNAMIC);
 +
-+        proxy = dbus_g_proxy_new_for_name (manager->priv->connection,
-+                                           GDM_DBUS_NAME,
-+                                           GDM_DBUS_LOCAL_DISPLAY_FACTORY_PATH,
-+                                           GDM_DBUS_LOCAL_DISPLAY_FACTORY_INTERFACE);
-+        if (proxy == NULL) {
-+                g_critical ("error getting %s proxy",
-+                            GDM_DBUS_LOCAL_DISPLAY_FACTORY_INTERFACE);
++        ck_seat_set_display_type (seat, display_type);
++
++        ck_seat_add_display (seat, display_number, TRUE, tty_device);
++
++        ck_seat_create_dynamic_sessions (seat);
++
++        ck_seat_get_display_id (seat, display_number, id);
++
++        return TRUE;
++}
++
++static gboolean
++_find_session_with_num (gpointer key,
++                        gpointer value,
++                        gpointer user_data)
++{
++        CkSession *session = CK_SESSION (value);
++        char      *x11_display = NULL;
++        gboolean  is_dynamic = FALSE;
++        int       *num = (int *) user_data;
++        char      *str = NULL;
++        gboolean   ret;
++
++        g_object_get (session, "is-dynamic", &is_dynamic, NULL);
++
++        if (is_dynamic == FALSE)
++                return FALSE;
++
++        g_object_get (session, "x11-display", &x11_display, NULL);
++
++        if (! IS_STR_SET (x11_display)) {
++                g_free (x11_display);
 +                return FALSE;
 +        }
 +
-+        error = NULL;
-+        ret = dbus_g_proxy_call (proxy,
-+                                 "CreateDynamicDisplay",
-+                                 &error,
-+                                 G_TYPE_INT, display_number,
-+                                 G_TYPE_STRING, xserver_command,
-+                                 G_TYPE_INVALID,
-+                                 DBUS_TYPE_G_OBJECT_PATH, id,
-+                                 G_TYPE_INVALID);
-+        if (!ret) {
-+                if (error != NULL) {
-+                        g_critical ("error creating dynamic display(%d=%s): %s",
-+                                    display_number,
-+                                    xserver_command,
-+                                    error->message);
-+                        g_error_free (error);
-+                } else {
-+                        g_critical ("error creating dynamic display(%d=%s)",
-+                                    display_number,
-+                                    xserver_command);
-+                }
-+        }
++        str = g_strdup_printf (":%d", *num);
++        ret = g_str_equal (x11_display, str);
 +
-+        g_object_unref (proxy);
++        g_free (x11_display);
++        g_free (str);
 +
 +        return ret;
 +}
@@ -258,8 +1047,16 @@ index bcb9350..7b85c90 100644
 +{
 +        DBusGProxy *proxy;
 +        gboolean    ret = TRUE;
++        gpointer    value = NULL;
 +
 +        g_return_val_if_fail (CK_IS_MANAGER (manager), FALSE);
++
++        /* Make sure this display_number is avail and is-dynamic == TRUE */
++        value = g_hash_table_find (manager->priv->sessions, _find_session_with_num, &display_number);
++
++        if (value == NULL) {
++                return FALSE;
++        }
 +
 +        proxy = dbus_g_proxy_new_for_name (manager->priv->connection,
 +                                           GDM_DBUS_NAME,
@@ -272,7 +1069,7 @@ index bcb9350..7b85c90 100644
 +        }
 +
 +        dbus_g_proxy_call_no_reply (proxy,
-+                                    "RemoveDynamicDisplay",
++                                    "RemoveDisplay",
 +                                    G_TYPE_INT, display_number,
 +                                    G_TYPE_INVALID,
 +                                    G_TYPE_INVALID);
@@ -327,18 +1124,38 @@ index bcb9350..7b85c90 100644
  static void
  add_seat_for_file (CkManager  *manager,
                     const char *filename)
+@@ -2673,6 +2869,7 @@ add_seat_for_file (CkManager  *manager,
+         if (seat == NULL) {
+                 /* returns null if connection to bus fails */
+                 g_free (sid);
++                manager->priv->seat_serial--;
+                 return;
+         }
+ 
 diff --git a/src/ck-manager.h b/src/ck-manager.h
-index 45910b7..afcad15 100644
+index 45910b7..32e57ac 100644
 --- a/src/ck-manager.h
 +++ b/src/ck-manager.h
-@@ -122,6 +122,19 @@ gboolean            ck_manager_get_system_idle_since_hint     (CkManager
- gboolean            ck_manager_open_session_with_parameters   (CkManager             *manager,
+@@ -83,6 +83,10 @@ gboolean            ck_manager_restart                        (CkManager
+                                                                DBusGMethodInvocation *context);
+ 
+ /* Authoritative properties */
++gboolean            ck_manager_create_static_sessions         (CkManager             *manager,
++                                                               DBusGMethodInvocation *context);
++
++
+ gboolean            ck_manager_open_session                   (CkManager             *manager,
+                                                                DBusGMethodInvocation *context);
+ gboolean            ck_manager_get_sessions                   (CkManager             *manager,
+@@ -123,6 +127,23 @@ gboolean            ck_manager_open_session_with_parameters   (CkManager
                                                                 const GPtrArray       *parameters,
                                                                 DBusGMethodInvocation *context);
+ 
 +/* Dynamic related */
 +gboolean            ck_manager_create_session                 (CkManager             *manager,
 +                                                               gint32                 display_number,
-+                                                               char                  *xserver_command,
++                                                               char                  *display_type,
++                                                               char                  *tty_device,
 +                                                               char                 **id,
 +                                                               DBusGMethodInvocation *context);
 +gboolean            ck_manager_remove_session                 (CkManager             *manager,
@@ -348,11 +1165,441 @@ index 45910b7..afcad15 100644
 +                                                               char                 **session_list,
 +                                                               DBusGMethodInvocation *context);
 +
++
++
++
+ G_END_DECLS
+ 
+ #endif /* __CK_MANAGER_H */
+diff --git a/src/ck-seat.c b/src/ck-seat.c
+index c2f70da..8f8a6df 100644
+--- a/src/ck-seat.c
++++ b/src/ck-seat.c
+@@ -40,6 +40,7 @@
+ #include "ck-seat-glue.h"
+ #include "ck-marshal.h"
+ 
++#include "ck-display-type.h"
+ #include "ck-session.h"
+ #include "ck-vt-monitor.h"
+ #include "ck-run-programs.h"
+@@ -51,10 +52,20 @@
+ 
+ #define NONULL_STRING(x) ((x) != NULL ? (x) : "")
+ 
++typedef struct
++{
++        gint      num;
++        gboolean  dynamic;
++        char     *tty_device;
++        char     *display_id;
++} DisplayData;
++
+ struct CkSeatPrivate
+ {
+         char            *id;
+         CkSeatKind       kind;
++        CkDisplayType   *display_type;
++        GSList          *displays; /* display_number - tty_device pair */
+         GHashTable      *sessions;
+         GPtrArray       *devices;
+ 
+@@ -300,6 +311,147 @@ ck_seat_activate_session (CkSeat                *seat,
+         return ret;
+ }
+ 
++static void
++_create_display (gpointer data,
++                 gpointer user_data)
++{
++        CkSeat      *seat = CK_SEAT (user_data);
++        DisplayData *disp = (DisplayData *)data;
++        DBusGProxy  *proxy;
++        gboolean     ret = TRUE;
++        GError      *error = NULL;
++
++        proxy = dbus_g_proxy_new_for_name (seat->priv->connection,
++                                           GDM_DBUS_NAME,
++                                           GDM_DBUS_LOCAL_DISPLAY_FACTORY_PATH,
++                                           GDM_DBUS_LOCAL_DISPLAY_FACTORY_INTERFACE);
++        if (proxy == NULL) {
++                g_critical ("error getting %s proxy",
++                            GDM_DBUS_LOCAL_DISPLAY_FACTORY_INTERFACE);
++                return;
++        }
++
++        error = NULL;
++        g_free (disp->display_id);
++        ret = dbus_g_proxy_call (proxy,
++                                 "CreateDisplay",
++                                 &error,
++                                 G_TYPE_STRING, seat->priv->id,
++                                 G_TYPE_INT, disp->num,
++                                 G_TYPE_STRING, ck_display_type_get_command (seat->priv->display_type) ? ck_display_type_get_command (seat->priv->display_type) : "",
++                                 G_TYPE_STRING, ck_display_type_get_arguments (seat->priv->display_type) ? ck_display_type_get_arguments (seat->priv->display_type) : "",
++                                 G_TYPE_BOOLEAN, ck_display_type_get_chooser (seat->priv->display_type),
++                                 G_TYPE_BOOLEAN, ck_display_type_get_use_auth (seat->priv->display_type),
++                                 G_TYPE_INT, ck_display_type_get_priority (seat->priv->display_type),
++                                 G_TYPE_STRING, disp->tty_device ? disp->tty_device : "",
++                                 G_TYPE_BOOLEAN, disp->dynamic,
++                                 G_TYPE_INVALID,
++                                 DBUS_TYPE_G_OBJECT_PATH, &disp->display_id,
++                                 G_TYPE_INVALID);
++
++        if (!ret) {
++                if (error != NULL) {
++                        g_critical ("error creating static display (--num=%d ): %s",
++                                    disp->num,
++                                    error->message);
++                        g_error_free (error);
++                } else {
++                        g_critical ("error creating display (--num=%d)",
++                                    disp->num);
++                }
++        }
++
++        g_object_unref (proxy);
++
++}
++
++static void
++_create_static_display (gpointer data,
++                        gpointer user_data)
++{
++        DisplayData *disp = (DisplayData *)data;
++
++        if (disp->dynamic == TRUE)
++                return;
++        
++        _create_display (data, user_data);
++}
++
++static void
++_create_dynamic_display (gpointer data,
++                         gpointer user_data)
++{
++        DisplayData *disp = (DisplayData *)data;
++
++        if (disp->dynamic == FALSE)
++                return;
++        
++        _create_display (data, user_data);
++}
++
++gboolean
++ck_seat_create_static_sessions (CkSeat *seat)
++{
++        g_slist_foreach (seat->priv->displays, _create_static_display, seat);
++        return TRUE;
++}
++
++gboolean
++ck_seat_create_dynamic_sessions (CkSeat *seat)
++{
++        g_slist_foreach (seat->priv->displays, _create_dynamic_display, seat);
++        return TRUE;
++}
++
++gboolean
++ck_seat_add_display (CkSeat     *seat,
++                     int         num,
++                     gboolean    dynamic,
++                     const char *tty)
++{
++        DisplayData *disp;
++
++        disp = g_new0 (DisplayData, 1);
++
++        disp->num = num;
++        disp->dynamic = dynamic;
++        disp->tty_device = g_strdup (tty);
++        
++        seat->priv->displays = g_slist_append (seat->priv->displays, disp);
++}
++
++gboolean
++ck_seat_set_display_type (CkSeat *seat,
++                          char   *type)
++{
++        g_object_unref (seat->priv->display_type);
++        seat->priv->display_type = ck_display_type_new (type);
++}
++
++gboolean
++ck_seat_get_display_id (CkSeat  *seat,
++                        int      num,
++                        char   **id)
++{
++        int i, len;
++        DisplayData *disp;
++
++        len = g_slist_length (seat->priv->displays);
++
++        for (i = 0; i < len; i++) {
++
++                disp = (DisplayData *) g_slist_nth_data (seat->priv->displays, i);
++
++                if (disp->num == num) {
++                        g_free (*id);
++                        *id = g_strdup (disp->display_id);
++                        break;
++                }
++
++        }
++
++}
++
+ static gboolean
+ match_session_display_device (const char *key,
+                               CkSession  *session,
+@@ -871,7 +1023,7 @@ ck_seat_get_property (GObject    *object,
+                 g_value_set_string (value, self->priv->id);
+                 break;
+         case PROP_KIND:
+-                g_value_set_string (value, self->priv->id);
++                g_value_set_enum (value, self->priv->kind);
+                 break;
+         default:
+                 G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+@@ -989,6 +1141,17 @@ ck_seat_init (CkSeat *seat)
+                                                       g_free,
+                                                       (GDestroyNotify) g_object_unref);
+         seat->priv->devices = g_ptr_array_new ();
++        seat->priv->displays = NULL;
++}
++
++static void
++free_display_data (gpointer data,
++                   gpointer user_data)
++{
++        DisplayData *disp = (DisplayData *)data;
++
++        g_free (disp->tty_device);
++        g_free (disp->display_id);
+ }
+ 
+ static void
+@@ -1011,9 +1174,13 @@ ck_seat_finalize (GObject *object)
+                 g_object_unref (seat->priv->active_session);
+         }
+ 
++        g_slist_foreach (seat->priv->displays, free_display_data, NULL);
++        g_slist_free (seat->priv->displays);
++
+         g_ptr_array_free (seat->priv->devices, TRUE);
+         g_hash_table_destroy (seat->priv->sessions);
+         g_free (seat->priv->id);
++        g_object_unref (seat->priv->display_type);
+ 
+         G_OBJECT_CLASS (ck_seat_parent_class)->finalize (object);
+ }
+@@ -1068,20 +1235,79 @@ ck_seat_new_with_devices (const char *sid,
+         return CK_SEAT (object);
+ }
+ 
++static gboolean
++is_VT_enabled ()
++{
++#ifdef __sun
++        static int vt_enabled = -1; // -1 means this function is not called.
++        if (vt_enabled == -1)
++                vt_enabled = TRUE;
++        //        vt_enabled = smf_checking_vt_daemon();
++        return vt_enabled == 1 ? TRUE : FALSE;
++#else
++        return TRUE;
++#endif
++}
++
++static char *
++generate_new_tty_device (gboolean is_console,
++                         gint     vt)
++{
++        char *res = NULL;
++#ifdef __sun
++        if (is_VT_enabled ()) {
++                if (vt <= 0) {
++                        /* if negative or zero means choose next available vt */
++                        res = NULL;
++                } else {
++                        /* Linux and Solaris using different vt device name */
++                        res = g_strdup_printf ("/dev/vt/%d", vt);
++                }
++        } else {
++                /* On Solaris, vt can be disabled running
++                         "svcadm disable vtdaemon"
++                   If vt is disabled, only one display is allowed use
++                  "/dev/console" as tty_device, other local displays should be 
++                  "/dev/dtlocal". If multiple displas are configured as
++                  IsConsole=true, then we follow the following rules:
++                  1) display ":0" always win 
++                  2) if display ":0" not set, we choose the met first display 
++                  This is decided on GDM side.
++                */
++                if (is_console)
++                        res = g_strdup ("/dev/console");
++                else
++                        res = g_strdup ("/dev/dtlocal");
++        }
++
++#else
++        res = g_strdup_printf ("vt%d", vt);
++#endif
++        return res;
++}
++
+ CkSeat *
+ ck_seat_new_from_file (const char *sid,
+                        const char *path)
+ {
+-        GKeyFile  *key_file;
+-        gboolean   res;
+-        GError    *error;
+-        char      *group;
+-        CkSeat    *seat;
+-        gboolean   hidden;
+-        GPtrArray *devices;
+-        char     **device_list;
+-        gsize      ndevices;
+-        gsize      i;
++        GKeyFile      *key_file;
++        gboolean       res;
++        GError        *error;
++        char          *group;
++        CkSeat        *seat;
++        gboolean       hidden;
++        char          *str;
++        CkDisplayType *display_type;
++        GPtrArray     *devices;
++        char         **device_list;
++        gsize          ndevices;
++        gint          *disp_num_list;
++        gsize          ndisp_num;
++        gboolean      *is_console_list;
++        gsize          nis_console;
++        gint          *tty_device_list;
++        gsize          ntty_device;
++        gsize          i;
+ 
+         key_file = g_key_file_new ();
+         error = NULL;
+@@ -1107,6 +1333,45 @@ ck_seat_new_from_file (const char *sid,
+                 return NULL;
+         }
+ 
++        error = NULL;
++        str = g_key_file_get_string (key_file, group, "DisplayType", &error);
++        if (error) {
++                g_warning ("Unable to load key DisplayType in seat file: %s", path, error->message);
++                g_error_free (error);
++                return NULL;
++        }
++        display_type = ck_display_type_new (str);
++        g_free (str);
++
++        if (!display_type) {
++                g_debug ("Invalid DisplayType in seat file %s", path);
++                return NULL;
++        }
++
++        error = NULL;
++        disp_num_list = g_key_file_get_integer_list (key_file, group, "DisplayNumbers", &ndisp_num, &error);
++        if (!disp_num_list) {
++                g_warning ("Unable to load key DisplayNumbers in seat file %s: %s", path, error->message);
++                g_error_free (error);
++                return NULL;
++        }
++
++        error = NULL;
++        is_console_list = g_key_file_get_boolean_list (key_file, group, "IsConsoles", &nis_console, &error);
++        if (!is_console_list) {
++                g_warning ("Unable to load key IsConsoles in seat file %s: %s", path, error->message);
++                g_error_free (error);
++                return NULL;
++        }
++
++        /* Make sure the numbers of DisplayNumbers, IsConsoles and TtyDevices are same */
++        if (ndisp_num != nis_console ) {
++                g_debug ("Unmatched DisplayNumbers, IsConsoles in seat file %s", path);
++                return NULL;
++        }
++
++        tty_device_list = g_key_file_get_integer_list (key_file, group, "TtyDevices", &ntty_device, NULL);
++
+         device_list = g_key_file_get_string_list (key_file, group, "Devices", &ndevices, NULL);
+ 
+         g_debug ("Creating seat %s with %d devices", sid, ndevices);
+@@ -1137,13 +1402,33 @@ ck_seat_new_from_file (const char *sid,
+ 
+                 g_strfreev (split);
+         }
++        g_strfreev (device_list);
+ 
+-        g_free (group);
+ 
+         seat = ck_seat_new_with_devices (sid, CK_SEAT_KIND_STATIC, devices);
+-
+         g_ptr_array_free (devices, TRUE);
+ 
++        g_debug ("Setting seat %s with DisplayType=%s", sid, str);
++        seat->priv->display_type = display_type;
++
++        for (i = 0; i < ndisp_num; i++) {
++
++                DisplayData  *disp;
++
++                disp = g_new0 (DisplayData, 1);
++                disp->num = -1;
++
++                disp->num = disp_num_list[i];
++                disp->dynamic = FALSE;
++                disp->tty_device = generate_new_tty_device (is_console_list[i],
++                                                            tty_device_list ? tty_device_list[i]:-1);
++                
++                seat->priv->displays = g_slist_append (seat->priv->displays, disp);
++                
++        }
++
++        g_free (group);
++
+         return seat;
+ }
+ 
+diff --git a/src/ck-seat.h b/src/ck-seat.h
+index 5977781..394168e 100644
+--- a/src/ck-seat.h
++++ b/src/ck-seat.h
+@@ -81,6 +81,10 @@ typedef enum
+                                                 G_TYPE_STRING,          \
+                                                 G_TYPE_INVALID))
+ 
++#define GDM_DBUS_NAME                            "org.gnome.DisplayManager"
++#define GDM_DBUS_LOCAL_DISPLAY_FACTORY_PATH      "/org/gnome/DisplayManager/LocalDisplayFactory"
++#define GDM_DBUS_LOCAL_DISPLAY_FACTORY_INTERFACE "org.gnome.DisplayManager.LocalDisplayFactory"
++
+ GQuark              ck_seat_error_quark         (void);
+ GType               ck_seat_get_type            (void);
+ CkSeat            * ck_seat_new                 (const char            *sid,
+@@ -133,6 +137,17 @@ gboolean            ck_seat_can_activate_sessions (CkSeat                *seat,
+ gboolean            ck_seat_activate_session      (CkSeat                *seat,
+                                                    const char            *ssid,
+                                                    DBusGMethodInvocation *context);
++gboolean            ck_seat_create_static_sessions  (CkSeat                *seat);
++gboolean            ck_seat_create_dynamic_sessions (CkSeat                *seat);
++gboolean            ck_seat_add_display           (CkSeat                *seat,
++                                                   int                    num,
++                                                   gboolean               dynamic,
++                                                   const char            *tty);
++gboolean            ck_seat_set_display_type      (CkSeat                *seat,
++                                                   char                  *type);
++gboolean            ck_seat_get_display_id        (CkSeat                *seat,
++                                                   int                    num,
++                                                   char                 **id);
  
  G_END_DECLS
  
 diff --git a/src/ck-session.c b/src/ck-session.c
-index 8ba8791..865cc59 100644
+index 8ba8791..fb992e1 100644
 --- a/src/ck-session.c
 +++ b/src/ck-session.c
 @@ -67,6 +67,7 @@ struct CkSessionPrivate
@@ -363,7 +1610,15 @@ index 8ba8791..865cc59 100644
  
          GTimeVal         creation_time;
  
-@@ -101,6 +102,7 @@ enum {
+@@ -92,6 +93,7 @@ enum {
+         PROP_0,
+         PROP_ID,
+         PROP_COOKIE,
++        PROP_SEAT_ID,
+         PROP_USER,
+         PROP_UNIX_USER,
+         PROP_X11_DISPLAY,
+@@ -101,6 +103,7 @@ enum {
          PROP_REMOTE_HOST_NAME,
          PROP_LOGIN_SESSION_ID,
          PROP_IS_LOCAL,
@@ -371,7 +1626,7 @@ index 8ba8791..865cc59 100644
          PROP_ACTIVE,
          PROP_IDLE_HINT,
  };
-@@ -421,6 +423,20 @@ ck_session_set_is_local (CkSession      *session,
+@@ -421,6 +424,20 @@ ck_session_set_is_local (CkSession      *session,
  }
  
  gboolean
@@ -392,7 +1647,7 @@ index 8ba8791..865cc59 100644
  ck_session_get_id (CkSession      *session,
                     char          **id,
                     GError        **error)
-@@ -598,6 +614,20 @@ ck_session_is_local (CkSession      *session,
+@@ -598,6 +615,20 @@ ck_session_is_local (CkSession      *session,
  }
  
  gboolean
@@ -413,7 +1668,7 @@ index 8ba8791..865cc59 100644
  ck_session_set_id (CkSession      *session,
                     const char     *id,
                     GError        **error)
-@@ -743,6 +773,9 @@ ck_session_set_property (GObject            *object,
+@@ -743,12 +774,18 @@ ck_session_set_property (GObject            *object,
          case PROP_IS_LOCAL:
                  ck_session_set_is_local (self, g_value_get_boolean (value), NULL);
                  break;
@@ -423,7 +1678,16 @@ index 8ba8791..865cc59 100644
          case PROP_ID:
                  ck_session_set_id (self, g_value_get_string (value), NULL);
                  break;
-@@ -799,6 +832,9 @@ ck_session_get_property (GObject    *object,
+         case PROP_COOKIE:
+                 ck_session_set_cookie (self, g_value_get_string (value), NULL);
+                 break;
++        case PROP_SEAT_ID:
++                ck_session_set_seat_id (self, g_value_get_string (value), NULL);
++                break;
+         case PROP_SESSION_TYPE:
+                 ck_session_set_session_type (self, g_value_get_string (value), NULL);
+                 break;
+@@ -799,12 +836,18 @@ ck_session_get_property (GObject    *object,
          case PROP_IS_LOCAL:
                  g_value_set_boolean (value, self->priv->is_local);
                  break;
@@ -433,7 +1697,16 @@ index 8ba8791..865cc59 100644
          case PROP_ID:
                  g_value_set_string (value, self->priv->id);
                  break;
-@@ -988,6 +1024,13 @@ ck_session_class_init (CkSessionClass *klass)
+         case PROP_COOKIE:
+                 g_value_set_string (value, self->priv->cookie);
+                 break;
++        case PROP_SEAT_ID:
++                g_value_set_string (value, self->priv->seat_id);
++                break;
+         case PROP_SESSION_TYPE:
+                 g_value_set_string (value, self->priv->session_type);
+                 break;
+@@ -988,6 +1031,13 @@ ck_session_class_init (CkSessionClass *klass)
                                                                 TRUE,
                                                                 G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
          g_object_class_install_property (object_class,
@@ -447,7 +1720,21 @@ index 8ba8791..865cc59 100644
                                           PROP_ID,
                                           g_param_spec_string ("id",
                                                                "id",
-@@ -1281,6 +1324,7 @@ ck_session_run_programs (CkSession  *session,
+@@ -1001,6 +1051,13 @@ ck_session_class_init (CkSessionClass *klass)
+                                                               "cookie",
+                                                               NULL,
+                                                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
++        g_object_class_install_property (object_class,
++                                         PROP_SEAT_ID,
++                                         g_param_spec_string ("seat-id",
++                                                              "seat id",
++                                                              "seat id",
++                                                              NULL,
++                                                              G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
+ 
+         g_object_class_install_property (object_class,
+                                          PROP_SESSION_TYPE,
+@@ -1281,6 +1338,7 @@ ck_session_run_programs (CkSession  *session,
          }
          extra_env[n++] = g_strdup_printf ("CK_SESSION_IS_ACTIVE=%s", session->priv->active ? "true" : "false");
          extra_env[n++] = g_strdup_printf ("CK_SESSION_IS_LOCAL=%s", session->priv->is_local ? "true" : "false");
@@ -455,7 +1742,7 @@ index 8ba8791..865cc59 100644
          extra_env[n++] = NULL;
  
          ck_run_programs (SYSCONFDIR "/ConsoleKit/run-session.d", action, extra_env);
-@@ -1350,6 +1394,7 @@ ck_session_dump (CkSession *session,
+@@ -1350,6 +1408,7 @@ ck_session_dump (CkSession *session,
                                 NONULL_STRING (session->priv->remote_host_name));
          g_key_file_set_boolean (key_file, group_name, "is_active", session->priv->active);
          g_key_file_set_boolean (key_file, group_name, "is_local", session->priv->is_local);
@@ -488,22 +1775,36 @@ index c9ebd08..c288745 100644
                                                         guint                 *uid,
                                                         GError               **error);
 diff --git a/src/org.freedesktop.ConsoleKit.Manager.xml b/src/org.freedesktop.ConsoleKit.Manager.xml
-index f405c25..a661f28 100644
+index f405c25..b787491 100644
 --- a/src/org.freedesktop.ConsoleKit.Manager.xml
 +++ b/src/org.freedesktop.ConsoleKit.Manager.xml
-@@ -300,6 +300,38 @@
+@@ -300,6 +300,72 @@
        </doc:doc>
      </method>
  
++    <method name="CreateStaticSessions">
++      <doc:doc>
++        <doc:description>
++          <doc:para>Start to create sessions defined in /etc/ConsoleKit/statdic-displays.conf
++          </doc:para>
++        </doc:description>
++      </doc:doc>
++    </method>
++
 +    <method name="CreateSession">
 +      <arg name="display_number" type="i" direction="in">
 +        <doc:doc>
 +          <doc:summary>The display number</doc:summary>
 +        </doc:doc>
 +      </arg>
-+      <arg name="xserver_command" type="s" direction="in">
++      <arg name="display_type" type="s" direction="in">
 +        <doc:doc>
-+          <doc:summary>The xserver command</doc:summary>
++          <doc:summary>The seat type</doc:summary>
++        </doc:doc>
++      </arg>
++      <arg name="tty_device" type="s" direction="in">
++        <doc:doc>
++          <doc:summary>The tty device</doc:summary>
 +        </doc:doc>
 +      </arg>
 +      <arg name="id" type="s" direction="out">
@@ -511,20 +1812,40 @@ index f405c25..a661f28 100644
 +          <doc:summary>The created display id</doc:summary>
 +        </doc:doc>
 +      </arg>
++      <doc:doc>
++        <doc:description>
++          <doc:para>This method is to create a dynamic session with given parameters
++          </doc:para>
++        </doc:description>
++      </doc:doc>
 +    </method>
++
 +    <method name="RemoveSession">
 +      <arg name="display_number" type="i" direction="in">
 +        <doc:doc>
 +          <doc:summary>The display number</doc:summary>
 +        </doc:doc>
 +      </arg>
++      <doc:doc>
++        <doc:description>
++          <doc:para>This method is to remove a dynamic session with given display number 
++          </doc:para>
++        </doc:description>
++      </doc:doc>
 +    </method>
++
 +    <method name="ListCreatedSessions">
 +      <arg name="session_list" type="s" direction="out">
 +        <doc:doc>
 +          <doc:summary>The created displays</doc:summary>
 +        </doc:doc>
 +      </arg>
++      <doc:doc>
++        <doc:description>
++          <doc:para>This method is to get a list of created display numbers
++          </doc:para>
++        </doc:description>
++      </doc:doc>
 +    </method>
 +
      <signal name="SeatAdded">
@@ -595,15 +1916,19 @@ index 13c191f..6522e91 100644
  ck_log_system_start_SOURCES =		\
  	ck-log-system-start.c		\
  	$(NULL)
+diff --git a/tools/ck-dynamic b/tools/ck-dynamic
+new file mode 100755
+index 0000000..7c6eabb
+Binary files /dev/null and b/tools/ck-dynamic differ
 diff --git a/tools/ck-dynamic.c b/tools/ck-dynamic.c
 new file mode 100644
-index 0000000..abcff72
+index 0000000..5a660f7
 --- /dev/null
 +++ b/tools/ck-dynamic.c
-@@ -0,0 +1,241 @@
+@@ -0,0 +1,230 @@
 +/* -*- Mode: C; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 8 -*-
 + *
-+ * Copyright (C) 2008 Sun Microsystems, Inc.
++ * Copyright (C) 2009 Sun Microsystems, Inc.
 + *
 + * This program is free software; you can redistribute it and/or
 + * modify it under the terms of the GNU General Public License as
@@ -642,51 +1967,37 @@ index 0000000..abcff72
 +static gboolean
 +create_dynamic_session (DBusGConnection *connection,
 +                        DBusGProxy      *proxy,
-+                        const char      *key)
++                        gint             disp_num,
++                        const char      *disp_type,
++                        const char      *tty)
 +{
-+        gint      disp_num;
-+        char     *p;
-+        char     *xcommand;
-+        char     *id = NULL;
-+        GError   *error = NULL;
-+        gboolean  ret = TRUE;
++        char      *id = NULL;
++        gboolean   ret = TRUE;
++        GError    *error;
 +
-+        if (! g_ascii_isdigit (*key)) {
-+                g_warning ("Invalid display number!");
-+                return FALSE;
-+        }
-+        disp_num = atoi (key);
-+
-+        p = strchr (key, '=');
-+        if (p == NULL || *(p + 1) == 0) {
-+                g_warning  ("No server string\n");
-+                return FALSE;
-+        }
-+        xcommand = p + 1;
-+
-+        ret = dbus_g_proxy_call (proxy, 
++        ret = dbus_g_proxy_call (proxy,
 +                                 "CreateSession", 
 +                                 &error,
 +                                 G_TYPE_INT, disp_num,
-+                                 G_TYPE_STRING, xcommand,
++                                 G_TYPE_STRING, disp_type,
++                                 G_TYPE_STRING, tty,
 +                                 G_TYPE_INVALID,
 +                                 G_TYPE_STRING, &id,
 +                                 G_TYPE_INVALID);
 +        if (!ret) {
-+                if (error) {
-+                         g_warning ("Unable to add dynamic display (%d=%s): %s",
++                if (error->message) {
++                         g_warning ("Unable to add dynamic display %s(:%d): %s",
++                                    disp_type,
 +                                    disp_num,
-+                                    xcommand,
 +                                    error->message);
 +                         g_error_free (error);
 +                } else {
-+                         g_warning ("Unable to add dynamic display (%d=%s)",
-+                                    disp_num,
-+                                    xcommand);
++                         g_warning ("Unable to add dynamic display %s(:%d)",
++                                    disp_type,
++                                    disp_num);
 +                }
 +        }
 +
-+        g_object_unref (proxy);
 +        g_free (id);
 +
 +        return ret;
@@ -695,23 +2006,15 @@ index 0000000..abcff72
 +static gboolean
 +remove_dynamic_session (DBusGConnection *connection,
 +                        DBusGProxy      *proxy,
-+                        const char      *key)
++                        int              disp_num)
 +{
-+        gint     disp_num;
 +        gboolean ret = TRUE;
-+
-+        if (!g_ascii_isdigit (*key)) {
-+                g_warning ("Invalid display number!");
-+                return FALSE;
-+        }
-+        disp_num = atoi (key);
 +
 +        dbus_g_proxy_call_no_reply (proxy, 
 +                                   "RemoveSession", 
 +                                   G_TYPE_INT, disp_num,
 +                                   G_TYPE_INVALID,
 +                                   G_TYPE_INVALID);
-+        g_object_unref (proxy);
 +
 +        return ret;
 +}
@@ -745,17 +2048,7 @@ index 0000000..abcff72
 +                }
 +        }
 +
-+        g_object_unref (proxy);
 +        g_free (disp_list);
-+
-+        return ret;
-+}
-+
-+static gboolean
-+release_all_waiting_sessions (DBusGConnection *connection,
-+                              DBusGProxy      *proxy)
-+{
-+        gboolean  ret = TRUE;
 +
 +        return ret;
 +}
@@ -767,20 +2060,22 @@ index 0000000..abcff72
 +        DBusGProxy      *proxy;
 +        GOptionContext  *ctx;
 +        GError          *error = NULL;
-+        char            *add_params = NULL;
-+        char            *delete_params = NULL;
-+        gboolean         list_disps = FALSE;
-+        gboolean         release = FALSE;
-+        gboolean         verbose = FALSE;
++        gboolean         add = FALSE;
++        gboolean         delete = FALSE;
++        gboolean         list = FALSE;
 +        gboolean         show_version = FALSE;
++        char            *type = NULL;
++        char            *tty = NULL;
++        int              num = -1;
 +        gboolean         res;
 +
 +        GOptionEntry options [] = {
-+                { "add", 'a', 0, G_OPTION_ARG_STRING, &add_params, N_("Add a new display"), N_("display") },
-+                { "delete", 'd', 0, G_OPTION_ARG_STRING, &delete_params, N_("Delete a display"), N_("display") },
-+                { "list", 'l', 0, G_OPTION_ARG_NONE, &list_disps, N_("List all attached displays"), NULL},
-+                { "release", 'r', 0, G_OPTION_ARG_NONE, &release, N_("Release (run) all displays waiting in the DISPLAY_CONFIG state"), NULL},
-+                { "verbose", 'v', 0, G_OPTION_ARG_NONE, &verbose, N_("Verbose mode"), NULL},
++                { "add", 'a', 0, G_OPTION_ARG_NONE, &add, N_("Add a new display"), NULL},
++                { "delete", 'd', 0, G_OPTION_ARG_NONE, &delete, N_("Delete a new display"), NULL},
++                { "list", 'l', 0, G_OPTION_ARG_NONE, &list, N_("List all attached displays"), NULL},
++                { "num", 'n', 0, G_OPTION_ARG_INT, &num, N_("Display number"), NULL},
++                { "type", 't', 0, G_OPTION_ARG_STRING, &type, N_("Display type"), NULL},
++                { "tty", 'T', 0, G_OPTION_ARG_STRING, &tty, N_("Tty device"), NULL},
 +                { "version", 'V', 0, G_OPTION_ARG_NONE, &show_version, N_("Version of this application"), NULL },
 +                { NULL }
 +        };   
@@ -804,6 +2099,26 @@ index 0000000..abcff72
 +
 +        if (show_version) {
 +                g_print ("%s %s\n", argv[0], VERSION);
++                exit (0);
++        }
++
++        if (add && delete) {
++                g_warning ("Can not specify -a and -d at the same time!");
++                exit (1);
++        }
++
++        if (!add  && !delete && !list) {
++                g_warning ("Must specify -a, -d or -l!");
++                exit (1);
++        }
++
++        if (delete && num < 0) {
++                g_warning ("Can not delete a negtive number display (:%d)!", num);
++                exit (1);
++        }
++
++        if (add && (!type || (strlen(type) == 0))) {
++                g_warning ("Invalid display type!");
 +                exit (1);
 +        }
 +
@@ -823,23 +2138,22 @@ index 0000000..abcff72
 +        if (proxy == NULL) {
 +                g_warning ("Failed to create a new proxy, %s", error->message);
 +                g_error_free (error);
-+                return FALSE;
++                exit (1);
 +        }
 +
 +
-+        if (add_params) {
-+                create_dynamic_session (connection, proxy, add_params);
-+        } else if (delete_params) {
-+                remove_dynamic_session (connection, proxy, delete_params);
-+        } else if (list_disps) {
++        if (add) {
++                create_dynamic_session (connection, proxy, num, type, tty);
++        } else if (delete) {
++                remove_dynamic_session (connection, proxy, num);
++        } else if (list) {
 +                list_created_sessions (connection, proxy);
-+        } else if (release) {
-+                release_all_waiting_sessions (connection, proxy);
 +        } else {
 +                g_warning ("Invaild parameters!");
 +                exit (1);
 +        }
 +
++        g_object_unref (proxy);
 +        return 0;
 +}
 diff --git a/tools/list-sessions.c b/tools/list-sessions.c

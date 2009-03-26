@@ -1,3 +1,11 @@
+2009-03-26  Halton Huo <halton.huo@sun.com>
+
+	* SFEconsolekit.spec: Add all files under etc/ConsoleKit/ to %files root
+	* SUNWgnome-display-mgr.spec: Enable patch dynamic-display.diff,
+	  Revert my last testing commit
+	* patches/ConsoleKit-04-ck-dynamic.diff: rework
+	* patches/gdm-04-dynamic-display.diff: rework
+
 2009-03-24  Andras Barna  <andras.barna@gmail.com>
 
 	* SFElibaudioio.spec: IPSize version
