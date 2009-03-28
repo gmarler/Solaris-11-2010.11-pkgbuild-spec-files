@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2007 Sun Microsystems, Inc.
+# Copyright 2009 Sun Microsystems, Inc.
 # This file and all modifications and additions to the pristine
 # package are under the same license as the package itself.
 
@@ -9,7 +9,7 @@
 
 Name:           SFEllgal
 Summary:        Command-line online gallery generator
-Version:        0.13.13
+Version:        0.13.15
 URL:            http://home.gna.org/llgal/
 Source:         http://download.gna.org/llgal/llgal-%{version}.tar.bz2
 Patch1:         llgal-01-solaris-build.diff
@@ -91,5 +91,7 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Sat Mar 28 2009 - halton.huo@sun.com
+- Bump to 0.13.15
 * Wed Sep 12 2007 - nonsea@users.sourceforge.net
 - Initial spec

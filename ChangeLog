@@ -1,3 +1,7 @@
+2009-03-28  Halton Huo <halton.huo@sun.com>
+
+	* SFEllgal.spec: Bump to 0.13.15
+
 2009-03-26  Halton Huo <halton.huo@sun.com>
 
 	* SFEconsolekit.spec: Add all files under etc/ConsoleKit/ to %files root
