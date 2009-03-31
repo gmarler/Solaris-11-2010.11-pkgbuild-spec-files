@@ -1,5 +1,9 @@
 2009-03-31  Brian Cameron  <brian.cameron@sun.com>
 
+	* patches/gdm-06-hide-face-browser.diff: Renumber from 07.
+
+2009-03-31  Brian Cameron  <brian.cameron@sun.com>
+
 	* SUNWgnome-display-mgr.spec, patches/gdm-05-default.diff:  Add
 	  patch which adds support for configuration via /etc/default/login.
 	* patches/gdm-07-hide-face-browser.diff: Update to the latest version
@@ -15,7 +19,8 @@
 
 2009-03-26  Halton Huo <halton.huo@sun.com>
 
-	* SFEconsolekit.spec: Add all files under etc/ConsoleKit/ to %files root
+	* SFEconsolekit.spec: Add all files under etc/ConsoleKit/ to %files
+	  root
 	* SUNWgnome-display-mgr.spec: Enable patch dynamic-display.diff,
 	  Revert my last testing commit
 	* patches/ConsoleKit-04-ck-dynamic.diff: rework
@@ -32,14 +37,12 @@
 
 2009-03-22  Petr Sobotka 	<sobotkap@gmail.com>
 
-	* SFEwesnoth-dev.spec: Bump to 1.6a version, which is new stable release.
-												 But because there were several bug sunCC problems,
-												 I'll keep it in dev spec file, until it will show
-												 as stable enough. Also from this release autotools 
-												 should not be used at all, which is not the case for
-												 this spec file (testing Scons, if there is any cmake 
-												 specialist I would welcome help to get cmake
-												 working;-).    
+	* SFEwesnoth-dev.spec: Bump to 1.6a version, which is new stable
+	  release.  But because there were several bug sunCC problems, I'll
+	  keep it in dev spec file, until it will show as stable enough. Also
+	  from this release autotools should not be used at all, which is not
+	  the case for this spec file (testing Scons, if there is any cmake 
+	  specialist I would welcome help to get cmake working;-).    
 	* patches/wesnoth-10-fixstd.diff:
 	* patches/wesnoth-12-fixmisshpp.diff:
 	* patches/wesnoth-13-fixstd2.diff:
@@ -187,9 +190,10 @@
 	  SFElxpanel.spec, SFElxrandr.spec, SFElxsession-edit.spec,
 	  SFElxsession-lite.spec, SFElxsession.spec, SFEopenbox.spec,
 	  SFEpcmanfm.spec, patches/lxpanel-01-solaris.diff,
-	  patches/lxsession-01-docbook2man.diff, patches/pcmanfm-01-mnttab.diff,
-	  patches/pcmanfm-04-crash.diff: Add the initial specs and patches for
-	  LXDE (Lightweight X11 Desktop Environment).
+	  patches/lxsession-01-docbook2man.diff,
+	  patches/pcmanfm-01-mnttab.diff, patches/pcmanfm-04-crash.diff: Add
+	  the initial specs and patches for LXDE (Lightweight X11 Desktop
+	  Environment).
 
 2009-03-15  Thomas Wagner  <tom68@users.sourceforge.net>
 
@@ -285,7 +289,8 @@
 	  patch4
 	* patches/xf86-input-synaptics-01-alps-tap.diff: Support ALPS hardware
 	  tap
-	* patches/xf86-input-synaptics-02-synclient.diff: Fix crash in synclient
+	* patches/xf86-input-synaptics-02-synclient.diff: Fix crash in
+	  synclient
 	* patches/xf86-input-synaptics-03-alignment.diff: Make shared memory
 	  struct aligned consistently for both 64 and 32-bit
 	* patches/xf86-input-synaptics-04-syndaemon.diff: Prevent signal
@@ -445,7 +450,8 @@
 	  (Build-)Require
 	* encumbered/SFEsox.spec: add contitional SFElibsndfile (Build-)Require
 	* SFElibsamplerate.spec: add contitional SFElibsndfile (Build-)Require
-	* encumbered/SFElame.spec: add contitional SFElibsndfile (Build-)Require
+	* encumbered/SFElame.spec: add contitional SFElibsndfile
+	  (Build-)Require
 	* encumbered/SFEtwolame.spec: add contitional SFElibsndfile
 	  (Build-)Require
 	* SFEoctave.spec: add contitional SFElibsndfile (Build-)Require
@@ -480,7 +486,6 @@
 2009-02-17  Wang Xin  <jedy.wang@sun.com>
 
 	Fix file attribute problem in the spec files.
-
 	* SFEevolution-mapi.spec:
 	* SFElibmapi.spec:
 	* SFEsamba4.spec:
