@@ -37,7 +37,7 @@ Patch4:                  gdm-04-dynamic-display.diff
 # date:2009-03-31 owner:yippi type:feature
 Patch5:                  gdm-05-default.diff
 # date:2008-12-16 owner:yippi type:bug bugid:568323
-Patch7:                  gdm-07-hide-face-browser.diff
+Patch6:                  gdm-07-hide-face-browser.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 
@@ -96,11 +96,9 @@ Requires:                %{name}
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
-# disable dynamic patch for now, since we're working new ways for it, refer to
-# http://wiki.genunix.org/wiki/index.php/design_for_newgdm_consolekit_multiseat_multidisplay
 %patch4 -p1
 %patch5 -p1
-%patch7 -p0
+%patch6 -p0
 
 %build
 export LDFLAGS="%_ldflags"
