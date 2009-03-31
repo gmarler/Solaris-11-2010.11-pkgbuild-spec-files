@@ -18,20 +18,24 @@ Release:                 1
 Source:                  http://download.gnome.org/sources/gdm/2.26/gdm-%{version}.tar.bz2
 Source1:                 gdm.xml
 Source2:                 svc-gdm
-# date:2009-02-13 owner:yippi type:branding
+# date:2009-02-13 owner:yippi type:feature
 Patch1:                  gdm-01-branding.diff
 # Patch1 adds SDTLOGIN interface, which drops the Xserver to user
 # perms rather than running as root, for added security on Solaris.
 # It also adds logindevperm support.  Refer to bug #531651.  My
 # hope is to get logindevperm support upstream.
-# date:2008-05-06 owner:yippi type:bug bugid:531651
+# date:2008-05-06 owner:yippi type:feature bugid:531651
 Patch2:                  gdm-02-sdtlogin-devperm.diff
 # Add ctrun support when running the user session.  Otherwise, any
 # core dump in the user session will cause GDM to restart.
+# date:2008-05-05 owner:yippi type:feature
 Patch3:                  gdm-03-ctrun.diff
 # Manage displays on the fly
-# date:2008-06-03 owner:yippi type:bug bugid:536355
+# date:2008-06-03 owner:yippi type:feature bugid:536355
 Patch4:                  gdm-04-dynamic-display.diff
+# Add support for /etc/default/login configuration.
+# date:2009-03-31 owner:yippi type:feature
+Patch5:                  gdm-05-default.diff
 # date:2008-12-16 owner:yippi type:bug bugid:568323
 Patch7:                  gdm-07-hide-face-browser.diff
 SUNW_BaseDir:            %{_basedir}
@@ -95,7 +99,8 @@ Requires:                %{name}
 # disable dynamic patch for now, since we're working new ways for it, refer to
 # http://wiki.genunix.org/wiki/index.php/design_for_newgdm_consolekit_multiseat_multidisplay
 %patch4 -p1
-%patch7 -p1
+%patch5 -p1
+%patch7 -p0
 
 %build
 export LDFLAGS="%_ldflags"
@@ -313,6 +318,8 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 %endif
 
 %changelog
+* Tue Mar 31 2009 - brian.cameron@sun.com
+- Add support for /etc/default/login via patch gdm-05-default.diff.
 * Thu Mar 26 2009 - halton.huo@sun.com
 - Enable patch dynamic-display.diff
 - Revert my last testing commit

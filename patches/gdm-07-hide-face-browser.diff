@@ -1,592 +1,523 @@
-diff --git a/gui/simple-greeter/gdm-greeter-login-window.c b/gui/simple-greeter/gdm-greeter-login-window.c
-index 01596e8..4359bbc 100644
---- a/gui/simple-greeter/gdm-greeter-login-window.c
-+++ b/gui/simple-greeter/gdm-greeter-login-window.c
-@@ -107,10 +107,44 @@ enum {
-         LOGIN_BUTTON_TIMED_LOGIN
- };
- 
-+/* Whether to show manual username entry by typing, selection from the
-+ * chooser, or both. When the chooser list is empty, SELECTION_TYPE_MANUAL
-+ * is used. When the chooser list is non-empty, the dialog starts with
-+ * SELECTION_TYPE_CHOOSER but moves to SELECTION_TYPE_BOTH if the
-+ * pseudo-user "Other..." is selected from the chooser, and moves back
-+ * to SELECTION_TYPE_CHOOSER if a different user is selected from the
-+ * chooser. */
-+
-+enum {
-+	SELECTION_TYPE_MANUAL = 0,
-+	SELECTION_TYPE_CHOOSER,
-+	SELECTION_TYPE_BOTH
-+};
-+
- struct GdmGreeterLoginWindowPrivate
- {
-         GladeXML        *xml;
-+
-+/* Widget for the original user chooser mechanism. */
-+
-         GtkWidget       *user_chooser;
-+
-+/* Widgets for the new manual username entry mechanism:
-+ *	manual_user_chooser:         widget shown when in MODE_SELECTION
-+ *	manual_user_chooser_entry:   subwidget holding the entered username
-+ *	manual_user_chooser_button:  subwidget for the Begin button
-+ *	manual_user_chosen:          widget shown when in MODE_AUTHENTICATION
-+ *      manual_user_chosen_value:    subwidget displaying the entered username
-+ * */
-+	GtkWidget	*manual_user_chooser;
-+	GtkWidget       *manual_user_chooser_entry;
-+	GtkWidget	*manual_user_chooser_button;
-+	GtkWidget       *manual_user_chosen;
-+	GtkWidget	*manual_user_chosen_value;
-+
-+/* Which selection type to use (manual, chooser, or both): */
-+	guint		user_selection_type;
-+
-         GtkWidget       *auth_banner_label;
-         guint            display_is_local : 1;
-         guint            is_interactive : 1;
-@@ -204,6 +238,9 @@ set_focus (GdmGreeterLoginWindow *login_window)
- 
-         if (GTK_WIDGET_REALIZED (entry) && ! GTK_WIDGET_HAS_FOCUS (entry)) {
-                 gtk_widget_grab_focus (entry);
-+        } else if (GTK_WIDGET_REALIZED (login_window->priv->manual_user_chooser_entry) &&
-+				! GTK_WIDGET_HAS_FOCUS (login_window->priv->manual_user_chooser_entry)) {
-+                gtk_widget_grab_focus (login_window->priv->manual_user_chooser_entry);
-         } else if (GTK_WIDGET_REALIZED (login_window->priv->user_chooser) && ! GTK_WIDGET_HAS_FOCUS (login_window->priv->user_chooser)) {
-                 gtk_widget_grab_focus (login_window->priv->user_chooser);
-         }
-@@ -519,6 +556,38 @@ add_sensitize_power_buttons_timeout (GdmGreeterLoginWindow *login_window)
-                                                                                    login_window);
- }
- 
-+/* Selects a particular user selection type (SELECTION_TYPE_MANUAL,
-+ * SELECTION_TYPE_CHOOSER, or SELECTION_TYPE_BOTH) and clears any 
-+ * previous manually entered username. Also shows/hides the widgets
-+ * in the state appropriate for MODE_SELECTION (so this routine
-+ * should only be called when mode is MODE_SELECTION or about to
-+ * be reset to MODE_SELECTION). */
-+
-+static void
-+set_user_selection_type (GdmGreeterLoginWindow *login_window,
-+				guint selection_type)
-+{
-+	gtk_entry_set_text ( GTK_ENTRY(login_window->priv->manual_user_chooser_entry), "");
-+	gtk_label_set_text ( GTK_LABEL(login_window->priv->manual_user_chosen_value), "no user selected");
-+	gtk_widget_hide_all(login_window->priv->manual_user_chosen);
-+	login_window->priv->user_selection_type = selection_type;
-+	if (selection_type == SELECTION_TYPE_CHOOSER) 
-+	{
-+	    gtk_widget_show(login_window->priv->user_chooser);
-+	    gtk_widget_hide_all(login_window->priv->manual_user_chooser);
-+	}
-+	else
-+	{
-+	    gtk_widget_show_all(login_window->priv->manual_user_chooser);
-+	    gtk_widget_grab_default(login_window->priv->manual_user_chooser_button);
-+	    if (GTK_WIDGET_REALIZED (login_window->priv->manual_user_chooser_entry) &&
-+                                ! GTK_WIDGET_HAS_FOCUS (login_window->priv->manual_user_chooser_entry)) {
-+                gtk_widget_grab_focus (login_window->priv->manual_user_chooser_entry);
-+	    }
-+
-+	}
-+}
-+
- static void
- switch_mode (GdmGreeterLoginWindow *login_window,
-              int                    number)
-@@ -563,7 +632,11 @@ switch_mode (GdmGreeterLoginWindow *login_window,
-                 sensitize_widget (login_window, "restart-button", FALSE);
-                 sensitize_widget (login_window, "suspend-button", FALSE);
-                 sensitize_widget (login_window, "disconnect-button", FALSE);
--
-+		gtk_widget_hide_all (login_window->priv->manual_user_chosen);
-+                if (gdm_user_chooser_widget_is_empty(GDM_USER_CHOOSER_WIDGET (login_window->priv->user_chooser)))
-+                        set_user_selection_type(login_window, SELECTION_TYPE_MANUAL);
-+                else
-+                        set_user_selection_type(login_window, SELECTION_TYPE_CHOOSER);
-                 default_name = NULL;
-                 break;
-         case MODE_AUTHENTICATION:
-@@ -573,6 +646,11 @@ switch_mode (GdmGreeterLoginWindow *login_window,
-                 show_widget (login_window, "suspend-button", FALSE);
-                 show_widget (login_window, "disconnect-button", FALSE);
-                 default_name = "log-in-button";
-+		gtk_widget_hide_all (login_window->priv->manual_user_chooser);
-+		if (login_window->priv->user_selection_type == SELECTION_TYPE_CHOOSER)
-+		     gtk_widget_hide_all (login_window->priv->manual_user_chosen);
-+		else  /* SELECTION_TYPE_CHOOSER or SELECTION_TYPE_BOTH */
-+		     gtk_widget_show_all (login_window->priv->manual_user_chosen);
-                 break;
-         default:
-                 g_assert_not_reached ();
-@@ -705,10 +783,16 @@ reset_dialog (GdmGreeterLoginWindow *login_window)
- 
-         switch_mode (login_window, MODE_SELECTION);
- 
-+	if (gdm_user_chooser_widget_is_empty(GDM_USER_CHOOSER_WIDGET (login_window->priv->user_chooser)))
-+	    set_user_selection_type(login_window, SELECTION_TYPE_MANUAL);
-+	else
-+	    set_user_selection_type(login_window, SELECTION_TYPE_CHOOSER);
-+	
-         set_sensitive (login_window, TRUE);
-         set_ready (login_window);
-         set_focus (GDM_GREETER_LOGIN_WINDOW (login_window));
--        gdm_chooser_widget_propagate_pending_key_events (GDM_CHOOSER_WIDGET (login_window->priv->user_chooser));
-+	if (login_window->priv->user_selection_type != SELECTION_TYPE_MANUAL)
-+            gdm_chooser_widget_propagate_pending_key_events (GDM_CHOOSER_WIDGET (login_window->priv->user_chooser));
- }
- 
- static void
-@@ -1324,8 +1408,16 @@ on_users_loaded (GdmUserChooserWidget  *user_chooser,
-                  GdmGreeterLoginWindow *login_window)
- {
-         gdm_chooser_widget_activate_if_one_item (GDM_CHOOSER_WIDGET (login_window->priv->user_chooser));
-+	if (login_window->priv->dialog_mode == MODE_SELECTION)
-+	{
-+		if (gdm_user_chooser_widget_is_empty(GDM_USER_CHOOSER_WIDGET (login_window->priv->user_chooser)))
-+	    		set_user_selection_type(login_window, SELECTION_TYPE_MANUAL);
-+		else
-+	    		set_user_selection_type(login_window, SELECTION_TYPE_CHOOSER);
-+	}
- }
- 
-+/* Handle a user or pseudo-user chosen from the chooser list. */
- static void
- on_user_chosen (GdmUserChooserWidget  *user_chooser,
-                 GdmGreeterLoginWindow *login_window)
-@@ -1339,12 +1431,21 @@ on_user_chosen (GdmUserChooserWidget  *user_chooser,
-                 return;
-         }
- 
-+/* For the "Other..." pseudo-user, do nothing except activate the
-+ * manual username entry mechanism in addition to the chooser,
-+ * and activate the Cancel button. */
-+
-+       if (strcmp (user_name, GDM_USER_CHOOSER_USER_OTHER) == 0) {
-+               set_user_selection_type(login_window, SELECTION_TYPE_BOTH);
-+		show_widget(login_window, "cancel-button", TRUE);
-+		return;
-+	}
-+
-+
-         g_signal_emit (G_OBJECT (login_window), signals[USER_SELECTED],
-                        0, user_name);
- 
--        if (strcmp (user_name, GDM_USER_CHOOSER_USER_OTHER) == 0) {
--                g_signal_emit (login_window, signals[BEGIN_VERIFICATION], 0);
--        } else if (strcmp (user_name, GDM_USER_CHOOSER_USER_GUEST) == 0) {
-+        if (strcmp (user_name, GDM_USER_CHOOSER_USER_GUEST) == 0) {
-                 /* FIXME: handle guest account stuff */
-         } else if (strcmp (user_name, GDM_USER_CHOOSER_USER_AUTO) == 0) {
-                 g_signal_emit (login_window, signals[BEGIN_AUTO_LOGIN], 0,
-@@ -1365,6 +1466,33 @@ on_user_chosen (GdmUserChooserWidget  *user_chooser,
-         g_free (user_name);
- }
- 
-+/* Handle a username typed in manually. */
-+
-+static void
-+on_user_chosen_manually (GtkButton *button,
-+				GdmGreeterLoginWindow *login_window) 
-+{
-+        const char *user_name;
-+
-+/* This should not happen, but just in case any spurious events get
-+ * received while in chooser-only mode, ignore them. */
-+	if (login_window->priv->user_selection_type == SELECTION_TYPE_CHOOSER) return;
-+
-+	user_name = gtk_entry_get_text (GTK_ENTRY(login_window->priv->manual_user_chooser_entry));
-+	g_debug ("Manual selection %s\n", user_name);
-+	if (! user_name || ! *user_name) {
-+            set_focus (GDM_GREETER_LOGIN_WINDOW (login_window));
-+	    return;
-+	}
-+	gtk_label_set_text (GTK_LABEL(login_window->priv->manual_user_chosen_value), user_name);
-+        g_signal_emit (G_OBJECT (login_window), signals[USER_SELECTED], 0, user_name);
-+        g_signal_emit (login_window, signals[BEGIN_VERIFICATION_FOR_USER], 0, user_name); 
-+        switch_mode (login_window, MODE_AUTHENTICATION);
-+/* Note: unlike on_user_chosen, we do not free user_name, as it was
-+ * returned by gtk_entry_get_text and hence is a pointer to the
-+ * internal buffer and must not be freed here. */
-+}
-+
- static void
- on_user_unchosen (GdmUserChooserWidget  *user_chooser,
-                   GdmGreeterLoginWindow *login_window)
-@@ -1573,11 +1701,20 @@ load_theme (GdmGreeterLoginWindow *login_window)
-         box = glade_xml_get_widget (login_window->priv->xml, "window-frame");
-         gtk_container_add (GTK_CONTAINER (login_window), box);
- 
--        login_window->priv->user_chooser = glade_xml_get_widget (login_window->priv->xml,
--                                                                 "user-chooser");
--        if (login_window->priv->user_chooser == NULL) {
--                g_critical ("Userlist box not found");
--        }
-+/* We have a lot of widgets to load with the new manual entry widget,
-+ * so do it in a macro to save writing the same code out over and over. */
-+
-+#define loadwidget(privname, widgname)  login_window->priv->privname =  glade_xml_get_widget (login_window->priv->xml, widgname); \
-+        if (login_window->priv->privname == NULL) { \
-+                g_critical ("Widget " widgname " not found"); \
-+        } \
-+
-+	loadwidget(user_chooser, "user-chooser")
-+	loadwidget(manual_user_chooser, "manual-user-chooser")
-+	loadwidget(manual_user_chooser_entry, "manual-user-chooser-entry")
-+	loadwidget(manual_user_chooser_button, "manual-user-chooser-button")
-+	loadwidget(manual_user_chosen, "manual-user-chosen")
-+	loadwidget(manual_user_chosen_value, "manual-user-chosen-value")
- 
-         gdm_user_chooser_widget_set_show_only_chosen (GDM_USER_CHOOSER_WIDGET (login_window->priv->user_chooser), TRUE);
- 
-@@ -1593,8 +1730,15 @@ load_theme (GdmGreeterLoginWindow *login_window)
-                           "deactivated",
-                           G_CALLBACK (on_user_unchosen),
-                           login_window);
-+	g_signal_connect (login_window->priv->manual_user_chooser_button,
-+				"clicked",
-+				G_CALLBACK (on_user_chosen_manually),
-+				login_window );
-+
-+/* Set to chooser-only mode for now. Once user list is loaded into chooser,
-+ * manual mode will be activated if chooser list is empty. */
- 
--        gtk_widget_show (login_window->priv->user_chooser);
-+	set_user_selection_type(login_window, SELECTION_TYPE_CHOOSER);
- 
-         login_window->priv->auth_banner_label = glade_xml_get_widget (login_window->priv->xml, "auth-banner-label");
-         /*make_label_small_italic (login_window->priv->auth_banner_label);*/
-diff --git a/gui/simple-greeter/gdm-greeter-login-window.glade b/gui/simple-greeter/gdm-greeter-login-window.glade
-index b46dcad..f38a4b8 100644
---- a/gui/simple-greeter/gdm-greeter-login-window.glade
-+++ b/gui/simple-greeter/gdm-greeter-login-window.glade
-@@ -667,6 +667,146 @@
- 			</packing>
- 		      </child>
- 
-+<child>
-+  <widget class="GtkHBox" id="manual-user-chosen">
-+    <property name="visible">True</property>
-+    <property name="homogeneous">False</property>
-+    <property name="spacing">6</property>
-+
-+    <child>
-+      <widget class="GtkLabel" id="manual-user-chosen-label">
-+	<property name="visible">True</property>
-+	<property name="label" translatable="yes">Logging in as</property>
-+	<property name="justify">GTK_JUSTIFY_LEFT</property>
-+	<property name="selectable">False</property>
-+      </widget>
-+      <packing>
-+	<property name="padding">0</property>
-+	<property name="expand">False</property>
-+	<property name="fill">False</property>
-+      </packing>
-+    </child>
-+    <child>
-+      <widget class="GtkLabel" id="manual-user-chosen-value">
-+	<property name="visible">True</property>
-+	<property name="label">-- no user selected --</property>
-+	<property name="justify">GTK_JUSTIFY_LEFT</property>
-+	<property name="selectable">False</property>
-+      </widget>
-+      <packing>
-+	<property name="padding">0</property>
-+	<property name="expand">False</property>
-+	<property name="fill">False</property>
-+      </packing>
-+    </child>
-+  </widget>
-+  <packing>
-+    <property name="padding">0</property>
-+    <property name="expand">False</property>
-+    <property name="fill">False</property>
-+  </packing>
-+</child>
-+                                                        
-+
-+<child>
-+  <widget class="GtkHBox" id="manual-user-chooser">
-+    <property name="visible">True</property>
-+    <property name="homogeneous">False</property>
-+    <property name="spacing">6</property>
-+
-+    <child>
-+      <widget class="GtkLabel" id="manual-user-chooser-prompt">
-+	<property name="visible">True</property>
-+	<property name="label" translatable="yes">Username:</property>
-+	<property name="justify">GTK_JUSTIFY_LEFT</property>
-+	<property name="selectable">False</property>
-+      </widget>
-+      <packing>
-+	<property name="padding">0</property>
-+	<property name="expand">False</property>
-+	<property name="fill">False</property>
-+      </packing>
-+    </child>
-+
-+    <child>
-+       <widget class="GtkEntry" id="manual-user-chooser-entry">
-+	<property name="visible">True</property>
-+	<property name="can_focus">True</property>
-+	<property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-+	<property name="editable">True</property>
-+	<property name="max_length">0</property>
-+	<property name="text" translatable="yes"></property>
-+	<property name="has_frame">True</property>
-+	<property name="activates_default">True</property>
-+      </widget>
-+      <packing>
-+	<property name="padding">0</property>
-+	<property name="expand">True</property>
-+	<property name="fill">True</property>
-+      </packing>
-+    </child>
-+
-+    <child>
-+      <widget class="GtkButton" id="manual-user-chooser-button">
-+	<property name="visible">True</property>
-+	<property name="can_default">True</property>
-+	<property name="has_default">True</property>
-+	<property name="can_focus">True</property>
-+	<property name="relief">GTK_RELIEF_NORMAL</property>
-+	<property name="focus_on_click">True</property>
-+
-+	<child>
-+	  <widget class="GtkHBox" id="manual-user-chooser-button-contents">
-+	    <property name="visible">True</property>
-+	    <property name="homogeneous">False</property>
-+	    <property name="spacing">0</property>
-+
-+	    <child>
-+	      <widget class="GtkImage" id="manual-user-chooser-button-image">
-+		<property name="visible">True</property>
-+		<property name="icon_name">go-home</property>
-+		<property name="pixel_size">16</property>
-+	      </widget>
-+	      <packing>
-+		<property name="padding">0</property>
-+		<property name="expand">False</property>
-+		<property name="fill">False</property>
-+	      </packing>
-+	    </child>
-+
-+	    <child>
-+	      <widget class="GtkLabel" id="manual-user-chooser-button-label">
-+		<property name="visible">True</property>
-+		<property name="label" translatable="yes">Begin</property>
-+		<property name="justify">GTK_JUSTIFY_LEFT</property>
-+		<property name="wrap">False</property>
-+		<property name="selectable">False</property>
-+	      </widget>
-+	      <packing>
-+		<property name="padding">10</property>
-+		<property name="expand">True</property>
-+		<property name="fill">True</property>
-+	      </packing>
-+	    </child>
-+
-+	  </widget>
-+	</child>
-+
-+      </widget>
-+      <packing>
-+	<property name="padding">0</property>
-+	<property name="expand">False</property>
-+	<property name="fill">False</property>
-+      </packing>
-+    </child>
-+  </widget>
-+  <packing>
-+    <property name="padding">0</property>
-+    <property name="expand">False</property>
-+    <property name="fill">False</property>
-+  </packing>
-+</child>
-+
- 		      <child>
- 			<widget class="GtkHBox" id="auth-input-box">
- 			  <property name="visible">True</property>
-diff --git a/gui/simple-greeter/gdm-user-chooser-widget.c b/gui/simple-greeter/gdm-user-chooser-widget.c
-index 79eb982..59ee39b 100644
---- a/gui/simple-greeter/gdm-user-chooser-widget.c
-+++ b/gui/simple-greeter/gdm-user-chooser-widget.c
-@@ -68,6 +68,7 @@ struct GdmUserChooserWidgetPrivate
+Index: gui/simple-greeter/gdm-user-chooser-widget.c
+===================================================================
+--- gui/simple-greeter/gdm-user-chooser-widget.c.orig
++++ gui/simple-greeter/gdm-user-chooser-widget.c
+@@ -67,6 +67,8 @@ struct GdmUserChooserWidgetPrivate
+         guint           show_user_auto : 1;
          guint           show_normal_users : 1;
  
++        guint           real_show_user_other : 1;
++
          guint           load_idle_id;
-+	guint		number_of_users;
  };
  
- enum {
-@@ -122,6 +123,49 @@ get_icon_height_for_widget (GtkWidget *widget)
-         return height;
+@@ -83,6 +85,9 @@ static void     gdm_user_chooser_widget_
+ 
+ G_DEFINE_TYPE (GdmUserChooserWidget, gdm_user_chooser_widget, GDM_TYPE_CHOOSER_WIDGET)
+ 
++static void     add_user_other    (GdmUserChooserWidget *widget);
++static void     remove_user_other (GdmUserChooserWidget *widget);
++
+ static int
+ get_font_height_for_widget (GtkWidget *widget)
+ {
+@@ -123,8 +128,31 @@ get_icon_height_for_widget (GtkWidget *w
  }
  
-+/* Adjust number of users when a user is added or removed.
-+ *
-+ * If this changes the widget from empty to non-empty,
-+ * ensure that the Other item is added too.
-+ *
-+ * If it changes the widget to just one item, remove the
-+ * Other item if present (because if it is present, it
-+ * would be the only entry).
-+ *
-+ * If the widget is now newly empty or newly non-empty
-+ * and has already been marked as loaded, send another
-+ * "loaded" signal so that the greeter can adjust
-+ * the presence/absence of the manual entry area
-+ * as needed. */
+ static void
++update_other_user_visibility (GdmUserChooserWidget *widget)
++{
++        if (!widget->priv->show_user_other) {
++                if (widget->priv->real_show_user_other) {
++                        remove_user_other (widget);
++                }
++
++                return;
++        }
++
++        if (gdm_chooser_widget_get_number_of_items (GDM_CHOOSER_WIDGET (widget)) == 1) {
++                /* we hide the Other user if it's the last one, and we show it
++                 * if there's another user */
++                if (widget->priv->real_show_user_other) {
++                        remove_user_other (widget);
++                } else {
++                        add_user_other (widget);
++                }
++        }
++}
 +
 +static void
-+adjust_number_of_users (GdmUserChooserWidget *widget, guint increment)
-+{
-+	guint old_number = widget->priv->number_of_users;
-+	guint new_number = old_number + increment;
-+	if (new_number < 0) g_critical ("Number of users dropped below zero!");
-+	widget->priv->number_of_users = new_number;
-+
-+	g_debug("Number of users in chooser changed from %d to %d", old_number, new_number);
-+	if (new_number > 0 && ! widget->priv->show_user_other)
-+        	gdm_user_chooser_widget_set_show_user_other(GDM_USER_CHOOSER_WIDGET (widget), TRUE);
-+
-+	if (new_number == 1 && old_number > 1 && widget->priv->show_user_other)
-+        	gdm_user_chooser_widget_set_show_user_other(GDM_USER_CHOOSER_WIDGET (widget), FALSE);
-+
-+	if (! widget->priv->loaded) return;
-+
-+	if (new_number > 0 && old_number == 0) gdm_chooser_widget_loaded (GDM_CHOOSER_WIDGET(widget));
-+	if (new_number == 0 && old_number > 0) gdm_chooser_widget_loaded (GDM_CHOOSER_WIDGET(widget));
-+}
-+
-+gboolean
-+gdm_user_chooser_widget_is_empty(GdmUserChooserWidget *widget)
-+{
-+	if (widget->priv->number_of_users > 0) return FALSE;
-+	return TRUE;
-+}
-+
- static void
  add_user_other (GdmUserChooserWidget *widget)
  {
-@@ -138,6 +182,7 @@ add_user_other (GdmUserChooserWidget *widget)
++        widget->priv->real_show_user_other = TRUE;
+         gdm_chooser_widget_add_item (GDM_CHOOSER_WIDGET (widget),
+                                      GDM_USER_CHOOSER_USER_OTHER,
+                                      NULL,
+@@ -146,6 +174,7 @@ add_user_guest (GdmUserChooserWidget *wi
                                       0,
                                       FALSE,
                                       TRUE);
-+	adjust_number_of_users(widget, +1);
++        update_other_user_visibility (widget);
  }
  
  static void
-@@ -151,6 +196,7 @@ add_user_guest (GdmUserChooserWidget *widget)
+@@ -159,11 +188,13 @@ add_user_auto (GdmUserChooserWidget *wid
                                       0,
                                       FALSE,
                                       TRUE);
-+	adjust_number_of_users(widget, +1);
++        update_other_user_visibility (widget);
  }
  
  static void
-@@ -164,6 +210,7 @@ add_user_auto (GdmUserChooserWidget *widget)
-                                      0,
-                                      FALSE,
-                                      TRUE);
-+	adjust_number_of_users(widget, +1);
- }
- 
- static void
-@@ -171,6 +218,7 @@ remove_user_other (GdmUserChooserWidget *widget)
+ remove_user_other (GdmUserChooserWidget *widget)
  {
++        widget->priv->real_show_user_other = FALSE;
          gdm_chooser_widget_remove_item (GDM_CHOOSER_WIDGET (widget),
                                          GDM_USER_CHOOSER_USER_OTHER);
-+	adjust_number_of_users(widget, -1);
  }
- 
- static void
-@@ -178,6 +226,7 @@ remove_user_guest (GdmUserChooserWidget *widget)
+@@ -173,6 +204,7 @@ remove_user_guest (GdmUserChooserWidget
  {
          gdm_chooser_widget_remove_item (GDM_CHOOSER_WIDGET (widget),
                                          GDM_USER_CHOOSER_USER_GUEST);
-+	adjust_number_of_users(widget, -1);
++        update_other_user_visibility (widget);
  }
  
  static void
-@@ -185,6 +234,7 @@ remove_user_auto (GdmUserChooserWidget *widget)
+@@ -180,6 +212,7 @@ remove_user_auto (GdmUserChooserWidget *
  {
          gdm_chooser_widget_remove_item (GDM_CHOOSER_WIDGET (widget),
                                          GDM_USER_CHOOSER_USER_AUTO);
-+	adjust_number_of_users(widget, -1);
++        update_other_user_visibility (widget);
  }
  
  void
-@@ -374,6 +424,7 @@ add_user (GdmUserChooserWidget *widget,
+@@ -190,11 +223,7 @@ gdm_user_chooser_widget_set_show_user_ot
+ 
+         if (widget->priv->show_user_other != show_user) {
+                 widget->priv->show_user_other = show_user;
+-                if (show_user) {
+-                        add_user_other (widget);
+-                } else {
+-                        remove_user_other (widget);
+-                }
++                update_other_user_visibility (widget);
+         }
+ }
+ 
+@@ -369,6 +398,8 @@ add_user (GdmUserChooserWidget *widget,
          if (pixbuf != NULL) {
                  g_object_unref (pixbuf);
          }
-+	adjust_number_of_users(widget, +1);
++
++        update_other_user_visibility (widget);
  }
  
  static void
-@@ -405,6 +456,7 @@ on_user_removed (GdmUserManager       *manager,
+@@ -400,6 +431,8 @@ on_user_removed (GdmUserManager       *m
  
          gdm_chooser_widget_remove_item (GDM_CHOOSER_WIDGET (widget),
                                          user_name);
-+	adjust_number_of_users(widget, -1);
++
++        update_other_user_visibility (widget);
  }
  
  static void
-@@ -449,8 +501,13 @@ on_users_loaded (GdmUserManager       *manager,
+@@ -444,8 +477,6 @@ on_users_loaded (GdmUserManager       *m
  {
          GSList *users;
  
-+/* Move below, after we have added the users to the
-+ * chooser widget. 
-+ 
-         widget->priv->loaded = TRUE;
- 
-+*/
-+
+-        widget->priv->loaded = TRUE;
+-
          g_debug ("GdmUserChooserWidget: Users loaded");
  
          users = gdm_user_manager_list_users (manager);
-@@ -459,8 +516,7 @@ on_users_loaded (GdmUserManager       *manager,
+@@ -454,7 +485,7 @@ on_users_loaded (GdmUserManager       *m
                  users = g_slist_delete_link (users, users);
          }
  
 -        gtk_widget_grab_focus (GTK_WIDGET (widget));
--
 +        widget->priv->loaded = TRUE;
+ 
          gdm_chooser_widget_loaded (GDM_CHOOSER_WIDGET (widget));
  }
- 
-@@ -510,6 +566,7 @@ gdm_user_chooser_widget_constructor (GType                  type,
+@@ -505,6 +536,7 @@ gdm_user_chooser_widget_constructor (GTy
                                                                                                                n_construct_properties,
                                                                                                                construct_properties));
  
-+	widget->priv->number_of_users = 0;
++        widget->priv->real_show_user_other = FALSE;
          widget->priv->show_normal_users = !is_user_list_disabled (widget);
  
          widget->priv->load_idle_id = g_idle_add ((GSourceFunc)load_users, widget);
-@@ -573,7 +630,9 @@ gdm_user_chooser_widget_class_init (GdmUserChooserWidgetClass *klass)
-                                          g_param_spec_boolean ("show-user-other",
-                                                                "show user other",
-                                                                "show user other",
--                                                               TRUE,
-+                                                               FALSE,   /* Start without an Other user, until a real user is added
-+									   (when list is empty, manual entry will be used and Other
-+									   is therefore not needed). */
-                                                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+Index: gui/simple-greeter/test-greeter-login-window.c
+===================================================================
+--- gui/simple-greeter/test-greeter-login-window.c.orig
++++ gui/simple-greeter/test-greeter-login-window.c
+@@ -53,7 +53,7 @@ main (int argc, char *argv[])
+         }
  
-         g_type_class_add_private (klass, sizeof (GdmUserChooserWidgetPrivate));
-diff --git a/gui/simple-greeter/gdm-user-chooser-widget.h b/gui/simple-greeter/gdm-user-chooser-widget.h
-index 8ef89a1..4b4d045 100644
---- a/gui/simple-greeter/gdm-user-chooser-widget.h
-+++ b/gui/simple-greeter/gdm-user-chooser-widget.h
-@@ -65,6 +65,7 @@ void                   gdm_user_chooser_widget_set_show_user_guest        (GdmUs
-                                                                            gboolean              show);
- void                   gdm_user_chooser_widget_set_show_user_auto         (GdmUserChooserWidget *widget,
-                                                                            gboolean              show);
-+gboolean	       gdm_user_chooser_widget_is_empty			  (GdmUserChooserWidget *widget);
- G_END_DECLS
+         login_window = gdm_greeter_login_window_new (TRUE);
+-        gtk_widget_show (login_window);
++        gdm_greeter_login_window_show (GDM_GREETER_LOGIN_WINDOW (login_window));
  
- #endif /* __GDM_USER_CHOOSER_WIDGET_H */
+         gtk_main ();
+ 
+Index: gui/simple-greeter/gdm-greeter-login-window.c
+===================================================================
+--- gui/simple-greeter/gdm-greeter-login-window.c.orig
++++ gui/simple-greeter/gdm-greeter-login-window.c
+@@ -114,6 +114,7 @@ struct GdmGreeterLoginWindowPrivate
+         GtkWidget       *auth_banner_label;
+         guint            display_is_local : 1;
+         guint            is_interactive : 1;
++        guint            user_chooser_loaded : 1;
+         GConfClient     *client;
+ 
+         gboolean         banner_message_enabled;
+@@ -130,6 +131,8 @@ struct GdmGreeterLoginWindowPrivate
+ 
+         guint            login_button_handler_id;
+         guint            start_session_handler_id;
++
++        guint            show_timeout_id;
+ };
+ 
+ enum {
+@@ -167,6 +170,10 @@ set_busy (GdmGreeterLoginWindow *login_w
+ {
+         GdkCursor *cursor;
+ 
++        if (!GTK_WIDGET_REALIZED (login_window)) {
++                return;
++        }
++
+         cursor = gdk_cursor_new (GDK_WATCH);
+         gdk_window_set_cursor (GTK_WIDGET (login_window)->window, cursor);
+         gdk_cursor_unref (cursor);
+@@ -175,6 +182,10 @@ set_busy (GdmGreeterLoginWindow *login_w
+ static void
+ set_ready (GdmGreeterLoginWindow *login_window)
+ {
++        if (!GTK_WIDGET_REALIZED (login_window)) {
++                return;
++        }
++
+         gdk_window_set_cursor (GTK_WIDGET (login_window)->window, NULL);
+ }
+ 
+@@ -198,6 +209,10 @@ set_focus (GdmGreeterLoginWindow *login_
+ {
+         GtkWidget *entry;
+ 
++        if (!GTK_WIDGET_REALIZED (login_window)) {
++                return;
++        }
++
+         entry = glade_xml_get_widget (GDM_GREETER_LOGIN_WINDOW (login_window)->priv->xml, "auth-prompt-entry");
+ 
+         gdk_window_focus (GTK_WIDGET (login_window)->window, GDK_CURRENT_TIME);
+@@ -528,9 +543,13 @@ switch_mode (GdmGreeterLoginWindow *logi
+         GtkWidget  *box;
+         gboolean    show_restart_buttons;
+         gboolean    show_suspend_button;
++        gboolean    only_other_user;
++        gboolean    show_buttons;
+ 
+-        show_restart_buttons = get_show_restart_buttons (login_window);
+-        show_suspend_button = can_suspend (login_window);
++        only_other_user = (gdm_chooser_widget_get_number_of_items (GDM_CHOOSER_WIDGET (login_window->priv->user_chooser)) == 0);
++        show_buttons = (number == MODE_SELECTION) || only_other_user;
++        show_restart_buttons = show_buttons && get_show_restart_buttons (login_window);
++        show_suspend_button = show_buttons && can_suspend (login_window);
+ 
+         /* we want to run this even if we're supposed to
+            be in the mode already so that we reset everything
+@@ -539,7 +558,14 @@ switch_mode (GdmGreeterLoginWindow *logi
+ 
+         default_name = NULL;
+ 
+-        remove_sensitize_power_buttons_timeout (login_window);
++        show_widget (login_window, "shutdown-button",
++                     login_window->priv->display_is_local && show_restart_buttons);
++        show_widget (login_window, "restart-button",
++                     login_window->priv->display_is_local && show_restart_buttons);
++        show_widget (login_window, "suspend-button",
++                     login_window->priv->display_is_local && show_restart_buttons && show_suspend_button);
++        show_widget (login_window, "disconnect-button",
++                     !login_window->priv->display_is_local && show_buttons);
+ 
+         switch (number) {
+         case MODE_SELECTION:
+@@ -547,15 +573,6 @@ switch_mode (GdmGreeterLoginWindow *logi
+ 
+                 show_widget (login_window, "cancel-button", FALSE);
+ 
+-                show_widget (login_window, "shutdown-button",
+-                             login_window->priv->display_is_local && show_restart_buttons);
+-                show_widget (login_window, "restart-button",
+-                             login_window->priv->display_is_local && show_restart_buttons);
+-                show_widget (login_window, "suspend-button",
+-                             login_window->priv->display_is_local && show_restart_buttons && show_suspend_button);
+-                show_widget (login_window, "disconnect-button",
+-                             ! login_window->priv->display_is_local);
+-
+                 show_widget (login_window, "auth-input-box", FALSE);
+ 
+                 add_sensitize_power_buttons_timeout (login_window);
+@@ -568,10 +585,12 @@ switch_mode (GdmGreeterLoginWindow *logi
+                 break;
+         case MODE_AUTHENTICATION:
+                 show_widget (login_window, "cancel-button", TRUE);
+-                show_widget (login_window, "shutdown-button", FALSE);
+-                show_widget (login_window, "restart-button", FALSE);
+-                show_widget (login_window, "suspend-button", FALSE);
+-                show_widget (login_window, "disconnect-button", FALSE);
++
++                sensitize_widget (login_window, "shutdown-button", TRUE);
++                sensitize_widget (login_window, "restart-button", TRUE);
++                sensitize_widget (login_window, "suspend-button", TRUE);
++                sensitize_widget (login_window, "disconnect-button", TRUE);
++
+                 default_name = "log-in-button";
+                 break;
+         default:
+@@ -665,10 +684,40 @@ delete_entry_text (GtkWidget *entry)
+ }
+ 
+ static void
++select_user (GdmGreeterLoginWindow *login_window,
++             const char            *user_name)
++{
++        g_signal_emit (G_OBJECT (login_window), signals[USER_SELECTED],
++                       0, user_name);
++
++        if (strcmp (user_name, GDM_USER_CHOOSER_USER_OTHER) == 0) {
++                g_signal_emit (login_window, signals[BEGIN_VERIFICATION], 0);
++        } else if (strcmp (user_name, GDM_USER_CHOOSER_USER_GUEST) == 0) {
++                /* FIXME: handle guest account stuff */
++        } else if (strcmp (user_name, GDM_USER_CHOOSER_USER_AUTO) == 0) {
++                g_signal_emit (login_window, signals[BEGIN_AUTO_LOGIN], 0,
++                               login_window->priv->timed_login_username);
++
++                login_window->priv->timed_login_enabled = TRUE;
++                restart_timed_login_timeout (login_window);
++
++                /* just wait for the user to select language and stuff */
++                set_log_in_button_mode (login_window, LOGIN_BUTTON_TIMED_LOGIN);
++                set_message (login_window, _("Select language and click Log In"));
++        } else {
++                g_signal_emit (login_window, signals[BEGIN_VERIFICATION_FOR_USER], 0, user_name);
++        }
++
++        switch_mode (login_window, MODE_AUTHENTICATION);
++}
++
++
++static void
+ reset_dialog (GdmGreeterLoginWindow *login_window)
+ {
+         GtkWidget  *entry;
+         GtkWidget  *label;
++        gboolean    use_selection;
+ 
+         g_debug ("GdmGreeterLoginWindow: Resetting dialog");
+         set_busy (login_window);
+@@ -703,12 +752,21 @@ reset_dialog (GdmGreeterLoginWindow *log
+         label = glade_xml_get_widget (GDM_GREETER_LOGIN_WINDOW (login_window)->priv->xml, "auth-prompt-label");
+         gtk_label_set_text (GTK_LABEL (label), "");
+ 
+-        switch_mode (login_window, MODE_SELECTION);
++        use_selection = !login_window->priv->user_chooser_loaded || (gdm_chooser_widget_get_number_of_items (GDM_CHOOSER_WIDGET (login_window->priv->user_chooser)) >= 1);
++
++        if (use_selection) {
++                switch_mode (login_window, MODE_SELECTION);
++        } else {
++                select_user (login_window, GDM_USER_CHOOSER_USER_OTHER);
++        }
+ 
+         set_sensitive (login_window, TRUE);
+         set_ready (login_window);
+         set_focus (GDM_GREETER_LOGIN_WINDOW (login_window));
+-        gdm_chooser_widget_propagate_pending_key_events (GDM_CHOOSER_WIDGET (login_window->priv->user_chooser));
++
++        if (use_selection) {
++                gdm_chooser_widget_propagate_pending_key_events (GDM_CHOOSER_WIDGET (login_window->priv->user_chooser));
++        }
+ }
+ 
+ static void
+@@ -1319,11 +1377,40 @@ shutdown_button_clicked (GtkButton      
+         do_system_stop (login_window);
+ }
+ 
++static gboolean
++show_timer (GdmGreeterLoginWindow *login_window)
++{
++        if (login_window->priv->show_timeout_id != 0) {
++                g_source_remove (login_window->priv->show_timeout_id);
++                login_window->priv->show_timeout_id = 0;
++        }
++
++        gtk_widget_show (GTK_WIDGET (login_window));
++
++        set_focus (login_window);
++
++        return FALSE;
++}
++
+ static void
+ on_users_loaded (GdmUserChooserWidget  *user_chooser,
+                  GdmGreeterLoginWindow *login_window)
+ {
+-        gdm_chooser_widget_activate_if_one_item (GDM_CHOOSER_WIDGET (login_window->priv->user_chooser));
++        int number_users;
++
++        g_debug ("GdmGreeterLoginWindow: users loaded");
++
++        login_window->priv->user_chooser_loaded = TRUE;
++
++        number_users = gdm_chooser_widget_get_number_of_items (GDM_CHOOSER_WIDGET (user_chooser));
++
++        if (number_users == 1) {
++                gdm_chooser_widget_activate_if_one_item (GDM_CHOOSER_WIDGET (user_chooser));
++        } else if (number_users == 0) {
++                select_user (login_window, GDM_USER_CHOOSER_USER_OTHER);
++        }
++
++        show_timer (login_window);
+ }
+ 
+ static void
+@@ -1339,28 +1426,7 @@ on_user_chosen (GdmUserChooserWidget  *u
+                 return;
+         }
+ 
+-        g_signal_emit (G_OBJECT (login_window), signals[USER_SELECTED],
+-                       0, user_name);
+-
+-        if (strcmp (user_name, GDM_USER_CHOOSER_USER_OTHER) == 0) {
+-                g_signal_emit (login_window, signals[BEGIN_VERIFICATION], 0);
+-        } else if (strcmp (user_name, GDM_USER_CHOOSER_USER_GUEST) == 0) {
+-                /* FIXME: handle guest account stuff */
+-        } else if (strcmp (user_name, GDM_USER_CHOOSER_USER_AUTO) == 0) {
+-                g_signal_emit (login_window, signals[BEGIN_AUTO_LOGIN], 0,
+-                               login_window->priv->timed_login_username);
+-
+-                login_window->priv->timed_login_enabled = TRUE;
+-                restart_timed_login_timeout (login_window);
+-
+-                /* just wait for the user to select language and stuff */
+-                set_log_in_button_mode (login_window, LOGIN_BUTTON_TIMED_LOGIN);
+-                set_message (login_window, _("Select language and click Log In"));
+-        } else {
+-                g_signal_emit (login_window, signals[BEGIN_VERIFICATION_FOR_USER], 0, user_name);
+-        }
+-
+-        switch_mode (login_window, MODE_AUTHENTICATION);
++        select_user (login_window, user_name);
+ 
+         g_free (user_name);
+ }
+@@ -1914,10 +1980,13 @@ gdm_greeter_login_window_init (GdmGreete
+ 
+         login_window->priv = GDM_GREETER_LOGIN_WINDOW_GET_PRIVATE (login_window);
+ 
++        login_window->priv->user_chooser_loaded = FALSE;
+         login_window->priv->timed_login_enabled = FALSE;
+ 
+         login_window->priv->dialog_mode = MODE_SELECTION;
+ 
++        login_window->priv->show_timeout_id = 0;
++
+         gtk_window_set_title (GTK_WINDOW (login_window), _("Login Window"));
+         /*gtk_window_set_opacity (GTK_WINDOW (login_window), 0.85);*/
+         gtk_window_set_position (GTK_WINDOW (login_window), GTK_WIN_POS_CENTER_ALWAYS);
+@@ -1981,3 +2050,17 @@ gdm_greeter_login_window_new (gboolean i
+ 
+         return GTK_WIDGET (object);
+ }
++
++void
++gdm_greeter_login_window_show (GdmGreeterLoginWindow *login_window)
++{
++        g_return_if_fail (GDM_IS_GREETER_LOGIN_WINDOW (login_window));
++
++        if (login_window->priv->show_timeout_id != 0) {
++                return;
++        }
++
++        login_window->priv->show_timeout_id = g_timeout_add_seconds (1,
++                                                                     (GSourceFunc) show_timer,
++                                                                     login_window);
++}
+Index: gui/simple-greeter/gdm-greeter-login-window.h
+===================================================================
+--- gui/simple-greeter/gdm-greeter-login-window.h.orig
++++ gui/simple-greeter/gdm-greeter-login-window.h
+@@ -64,6 +64,7 @@ typedef struct
+ GType               gdm_greeter_login_window_get_type           (void);
+ GtkWidget *         gdm_greeter_login_window_new                (gboolean display_is_local);
+ 
++void                gdm_greeter_login_window_show               (GdmGreeterLoginWindow *login_window);
+ 
+ gboolean            gdm_greeter_login_window_reset              (GdmGreeterLoginWindow *login_window);
+ gboolean            gdm_greeter_login_window_ready              (GdmGreeterLoginWindow *login_window);
+Index: gui/simple-greeter/gdm-greeter-session.c
+===================================================================
+--- gui/simple-greeter/gdm-greeter-session.c.orig
++++ gui/simple-greeter/gdm-greeter-session.c
+@@ -456,7 +456,7 @@ toggle_login_window (GdmGreeterSession *
+                                   "start-session",
+                                   G_CALLBACK (on_start_session),
+                                   session);
+-                gtk_widget_show (session->priv->login_window);
++                gdm_greeter_login_window_show (GDM_GREETER_LOGIN_WINDOW (session->priv->login_window));
+         } else {
+                 gtk_widget_destroy (session->priv->login_window);
+                 session->priv->login_window = NULL;
+Index: gui/simple-greeter/gdm-chooser-widget.c
+===================================================================
+--- gui/simple-greeter/gdm-chooser-widget.c.orig
++++ gui/simple-greeter/gdm-chooser-widget.c
+@@ -593,6 +593,16 @@ update_separator_visibility (GdmChooserW
+ }
+ 
+ static void
++update_chooser_visibility (GdmChooserWidget *widget)
++{
++        if (gdm_chooser_widget_get_number_of_items (widget) > 0) {
++                gtk_widget_show (widget->priv->scrollable_widget);
++        } else {
++                gtk_widget_hide (widget->priv->scrollable_widget);
++        }
++}
++
++static void
+ set_inactive_items_visible (GdmChooserWidget *widget,
+                             gboolean          should_show)
+ {
+@@ -1771,7 +1781,6 @@ gdm_chooser_widget_init (GdmChooserWidge
+         add_frame (widget);
+ 
+         widget->priv->scrollable_widget = gdm_scrollable_widget_new ();
+-        gtk_widget_show (widget->priv->scrollable_widget);
+         gtk_container_add (GTK_CONTAINER (widget->priv->frame_alignment),
+                            widget->priv->scrollable_widget);
+ 
+@@ -2055,6 +2064,8 @@ gdm_chooser_widget_add_item (GdmChooserW
+                                            -1);
+ 
+         move_cursor_to_top (widget);
++
++        update_chooser_visibility (widget);
+ }
+ 
+ void
+@@ -2103,6 +2114,8 @@ gdm_chooser_widget_remove_item (GdmChoos
+         gtk_list_store_remove (widget->priv->list_store, &iter);
+ 
+         move_cursor_to_top (widget);
++
++        update_chooser_visibility (widget);
+ }
+ 
+ gboolean
