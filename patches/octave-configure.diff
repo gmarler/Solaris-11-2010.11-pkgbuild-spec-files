@@ -1,0 +1,11 @@
+--- octave-3.0.3/configure.orig	2008-09-24 09:14:06.000000000 +0200
++++ octave-3.0.3/configure	2009-04-01 15:19:58.584726000 +0200
+@@ -8569,7 +8569,7 @@
+ _ACEOF
+ 
+   if test $WITH_PCRE_CONFIG = yes; then
+-    REGEX_LIBS=$(pcre-config --libs)
++    REGEX_LIBS=`pcre-config --libs`
+   else
+     REGEX_LIBS=-lpcre
+   fi

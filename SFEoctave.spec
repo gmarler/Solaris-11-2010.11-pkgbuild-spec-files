@@ -13,6 +13,9 @@ Group:		Math
 Version:        3.0.3
 Source:		ftp://ftp.octave.org/pub/octave/octave-%{version}.tar.bz2
 Patch1:		octave-stlport4.diff
+Patch2:		octave-configure.diff
+Patch3:		octave-configure02.diff
+Patch4:		octave-configure.in.diff
 SUNW_BaseDir:   %{_basedir}
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %include	default-depend.inc
@@ -62,6 +65,9 @@ C++, C, Fortran, or other languages.
 %prep
 %setup -q -c -n %{name}
 %patch1 -p0
+%patch2 -p0
+%patch3 -p0
+%patch4 -p0
 
 %build
 %define enable64 no

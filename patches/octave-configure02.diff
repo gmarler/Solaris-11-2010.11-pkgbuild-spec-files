@@ -1,0 +1,11 @@
+--- octave-3.0.3/configure.orig	2009-04-01 15:51:37.780445000 +0200
++++ octave-3.0.3/configure	2009-04-01 16:06:27.473910000 +0200
+@@ -8524,7 +8524,7 @@
+ 
+ 
+ if test $WITH_PCRE_CONFIG = yes ; then
+-  CPPFLAGS="$CPPFLAGS $(pcre-config --cflags)"
++  CPPFLAGS="$CPPFLAGS `pcre-config --cflags`"
+ fi
+ 
+ ## NB: no need to do separate check for pcre.h header -- checking macros is good enough

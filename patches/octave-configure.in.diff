@@ -1,0 +1,20 @@
+--- octave-3.0.3/configure.in.orig	2008-09-24 09:13:46.000000000 +0200
++++ octave-3.0.3/configure.in	2009-04-01 16:05:37.973461000 +0200
+@@ -427,7 +427,7 @@
+ ## check for pcre-config, and if so, set CPPFLAGS appropriately
+ AC_CHECK_PROG(WITH_PCRE_CONFIG, pcre-config, yes, no)
+ if test $WITH_PCRE_CONFIG = yes ; then
+-  CPPFLAGS="$CPPFLAGS $(pcre-config --cflags)"
++  CPPFLAGS="$CPPFLAGS `pcre-config --cflags`"
+ fi
+ 
+ ## NB: no need to do separate check for pcre.h header -- checking macros is good enough
+@@ -445,7 +445,7 @@
+ if test $WITH_PCRE = yes; then
+   AC_DEFINE(HAVE_PCRE, 1, [Define if PCRE is available.])
+   if test $WITH_PCRE_CONFIG = yes; then
+-    REGEX_LIBS=$(pcre-config --libs)
++    REGEX_LIBS=`pcre-config --libs`
+   else
+     REGEX_LIBS=-lpcre
+   fi
