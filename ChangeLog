@@ -1,3 +1,8 @@
+2009-03-31  Brian Cameron  <brian.cameron@sun.com>
+
+	* patches/gdm-06-hide-face-browser.diff: Update the patch to fix
+	  another usability issue.
+
 2009-04-01  Gilles Dauphin
 
 	* patches/octave-configure.diff
