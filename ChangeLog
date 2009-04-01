@@ -1,3 +1,9 @@
+2009-04-01  Gilles Dauphin
+
+	* patches/octave-configure.diff
+	* patches/octave-configure02.diff
+	* patches/octave-configure.in.diff
+
 2009-04-01  Halton Huo <halton.huo@sun.com>
 
 	* SFEconsolekit.spec: remove dup make
