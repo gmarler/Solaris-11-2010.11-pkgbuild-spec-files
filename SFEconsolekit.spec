@@ -97,7 +97,6 @@ Requires: %name
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
-#%patch5 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -136,7 +135,6 @@ autoconf
 %endif
             --enable-rbac-shutdown=solaris.system.shutdown
 
-make
 make -j$CPUS 
 
 %install

@@ -1,3 +1,33 @@
+diff --git a/configure.ac b/configure.ac
+index 77a8844..c81d62b 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -175,6 +175,7 @@ dnl ---------------------------------------------------------------------------
+ 
+ CK_BACKEND=""
+ KVM_LIBS=""
++X11_DIR="/usr/bin"
+ case "$host" in
+         *-*-freebsd*)
+         CK_BACKEND="freebsd"
+@@ -189,8 +190,10 @@ case "$host" in
+         ;;
+         *-*-solaris*)
+         CK_BACKEND="solaris"
++        X11_DIR="/usr/X11/bin"
+         ;;
+ esac
++AC_SUBST(X11_DIR)
+ 
+ AC_SUBST(KVM_LIBS)
+ 
+@@ -441,4 +444,4 @@ if test x${have_polkit} = xno -a x${msg_rbac_shutdown} = xno; then
+    echo "         a huge SECURITY HOLE. I repeat: YOU NEED TO EDIT THE FILE"
+    echo "         ConsoleKit.conf to match your distro/site to avoid NASTY SECURITY HOLES."
+    echo ""
+-fi
+\ No newline at end of file
++fi
 diff --git a/data/00-primary.seat b/data/00-primary.seat
 index 6e61db4..e23e733 100644
 --- a/data/00-primary.seat
@@ -45,57 +75,86 @@ index 6e61db4..e23e733 100644
 +#  If a display is on console (IsConsole == TRUE), This one display must have the value "/dev/console".
 +#  Only a single display can run on the console Seat.
 +#  If a display not on the console like Sunray, then the value is "/dev/dtlocal"
+diff --git a/data/ConsoleKit.conf b/data/ConsoleKit.conf
+index dbe29f8..e2ee1b1 100644
+--- a/data/ConsoleKit.conf
++++ b/data/ConsoleKit.conf
+@@ -84,6 +84,8 @@
+     <allow send_interface="org.freedesktop.ConsoleKit.Session"
+            send_member="IsLocal"/>
+     <allow send_interface="org.freedesktop.ConsoleKit.Session"
++           send_member="IsDynamic"/>
++    <allow send_interface="org.freedesktop.ConsoleKit.Session"
+            send_member="GetCreationTime"/>
+     <allow send_interface="org.freedesktop.ConsoleKit.Session"
+            send_member="Activate"/>
 diff --git a/data/Makefile.am b/data/Makefile.am
-index ca51570..8d65ab1 100644
+index ca51570..bdb0b9b 100644
 --- a/data/Makefile.am
 +++ b/data/Makefile.am
-@@ -6,6 +6,9 @@ dbusconf_DATA = ConsoleKit.conf
+@@ -6,6 +6,13 @@ dbusconf_DATA = ConsoleKit.conf
  seatdir = $(sysconfdir)/ConsoleKit/seats.d
  seat_DATA = 00-primary.seat
  
 +display_typedir = $(sysconfdir)/ConsoleKit
-+display_type_DATA = display-types.conf
++display_type_in_files = display-types.conf.in
++display_type_DATA = $(display_type_in_files:.conf.in=.conf)
++
++$(display_type_DATA): $(display_type_in_files) Makefile
++	$(edit) $< >$@
 +
  if HAVE_POLKIT
  polkit_policydir = $(datadir)/PolicyKit/policy
  dist_polkit_policy_DATA =	\
-@@ -29,6 +32,7 @@ edit = sed \
+@@ -24,11 +31,13 @@ edit = sed \
+ 	-e 's|@sbindir[@]|$(sbindir)|g' \
+ 	-e 's|@sysconfdir[@]|$(sysconfdir)|g' \
+ 	-e 's|@localstatedir[@]|$(localstatedir)|g' \
++	-e 's|@X11_DIR[@]|$(X11_DIR)|g' \
+ 	-e 's|@CONSOLE_KIT_PID_FILE[@]|$(CONSOLE_KIT_PID_FILE)|g'
+ 
  EXTRA_DIST =						\
  	$(dbusconf_DATA)				\
  	$(seat_DATA)					\
-+	$(display_type_DATA)				\
++	$(display_type_in_files)			\
  	$(service_in_files)				\
  	$(NULL)
  
-diff --git a/data/display-types.conf b/data/display-types.conf
+@@ -36,4 +45,4 @@ MAINTAINERCLEANFILES =			\
+ 	*~				\
+ 	Makefile.in
+ 
+-CLEANFILES = $(service_DATA)
++CLEANFILES = $(display_type_DATA) $(service_DATA)
+diff --git a/data/display-types.conf.in b/data/display-types.conf.in
 new file mode 100644
-index 0000000..5c48d93
+index 0000000..3316461
 --- /dev/null
-+++ b/data/display-types.conf
++++ b/data/display-types.conf.in
 @@ -0,0 +1,28 @@
 +[Local]
-+Command=/usr/X11/bin/Xorg
++Command=@X11_DIR@/Xorg
 +Arguments=-br -verbose -nolisten tcp
 +Chooser=false
 +UseAuth=true
 +Priority=0
 +
 +[RemoteMachine]
-+Command=/usr/bin/Xorg
++Command=@X11_DIR@/Xorg
 +Arguments=-br -verbose -indirect
 +Chooser=true
 +UseAuth=true
 +Priority=0
 +
 +[LocalVNC]
-+Command=/usr/bin/Xvnc
++Command=@X11_DIR@/Xvnc
 +Arguments=-query localhost
 +Chooser=false
 +UseAuth=true
 +Priority=0
 +
 +[Headless]
-+Command=/usr/X11/bin/Xvfb
++Command=@X11_DIR@/Xvfb
 +Chooser=false
 +Arguments=
 +UseAuth=true
@@ -763,7 +822,7 @@ index a54a34e..f95fb37 100644
          char    *session_creation_time;
  } CkLogSeatSessionRemovedEvent;
 diff --git a/src/ck-manager.c b/src/ck-manager.c
-index bcb9350..62e54b6 100644
+index bcb9350..f95c8c5 100644
 --- a/src/ck-manager.c
 +++ b/src/ck-manager.c
 @@ -49,6 +49,7 @@
@@ -822,7 +881,7 @@ index bcb9350..62e54b6 100644
                        "id", &ssid,
                        "unix-user", &uid,
                        "remote-host-name", &remote_host,
-@@ -1596,57 +1610,63 @@ find_seat_for_session (CkManager *manager,
+@@ -1596,57 +1610,17 @@ find_seat_for_session (CkManager *manager,
                         CkSession *session)
  {
          CkSeat  *seat;
@@ -867,61 +926,14 @@ index bcb9350..62e54b6 100644
 -
 -        if (is_static_x11 || is_static_text) {
 -                char *sid;
--                sid = g_strdup_printf ("%s/Seat%u", CK_DBUS_PATH, 1);
--                seat = g_hash_table_lookup (manager->priv->seats, sid);
--                g_free (sid);
 +        char    *sid = NULL;
 +
 +        ck_session_get_seat_id (session, &sid, NULL);
 +
 +        if (! IS_STR_SET (sid)) {
-+
-+                /* FIXME: use matching to group entries? */
-+                gboolean is_static_x11;
-+                gboolean is_static_text;
-+                char    *display_device;
-+                char    *x11_display_device;
-+                char    *x11_display;
-+                char    *remote_host_name;
-+                gboolean is_local;
-+
-+                is_static_text = FALSE;
-+                is_static_x11 = FALSE;
-+
-+
-+                seat = NULL;
-+                display_device = NULL;
-+                x11_display_device = NULL;
-+                x11_display = NULL;
-+                remote_host_name = NULL;
-+                is_local = FALSE;
-+
-+                ck_session_get_display_device (session, &display_device, NULL);
-+                ck_session_get_x11_display_device (session, &x11_display_device, NULL);
-+                ck_session_get_x11_display (session, &x11_display, NULL);
-+                ck_session_get_remote_host_name (session, &remote_host_name, NULL);
-+                ck_session_is_local (session, &is_local, NULL);
-+
-+                if (IS_STR_SET (x11_display)
-+                    && IS_STR_SET (x11_display_device)
-+                    && ! IS_STR_SET (remote_host_name)
-+                    && is_local == TRUE) {
-+                        is_static_x11 = TRUE;
-+                } else if (! IS_STR_SET (x11_display)
-+                           && ! IS_STR_SET (x11_display_device)
-+                           && IS_STR_SET (display_device)
-+                           && ! IS_STR_SET (remote_host_name)
-+                           && is_local == TRUE) {
-+                        is_static_text = TRUE;
-+                }
-+
-+                if (is_static_x11 || is_static_text) {
-+                        sid = g_strdup_printf ("%s/Seat%u", CK_DBUS_PATH, 1);
-+                }
-+                g_free (display_device);
-+                g_free (x11_display_device);
-+                g_free (x11_display);
-+                g_free (remote_host_name);
+                 sid = g_strdup_printf ("%s/Seat%u", CK_DBUS_PATH, 1);
+-                seat = g_hash_table_lookup (manager->priv->seats, sid);
+-                g_free (sid);
          }
  
 -        g_free (display_device);
@@ -934,7 +946,7 @@ index bcb9350..62e54b6 100644
          return seat;
  }
  
-@@ -2146,6 +2166,29 @@ ck_manager_get_current_session (CkManager             *manager,
+@@ -2146,6 +2120,29 @@ ck_manager_get_current_session (CkManager             *manager,
          return res;
  }
  
@@ -964,7 +976,7 @@ index bcb9350..62e54b6 100644
  gboolean
  ck_manager_open_session (CkManager             *manager,
                           DBusGMethodInvocation *context)
-@@ -2660,6 +2703,159 @@ ck_manager_get_sessions (CkManager  *manager,
+@@ -2660,6 +2657,159 @@ ck_manager_get_sessions (CkManager  *manager,
          return TRUE;
  }
  
@@ -1124,7 +1136,7 @@ index bcb9350..62e54b6 100644
  static void
  add_seat_for_file (CkManager  *manager,
                     const char *filename)
-@@ -2673,6 +2869,7 @@ add_seat_for_file (CkManager  *manager,
+@@ -2673,6 +2823,7 @@ add_seat_for_file (CkManager  *manager,
          if (seat == NULL) {
                  /* returns null if connection to bus fails */
                  g_free (sid);
@@ -1172,7 +1184,7 @@ index 45910b7..32e57ac 100644
  
  #endif /* __CK_MANAGER_H */
 diff --git a/src/ck-seat.c b/src/ck-seat.c
-index c2f70da..8f8a6df 100644
+index c2f70da..81481c3 100644
 --- a/src/ck-seat.c
 +++ b/src/ck-seat.c
 @@ -40,6 +40,7 @@
@@ -1393,7 +1405,7 @@ index c2f70da..8f8a6df 100644
  
          G_OBJECT_CLASS (ck_seat_parent_class)->finalize (object);
  }
-@@ -1068,20 +1235,79 @@ ck_seat_new_with_devices (const char *sid,
+@@ -1068,20 +1235,77 @@ ck_seat_new_with_devices (const char *sid,
          return CK_SEAT (object);
  }
  
@@ -1416,15 +1428,13 @@ index c2f70da..8f8a6df 100644
 +                         gint     vt)
 +{
 +        char *res = NULL;
++        /* if negative or zero means choose next available vt */
++        if (vt <= 0)
++                return NULL;
 +#ifdef __sun
 +        if (is_VT_enabled ()) {
-+                if (vt <= 0) {
-+                        /* if negative or zero means choose next available vt */
-+                        res = NULL;
-+                } else {
-+                        /* Linux and Solaris using different vt device name */
-+                        res = g_strdup_printf ("/dev/vt/%d", vt);
-+                }
++                /* Linux and Solaris using different vt device name */
++                res = g_strdup_printf ("/dev/vt/%d", vt);
 +        } else {
 +                /* On Solaris, vt can be disabled running
 +                         "svcadm disable vtdaemon"
@@ -1483,7 +1493,7 @@ index c2f70da..8f8a6df 100644
  
          key_file = g_key_file_new ();
          error = NULL;
-@@ -1107,6 +1333,45 @@ ck_seat_new_from_file (const char *sid,
+@@ -1107,6 +1331,45 @@ ck_seat_new_from_file (const char *sid,
                  return NULL;
          }
  
@@ -1529,7 +1539,7 @@ index c2f70da..8f8a6df 100644
          device_list = g_key_file_get_string_list (key_file, group, "Devices", &ndevices, NULL);
  
          g_debug ("Creating seat %s with %d devices", sid, ndevices);
-@@ -1137,13 +1402,33 @@ ck_seat_new_from_file (const char *sid,
+@@ -1137,13 +1400,33 @@ ck_seat_new_from_file (const char *sid,
  
                  g_strfreev (split);
          }
@@ -1599,7 +1609,7 @@ index 5977781..394168e 100644
  G_END_DECLS
  
 diff --git a/src/ck-session.c b/src/ck-session.c
-index 8ba8791..fb992e1 100644
+index 8ba8791..d4cc615 100644
 --- a/src/ck-session.c
 +++ b/src/ck-session.c
 @@ -67,6 +67,7 @@ struct CkSessionPrivate
@@ -1714,7 +1724,7 @@ index 8ba8791..fb992e1 100644
 +                                         g_param_spec_boolean ("is-dynamic",
 +                                                               NULL,
 +                                                               NULL,
-+                                                               TRUE,
++                                                               FALSE,
 +                                                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 +        g_object_class_install_property (object_class,
                                           PROP_ID,
@@ -1916,10 +1926,6 @@ index 13c191f..6522e91 100644
  ck_log_system_start_SOURCES =		\
  	ck-log-system-start.c		\
  	$(NULL)
-diff --git a/tools/ck-dynamic b/tools/ck-dynamic
-new file mode 100755
-index 0000000..7c6eabb
-Binary files /dev/null and b/tools/ck-dynamic differ
 diff --git a/tools/ck-dynamic.c b/tools/ck-dynamic.c
 new file mode 100644
 index 0000000..5a660f7

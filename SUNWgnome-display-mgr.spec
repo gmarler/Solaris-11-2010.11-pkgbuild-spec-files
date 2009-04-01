@@ -37,7 +37,9 @@ Patch4:                  gdm-04-dynamic-display.diff
 # date:2009-03-31 owner:yippi type:feature
 Patch5:                  gdm-05-default.diff
 # date:2008-12-16 owner:yippi type:bug bugid:568323
-Patch6:                  gdm-07-hide-face-browser.diff
+Patch6:                  gdm-06-hide-face-browser.diff
+# date:2009-04-01 owner:halton type:bug bugid:
+Patch7:                  gdm-07-solaris-xinerama.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 
@@ -99,6 +101,7 @@ Requires:                %{name}
 %patch4 -p1
 %patch5 -p1
 %patch6 -p0
+%patch7 -p1
 
 %build
 export LDFLAGS="%_ldflags"
@@ -124,8 +127,8 @@ fi
 test ! -d ./m4 && mkdir ./m4
 glib-gettextize -f
 intltoolize --force --copy --automake
-aclocal $ACLOCAL_FLAGS -I . -I ./m4
 libtoolize --copy --force
+aclocal $ACLOCAL_FLAGS -I . -I ./m4
 autoheader
 automake -a -c -f
 autoconf
@@ -316,6 +319,8 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 %endif
 
 %changelog
+* Wed Apr 01 2009 - halton.huo@sun.com
+- Add patch7 solaris-xinerama.diff to fix solaris xinerama checking failure
 * Tue Mar 31 2009 - brian.cameron@sun.com
 - Add support for /etc/default/login via patch gdm-05-default.diff.
 * Thu Mar 26 2009 - halton.huo@sun.com

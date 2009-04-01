@@ -1,3 +1,11 @@
+2009-04-01  Halton Huo <halton.huo@sun.com>
+
+	* SFEconsolekit.spec: remove dup make
+	* SUNWgnome-display-mgr.spec: add patch7 to fix solaris xinerama
+	  checking failure
+	* patches/ConsoleKit-04-ck-dynamic.diff: rework
+	* patches/gdm-07-solaris-xinerama.diff: addded
+
 2009-03-31  Brian Cameron  <brian.cameron@sun.com>
 
 	* patches/gdm-06-hide-face-browser.diff: Renumber from 07.
