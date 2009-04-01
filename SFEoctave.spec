@@ -34,7 +34,8 @@ Requires: 	SUNWgmake
 Requires: 	SUNWgnu-gperf
 Requires: 	SFEgnuplot
 Requires:	SUNWncurses
-Requires:	SFEfftw
+Requires:	SUNWfftw2
+Requires:	SUNWfftw3
 Requires:	SFEblas
 Requires:	SFEgnuplot
 Requires:	SFElapack
@@ -156,6 +157,8 @@ rm -rf $RPM_BUILD_ROOT
 #%endif
 
 %changelog
+* April 01 2009 - Gilles Dauphin
+- SUNWfftw2 SUNWfftw3 is still in b109
 * Mars 20 2009 - Gilles Dauphin
 - stlport4 , patch, bug about reading files
 * Tue Feb 17 2009 - Thomas Wagner
