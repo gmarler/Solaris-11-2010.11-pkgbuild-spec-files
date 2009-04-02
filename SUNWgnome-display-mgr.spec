@@ -36,10 +36,12 @@ Patch4:                  gdm-04-dynamic-display.diff
 # Add support for /etc/default/login configuration.
 # date:2009-03-31 owner:yippi type:feature
 Patch5:                  gdm-05-default.diff
-# date:2008-12-16 owner:yippi type:bug bugid:568323
+# date:2009-04-02 owner:yippi type:bug bugid:568323
 Patch6:                  gdm-06-hide-face-browser.diff
 # date:2009-04-01 owner:halton type:bug bugid:
 Patch7:                  gdm-07-solaris-xinerama.diff
+# date:2009-04-02 owner:yippi type:bug bugid:568323
+Patch8:                  gdm-08-hide-face-browser-pt2.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 
@@ -102,6 +104,7 @@ Requires:                %{name}
 %patch5 -p1
 %patch6 -p0
 %patch7 -p1
+%patch8 -p1
 
 %build
 export LDFLAGS="%_ldflags"
@@ -319,6 +322,9 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 %endif
 
 %changelog
+* Thu Apr 02 2009 - brian.cameron@sun.com
+- Add patch8 gdm-08-hide-face-browser-pt2.diff to improve usability 
+  further.  Fixes bugzilla bug #568323.
 * Wed Apr 01 2009 - halton.huo@sun.com
 - Add patch7 solaris-xinerama.diff to fix solaris xinerama checking failure
 * Tue Mar 31 2009 - brian.cameron@sun.com

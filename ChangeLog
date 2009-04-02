@@ -1,3 +1,9 @@
+2009-04-02  Brian Cameron  <brian.cameron@sun.com>
+
+	* SUNWgnome-display-mgr.spec,
+	  patches/gdm-08-hide-face-browser-pt2.diff: Add patch to fix
+	  buzilla bug #568323.
+
 2009-03-31  Brian Cameron  <brian.cameron@sun.com>
 
 	* patches/gdm-06-hide-face-browser.diff: Update the patch to fix
