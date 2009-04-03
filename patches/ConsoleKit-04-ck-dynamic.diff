@@ -1,5 +1,5 @@
 diff --git a/configure.ac b/configure.ac
-index 77a8844..c81d62b 100644
+index 77a8844..237d319 100644
 --- a/configure.ac
 +++ b/configure.ac
 @@ -175,6 +175,7 @@ dnl ---------------------------------------------------------------------------
@@ -21,7 +21,27 @@ index 77a8844..c81d62b 100644
  
  AC_SUBST(KVM_LIBS)
  
-@@ -441,4 +444,4 @@ if test x${have_polkit} = xno -a x${msg_rbac_shutdown} = xno; then
+@@ -314,6 +317,19 @@ fi
+ AC_SUBST(RBAC_LIBS)
+ 
+ dnl ---------------------------------------------------------------------------
++dnl check for SCF (Only avail on solaris) 
++dnl ---------------------------------------------------------------------------
++
++AC_CHECK_LIB(scf, smf_get_state,
++             [SCF_LIBS=-lscf
++             AC_DEFINE(HAVE_SCF,1,[Define to 1 if the libscf library is present.])],
++             [AC_MSG_WARN([[
++***
++*** libscf was not found.
++]])])
++AC_SUBST(SCF_LIBS)
++
++dnl ---------------------------------------------------------------------------
+ dnl Finish
+ dnl ---------------------------------------------------------------------------
+ 
+@@ -441,4 +457,4 @@ if test x${have_polkit} = xno -a x${msg_rbac_shutdown} = xno; then
     echo "         a huge SECURITY HOLE. I repeat: YOU NEED TO EDIT THE FILE"
     echo "         ConsoleKit.conf to match your distro/site to avoid NASTY SECURITY HOLES."
     echo ""
@@ -29,10 +49,10 @@ index 77a8844..c81d62b 100644
 \ No newline at end of file
 +fi
 diff --git a/data/00-primary.seat b/data/00-primary.seat
-index 6e61db4..e23e733 100644
+index 6e61db4..7362125 100644
 --- a/data/00-primary.seat
 +++ b/data/00-primary.seat
-@@ -1,5 +1,38 @@
+@@ -1,5 +1,34 @@
  [Seat Entry]
 -Version=1.0
 -Name=Primary seat
@@ -41,40 +61,36 @@ index 6e61db4..e23e733 100644
  Hidden=false
 -Devices=
 \ No newline at end of file
-+# Indicate whether create this seat or not. If it is set TRUE, then CK will not create this seat. Default value is false.
++# Indicate whether to create this seat or not. If it is set true, then CK will
++# not create this seat. Default value is false.
 +
 +DisplayType=Local
 +# Indicate display type which defined in <etc>/ConsoleKit/displays-types.conf
 +
 +Devices=
-+# Indicate input/output devices including keyboard-pointer-video card-monitor-sound-usb devices,
-+# This key is inherited from ConsoleKit-0.3.0, With discussing on http://mail.gnome.org/archives/gdm-list/2009-March/msg00003.html
-+# This key might need be divided into several keys:
++# Indicate input/output devices including keyboard-pointer-video
++# card-monitor-sound-usb devices,
++# This key will not implemented now, it might need be divided into
++# several keys in the future:
 +# Pointer=
 +# Monitor=
 +# VideoCard=
 +# Monitor=
 +# UsbHub=
-+# This key will not implemented in phase I
 +
 +DisplayNumbers=0
-+# Display numbers list, separated by a separator character, typically ';' or ','. If want to automatically choose next available display number, indicate -1
++# Display numbers list, separated by a separator character, typically ';'
++# or ','. If want to automatically choose next available display number,
++# indicate -1
 +
 +IsConsoles=true
-+# Values list to indicate whether the give DisplayNumbers are on console or not , separated by a separator character, typically ';' or ','.
++# Values list to indicate whether the give DisplayNumbers are on console
++# or not , separated by a separator character, typically ';' or ','.
 +
 +TtyDevices=
-+# Values list to indicate the tty device number, separated by a separator character, typically ';' or ','.
++# Values list to indicate the tty device number, separated by a separator
++# character, typically ';' or ','.
 +# Zero or negative number or no value means choose next available vt number
-+#
-+# The real TtyDevice is decided at run time.
-+# If vt is available
-+#   TtyDevice should be "/dev/vt/#" for Solaris and "vt#" for Linux.
-+#   No value means choose next available vt.
-+# If vt is not available (Only happen on Solaris by running 'svcadm disable vtdaemon')
-+#  If a display is on console (IsConsole == TRUE), This one display must have the value "/dev/console".
-+#  Only a single display can run on the console Seat.
-+#  If a display not on the console like Sunray, then the value is "/dev/dtlocal"
 diff --git a/data/ConsoleKit.conf b/data/ConsoleKit.conf
 index dbe29f8..e2ee1b1 100644
 --- a/data/ConsoleKit.conf
@@ -128,38 +144,44 @@ index ca51570..bdb0b9b 100644
 +CLEANFILES = $(display_type_DATA) $(service_DATA)
 diff --git a/data/display-types.conf.in b/data/display-types.conf.in
 new file mode 100644
-index 0000000..3316461
+index 0000000..80a1f3a
 --- /dev/null
 +++ b/data/display-types.conf.in
-@@ -0,0 +1,28 @@
+@@ -0,0 +1,34 @@
 +[Local]
 +Command=@X11_DIR@/Xorg
 +Arguments=-br -verbose -nolisten tcp
 +Chooser=false
 +UseAuth=true
-+Priority=0
++Priority=
 +
 +[RemoteMachine]
 +Command=@X11_DIR@/Xorg
 +Arguments=-br -verbose -indirect
 +Chooser=true
 +UseAuth=true
-+Priority=0
++Priority=
 +
 +[LocalVNC]
 +Command=@X11_DIR@/Xvnc
 +Arguments=-query localhost
 +Chooser=false
 +UseAuth=true
-+Priority=0
++Priority=
 +
 +[Headless]
 +Command=@X11_DIR@/Xvfb
 +Chooser=false
 +Arguments=
 +UseAuth=true
-+Priority=0
++Priority=
 +
++[Sunray]
++Command=/etc/opt/SUNWut/basedir/lib/utxsun
++Chooser=false
++Arguments=
++UseAuth=true
++Priority=
 diff --git a/libck-connector/ck-connector.c b/libck-connector/ck-connector.c
 index 7f6f87f..ad8a111 100644
 --- a/libck-connector/ck-connector.c
@@ -177,7 +199,7 @@ index 7f6f87f..ad8a111 100644
  };
  
 diff --git a/src/Makefile.am b/src/Makefile.am
-index cbe8a09..bd3ec70 100644
+index cbe8a09..ea8d6e2 100644
 --- a/src/Makefile.am
 +++ b/src/Makefile.am
 @@ -107,6 +107,8 @@ console_kit_daemon_SOURCES =	\
@@ -189,12 +211,20 @@ index cbe8a09..bd3ec70 100644
  	ck-seat.h		\
  	ck-seat.c		\
  	ck-session-leader.h	\
+@@ -139,6 +141,7 @@ console_kit_daemon_LDADD =	\
+ 	$(CONSOLE_KIT_LIBS)	\
+ 	$(POLKIT_LIBS)		\
+ 	$(RBAC_LIBS)		\
++	$(SCF_LIBS)		\
+ 	libck.la		\
+ 	libck-event-log.la	\
+ 	$(NULL)
 diff --git a/src/ck-display-type.c b/src/ck-display-type.c
 new file mode 100644
-index 0000000..e3c5d13
+index 0000000..2920eb8
 --- /dev/null
 +++ b/src/ck-display-type.c
-@@ -0,0 +1,438 @@
+@@ -0,0 +1,425 @@
 +/* -*- Mode: C; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 8 -*-
 + *
 + * Authors: halton.huo@sun.com
@@ -226,6 +256,17 @@ index 0000000..e3c5d13
 +#define CK_DISPLAY_TYPE_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), CK_TYPE_DISPLAY_TYPE, CkDisplayTypePrivate))
 +
 +#define CK_DISPLAY_TYPES_FILE     SYSCONFDIR "/ConsoleKit/display-types.conf"
++
++#if __sun
++#define CK_PRIO_MIN 0
++#define CK_PRIO_MAX (NZERO*2)-1
++#define CK_PRIO_DEFAULT NZERO
++#else
++#include <sys/resource.h>
++#define CK_PRIO_MIN PRIO_MIN
++#define CK_PRIO_MAX PRIO_MAX
++#define CK_PRIO_DEFAULT 0
++#endif
 +
 +struct CkDisplayTypePrivate
 +{
@@ -295,7 +336,13 @@ index 0000000..e3c5d13
 +_ck_display_type_set_priority (CkDisplayType  *display,
 +                               int             priority)
 +{
-+        display->priv->priority = priority;
++        /* do some bounds checking */
++        if (priority < CK_PRIO_MIN)
++                display->priv->priority = CK_PRIO_MIN;
++        else if (priority > CK_PRIO_MAX)
++                display->priv->priority = CK_PRIO_MAX;
++        else
++                display->priv->priority = priority;
 +}
 +
 +static void
@@ -417,9 +464,9 @@ index 0000000..e3c5d13
 +                                         g_param_spec_int    ("priority",
 +                                                              "priority",
 +                                                              "priority",
-+                                                              -20,
-+                                                              20,
-+                                                              0,
++                                                              CK_PRIO_MIN,
++                                                              CK_PRIO_MAX,
++                                                              CK_PRIO_DEFAULT,
 +                                                              G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
 +
 +        g_type_class_add_private (klass, sizeof (CkDisplayTypePrivate));
@@ -529,9 +576,12 @@ index 0000000..e3c5d13
 +                        priority = g_key_file_get_integer (key_file, name, "Priority", &error);
 +                        if (error) {
 +                                /* Use NULL if key Priority is not defined or invalid value is set */
-+                                g_warning ("Unable to load key Priority for display type %s, use default value '0' : %s", name, error->message);
++                                g_warning ("Unable to load key Priority for display type %s, use default value '%d' : %s",
++                                           name,
++                                           CK_PRIO_DEFAULT,
++                                           error->message);
 +                                g_error_free (error);
-+                                priority = 0;
++                                priority = CK_PRIO_DEFAULT;
 +                        }
 +
 +                        object = g_object_new (CK_TYPE_DISPLAY_TYPE,
@@ -550,39 +600,6 @@ index 0000000..e3c5d13
 +        }
 +
 +        g_strfreev (groups);
-+        return CK_DISPLAY_TYPE (object);
-+}
-+
-+CkDisplayType *
-+ck_display_type_dup (CkDisplayType   *display)
-+{
-+        GObject   *object;
-+        char      *name;
-+        char      *command;
-+        char      *arguments;
-+        gboolean   chooser;
-+        gboolean   use_auth ;
-+        int        priority;
-+        gboolean   res;
-+
-+        g_object_get (G_OBJECT (display), 
-+                      "name", &name,
-+                      "command", &command,
-+                      "arguments", &arguments,
-+                      "chooser", &chooser,
-+                      "use-auth", &use_auth,
-+                      "priority", &priority,
-+                      NULL);
-+                      
-+        object = g_object_new (CK_TYPE_DISPLAY_TYPE,
-+                               "name", name,
-+                               "command", command,
-+                               "arguments", arguments,
-+                               "chooser", chooser,
-+                               "use-auth", use_auth,
-+                               "priority", priority,
-+                               NULL);
-+
 +        return CK_DISPLAY_TYPE (object);
 +}
 +
@@ -1184,7 +1201,7 @@ index 45910b7..32e57ac 100644
  
  #endif /* __CK_MANAGER_H */
 diff --git a/src/ck-seat.c b/src/ck-seat.c
-index c2f70da..81481c3 100644
+index c2f70da..219f537 100644
 --- a/src/ck-seat.c
 +++ b/src/ck-seat.c
 @@ -40,6 +40,7 @@
@@ -1405,7 +1422,7 @@ index c2f70da..81481c3 100644
  
          G_OBJECT_CLASS (ck_seat_parent_class)->finalize (object);
  }
-@@ -1068,20 +1235,77 @@ ck_seat_new_with_devices (const char *sid,
+@@ -1068,20 +1235,98 @@ ck_seat_new_with_devices (const char *sid,
          return CK_SEAT (object);
  }
  
@@ -1413,11 +1430,32 @@ index c2f70da..81481c3 100644
 +is_VT_enabled ()
 +{
 +#ifdef __sun
++
++#ifdef HAVE_SCF  
++#include <libscf.h> 
++#endif 
++
 +        static int vt_enabled = -1; // -1 means this function is not called.
-+        if (vt_enabled == -1)
++        if (vt_enabled != -1)
++                return vt_enabled == 1 ? TRUE : FALSE;
++
++        /* TODO: After Solaris Xorg VT support is done, remove the directly
++                 return code
++        */
++        vt_enabled = FALSE;
++        return FALSE;
++
++        char *state = NULL;
++
++        state = smf_get_state ("svc:/system/vtdaemon:default");
++        if (state && g_str_equal (state, SCF_STATE_STRING_ONLINE)) {
 +                vt_enabled = TRUE;
-+        //        vt_enabled = smf_checking_vt_daemon();
-+        return vt_enabled == 1 ? TRUE : FALSE;
++        } else {
++                vt_enabled = FALSE;
++        }
++
++        g_free (state);
++        return vt_enabled;
 +#else
 +        return TRUE;
 +#endif
@@ -1493,7 +1531,7 @@ index c2f70da..81481c3 100644
  
          key_file = g_key_file_new ();
          error = NULL;
-@@ -1107,6 +1331,45 @@ ck_seat_new_from_file (const char *sid,
+@@ -1107,6 +1352,45 @@ ck_seat_new_from_file (const char *sid,
                  return NULL;
          }
  
@@ -1539,7 +1577,7 @@ index c2f70da..81481c3 100644
          device_list = g_key_file_get_string_list (key_file, group, "Devices", &ndevices, NULL);
  
          g_debug ("Creating seat %s with %d devices", sid, ndevices);
-@@ -1137,13 +1400,33 @@ ck_seat_new_from_file (const char *sid,
+@@ -1137,13 +1421,33 @@ ck_seat_new_from_file (const char *sid,
  
                  g_strfreev (split);
          }

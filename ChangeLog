@@ -1,3 +1,8 @@
+2009-04-03  Halton Huo <halton.huo@sun.com>
+
+	* patches/ConsoleKit-04-ck-dynamic.diff: rework
+	* patches/gdm-04-dynamic-display.diff: rework
+
 2009-04-02  Brian Cameron  <brian.cameron@sun.com>
 
 	* SUNWgnome-display-mgr.spec,
