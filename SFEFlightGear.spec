@@ -21,7 +21,6 @@ Name:                   SFEFlightGear
 Summary:                Flight Simulator for 'true' airplane
 Version:                1.0.0
 Source:                 %{src_url}/%{src_name}-%{version}.tar.gz
-#Source1:		SimGear_Props.cxx
 Patch1:			FlightGear-01.diff
 SUNW_BaseDir:           %{_basedir}
 BuildRoot:              %{_tmppath}/%{name}-%{version}-build
@@ -59,7 +58,7 @@ cd %{src_name}-%{version}
 export CC=cc
 export CXX=CC
 #CC=cc CXX=CC ./configure --without-logging --prefix==%{_prefix}
-CC=cc CXX=CC ./configure --prefix=%{_prefix}
+/bin/bash ./configure CONFIG_SHELL=/bin/bash --prefix=%{_prefix}
 make # -j$CPUS 
 
 %install

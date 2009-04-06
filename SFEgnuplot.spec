@@ -21,6 +21,7 @@ Requires: SUNWxwplt
 Requires: SUNWzlib
 Requires: SUNWtexi
 Requires: SUNWgd2
+Requires: SUNWwxwidgets
 BuildRequires: SUNWpng-devel
 
 %prep

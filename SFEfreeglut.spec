@@ -12,8 +12,9 @@
 
 Name:                   SFEfreeglut
 Summary:                Free OpenGL Library
-Version:                2.6.0-rc1
-Source:                 %{src_url}/%{src_name}-%{version}.tar.gz
+#Version:                2.6.0-rc1
+Version:                2.6.0.1
+Source:                 %{src_url}/%{src_name}-2.6.0-rc1.tar.gz
 Patch1:			freeglut260-01.diff
 SUNW_BaseDir:           %{_basedir}
 BuildRoot:              %{_tmppath}/%{name}-%{version}-build

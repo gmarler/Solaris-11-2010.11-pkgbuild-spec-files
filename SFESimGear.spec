@@ -51,7 +51,7 @@ cd %{src_name}-%{version}
 export CC=cc
 export CXX=CC
 #CC=cc CXX=CC ./configure --without-logging --prefix==%{_prefix}
-CC=cc CXX=CC ./configure --prefix=%{_prefix}
+/bin/bash ./configure CONFIG_SHELL=/bin/bash --prefix=%{_prefix}
 make # -j$CPUS 
 
 %install
