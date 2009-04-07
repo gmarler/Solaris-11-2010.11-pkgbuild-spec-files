@@ -1,0 +1,29 @@
+--- vlc-0.8.6c/configure.ac.orig	2009-04-07 10:46:16.708954000 +0200
++++ vlc-0.8.6c/configure.ac	2009-04-07 11:14:23.630332000 +0200
+@@ -2684,7 +2684,7 @@
+     AC_CHECK_HEADERS(ffmpeg/avcodec.h, [], [AC_MSG_ERROR([Missing header file ffmpeg/avcodec.h.])] )
+     AC_CHECK_HEADERS(ffmpeg/avformat.h)
+     AC_CHECK_HEADERS(ffmpeg/avutil.h)
+-    AC_CHECK_HEADERS(postproc/postprocess.h, [], [AC_MSG_ERROR([Missing header file postproc/postprocess.h.])] )
++    AC_CHECK_HEADERS(libpostproc/postprocess.h, [], [AC_MSG_ERROR([Missing header file libpostproc/postprocess.h.])] )
+     VLC_ADD_PLUGINS([ffmpeg])
+     if test "${enable_sout}" != "no"; then
+         VLC_ADD_PLUGINS([stream_out_switcher])
+@@ -2700,7 +2700,7 @@
+      AC_CHECK_HEADERS(ffmpeg/avcodec.h, [], [AC_MSG_ERROR([Missing header file ffmpeg/avcodec.h.])] )
+      AC_CHECK_HEADERS(ffmpeg/avformat.h)
+      AC_CHECK_HEADERS(ffmpeg/avutil.h)
+-     AC_CHECK_HEADERS(postproc/postprocess.h, [], [AC_MSG_ERROR([Missing header file postproc/postprocess.h.])] )
++     AC_CHECK_HEADERS(libpostproc/postprocess.h, [], [AC_MSG_ERROR([Missing header file libpostproc/postprocess.h.])] )
+      if test "${SYS}" = "darwin"; then
+         VLC_ADD_BUILTINS([ffmpeg])
+      else
+@@ -2729,7 +2729,7 @@
+       AC_CHECK_HEADERS(ffmpeg/avcodec.h, [], [AC_MSG_ERROR([Missing header file ffmpeg/avcodec.h.])] )
+       AC_CHECK_HEADERS(ffmpeg/avformat.h)
+       AC_CHECK_HEADERS(ffmpeg/avutil.h)
+-      AC_CHECK_HEADERS(postproc/postprocess.h, [], [AC_MSG_ERROR([Missing header file postproc/postprocess.h.])] )
++      AC_CHECK_HEADERS(libpostproc/postprocess.h, [], [AC_MSG_ERROR([Missing header file libpostproc/postprocess.h.])] )
+ 
+       AC_CHECK_LIB(avutil, av_crc_init, [
+         VLC_ADD_LDFLAGS([ffmpeg],[-lavutil])

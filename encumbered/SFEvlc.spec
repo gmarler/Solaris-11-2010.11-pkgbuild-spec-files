@@ -24,6 +24,7 @@ Patch7:			vlc-07-live.diff
 Patch8:			vlc-08-osdmenu_path.diff
 Patch9:			vlc-09-pic-mmx.diff
 Patch10:		vlc-10-real_codecs_path.diff
+Patch11:		vlc-11-libpostproc.diff
 SUNW_BaseDir:           %{_basedir}
 SUNW_BaseDir:           %{_basedir}
 BuildRoot:              %{_tmppath}/%{name}-%{version}-build
@@ -103,6 +104,7 @@ Requires:                %{name}
 %patch8 -p1
 %patch9 -p1
 %patch10 -p1
+%patch11 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -249,6 +251,9 @@ test -x $BASEDIR/lib/postrun || exit 0
 %{_libdir}/lib*.a
 
 %changelog
+* April 2009 - Gilles Dauphin
+- postprocess.h is in libpostproc
+- TODO upgrade vlc, that's a nightmare
 * Thu Dec 02 2008 - dauphin@enst.fr
 - try to use the actual SFE ffmpeg , probleme in new ffmpeg API
 - I just resign now, but... later i will retry
