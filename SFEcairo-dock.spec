@@ -76,6 +76,7 @@ PROTO_PKG=$RPM_BUILD_DIR/%{name}/usr/X11/lib/pkgconfig
 export PKG_CONFIG_PATH="$PROTO_PKG"
 export CC=/usr/sfw/bin/gcc
 export LDFLAGS="-L$PROTO_LIB -L/usr/X11/lib -R/usr/X11/lib"
+export CFLAGS=-D__EXTENSIONS__
 
 cd cairo-dock
 
@@ -87,7 +88,7 @@ autoreconf -isf
 export CC=/usr/sfw/bin/gcc
 export LDFLAGS="-L$PROTO_LIB -L/usr/X11/lib -L/usr/openwin/lib -R/usr/X11/lib -R/usr/openwin/lib -lX11 -lXext"
 
-./configure --prefix=%{_prefix}		\
+/bin/bash ./configure CONFIG_SHELL=/bin/bash --prefix=%{_prefix}		\
 	    --bindir=%{_bindir}         \
 	    --sysconfdir=%{_sysconfdir}	\
 	    --libdir=%{_libdir}         \
