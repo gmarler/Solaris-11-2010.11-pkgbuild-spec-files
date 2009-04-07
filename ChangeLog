@@ -1,3 +1,8 @@
+2009-04-07  Brian Cameron  <brian.cameron@sun.com>
+
+	* SFEgnome-shell.spec, patches/gnome-shell-01-bash.diff:  Remove
+	  upstream patch.
+
 2009-04-07  Halton Huo <halton.huo@sun.com>
 
 	* patches/ConsoleKit-04-ck-dynamic.diff: rework to remove several
@@ -6,7 +11,7 @@
 	  2. remove --tty for ck-dynaminc
 	  3. remove checking vtdaemon service code for Solaris 
 
-2009-04-03  Brian Cameron  <brian.cameron@sun.com>
+2009-04-06  Brian Cameron  <brian.cameron@sun.com>
 
 	* SFEgnome-shell.spec, SFEmetacity-clutter.spec
 	  SFEgobject-introspection.spec, SFEgir-repository.spec, SFEgjs.spec:

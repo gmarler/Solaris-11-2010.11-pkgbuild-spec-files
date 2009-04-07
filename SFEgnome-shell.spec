@@ -8,12 +8,10 @@
 Name:                    SFEgnome-shell
 Summary:                 GNOME Shell
 Version:                 0.0.1
-#owner:yippi date:2009-04-07 type:bug bugzilla:578195
-Patch1:                  gnome-shell-01-bash.diff
 #owner:yippi date:2009-04-07 type:bug bugzilla:578196
-Patch2:                  gnome-shell-02-launch.diff
+Patch1:                  gnome-shell-01-launch.diff
 #owner:yippi date:2009-04-07 type:bug bugzilla:578197
-Patch3:                  gnome-shell-03-overlay.diff
+Patch2:                  gnome-shell-02-overlay.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 BuildRequires:           SUNWPython26-devel
@@ -46,7 +44,6 @@ git-clone git://git.gnome.org/gnome-shell
 cd gnome-shell
 %patch1 -p1
 %patch2 -p1
-%patch3 -p1
 
 %build
 cd gnome-shell-%version
