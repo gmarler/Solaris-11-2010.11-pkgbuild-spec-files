@@ -10,8 +10,8 @@
 
 Name:                   SFEbullet
 Summary:                Bullet Physics Library
-Version:                2.50b
-Source:                 %{src_url}/%{src_name}-%{version}.tgz
+Version:                2.50
+Source:                 %{src_url}/%{src_name}-%{version}b.tgz
 SUNW_BaseDir:           %{_basedir}
 BuildRoot:              %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -83,5 +83,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*
 
 %changelog
+* April 2008 - Gilles Dauphin
+- adjust name for IPS
 * Sun May  6 2007 - dougs@truemail.co.th
 - Initial version
