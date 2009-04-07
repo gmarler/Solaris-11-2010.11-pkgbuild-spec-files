@@ -1,3 +1,11 @@
+2009-04-07  Halton Huo <halton.huo@sun.com>
+
+	* patches/ConsoleKit-04-ck-dynamic.diff: rework to remove several
+	  Solaris specific things:
+	  1. remove Sunray from display-typs.conf.in
+	  2. remove --tty for ck-dynaminc
+	  3. remove checking vtdaemon service code for Solaris 
+
 2009-04-03  Brian Cameron  <brian.cameron@sun.com>
 
 	* SFEgnome-shell.spec, SFEmetacity-clutter.spec

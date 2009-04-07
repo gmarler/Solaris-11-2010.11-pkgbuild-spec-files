@@ -1,5 +1,5 @@
 diff --git a/configure.ac b/configure.ac
-index 77a8844..237d319 100644
+index 77a8844..c81d62b 100644
 --- a/configure.ac
 +++ b/configure.ac
 @@ -175,6 +175,7 @@ dnl ---------------------------------------------------------------------------
@@ -21,27 +21,7 @@ index 77a8844..237d319 100644
  
  AC_SUBST(KVM_LIBS)
  
-@@ -314,6 +317,19 @@ fi
- AC_SUBST(RBAC_LIBS)
- 
- dnl ---------------------------------------------------------------------------
-+dnl check for SCF (Only avail on solaris) 
-+dnl ---------------------------------------------------------------------------
-+
-+AC_CHECK_LIB(scf, smf_get_state,
-+             [SCF_LIBS=-lscf
-+             AC_DEFINE(HAVE_SCF,1,[Define to 1 if the libscf library is present.])],
-+             [AC_MSG_WARN([[
-+***
-+*** libscf was not found.
-+]])])
-+AC_SUBST(SCF_LIBS)
-+
-+dnl ---------------------------------------------------------------------------
- dnl Finish
- dnl ---------------------------------------------------------------------------
- 
-@@ -441,4 +457,4 @@ if test x${have_polkit} = xno -a x${msg_rbac_shutdown} = xno; then
+@@ -441,4 +444,4 @@ if test x${have_polkit} = xno -a x${msg_rbac_shutdown} = xno; then
     echo "         a huge SECURITY HOLE. I repeat: YOU NEED TO EDIT THE FILE"
     echo "         ConsoleKit.conf to match your distro/site to avoid NASTY SECURITY HOLES."
     echo ""
@@ -144,10 +124,10 @@ index ca51570..bdb0b9b 100644
 +CLEANFILES = $(display_type_DATA) $(service_DATA)
 diff --git a/data/display-types.conf.in b/data/display-types.conf.in
 new file mode 100644
-index 0000000..80a1f3a
+index 0000000..4c4246d
 --- /dev/null
 +++ b/data/display-types.conf.in
-@@ -0,0 +1,34 @@
+@@ -0,0 +1,27 @@
 +[Local]
 +Command=@X11_DIR@/Xorg
 +Arguments=-br -verbose -nolisten tcp
@@ -175,13 +155,6 @@ index 0000000..80a1f3a
 +Arguments=
 +UseAuth=true
 +Priority=
-+
-+[Sunray]
-+Command=/etc/opt/SUNWut/basedir/lib/utxsun
-+Chooser=false
-+Arguments=
-+UseAuth=true
-+Priority=
 diff --git a/libck-connector/ck-connector.c b/libck-connector/ck-connector.c
 index 7f6f87f..ad8a111 100644
 --- a/libck-connector/ck-connector.c
@@ -199,7 +172,7 @@ index 7f6f87f..ad8a111 100644
  };
  
 diff --git a/src/Makefile.am b/src/Makefile.am
-index cbe8a09..ea8d6e2 100644
+index cbe8a09..bd3ec70 100644
 --- a/src/Makefile.am
 +++ b/src/Makefile.am
 @@ -107,6 +107,8 @@ console_kit_daemon_SOURCES =	\
@@ -211,14 +184,6 @@ index cbe8a09..ea8d6e2 100644
  	ck-seat.h		\
  	ck-seat.c		\
  	ck-session-leader.h	\
-@@ -139,6 +141,7 @@ console_kit_daemon_LDADD =	\
- 	$(CONSOLE_KIT_LIBS)	\
- 	$(POLKIT_LIBS)		\
- 	$(RBAC_LIBS)		\
-+	$(SCF_LIBS)		\
- 	libck.la		\
- 	libck-event-log.la	\
- 	$(NULL)
 diff --git a/src/ck-display-type.c b/src/ck-display-type.c
 new file mode 100644
 index 0000000..2920eb8
@@ -1201,7 +1166,7 @@ index 45910b7..32e57ac 100644
  
  #endif /* __CK_MANAGER_H */
 diff --git a/src/ck-seat.c b/src/ck-seat.c
-index c2f70da..219f537 100644
+index c2f70da..9dc1b9f 100644
 --- a/src/ck-seat.c
 +++ b/src/ck-seat.c
 @@ -40,6 +40,7 @@
@@ -1422,45 +1387,10 @@ index c2f70da..219f537 100644
  
          G_OBJECT_CLASS (ck_seat_parent_class)->finalize (object);
  }
-@@ -1068,20 +1235,98 @@ ck_seat_new_with_devices (const char *sid,
+@@ -1068,20 +1235,45 @@ ck_seat_new_with_devices (const char *sid,
          return CK_SEAT (object);
  }
  
-+static gboolean
-+is_VT_enabled ()
-+{
-+#ifdef __sun
-+
-+#ifdef HAVE_SCF  
-+#include <libscf.h> 
-+#endif 
-+
-+        static int vt_enabled = -1; // -1 means this function is not called.
-+        if (vt_enabled != -1)
-+                return vt_enabled == 1 ? TRUE : FALSE;
-+
-+        /* TODO: After Solaris Xorg VT support is done, remove the directly
-+                 return code
-+        */
-+        vt_enabled = FALSE;
-+        return FALSE;
-+
-+        char *state = NULL;
-+
-+        state = smf_get_state ("svc:/system/vtdaemon:default");
-+        if (state && g_str_equal (state, SCF_STATE_STRING_ONLINE)) {
-+                vt_enabled = TRUE;
-+        } else {
-+                vt_enabled = FALSE;
-+        }
-+
-+        g_free (state);
-+        return vt_enabled;
-+#else
-+        return TRUE;
-+#endif
-+}
-+
 +static char *
 +generate_new_tty_device (gboolean is_console,
 +                         gint     vt)
@@ -1470,26 +1400,8 @@ index c2f70da..219f537 100644
 +        if (vt <= 0)
 +                return NULL;
 +#ifdef __sun
-+        if (is_VT_enabled ()) {
-+                /* Linux and Solaris using different vt device name */
-+                res = g_strdup_printf ("/dev/vt/%d", vt);
-+        } else {
-+                /* On Solaris, vt can be disabled running
-+                         "svcadm disable vtdaemon"
-+                   If vt is disabled, only one display is allowed use
-+                  "/dev/console" as tty_device, other local displays should be 
-+                  "/dev/dtlocal". If multiple displas are configured as
-+                  IsConsole=true, then we follow the following rules:
-+                  1) display ":0" always win 
-+                  2) if display ":0" not set, we choose the met first display 
-+                  This is decided on GDM side.
-+                */
-+                if (is_console)
-+                        res = g_strdup ("/dev/console");
-+                else
-+                        res = g_strdup ("/dev/dtlocal");
-+        }
-+
++        /* Linux and Solaris using different vt device name */
++        res = g_strdup_printf ("/dev/vt/%d", vt);
 +#else
 +        res = g_strdup_printf ("vt%d", vt);
 +#endif
@@ -1531,7 +1443,7 @@ index c2f70da..219f537 100644
  
          key_file = g_key_file_new ();
          error = NULL;
-@@ -1107,6 +1352,45 @@ ck_seat_new_from_file (const char *sid,
+@@ -1107,6 +1299,45 @@ ck_seat_new_from_file (const char *sid,
                  return NULL;
          }
  
@@ -1577,7 +1489,7 @@ index c2f70da..219f537 100644
          device_list = g_key_file_get_string_list (key_file, group, "Devices", &ndevices, NULL);
  
          g_debug ("Creating seat %s with %d devices", sid, ndevices);
-@@ -1137,13 +1421,33 @@ ck_seat_new_from_file (const char *sid,
+@@ -1137,13 +1368,33 @@ ck_seat_new_from_file (const char *sid,
  
                  g_strfreev (split);
          }
@@ -1966,10 +1878,10 @@ index 13c191f..6522e91 100644
  	$(NULL)
 diff --git a/tools/ck-dynamic.c b/tools/ck-dynamic.c
 new file mode 100644
-index 0000000..5a660f7
+index 0000000..d9279e2
 --- /dev/null
 +++ b/tools/ck-dynamic.c
-@@ -0,0 +1,230 @@
+@@ -0,0 +1,228 @@
 +/* -*- Mode: C; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 8 -*-
 + *
 + * Copyright (C) 2009 Sun Microsystems, Inc.
@@ -2109,7 +2021,6 @@ index 0000000..5a660f7
 +        gboolean         list = FALSE;
 +        gboolean         show_version = FALSE;
 +        char            *type = NULL;
-+        char            *tty = NULL;
 +        int              num = -1;
 +        gboolean         res;
 +
@@ -2119,7 +2030,6 @@ index 0000000..5a660f7
 +                { "list", 'l', 0, G_OPTION_ARG_NONE, &list, N_("List all attached displays"), NULL},
 +                { "num", 'n', 0, G_OPTION_ARG_INT, &num, N_("Display number"), NULL},
 +                { "type", 't', 0, G_OPTION_ARG_STRING, &type, N_("Display type"), NULL},
-+                { "tty", 'T', 0, G_OPTION_ARG_STRING, &tty, N_("Tty device"), NULL},
 +                { "version", 'V', 0, G_OPTION_ARG_NONE, &show_version, N_("Version of this application"), NULL },
 +                { NULL }
 +        };   
@@ -2187,7 +2097,7 @@ index 0000000..5a660f7
 +
 +
 +        if (add) {
-+                create_dynamic_session (connection, proxy, num, type, tty);
++                create_dynamic_session (connection, proxy, num, type, NULL);
 +        } else if (delete) {
 +                remove_dynamic_session (connection, proxy, num);
 +        } else if (list) {
