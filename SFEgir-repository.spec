@@ -9,6 +9,9 @@
 Name:                    SFEgir-repository
 Summary:                 GIR Repository
 Version:                 0.6.3
+# This patch just hacks gir-repository to avoid building the GStreamer
+# files since they do not seem to build properly on Solaris.  Need to
+# actually fix this instead of avoiding building them.
 Patch1:                  gir-repository-01-nogst.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build

@@ -10,8 +10,11 @@
 Name:                    SFEgobject-introspection
 Summary:                 GObject introspection support
 Version:                 0.6.3
+#owner:yippi date:2009-04-07 type:bug bugzilla:578199
 Patch1:                  gobject-introspection-01-union.diff
+#owner:yippi date:2009-04-07 type:bug bugzilla:578200
 Patch2:                  gobject-introspection-02-scanner.diff
+#owner:yippi date:2009-04-07 type:bug bugzilla:578202
 Patch3:                  gobject-introspection-03-fixshave.diff
 Patch4:                  gobject-introspection-04-dumper.diff
 SUNW_BaseDir:            %{_basedir}

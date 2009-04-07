@@ -8,8 +8,11 @@
 Name:                    SFEgnome-shell
 Summary:                 GNOME Shell
 Version:                 0.0.1
+#owner:yippi date:2009-04-07 type:bug bugzilla:578195
 Patch1:                  gnome-shell-01-bash.diff
+#owner:yippi date:2009-04-07 type:bug bugzilla:578196
 Patch2:                  gnome-shell-02-launch.diff
+#owner:yippi date:2009-04-07 type:bug bugzilla:578197
 Patch3:                  gnome-shell-03-overlay.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
