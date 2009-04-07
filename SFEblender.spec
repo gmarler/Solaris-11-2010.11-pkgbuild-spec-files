@@ -7,8 +7,8 @@
 
 Name:           SFEblender
 Summary:        blender
-Version:        2.48a
-Source:		http://download.blender.org/source/blender-%{version}.tar.gz
+Version:        2.48
+Source:		http://download.blender.org/source/blender-%{version}a.tar.gz
 Source1:	blender-01.sh
 Patch1:		blender-01-build.diff
 Patch2:		blender-02-install.diff
@@ -164,6 +164,8 @@ rm -rf $RPM_BUILD_ROOT
 #%endif
 
 %changelog
+* April 2009 - Gilles dauphin
+- adjust version for IPS
 * Sun 18 Jan 2009 - Henry Zhang
 - Bump to 2.48a, and update the patch and blender-01.sh.
 * Thu 27 Nov 2008 - Henry Zhang
