@@ -1,0 +1,8 @@
+--- gnome-shell/autogen.sh-orig	2009-04-06 16:12:01.050916000 -0500
++++ gnome-shell/autogen.sh	2009-04-06 16:12:05.784820000 -0500
+@@ -1,4 +1,4 @@
+-#!/bin/sh
++#!/bin/bash
+ 
+ (cd $(dirname $0);
+     touch ChangeLog NEWS &&

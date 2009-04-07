@@ -1,0 +1,11 @@
+--- gobject-introspection/giscanner/dumper.py-orig	2009-04-03 17:25:39.966244000 -0500
++++ gobject-introspection/giscanner/dumper.py	2009-04-03 18:01:40.197496000 -0500
+@@ -79,7 +79,7 @@ class DumpCompiler(object):
+         self._tmpdir = tempfile.mkdtemp('', 'tmp-introspect')
+ 
+         self._compiler_cmd = os.environ.get('CC', 'gcc')
+-        self._linker_cmd = os.environ.get('LD', self._compiler_cmd)
++        self._linker_cmd = os.environ.get('CC', self._compiler_cmd)
+         self._pkgconfig_cmd = os.environ.get('PKG_CONFIG', 'pkg-config')
+ 
+         self._uninst_srcdir = os.environ.get(

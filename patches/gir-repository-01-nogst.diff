@@ -1,0 +1,18 @@
+--- gir-repository/configure.ac-orig	2009-04-03 22:30:13.659471000 -0500
++++ gir-repository/configure.ac	2009-04-03 23:02:25.521533000 -0500
+@@ -139,13 +139,13 @@ AM_CONDITIONAL(BUILD_CLUTTERCAIRO, $have
+ dnl gstreamer
+ PKG_CHECK_MODULES(GSTREAMER, gstreamer-0.10 >= 0.10.0, 
+                   have_gstreamer=true, have_gstreamer=false)
+-AM_CONDITIONAL(BUILD_GSTREAMER, $have_gstreamer)
++AM_CONDITIONAL(BUILD_GSTREAMER, 0)
+ 
+ dnl gstreamer
+ PKG_CHECK_MODULES(GSTREAMER_PLUGINS_BASE, gstreamer-plugins-base-0.10 >= 0.10.0, 
+                   have_gstreamer_plugins_base=true, 
+                   have_gstreamer_plugins_base=false)
+-AM_CONDITIONAL(BUILD_GSTREAMER_PLUGINS_BASE, $have_gstreamer_plugins_base)
++AM_CONDITIONAL(BUILD_GSTREAMER_PLUGINS_BASE, 0)
+ 
+ dnl gtksourceview
+ PKG_CHECK_MODULES(GTKSOURCEVIEW, gtksourceview-2.0,

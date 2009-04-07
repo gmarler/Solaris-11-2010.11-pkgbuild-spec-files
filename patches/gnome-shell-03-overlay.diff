@@ -1,0 +1,18 @@
+--- gnome-shell/js/ui/overlay.js-orig	2009-04-06 19:22:07.930236000 -0500
++++ gnome-shell/js/ui/overlay.js	2009-04-06 19:22:35.386335000 -0500
+@@ -117,8 +117,13 @@ Sideshow.prototype = {
+ 
+         let searchIconTexture = new Clutter.Texture({ x: SIDESHOW_PAD + 2,
+                                                       y: this._searchBox.y + 2 });
+-        let searchIconPath = icontheme.lookup_icon('gtk-find', 16, 0).get_filename();
+-        searchIconTexture.set_from_file(searchIconPath);
++        try {
++            let searchIconPath = icontheme.lookup_icon('gtk-find', 16, 0).get_filename();
++            searchIconTexture.set_from_file(searchIconPath);
++        } catch (e) {
++            log('Error finding icon ' + e);
++        }
++
+         this.actor.add_actor(searchIconTexture);
+ 
+         // We need to initialize the text for the entry to have the cursor displayed 

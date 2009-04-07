@@ -1,0 +1,255 @@
+--- gobject-introspection/girepository/gtypelib.h-orig	2009-04-03 14:45:34.626150000 -0500
++++ gobject-introspection/girepository/gtypelib.h	2009-04-03 14:45:54.835369000 -0500
+@@ -313,7 +313,7 @@ typedef union
+     guint pointer    : 1;
+     guint reserved3  : 2;
+     guint tag        : 5;    
+-  };
++  } flags;
+   guint32    offset;
+ } SimpleTypeBlob;
+ 
+@@ -532,7 +532,7 @@ typedef struct {
+   union {
+     guint16 length;
+     guint16 size;
+-  };
++  } dimensions;
+ 
+   SimpleTypeBlob type;
+ } ArrayTypeBlob;
+--- gobject-introspection/girepository/gtypelib.c-orig	2009-04-03 14:45:30.528086000 -0500
++++ gobject-introspection/girepository/gtypelib.c	2009-04-03 14:45:54.835245000 -0500
+@@ -116,13 +116,13 @@ get_type_blob (GTypelib *typelib,
+       return FALSE;
+     }
+ 
+-  if (simple->reserved == 0 && simple->reserved2 == 0)
++  if (simple->flags.reserved == 0 && simple->flags.reserved2 == 0)
+     {
+       g_set_error (error,
+ 		   G_TYPELIB_ERROR,
+ 		   G_TYPELIB_ERROR_INVALID,
+ 		   "Expected non-basic type but got %d",
+-		   simple->tag);
++		   simple->flags.tag);
+       return FALSE;
+     }
+ 
+@@ -547,10 +547,10 @@ validate_type_blob (GTypelib     *typeli
+   
+   simple = (SimpleTypeBlob *)&typelib->data[offset];
+ 
+-  if (simple->reserved == 0 && 
+-      simple->reserved2 == 0)
++  if (simple->flags.reserved == 0 && 
++      simple->flags.reserved2 == 0)
+     {
+-      if (simple->tag >= GI_TYPE_TAG_ARRAY)
++      if (simple->flags.tag >= GI_TYPE_TAG_ARRAY)
+ 	{
+ 	  g_set_error (error,
+ 		       G_TYPELIB_ERROR,
+@@ -559,13 +559,13 @@ validate_type_blob (GTypelib     *typeli
+ 	  return FALSE;
+ 	}
+       
+-      if (simple->tag >= GI_TYPE_TAG_UTF8 &&
+-	  !simple->pointer)
++      if (simple->flags.tag >= GI_TYPE_TAG_UTF8 &&
++	  !simple->flags.pointer)
+ 	{
+ 	  g_set_error (error,
+ 		       G_TYPELIB_ERROR,
+ 		       G_TYPELIB_ERROR_INVALID_BLOB,
+-		       "Pointer type exected for tag %d", simple->tag);
++		       "Pointer type exected for tag %d", simple->flags.tag);
+ 	  return FALSE;	  
+ 	}
+ 
+@@ -963,9 +963,9 @@ validate_constant_blob (GTypelib     *ty
+     }
+   
+   type = (SimpleTypeBlob *)&typelib->data[offset + G_STRUCT_OFFSET (ConstantBlob, type)];
+-  if (type->reserved == 0 && type->reserved2 == 0)
++  if (type->flags.reserved == 0 && type->flags.reserved2 == 0)
+     {
+-      if (type->tag == 0)
++      if (type->flags.tag == 0)
+ 	{
+ 	  g_set_error (error,
+ 		       G_TYPELIB_ERROR,
+@@ -974,8 +974,8 @@ validate_constant_blob (GTypelib     *ty
+ 	  return FALSE;
+ 	}
+ 
+-      if (value_size[type->tag] != 0 &&
+-	  blob->size != value_size[type->tag])
++      if (value_size[type->flags.tag] != 0 &&
++	  blob->size != value_size[type->flags.tag])
+ 	{
+ 	  g_set_error (error,
+ 		       G_TYPELIB_ERROR,
+--- gobject-introspection/girepository/ginfo.c-orig	2009-04-03 14:45:22.827539000 -0500
++++ gobject-introspection/girepository/ginfo.c	2009-04-03 14:45:41.971927000 -0500
+@@ -637,7 +637,7 @@ g_type_info_new (GIBaseInfo    *containe
+   SimpleTypeBlob *type = (SimpleTypeBlob *)&typelib->data[offset];
+ 
+   return (GITypeInfo *) g_info_new (GI_INFO_TYPE_TYPE, container, typelib, 
+-				    (type->reserved == 0 && type->reserved2 == 0) ? offset : type->offset);
++				    (type->flags.reserved == 0 && type->flags.reserved2 == 0) ? offset : type->offset);
+ }
+ 
+ /**
+@@ -852,8 +852,8 @@ g_type_info_is_pointer (GITypeInfo *info
+   GIBaseInfo *base = (GIBaseInfo *)info;
+   SimpleTypeBlob *type = (SimpleTypeBlob *)&base->typelib->data[base->offset];
+   
+-  if (type->reserved == 0 && type->reserved2 == 0)
+-    return type->pointer;
++  if (type->flags.reserved == 0 && type->flags.reserved2 == 0)
++    return type->flags.pointer;
+   else
+     {
+       InterfaceTypeBlob *iface = (InterfaceTypeBlob *)&base->typelib->data[base->offset];
+@@ -868,8 +868,8 @@ g_type_info_get_tag (GITypeInfo *info)
+   GIBaseInfo *base = (GIBaseInfo *)info;
+   SimpleTypeBlob *type = (SimpleTypeBlob *)&base->typelib->data[base->offset];
+ 
+-  if (type->reserved == 0 && type->reserved2 == 0)
+-    return type->tag;
++  if (type->flags.reserved == 0 && type->flags.reserved2 == 0)
++    return type->flags.tag;
+   else
+     {
+       InterfaceTypeBlob *iface = (InterfaceTypeBlob *)&base->typelib->data[base->offset];
+@@ -885,7 +885,7 @@ g_type_info_get_param_type (GITypeInfo *
+   GIBaseInfo *base = (GIBaseInfo *)info;
+   SimpleTypeBlob *type = (SimpleTypeBlob *)&base->typelib->data[base->offset];
+   
+-  if (!(type->reserved == 0 && type->reserved2 == 0))
++  if (!(type->flags.reserved == 0 && type->flags.reserved2 == 0))
+     {
+       ParamTypeBlob *param = (ParamTypeBlob *)&base->typelib->data[base->offset];
+ 
+@@ -913,7 +913,7 @@ g_type_info_get_interface (GITypeInfo *i
+   GIBaseInfo *base = (GIBaseInfo *)info;
+   SimpleTypeBlob *type = (SimpleTypeBlob *)&base->typelib->data[base->offset];
+   
+-  if (!(type->reserved == 0 && type->reserved2 == 0))
++  if (!(type->flags.reserved == 0 && type->flags.reserved2 == 0))
+     {
+       InterfaceTypeBlob *blob = (InterfaceTypeBlob *)&base->typelib->data[base->offset];
+       
+@@ -930,14 +930,14 @@ g_type_info_get_array_length (GITypeInfo
+   GIBaseInfo *base = (GIBaseInfo *)info;
+   SimpleTypeBlob *type = (SimpleTypeBlob *)&base->typelib->data[base->offset];
+   
+-  if (!(type->reserved == 0 && type->reserved2 == 0))
++  if (!(type->flags.reserved == 0 && type->flags.reserved2 == 0))
+     {
+       ArrayTypeBlob *blob = (ArrayTypeBlob *)&base->typelib->data[base->offset];
+ 
+       if (blob->tag == GI_TYPE_TAG_ARRAY)
+ 	{
+ 	  if (blob->has_length)
+-	    return blob->length;
++	    return blob->dimensions.length;
+ 	}
+     }
+ 
+@@ -950,14 +950,14 @@ g_type_info_get_array_fixed_size (GIType
+   GIBaseInfo *base = (GIBaseInfo *)info;
+   SimpleTypeBlob *type = (SimpleTypeBlob *)&base->typelib->data[base->offset];
+   
+-  if (!(type->reserved == 0 && type->reserved2 == 0))
++  if (!(type->flags.reserved == 0 && type->flags.reserved2 == 0))
+     {
+       ArrayTypeBlob *blob = (ArrayTypeBlob *)&base->typelib->data[base->offset];
+ 
+       if (blob->tag == GI_TYPE_TAG_ARRAY)
+ 	{
+ 	  if (blob->has_size)
+-	    return blob->size;
++	    return blob->dimensions.size;
+ 	}
+     }
+ 
+@@ -970,7 +970,7 @@ g_type_info_is_zero_terminated (GITypeIn
+   GIBaseInfo *base = (GIBaseInfo *)info;
+   SimpleTypeBlob *type = (SimpleTypeBlob *)&base->typelib->data[base->offset];
+   
+-  if (!(type->reserved == 0 && type->reserved2 == 0))
++  if (!(type->flags.reserved == 0 && type->flags.reserved2 == 0))
+     {
+       ArrayTypeBlob *blob = (ArrayTypeBlob *)&base->typelib->data[base->offset];
+ 
+@@ -987,7 +987,7 @@ g_type_info_get_n_error_domains (GITypeI
+   GIBaseInfo *base = (GIBaseInfo *)info;
+   SimpleTypeBlob *type = (SimpleTypeBlob *)&base->typelib->data[base->offset];
+   
+-  if (!(type->reserved == 0 && type->reserved2 == 0))
++  if (!(type->flags.reserved == 0 && type->flags.reserved2 == 0))
+     {
+       ErrorTypeBlob *blob = (ErrorTypeBlob *)&base->typelib->data[base->offset];
+ 
+@@ -1005,7 +1005,7 @@ g_type_info_get_error_domain (GITypeInfo
+   GIBaseInfo *base = (GIBaseInfo *)info;
+   SimpleTypeBlob *type = (SimpleTypeBlob *)&base->typelib->data[base->offset];
+   
+-  if (!(type->reserved == 0 && type->reserved2 == 0))
++  if (!(type->flags.reserved == 0 && type->flags.reserved2 == 0))
+     {
+       ErrorTypeBlob *blob = (ErrorTypeBlob *)&base->typelib->data[base->offset];
+ 
+@@ -2047,13 +2047,13 @@ g_constant_info_get_value (GIConstantInf
+   ConstantBlob *blob = (ConstantBlob *)&base->typelib->data[base->offset];
+ 
+   /* FIXME non-basic types ? */
+-  if (blob->type.reserved == 0 && blob->type.reserved2 == 0)
++  if (blob->type.flags.reserved == 0 && blob->type.flags.reserved2 == 0)
+     {
+-      if (blob->type.pointer)
++      if (blob->type.flags.pointer)
+ 	value->v_pointer = g_memdup (&base->typelib->data[blob->offset], blob->size);
+       else
+ 	{
+-	  switch (blob->type.tag)
++	  switch (blob->type.flags.tag)
+ 	    {
+ 	    case GI_TYPE_TAG_BOOLEAN:
+ 	      value->v_boolean = *(gboolean*)&base->typelib->data[blob->offset];
+--- gobject-introspection/girepository/girnode.c-orig	2009-04-03 14:45:25.945813000 -0500
++++ gobject-introspection/girepository/girnode.c	2009-04-03 14:45:44.480679000 -0500
+@@ -1437,11 +1437,11 @@ g_ir_node_build_typelib (GIrNode        
+ 	    type->tag == GI_TYPE_TAG_UTF8 ||
+ 	    type->tag == GI_TYPE_TAG_FILENAME)
+ 	  { 
+-	    blob->reserved = 0;
+-	    blob->reserved2 = 0;
+-	    blob->pointer = type->is_pointer;
+-	    blob->reserved3 = 0;
+-	    blob->tag = type->tag;
++	    blob->flags.reserved = 0;
++	    blob->flags.reserved2 = 0;
++	    blob->flags.pointer = type->is_pointer;
++	    blob->flags.reserved3 = 0;
++	    blob->flags.tag = type->tag;
+ 	  }
+ 	else 
+ 	  {
+@@ -1481,11 +1481,11 @@ g_ir_node_build_typelib (GIrNode        
+                       array->has_size = type->has_size;
+ 		      array->reserved2 = 0;
+                       if (array->has_length)
+-                        array->length = type->length;
++                        array->dimensions.length = type->length;
+                       else if (array->has_size)
+-                        array->size  = type->size;
++                        array->dimensions.size  = type->size;
+                       else
+-                        array->length = -1;
++                        array->dimensions.length = -1;
+ 		      
+ 		      pos = *offset2 + G_STRUCT_OFFSET (ArrayTypeBlob, type);
+ 		      *offset2 += sizeof (ArrayTypeBlob);

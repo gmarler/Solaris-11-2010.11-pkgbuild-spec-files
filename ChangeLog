@@ -1,3 +1,18 @@
+2009-04-03  Brian Cameron  <brian.cameron@sun.com>
+
+	* SFEgnome-shell.spec, SFEmetacity-clutter.spec
+	  SFEgobject-introspection.spec, SFEgir-repository.spec, SFEgjs.spec:
+	  Add new spec-files.
+	* patches/gobject-intropsection-01-union.diff,
+	  patches/gobject-introspection-02-scanner.diff,
+	  patches/gobject-introspection-03-overlay.diff,
+	  patches/gobject-introspection-04-dumper.diff,
+	  patches/gir-repository-01-nogst.diff,
+	  patches/metacity-clutter-01-xopen-source.diff,
+	  patches/gnome-shell-01-bash.diff,
+	  patches/gnome-shell-02-launch.diff,
+	  patches/gnome-shell-03-overlay.diff: Add new patches.
+
 2009-04-03  Halton Huo <halton.huo@sun.com>
 
 	* patches/ConsoleKit-04-ck-dynamic.diff: rework
