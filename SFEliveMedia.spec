@@ -15,7 +15,7 @@
 
 Name:                    SFEliveMedia
 Summary:                 liveMedia - live555 Streaming Media
-Version:                 2009.04.06
+Version:                 2009.4.6
 Source:                  http://www.live555.com/liveMedia/public/live.%{src_version}.tar.gz
 Patch1:                  liveMedia-01-SOLARIS-macro.diff
 Patch2:                  liveMedia-02-config.diff
