@@ -1,3 +1,9 @@
+2009-04-08  Brian Cameron  <brian.cameron@sun.com>
+
+	* SUNWgnome-display-mgr.spec, patches/gdm-09-audit.diff:  Add patch
+	  to properly set PAM_TTY on Solaris and to fix bugs in the Sun Audit
+	  code.
+
 2009-04-08  Halton Huo <halton.huo@sun.com>
 
 	* SFEconsolekit.spec: Add three more patches

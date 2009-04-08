@@ -42,6 +42,8 @@ Patch6:                  gdm-06-hide-face-browser.diff
 Patch7:                  gdm-07-solaris-xinerama.diff
 # date:2009-04-02 owner:yippi type:bug bugid:568323
 Patch8:                  gdm-08-hide-face-browser-pt2.diff
+# date:2009-04-08 owner:yippi type:bug state:upstream
+Patch9:                  gdm-09-audit.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 
@@ -105,6 +107,7 @@ Requires:                %{name}
 %patch6 -p0
 %patch7 -p1
 %patch8 -p1
+%patch9 -p1
 
 %build
 export LDFLAGS="%_ldflags"
@@ -322,6 +325,8 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 %endif
 
 %changelog
+* Wed Apr 08 2009 - brian.cameron@sun.com
+- Add patch gdm-09-audit.diff so that GDM works with SunAudit better.
 * Thu Apr 02 2009 - brian.cameron@sun.com
 - Add patch8 gdm-08-hide-face-browser-pt2.diff to improve usability 
   further.  Fixes bugzilla bug #568323.
