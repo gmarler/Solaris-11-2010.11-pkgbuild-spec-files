@@ -1,0 +1,15 @@
+diff --git a/data/display-types.conf.in b/data/display-types.conf.in
+index 4c4246d..80a1f3a 100644
+--- a/data/display-types.conf.in
++++ b/data/display-types.conf.in
+@@ -25,3 +25,10 @@ Chooser=false
+ Arguments=
+ UseAuth=true
+ Priority=
++
++[Sunray]
++Command=/etc/opt/SUNWut/basedir/lib/utxsun
++Chooser=false
++Arguments=
++UseAuth=true
++Priority=

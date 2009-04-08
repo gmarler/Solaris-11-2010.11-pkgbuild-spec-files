@@ -1,3 +1,13 @@
+2009-04-08  Halton Huo <halton.huo@sun.com>
+
+	* SFEconsolekit.spec: Add three more patches
+	* patches/ConsoleKit-05-add-sunray-type.diff: (added) for add Sunray to
+	  display-typs.conf.in
+	* patches/ConsoleKit-06-dynamic-tty.diff: (added) to add --tty for
+	  ck-dynaminc
+	* patches/ConsoleKit-07-solaris-vtdaemon.diff: (added) to check
+	  vtdaemon service code for Solaris
+
 2009-04-07  Brian Cameron  <brian.cameron@sun.com>
 
 	* SFEgnome-shell.spec, patches/gnome-shell-01-bash.diff:  Remove

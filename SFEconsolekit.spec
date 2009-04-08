@@ -39,6 +39,9 @@ Patch4:                  ConsoleKit-04-ck-dynamic.diff
 # Disable getcurrentsession.diff for now, since halton think it is not
 # a bug actually
 #Patch5:                  ConsoleKit-05-getcurrentsession.diff
+Patch5:                  ConsoleKit-05-add-sunray-type.diff
+Patch6:                  ConsoleKit-06-dynamic-tty.diff
+Patch7:                  ConsoleKit-07-solaris-vtdaemon.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 
@@ -97,6 +100,9 @@ Requires: %name
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
+%patch5 -p1
+%patch6 -p1
+%patch7 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -213,6 +219,10 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Wed Apr 08 2009 - halton.huo@sun.com
+- Add patch5: add-sunray-type.diff to add Sunray for display-typs.conf.in
+- Add patch6: dynamic-tty.diff to add --tty for ck-dynaminc
+- Add patch7: solaris-vtdaemon.diff to check vtdaemon service code for Solaris
 * Thu Mar 26 2009 - halton.huo@sun.com
 - Add all files under etc/ConsoleKit/ to %files root
 * Sat Feb 07 2009 - brian.cameron@sun.com
