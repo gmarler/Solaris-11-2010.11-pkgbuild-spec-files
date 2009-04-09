@@ -21,6 +21,7 @@ BuildRequires:           SUNWgnome-base-libs-devel
 BuildRequires:           SUNWgnome-media-devel
 BuildRequires:           SUNWgnome-panel-devel
 BuildRequires:           SUNWlibrsvg-devel
+BuildRequires:           SFEgir-repository
 BuildRequires:           SFEgjs-devel
 BuildRequires:           SFEgobject-introspection-devel
 BuildRequires:           SFEmetacity-clutter-devel
@@ -31,6 +32,7 @@ Requires:                SUNWgnome-base-libs
 Requires:                SUNWgnome-media
 Requires:                SUNWgnome-panel
 Requires:                SUNWlibrsvg
+Requires:                SFEgir-repository
 Requires:                SFEgjs
 Requires:                SFEgobject-introspection
 Requires:                SFEmetacity-clutter

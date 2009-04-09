@@ -1,5 +1,16 @@
 2009-04-08  Brian Cameron  <brian.cameron@sun.com>
 
+	* patches/gnome-shell-02-overlay.diff: Update based on maintainer's
+	  comments.
+	* SFEclutter09.spec, SFEclutter-gtk09.spec,
+	  patches/clutter9-01-fix-tests.diff,
+	  patches/clutter-gtk9-01-introspection.diff:  Add 0.9 versions of
+	  clutter and clutter-gtk.  These are parallel installable with
+	  the 0.8 version.
+	* SFEgnome-shell.spec: Add SFEgir-repository to Requires/BuildRequires.
+
+2009-04-08  Brian Cameron  <brian.cameron@sun.com>
+
 	* SUNWgnome-display-mgr.spec, patches/gdm-09-audit.diff:  Add patch
 	  to properly set PAM_TTY on Solaris and to fix bugs in the Sun Audit
 	  code.

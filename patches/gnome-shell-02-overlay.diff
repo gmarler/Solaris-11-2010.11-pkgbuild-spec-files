@@ -1,18 +1,96 @@
---- gnome-shell/js/ui/overlay.js-orig	2009-04-06 19:22:07.930236000 -0500
-+++ gnome-shell/js/ui/overlay.js	2009-04-06 19:22:35.386335000 -0500
-@@ -117,8 +117,13 @@ Sideshow.prototype = {
+From 2d70386c4f43d9378a3cfd2717052766f251512b Mon Sep 17 00:00:00 2001
+From: Colin Walters <walters@verbum.org>
+Date: Wed, 8 Apr 2009 15:32:20 -0400
+Subject: [PATCH] Bug 578197 - Handle builtin icons
+
+We should be able to handle icons being builtin by converting from
+pixbuf to texture directly, so do that.
+---
+ js/ui/gtkutil.js |   35 ++++++++++++++++++++++++++---------
+ js/ui/overlay.js |    7 +++----
+ 2 files changed, 29 insertions(+), 13 deletions(-)
+
+diff --git a/js/ui/gtkutil.js b/js/ui/gtkutil.js
+index 56a9004..7b95cd6 100644
+--- a/js/ui/gtkutil.js
++++ b/js/ui/gtkutil.js
+@@ -3,19 +3,21 @@
+ const Lang = imports.lang;
  
-         let searchIconTexture = new Clutter.Texture({ x: SIDESHOW_PAD + 2,
-                                                       y: this._searchBox.y + 2 });
+ const Clutter = imports.gi.Clutter;
++const Shell = imports.gi.Shell;
+ const Gtk = imports.gi.Gtk;
+ 
+-function loadIconToTexture(gicon, size, fallback) {
+-    let iconTheme = Gtk.IconTheme.get_default();
+-
++function _loadIconInfo(iconinfo, size, fallback) {
+     let path = null;
++    let builtinPixbuf = null;
+     let icon = null;
+-    if (gicon != null) {
+-        let iconinfo = iconTheme.lookup_by_gicon(gicon, size, Gtk.IconLookupFlags.NO_SVG);
+-        if (iconinfo)
+-            path = iconinfo.get_filename();
++    if (iconinfo != null) {
++        path = iconinfo.get_filename();
++        builtinPixbuf = iconinfo.get_builtin_pixbuf();
+     }
+-    if (path) {
++    if (builtinPixbuf != null) {
++        icon = new Clutter.Texture({ width: size, height: size });
++        Shell.clutter_texture_set_from_pixbuf(icon, builtinPixbuf);
++    } else if (path) {
+         try {
+             icon = new Clutter.Texture({ width: size, height: size, load_async: true });
+             icon.set_from_file(path);
+@@ -27,4 +29,19 @@ function loadIconToTexture(gicon, size, fallback) {
+     if (icon == null && fallback)
+         icon = new Clutter.Texture({ width: size, height: size });
+     return icon;
+-}
+\ No newline at end of file
++}
++
++function loadIconToTexture(gicon, size, fallback) {
++    let iconTheme = Gtk.IconTheme.get_default();
++    let iconinfo = null;
++    if (gicon != null) {
++        iconinfo = iconTheme.lookup_by_gicon(gicon, size, Gtk.IconLookupFlags.NO_SVG | Gtk.IconLookupFlags.USE_BUILTIN);
++    }
++    return _loadIconInfo(iconinfo, size, fallback);
++}
++
++function loadStockToTexture(stockid, size, fallback) {
++    let iconTheme = Gtk.IconTheme.get_default();
++    let iconinfo = iconTheme.lookup_icon(stockid, size, Gtk.IconLookupFlags.NO_SVG | Gtk.IconLookupFlags.USE_BUILTIN);
++    return _loadIconInfo(iconinfo, size, fallback);
++}
+diff --git a/js/ui/overlay.js b/js/ui/overlay.js
+index 7717156..4ee59ff 100644
+--- a/js/ui/overlay.js
++++ b/js/ui/overlay.js
+@@ -11,6 +11,7 @@ const Signals = imports.signals;
+ const AppDisplay = imports.ui.appDisplay;
+ const DocDisplay = imports.ui.docDisplay;
+ const GenericDisplay = imports.ui.genericDisplay;
++const GtkUtil = imports.ui.gtkutil;
+ const Link = imports.ui.link;
+ const Main = imports.ui.main;
+ const Panel = imports.ui.panel;
+@@ -120,10 +121,8 @@ Sideshow.prototype = {
+                                         height: 24});
+         this.actor.add_actor(this._searchBox);
+ 
+-        let searchIconTexture = new Clutter.Texture({ x: SIDESHOW_PAD + 2,
+-                                                      y: this._searchBox.y + 2 });
 -        let searchIconPath = icontheme.lookup_icon('gtk-find', 16, 0).get_filename();
 -        searchIconTexture.set_from_file(searchIconPath);
-+        try {
-+            let searchIconPath = icontheme.lookup_icon('gtk-find', 16, 0).get_filename();
-+            searchIconTexture.set_from_file(searchIconPath);
-+        } catch (e) {
-+            log('Error finding icon ' + e);
-+        }
-+
++        let searchIconTexture = GtkUtil.loadStockToTexture('gtk-find', 16, true);
++        searchIconTexture.set_position(SIDESHOW_PAD + 2, this._searchBox.y + 2);
          this.actor.add_actor(searchIconTexture);
  
          // We need to initialize the text for the entry to have the cursor displayed 
+-- 
+1.6.0.6
+
