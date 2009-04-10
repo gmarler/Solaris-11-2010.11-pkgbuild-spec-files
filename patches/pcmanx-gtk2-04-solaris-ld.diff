@@ -1,0 +1,26 @@
+Index: trunk/configure.ac
+===================================================================
+--- trunk/configure.ac	(revision 464)
++++ trunk/configure.ac	(working copy)
+@@ -698,7 +698,7 @@
+ CFLAGS="$CFLAGS $CPPFLAGS"
+ 
+ dnl Reduce C++ overhead
+-CXXFLAGS="$CXXFLAGS -fno-exceptions -fno-rtti"
++CXXFLAGS="$CXXFLAGS"
+ LDFLAGS="$LDFLAGS $PACKAGE_LIBS" #-nodefaultlibs -lgcc -lc -lm"
+ 
+ dnl linker optimizations
+Index: trunk/src/core/Makefile.am
+===================================================================
+--- trunk/src/core/Makefile.am	(revision 464)
++++ trunk/src/core/Makefile.am	(working copy)
+@@ -17,8 +17,6 @@
+ libpcmanx_core_la_LIBADD = $(GUI_LIBS)
+ libpcmanx_core_la_LDFLAGS = \
+ 	-version-info @LIBTOOL_VERSION_INFO@ \
+-	-export-dynamic \
+-	@LIBTOOL_EXPORT_OPTIONS@ \
+ 	-rpath $(libdir)
+ libpcmanx_core_la_SOURCES = \
+ 	$(PROXY_SOURCES) \

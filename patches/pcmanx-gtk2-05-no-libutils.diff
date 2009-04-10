@@ -1,0 +1,15 @@
+Index: trunk/src/Makefile.am
+===================================================================
+--- trunk/src/Makefile.am	(revision 464)
++++ trunk/src/Makefile.am	(working copy)
+@@ -15,10 +15,6 @@
+ 
+ pcmanx_LDADD = $(GUI_LIBS) $(LIBPCMANX_CORE) $(SCRIPT_LIBS)
+ 
+-if CSRG_BASED
+-pcmanx_LDADD += -lutil
+-endif
+-
+ OPTIONAL_DOCKLET = \
+ 	docklet/api.h \
+ 	docklet/clipboard.c \

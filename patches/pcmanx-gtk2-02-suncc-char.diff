@@ -1,0 +1,14 @@
+Index: trunk/src/view/telnetview.cpp
+===================================================================
+--- trunk/src/view/telnetview.cpp	(revision 464)
++++ trunk/src/view/telnetview.cpp	(working copy)
+@@ -708,7 +708,8 @@
+ #ifdef USE_WGET
+ 	if (m_bWgetFiles == true) {
+ 		const char* t_pcURL = sURL.c_str();
+-		char* t_pcDot = strrchr(t_pcURL, '.') + 1;
++		char* t_pcDot;
++		t_pcDot = (char *)strrchr(t_pcURL, '.') + 1;
+ 		char t_cFileType = strlen(t_pcURL) - (t_pcDot -t_pcURL);
+ 		if (t_cFileType == 3) {
+ 			if (strncmp(t_pcDot, "rar", 3) == 0 ||

@@ -1,0 +1,13 @@
+Index: trunk/src/core/proxy.c
+===================================================================
+--- trunk/src/core/proxy.c	(revision 464)
++++ trunk/src/core/proxy.c	(working copy)
+@@ -21,6 +21,8 @@
+ 
+ #include <string.h>
+ #include <unistd.h>
++#include <sys/types.h>
++#include <sys/socket.h>
+ #include <errno.h>
+ 
+ #include "proxy.h"

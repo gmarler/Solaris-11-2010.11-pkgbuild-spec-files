@@ -1,3 +1,13 @@
+2009-04-10  Halton Huo <halton.huo@sun.com>
+
+	* SFEpcmanx.spec: (new) pxmanx module
+	* base-specs/pcmanx-gtk2.spec: (new) pxmanx module
+	* patches/pcmanx-gtk2-01-solaris-socket.diff:
+	* patches/pcmanx-gtk2-02-suncc-char.diff:
+	* patches/pcmanx-gtk2-03-suncc-init-array.diff:
+	* patches/pcmanx-gtk2-04-solaris-ld.diff:
+	* patches/pcmanx-gtk2-05-no-libutils.diff:
+
 2009-04-08  Brian Cameron  <brian.cameron@sun.com>
 
 	* patches/gnome-shell-02-overlay.diff: Update based on maintainer's
