@@ -13,9 +13,9 @@ Version:                 0.9
 Patch1:                  clutter-gtk9-01-introspection.diff
 SUNW_BaseDir:            %{_basedir}
 Requires: SUNWgnome-base-libs
-Requires: SUNWclutter
+Requires: SFEclutter09
 BuildRequires: SUNWgnome-base-libs-devel
-BuildRequires: SUNWclutter-devel
+BuildRequires: SFEclutter09-devel
 %include default-depend.inc
 
 %ifnarch sparc

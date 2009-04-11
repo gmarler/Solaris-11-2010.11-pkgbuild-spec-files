@@ -14,13 +14,13 @@ Patch1:                  metacity-clutter-01-xopen-source.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 BuildRequires:           SUNWPython26-devel
-BuildRequires:           SUNWclutter-devel
+BuildRequires:           SUNWclutter09-devel
 BuildRequires:           SUNWgnome-base-libs-devel
 BuildRequires:           SFEgobject-introspection-devel
 BuildRequires:           SFEgir-repository
 BuildRequires:           SFEgjs-devel
 Requires:                SUNWPython26
-Requires:                SUNWclutter
+Requires:                SUNWclutter09
 Requires:                SUNWgnome-base-libs
 Requires:                SFEgobject-introspection
 Requires:                SFEgir-repository

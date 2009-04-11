@@ -1,6 +1,6 @@
 #
 #
-# spec file for package SUNWclutter09
+# spec file for package SFEclutter09
 #
 # includes module(s): clutter
 #
@@ -14,13 +14,11 @@
 
 %use clutter = clutter9.spec
 
-Name:                    SUNWclutter09
+Name:                    SFEclutter09
 Summary:                 clutter - a library for creating fast, visually rich and animated graphical user interfaces.
 Version:                 %{clutter.version}
 URL:                     http://www.clutter-project.org/
-#Source:                  %{name}-manpages-0.1.tar.gz
 SUNW_BaseDir:            %{_basedir}
-SUNW_Copyright:		 SUNWclutter.copyright
 
 %ifnarch sparc
 #the packages are only on x86

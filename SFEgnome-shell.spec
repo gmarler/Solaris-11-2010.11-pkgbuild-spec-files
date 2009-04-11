@@ -16,7 +16,7 @@ SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 BuildRequires:           SUNWPython26-devel
 BuildRequires:           SUNWdbus-glib-devel
-BuildRequires:           SUNWclutter-devel
+BuildRequires:           SUNWclutter09-devel
 BuildRequires:           SUNWgnome-base-libs-devel
 BuildRequires:           SUNWgnome-media-devel
 BuildRequires:           SUNWgnome-panel-devel
@@ -27,7 +27,7 @@ BuildRequires:           SFEgobject-introspection-devel
 BuildRequires:           SFEmetacity-clutter-devel
 Requires:                SUNWPython26
 Requires:                SUNWdbus-glib
-Requires:                SUNWclutter
+Requires:                SUNWclutter09
 Requires:                SUNWgnome-base-libs
 Requires:                SUNWgnome-media
 Requires:                SUNWgnome-panel
