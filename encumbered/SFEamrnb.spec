@@ -5,7 +5,7 @@
 #
 %include Solaris.inc
 
-%define	src_ver 6.1.0.4
+%define	src_ver 7.0.0.2
 %define	src_name amrnb
 %define	src_url	http://ftp.penguin.cz/pub/users/utx/amr
 
@@ -13,8 +13,7 @@ Name:		SFEamrnb
 Summary:	3GPP AMR-NB Floating-point Speech Codec
 Version:	%{src_ver}
 Source:		%{src_url}/%{src_name}-%{version}.tar.bz2
-Source1:	http://www.3gpp.org/ftp/Specs/archive/26_series/26.104/26104-610.zip
-Patch1:		amrnb-01-patch.diff
+Source1:	http://www.3gpp.org/ftp/Specs/archive/26_series/26.104/26104-700.zip
 SUNW_BaseDir:	%{_basedir}
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 
@@ -30,7 +29,6 @@ Requires: %name
 %prep
 %setup -q -n %{src_name}-%version
 cp %{SOURCE1} .
-%patch1 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -42,10 +40,10 @@ export CFLAGS="%optflags"
 export LDFLAGS="%_ldflags"
 
 libtoolize --copy --force
-aclocal
+aclocal -I ./m4
 autoconf -f
 automake -a -f
-./configure --prefix=%{_prefix}			\
+PATCH=/usr/bin/gpatch ./configure --prefix=%{_prefix}	\
             --bindir=%{_bindir}			\
             --libdir=%{_libdir}			\
             --includedir=%{_includedir} 	\
@@ -76,5 +74,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}
 
 %changelog
+* Sat Apr 11 2009 - Milan Jurik
+- update for version 7.0.0.2
 * Fri Aug  3 2007 - dougs@truemail.co.th
 - Initial spec
