@@ -11,10 +11,12 @@
 
 Name:                   SFEwine
 Summary:                Windows compatibility
-Version:                1.1.17
+Version:                1.1.19
 URL:                    http://www.winehq.org/
 Source:                 %{src_url}/%{src_name}-%{version}.tar.bz2
 Source101:		http://trisk.acm.jhu.edu/winetricks-20080627
+#we need this because pkg can't handle 2 source_url
+Nosource:               101
 Patch1:			wine-01-shell.diff
 # http://bugs.winehq.org/show_bug.cgi?id=9787
 #Patch2:			wine-02-acceptex.diff
@@ -152,6 +154,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/aclocal/*
 
 %changelog
+* Sat Apr 11 2009 - andras.barna@gmail.com
+- bump to 1.1.19
 * Tue Mar 24 2009 - andras.barna@gmail.com
 - fix Requires, disable patch2 (needs rework?)
 * Mon Mar 16 2009 - andras.barna@gmail.com

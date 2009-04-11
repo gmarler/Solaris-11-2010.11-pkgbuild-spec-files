@@ -7,7 +7,7 @@
 
 Name:                SFErecordmysolaris
 Summary:             Recordmysolaris - Desktop recording tool
-Version:             0.2
+Version:             0.3
 Source:              http://recordmysolaris.googlecode.com/files/recordmysolaris-%{version}.tar.gz
 URL:                 http://code.google.com/p/recordmysolaris/
 
@@ -23,7 +23,7 @@ Requires:            SUNWlibtheora
 %include default-depend.inc
 
 %prep
-%setup -q -n recordmysolaris
+%setup -q -n recordmysolaris-%version
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -67,6 +67,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/*
 
 %changelog
+* Sun Apr 05 2009 - (andras.barna@gmail.com)
+- bump version
 * Mon Mar 16 2009 - (andras.barna@gmail.com)
 - fix Requires
 * Sat Mar 07 2009 - (andras.barna@gmail.com)

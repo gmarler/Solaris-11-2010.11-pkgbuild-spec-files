@@ -1,3 +1,11 @@
+2009-04-11  Andras Barna  <andras.barna@gmail.com>
+
+	* SFErecordmysolaris-gtk.spec: bump version
+	* SFErecordmysolaris.spec: bump version
+	* SFEsdl-gfx.spec: remove %doc
+	* SFEwine.spec: bump version, *disable* Source101 see comment!
+	* include/default-depend.inc: remove SUNWcar SUNWkvm
+
 2009-04-11  Milan Jurik <sfnet@xylab.cz>
 
 	* encumbered/SFEamrnb.spec: update for version 7.0.0.2

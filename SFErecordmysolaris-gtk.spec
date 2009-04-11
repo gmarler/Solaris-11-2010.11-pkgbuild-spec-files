@@ -7,8 +7,8 @@
 
 Name:                SFErecordmysolaris-gtk
 Summary:             Recordmysolaris-gtk - Desktop recording tool, gtk frontend
-Version:             0.2
-Source:              http://recordmysolaris.googlecode.com/files/gtk-recordmysolaris-%{version}.tar.gz
+Version:             0.3.3
+Source:              http://recordmysolaris.googlecode.com/files/recordmysolaris-gtk-%{version}.tar.gz
 URL:                 http://code.google.com/p/recordmysolaris/
 
 SUNW_BaseDir:        %{_basedir}
@@ -31,7 +31,7 @@ Requires:                %{name}
 %define pythonver 2.4
 
 %prep
-%setup -q -n gtk-recordmysolaris
+%setup -q -n recordmysolaris-gtk-%version
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -94,12 +94,12 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr (-, root, bin)
 %dir %attr (0755, root, bin) %{_bindir}
-%{_bindir}/gtk-recordmysolaris
+%{_bindir}/recordmysolaris-gtk
 %dir %attr (0755, root, bin) %{_libdir}
 %{_libdir}/python%{pythonver}/site-packages/recordmysolaris
 %dir %attr(0755, root, sys) %{_datadir}
 %dir %attr (0755, root, other) %{_datadir}/applications
-%{_datadir}/applications/gtk-recordmysolaris.desktop
+%{_datadir}/applications/recordmysolaris-gtk.desktop
 %dir %attr (0755, root, other) %{_datadir}/pixmaps
 %{_datadir}/pixmaps/*
 
@@ -112,6 +112,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sun Apr 05 2009 - (andras.barna@gmail.com)
+- bump version
 * Sat Mar 07 2009 - (andras.barna@gmail.com)
 - new version
 * Mon Aug 25 2008 - (andras.barna@gmail.com)
