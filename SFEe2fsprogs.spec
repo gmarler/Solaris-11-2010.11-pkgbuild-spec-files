@@ -10,14 +10,17 @@
 Name:                SFEe2fsprogs
 License:             GPL
 Summary:             Ext2 Filesystems Utilities
-Version:             1.40.5
+Version:             1.41.4
 URL:                 http://e2fsprogs.sourceforge.net/
 Source:              %{sf_download}/e2fsprogs/e2fsprogs-%{version}.tar.gz
 Source1:             ext2fs.pc
+Patch1:              e2fsprogs-01-rpathlink.diff
 
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
+BuildRequires:       SFElibiconv-devel
+Requires:            SFElibiconv
 
 %package devel
 Summary:                 %{summary} - development files
@@ -35,6 +38,7 @@ Requires:                %{name}
 
 %prep
 %setup -q -n e2fsprogs-%version
+%patch1 -p1
 
 if [ "x`basename $CC`" != xgcc ]
 then
@@ -45,10 +49,11 @@ fi
 %build
 
 export CFLAGS="%optflags -I%{gnu_inc} -DINSTALLPREFIX=\\\"%{_prefix}\\\" -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64"
-export LDFLAGS="%_ldflags %{gnu_lib_path} -liconv -lintl -R%{_libdir}/ext2fs"
+export LDFLAGS="%_ldflags %{gnu_lib_path} -lintl -lsocket -lnsl -R%{_libdir}/ext2fs"
 export PATH=/usr/bin:${PATH}
 
-./configure --prefix=%{_prefix}	\
+autoconf
+CFLAGS=-std=gnu99 ./configure --prefix=%{_prefix}	\
             --mandir=%{_mandir}	\
             --infodir=%{_infodir} \
             --libdir=%{_libdir}/ext2fs \
@@ -58,8 +63,6 @@ export PATH=/usr/bin:${PATH}
             --with-pic \
             --enable-elf-shlibs \
             --with-ldopts="${LDFLAGS}"
-
-cp config/asm_types.h .
 
 make
 
@@ -105,31 +108,46 @@ rm $RPM_BUILD_ROOT%{_sbindir}/fsck
 #
 mkdir -p $RPM_BUILD_ROOT%{_libdir}/fs/ext2fs
 (cd $RPM_BUILD_ROOT%{_libdir}/fs
-    ln -s ext2fs ext3fs)
+    ln -s ext2fs ext3fs
+    ln -s ext2fs ext4fs)
 
 rm $RPM_BUILD_ROOT%{_sbindir}/fsck.ext2
 rm $RPM_BUILD_ROOT%{_sbindir}/fsck.ext3
+rm $RPM_BUILD_ROOT%{_sbindir}/fsck.ext4
+rm $RPM_BUILD_ROOT%{_sbindir}/fsck.ext4dev
 rm $RPM_BUILD_ROOT%{_sbindir}/mkfs.ext2
 rm $RPM_BUILD_ROOT%{_sbindir}/mkfs.ext3
+rm $RPM_BUILD_ROOT%{_sbindir}/mkfs.ext4
+rm $RPM_BUILD_ROOT%{_sbindir}/mkfs.ext4dev
 
 (cd $RPM_BUILD_ROOT%{_libdir}/fs/ext2fs
-    ln -s ../../../../%{_sbindir}badblocks
-    ln -s ../../../../%{_sbindir}blkid
-    ln -s ../../../../%{_sbindir}debugfs
+    ln -s ../../../../%{_sbindir}/badblocks
+    ln -s ../../../../%{_sbindir}/blkid
+    ln -s ../../../../%{_sbindir}/debugfs
     ln -s debugfs fsdb
-    ln -s ../../../../%{_sbindir}dumpe2fs dump
-    ln -s ../../../../%{_sbindir}e2fsck fsck
-    ln -s ../../../../%{_sbindir}e2image
+    ln -s ../../../../%{_sbindir}/dumpe2fs dump
+    ln -s ../../../../%{_sbindir}/e2fsck fsck
+    ln -s ../../../../%{_sbindir}/e2image
     ln -s e2image fsimage
-    ln -s ../../../../%{_sbindir}e2label labelit
-    ln -s ../../../../%{_sbindir}filefrag
-    ln -s ../../../../%{_sbindir}findfs
-    ln -s ../../../../%{_sbindir}logsave
-    ln -s ../../../../%{_sbindir}mke2fs mkfs
-    ln -s ../../../../%{_sbindir}mklost+found
-    ln -s ../../../../%{_sbindir}resize2fs resize
-    ln -s ../../../../%{_sbindir}tune2fs tunefs
-    ln -s ../../../../%{_sbindir}uuid)
+    ln -s ../../../../%{_sbindir}/e2label labelit
+    ln -s ../../../../%{_sbindir}/filefrag
+    ln -s ../../../../%{_sbindir}/findfs
+    ln -s ../../../../%{_sbindir}/logsave
+    ln -s ../../../../%{_sbindir}/mke2fs mkfs
+    ln -s ../../../../%{_sbindir}/mklost+found
+    ln -s ../../../../%{_sbindir}/resize2fs resize
+    ln -s ../../../../%{_sbindir}/tune2fs tunefs
+    ln -s ../../../../%{_sbindir}/uuidd)
+
+# section 8 is not valid for Solaris
+(cd $RPM_BUILD_ROOT%{_mandir}
+    rm man8/fsck.8
+    for i in `ls -1 man8/*`; do mv $i $(echo $i | sed 's/\.8/\.1m/g'); done
+    for i in `ls -1 man8/fsck*`; do mv $i $( echo $i | sed 's/fsck\./fsck_/g' ); done
+    for i in `ls -1 man8/mkfs*`; do mv $i $( echo $i | sed 's/mkfs\./mkfs_/g' ); done
+    for i in `ls -1 man8/fsck_*[2-4].1m man8/mkfs_*[2-4].1m`; do mv $i $( echo $i | sed 's/\.1m/fs.1m/g' ); done
+    mv man8 man1m
+)
 
 %if %build_l10n
 %else
@@ -157,6 +175,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, sys) %{_libdir}/fs/ext2fs
 %{_libdir}/fs/ext2fs/*
 %{_libdir}/fs/ext3fs
+%{_libdir}/fs/ext4fs
 %attr (0755, root, bin) %{_libdir}/ext2fs/e2initrd_helper
 
 %if %build_l10n
@@ -176,6 +195,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*
 
 %changelog
+* Sun Apr 11 2009 - Milan Jurik
+- update for 1.41.4
+- manpage relocation to section 1m
 * Wed Feb 06 2008 - moinak.ghosh@sun.com
 - Rework to build shlibs and add additional headers.
 * Sat Feb 02 2008 - moinak.ghosh@sun.com

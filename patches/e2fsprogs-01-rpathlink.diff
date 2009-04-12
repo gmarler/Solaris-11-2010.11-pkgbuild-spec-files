@@ -1,0 +1,11 @@
+--- e2fsprogs-1.41.4.orig/configure.in	Sun Apr 12 10:13:38 2009
++++ e2fsprogs-1.41.4/configure.in	Sun Apr 12 10:17:43 2009
+@@ -235,7 +235,7 @@
+ 	BINARY_TYPE=elfbin
+ 	LIB_EXT=.so
+ 	PRIVATE_LIBS_CMT=#
+-	LDFLAG_DYNAMIC=['-Wl,-rpath-link,$(top_builddir)/lib']
++	LDFLAG_DYNAMIC=['-L$(top_builddir)/lib -R$(top_builddir)/lib']
+ 	AC_MSG_RESULT([Enabling ELF shared libraries])
+ fi
+ ,

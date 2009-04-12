@@ -1,3 +1,7 @@
+2009-04-12  Milan Jurik <sfnet@xylab.cz>
+
+	* SFEe2fsprogs.spec: update for 1.41.4, manpage relocation to section 1m
+
 2009-04-11  Andras Barna  <andras.barna@gmail.com>
 
 	* SFErecordmysolaris-gtk.spec: bump version
