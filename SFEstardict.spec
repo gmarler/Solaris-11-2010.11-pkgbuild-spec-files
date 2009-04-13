@@ -12,6 +12,10 @@ License: 	GPLv3
 Source: 	%{src_url}/%{src_name}-%{version}.tar.bz2
 Patch1:         stardict-01-ss12.diff
 BuildRoot:      %{_tmppath}/%{src_name}-%{version}-build
+SUNW_LOC:       zh,zh.GBK,zh_CN.GB18030,zh.UTF-8
+SUNW_PKGLIST:   SUNWgnome-libs
+SUNW_Copyright: %{src_name}.copyright
+
 %include default-depend.inc
 Requires: SUNWlibC
 Requires: SUNWlibpopt
