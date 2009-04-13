@@ -23,7 +23,7 @@ Requires: SUNWespeak
 BuildRequires: SUNWlibpopt-devel
 BuildRequires: SUNWgnome-base-libs-devel
 BuildRequires: SUNWgnome-panel-devel
-BuildRequires: SUNWespeak
+BuildRequires: SUNWespeak-devel
 
 %package root
 Summary:        %{summary} (ROOT)
@@ -41,6 +41,7 @@ Requires: SUNWpostrun-root
 export CFLAGS="%optflags"
 ./autogen.sh --prefix=%{_prefix}        \
              --disable-festival         \
+             --disable-advertisement    \
              --disable-gucharmap
 make
 
