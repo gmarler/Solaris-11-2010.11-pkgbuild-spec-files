@@ -13,13 +13,13 @@
 %define _pythonlibdir /usr/lib
 
 %define _docdir %{_basedir}/share/doc
-%define src_version 1.6a
+%define src_version 1.6.1
 
 %define SUNWlibsdl      %(/usr/bin/pkginfo -q SUNWlibsdl && echo 1 || echo 0)
 
 Name:                    	SFEwesnothDev
 Summary:                 	Battle for Wesnoth is a fantasy turn-based strategy game (development version)
-Version:                 	1.6.0
+Version:                 	1.6.1
 Source:                  	%{sf_download}/wesnoth/wesnoth-%{src_version}.tar.bz2
 Patch1:										wesnoth-dev-01-fixconfigure.diff
 Patch2:										wesnoth-dev-02-fixusleep.diff
@@ -27,7 +27,6 @@ Patch3:										wesnoth-dev-03-fixtolower.diff
 Patch4:										wesnoth-dev-04-fixatoi.diff
 Patch5:										wesnoth-dev-05-fixround.diff
 Patch6: 									wesnoth-dev-06-fixreturn.diff
-Patch7:										wesnoth-dev-07-fixbadalloc.diff
 Patch9:										wesnoth-09-fixrand.diff
 Patch10:									wesnoth-10-fixstd.diff
 
@@ -59,7 +58,6 @@ Requires:		SUNWPython
 %patch4 -p1
 %patch5 -p1
 %patch6 -p1
-%patch7 -p1
 %patch9 -p1
 %patch10 -p1
 
@@ -139,6 +137,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_pythonlibdir}/python2.4/site-packages/wesnoth-dev/*
 
 %changelog
+* Mon Apr 13 2009 - sobotkap@gmail.com
+- Bump to 1.6.1 version
 * Sun Mar 22 2009 - sobotkap@gmail.com
 - Bump to 1.6a version - which will be very soon stable branch 
 - TODO: Move this spec file to SFEwesnoth.spec 
