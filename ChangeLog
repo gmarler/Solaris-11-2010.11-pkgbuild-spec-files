@@ -1,3 +1,7 @@
+2009-04-13  Alexander Eremin <eremin@milax.org>
+
+	* SFEconky.spec: initial release
+
 2009-04-12  Milan Jurik <sfnet@xylab.cz>
 
 	* SFEe2fsprogs.spec: update for 1.41.4, manpage relocation to section 1m
