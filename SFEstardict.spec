@@ -3,7 +3,7 @@
 %define src_name stardict
 %define src_url http://downloads.sourceforge.net/stardict
 
-Summary:	stardict
+Summary:	A powerful dictionary platform written in GTK+2
 SUNW_BaseDir:   %{_basedir}
 Name:		SUNWstardict
 Version: 	3.0.1
@@ -24,10 +24,12 @@ Requires: SUNWgnome-panel
 Requires: SUNWpostrun
 Requires: SUNWstardict-root
 Requires: SUNWespeak
+Requires: SUNWsigcpp
 BuildRequires: SUNWlibpopt-devel
 BuildRequires: SUNWgnome-base-libs-devel
 BuildRequires: SUNWgnome-panel-devel
 BuildRequires: SUNWespeak-devel
+BuildRequires: SUNWsigcpp-devel
 
 %package root
 Summary:        %{summary} (ROOT)
