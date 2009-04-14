@@ -1,3 +1,11 @@
+2009-04-14  Brian Cameron  <brian.cameron@sun.com>
+
+	* SUNWgnome-display-mgr.spec: Bump to 2.26.1.
+	* patches/gdm-09-audit.diff: Remove upstream patch
+	* patches/gdm-09-fixcompile.diff: Add new patch needed to compile.
+	* patches/gdm-02-sdtlogin-devperm.diff, gdm-06-hide-face-browser.diff:
+	  Rework.
+
 2009-04-13  Petr Sobotka  <sobotkap@gmail.com>
 
 	* SFEwesnoth-dev.spec: Bump to version 1.6.1

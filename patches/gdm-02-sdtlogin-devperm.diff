@@ -101,7 +101,7 @@ index 6761736..a6ac9d3 100644
  
  #define GDM_SESSION_WORKER_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), GDM_TYPE_SESSION_WORKER, GdmSessionWorkerPrivate))
  
-@@ -146,12 +158,115 @@ static void     gdm_session_worker_finalize     (GObject               *object);
+@@ -146,12 +158,115 @@ static void     gdm_session_worker_final
  static void     queue_state_change              (GdmSessionWorker      *worker);
  
  typedef int (* GdmSessionWorkerPamNewMessagesFunc) (int,
@@ -230,7 +230,7 @@ index 6761736..a6ac9d3 100644
  
          g_assert (worker->priv->pam_handle != NULL);
  
-@@ -865,7 +984,7 @@ gdm_session_worker_process_pam_message (GdmSessionWorker          *worker,
+@@ -865,7 +984,7 @@ gdm_session_worker_process_pam_message (
  
  static int
  gdm_session_worker_pam_new_messages_handler (int                        number_of_messages,
@@ -239,7 +239,7 @@ index 6761736..a6ac9d3 100644
                                               struct pam_response      **responses,
                                               GdmSessionWorker          *worker)
  {
-@@ -977,6 +1096,22 @@ gdm_session_worker_uninitialize_pam (GdmSessionWorker *worker,
+@@ -977,6 +1096,22 @@ gdm_session_worker_uninitialize_pam (Gdm
          if (worker->priv->state >= GDM_SESSION_WORKER_STATE_SESSION_OPENED) {
                  pam_close_session (worker->priv->pam_handle, 0);
                  gdm_session_auditor_report_logout (worker->priv->auditor);
@@ -260,9 +260,9 @@ index 6761736..a6ac9d3 100644
 +#endif  /* HAVE_LOGINDEVPERM */
 +
          } else {
-                 gdm_session_auditor_report_login_failure (worker->priv->auditor,
-                                                           status,
-@@ -1817,6 +1952,7 @@ static gboolean
+                 void *p;
+ 
+@@ -1827,6 +1962,7 @@ static gboolean
  gdm_session_worker_open_user_session (GdmSessionWorker  *worker,
                                        GError           **error)
  {
@@ -270,7 +270,7 @@ index 6761736..a6ac9d3 100644
          int error_code;
  
          g_assert (worker->priv->state == GDM_SESSION_WORKER_STATE_ACCREDITED);
-@@ -1843,6 +1979,32 @@ gdm_session_worker_open_user_session (GdmSessionWorker  *worker,
+@@ -1853,6 +1989,32 @@ gdm_session_worker_open_user_session (Gd
  
          gdm_session_auditor_report_login (worker->priv->auditor);
  
@@ -303,8 +303,6 @@ index 6761736..a6ac9d3 100644
          return TRUE;
  }
  
-diff --git a/daemon/main.c b/daemon/main.c
-index 9d7ab5e..de4515a 100644
 --- a/daemon/main.c
 +++ b/daemon/main.c
 @@ -521,6 +521,21 @@ main (int    argc,

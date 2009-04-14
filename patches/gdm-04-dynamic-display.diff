@@ -470,7 +470,7 @@ index e8a2369..78a4a01 100644
 +      <arg name="number" direction="out" type="i"/>
      </method>
      <method name="GetX11Cookie">
-       <arg name="x11_cookie" direction="out" type="s"/>
+       <arg name="x11_cookie" direction="out" type="ay"/>
 @@ -17,7 +29,7 @@
        <arg name="filename" direction="out" type="s"/>
      </method>

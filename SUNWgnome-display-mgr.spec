@@ -13,7 +13,7 @@
 
 Summary:                 GNOME display manager
 Name:                    SUNWgnome-display-mgr
-Version:                 2.26.0
+Version:                 2.26.1
 Release:                 1
 Source:                  http://download.gnome.org/sources/gdm/2.26/gdm-%{version}.tar.bz2
 Source1:                 gdm.xml
@@ -42,8 +42,7 @@ Patch6:                  gdm-06-hide-face-browser.diff
 Patch7:                  gdm-07-solaris-xinerama.diff
 # date:2009-04-02 owner:yippi type:bug bugid:568323
 Patch8:                  gdm-08-hide-face-browser-pt2.diff
-# date:2009-04-08 owner:yippi type:bug state:upstream
-Patch9:                  gdm-09-audit.diff
+Patch9:                  gdm-09-fixcompile.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 
@@ -114,6 +113,13 @@ export LDFLAGS="%_ldflags"
 export PKG_CONFIG_PATH=%{_pkg_config_path}
 export CFLAGS="%optflags"
 export RPM_OPT_FLAGS="$CFLAGS"
+
+# There seems to be an issue with the version of libtool that GStreamer is
+# now using.  The libtool script uses the echo and RM variables but does not
+# define them, so setting them here addresses this.
+export echo="/usr/bin/echo"
+export RM="/usr/bin/rm"
+
 %if %option_without_dt
 export GDMGNOMESESSIONCMD="/usr/bin/dtstart jds"
 %endif
@@ -154,6 +160,12 @@ make -j $CPUS
 
 %install
 rm -rf $RPM_BUILD_ROOT
+
+# There seems to be an issue with the version of libtool that GStreamer is
+# now using.  The libtool script uses the echo and RM variables but does not
+# define them, so setting them here addresses this.
+export echo="/usr/bin/echo"
+export RM="/usr/bin/rm"
 
 make install DESTDIR=$RPM_BUILD_ROOT
 
@@ -325,6 +337,8 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 %endif
 
 %changelog
+* Tue Apr 14 2009 - brian.cameron@sun.com
+- Bump to 2.26.1.
 * Wed Apr 08 2009 - brian.cameron@sun.com
 - Add patch gdm-09-audit.diff so that GDM works with SunAudit better.
 * Thu Apr 02 2009 - brian.cameron@sun.com
