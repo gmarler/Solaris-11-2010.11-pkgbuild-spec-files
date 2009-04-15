@@ -1,3 +1,9 @@
+2009-04-15  Alexander Eremin  <eremin@milax.org>
+
+	* SFEeboard.spec: Added
+	* SFEcrafty.spec: Added
+	* SFEconky.spec: Fixed %install.
+
 2009-04-14  Brian Cameron  <brian.cameron@sun.com>
 
 	* SUNWgnome-display-mgr.spec: Bump to 2.26.1.

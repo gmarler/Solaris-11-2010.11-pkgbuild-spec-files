@@ -9,7 +9,7 @@ Name:                    SFEconky
 Summary:                 Light-weight system monitor for X  
 Version:                 1.5.1
 Source:                  http://prdownloads.sourceforge.net/conky/conky-1.5.1.tar.gz
-Patch1:                  Conky-01.diff
+Patch1:                  conky-01.diff
 URL:                     http://conky.sourceforge.net/
 #SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -48,8 +48,6 @@ make -j $CPUS
 
 %install
 make install DESTDIR=$RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/etc/conky
-cp data/conky.conf $RPM_BUILD_ROOT/etc/conky.conf
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -69,7 +67,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %defattr (-, root, sys)
 %dir %attr (0755, root, sys) %{_sysconfdir}
-%attr(0644, root, sys) %{_sysconfdir}/data/conky.conf
 %dir %attr (0755, root, sys) %{_sysconfdir}/conky
 %{_sysconfdir}/conky/*
 
