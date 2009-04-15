@@ -1,0 +1,44 @@
+diff -rupN eboard-1.1.1/configure eboard-1.1.1new/configure
+--- eboard-1.1.1/configure	2008-02-22 18:51:22.000000000 +0300
++++ eboard-1.1.1new/configure	2009-04-14 09:50:24.000000000 +0400
+@@ -7,7 +7,7 @@ my $package     = "eboard";
+ my $version     = "1.1.1";
+ my $cxx         = "g++";
+ my @cxxflags    = ("-O6");
+-my @ldflags     = ("-lpthread");
++my @ldflags     = ("-lpthread -lnsl -lsocket");
+ my @libs        = ();
+ my $configh     = "config.h";
+ my $configmake  = "config.make";
+@@ -199,7 +199,7 @@ sub install_util {
+     }
+     unlink("xxtest","yytest");
+     print "ok\n";
+-    return 1;
++    return 0;
+ }
+ 
+ sub append_inc {
+@@ -487,8 +487,8 @@ if (!open(CONFIGMAKE,">$configmake")) {
+ }
+ 
+ if (!install_util()) {
+-    print "** install is not working properly.\n";
+-    exit 2;
++#    print "** install is not working properly.\n";
++#    exit 2;
+ }
+ 
+ if (!cplusplus_lang()) {
+diff -rupN eboard-1.1.1/elifekam eboard-1.1.1new/elifekam
+--- eboard-1.1.1/elifekam	2009-04-15 10:13:53.571516145 +0400
++++ eboard-1.1.1new/elifekam	2009-04-15 10:16:44.168557610 +0400
+@@ -3,7 +3,7 @@
+ 
+ DIST = eboard-$(version)
+ 
+-INSTALL = install
++INSTALL = ginstall
+ 
+ SRCS = board.cc bugpane.cc chess.cc cimg.cc clock.cc dgtboard.cc dlg_connect.cc dlg_gamelist.cc dlg_prefs.cc global.cc help.cc history.cc main.cc mainwindow.cc movelist.cc network.cc notebook.cc ntext.cc p2p.cc pieces.cc position.cc promote.cc proto_fics.cc proto_p2p.cc proto_xboard.cc protocol.cc quickbar.cc script.cc seekgraph.cc sound.cc status.cc text.cc tstring.cc util.cc widgetproxy.cc langs.cc
+ 
