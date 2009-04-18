@@ -6,7 +6,7 @@
 
 #TODO# re-work perl specific prerequisites...
 
-%define module_version 0.59
+%define module_version 0.65
 %define module_name Net-DNS
 %define module_name_major Net
 %define module_package_name net-dns
@@ -91,6 +91,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man3/*
 
 %changelog
+* Sat Apr 18 2009 - Thomas Wagner
+- bump to 0.65 (0.59 too old for SpamAssassin)
 * Thu Feb 21 2008 - Thomas Wagner
 - (Build-)Requires corrected to be lowercase (SFEperl-io-socket-inet6)
 * Wed Nov 28 2007 - Thomas Wagner
