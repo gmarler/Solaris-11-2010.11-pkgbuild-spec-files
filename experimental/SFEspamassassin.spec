@@ -174,8 +174,14 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr (-, root, bin)
-%doc README Changes sample-nonspam.txt sample-spam.txt INSTALL LICENSE TRADEMARK USAGE UPGRADE
-%attr (0755, root, bin) %dir %{_sysconfdir}
+#%doc README Changes sample-nonspam.txt sample-spam.txt INSTALL LICENSE TRADEMARK USAGE UPGRADE
+%dir %attr (0755, root, sys) %{_prefix}
+%dir %attr(0755, root, sys) %{_datadir}
+%dir %attr(0755, root, sys) %{_datadir}/%{src_name}
+%{_datadir}/%{src_name}/*
+#%dir %attr(0755, root, other) %{_docdir}
+#%{_docdir}/%{src_name}/*
+%attr (0755, root, sys) %dir %{_sysconfdir}
 %attr (0755, root, bin) %dir %{_sysconfdir}/%{src_name}
 %{_sysconfdir}/%{src_name}/*
 %dir %attr (0755,root,bin) %{_bindir}
@@ -188,8 +194,6 @@ rm -rf $RPM_BUILD_ROOT
 #%{_prefix}/perl5/vendor_perl/%{perl_version}/%{perl_dir}/%{module_name_major}/*
 #%dir %attr(0755, root, bin) %{_prefix}/perl5/vendor_perl/%{perl_version}/%{perl_dir}/auto
 #%{_prefix}/perl5/vendor_perl/%{perl_version}/%{perl_dir}/auto/*
-%dir %attr(0755, root, sys) %{_datadir}
-%{_datadir}/%{src_name}
 %dir %attr(0755, root, bin) %{_mandir}
 %dir %attr(0755, root, bin) %{_mandir}/man1
 %{_mandir}/man1/*
