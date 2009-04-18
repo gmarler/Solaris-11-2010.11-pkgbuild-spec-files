@@ -2,6 +2,7 @@
 
         * SFEperl-net-dns.spec: bump version to 0.65
         * experimental/SFEspamassassin.spec: *new* - experimental state, feedback/contribution welcome
+        * experimental/SFEpostfix.spec: added SMF simple manifest, changes to userids/groupids, adjust dbm: for aliases (on Solaris)
 
 2009-04-16  Gilles Dauphin
 
