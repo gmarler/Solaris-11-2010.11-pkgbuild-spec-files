@@ -1,3 +1,8 @@
+2009-04-18  Thomas Wagner  <tom68@users.sourceforge.net>
+
+        * SFEperl-net-dns.spec: bump version to 0.65
+        * experimental/SFEspamassassin.spec: *new* - experimental state, feedback/contribution welcome
+
 2009-04-16  Gilles Dauphin
 
 	* SFER.spec : Added
