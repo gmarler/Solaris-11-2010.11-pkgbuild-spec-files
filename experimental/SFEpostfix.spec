@@ -7,10 +7,25 @@
 
 %include Solaris.inc
 
-%define src_name	postfix
+
+#change these defaults if needed 
+##TODO## ##FIXME##
+#future enhancements:  <<-- important
+#if userid is already engaged 
+#for other users/groups then postfix/postfix/postdrop, then
+#the user or group will be created with a numeric id given by 
+#the system
 %define runuser         postfix
-%define rungroup        postdrop
+%define runuserid       161
+%define runusergroup    other
+
+%define rungroup        postfix
+%define rungroupid	181
+%define rundropgroup    postdrop
+%define rundropgroupid	182
 # see much more special variables below
+
+%define src_name	postfix
 
 Name:                    SFEpostfix
 Summary:                 postfix - Mailer System
@@ -18,7 +33,10 @@ URL:                     http://postfix.org/
 Version:                 2.5.6
 Source:                  ftp://ftp.porcupine.org/mirrors/postfix-release/official/postfix-%{version}.tar.gz
 Source2:                 http://ftp.wl0.org/official/2.5/SRPMS/postfix-%{version}-1.src.rpm
+Source3:                 postfix.xml
+Source4:                 i.renamenew
 Patch1:			postfix-01-make-postfix.spec.diff
+Patch2:			postfix-02-solarize-startscript.diff
 
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -28,6 +46,8 @@ BuildRequires: SFEcpio
 BuildRequires: SUNWrpm
 BuildRequires: SUNWggrp
 #TODO: Requires:
+#we need to create user/group-IDs first in preinstall of %{name}-root to get proper verification of file owners
+Requires: %{name}-root
 
 %package root
 Summary:                 %{summary} - / filesystem
@@ -84,19 +104,19 @@ SUNW_BaseDir:            /
 
 %define distribution Solaris
 %define mysql_paths 0
-%define requires_db 0
-%define requires_zlib 0
+%define requires_db 1
+%define requires_zlib 1
 %define smtpd_multiline_greeting 0
 %define with_alt_prio     0
-%define with_cdb          0
+%define with_cdb          1
 %define with_ldap         0
 %define with_mysql        0
 %define with_mysql_redhat 0
-%define with_pcre         0
+%define with_pcre         1
 %define with_pgsql        0
 %define with_sasl         0
 %define with_spf          0
-%define with_dovecot      0
+%define with_dovecot      1
 %define with_tls          0
 %define with_tlsfix       0
 %define with_vda          0
@@ -115,7 +135,13 @@ mkdir tmp
 
 %patch1 -p1
 
+
+#postfix manifest
+cp -p %{SOURCE3} postfix.xml
+
 (cd tmp; bash make-postfix.spec)
+
+%patch2 -p1
 
 #last step: change /bin/sh into /usr/bin/bash
 #alternatively we could search fo rexecutalbes, then if it starts with "#!/bin/sh"
@@ -243,6 +269,7 @@ CCARGS="${CCARGS} -fsigned-char"
 
 export CCARGS AUXLIBS
 make -f Makefile.init makefiles
+make tidy
 unset CCARGS AUXLIBS
 # -Wno-comment needed due to large number of warnings on RHEL5
 # suggestion by Eric Hoeve <eric@ehoeve.com>
@@ -294,7 +321,7 @@ sh postfix-install -non-interactive \
        config_directory=%{_sysconfdir}/postfix \
        daemon_directory=%{_libexecdir}/postfix \
        command_directory=%{_sbindir} \
-       queue_directory=%{_var}/spool/postfix \
+       queue_directory=%{_localstatedir}/spool/postfix \
        sendmail_path=%{sendmail_path} \
        newaliases_path=%{newaliases_path} \
        mailq_path=%{mailq_path} \
@@ -322,10 +349,12 @@ q
 EOF
 
 # Change alias_maps and alias_database default directory to use
-# %{_sysconfdir}/postfix
+### %{_sysconfdir}/postfix
+# %{_sysconfdir}/mail
+# use database "dbm" on Solaris (hash unavailable)
 bin/postconf -c ${RPM_BUILD_ROOT}%{_sysconfdir}/postfix -e \
-	"alias_maps = hash:%{_sysconfdir}/postfix/aliases" \
-	"alias_database = hash:%{_sysconfdir}/postfix/aliases" \
+	"alias_maps = dbm:%{_sysconfdir}/mail/aliases" \
+	"alias_database = dbm:%{_sysconfdir}/mail/aliases" \
 || exit 1
 
 # Change default smtpd_sasl... parameters for dovecot
@@ -351,16 +380,16 @@ install -c tmp/postfix-etc-init.d-postfix \
 install -c auxiliary/rmail/rmail ${RPM_BUILD_ROOT}%{rmail_path}
 install -c auxiliary/qshape/qshape.pl ${RPM_BUILD_ROOT}/%{_sbindir}/qshape
 
-# copy new aliases files and generate a ghost aliases.db file
-#cp -f %{_sourcedir}/postfix-aliases ${RPM_BUILD_ROOT}%{_sysconfdir}/postfix/aliases
-cp -f tmp/postfix-aliases ${RPM_BUILD_ROOT}%{_sysconfdir}/postfix/aliases
-chmod 644 ${RPM_BUILD_ROOT}%{_sysconfdir}/postfix/aliases
+#disabled  copy new aliases files and generate a ghost aliases.db file
+#disabled cp -f %{_sourcedir}/postfix-aliases ${RPM_BUILD_ROOT}%{_sysconfdir}/postfix/aliases
+#disabled cp -f tmp/postfix-aliases ${RPM_BUILD_ROOT}%{_sysconfdir}/postfix/aliases
+#disabled chmod 644 ${RPM_BUILD_ROOT}%{_sysconfdir}/postfix/aliases
 
-touch ${RPM_BUILD_ROOT}/%{_sysconfdir}/postfix/aliases.db
+#disabled touch ${RPM_BUILD_ROOT}/%{_sysconfdir}/postfix/aliases.db
 
 for i in active bounce corrupt defer deferred flush incoming private saved \
          hold maildrop public pid; do
-    mkdir -p ${RPM_BUILD_ROOT}%{_var}/spool/postfix/$i
+    mkdir -p ${RPM_BUILD_ROOT}%{_localstatedir}/spool/postfix/$i
 done
 
 # install qmqp-source, smtp-sink & smtp-source by hand
@@ -522,43 +551,81 @@ export POSTFIX_MYSQL POSTFIX_MYSQL_PATHS POSTFIX_MYSQL_REDHAT \\
 # interest if you are building Postfix by hand.
 EOF
 
+mkdir -p ${RPM_BUILD_ROOT}/var/svc/manifest/site/
+cp postfix.xml ${RPM_BUILD_ROOT}/var/svc/manifest/site/
+
+%{?pkgbuild_postprocess: %pkgbuild_postprocess -v -c "%{version}:%{jds_version}:%{name}:$RPM_ARCH:%(date +%%Y-%%m-%%d):%{support_level}" $RPM_BUILD_ROOT}
+
 
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%files
-%defattr(-, root, bin)
-#%doc AAAREADME COMPATIBILITY COPYRIGHT HISTORY INSTALL IPv6-ChangeLog LICENSE PORTING RELEASE_NOTES RELEASE_NOTES-1.0 RELEASE_NOTES-1.1 RELEASE_NOTES-2.0 RELEASE_NOTES-2.1 RELEASE_NOTES-2.2 RELEASE_NOTES-2.3 RELEASE_NOTES-2.4 TLS_ACKNOWLEDGEMENTS TLS_CHANGES TLS_LICENSE US_PATENT_6321267 README_FILES/AAAREADME README_FILES/ADDRESS_CLASS_README README_FILES/ADDRESS_REWRITING_README README_FILES/ADDRESS_VERIFICATION_README README_FILES/BACKSCATTER_README README_FILES/BASIC_CONFIGURATION_README README_FILES/BUILTIN_FILTER_README README_FILES/CDB_README README_FILES/CONNECTION_CACHE_README README_FILES/CONTENT_INSPECTION_README README_FILES/CYRUS_README README_FILES/DATABASE_README README_FILES/DB_README README_FILES/DEBUG_README README_FILES/DSN_README README_FILES/ETRN_README README_FILES/FILTER_README README_FILES/INSTALL README_FILES/IPV6_README README_FILES/LDAP_README README_FILES/LINUX_README README_FILES/LOCAL_RECIPIENT_README README_FILES/MAILDROP_README README_FILES/MILTER_README README_FILES/MYSQL_README README_FILES/NFS_README README_FILES/OVERVIEW README_FILES/PACKAGE_README README_FILES/PCRE_README README_FILES/PGSQL_README README_FILES/QMQP_README README_FILES/QSHAPE_README README_FILES/RELEASE_NOTES README_FILES/RESTRICTION_CLASS_README README_FILES/SASL_README README_FILES/SCHEDULER_README README_FILES/SMTPD_ACCESS_README README_FILES/SMTPD_POLICY_README README_FILES/SMTPD_PROXY_README README_FILES/SOHO_README README_FILES/STANDARD_CONFIGURATION_README README_FILES/STRESS_README README_FILES/TLS_LEGACY_README README_FILES/TLS_README README_FILES/TUNING_README README_FILES/ULTRIX_README README_FILES/UUCP_README README_FILES/VERP_README README_FILES/VIRTUAL_README README_FILES/XCLIENT_README README_FILES/XFORWARD_README
-%dir %attr (0755, root, bin) %{_bindir}
-%{_bindir}/*
-%dir %attr (0755, root, bin) %{_sbindir}
-%{_sbindir}/postalias
-%{_sbindir}/postcat
-%{_sbindir}/postconf
-%attr (2755, root, %{rungroup}) %{_sbindir}/postqueue
-%attr (2755, root, %{rungroup}) %{_sbindir}/postdrop
-%{_sbindir}/postfix
-%{_sbindir}/postkick
-%{_sbindir}/postlock
-%{_sbindir}/postlog
-%{_sbindir}/postmap
-%{_sbindir}/postsuper
-%{_sbindir}/smtp-sink
-%{_sbindir}/smtp-source
-%{_sbindir}/qmqp-source
-%{_sbindir}/qshape
-%{_sbindir}/sendmail.postfix
-%dir %attr (0755, root, bin) %{_libdir}
-%{_libdir}/sendmail.postfix
-%dir %attr (0700, root, bin) %{_libdir}/%{src_name}
-%{_libdir}/%{src_name}/*
-%dir %attr (0755, root, sys) %{_datadir}
-%dir %attr (0755, root, other) %{_docdir}
-%{_docdir}/%{name}/*
-%dir %attr(0755, root, bin) %{_mandir}
-%dir %attr(0755, root, bin) %{_mandir}/*
-%{_mandir}/*/*
+#from: http://freebsd.active-venture.com/porters-handbook/dads-uid.html
+#groups
+#postfix:*:125:
+#maildrop:*:126:
+
+#userids
+#postfix:*:125:125:Postfix Mail System:/var/spool/postfix:/sbin/nologin
+
+# from http://cvsweb.openwall.com/cgi/cvsweb.cgi/Owl/packages/postfix/postfix.spec?rev=1.43;sortby=rev
+#grep -q ^postdrop: /etc/group || groupadd -g 161 postdrop
+#grep -q ^postdrop: /etc/passwd ||
+#	useradd -g postdrop -u 161 -d / -s /bin/false -M postdrop
+#grep -q ^postfix: /etc/group || groupadd -g 182 postfix
+#grep -q ^postfix: /etc/passwd ||
+#	useradd -g postfix -u 182 -d / -s /bin/false -M postfix
+#grep -q ^postman: /etc/group || groupadd -g 183 postman
+#grep -q ^postman: /etc/passwd ||
+#	useradd -g postman -u 183 -d / -s /bin/false -M postman
+
+
+# sorry for duplication, but someone in the chain pkgtool/pkgbuild/packagetools doesn't install
+#in the right order (first SFEpostfix-root, second SFEpostfix)
+%pre
+test -x $BASEDIR/var/lib/postrun/postrun || exit 0
+( echo '/usr/bin/getent group %{rundropgroup} >/dev/null || {';
+  echo 'echo "Adding %{rundropgroup} group to system"';
+  echo '/usr/sbin/groupadd -g %{rundropgroupid} %{rundropgroup}';
+  echo '}';
+  echo '/usr/bin/getent group %{rungroup} >/dev/null || {';
+  echo 'echo "Adding %{rungroup} group to system"';
+  echo '/usr/sbin/groupadd -g %{rungroupid} %{rungroup}';
+  echo '}';
+  echo '/usr/bin/getent passwd %{runuser} >/dev/null || {';
+  echo 'echo "Adding %{runuser} user to system"';
+  echo '/usr/sbin/useradd -u %{runuserid} -g %{runusergroup} -G mail -d %{_localstatedir}/spool/postfix -s /bin/true %{runuser}';
+  echo 'echo "running postalias to update /etc/mail/aliases for postfix"';
+  echo 'postfix /etc/mail/aliases';
+  echo '}';
+) | $BASEDIR/var/lib/postrun/postrun -i -c POSTFIX -a
+
+
+%pre root
+test -x $BASEDIR/var/lib/postrun/postrun || exit 0
+( echo '/usr/bin/getent group %{rundropgroup} >/dev/null || {';
+  echo 'echo "Adding %{rundropgroup} group to system"';
+  echo '/usr/sbin/groupadd -g %{rundropgroupid} %{rundropgroup}';
+  echo '}';
+  echo '/usr/bin/getent group %{rungroup} >/dev/null || {';
+  echo 'echo "Adding %{rungroup} group to system"';
+  echo '/usr/sbin/groupadd -g %{rungroupid} %{rungroup}';
+  echo '}';
+  echo '/usr/bin/getent passwd %{runuser} >/dev/null || {';
+  echo 'echo "Adding %{runuser} user to system"';
+  echo '/usr/sbin/useradd -u %{runuserid} -g %{runusergroup} -G mail -d %{_localstatedir}/spool/postfix -s /bin/true %{runuser}';
+  echo 'echo "running postalias to update /etc/mail/aliases for postfix"';
+  echo 'postfix /etc/mail/aliases';
+  echo '}';
+) | $BASEDIR/var/lib/postrun/postrun -i -c POSTFIX -a
+
+%postun root
+test -x $BASEDIR/var/lib/postrun/postrun || exit 0
+( echo 'userdel postfix';
+  echo 'groupdel postfix';
+  echo 'groupdel postdrop';
+) | $BASEDIR/var/lib/postrun/postrun -i -c POSTFIX -a
 
 
 
@@ -596,10 +663,51 @@ rm -rf $RPM_BUILD_ROOT
 
 
 
-#%class(manifest) %attr(0444, root, sys)/var/svc/manifest/site/postfix.xml
+%class(manifest) %attr(0444, root, sys)/var/svc/manifest/site/postfix.xml
+
+
+
+%files
+%defattr(-, root, bin)
+#%doc AAAREADME COMPATIBILITY COPYRIGHT HISTORY INSTALL IPv6-ChangeLog LICENSE PORTING RELEASE_NOTES RELEASE_NOTES-1.0 RELEASE_NOTES-1.1 RELEASE_NOTES-2.0 RELEASE_NOTES-2.1 RELEASE_NOTES-2.2 RELEASE_NOTES-2.3 RELEASE_NOTES-2.4 TLS_ACKNOWLEDGEMENTS TLS_CHANGES TLS_LICENSE US_PATENT_6321267 README_FILES/AAAREADME README_FILES/ADDRESS_CLASS_README README_FILES/ADDRESS_REWRITING_README README_FILES/ADDRESS_VERIFICATION_README README_FILES/BACKSCATTER_README README_FILES/BASIC_CONFIGURATION_README README_FILES/BUILTIN_FILTER_README README_FILES/CDB_README README_FILES/CONNECTION_CACHE_README README_FILES/CONTENT_INSPECTION_README README_FILES/CYRUS_README README_FILES/DATABASE_README README_FILES/DB_README README_FILES/DEBUG_README README_FILES/DSN_README README_FILES/ETRN_README README_FILES/FILTER_README README_FILES/INSTALL README_FILES/IPV6_README README_FILES/LDAP_README README_FILES/LINUX_README README_FILES/LOCAL_RECIPIENT_README README_FILES/MAILDROP_README README_FILES/MILTER_README README_FILES/MYSQL_README README_FILES/NFS_README README_FILES/OVERVIEW README_FILES/PACKAGE_README README_FILES/PCRE_README README_FILES/PGSQL_README README_FILES/QMQP_README README_FILES/QSHAPE_README README_FILES/RELEASE_NOTES README_FILES/RESTRICTION_CLASS_README README_FILES/SASL_README README_FILES/SCHEDULER_README README_FILES/SMTPD_ACCESS_README README_FILES/SMTPD_POLICY_README README_FILES/SMTPD_PROXY_README README_FILES/SOHO_README README_FILES/STANDARD_CONFIGURATION_README README_FILES/STRESS_README README_FILES/TLS_LEGACY_README README_FILES/TLS_README README_FILES/TUNING_README README_FILES/ULTRIX_README README_FILES/UUCP_README README_FILES/VERP_README README_FILES/VIRTUAL_README README_FILES/XCLIENT_README README_FILES/XFORWARD_README
+%dir %attr (0755, root, bin) %{_bindir}
+%{_bindir}/*
+%dir %attr (0755, root, bin) %{_sbindir}
+%{_sbindir}/postalias
+%{_sbindir}/postcat
+%{_sbindir}/postconf
+%attr (2755, root, %{rungroup}) %{_sbindir}/postqueue
+%attr (2755, root, %{rungroup}) %{_sbindir}/postdrop
+%{_sbindir}/postfix
+%{_sbindir}/postkick
+%{_sbindir}/postlock
+%{_sbindir}/postlog
+%{_sbindir}/postmap
+%{_sbindir}/postsuper
+%{_sbindir}/smtp-sink
+%{_sbindir}/smtp-source
+%{_sbindir}/qmqp-source
+%{_sbindir}/qshape
+%{_sbindir}/sendmail.postfix
+%dir %attr (0755, root, bin) %{_libdir}
+%{_libdir}/sendmail.postfix
+%dir %attr (0700, root, bin) %{_libdir}/%{src_name}
+%{_libdir}/%{src_name}/*
+%dir %attr (0755, root, sys) %{_datadir}
+%dir %attr (0755, root, other) %{_docdir}
+%{_docdir}/%{name}/*
+%dir %attr(0755, root, bin) %{_mandir}
+%dir %attr(0755, root, bin) %{_mandir}/*
+%{_mandir}/*/*
+
 
 
 %changelog
+* Fri Apr 17 2009 - Thomas Wagner
+- unresolved: install-order is important: -root first, then base package (or file owner/group verifaction fails w/o user/groupnames on the system)
+- change postfix userid to be in group "other"
+- add make tidy
+- rename /etc/postfix/aliases to say "unused" 
 * Sun Jan 25 2009 - Thomas Wagner
 - adjust %files permissions, globbing
 - tried to make %install repeatable...hopeless 
@@ -607,4 +715,3 @@ rm -rf $RPM_BUILD_ROOT
 - %doc made monstrous 
 * Sun Jan 2009 - Thomas Wagner
 - Initial spec, parts derived from postfix.spec from the original SRPM
-
