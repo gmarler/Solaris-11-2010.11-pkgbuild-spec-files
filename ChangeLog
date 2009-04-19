@@ -1,3 +1,8 @@
+2009-04-19  Sergio Schvezov  <sergiusens@ieee.org>
+
+        * SFEvagalume.spec: initial spec file for last.fm client
+	* copyright/SFEvagalume.copyright: copyrights extracted from sources for vagalume
+
 2009-04-18  Thomas Wagner  <tom68@users.sourceforge.net>
 
         * SFEperl-net-dns.spec: bump version to 0.65

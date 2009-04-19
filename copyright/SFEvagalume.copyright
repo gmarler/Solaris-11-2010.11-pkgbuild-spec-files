@@ -1,0 +1,48 @@
+src/audio.c: * Copyright (C) 2007 Alberto Garcia <agarcia@igalia.com>
+src/audio.h: * Copyright (C) 2007 Alberto Garcia <agarcia@igalia.com>
+src/connection.c: * Copyright (C) 2007 Alberto Garcia <agarcia@igalia.com>
+src/connection.h: * Copyright (C) 2007 Alberto Garcia <agarcia@igalia.com>
+src/controller.c: * Copyright (C) 2007, 2008 Alberto Garcia <agarcia@igalia.com>
+src/controller.h: * Copyright (C) 2007 Alberto Garcia <agarcia@igalia.com>
+src/dbus.c: * Copyright (C) 2007 Alberto Garcia <agarcia@igalia.com>
+src/dbus.c: * Copyright (C) 2008 Mario Sanchez Prada <msanchez@igalia.com>
+src/dbus.h: * Copyright (C) 2007 Alberto Garcia <agarcia@igalia.com>
+src/dlwin.c: * Copyright (C) 2007 Alberto Garcia <agarcia@igalia.com>
+src/dlwin.h: * Copyright (C) 2007 Alberto Garcia <agarcia@igalia.com>
+src/globaldefs.h: * Copyright (C) 2007 Alberto Garcia <agarcia@igalia.com>
+src/http.c: * Copyright (C) 2007 Alberto Garcia <agarcia@igalia.com>
+src/http.h: * Copyright (C) 2007 Alberto Garcia <agarcia@igalia.com>
+src/imstatus.c: * Copyright (C) 2008 Tim Wegener <twegener@fastmail.fm>
+src/imstatus.c: * Copyright (C) 2008 Alberto Garcia <agarcia@igalia.com>
+src/imstatus.h: * Copyright (C) 2008 Tim Wegener <twegener@fastmail.fm>
+src/main.c: * Copyright (C) 2007, 2008 Alberto Garcia <agarcia@igalia.com>
+src/metadata.c: * Copyright (C) 2007 Alberto Garcia <agarcia@igalia.com>
+src/metadata.h: * Copyright (C) 2007 Alberto Garcia <agarcia@igalia.com>
+src/playlist.c: * Copyright (C) 2007 Alberto Garcia <agarcia@igalia.com>
+src/playlist.h: * Copyright (C) 2007 Alberto Garcia <agarcia@igalia.com>
+src/protocol.c: * Copyright (C) 2007 Alberto Garcia <agarcia@igalia.com>
+src/protocol.c: * Copy a LastfmSession object
+src/protocol.h: * Copyright (C) 2007 Alberto Garcia <agarcia@igalia.com>
+src/radio.c: * Copyright (C) 2007 Alberto Garcia <agarcia@igalia.com>
+src/radio.h: * Copyright (C) 2007 Alberto Garcia <agarcia@igalia.com>
+src/scrobbler.c: * Copyright (C) 2007 Alberto Garcia <agarcia@igalia.com>
+src/scrobbler.h: * Copyright (C) 2007 Alberto Garcia <agarcia@igalia.com>
+src/uimisc.c: * Copyright (C) 2007 Alberto Garcia <agarcia@igalia.com>
+src/uimisc.h: * Copyright (C) 2007 Alberto Garcia <agarcia@igalia.com>
+src/userconfig.c: * Copyright (C) 2007 Alberto Garcia <agarcia@igalia.com>
+src/userconfig.h: * Copyright (C) 2007 Alberto Garcia <agarcia@igalia.com>
+src/util.c: * Copyright (C) 2007 Alberto Garcia <agarcia@igalia.com>
+src/util.h: * Copyright (C) 2007 Alberto Garcia <agarcia@igalia.com>
+src/vgl-bookmark-mgr.c: * Copyright (C) 2008 Alberto Garcia <agarcia@igalia.com>
+src/vgl-bookmark-mgr.h: * Copyright (C) 2008 Alberto Garcia <agarcia@igalia.com>
+src/vgl-bookmark-window.c: * Copyright (C) 2008 Alberto Garcia <agarcia@igalia.com>
+src/vgl-bookmark-window.h: * Copyright (C) 2008 Alberto Garcia <agarcia@igalia.com>
+src/vgl-main-window.c: * Copyright (C) 2007, 2008 Alberto Garcia <agarcia@igalia.com>
+src/vgl-main-window.c: * Copyright (C) 2008 Felipe Erias Morandeira <femorandeira@igalia.com>
+src/vgl-main-window.h: * Copyright (C) 2007, 2008 Alberto Garcia <agarcia@igalia.com>
+src/vgl-sb-plugin.c: * Copyright (C) 2008 Mario Sanchez Prada <msanchez@igalia.com>
+src/vgl-sb-plugin.h: * Copyright (C) 2008 Mario Sanchez Prada <msanchez@igalia.com>
+src/vgl-tray-icon.c: * Copyright (C) 2008 Mario Sanchez Prada <msanchez@igalia.com>
+src/vgl-tray-icon.h: * Copyright (C) 2008 Mario Sanchez Prada <msanchez@igalia.com>
+src/xmlrpc.c: * Copyright (C) 2007 Alberto Garcia <agarcia@igalia.com>
+src/xmlrpc.h: * Copyright (C) 2007 Alberto Garcia <agarcia@igalia.com>
