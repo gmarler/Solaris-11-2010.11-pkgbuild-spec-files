@@ -10,6 +10,9 @@ Name:           SFEplib
 Summary:        plib
 Version:        1.8.5
 Source:		http://plib.sourceforge.net/dist/plib-%{version}.tar.gz
+URL:		http://plib.sourceforge.net/
+License:        GPLv2
+SUNW_Copyright: %{name}.copyright
 #Source1:	plib-01.sh
 #Patch1:	plib-01.diff
 #Patch2:	plib-install-02.diff

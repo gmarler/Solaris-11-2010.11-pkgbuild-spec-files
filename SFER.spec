@@ -18,6 +18,7 @@ Version:		2.8.1
 Summary:		A language for data analysis and graphics
 URL:			http://www.r-project.org
 License:		GPLv2+
+SUNW_Copyright: 	%{name}.copyright
 Group:			Applications/Math
 Source:			ftp://cran.r-project.org/pub/R/src/base/R-2/R-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{src_version}-build

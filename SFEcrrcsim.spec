@@ -10,6 +10,8 @@ Name:           SFEcrrcsim
 Summary:        crrcsim flight simulator
 Version:        0.9.9
 Source:		http://surfnet.dl.sourceforge.net/sourceforge/crrcsim/crrcsim-%{version}.tar.gz
+License:i	GPLv2
+URL:            http://crrcsim.berlios.de/wiki/
 #Source1:	plib-01.sh
 Patch1:		crrcsim-01.diff
 Patch2:		crrcsim-02.diff
@@ -19,6 +21,7 @@ Patch5:		crrcsim-05.diff
 Patch6:		crrcsim-06.diff
 Patch7:		crrcsim-07.diff
 SUNW_BaseDir:   %{_basedir}
+SUNW_Copyright:	%{name}.copyright
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %include	default-depend.inc
 #Requires:	%name-root
