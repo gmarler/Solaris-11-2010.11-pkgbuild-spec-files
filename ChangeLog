@@ -1,3 +1,8 @@
+2009-04-21  Alexander Eremin  <eremin@milax.org>
+
+        * SFEbusybox: Added initial spec for 1.2.0 version.
+	* patches/busybox-01.diff: Added.
+
 2009-04-19  Sergio Schvezov  <sergiusens@ieee.org>
 
         * SFEvagalume.spec: initial spec file for last.fm client
