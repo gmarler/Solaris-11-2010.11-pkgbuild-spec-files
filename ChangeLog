@@ -1,3 +1,7 @@
+2009-04-24  Andras Barna  <andras.barna@gmail.com>
+
+	* encumbered/SFExmms1-oss4.spec: new spec
+
 2009-04-23  Brian Cameron  <brian.cameron@sun.com>
 
 	* SUNWgnome-display-mgr, patches/gdm-10-xinerama.diff:  Add patch
