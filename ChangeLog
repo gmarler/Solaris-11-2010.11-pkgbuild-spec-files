@@ -1,3 +1,10 @@
+2009-04-23  Brian Cameron  <brian.cameron@sun.com>
+
+	* SUNWgnome-display-mgr, patches/gdm-07-solaris-xinerama.diff:  Update
+	  patch to fix configure so it uses the Xfree Xinerama interfaces
+	  before trying the obsolete Solaris-specific Xinerama interfaces.
+	* patches/gdm-10-xinerama.diff: Remove unnecessary duplicate patch.
+
 2009-04-24  Andras Barna  <andras.barna@gmail.com>
 
 	* encumbered/SFExmms1-oss4.spec: new spec

@@ -38,13 +38,11 @@ Patch4:                  gdm-04-dynamic-display.diff
 Patch5:                  gdm-05-default.diff
 # date:2009-04-02 owner:yippi type:bug bugid:568323
 Patch6:                  gdm-06-hide-face-browser.diff
-# date:2009-04-01 owner:halton type:bug bugid:
+# date:2009-04-01 owner:halton type:bug bugid:580060
 Patch7:                  gdm-07-solaris-xinerama.diff
 # date:2009-04-02 owner:yippi type:bug bugid:568323
 Patch8:                  gdm-08-hide-face-browser-pt2.diff
 Patch9:                  gdm-09-fixcompile.diff
-# date:2009-04-23 owner:yippi type:bug bugid:580060
-Patch10:                 gdm-10-xinerama.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 
@@ -109,7 +107,6 @@ Requires:                %{name}
 %patch7 -p1
 %patch8 -p1
 %patch9 -p1
-%patch10 -p1
 
 %build
 export LDFLAGS="%_ldflags"
@@ -341,7 +338,7 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 
 %changelog
 * Thu Apr 23 2009 - brian.cameron@sun.com
-- Add patch gdm-10-xinerama.diff which fixes configure so it uses the
+- Update patch gdm-07-xinerama.diff which fixes configure so it uses the
   Xfree Xinerama interfaces before trying the obsolete Solaris-specific
   Xinerama interfaces.
 * Tue Apr 14 2009 - brian.cameron@sun.com
