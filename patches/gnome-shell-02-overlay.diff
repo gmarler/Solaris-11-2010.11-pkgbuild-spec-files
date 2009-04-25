@@ -1,4 +1,4 @@
-From 2d70386c4f43d9378a3cfd2717052766f251512b Mon Sep 17 00:00:00 2001
+From 10736d94e94cdd1611443fdcde8a91e9fe6340e4 Mon Sep 17 00:00:00 2001
 From: Colin Walters <walters@verbum.org>
 Date: Wed, 8 Apr 2009 15:32:20 -0400
 Subject: [PATCH] Bug 578197 - Handle builtin icons
@@ -7,8 +7,8 @@ We should be able to handle icons being builtin by converting from
 pixbuf to texture directly, so do that.
 ---
  js/ui/gtkutil.js |   35 ++++++++++++++++++++++++++---------
- js/ui/overlay.js |    7 +++----
- 2 files changed, 29 insertions(+), 13 deletions(-)
+ js/ui/overlay.js |    5 ++---
+ 2 files changed, 28 insertions(+), 12 deletions(-)
 
 diff --git a/js/ui/gtkutil.js b/js/ui/gtkutil.js
 index 56a9004..7b95cd6 100644
@@ -67,10 +67,10 @@ index 56a9004..7b95cd6 100644
 +    return _loadIconInfo(iconinfo, size, fallback);
 +}
 diff --git a/js/ui/overlay.js b/js/ui/overlay.js
-index 7717156..4ee59ff 100644
+index 6c1793d..58cde3a 100644
 --- a/js/ui/overlay.js
 +++ b/js/ui/overlay.js
-@@ -11,6 +11,7 @@ const Signals = imports.signals;
+@@ -12,6 +12,7 @@ const Lang = imports.lang;
  const AppDisplay = imports.ui.appDisplay;
  const DocDisplay = imports.ui.docDisplay;
  const GenericDisplay = imports.ui.genericDisplay;
@@ -78,19 +78,17 @@ index 7717156..4ee59ff 100644
  const Link = imports.ui.link;
  const Main = imports.ui.main;
  const Panel = imports.ui.panel;
-@@ -120,10 +121,8 @@ Sideshow.prototype = {
-                                         height: 24});
-         this.actor.add_actor(this._searchBox);
+@@ -104,9 +105,7 @@ SearchEntry.prototype = {
+                                  });
  
--        let searchIconTexture = new Clutter.Texture({ x: SIDESHOW_PAD + 2,
--                                                      y: this._searchBox.y + 2 });
+         let icontheme = Gtk.IconTheme.get_default();
+-        let searchIconTexture = new Clutter.Texture({});
 -        let searchIconPath = icontheme.lookup_icon('gtk-find', 16, 0).get_filename();
 -        searchIconTexture.set_from_file(searchIconPath);
 +        let searchIconTexture = GtkUtil.loadStockToTexture('gtk-find', 16, true);
-+        searchIconTexture.set_position(SIDESHOW_PAD + 2, this._searchBox.y + 2);
-         this.actor.add_actor(searchIconTexture);
+         this.actor.append(searchIconTexture, 0);
  
-         // We need to initialize the text for the entry to have the cursor displayed 
+         // We need to initialize the text for the entry to have the cursor displayed
 -- 
 1.6.0.6
 

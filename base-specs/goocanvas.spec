@@ -11,7 +11,7 @@
 Name:           goocanvas
 License:        LGPL
 Group:          System/Libraries
-Version:        0.12
+Version:        0.14
 Release:        1
 Distribution:   Java Desktop System
 Vendor:         Sun Microsystems, Inc.
@@ -108,13 +108,15 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*.pc
 
 %changelog
+* Fri Apr 24 2009 - brian.cameron@sun.com
+- Bump to 0.14.
 * Wed Sep 10 2008 - halton.huo@sun.com
-- Bump to 0.11
+- Bump to 0.11.
 * Mon Sep 01 2008 - halton.huo@sun.com
 - Add patch remove-GtkSignalFunc.diff to fix build issue under glib 2.17.7
 * Mon May 26 2008 - nonsea@users.sourceforge.net
 - change SOURCE to download.gnome.org
 * Tue May 13 2008 - nonsea@users.sourceforge.net
-- Bump to 0.10
+- Bump to 0.10.
 * Tue Dec 11 2007 - nonsea@users.sourceforge.net
-- Initial version
+- Initial version.

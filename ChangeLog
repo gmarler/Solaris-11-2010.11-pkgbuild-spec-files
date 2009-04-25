@@ -1,5 +1,12 @@
 2009-04-23  Brian Cameron  <brian.cameron@sun.com>
 
+	* base-specs/goocanvas.spec: Bump to 0.14.
+	* SFEgnome-shell.spec, SFEmetacity-clutter.spec: Fix Requires and
+	  BuildRequires lines.
+	* patches/gnome-shell-02-overlay.diff: Update patch so it applies.
+
+2009-04-23  Brian Cameron  <brian.cameron@sun.com>
+
 	* SUNWgnome-display-mgr, patches/gdm-07-solaris-xinerama.diff:  Update
 	  patch to fix configure so it uses the Xfree Xinerama interfaces
 	  before trying the obsolete Solaris-specific Xinerama interfaces.
