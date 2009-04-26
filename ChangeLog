@@ -5,6 +5,7 @@
           for init-script used by SMF manifest (temporary solution), add Requires: SUNWswmt 
           to get class preserve (may be removed again in the future)
         * experimental/SFEspamassassin.spec: - add manifest xml, add %iclass(renamenew) to protect configuration files
+        * SFEperl-net-dns.spec: disable IPv6 tests with --no-IPv6-tests
 
 2009-04-23  Brian Cameron  <brian.cameron@sun.com>
 
