@@ -61,7 +61,9 @@ perl Makefile.PL \
     INSTALLSITEMAN3DIR=$RPM_BUILD_ROOT%{_mandir}/man3 \
     INSTALLMAN1DIR=$RPM_BUILD_ROOT%{_mandir}/man1 \
     INSTALLMAN3DIR=$RPM_BUILD_ROOT%{_mandir}/man3 \
-    --no-online-tests
+    --no-online-tests \
+    --no-IPv6-tests
+
 make CC=$CC CCCDLFLAGS="%picflags" OPTIMIZE="%optflags" LD=$CC
 
 %install
@@ -91,6 +93,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man3/*
 
 %changelog
+* Sun Apr 26 2009 - Thomas Wagner
+- add --no-IPv6-tests
 * Sat Apr 18 2009 - Thomas Wagner
 - bump to 0.65 (0.59 too old for SpamAssassin)
 * Thu Feb 21 2008 - Thomas Wagner
