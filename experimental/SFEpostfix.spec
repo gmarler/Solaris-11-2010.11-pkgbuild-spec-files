@@ -8,6 +8,10 @@
 ##TODO## think on using SUNWsndmr:/etc/mail/aliases file to get the Solaris standard aliases mapping
 #        and setting this file to be %class(renamenew) protected at upgrade/re-install time
 
+##TODO## tar up the old configuration in case of uninstall of the -root package, valuable configuration would be lost in case of pkgrm. pkgadd with "overwrite" upgrade would not overwrite config and place new configuration files with ".new" appended.
+
+##TODOÃ## add noted to set resource manager to have a zone or preocessgroup or service not locking up the whole CPUs
+
 %include Solaris.inc
 
 
@@ -619,6 +623,14 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
   echo '}';
 ) | $BASEDIR/var/lib/postrun/postrun -i -c POSTFIX -a
 
+%post
+test -x $BASEDIR/var/lib/postrun/postrun || exit 0
+( echo 'touch /etc/mail/aliases.pag /etc/mail/aliases.dir';
+  echo 'touch /etc/mail/aliases';
+  echo '/usr/sbin/postalias aliases >/dev/null';
+  echo '}';
+) | $BASEDIR/var/lib/postrun/postrun -i -c POSTFIX -a
+
 
 %pre root
 test -x $BASEDIR/var/lib/postrun/postrun || exit 0
@@ -735,7 +747,7 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 %{_sbindir}/sendmail.postfix
 %dir %attr (0755, root, bin) %{_libdir}
 %{_libdir}/sendmail.postfix
-%dir %attr (0700, root, bin) %{_libdir}/%{src_name}
+%dir %attr (0711, root, bin) %{_libdir}/%{src_name}
 %{_libdir}/%{src_name}/*
 %dir %attr (0755, root, sys) %{_datadir}
 %dir %attr (0755, root, other) %{_docdir}
@@ -747,6 +759,9 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 
 
 %changelog
+* Sun Apr 26 2009 - Thomas Wagner
+- build aliases.pag aliases.dir in /etc/mail/aliases* by a %post script for base package
+- set /usr/lib/postfix to chmod 711 for reading the filter.sh script
 * Sat Apr 25 2009 - Thomas Wagner
 - add Source5 filter.sh to run spamassassin - see your extra configuration steps on pkgbuild wiki usage tips
 - placed formerly Source4 "i.renamenew" in ext-sources for saving configuration in case of package upgrade/reinstall
