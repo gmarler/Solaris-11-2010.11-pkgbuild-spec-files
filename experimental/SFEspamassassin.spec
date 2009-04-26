@@ -24,6 +24,7 @@ Summary:                 spamassassin - a spam filter for email which can be inv
 URL:                     http://spamassassin.apache.org/
 Version:                 %{module_version}
 Source:                  http://ftp.uni-erlangen.de/pub/mirrors/apache/spamassassin/source/Mail-SpamAssassin-%{version}.tar.bz2
+Source1:		 spamassassin.xml
 License: Apache License 2.0
 
 SUNW_BaseDir:            /
@@ -137,6 +138,9 @@ if echo $WANTEDPERLMODULES | grep -v "^$"
 fi #$WANTEDPERLMODULES
 
 
+#smapassassin manifest
+cp -p %{SOURCE1} spamassassin.xml
+
 %build
 
 #NOTE# special to this module: --no-online-tests
@@ -161,6 +165,9 @@ make CC=$CC CCCDLFLAGS="%picflags" OPTIMIZE="%optflags" LD=$CC
 rm -rf $RPM_BUILD_ROOT
 make install
 
+mkdir -p ${RPM_BUILD_ROOT}/var/svc/manifest/site/
+cp spamassassin.xml ${RPM_BUILD_ROOT}/var/svc/manifest/site/
+
 #remove /usr/lib/i86pc-solaris-64int/perllocal.pod 
 rm -rf $RPM_BUILD_ROOT%{_prefix}/lib
 
@@ -171,6 +178,9 @@ rm -rf $RPM_BUILD_ROOT%{_prefix}/lib
 
 %clean
 rm -rf $RPM_BUILD_ROOT
+
+#the script is found automaticly in ext-sources w/o a Source<n> keyword
+%iclass renamenew -f i.renamenew
 
 %files
 %defattr (-, root, bin)
@@ -183,7 +193,8 @@ rm -rf $RPM_BUILD_ROOT
 #%{_docdir}/%{src_name}/*
 %attr (0755, root, sys) %dir %{_sysconfdir}
 %attr (0755, root, bin) %dir %{_sysconfdir}/%{src_name}
-%{_sysconfdir}/%{src_name}/*
+#%{_sysconfdir}/%{src_name}/*
+%class(renamenew) %{_sysconfdir}/%{src_name}/*
 %dir %attr (0755,root,bin) %{_bindir}
 %{_bindir}/*
 %dir %attr(0755, root, bin) %{_prefix}/perl5
@@ -199,8 +210,15 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/*
 %dir %attr(0755, root, bin) %{_mandir}/man3
 %{_mandir}/man3/*
+%dir %attr (0755, root, sys) %{_localstatedir}
+%defattr (-, root, sys)
+%class(manifest) %attr(0444, root, sys)/var/svc/manifest/site/spamassassin.xml
 
 
 %changelog
+* Sun Apr 26 2009  - Thomas Wagner
+- add %iclass(renamenew) for /etc/spamassassin/*
+* Sun Apr 19 2009  - Thomas Wagner
+- add manifest for SMF
 * Sat Apr 18 2009  - Thomas Wagner
 - Initial spec
