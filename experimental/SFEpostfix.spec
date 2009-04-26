@@ -5,6 +5,9 @@
 # note: this spec derived partly from the provided postfix.spec, you might update this by comparing with vimdiff SFEpostfix.spec BUILD/postfix-*/tmp/postfix.spec
 # note: it also takes several files from the original source-rpm line postfix.spec, make-postfix.spec, postfix-aliases
 
+##TODO## think on using SUNWsndmr:/etc/mail/aliases file to get the Solaris standard aliases mapping
+#        and setting this file to be %class(renamenew) protected at upgrade/re-install time
+
 %include Solaris.inc
 
 
@@ -34,7 +37,7 @@ Version:                 2.5.6
 Source:                  ftp://ftp.porcupine.org/mirrors/postfix-release/official/postfix-%{version}.tar.gz
 Source2:                 http://ftp.wl0.org/official/2.5/SRPMS/postfix-%{version}-1.src.rpm
 Source3:                 postfix.xml
-Source4:                 i.renamenew
+Source5:                 postfix-spamassassin-wiki.apache.org-filter.sh
 Patch1:			postfix-01-make-postfix.spec.diff
 Patch2:			postfix-02-solarize-startscript.diff
 
@@ -49,9 +52,13 @@ BuildRequires: SUNWggrp
 #we need to create user/group-IDs first in preinstall of %{name}-root to get proper verification of file owners
 Requires: %{name}-root
 
+#%config %class(preserve)
+Requires: SUNWswmt
+
 %package root
 Summary:                 %{summary} - / filesystem
 SUNW_BaseDir:            /
+SUNW_PkgType:		root
 %include default-depend.inc
 
 #variables altered from postfix.spec
@@ -138,6 +145,12 @@ mkdir tmp
 
 #postfix manifest
 cp -p %{SOURCE3} postfix.xml
+
+#filter-script for calling spamassassin (activate manually, see pkgbuild wiki)
+#it uses the useraccount spamvac to store email with high spam scores for later
+#review or manual deletion
+#see more alternatives on pkgbuild wiki or your favorite internet search engine
+cp -p %{SOURCE5} tmp/filter.sh
 
 (cd tmp; bash make-postfix.spec)
 
@@ -554,7 +567,12 @@ EOF
 mkdir -p ${RPM_BUILD_ROOT}/var/svc/manifest/site/
 cp postfix.xml ${RPM_BUILD_ROOT}/var/svc/manifest/site/
 
+#this filters email trough spamassassin
+chmod a+rx tmp/filter.sh
+cp -p tmp/filter.sh ${RPM_BUILD_ROOT}/%{_libexecdir}/postfix/filter.sh
+
 %{?pkgbuild_postprocess: %pkgbuild_postprocess -v -c "%{version}:%{jds_version}:%{name}:$RPM_ARCH:%(date +%%Y-%%m-%%d):%{support_level}" $RPM_BUILD_ROOT}
+
 
 
 
@@ -628,12 +646,38 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 ) | $BASEDIR/var/lib/postrun/postrun -i -c POSTFIX -a
 
 
+#the script is found automaticly in ext-sources w/o a Source<n> keyword
+%iclass renamenew -f i.renamenew
 
 %files root
 %defattr (-, root, bin)
 %attr (0755, root, sys) %dir %{_sysconfdir}
 %attr (0755, root, sys) %dir %{_sysconfdir}/%{src_name}
-%{_sysconfdir}/%{src_name}/*
+#%{_sysconfdir}/%{src_name}/*
+%class(renamenew) %{_sysconfdir}/%{src_name}/master.cf
+%class(renamenew) %{_sysconfdir}/%{src_name}/main.cf
+%class(renamenew) %{_sysconfdir}/%{src_name}/aliases
+%{_sysconfdir}/%{src_name}/examples
+%{_sysconfdir}/%{src_name}/bounce.cf.default
+%{_sysconfdir}/%{src_name}/access
+%{_sysconfdir}/%{src_name}/postfix-script
+%{_sysconfdir}/%{src_name}/readme
+%{_sysconfdir}/%{src_name}/transport
+%{_sysconfdir}/%{src_name}/header_checks
+%{_sysconfdir}/%{src_name}/postfix.spec.cf
+%{_sysconfdir}/%{src_name}/postfix-files
+%{_sysconfdir}/%{src_name}/README.rpm
+%{_sysconfdir}/%{src_name}/html
+%{_sysconfdir}/%{src_name}/LICENSE
+%{_sysconfdir}/%{src_name}/virtual
+%{_sysconfdir}/%{src_name}/postfix-chroot.sh
+%{_sysconfdir}/%{src_name}/TLS_LICENSE
+%{_sysconfdir}/%{src_name}/main.cf.default
+%{_sysconfdir}/%{src_name}/generic
+%{_sysconfdir}/%{src_name}/relocated
+%{_sysconfdir}/%{src_name}/makedefs.out
+%{_sysconfdir}/%{src_name}/canonical
+%{_sysconfdir}/%{src_name}/post-install
 # only for oldtimers the original init.d/postfix script - *not* tested on Solaris
 # this is %{_sysconfdir}/init.d
 %attr (0755, root, sys) %dir %{initdir}
@@ -703,6 +747,12 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 
 
 %changelog
+* Sat Apr 25 2009 - Thomas Wagner
+- add Source5 filter.sh to run spamassassin - see your extra configuration steps on pkgbuild wiki usage tips
+- placed formerly Source4 "i.renamenew" in ext-sources for saving configuration in case of package upgrade/reinstall
+- add %iclass(renamenew) for main.cf, master.cf, aliases (unused in this case, see /etc/mail/aliases originating from SUNWsndmr package
+- add patch2 postfix-02-solarize-startscript.diff
+- add Requires: SUNWswmt to get class preserve for configuration files (better/preferred would be: renamenew)
 * Fri Apr 17 2009 - Thomas Wagner
 - unresolved: install-order is important: -root first, then base package (or file owner/group verifaction fails w/o user/groupnames on the system)
 - change postfix userid to be in group "other"
@@ -714,4 +764,4 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 * Thu Jan 22 2009 - Thomas Wagner
 - %doc made monstrous 
 * Sun Jan 2009 - Thomas Wagner
-- Initial spec, parts derived from postfix.spec from the original SRPM
+e Initial spec, parts derived from postfix.spec from the original SRPM

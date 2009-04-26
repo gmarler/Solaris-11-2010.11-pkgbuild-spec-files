@@ -1,0 +1,55 @@
+--- virtual/tmp/postfix-etc-init.d-postfix	Fri Apr 17 20:52:22 2009
++++ virtual/tmp/postfix	Fri Apr 17 20:28:06 2009
+@@ -17,15 +17,22 @@
+ # 23/11/00: Changes & suggestions by Ajay Ramaswamy <ajayr@bigfoot.com>
+ # 20/01/01: Changes to fall in line with RedHat 7.0 style
+ # 23/02/01: Fix a few untidy problems with help from Daniel Roesen.
++# 17/04/09: Solaris fixes (SFE)
+ 
+ # Source function library.
+-. /etc/rc.d/init.d/functions
++#. /etc/rc.d/init.d/functions
++function success {
++echo "successfull started postfix"
++}
++function failure {
++echo "successfull started postfix"
++}
+ 
+ # Source networking configuration.
+-. /etc/sysconfig/network
++#. /etc/sysconfig/network
+ 
+ # Check that networking is up.
+-[ ${NETWORKING} = "no" ] && exit 0
++#[ ${NETWORKING} = "no" ] && exit 0
+ 
+ [ -x /usr/sbin/postfix ] || exit 0
+ [ -d /etc/postfix ] || exit 0
+@@ -38,7 +45,7 @@
+ 	echo -n "Starting postfix: "
+ 	/usr/sbin/postfix start 2>/dev/null 1>&2 && success || failure
+ 	RETVAL=$?
+-	[ $RETVAL -eq 0 ] && touch /var/lock/subsys/postfix
++	[ $RETVAL -eq 0 ] && touch /var/run/postfix
+         echo
+ 	return $RETVAL
+ }
+@@ -48,7 +55,7 @@
+ 	echo -n "Shutting down postfix: "
+ 	/usr/sbin/postfix stop 2>/dev/null 1>&2 && success || failure
+ 	RETVAL=$?
+-	[ $RETVAL -eq 0 ] && rm -f /var/lock/subsys/postfix
++	[ $RETVAL -eq 0 ] && rm -f /var/run/postfix
+ 	echo
+ 	return $RETVAL
+ }
+@@ -108,7 +115,7 @@
+   	status master
+ 	;;
+   condrestart)
+-	# don't use /var/lock/subsys/postfix, check for postfix running directly
++	# don't use /var/run/postfix, check for postfix running directly
+ 	daemon_directory=$(postconf -h daemon_directory)
+ 	$daemon_directory/master -t 2>/dev/null && : || restart
+ 	;;
