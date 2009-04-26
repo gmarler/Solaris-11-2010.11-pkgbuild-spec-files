@@ -1,3 +1,11 @@
+2009-04-26  Thomas Wagner  <tom68@users.sourceforge.net>
+
+        * experimental/SFEpostfix.spec: - add SpamAssassin filter.sh, protect
+          config files with %class(renamenew), add patch2 postfix-02-solarize-startscript.diff
+          for init-script used by SMF manifest (temporary solution), add Requires: SUNWswmt 
+          to get class preserve (may be removed again in the future)
+        * experimental/SFEspamassassin.spec: - add manifest xml, add %iclass(renamenew) to protect configuration files
+
 2009-04-23  Brian Cameron  <brian.cameron@sun.com>
 
 	* base-specs/goocanvas.spec: Bump to 0.14.
