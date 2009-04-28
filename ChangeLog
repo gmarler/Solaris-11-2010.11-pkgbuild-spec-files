@@ -1,3 +1,7 @@
+2009-04-28  Alfred Peng  <alfred.peng@sun.com>
+
+	* SFEperl-config-general.spec: Added.
+
 2009-04-26  Thomas Wagner  <tom68@users.sourceforge.net>
 
         * experimental/SFEpostfix.spec: - add SpamAssassin filter.sh, protect
