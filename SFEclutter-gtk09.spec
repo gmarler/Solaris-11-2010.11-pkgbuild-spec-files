@@ -24,7 +24,7 @@ BuildRequires: SFEclutter09-devel
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 Requires: SUNWgnome-base-libs
-Requires: SUNWclutter
+Requires: SFEclutter09
 BuildRequires: SUNWgnome-base-libs-devel
 
 %package devel
@@ -33,7 +33,7 @@ SUNW_BaseDir:            %{_basedir}
 %include default-depend.inc
 Requires: %name
 Requires: SUNWgnome-base-libs-devel
-Requires: SUNWclutter-devel
+Requires: SFEclutter09-devel
 
 %prep
 mkdir -p clutter-gtk-%version

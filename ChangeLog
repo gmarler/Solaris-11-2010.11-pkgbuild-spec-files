@@ -1,15 +1,29 @@
+2009-04-28  Brian Cameron  <brian.cameron@sun.com>
+
+	* SFEmetacity-clutter.spec, SFEmutter.spec,
+	  patches/metacity-clutter-01-xopen-source.diff,
+	  patches/mutter-01-xopen-source.diff:  Rename to reflect new module
+	  name:
+	* patches/clutter-gtk9-01-introspection.diff: Rework so it applies
+	  to latest source.
+	* SUNWclutter-gtk09.spec: Fix Requires lines.
+	* SFEgnome-shell.spec, ext-sources/shell.desktop:  Install a
+	  desktop file for GNOME Shell.
+
 2009-04-28  Alfred Peng  <alfred.peng@sun.com>
 
 	* SFEperl-config-general.spec: Added.
 
 2009-04-26  Thomas Wagner  <tom68@users.sourceforge.net>
 
-        * experimental/SFEpostfix.spec: - add SpamAssassin filter.sh, protect
-          config files with %class(renamenew), add patch2 postfix-02-solarize-startscript.diff
-          for init-script used by SMF manifest (temporary solution), add Requires: SUNWswmt 
-          to get class preserve (may be removed again in the future)
-        * experimental/SFEspamassassin.spec: - add manifest xml, add %iclass(renamenew) to protect configuration files
-        * SFEperl-net-dns.spec: disable IPv6 tests with --no-IPv6-tests
+	* experimental/SFEpostfix.spec: - add SpamAssassin filter.sh, protect
+	  config files with %class(renamenew), add patch2
+	  postfix-02-solarize-startscript.diff for init-script used by SMF
+	  manifest (temporary solution), add Requires: SUNWswmt to get class
+	  preserve (may be removed again in the future)
+	* experimental/SFEspamassassin.spec: - add manifest xml, add
+	  %iclass(renamenew) to protect configuration files
+	* SFEperl-net-dns.spec: disable IPv6 tests with --no-IPv6-tests
 
 2009-04-23  Brian Cameron  <brian.cameron@sun.com>
 

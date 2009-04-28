@@ -8,6 +8,7 @@
 Name:                    SFEgnome-shell
 Summary:                 GNOME Shell
 Version:                 0.0.1
+Source1:                 shell.desktop
 #owner:yippi date:2009-04-07 type:bug bugzilla:578196
 Patch1:                  gnome-shell-01-launch.diff
 #owner:yippi date:2009-04-07 type:bug bugzilla:578197
@@ -24,7 +25,7 @@ BuildRequires:           SFEclutter09-devel
 BuildRequires:           SFEgir-repository
 BuildRequires:           SFEgjs-devel
 BuildRequires:           SFEgobject-introspection-devel
-BuildRequires:           SFEmetacity-clutter-devel
+BuildRequires:           SFEmutter-devel
 Requires:                SUNWPython26
 Requires:                SUNWdbus-glib
 Requires:                SUNWgnome-base-libs
@@ -35,7 +36,7 @@ Requires:                SFEclutter09
 Requires:                SFEgir-repository
 Requires:                SFEgjs
 Requires:                SFEgobject-introspection
-Requires:                SFEmetacity-clutter
+Requires:                SFEmutter
 %include default-depend.inc
 
 %prep
@@ -61,8 +62,10 @@ cd gnome-shell-%version
 cd gnome-shell
 make install DESTDIR=$RPM_BUILD_ROOT
 
-#find $RPM_BUILD_ROOT/%{_libdir} -type f -name "*.a" -exec rm -f {} ';'
-#find $RPM_BUILD_ROOT/%{_libdir} -type f -name "*.la" -exec rm -f {} ';'
+# Install a desktop file so you can log into GNOME Shell.
+#
+install -d $RPM_BUILD_ROOT%{_datadir}/xsessions
+install --mode=0444 %SOURCE1 $RPM_BUILD_ROOT%{_datadir}/xsessions
 
 %{?pkgbuild_postprocess: %pkgbuild_postprocess -v -c "%{version}:%{jds_version}:%{name}:$RPM_ARCH:%(date +%%Y-%%m-%%d):%{support_level}" $RPM_BUILD_ROOT}
 
@@ -79,7 +82,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/metacity/plugins
 %dir %attr (0755, root, sys) %{_datadir}
 %{_datadir}/gnome-shell
+%{_datadir}/xsessions
 
 %changelog
-* Sat Apr 06 2009 - Brian.Cameron  <brian.cameron@sun.com>
+* Tue Apr 28 2009 - Brian Cameron  <brian.cameron@sun.com>
+- Install dekstop file for GNOME Shell.
+* Sat Apr 06 2009 - Brian Cameron  <brian.cameron@sun.com>
 - Created.

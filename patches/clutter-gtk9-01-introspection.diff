@@ -1,29 +1,16 @@
+diff --git a/Makefile.am b/Makefile.am
+index e2c500a..237abd7 100644
 --- a/Makefile.am
 +++ b/Makefile.am
-@@ -1,3 +1,5 @@
-+ACLOCAL_AMFLAGS = -I build/autotools
-+
- SUBDIRS = clutter-gtk doc examples
- 
- clutter-gtk-0.9.pc: clutter-gtk.pc
-@@ -10,6 +12,6 @@ CLEANFILES = clutter-gtk-0.9.pc
+@@ -16,7 +16,7 @@ CLEANFILES = clutter-gtk-0.9.pc
  
  DISTCLEANFILES = clutter-gtk.pc
  
 -EXTRA_DIST = clutter-gtk.pc.in
 +EXTRA_DIST = clutter-gtk.pc.in introspection.m4
  
- DISTCHECK_CONFIGURE_FLAGS = --enable-gtk-doc
-diff --git a/autogen.sh b/autogen.sh
-index aecfb84..c792397 100755
---- a/autogen.sh
-+++ b/autogen.sh
-@@ -1,4 +1,4 @@
- #! /bin/sh
- gtkdocize || exit 1
--autoreconf -v --install || exit 1
-+env ACLOCAL="${ACLOCAL-aclocal} $ACLOCAL_FLAGS"  autoreconf -v --install || exit 1
- ./configure --enable-maintainer-mode "$@"
+ DISTCHECK_CONFIGURE_FLAGS = --enable-gtk-doc --enable-maintainer-flags
+ 
 diff --git a/build/autotools/introspection.m4 b/build/autotools/introspection.m4
 new file mode 100644
 index 0000000..bb3a0da
@@ -119,30 +106,21 @@ index 0000000..bb3a0da
 +  _GOBJECT_INTROSPECTION_CHECK_INTERNAL([$1], [require])
 +])
 diff --git a/clutter-gtk/Makefile.am b/clutter-gtk/Makefile.am
-index 1f487e0..83b8aae 100644
+index b4ade95..81b54a9 100644
 --- a/clutter-gtk/Makefile.am
 +++ b/clutter-gtk/Makefile.am
-@@ -1,3 +1,4 @@
+@@ -1,6 +1,8 @@
 +CLEANFILES=
  INCLUDES = \
  	-I$(srcdir) 				\
  	-I$(top_srcdir) 			\
-@@ -10,10 +11,11 @@ INCLUDES = \
-         -DGDK_DISABLE_DEPRECATED                \
-         -DGTK_DISABLE_DEPRECATED                \
- 	$(CLUTTER_DEBUG_FLAGS) 			\
--	$(GCC_FLAGS) 				\
- 	$(CLUTTER_CFLAGS) 			\
- 	$(GTK_CFLAGS)
- 
-+AM_CFLAGS = $(GCC_FLAGS)
-+
- lib_LTLIBRARIES = libclutter-gtk-0.9.la
- 
- # please, keep the list sorted alphabetically
-@@ -34,3 +36,33 @@ cluttergtkheaders_HEADERS = \
-         gtk-clutter-scrollable.h \
-         gtk-clutter-util.h \
++	$(CLUTTER_CFLAGS)			\
+ 	-DG_LOG_DOMAIN=\"Clutter-Gtk\" 		\
+ 	-DPREFIX=\""$(prefix)"\" 		\
+ 	-DLIBDIR=\""$(libdir)"\" 		\
+@@ -39,3 +41,33 @@ cluttergtkheaders_HEADERS = 		\
+         gtk-clutter-scrollable.h 	\
+         gtk-clutter-util.h 		\
          gtk-clutter-viewport.h
 +
 +if HAVE_INTROSPECTION
@@ -175,39 +153,34 @@ index 1f487e0..83b8aae 100644
 +CLEANFILES += $(BUILT_GIRSOURCES) $(typelibs_DATA)
 +endif
 diff --git a/configure.ac b/configure.ac
-index fe4de51..e3fef20 100644
+index 87597a4..1f1dbb3 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -21,6 +21,7 @@ AC_PREREQ(2.53)
- AC_INIT([clutter-gtk],
-         [clutter_version],
-         [http://bugzilla.o-hand.com/enter_bug.cgi?product=Clutter])
-+AC_CONFIG_MACRO_DIR([build/autotools])
- AC_CONFIG_SRCDIR([clutter-gtk/gtk-clutter-embed.h])
- AM_CONFIG_HEADER([config.h])
+@@ -153,6 +153,8 @@ AC_SUBST(CLUTTER_PREFIX)
  
-@@ -29,10 +30,12 @@ AM_INIT_AUTOMAKE([1.9])
- CLUTTER_GTK_MAJOR_VERSION=clutter_major_version
- CLUTTER_GTK_MINOR_VERSION=clutter_minor_version
- CLUTTER_GTK_MICRO_VERSION=clutter_micro_version
-+CLUTTER_GTK_API_VERSION=clutter_api_version
- CLUTTER_GTK_VERSION=clutter_version
- AC_SUBST(CLUTTER_GTK_MAJOR_VERSION)
- AC_SUBST(CLUTTER_GTK_MINOR_VERSION)
- AC_SUBST(CLUTTER_GTK_MICRO_VERSION)
-+AC_SUBST(CLUTTER_GTK_API_VERSION)
- AC_SUBST(CLUTTER_GTK_VERSION)
- 
- m4_define([lt_current],
-@@ -100,6 +103,8 @@ PKG_CHECK_MODULES(GTK, gtk+-2.0 >= 2.12)
- AC_SUBST(GTK_CFLAGS)
- AC_SUBST(GTK_LIBS)
+ GTK_DOC_CHECK([1.11])
  
 +GOBJECT_INTROSPECTION_CHECK([0.6.3])
 +
  dnl ========================================================================
  
- if test "x$GCC" = "xyes"; then
--- 
-1.6.0.6
-
+ SHAVE_INIT([build/autotools], [enable])
+diff --git a/build/autotools/shave-libtool.in b/build/autotools/shave-libtool.in
+index 1f3a720..7b3d63f 100644
+--- a/build/autotools/shave-libtool.in
++++ b/build/autotools/shave-libtool.in
+@@ -11,8 +11,12 @@ lt_unmangle ()
+    last_result=`echo $1 | $SED -e 's#.libs/##' -e 's#[0-9a-zA-Z_\-\.]*_la-##'`
+ }
+ 
+-# the real libtool to use
+-LIBTOOL="$1"
++tempval=`echo $1 | sed s/\'//g`
++if test "x$tempval" = "x$SHELL"; then
++   shift
++fi
++tempval=`echo $1 | sed s/\'//g`
++LIBTOOL="$tempval"
+ shift
+ 
+ # if 1, don't print anything, the underlaying wrapper will do it

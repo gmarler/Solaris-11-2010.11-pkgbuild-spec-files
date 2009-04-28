@@ -1,16 +1,17 @@
 #
-# spec file for package SFEmetacity-clutter
+# spec file for package SFEmutter
 #
-# includes module(s): metacity-clutter
+# includes module(s): mutter
 #
 %include Solaris.inc
 
 %define pythonver 2.6
 
-Name:                    SFEmetacity-clutter
+Name:                    SFEmutter
 Summary:                 Clutter enabled metacity window manager
-Version:                 2.25.144
-Patch1:                  metacity-clutter-01-xopen-source.diff
+Version:                 2.27.0
+# Reported as bugzilla bug #580662.
+Patch1:                  mutter-01-xopen-source.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 BuildRequires:           SUNWPython26-devel
@@ -46,16 +47,16 @@ Requires:                %{name}
 %endif
 
 %prep
-mkdir -p metacity-clutter-%version
-cd metacity-clutter-%version
-rm -fR metacity-clutter
-git-clone git://git.fishsoup.net/metacity-clutter
-cd metacity-clutter
+mkdir -p mutter-%version
+cd mutter-%version
+rm -fR mutter
+git-clone git://git.gnome.org/mutter
+cd mutter
 %patch1 -p1
 
 %build
-cd metacity-clutter-%version
-cd metacity-clutter
+cd mutter-%version
+cd mutter
 export CFLAGS="%optflags -xc99 -I/usr/include/clutter-0.9"
 export PYTHON=/usr/bin/python%{pythonver}
 ./autogen.sh \
@@ -67,9 +68,8 @@ export PYTHON=/usr/bin/python%{pythonver}
 make
 
 %install
-rm -rf $RPM_BUILD_ROOT
-cd metacity-clutter-%version
-cd metacity-clutter
+cd mutter-%version
+cd mutter
 make install DESTDIR=$RPM_BUILD_ROOT
 
 find $RPM_BUILD_ROOT/%{_libdir} -type f -name "*.a" -exec rm -f {} ';'
