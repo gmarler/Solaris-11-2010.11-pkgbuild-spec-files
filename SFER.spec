@@ -49,6 +49,10 @@ BuildRequires: SFEreadline-devel
 BuildRequires: SUNWncurses-devel
 BuildRequires: SUNWj5dev
 
+Meta(info.upstream):		cran.r-projet.org
+Meta(info.maintainer):		Gilles Dauphin
+Meta(info.repository_url):	ftp://ftp.stat.math.ethz.ch/Software/R
+
 %description
 R is a language and environment for statistical computing and graphics. 
 R is similar to the award-winning S system, which was developed at 
@@ -75,32 +79,17 @@ export R_PDFVIEWER="%{_bindir}/xdg-open"
 export R_PRINTCMD="lpr"
 export R_BROWSER="%{_bindir}/xdg-open"
 
-case "%{_target_cpu}" in
-      x86_64|mips64|ppc64|powerpc64|sparc64|s390x)
-          #export CC="gcc -m64"
-          #export CXX="g++ -m64"
-          export CC="cc -m64"
-          export CXX="CC -m64"
-          export F77="f95 -m64"
-          export FC="f95 -m64"
-      ;;
-      ia64|alpha|sh*)
-          export CC="gcc"
-          export CXX="g++"
-          export F77="f95"
-          export FC="f95"
-      ;;
-      *)
-          #export CC="gcc -m32"
-          #export CXX="g++ -m32"
-          export CC="cc -m32"
-	 # because of foreign -Wno-long-long !!! Argh :(
-          export ac_cv_prog_CC="cc -m32"
-          export CXX="CC -m32"
-          export F77="f95 -m32"
-          export FC="f95 -m32"
-      ;;    
-esac
+# because of foreign -Wno-long-long !!! Argh :(
+export ac_cv_prog_CC="cc -m32"
+export CC="cc -m32"
+export CXX="CC -m32"
+export CXXFLAGS="-library=stlport4"
+export SHLIB_CXXFLAGS="-library=stlport4"
+export SHLIB_CXXLD="CC -m32"
+export SHLIB_CXXFLAGS="-library=stlport4"
+export SHLIB_CXXLDFLAGS="-library=stlport4"
+export F77="f95 -m32"
+export FC="f95 -m32"
 
 export FCFLAGS="%{optflags}"
 ( ./configure \
