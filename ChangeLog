@@ -1,5 +1,11 @@
 2009-04-28  Brian Cameron  <brian.cameron@sun.com>
 
+	* SUNWgnome-display-mgr.spec, patches/gdm-10-no-system-gconf.diff:
+	  Add patch so that GDM does not display a gconf-sanity-check-2 error
+	  on startup.
+
+2009-04-28  Brian Cameron  <brian.cameron@sun.com>
+
 	* SFEmetacity-clutter.spec, SFEmutter.spec,
 	  patches/metacity-clutter-01-xopen-source.diff,
 	  patches/mutter-01-xopen-source.diff:  Rename to reflect new module
