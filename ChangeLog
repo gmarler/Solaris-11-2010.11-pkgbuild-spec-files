@@ -1,3 +1,17 @@
+2009-04-29	Gilles Dauphin
+	* update SFER.spec
+	* add SFER-car.spec
+	* add SFER-Matrix.spec
+	* add SFER-ctv.spec
+	* add SFER-e1071.spec
+	* add copyright/SFER-e1071.copyright
+	* add copyright/SFER-ctv.copyright
+	* add copyright/SFER-Matrix.copyright
+	* add copyright/SFER-car.copyright
+	* add ext-sources/R-MachineLearning.stdin (will be remove )
+	* add SFER-MachineLearning.spec (will be remove )
+	* add copyright/SFER-MachineLearning.copyright (will be remove )
+
 2009-04-28  Brian Cameron  <brian.cameron@sun.com>
 
 	* SUNWgnome-display-mgr.spec, patches/gdm-10-no-system-gconf.diff:

@@ -1,0 +1,3 @@
+library(ctv)
+install.views("MachineLearning",repos="http://cran.cict.fr/", lib="/usr/lib/R/library")
+update.packages(repos="http://cran.cict.fr/",ask=FALSE)
