@@ -6,7 +6,7 @@
 
 %include Solaris.inc
 
-%define version_version 0.7501
+%define version_version 0.76
 %define perl_version 5.8.4
 
 Name:                    SFEperl-version
@@ -70,6 +70,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man3/*
 
 %changelog
+* Thr Apr 30 2009 - Thomas Wagner
+- bump to 0.76
 * Wed Jun 18 2008 - daymobrew@users.sourceforge.net
 - Bump to 0.7501.
 
