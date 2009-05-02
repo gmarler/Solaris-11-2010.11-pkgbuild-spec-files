@@ -120,6 +120,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sat Mai 02 2009 - Thomas Wagner
+- add SMF manifest for auto-start
 * Sun Jan 06 2008 - moinak.ghosh@sun.com
 - Added a missing pathname to files section
 * Sat Nov 24 2007 - Thomas Wagner
