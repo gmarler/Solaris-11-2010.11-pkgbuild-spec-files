@@ -1,0 +1,20 @@
+--- DB_File-1.820/config.in.orig	2009-03-28 14:38:14.000000000 +0100
++++ DB_File-1.820/config.in	2009-04-30 19:16:57.898271315 +0200
+@@ -9,7 +9,7 @@
+ #    Change the path below to point to the directory where db.h is
+ #    installed on your system.
+ 
+-INCLUDE	= /usr/local/BerkeleyDB/include
++INCLUDE	= /usr/gnu/include
+ #INCLUDE	= /usr/local/include
+ #INCLUDE	= /usr/include
+ 
+@@ -18,7 +18,7 @@
+ #    Change the path below to point to the directory where libdb is
+ #    installed on your system.
+ 
+-LIB	= /usr/local/BerkeleyDB/lib
++LIB	= /usr/gnu/lib
+ #LIB	= /usr/local/lib
+ #LIB	= /usr/lib
+ 
