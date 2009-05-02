@@ -7,13 +7,15 @@
 
 %include Solaris.inc
 
-%define compress_raw_zlib_version 2.008
+#note: download file version differs from package version (for IPS not accepting "015" / leading zero)
+%define module_version 2.17
+%define module_version_download 2.017
 %define perl_version 5.8.4
 
 Name:                    SFEperl-compress-raw-zlib
-Summary:                 Compress-Raw-Zlib-%{compress_raw_zlib_version} PERL module
+Summary:                 Compress-Raw-Zlib-%{module_version_download} PERL module
 Version:                 %{perl_version}.%{compress_raw_zlib_version}
-Source:                  http://www.cpan.org/modules/by-module/Compress/Compress-Raw-Zlib-%{compress_raw_zlib_version}.tar.gz
+Source:                  http://www.cpan.org/modules/by-module/Compress/Compress-Raw-Zlib-%{module_version_download}.tar.gz
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 Requires:                SUNWperl584core
@@ -32,7 +34,7 @@ BuildRequires:           SUNWsfwhea
 %setup -q            -c -n %name-%version
 
 %build
-cd Compress-Raw-Zlib-%{compress_raw_zlib_version}
+cd Compress-Raw-Zlib-%{module_version_download}
 perl Makefile.PL \
     PREFIX=$RPM_BUILD_ROOT%{_prefix} \
     INSTALLSITELIB=$RPM_BUILD_ROOT%{_prefix}/perl5/vendor_perl/%{perl_version} \
@@ -45,7 +47,7 @@ make CC=$CC CCCDLFLAGS="%picflags" OPTIMIZE="%optflags" LD=$CC
 
 %install
 rm -rf $RPM_BUILD_ROOT
-cd Compress-Raw-Zlib-%{compress_raw_zlib_version}
+cd Compress-Raw-Zlib-%{module_version_download}
 make install
 
 rm -rf $RPM_BUILD_ROOT%{_prefix}/lib
@@ -71,5 +73,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man3/*
 
 %changelog
+* Thr Apr 30 2009 - Thomas Wagner
+- bump version to 2.017
+- make version number IPS capable
 * Tue Nov 13 2007 - trisk@acm.jhu.edu
 - Initial spec
