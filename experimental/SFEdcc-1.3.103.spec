@@ -8,7 +8,7 @@
 Name:                SFEdcc
 Summary:             Distributed Checksum Clearinghouse
 Version:             1.3.103
-Source:              http://www.rhyolite.com/anti-spam/dcc/source/dcc-%{version}.tar.Z
+Source:              http://www.rhyolite.com/dcc/source/old/dcc-%{version}.tar.Z
 #SUNW_BaseDir:        %{_basedir}
 SUNW_BaseDir:        /
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
@@ -75,6 +75,7 @@ rm -rf $RPM_BUILD_ROOT
 %changelog
 * Sun Mai 03 2009 - Thomas Wagner
 - bump to 1.3.103
+Ã- fix download link
 * Fri 22 Aug 2008 - Thomas Wagner
 - bump to 1.3.92
 - reworked TODO
