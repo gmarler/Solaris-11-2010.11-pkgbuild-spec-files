@@ -1,5 +1,17 @@
 2009-05-02  Thomas Wagner  <tom68@users.sourceforge.net>
         * encumbered/SFEnntpcached.spec: add nntpcached.xml SMF manifest for auto-starting
+        * SFEbdb.spec: bump version to 4.7.25, use usr-gnu.inc (Berkeley DB with include file db.h)
+        * SFEperl-dbfile.spec: *new* Perl module DB_File to interface to Berkeley 1.x Database Functions
+        * SFEperl-encode-detect.spec: bump to 1.01, rework patch1, make version number IPS capable
+        * SFEperl-io-socket-inet6.spec: bump version to 2.56
+        * SFEtinyca2.spec: fix %doc, add (Build)Requires: SFEperl-glib, (Build)Requires: SFEperl-gtk2, BuildRequires: SFEperl-gtk2
+        * SFEperl-mail-spf.spec: *new* Perl module Mail::SPF Sender Policy Framework
+        * SFEperl-version.spec: bump to 0.76
+        * SFEperl-netaddr-ip.spec: *new* Perl Module NetAddr::IP
+        * SFEperl-compress-raw-zlib.spec: bump version to 2.017, make version number IPS capable
+        * experimental/SFEspamassassin.spec: add (Build)Requires: SFEperl-encode-detect and (Build)Requires: SFEperl-mail-spf
+        * SFEdcc.spec: *new* dcc Distributed Checksum Clearinghouses anti-spam content filter
+
 
 2009-04-29	Gilles Dauphin
 	* update SFER.spec
