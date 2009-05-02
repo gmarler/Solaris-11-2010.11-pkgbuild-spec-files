@@ -5,7 +5,7 @@
 # (needed by: Net-DNS)
 #
 
-%define module_version 2.51
+%define module_version 2.56
 %define module_name IO-Socket-INET6
 %define module_name_major IO
 %define module_package_name io-socket-inet6
@@ -76,6 +76,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thr Apr 30 2009 - Thomas Wagner
+- bump version to 2.56
 * Wed Nov 28 2007 - Thomas Wagner
 - renamed package and if necessary (Build-)Requires
 * Sat Nov 24 2007 - Thomas Wagner
