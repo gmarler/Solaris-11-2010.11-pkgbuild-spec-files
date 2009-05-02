@@ -1,3 +1,6 @@
+2009-05-02  Thomas Wagner  <tom68@users.sourceforge.net>
+        * encumbered/SFEnntpcached.spec: add nntpcached.xml SMF manifest for auto-starting
+
 2009-04-29	Gilles Dauphin
 	* update SFER.spec
 	* add SFER-car.spec
