@@ -5,10 +5,14 @@
 #
 %include Solaris.inc
 
+#SUNWbdb is w/o db.h, we install in /usr/gnu/
+%include usr-gnu.inc
+
 Name:                    SFEbdb
 Summary:                 Berkeley DB
-Version:                 4.5.20
-Source:                  http://download-west.oracle.com/berkeley-db/db-%{version}.tar.gz
+Version:                 4.7.25
+#Source:                  http://download-west.oracle.com/berkeley-db/db-%{version}.tar.gz
+Source:			http://download.oracle.com/berkeley-db/db-%{version}.tar.gz
 URL:                     http://www.oracle.com/technology/software/products/berkeley-db/index.html
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -30,7 +34,13 @@ cd build_unix
         --libexecdir=%{_libexecdir}         \
         --mandir=%{_mandir}                 \
         --datadir=%{_datadir}               \
-        --infodir=%{_datadir}/info
+        --infodir=%{_datadir}/info          \
+        --enable-rpc			    \
+	--enable-compat185		    \
+        --disable-static                    \
+        --enable-shared
+
+
 
 make -j$CPUS 
 
@@ -39,7 +49,7 @@ rm -rf $RPM_BUILD_ROOT
 cd build_unix
 make install DESTDIR=$RPM_BUILD_ROOT
 rm $RPM_BUILD_ROOT%{_libdir}/*.la
-rm $RPM_BUILD_ROOT%{_libdir}/*.a
+#rm $RPM_BUILD_ROOT%{_libdir}/*.a
 mkdir -p $RPM_BUILD_ROOT%{_prefix}/share/doc
 mv $RPM_BUILD_ROOT%{_prefix}/docs $RPM_BUILD_ROOT%{_prefix}/share/doc/bdb
 
@@ -50,6 +60,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr (-, root, bin)
 %dir %attr (0755, root, bin) %{_bindir}
 %{_bindir}/db*
+%{_bindir}/be*
 %dir %attr (0755, root, bin) %{_libdir}
 %{_libdir}/libdb*
 %dir %attr (0755, root, bin) %{_includedir}
@@ -59,6 +70,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/doc/*
 
 %changelog
+* Thr Apr 30 2009 - Thomas Wagner
+- bump version to 4.7.25
+- use usr-gnu.inc to avoid conflicts with SUNWbdb (which unfortunately doesn't provide db.h)
 * Fri Jan 05 2007 - daymobrew@users.sourceforge.net
 - Add URL.
 * Tue Nov 07 2006 - glynn.foster@sun.com
