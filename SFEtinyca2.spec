@@ -23,7 +23,11 @@ License:             GPL
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 
+BuildRequires: SFEperl-glib
+Requires: SFEperl-glib
+BuildRequires: SFEperl-gtk2
 Requires: SFEperl-gtk2
+BuildRequires: SFEperl-gettext
 Requires: SFEperl-gettext
 Requires: SUNWopensslr
 Requires: SUNWopenssl-libraries
@@ -100,6 +104,9 @@ done
 
 install -m 644 lib/*.pm $RPM_BUILD_ROOT%{tinyca2libdir}
 
+# for older pkgbuild/pkgtool
+test -d $RPM_BUILD_ROOT%{_docdir} || mkdir $RPM_BUILD_ROOT%{_docdir}
+
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -109,16 +116,20 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-, root, bin)
-%doc CHANGES
+%doc CHANGES INSTALL templates/openssl.cnf
 %dir %attr (0755, root, bin) %{_bindir}
 %{_bindir}/*
 %dir %attr (0755, root, sys) %{_datadir}
 %{_datadir}/tinyca2/*
+%dir %attr (0755, root, other) %{_docdir}
 %dir %attr (0755, root, other) %{_datadir}/applications
 %{_datadir}/applications/*
 
 
 %changelog
+* Mar 26 2009 - Thomas Wagner
+- fix %doc
+- add (Build)Requires: SFEperl-glib, (Build)Requires: SFEperl-gtk2, BuildRequires: SFEperl-gtk2
 * Nov 13 2008 - Thomas Wagner
 - Fix Requires to be SUNWopensslr and SUNWopenssl-libraries
 * Tue Oct 21 2008  - Pradhap Devarajan <pradhap (at) gmail.com>
