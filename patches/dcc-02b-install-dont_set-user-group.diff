@@ -1,0 +1,19 @@
+--- dcc-1.3.80/Makefile.inc.in.orig	Thu Oct 25 16:05:05 2007
++++ dcc-1.3.80/Makefile.inc.in	Thu Jan 17 18:50:40 2008
+@@ -125,9 +125,13 @@
+ SET_MANOWN=
+ SET_DCCOWN=
+ @MAKE_DOT@else
+-SET_BINOWN=-o $(BINOWN) -g $(BINGRP)
+-SET_MANOWN=-o $(MANOWN) -g $(MANGRP)
+-SET_DCCOWN=-o @DCCSUID@ -g $(BINGRP)
++#owner:group is set by SFEdcc.spec
++#SET_BINOWN=-o $(BINOWN) -g $(BINGRP)
++#SET_MANOWN=-o $(MANOWN) -g $(MANGRP)
++#SET_DCCOWN=-o @DCCSUID@ -g $(BINGRP)
++SET_BINOWN= 
++SET_MANOWN=
++SET_DCCOWN=
+ @MAKE_DOT@endif
+ 
+ @MAKE_DOT@ifdef PROG

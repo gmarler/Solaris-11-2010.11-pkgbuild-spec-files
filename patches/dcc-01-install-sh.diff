@@ -1,0 +1,12 @@
+--- dcc-1.3.92/configure.orig	2008-06-09 18:41:00.000000000 +0200
++++ dcc-1.3.92/configure	2008-08-23 15:03:23.848395309 +0200
+@@ -3541,7 +3541,8 @@
+ 	DCCINSTALL=install
+ 	;;
+     *)
+-	DCCINSTALL='$(DEPTH)/autoconf/install-sh -c'
++	#DCCINSTALL='$(DEPTH)/autoconf/install-sh -c'
++	DCCINSTALL='install'
+ 	# some systems do not have UNIX file permissions
+ 	cat >> confdefs.h <<\EOF
+ #define HAVE_PRIVATE_FILES 1

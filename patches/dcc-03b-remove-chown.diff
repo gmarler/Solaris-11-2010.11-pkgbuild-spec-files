@@ -1,0 +1,20 @@
+--- dcc-1.3.92/homedir/Makefile.in.orig	2008-05-29 20:02:36.000000000 +0200
++++ dcc-1.3.92/homedir/Makefile.in	2008-08-23 15:26:06.335849300 +0200
+@@ -76,7 +76,7 @@
+ 		$(HINST) -m 644 $$nm $(HD)/$${nm}@configsuffix@; fi; done
+ 	if test -s $(UPFILE); then\
+ 	    $(HINST) -m 600 $(UPFILE) $(HD)/$(UPFILE);\
+-	    set +e; chown @DCCSUID@ $(HD)/$(UPFILE); fi
++	    set +e; fi
+ 	if test -n '@configsuffix@' || test ! -f $(HD)/ids -a ! -f $(HD)/map\
+ 				 -a ! -f $(HD)/map.txt; then\
+ 	    umask 077; PASSWD=`$(RND)`;\
+@@ -86,7 +86,7 @@
+ 	    sh fix-map -c $(CDCC) -m $(MAP) -h $(HD);\
+ 	    echo '# map.txt is merely the output of `cdcc info`' >$(MAPTXT);\
+ 	    $(CDCC) -qh$(HD) "file $(MAP); info" >>$(MAPTXT);\
+-	    set +e; chown @DCCSUID@ $(MAPTXT) $(MAP) $(IDS);\
++	    set +e;\
+ 	else\
+ 	    sh fix-map -c $(CDCC) -m $(MAP) -h $(HD);\
+ 	fi
