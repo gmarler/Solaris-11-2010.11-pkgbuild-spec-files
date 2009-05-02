@@ -44,13 +44,18 @@ Requires: SFEperl-net-dns
 BuildRequires: SFEperl-libwww-perl
 Requires: SFEperl-libwww-perl
 
+BuildRequires: SFEperl-encode-detect
+Requires: SFEperl-encode-detect
+BuildRequires: SFEperl-mail-spf
+Requires: SFEperl-mail-spf
+
 
 #optional perl modules for improvements/special features
 
 BuildRequires: SUNWopenssl-include
 Requires: SUNWopenssl-libraries
 
-#pkgbuild: Requires: SFEperl-mail-spf-query
+#obsolete pkgbuild: Requires: SFEperl-mail-spf-query
 #pkgbuild: Requires: SFEperl-ip-country
 #we *want* this one
 #pkgbuild: Requires: SFEperl-razor2
@@ -63,7 +68,6 @@ Requires: SUNWopenssl-libraries
 #pkgbuild: Requires: SFEperl-htp-date
 #pkgbuild: Requires: SFEperl-archive-tar
 #pkgbuild: Requires: SFEperl-io-zlib
-#pkgbuild: Requires: SFEperl-encode-detect
 
 #INSTALL file says this is highly recommended:
 #DB_File
@@ -74,12 +78,13 @@ Requires: SUNWopenssl-libraries
 #Mail::DomainKeys
 #Net::SMTP
 #Time::HiRes
-#Encode::Detect
 #Razor2 (If you do not plan to use this plugin, be sure to comment out its loadplugin line in /etc/spamassassin/v310.pre)
-# BuildRequires: SFEperl-mail-spf
-# Requires: SFEperl-mail-spf
 
-
+#from http://advosys.ca/papers/email/53-postfix-filtering.html
+#install MIME::Base64
+#install MIME::QuotedPrint
+#install Net::DNS
+#install DB_File
 
 %ifarch sparc
 %define perl_dir sun4-solaris-64int
@@ -216,6 +221,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sat Mai 02 2009 - Thomas Wagner
+- add (Build)Requires: SFEperl-encode-detect and (Build)Requires: SFEperl-mail-spf
 * Sun Apr 26 2009  - Thomas Wagner
 - add %iclass(renamenew) for /etc/spamassassin/*
 * Sun Apr 19 2009  - Thomas Wagner
