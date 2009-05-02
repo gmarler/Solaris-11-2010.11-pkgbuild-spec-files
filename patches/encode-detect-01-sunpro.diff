@@ -1,5 +1,5 @@
---- Encode-Detect-1.00/Detector.xs.orig	Fri Oct 27 16:48:59 2006
-+++ Encode-Detect-1.00/Detector.xs	Mon Apr  7 21:45:26 2008
+--- Encode-Detect-1.01/Detector.xs.orig	2008-05-27 22:35:11.000000000 +0200
++++ Encode-Detect-1.01/Detector.xs	2009-05-01 03:12:04.636334492 +0200
 @@ -36,6 +36,8 @@
  
  extern "C" {
@@ -8,4 +8,4 @@
 +#include <sys/vnode.h>
  #include "EXTERN.h"
  #include "perl.h"
- #include "XSUB.h"
+ 

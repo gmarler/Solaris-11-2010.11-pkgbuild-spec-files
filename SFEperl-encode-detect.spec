@@ -4,7 +4,8 @@
 # includes module(s): Encode-Detect
 #
 
-%define module_version 1.00
+%define module_version 1.1
+%define module_version_download 1.01
 %define module_name Encode-Detect
 %define module_name_major Encode
 %define module_package_name encode-detect
@@ -15,8 +16,8 @@
 %include Solaris.inc
 Name:                    SFEperl-%{module_package_name}
 Summary:                 %{module_name}-%{module_version} PERL module
-Version:                 %{perl_version}.%{module_version}
-Source:                  http://www.cpan.org/modules/by-module/%{module_name_major}/%{module_name}-%{module_version}.tar.gz
+Version:                 %{perl_version}.%{module_version_download}
+Source:                  http://www.cpan.org/modules/by-module/%{module_name_major}/%{module_name}-%{module_version_download}.tar.gz
 Patch1:	                 encode-detect-01-sunpro.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -34,7 +35,8 @@ BuildRequires:           SFEperl-extutils-cbuilder
 
 %prep
 %setup -q            -c -n %name-%version
-cd %{module_name}-%{module_version}
+cd %{module_name}-%{module_version_download}
+chmod +w Detector.xs
 %patch1 -p1
 
 %build
@@ -42,7 +44,7 @@ cd %{module_name}-%{module_version}
 %else
 export CXX="${CXX} -norunpath"
 %endif
-cd %{module_name}-%{module_version}
+cd %{module_name}-%{module_version_download}
 perl Build.PL \
     --install_path lib=%{_prefix}/perl5/vendor_perl/%{perl_version} \
     --install_path arch=%{_prefix}/perl5/vendor_perl/%{perl_version}/%{perl_dir} \
@@ -58,7 +60,7 @@ perl Build --installdirs vendor --makefile_env_macros 1 build \
 
 %install
 rm -rf $RPM_BUILD_ROOT
-cd %{module_name}-%{module_version}
+cd %{module_name}-%{module_version_download}
 perl Build install
 
 rm -rf $RPM_BUILD_ROOT%{_prefix}/lib
@@ -83,5 +85,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man3/*
 
 %changelog
+* Thr Apr 30 2009 - Thomas Wagner
+- bump to 1.01
+- rework patch1
+- make version number IPS capable
 * Tue Apr 08 2008 - trisk@acm.jhu.edu
 - Initial spec
