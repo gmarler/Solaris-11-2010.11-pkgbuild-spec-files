@@ -28,7 +28,7 @@ index 0117eb9..6f96613 100644
  };
  
 diff --git a/daemon/gdm-display.c b/daemon/gdm-display.c
-index 323d941..30a479f 100644
+index 53f48f9..4370261 100644
 --- a/daemon/gdm-display.c
 +++ b/daemon/gdm-display.c
 @@ -48,12 +48,27 @@ static guint32 display_serial = 1;
@@ -87,7 +87,7 @@ index 323d941..30a479f 100644
          PROP_SLAVE_COMMAND,
  };
  
-@@ -554,10 +577,12 @@ gdm_display_real_prepare (GdmDisplay *display)
+@@ -551,10 +574,12 @@ gdm_display_real_prepare (GdmDisplay *display)
  
          g_assert (display->priv->slave_proxy == NULL);
  
@@ -104,7 +104,7 @@ index 323d941..30a479f 100644
          }
  
          _gdm_display_set_status (display, GDM_DISPLAY_PREPARED);
-@@ -749,6 +774,60 @@ gdm_display_get_id (GdmDisplay         *display,
+@@ -743,6 +768,60 @@ gdm_display_get_id (GdmDisplay         *display,
  }
  
  gboolean
@@ -165,7 +165,7 @@ index 323d941..30a479f 100644
  gdm_display_get_x11_display_name (GdmDisplay   *display,
                                    char        **x11_display,
                                    GError      **error)
-@@ -776,6 +855,34 @@ gdm_display_is_local (GdmDisplay *display,
+@@ -770,6 +849,34 @@ gdm_display_is_local (GdmDisplay *display,
          return TRUE;
  }
  
@@ -200,7 +200,7 @@ index 323d941..30a479f 100644
  static void
  _gdm_display_set_id (GdmDisplay     *display,
                       const char     *id)
-@@ -785,6 +892,43 @@ _gdm_display_set_id (GdmDisplay     *display,
+@@ -779,6 +886,43 @@ _gdm_display_set_id (GdmDisplay     *display,
  }
  
  static void
@@ -244,7 +244,7 @@ index 323d941..30a479f 100644
  _gdm_display_set_seat_id (GdmDisplay     *display,
                            const char     *seat_id)
  {
-@@ -831,6 +975,20 @@ _gdm_display_set_is_local (GdmDisplay     *display,
+@@ -825,6 +969,20 @@ _gdm_display_set_is_local (GdmDisplay     *display,
  }
  
  static void
@@ -265,7 +265,7 @@ index 323d941..30a479f 100644
  _gdm_display_set_slave_command (GdmDisplay     *display,
                                  const char     *command)
  {
-@@ -852,6 +1010,18 @@ gdm_display_set_property (GObject        *object,
+@@ -846,6 +1004,18 @@ gdm_display_set_property (GObject        *object,
          case PROP_ID:
                  _gdm_display_set_id (self, g_value_get_string (value));
                  break;
@@ -284,7 +284,7 @@ index 323d941..30a479f 100644
          case PROP_STATUS:
                  _gdm_display_set_status (self, g_value_get_int (value));
                  break;
-@@ -873,6 +1043,12 @@ gdm_display_set_property (GObject        *object,
+@@ -867,6 +1037,12 @@ gdm_display_set_property (GObject        *object,
          case PROP_IS_LOCAL:
                  _gdm_display_set_is_local (self, g_value_get_boolean (value));
                  break;
@@ -297,7 +297,7 @@ index 323d941..30a479f 100644
          case PROP_SLAVE_COMMAND:
                  _gdm_display_set_slave_command (self, g_value_get_string (value));
                  break;
-@@ -896,6 +1072,18 @@ gdm_display_get_property (GObject        *object,
+@@ -890,6 +1066,18 @@ gdm_display_get_property (GObject        *object,
          case PROP_ID:
                  g_value_set_string (value, self->priv->id);
                  break;
@@ -316,7 +316,7 @@ index 323d941..30a479f 100644
          case PROP_STATUS:
                  g_value_set_int (value, self->priv->status);
                  break;
-@@ -921,6 +1109,12 @@ gdm_display_get_property (GObject        *object,
+@@ -915,6 +1103,12 @@ gdm_display_get_property (GObject        *object,
          case PROP_IS_LOCAL:
                  g_value_set_boolean (value, self->priv->is_local);
                  break;
@@ -329,7 +329,7 @@ index 323d941..30a479f 100644
          case PROP_SLAVE_COMMAND:
                  g_value_set_string (value, self->priv->slave_command);
                  break;
-@@ -1040,6 +1234,36 @@ gdm_display_class_init (GdmDisplayClass *klass)
+@@ -1034,6 +1228,36 @@ gdm_display_class_init (GdmDisplayClass *klass)
                                                                NULL,
                                                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
          g_object_class_install_property (object_class,
@@ -366,7 +366,7 @@ index 323d941..30a479f 100644
                                           PROP_REMOTE_HOSTNAME,
                                           g_param_spec_string ("remote-hostname",
                                                                "remote-hostname",
-@@ -1083,7 +1307,6 @@ gdm_display_class_init (GdmDisplayClass *klass)
+@@ -1077,7 +1301,6 @@ gdm_display_class_init (GdmDisplayClass *klass)
                                                                "authority file",
                                                                NULL,
                                                                G_PARAM_READABLE));
@@ -374,7 +374,7 @@ index 323d941..30a479f 100644
          g_object_class_install_property (object_class,
                                           PROP_IS_LOCAL,
                                           g_param_spec_boolean ("is-local",
-@@ -1091,7 +1314,20 @@ gdm_display_class_init (GdmDisplayClass *klass)
+@@ -1085,7 +1308,20 @@ gdm_display_class_init (GdmDisplayClass *klass)
                                                                 NULL,
                                                                 TRUE,
                                                                 G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
@@ -396,7 +396,7 @@ index 323d941..30a479f 100644
          g_object_class_install_property (object_class,
                                           PROP_SLAVE_COMMAND,
                                           g_param_spec_string ("slave-command",
-@@ -1138,6 +1374,9 @@ gdm_display_finalize (GObject *object)
+@@ -1132,6 +1368,9 @@ gdm_display_finalize (GObject *object)
  
          g_debug ("GdmDisplay: Finalizing display: %s", display->priv->id);
          g_free (display->priv->id);
@@ -407,7 +407,7 @@ index 323d941..30a479f 100644
          g_free (display->priv->remote_hostname);
          g_free (display->priv->x11_display_name);
 diff --git a/daemon/gdm-display.h b/daemon/gdm-display.h
-index 2914c81..7dae801 100644
+index 607ea1d..5df9c65 100644
 --- a/daemon/gdm-display.h
 +++ b/daemon/gdm-display.h
 @@ -102,6 +102,18 @@ gboolean            gdm_display_unmanage                       (GdmDisplay *disp
@@ -443,7 +443,7 @@ index 2914c81..7dae801 100644
                                                                  gboolean   *enabled,
                                                                  char      **username,
 diff --git a/daemon/gdm-display.xml b/daemon/gdm-display.xml
-index e8a2369..78a4a01 100644
+index a92e37f..a7e1f5a 100644
 --- a/daemon/gdm-display.xml
 +++ b/daemon/gdm-display.xml
 @@ -4,11 +4,23 @@
@@ -1357,7 +1357,7 @@ index 9adcb09..2af3a46 100644
          return TRUE;
  }
 diff --git a/daemon/gdm-server.c b/daemon/gdm-server.c
-index 0dd1afe..7cdbc41 100644
+index d6925b8..e1b655c 100644
 --- a/daemon/gdm-server.c
 +++ b/daemon/gdm-server.c
 @@ -42,6 +42,8 @@
@@ -1379,7 +1379,7 @@ index 0dd1afe..7cdbc41 100644
  /* These are the servstat values, also used as server
   * process exit codes */
  #define SERVER_TIMEOUT 2        /* Server didn't start */
-@@ -65,42 +70,35 @@ extern char **environ;
+@@ -65,42 +70,37 @@ extern char **environ;
  
  struct GdmServerPrivate
  {
@@ -1392,6 +1392,7 @@ index 0dd1afe..7cdbc41 100644
 -        char    *session_args;
 -
          char    *log_dir;
++        gboolean disable_tcp;
 +
 +        /* cached display values */
 +        char    *display_id;
@@ -1427,13 +1428,13 @@ index 0dd1afe..7cdbc41 100644
          PROP_USER_NAME,
 -        PROP_SESSION_ARGS,
          PROP_LOG_DIR,
--        PROP_DISABLE_TCP,
+         PROP_DISABLE_TCP,
 +        PROP_DISPLAY_ID,
 +        PROP_DISPLAY_DEVICE,
  };
  
  enum {
-@@ -255,72 +253,48 @@ connect_to_parent (GdmServer *server)
+@@ -255,72 +255,48 @@ connect_to_parent (GdmServer *server)
  
  static gboolean
  gdm_server_resolve_command_line (GdmServer  *server,
@@ -1491,7 +1492,12 @@ index 0dd1afe..7cdbc41 100644
          if (server->priv->auth_file != NULL) {
 -                argv[len++] = g_strdup ("-auth");
 -                argv[len++] = g_strdup (server->priv->auth_file);
--        }
++                tmp = g_strdup (command);
++                g_free (command);
++                command = g_strdup_printf ("%s -auth %s ",
++                                           tmp, server->priv->auth_file);
++                g_free (tmp);
+         }
 -
 -        if (server->priv->chosen_hostname) {
 -                /* run just one session */
@@ -1504,12 +1510,7 @@ index 0dd1afe..7cdbc41 100644
 -        if (server->priv->disable_tcp && ! query_in_arglist) {
 -                argv[len++] = g_strdup ("-nolisten");
 -                argv[len++] = g_strdup ("tcp");
-+                tmp = g_strdup (command);
-+                g_free (command);
-+                command = g_strdup_printf ("%s -auth %s ",
-+                                           tmp, server->priv->auth_file);
-+                g_free (tmp);
-         }
+-        }
 -
 -        if (vtarg != NULL && ! gotvtarg) {
 -                argv[len++] = g_strdup (vtarg);
@@ -1538,7 +1539,7 @@ index 0dd1afe..7cdbc41 100644
  }
  
  static void
-@@ -467,7 +441,14 @@ server_child_setup (GdmServer *server)
+@@ -467,7 +443,14 @@ server_child_setup (GdmServer *server)
          sigemptyset (&mask);
          sigprocmask (SIG_SETMASK, &mask, NULL);
  
@@ -1554,7 +1555,7 @@ index 0dd1afe..7cdbc41 100644
                  if (setpriority (PRIO_PROCESS, 0, server->priv->priority)) {
                          g_warning (_("%s: Server priority couldn't be set to %d: %s"),
                                     "gdm_server_spawn",
-@@ -546,30 +527,6 @@ get_server_environment (GdmServer *server)
+@@ -546,30 +529,6 @@ get_server_environment (GdmServer *server)
  }
  
  static void
@@ -1585,7 +1586,7 @@ index 0dd1afe..7cdbc41 100644
  server_child_watch (GPid       pid,
                      int        status,
                      GdmServer *server)
-@@ -596,8 +553,7 @@ server_child_watch (GPid       pid,
+@@ -596,8 +555,7 @@ server_child_watch (GPid       pid,
  }
  
  static gboolean
@@ -1595,7 +1596,7 @@ index 0dd1afe..7cdbc41 100644
  {
          int              argc;
          gchar          **argv = NULL;
-@@ -612,14 +568,9 @@ gdm_server_spawn (GdmServer  *server,
+@@ -612,14 +570,9 @@ gdm_server_spawn (GdmServer  *server,
          argv = NULL;
          argc = 0;
          gdm_server_resolve_command_line (server,
@@ -1610,7 +1611,7 @@ index 0dd1afe..7cdbc41 100644
          if (argv[0] == NULL) {
                  g_warning (_("%s: Empty server command for display %s"),
                             "gdm_server_spawn",
-@@ -698,7 +649,7 @@ gdm_server_start (GdmServer *server)
+@@ -698,7 +651,7 @@ gdm_server_start (GdmServer *server)
          gboolean res;
  
          /* fork X server process */
@@ -1619,25 +1620,25 @@ index 0dd1afe..7cdbc41 100644
  
          return res;
  }
-@@ -755,21 +706,12 @@ gdm_server_stop (GdmServer *server)
+@@ -755,21 +708,12 @@ gdm_server_stop (GdmServer *server)
          return TRUE;
  }
  
 -
- static void
+-static void
 -_gdm_server_set_display_name (GdmServer  *server,
 -                              const char *name)
-+_gdm_server_set_display_id (GdmServer  *server,
-+                            const char *id)
- {
+-{
 -        g_free (server->priv->display_name);
 -        server->priv->display_name = g_strdup (name);
 -}
 -
--static void
+ static void
 -_gdm_server_set_auth_file (GdmServer  *server,
 -                           const char *auth_file)
--{
++_gdm_server_set_display_id (GdmServer  *server,
++                            const char *id)
+ {
 -        g_free (server->priv->auth_file);
 -        server->priv->auth_file = g_strdup (auth_file);
 +        g_free (server->priv->display_id);
@@ -1645,21 +1646,7 @@ index 0dd1afe..7cdbc41 100644
  }
  
  static void
-@@ -781,13 +723,6 @@ _gdm_server_set_user_name (GdmServer  *server,
- }
- 
- static void
--_gdm_server_set_disable_tcp (GdmServer  *server,
--                             gboolean    disabled)
--{
--        server->priv->disable_tcp = disabled;
--}
--
--static void
- gdm_server_set_property (GObject      *object,
-                          guint         prop_id,
-                          const GValue *value,
-@@ -798,18 +733,12 @@ gdm_server_set_property (GObject      *object,
+@@ -798,11 +742,8 @@ gdm_server_set_property (GObject      *object,
          self = GDM_SERVER (object);
  
          switch (prop_id) {
@@ -1673,14 +1660,7 @@ index 0dd1afe..7cdbc41 100644
                  break;
          case PROP_USER_NAME:
                  _gdm_server_set_user_name (self, g_value_get_string (value));
-                 break;
--        case PROP_DISABLE_TCP:
--                _gdm_server_set_disable_tcp (self, g_value_get_boolean (value));
--                break;
-         default:
-                 G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-                 break;
-@@ -827,22 +756,16 @@ gdm_server_get_property (GObject    *object,
+@@ -827,16 +768,13 @@ gdm_server_get_property (GObject    *object,
          self = GDM_SERVER (object);
  
          switch (prop_id) {
@@ -1699,13 +1679,7 @@ index 0dd1afe..7cdbc41 100644
          case PROP_USER_NAME:
                  g_value_set_string (value, self->priv->user_name);
                  break;
--        case PROP_DISABLE_TCP:
--                g_value_set_boolean (value, self->priv->disable_tcp);
--                break;
-         default:
-                 G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-                 break;
-@@ -908,10 +831,10 @@ gdm_server_class_init (GdmServerClass *klass)
+@@ -908,10 +846,10 @@ gdm_server_class_init (GdmServerClass *klass)
                                G_TYPE_INT);
  
          g_object_class_install_property (object_class,
@@ -1720,7 +1694,7 @@ index 0dd1afe..7cdbc41 100644
                                                                NULL,
                                                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
          g_object_class_install_property (object_class,
-@@ -922,41 +845,18 @@ gdm_server_class_init (GdmServerClass *klass)
+@@ -922,14 +860,6 @@ gdm_server_class_init (GdmServerClass *klass)
                                                                NULL,
                                                                G_PARAM_READABLE));
          g_object_class_install_property (object_class,
@@ -1735,17 +1709,11 @@ index 0dd1afe..7cdbc41 100644
                                           PROP_USER_NAME,
                                           g_param_spec_string ("user-name",
                                                                "user name",
-                                                               "user name",
-                                                               NULL,
-                                                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
--        g_object_class_install_property (object_class,
--                                         PROP_DISABLE_TCP,
--                                         g_param_spec_boolean ("disable-tcp",
--                                                               NULL,
--                                                               NULL,
--                                                               TRUE,
--                                                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
--
+@@ -944,19 +874,13 @@ gdm_server_class_init (GdmServerClass *klass)
+                                                                TRUE,
+                                                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+ 
++
  }
  
  static void
@@ -1762,7 +1730,7 @@ index 0dd1afe..7cdbc41 100644
  }
  
  static void
-@@ -975,19 +875,203 @@ gdm_server_finalize (GObject *object)
+@@ -975,19 +899,203 @@ gdm_server_finalize (GObject *object)
  
          gdm_server_stop (server);
  
@@ -2080,7 +2048,7 @@ index 3a2623c..fa44a98 100644
          return TRUE;
  }
 diff --git a/daemon/gdm-slave.c b/daemon/gdm-slave.c
-index 07c63c1..b40e324 100644
+index 477b42d..13864b7 100644
 --- a/daemon/gdm-slave.c
 +++ b/daemon/gdm-slave.c
 @@ -82,6 +82,7 @@ struct GdmSlavePrivate
@@ -2091,7 +2059,7 @@ index 07c63c1..b40e324 100644
          gboolean         display_is_parented;
          char            *display_seat_id;
          char            *display_x11_authority_file;
-@@ -99,6 +100,7 @@ enum {
+@@ -101,6 +102,7 @@ enum {
          PROP_DISPLAY_NUMBER,
          PROP_DISPLAY_HOSTNAME,
          PROP_DISPLAY_IS_LOCAL,
@@ -2099,7 +2067,7 @@ index 07c63c1..b40e324 100644
          PROP_DISPLAY_SEAT_ID,
          PROP_DISPLAY_X11_AUTHORITY_FILE
  };
-@@ -513,6 +515,24 @@ gdm_slave_real_start (GdmSlave *slave)
+@@ -548,6 +550,24 @@ gdm_slave_real_start (GdmSlave *slave)
  
          error = NULL;
          res = dbus_g_proxy_call (slave->priv->display_proxy,
@@ -2124,7 +2092,7 @@ index 07c63c1..b40e324 100644
                                   "GetX11DisplayName",
                                   &error,
                                   G_TYPE_INVALID,
-@@ -1164,6 +1184,13 @@ _gdm_slave_set_display_is_local (GdmSlave   *slave,
+@@ -1218,6 +1238,13 @@ _gdm_slave_set_display_is_local (GdmSlave   *slave,
  }
  
  static void
@@ -2138,7 +2106,7 @@ index 07c63c1..b40e324 100644
  gdm_slave_set_property (GObject      *object,
                          guint         prop_id,
                          const GValue *value,
-@@ -1195,6 +1222,9 @@ gdm_slave_set_property (GObject      *object,
+@@ -1249,6 +1276,9 @@ gdm_slave_set_property (GObject      *object,
          case PROP_DISPLAY_IS_LOCAL:
                  _gdm_slave_set_display_is_local (self, g_value_get_boolean (value));
                  break;
@@ -2148,7 +2116,7 @@ index 07c63c1..b40e324 100644
          default:
                  G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
                  break;
-@@ -1233,6 +1263,9 @@ gdm_slave_get_property (GObject    *object,
+@@ -1287,6 +1317,9 @@ gdm_slave_get_property (GObject    *object,
          case PROP_DISPLAY_IS_LOCAL:
                  g_value_set_boolean (value, self->priv->display_is_local);
                  break;
@@ -2158,7 +2126,7 @@ index 07c63c1..b40e324 100644
          default:
                  G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
                  break;
-@@ -1357,6 +1390,13 @@ gdm_slave_class_init (GdmSlaveClass *klass)
+@@ -1411,6 +1444,13 @@ gdm_slave_class_init (GdmSlaveClass *klass)
                                                                 "display is local",
                                                                 TRUE,
                                                                 G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
@@ -2185,7 +2153,7 @@ index a747ee3..9e5874a 100644
          g_free (x11_display);
  
 diff --git a/daemon/gdm-welcome-session.c b/daemon/gdm-welcome-session.c
-index 4f5b4e1..1d773e1 100644
+index b58e855..14558c1 100644
 --- a/daemon/gdm-welcome-session.c
 +++ b/daemon/gdm-welcome-session.c
 @@ -65,10 +65,12 @@ struct GdmWelcomeSessionPrivate
