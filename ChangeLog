@@ -1,3 +1,13 @@
+2009-05-05  Halton Huo <halton.huo@sun.com>
+
+	* SFEanjuta.spec: Bump to 2.27.1.0
+	* base-specs/gdl.spec: Bump to 2.27.1
+	* base-specs/libgda.spec: Bump to 4.1.0
+	* patches/anjuta-01-inline.diff: Remove upstreamed patch
+	* patches/anjuta-01-void-return.diff: Added to fix bugzilla #581416
+	* patches/anjuta-02-solaris-ld.diff: Added to fix bugzilla #581421
+	* patches/libgda-01-zero-array.diff: Added to fix bugzilla #581408
+
 2009-05-04  Halton Huo <halton.huo@sun.com>
 
 	* patches/gdm-04-dynamic-display.diff: rework to add property

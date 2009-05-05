@@ -11,13 +11,13 @@
 Name:		gdl
 License:	GPL
 Group:		Development/Libraries
-Version:	2.25.92
+Version:	2.27.1
 Release:	1
 Distribution:   Java Desktop System
 Vendor:         Sun Microsystems, Inc.
 URL:		http://www.gnome.org
 Summary:	Components and library for GNOME development tools.
-Source:		http://download.gnome.org/sources/%{name}/2.25/%{name}-%{version}.tar.bz2
+Source:		http://download.gnome.org/sources/%{name}/2.27/%{name}-%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-root
 
 Requires: 	gtk2 >= 2.4.0
@@ -109,6 +109,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_prefix}/lib/pkgconfig/*
 
 %changelog
+* Tue May 05 2009 - halton.huo@sun.com
+- Bump to 2.27.1
 * Tue Mar 03 2009 - halton.huo@sun.com
 - Bump to 2.25.92
 * Fri Jan 16 2009 - halton.huo@sun.com

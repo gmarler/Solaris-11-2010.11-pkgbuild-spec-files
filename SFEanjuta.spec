@@ -8,19 +8,17 @@
 
 %include Solaris.inc
 
-# Fixme:
-# As root, ln -s /usr/lib/libdb.so.1 /usr/lib/libdb.so, it is build requirement;
-# or, depend on package SUNWevolution-bdb-devel, which is in jds spec-files/closed
-# now, use second way.
 Name:           SFEanjuta
-Version:        2.25.903.0
+Version:        2.27.1.0
 Summary:        GNOME IDE for C and C++
 Group:          Development/Tools
 License:        GPL
 URL:            http://anjuta.org/
-Source:         http://download.gnome.org/sources/anjuta/2.25/anjuta-%{version}.tar.bz2
-# date:2009-02-03 owner:halton type:bug bugzilla:573858
-Patch1:         anjuta-01-inline.diff
+Source:         http://download.gnome.org/sources/anjuta/2.27/anjuta-%{version}.tar.bz2
+# date:2009-05-05 owner:halton type:bug bugzilla:581416
+Patch1:         anjuta-01-void-return.diff
+# date:2009-05-05 owner:halton type:bug bugzilla:581421
+Patch2:         anjuta-02-solaris-ld.diff
 
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
@@ -53,7 +51,6 @@ BuildRequires: SFEgdl-devel
 BuildRequires: SFElibgda-devel
 BuildRequires: SFEautogen-devel
 BuildRequires: SUNWgraphviz-devel
-BuildRequires: SUNWevolution-bdb-devel
 
 
 %description
@@ -91,6 +88,7 @@ Requires:                %{name}
 %prep
 %setup -q -n anjuta-%{version}
 %patch1 -p1
+%patch2 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -275,6 +273,11 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 %endif
 
 %changelog
+* Tue May 05 2009 - halton.huo@sun.com
+- Bump to 2.27.1.0
+- Remove upstreamed patch inline.diff
+- Add patch void-return.diff to fix bugzilla #581416
+- Add patch solaris-ld.diff to fix bugzilla #581421
 * Tue Mar 03 2009 - halton.huo@sun.com
 - Bump to 2.25.903.0
 - Add patch inline.diff to fix bugzilla #573858
