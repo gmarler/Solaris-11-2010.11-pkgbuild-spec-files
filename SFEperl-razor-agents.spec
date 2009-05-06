@@ -69,7 +69,7 @@ rm -r $RPM_BUILD_ROOT/%{_prefix}/lib
 #remove: perllocal.pod
 rm -r $RPM_BUILD_ROOT/%{_prefix}/perl5/vendor_perl/%{perl_version}/%{perl_dir}/%{perl_dir}
 #remove: .packlist
-rm $RPM_BUILD_ROOT/%{_prefix}/perl5/vendor_perl/%{perl_version}/%{perl_dir}/%{perl_dir}/auto/%{module_package_name}
+rm -r $RPM_BUILD_ROOT/%{_prefix}/perl5/vendor_perl/%{perl_version}/%{perl_dir}/auto/%{module_package_name}
 
 
 %{?pkgbuild_postprocess: %pkgbuild_postprocess -v -c "%{version}:%{jds_version}:%{name}:$RPM_ARCH:%(date +%%Y-%%m-%%d):%{support_level}" $RPM_BUILD_ROOT}
