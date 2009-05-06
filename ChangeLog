@@ -1,3 +1,7 @@
+2009-05-02  Thomas Wagner  <tom68@users.sourceforge.net>
+ 
+        * SFEperl-razor.spec: *new* Vipul's Razor (distributed, collaborative, spam detection and filtering network) - read wiki in a few days for instructions and read the license
+
 2009-05-05  Halton Huo <halton.huo@sun.com>
 
 	* SFEanjuta.spec: Bump to 2.27.1.0
@@ -14,6 +18,7 @@
 	  disable-tcp back to GdmServer
 
 2009-05-02  Thomas Wagner  <tom68@users.sourceforge.net>
+
 	* encumbered/SFEnntpcached.spec: add nntpcached.xml SMF manifest
 	  for auto-starting
 	* SFEbdb.spec: bump version to 4.7.25, use usr-gnu.inc (Berkeley DB
