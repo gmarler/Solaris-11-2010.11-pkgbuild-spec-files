@@ -46,10 +46,7 @@ python setup.py build
 rm -rf $RPM_BUILD_ROOT
 python setup.py install --root=%{buildroot}
 
-desktop-file-install --vendor="" \
-  --remove-category="Application" \
-  --remove-category="AudioVideo" \
-  --add-category="X-MandrivaLinux-Multimedia-Sound" \
+desktop-file-install \
   --dir %{buildroot}%{_datadir}/applications %{buildroot}%{_datadir}/applications/*
 
 # move to vendor-packages
