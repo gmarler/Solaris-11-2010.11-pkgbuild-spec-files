@@ -29,7 +29,6 @@ BuildRequires: SFEogg-vorbis-devel
 BuildRequires: SUNWogg-vorbis-devel
 Requires: SUNWogg-vorbis
 Requires: SUNWflac
-Requires: SUNWflac
 Requires: SUNWlibms
 BuildRequires: SUNWaudh
 
@@ -75,19 +74,27 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/sndfile-info
 %{_bindir}/sndfile-play
 %{_bindir}/sndfile-regtest
+%{_bindir}/sndfile-jackplay
+%{_bindir}/sndfile-cmp
+%{_bindir}/sndfile-metadata-set
+%{_bindir}/sndfile-metadata-get
 %dir %attr (0755, root, bin) %{_libdir}
 %{_libdir}/lib*.so*
 %dir %attr (0755, root, sys) %{_datadir}
 %dir %attr (0755, root, bin) %{_mandir}
 %dir %attr (0755, root, bin) %{_mandir}/man1
 %{_mandir}/man1/*
-%{_datadir}/octave
+#%{_datadir}/octave
 %ifarch amd64 sparcv9
 %dir %attr (0755, root, bin) %{_bindir}/%{_arch64}
 %{_bindir}/%{_arch64}/sndfile-convert
 %{_bindir}/%{_arch64}/sndfile-info
 %{_bindir}/%{_arch64}/sndfile-play
 %{_bindir}/%{_arch64}/sndfile-regtest
+%{_bindir}/%{_arch64}/sndfile-jackplay
+%{_bindir}/%{_arch64}/sndfile-cmp
+%{_bindir}/%{_arch64}/sndfile-metadata-set
+%{_bindir}/%{_arch64}/sndfile-metadata-get
 %dir %attr (0755, root, bin) %{_libdir}/%{_arch64}
 %{_libdir}/%{_arch64}/lib*.so*
 %endif
@@ -109,6 +116,13 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Sat May 09 2009 - Thomas Wagner
+- submitting changes suggested by Srirama Sharma:
+- add log note about removal of obsoleted libsndfile-01-flac-1.1.3.diff (removal on behalf Srirama Sharma)
+- add libsndfile-01-common.diff (new) to fix feature with SUNSPRO compiler detection (add patch on behalf Srirama Sharma)
+* Wed Apr 29 2009 - Srirama Sharma
+- Fix files section to make 1.0.19 build without problems.
+- Remove duplicate Requires: SUNWflac entry
 * Tue Mar 03 2009 - Thomas Wagner
 - bump to 1.0.19  in base-specs/libsndfile.spec
 * Sat Aug 16 2008 - nonsea@users.sourceforge.net

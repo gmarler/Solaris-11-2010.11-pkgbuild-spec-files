@@ -10,7 +10,7 @@ Name:		libsndfile
 Summary:	libsndfile  - a library of C routines for reading and writing files containing sampled audio data
 Version:	1.0.19
 Source:		%{src_url}/%{src_name}-%{version}.tar.gz
-Patch1:		libsndfile-01-flac-1.1.3.diff
+Patch1:		libsndfile-01-common.diff
 Patch2:		libsndfile-02-cpp_test.diff
 Patch3:		libsndfile-03-endian.diff
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
@@ -55,6 +55,13 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/lib*a
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Sat May 09 2009 - Thomas Wagner
+- submitting changes suggested by Srirama Sharma:
+- add log note about removal of obsoleted libsndfile-01-flac-1.1.3.diff (removal on behalf Srirama Sharma)
+- add libsndfile-01-common.diff (new) to fix feature with SUNSPRO compiler detection (add patch on behalf Srirama Sharma)
+* Wed Apr 29 2009 - Srirama Sharma
+- Fix files section to make 1.0.19 build without problems.
+- Remove duplicate Requires: SUNWflac entry
 * Tue Mar 03 2009 - Thomas Wagner
 - bump to 1.0.19
 * Tue Oct 16 2007 - laca@sun.com
