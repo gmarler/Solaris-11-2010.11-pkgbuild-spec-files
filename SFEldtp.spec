@@ -8,10 +8,10 @@
 
 Name:          SFEldtp
 Summary:       Linux Desktop Testing Project
-Version:       1.5.1
+Version:       1.6.0
 SUNW_BaseDir:  %{_basedir}
 BuildRoot:     %{_tmppath}/%{name}-%{version}-build
-Source:        http://download.freedesktop.org/ldtp/1.x/1.5.x/ldtp-%{version}.tar.gz
+Source:        http://download.freedesktop.org/ldtp/1.x/1.6.x/ldtp-%{version}.tar.gz
 URL:           http://ldtp.freedesktop.org
 %include default-depend.inc
 Requires: SUNWPython
