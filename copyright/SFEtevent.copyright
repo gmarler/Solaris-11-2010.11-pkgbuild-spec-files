@@ -1,0 +1,19 @@
+Copyright 2008 Sun Microsystems, Inc.  All rights reserved.
+Use is subject to license terms.
+
+For the avoidance of doubt, except that if any license choice other
+than GPL or LGPL is available it will apply instead, Sun elects to
+use only the General Public License version 2 (GPLv2) at this time
+for any software where a choice of GPL license versions is made
+available with the language indicating that GPLv2 or any later
+version may be used, or where a choice of which version of the GPL
+is applied is otherwise unspecified.
+
+--------------------------------------------------------------------
+
+Licensing and copyright information for %{name}:
+
+ License: GNU General Public License Version 3 or later
+ 
+ The sources of tevent-%{tevent.version} were downloaded
+ from %{tevent.SOURCE0.url}

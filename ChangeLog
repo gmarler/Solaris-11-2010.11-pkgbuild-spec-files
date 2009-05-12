@@ -1,3 +1,14 @@
+2009-05-12  Wang Xin  <jedy.wang@sun.com>
+
+	Add copyright files.
+
+	* copyright/SFEevolution-mapi.copyright:
+	* copyright/SFElibmapi.copyright:
+	* copyright/SFEsamba4.copyright:
+	* copyright/SFEtalloc.copyright:
+	* copyright/SFEtdb.copyright:
+	* copyright/SFEtevent.copyright:
+
 2009-05-11  Tim Miao <Tim.Miao@Sun.COM>
 
 	* SFEldtp.spec: Upgrade ldtp version to 1.6.0
