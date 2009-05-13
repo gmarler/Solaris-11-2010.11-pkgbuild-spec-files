@@ -3,7 +3,7 @@
 #
 # includes module(s): jokosher
 #
-%define pythonver 2.4
+%define pythonver 2.6
 
 %include Solaris.inc
 
@@ -40,11 +40,11 @@ Requires:                %{name}
 %setup -q -n jokosher-%version
 
 %build
-python setup.py build
+python%{pythonver} setup.py build
 
 %install
 rm -rf $RPM_BUILD_ROOT
-python setup.py install --root=%{buildroot}
+python%{pythonver} setup.py install --root=%{buildroot}
 
 desktop-file-install \
   --dir %{buildroot}%{_datadir}/applications %{buildroot}%{_datadir}/applications/*
@@ -97,6 +97,7 @@ test -x $BASEDIR/lib/postrun || exit 0
 
 %dir %attr (0755, root, bin) %{_libdir}
 %{_libdir}/python%{pythonver}/vendor-packages/Jokosher
+%{_libdir}/python%{pythonver}/vendor-packages/jokosher*egg-info
 
 %dir %attr (0755, root, sys) %{_datadir}
 %dir %attr (0755, root, other) %{_datadir}/applications
@@ -123,6 +124,8 @@ test -x $BASEDIR/lib/postrun || exit 0
 %endif
 
 %changelog
+* Tue May 12 2009 - brian.cameron@sun.com
+- Now build with Python 2.6.
 * Thu Mar 19 2009 - brian.cameron@sun.com
 - Bump to 0.11.1.
 * Sun Mar 01 2009 - brian.cameron@sun.com

@@ -21,7 +21,7 @@ BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %setup -q -n gnonlin-%version
 
 %build
-./configure --prefix=%{_prefix}
+./configure --prefix=%{_prefix} --enable-gtk-doc
 make
 
 %install
@@ -41,9 +41,13 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, bin) %{_libdir}
 %dir %attr (0755, root, bin) %{_libdir}/gstreamer-%{majmin}
 %{_libdir}/gstreamer-%{majmin}/libgnl.so
+%dir %attr (0755, root, sys) %{_datadir}
+%{_datadir}/gtk-doc
 
 %changelog
-* Sun Mar 01 2009 - Brian.Cameron  <brian.cameron@sun.com>
+* Tue May 12 2009 - Brian Cameron  <brian.cameron@sun.com>
+- Now install gtk-docs.
+* Sun Mar 01 2009 - Brian Cameron  <brian.cameron@sun.com>
 - Bump to 0.10.10.
 * Wed Aug 15 2007 - Brian Cameron  <brian.cameron@sun.com>
 - Bump to 0.10.9.
