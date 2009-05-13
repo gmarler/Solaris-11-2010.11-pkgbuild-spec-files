@@ -13,7 +13,14 @@ Patch1:                  gnome-zeitgeist-01-makefile.diff
 Patch2:                  gnome-zeitgeist-02-python.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
+# SFEbzr is needed since there isn't a release yet, and the spec-file
+# pulls the data directly from bzr.
 BuildRequires:           SFEbzr
+BuildRequires:           SUNWdbus-python26
+BuildRequires:           SUNWgnome-python26-libs-devel
+Requires:                SUNWdbus-python26
+Requires:                SUNWgnome-python26-libs
+
 %include default-depend.inc
 
 %prep
