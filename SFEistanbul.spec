@@ -43,6 +43,7 @@ Requires: SFEistanbul
 
 %build
 export PYTHON=/usr/bin/python%{pythonver}
+export PKG_CONFIG_PATH=/usr/lib/python2.4/pkgconfig
 ./configure --prefix=%{_prefix} \
             --sysconfdir=%{_sysconfdir} \
             --libdir=%{_libdir} \
@@ -112,5 +113,11 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 
 
 %changelog
+* Wed May 13 2009 - brian.cameron@sun.com
+- Set PKG_CONFIG_PATH to point to the Python 2.4 libraries.  Otherwise it
+  fails to configure.  Probably could use Python 2.6, but would need to make
+  python-xlib install as Python 2.6 and also would need to modify the 
+  istanbul common/as-python.m4 file to find python 2.6, which it does not
+  currently.
 * Tue Feb 24 2009 - brian.cameron@sun.com
 - Initial 0.2.2 version
