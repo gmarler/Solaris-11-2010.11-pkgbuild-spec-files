@@ -12,6 +12,10 @@ Version:                 0.10.10
 Source:                  http://gstreamer.freedesktop.org/src/gnonlin/gnonlin-%{version}.tar.bz2
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
+Requires:                SUNWglib2
+Requires:                SUNWgnome-media
+BuildRequires:           SUNWglib2-devel
+BuildRequires:           SUNWgnome-media-devel
 
 %define         majmin          0.10
 

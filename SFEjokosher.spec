@@ -14,13 +14,19 @@ URL:		http://jokosher.org
 Source0:	http://launchpad.net/jokosher/0.11/%{version}/+download/jokosher-%{version}.tar.gz
 SUNW_BaseDir:   %{_basedir}
 BuildRoot:      %{_tmppath}/jokosher-%{version}-build
-Requires:	SUNWgnome-python-libs
-Requires:	SUNWdbus-python24
+Requires:       SUNWPython
+Requires:	SUNWdbus-python26
 Requires:	SUNWgnome-media
-Requires:	SUNWgst-python
+Requires:	SUNWgnome-python26-libs
+Requires:	SUNWgst-python26
 Requires:	SFEgnonlin
-BuildRequires:	SUNWPython-devel >= %{pythonver}
-BuildRequires:	SUNWgst-python
+Requires:	SUNWpython26-setuptools
+BuildRequires:	SUNWPython26-devel
+BUildRequires:	SUNWdbus-python26-devel
+BuildRequires:	SUNWgnome-media-devel
+BuildRequires:	SUNWgnome-python26-libs-devel
+BuildRequires:	SUNWgst-python26-devel
+BuildRequires:  SUNWpython26-setuptools
 BuildRequires:	SFEgnonlin
 
 %include default-depend.inc
