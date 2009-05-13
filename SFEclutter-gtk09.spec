@@ -3,65 +3,47 @@
 #
 # includes module(s): clutter-gtk
 #
+# Copyright 2008 Sun Microsystems, Inc.
+# This file and all modifications and additions to the pristine
+# package are under the same license as the package itself.
+#
 
 %include Solaris.inc
+%use cluttergtk = clutter-gtk9.spec
+
 Name:                    SFEclutter-gtk09
-Summary:                 GNOME JavaScript bindings
-Version:                 0.9
-# Patch taken from here:
-# http://bugzilla.o-hand.com/show_bug.cgi?id=1490
-Patch1:                  clutter-gtk9-01-introspection.diff
+Summary:                 clutter-gtk - GTK+ integration library for clutter
+Version:                 %{cluttergtk.version}
+URL:                     http://www.clutter-project.org/
 SUNW_BaseDir:            %{_basedir}
-Requires: SUNWgnome-base-libs
-Requires: SFEclutter09
-BuildRequires: SUNWgnome-base-libs-devel
-BuildRequires: SFEclutter09-devel
-%include default-depend.inc
 
 %ifnarch sparc
 #packages are only for x86
 
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
-Requires: SUNWgnome-base-libs
 Requires: SFEclutter09
-BuildRequires: SUNWgnome-base-libs-devel
 
 %package devel
 Summary:                 %{summary} - developer files
 SUNW_BaseDir:            %{_basedir}
 %include default-depend.inc
 Requires: %name
-Requires: SUNWgnome-base-libs-devel
 Requires: SFEclutter09-devel
 
 %prep
-mkdir -p clutter-gtk-%version
-cd clutter-gtk-%version
-rm -fR clutter-gtk
-git-clone git://git.clutter-project.org/clutter-gtk
-cd clutter-gtk
-%patch1 -p1
+rm -rf %name-%version
+mkdir %name-%version
+%cluttergtk.prep -d %name-%version
 
 %build
-cd clutter-gtk-%version
-cd clutter-gtk
-./autogen.sh --prefix=%{_prefix} \
-            --libexecdir=%{_libexecdir}      \
-            --sysconfdir=%{_sysconfdir}      \
-            --disable-static
-make
+export CFLAGS="%optflags"
+export LDFLAGS="%_ldflags"
+%cluttergtk.build -d %name-%version
 
 %install
-rm -rf $RPM_BUILD_ROOT
-cd clutter-gtk-%version
-cd clutter-gtk
-make install DESTDIR=$RPM_BUILD_ROOT
-
-find $RPM_BUILD_ROOT/%{_libdir} -type f -name "*.a" -exec rm -f {} ';'
-find $RPM_BUILD_ROOT/%{_libdir} -type f -name "*.la" -exec rm -f {} ';'
-
-%{?pkgbuild_postprocess: %pkgbuild_postprocess -v -c "%{version}:%{jds_version}:%{name}:$RPM_ARCH:%(date +%%Y-%%m-%%d):%{support_level}" $RPM_BUILD_ROOT}
+%cluttergtk.install -d %name-%version
+rm $RPM_BUILD_ROOT%{_libdir}/lib*.la
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -84,5 +66,9 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
-* Sat Apr 04 2009 - Brian.Cameron  <brian.cameron@sun.com>
-- Created.
+* Thu Mar 26 2009  Chris.wang@sun.com
+- Correct copyright file in file section
+* Fri Feb 20 2009  chris.wang@sun.com
+- Add manpage
+* Tue Jul  1 2008  chris.wang@sun.com 
+- Initial build.

@@ -1,5 +1,10 @@
 2009-05-12  Brian Cameron  <brian.cameron@sun.com>
 
+	* SFEclutter-gtk09.spec, base-specs/clutter-gtk9.spec:  Build from
+	  the actual clutter-gtk 0.9.0 tarball rather than pulling from git.
+
+2009-05-12  Brian Cameron  <brian.cameron@sun.com>
+
 	* SFEgnome-zeitgeist.spec,
 	  patches/gnome-zeitgeist-01-makefile.diff,
 	  patches/gnome-zeitgeist-02-python.diff: Add spec-file to build
