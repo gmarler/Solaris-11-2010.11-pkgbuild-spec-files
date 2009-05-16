@@ -140,7 +140,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-, root, bin)
-%doc README ChangeLog CREDITS COPYING INSTALL NEWS AUTHORS TODO ABOUT-NLS
+%doc README ChangeLog INSTALL NEWS TODO ABOUT-NLS.LPRng CHANGES CONTRIBUTORS COPYRIGHT KERBEROS_configuration LICENSE MIT_configure README.SSL.SECURITY STANDARD_configuration 
 %dir %attr (0755, root, bin) %{_bindir}
 %{_bindir}/*
 %dir %attr (0755, root, bin) %{_sbindir}
@@ -167,6 +167,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sat May 16 2009 - Thomas Wagner
+- adjust %doc section
 * Sun Oct 18 2008  - Thomas Wagner
 - default to gnu paths
 * Sun Oct 13 2008  - Thomas Wagner
