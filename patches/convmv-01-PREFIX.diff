@@ -1,0 +1,9 @@
+--- convmv-1.12/Makefile.orig	2006-06-27 16:38:01.000000000 +0200
++++ convmv-1.12/Makefile	2008-10-05 19:32:17.559050693 +0200
+@@ -1,5 +1,5 @@
+ DESTDIR=
+-PREFIX=/usr/local
++PREFIX=/usr
+ MANDIR=$(PREFIX)/share/man
+ 
+ all: manpage
