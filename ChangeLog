@@ -1,5 +1,10 @@
 2009-05-17  Denis Bernard  <denis@wildservices.net>
 
+	* SFEpython-paramiko.spec: bump to paramiko 1.7.4, integrates AES-CTR
+	  and arcfour patch for OpenSolaris interoperability.
+
+2009-05-17  Denis Bernard  <denis@wildservices.net>
+
 	* SFEpython25-crypto.spec:
 	* SFEpython25-paramiko.spec,
 	  patches/python-paramiko-01-arc4_and_ctr.patch: Python 2.5, bump to

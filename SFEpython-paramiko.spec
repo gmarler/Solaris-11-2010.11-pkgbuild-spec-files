@@ -11,8 +11,9 @@
 Name:                   SFEpython-paramiko
 Summary:                Python module that implements the SSH2 protocol
 URL:                    http://www.lag.net/paramiko
-Version:                1.7.1
+Version:                1.7.4
 Source:                 %{src_url}/%{src_name}-%{version}.tar.gz
+Patch1:			python-paramiko-01-arc4_and_ctr.patch
 SUNW_BaseDir:           %{_basedir}
 BuildRoot:              %{_tmppath}/%{name}-%{version}-build
 
@@ -26,13 +27,14 @@ BuildRequires:          SFEpython-crypto
 
 %prep
 %setup -q -n %{src_name}-%{version}
+%patch1 -p1
 
 %build
-python setup.py build
+python%{python_version} setup.py build
 
 %install
 rm -rf $RPM_BUILD_ROOT
-python setup.py install --root=$RPM_BUILD_ROOT --prefix=%{_prefix} --no-compile
+python%{python_version} setup.py install --root=$RPM_BUILD_ROOT --prefix=%{_prefix} --no-compile
 
 # move to vendor-packages
 mkdir -p $RPM_BUILD_ROOT%{_libdir}/python%{python_version}/vendor-packages
@@ -51,5 +53,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/python%{python_version}/vendor-packages
 
 %changelog
+* Thu May 17 2009 - Denis Bernard <denis@wildservices.net>
+- bump to paramiko 1.7.4
+- arcfour and aes-ctr patches for OpenSolaris interoperability
 * Fri Oct 12 2007 - Ananth Shrinivas <ananth@sun.com>
 - Initial Version
