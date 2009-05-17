@@ -1,3 +1,11 @@
+2009-05-17  Denis Bernard  <denis@wildservices.net>
+
+	* SFEpython25-crypto.spec:
+	* SFEpython25-paramiko.spec,
+	  patches/python-paramiko-01-arc4_and_ctr.patch: Python 2.5, bump to
+	  paramiko 1.7.4, patch to implement AEC-CTR and arcfour ciphers for
+	  OpenSolaris interoperability.
+
 2009-05-13  Brian Cameron  <brian.cameron@sun.com>
 
 	* SFEistanbul.spec: Set PKG_CONFIG_PATH so it builds.
