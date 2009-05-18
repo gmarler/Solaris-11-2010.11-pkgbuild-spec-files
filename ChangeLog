@@ -1,3 +1,6 @@
+2009-05-18	Pradhap Devarajan <pradhap (at) gmail.com>
+	*	SFEswt.spec: Bump up the version, fix URL and if condition 
+
 2009-05-17  Denis Bernard  <denis@wildservices.net>
 
 	* SFEpython-paramiko.spec: bump to paramiko 1.7.4, integrates AES-CTR
