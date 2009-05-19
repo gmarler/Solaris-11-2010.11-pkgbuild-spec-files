@@ -1,0 +1,239 @@
+--- gnome-screensaver-2.24.1-orig/configure.ac 2009-05-11 10:53:58.935363066 -0700
++++ gnome-screensaver-2.24.1/configure.ac 2009-05-11 10:54:39.210226052 -0700
+@@ -584,6 +584,8 @@
+       AC_CHECK_LIB(rt, sigtimedwait, [AUTH_LIBS="${AUTH_LIBS} -lrt"])
+     fi
+ 
++    AC_CHECK_LIB(bsm, adt_start_session, [AUTH_LIBS="${AUTH_LIBS} -lbsm"])
++
+     AC_MSG_CHECKING(how to call pam_strerror)
+     AC_CACHE_VAL(ac_cv_pam_strerror_args,
+      [AC_TRY_COMPILE([#include <stdio.h>
+
+--- gnome-screensaver-2.24.1/src/gs-auth-pam.c.orig	2008-04-29 19:30:08.000000000 -0700
++++ gnome-screensaver-2.24.1/src/gs-auth-pam.c	2009-05-15 11:37:22.805307934 -0700
+@@ -99,6 +99,128 @@
+ static GCond  *message_handled_condition;
+ static GMutex *message_handler_mutex;
+ 
++#ifdef  sun
++#include <syslog.h>
++#include <bsm/adt.h>
++#include <bsm/adt_event.h>
++#include <deflt.h>
++static gboolean audit_flag_global = TRUE;
++
++/*
++ * audit_lock - audit entry to screenlock
++ *
++ *      Entry   Process running with appropriate privilege to generate
++ *                      audit records and real uid of the user.
++ *
++ *      Exit    ADT_screenlock audit record written.
++ */
++void
++audit_lock(void)
++{
++        adt_session_data_t      *ah;  	/* audit session handle */
++        adt_event_data_t        *event;	/* audit event handle */
++
++      	/* Audit start of screen lock -- equivalent to logout ;-) */
++        if (adt_start_session(&ah, NULL, ADT_USE_PROC_DATA) != 0) {
++
++                syslog(LOG_AUTH | LOG_ALERT, "adt_start_session: %m");
++                return;
++        }
++        if ((event = adt_alloc_event(ah, ADT_screenlock)) == NULL) {
++
++                syslog(LOG_AUTH | LOG_ALERT,
++                    "adt_alloc_event(ADT_screenlock): %m");
++        } else {
++                if (adt_put_event(event, ADT_SUCCESS, ADT_SUCCESS) != 0) {
++
++                        syslog(LOG_AUTH | LOG_ALERT,
++                            "adt_put_event(ADT_screenlock): %m");
++                }
++                adt_free_event(event);
++        }
++        (void) adt_end_session(ah);
++}
++
++/*
++ * audit_unlock - audit screen unlock
++ *
++ *      Entry   Process running with appropriate privilege to generate
++ *                      audit records and real uid of the user.
++ *              pam_status = PAM error code; reason for failure.
++ *
++ *      Exit    ADT_screenunlock audit record written.
++ */
++static void
++audit_unlock(int pam_status)
++{
++        adt_session_data_t      *ah;  	/* audit session handle */
++        adt_event_data_t        *event;/* audit event handle */
++
++        if (adt_start_session(&ah, NULL, ADT_USE_PROC_DATA) != 0) {
++
++                syslog(LOG_AUTH | LOG_ALERT,
++                    "adt_start_session(ADT_screenunlock): %m");
++                return;
++        }
++        if ((event = adt_alloc_event(ah, ADT_screenunlock)) == NULL) {
++
++                syslog(LOG_AUTH | LOG_ALERT,
++                    "adt_alloc_event(ADT_screenunlock): %m");
++        } else {
++                if (adt_put_event(event,
++                    pam_status == PAM_SUCCESS ? ADT_SUCCESS : ADT_FAILURE,
++                    pam_status == PAM_SUCCESS ? ADT_SUCCESS : ADT_FAIL_PAM +
++                    pam_status) != 0) {
++
++                        syslog(LOG_AUTH | LOG_ALERT,
++                            "adt_put_event(ADT_screenunlock(%s): %m",
++                            pam_strerror(NULL, pam_status));
++                }
++                adt_free_event(event);
++        }
++        (void) adt_end_session(ah);
++}
++
++/*
++ * audit_passwd - audit password change
++ *      Entry   Process running with appropriate privilege to generate
++ *                      audit records and real uid of the user.
++ *              pam_status = PAM error code; reason for failure.
++ *
++ *      Exit    ADT_passwd audit record written.
++ */
++static void
++audit_passwd(int pam_status)
++{
++        adt_session_data_t      *ah;		/* audit session handle */
++        adt_event_data_t        *event;	/* audit event handle */
++
++        if (adt_start_session(&ah, NULL, ADT_USE_PROC_DATA) != 0) {
++
++                syslog(LOG_AUTH | LOG_ALERT,
++                    "adt_start_session(ADT_passwd): %m");
++                return;
++        }
++        if ((event = adt_alloc_event(ah, ADT_passwd)) == NULL) {
++
++                syslog(LOG_AUTH | LOG_ALERT,
++                    "adt_alloc_event(ADT_passwd): %m");
++        } else {
++                if (adt_put_event(event,
++                    pam_status == PAM_SUCCESS ? ADT_SUCCESS : ADT_FAILURE,
++                    pam_status == PAM_SUCCESS ? ADT_SUCCESS : ADT_FAIL_PAM +
++                    pam_status) != 0) {
++
++                        syslog(LOG_AUTH | LOG_ALERT,
++                            "adt_put_event(ADT_passwd(%s): %m",
++                            pam_strerror(NULL, pam_status));
++                }
++                adt_free_event(event);
++        }
++        (void) adt_end_session(ah);
++}
++#endif /* sun */
++
+ GQuark
+ gs_auth_error_quark (void)
+ {
+@@ -481,14 +603,34 @@
+ 
+ static int
+ gs_auth_thread_func (int auth_operation_fd)
+-{
+-        static const int flags = 0;
++{
++        int              flags = 0;
+         int              status;
+         int              status2;
+         struct timespec  timeout;
+         sigset_t         set;
+         const void      *p;
+ 
++#ifdef sun
++        if (audit_flag_global) /* We want one audit lock log per lock */
++            audit_lock();
++
++        /* Check /etc/default/login to see if we should add
++           PAM_DISALLOW_NULL_AUTHTOK to pam_flags */
++        if (defopen("/etc/default/login") == 0) {
++            char *ptr;
++            int tflags = defcntl(DC_GETFLAGS, 0);
++            TURNOFF(tflags, DC_CASE);
++            (void) defcntl(DC_SETFLAGS, tflags);
++            if ((ptr = defread("PASSREQ=")) != NULL &&
++              strcasecmp("YES", ptr) == 0) {
++                flags |= PAM_DISALLOW_NULL_AUTHTOK;
++            }
++
++            (void) defopen((char *)NULL); /* close current file */
++        }
++#endif /* sun */
++
+         timeout.tv_sec = 0;
+         timeout.tv_nsec = 1;
+ 
+@@ -499,6 +641,12 @@
+         sigtimedwait (&set, NULL, &timeout);
+         unblock_sigchld ();
+ 
++#ifdef sun
++        audit_unlock(status);
++        if (status == PAM_SUCCESS) audit_flag_global = TRUE;
++        else audit_flag_global = FALSE;
++#endif /* sun */
++
+         if (gs_auth_get_verbose ()) {
+                 g_message ("   pam_authenticate (...) ==> %d (%s)",
+                            status,
+@@ -528,11 +676,32 @@
+                            PAM_STRERROR (pam_handle, status2));
+         }
+ 
++#ifdef sun
++        if (status2 != PAM_SUCCESS)
++                audit_unlock(status2);
++#endif /* sun */
++
+         /* FIXME: should we handle these? */
+         switch (status2) {
+         case PAM_SUCCESS:
+                 break;
+         case PAM_NEW_AUTHTOK_REQD:
++#ifdef sun
++                {
++                  int tst;
++                  for (int i=0; i<3; i++) 
++                  {
++                    tst  = pam_chauthtok(pam_handle, PAM_CHANGE_EXPIRED_AUTHTOK);
++                    if (tst == PAM_AUTHTOK_ERR ||
++                        tst == PAM_TRY_AGAIN ) 
++                    {
++                      i = 0; /* Reset num tries we need to do to change expired passwd */
++                    }
++                    else break; /* get out of the loop */
++                  } /* for */ 
++                  audit_passwd(tst);
++#endif /* sun */
++                }
+                 break;
+         case PAM_AUTHINFO_UNAVAIL:
+                 break;
+@@ -560,6 +729,12 @@
+                            PAM_STRERROR (pam_handle, status2));
+         }
+ 
++#ifdef sun
++        if (status2 != PAM_SUCCESS)
++        /* Only in failure of pam_setcred() case we call audit. */
++            audit_unlock(status2);
++#endif /* sun */
++
+  done:
+         /* we're done, close the fd and wake up the main
+          * loop

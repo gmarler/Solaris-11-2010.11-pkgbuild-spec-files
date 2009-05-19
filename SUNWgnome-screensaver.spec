@@ -21,33 +21,25 @@ BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 
 Requires:	SUNWcsl
+Requires:       SUNWdbus
+Requires:       SUNWgtk2
+Requires:       SUNWlibglade
+Requires:       SUNWlibpopt
 Requires:	SUNWlxml
 Requires:	SUNWgnome-config
-Requires:	SUNWgnome-base-libs
-Requires:	SUNWgnome-vfs
-Requires:	SUNWgnome-libs
-Requires:	SUNWgnome-ui-designer
 Requires:	SUNWgnome-panel
-Requires:       SUNWdbus
-Requires:       SUNWgnome-component
-Requires:       SUNWlibexif
 Requires:       SUNWlibms
-Requires:       SUNWlibpopt
 Requires:       SUNWmlib
 Requires:       SUNWzlib
 Requires:       SUNWpostrun
-BuildRequires:  SUNWdbus-devel
-BuildRequires:  SUNWgnome-component-devel
-BuildRequires:  SUNWlibexif-devel
-BuildRequires:  SUNWlibpopt-devel
 BuildRequires:	SUNWcsl
+BuildRequires:  SUNWdbus-devel
+BuildRequires:  SUNWgtk2-devel
+BuildRequires:  SUNWlibglade-devel
+BuildRequires:  SUNWlibpopt-devel
 BuildRequires:	SUNWlxml
 BuildRequires:	SUNWgnome-config-devel
-BuildRequires:	SUNWgnome-base-libs-devel
-BuildRequires:	SUNWgnome-vfs-devel
-BuildRequires:	SUNWgnome-libs-devel
-BuildRequires:	SUNWgnome-ui-designer
-
+BuildRequires:	SUNWgnome-panel-devel
 
 %if %build_l10n
 %package l10n
@@ -57,12 +49,10 @@ SUNW_BaseDir:            %{_basedir}
 Requires:                %{name}
 %endif
 
-
 %prep
 rm -rf %name-%version
 mkdir %name-%version
 %gss.prep -d %name-%version
-
 
 %build
 export CFLAGS="%optflags"

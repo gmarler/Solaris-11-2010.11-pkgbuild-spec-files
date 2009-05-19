@@ -10,12 +10,14 @@
 Name:         gnome-screensaver
 License:      GPL
 Group:        System/GUI/GNOME
-Version:      2.24.1
+Version:      2.26.1
 Release:      1
 Distribution: Java Desktop System
 Vendor:	      Sun Microsystems, Inc.
 Summary:      The GNOME screen saver 
-Source:       http://ftp.gnome.org/pub/GNOME/sources/%{name}/2.24/%{name}-%{version}.tar.bz2
+Source:       http://ftp.gnome.org/pub/GNOME/sources/%{name}/2.26/%{name}-%{version}.tar.bz2
+# date:2009-05-11 owner:johnf type:feature
+Patch1:       gnome-screensaver-01-pam-audit.diff
 URL:          www.gnome.org
 BuildRoot:    %{_tmppath}/%{name}-%{version}-build
 Autoreqprov:  on
@@ -54,6 +56,8 @@ It is designed to support:
 
 %prep
 %setup -q
+%patch1 -p1
+
 # Fix for 332967.
 for po in po/*.po; do
   dos2unix -ascii $po $po
@@ -99,6 +103,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/*
 
 %changelog
+* Tue May 19 2009 - brian.cameron@sun.com
+- Bump to 2.26.1.  Add patch gnome-screensaver-01-pam-audit.diff which
+  John Fischer wrote to add Sun Audit and Sun PAM interfaces.
+
 * Tue Dec 23 2008 - jedy.wang@sun.com
 - Bump to 2.24.1.
 - Remove patch 01-gthread.diff.

@@ -1,5 +1,13 @@
+2009-05-19  Brian Cameron  <brian.cameron@sun.com>
+
+	* SUNWgnome-screensaver.spec, base-specs/gnome-screensaver.spec,
+	  patches/gnome-screensaver-01-pam-audit.diff:  Bump to 2.26.1 and
+	  add patch by John Fischer which adds support for SunAudit interfaces
+	  and adds better Solaris PAM support.
+
 2009-05-18	Pradhap Devarajan <pradhap (at) gmail.com>
-	*	SFEswt.spec: Bump up the version, fix URL and if condition 
+
+	* SFEswt.spec: Bump up the version, fix URL and if condition 
 
 2009-05-17  Denis Bernard  <denis@wildservices.net>
 
