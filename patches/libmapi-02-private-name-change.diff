@@ -1,0 +1,200 @@
+--- libmapi-0.8-ROMULUS/mapiproxy/dcesrv_mapiproxy_server.c.old	2009-05-15 15:23:44.904113958 +0800
++++ libmapi-0.8-ROMULUS/mapiproxy/dcesrv_mapiproxy_server.c	2009-05-15 15:24:03.351248959 +0800
+@@ -47,7 +47,7 @@
+ 	const struct ndr_interface_table	*table;
+ 	NTSTATUS				status;
+ 
+-	table = (const struct ndr_interface_table *)dce_call->context->iface->private;
++	table = (const struct ndr_interface_table *)dce_call->context->iface->private_data;
+ 
+ 	for (server = server_list; server; server = server->next) {
+ 		if (server->module->endpoint && table->name &&
+--- libmapi-0.8-ROMULUS/mapiproxy/modules/mpm_downgrade.c.old	2009-05-15 15:27:38.104909359 +0800
++++ libmapi-0.8-ROMULUS/mapiproxy/modules/mpm_downgrade.c	2009-05-15 15:27:56.476374092 +0800
+@@ -58,7 +58,7 @@
+ 	uint16_t				opnum;
+ 	const char				*name;
+ 
+-	table = (const struct ndr_interface_table *)dce_call->context->iface->private;
++	table = (const struct ndr_interface_table *)dce_call->context->iface->private_data;
+ 	opnum = dce_call->pkt.u.request.opnum;
+ 	name = table->calls[opnum].name;
+ 
+@@ -103,7 +103,7 @@
+ 	const struct ndr_interface_table	*table;
+ 	uint16_t				opnum;
+ 
+-	table = (const struct ndr_interface_table *)dce_call->context->iface->private;
++	table = (const struct ndr_interface_table *)dce_call->context->iface->private_data;
+ 	opnum = dce_call->pkt.u.request.opnum;
+ 	
+ 	if ((opnum == 0xA) && (table->name && !strcmp(table->name, "exchange_emsmdb"))) {
+--- libmapi-0.8-ROMULUS/mapiproxy/dcesrv_mapiproxy.c.old	2009-05-15 15:24:34.872256089 +0800
++++ libmapi-0.8-ROMULUS/mapiproxy/dcesrv_mapiproxy.c	2009-05-15 15:26:01.098937680 +0800
+@@ -57,7 +57,7 @@
+ 	binding = lp_parm_string(dce_call->conn->dce_ctx->lp_ctx, NULL, "dcerpc_mapiproxy", "binding");
+ 	machine_account = lp_parm_bool(dce_call->conn->dce_ctx->lp_ctx, NULL, "dcerpc_mapiproxy", "use_machine_account", false);
+ 
+-	private = dce_call->context->private;
++	private = dce_call->context->private_data;
+ 
+ 	if (!binding) {
+ 		DEBUG(0, ("You must specify a DCE/RPC binding string\n"));
+@@ -193,7 +193,7 @@
+ 	private->c_pipe = NULL;
+ 	private->exchname = NULL;
+ 	private->server_mode = server_mode;
+-	dce_call->context->private = private;
++	dce_call->context->private_data = private;
+ 
+ 	if (server_mode == false) {
+ 		return mapiproxy_op_bind_proxy(dce_call, iface);
+@@ -213,7 +213,7 @@
+  */
+ static void mapiproxy_op_unbind(struct dcesrv_connection_context *context, const struct dcesrv_interface *iface)
+ {
+-	struct dcesrv_mapiproxy_private	*private = (struct dcesrv_mapiproxy_private *) context->private;
++	struct dcesrv_mapiproxy_private	*private = (struct dcesrv_mapiproxy_private *) context->private_data;
+ 
+ 	DEBUG(5, ("mapiproxy::mapiproxy_op_unbind\n"));
+ 
+@@ -251,7 +251,7 @@
+ 
+ 	DEBUG(5, ("mapiproxy::mapiproxy_op_ndr_pull\n"));
+ 
+-	table = (const struct ndr_interface_table *)dce_call->context->iface->private;
++	table = (const struct ndr_interface_table *)dce_call->context->iface->private_data;
+ 	opnum = dce_call->pkt.u.request.opnum;
+ 
+ 	dce_call->fault_code = 0;
+@@ -308,8 +308,8 @@
+ 
+ 	DEBUG(5, ("mapiproxy::mapiproxy_op_ndr_push\n"));
+ 
+-	private = dce_call->context->private;
+-	table = (const struct ndr_interface_table *)dce_call->context->iface->private;
++	private = dce_call->context->private_data;
++	table = (const struct ndr_interface_table *)dce_call->context->iface->private_data;
+ 	opnum = dce_call->pkt.u.request.opnum;
+ 
+ 	name = table->calls[opnum].name;
+@@ -384,8 +384,8 @@
+ 	const char				*name;
+ 	NTSTATUS				status;
+ 
+-	private = dce_call->context->private;
+-	table = dce_call->context->iface->private;
++	private = dce_call->context->private_data;
++	table = dce_call->context->iface->private_data;
+ 	opnum = dce_call->pkt.u.request.opnum;
+ 
+ 	name = table->calls[opnum].name;
+@@ -477,7 +477,7 @@
+  */
+ static NTSTATUS mapiproxy_register_one_iface(struct dcesrv_context *dce_ctx, const struct dcesrv_interface *iface)
+ {
+-	const struct ndr_interface_table	*table = iface->private;
++	const struct ndr_interface_table	*table = iface->private_data;
+ 	int					i;
+ 
+ 	for (i = 0; i < table->endpoints->count; i++) {
+@@ -552,7 +552,7 @@
+ 	iface->reply = mapiproxy_op_reply;
+ 	iface->ndr_push = mapiproxy_op_ndr_push;
+ 
+-	iface->private = tbl;
++	iface->private_data = tbl;
+ 
+ 	return true;
+ }
+--- libmapi-0.8-ROMULUS/mapiproxy/dcesrv_mapiproxy_module.c.old	2009-05-15 15:21:25.543814452 +0800
++++ libmapi-0.8-ROMULUS/mapiproxy/dcesrv_mapiproxy_module.c	2009-05-15 15:23:05.136851440 +0800
+@@ -44,7 +44,7 @@
+ 	const struct ndr_interface_table	*table;
+ 	NTSTATUS				status;
+ 
+-	table = (const struct ndr_interface_table *)dce_call->context->iface->private;
++	table = (const struct ndr_interface_table *)dce_call->context->iface->private_data;
+ 
+ 	for (mpm = mpm_list; mpm; mpm = mpm->next) {
+ 		if (mpm->module->endpoint && 
+@@ -68,7 +68,7 @@
+ 	const struct ndr_interface_table	*table;
+ 	NTSTATUS				status;
+ 
+-	table = (const struct ndr_interface_table *)dce_call->context->iface->private;
++	table = (const struct ndr_interface_table *)dce_call->context->iface->private_data;
+ 
+ 	for (mpm = mpm_list; mpm; mpm = mpm->next) {
+ 		if (mpm->module->endpoint && 
+@@ -92,7 +92,7 @@
+ 	const struct ndr_interface_table	*table;
+ 	NTSTATUS				status;
+ 
+-	table = (const struct ndr_interface_table *)dce_call->context->iface->private;
++	table = (const struct ndr_interface_table *)dce_call->context->iface->private_data;
+ 
+ 	for (mpm = mpm_list; mpm; mpm = mpm->next) {
+ 		if (mpm->module->endpoint && 
+@@ -117,7 +117,7 @@
+ 	const struct ndr_interface_table	*table;
+ 	NTSTATUS				status;
+ 
+-	table = (const struct ndr_interface_table *)dce_call->context->iface->private;
++	table = (const struct ndr_interface_table *)dce_call->context->iface->private_data;
+ 
+ 	for (mpm = mpm_list; mpm; mpm = mpm->next) {
+ 		if (mpm->module->endpoint && 
+--- libmapi-0.8-ROMULUS/mapiproxy/dcesrv_mapiproxy_nspi.c.old	2009-05-15 15:26:43.992617796 +0800
++++ libmapi-0.8-ROMULUS/mapiproxy/dcesrv_mapiproxy_nspi.c	2009-05-15 15:27:12.534816343 +0800
+@@ -130,7 +130,7 @@
+ 	char			*lpszA;
+ 	char			*exchname;
+ 
+-	private = dce_call->context->private;
++	private = dce_call->context->private_data;
+ 
+ 	/* Sanity checks */
+ 	if (!r->out.ppRows) return false;
+@@ -191,7 +191,7 @@
+ 	const char			*proxyname;
+ 	uint32_t			i;
+ 
+-	private = dce_call->context->private;
++	private = dce_call->context->private_data;
+ 	proxyname = lp_netbios_name(dce_call->conn->dce_ctx->lp_ctx);
+ 
+ 	if (!private->exchname) return false;
+--- libmapi-0.8-ROMULUS/mapiproxy/servers/default/rfr/dcesrv_exchange_ds_rfr.c.old	2009-05-15 15:30:07.481220353 +0800
++++ libmapi-0.8-ROMULUS/mapiproxy/servers/default/rfr/dcesrv_exchange_ds_rfr.c	2009-05-15 15:30:17.080634314 +0800
+@@ -146,7 +146,7 @@
+ 	const struct ndr_interface_table	*table;
+ 	uint16_t				opnum;
+ 
+-	table = (const struct ndr_interface_table *) dce_call->context->iface->private;
++	table = (const struct ndr_interface_table *) dce_call->context->iface->private_data;
+ 	opnum = dce_call->pkt.u.request.opnum;
+ 
+ 	/* Sanity checks */
+--- libmapi-0.8-ROMULUS/mapiproxy/servers/default/emsmdb/dcesrv_exchange_emsmdb.c.old	2009-05-15 15:29:26.217097594 +0800
++++ libmapi-0.8-ROMULUS/mapiproxy/servers/default/emsmdb/dcesrv_exchange_emsmdb.c	2009-05-15 15:29:40.490582484 +0800
+@@ -410,7 +410,7 @@
+ 	const struct ndr_interface_table	*table;
+ 	uint16_t				opnum;
+ 
+-	table = (const struct ndr_interface_table *) dce_call->context->iface->private;
++	table = (const struct ndr_interface_table *) dce_call->context->iface->private_data;
+ 	opnum = dce_call->pkt.u.request.opnum;
+ 
+ 	/* Sanity checks */
+--- libmapi-0.8-ROMULUS/mapiproxy/servers/default/nspi/dcesrv_exchange_nsp.c.old	2009-05-15 15:28:45.640964851 +0800
++++ libmapi-0.8-ROMULUS/mapiproxy/servers/default/nspi/dcesrv_exchange_nsp.c	2009-05-15 15:29:01.646300640 +0800
+@@ -797,7 +797,7 @@
+ 	const struct ndr_interface_table	*table;
+ 	uint16_t				opnum;
+ 
+-	table = (const struct ndr_interface_table *) dce_call->context->iface->private;
++	table = (const struct ndr_interface_table *) dce_call->context->iface->private_data;
+ 	opnum = dce_call->pkt.u.request.opnum;
+ 
+ 	/* Sanity checks */

@@ -10,6 +10,7 @@ Summary:             A client-side implementation of the MAPI protocol that is u
 Version:             0.8
 Source:              http://downloads.sourceforge.net/openchange/libmapi-%{version}-ROMULUS.tar.gz
 Patch1:              libmapi-01-solaris.diff
+Patch2:              libmapi-02-private-name-change.diff
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -18,6 +19,7 @@ BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %prep
 %setup -q -n libmapi-%{version}-ROMULUS
 %patch1 -p1
+%patch2 -p1
 
 %build
 

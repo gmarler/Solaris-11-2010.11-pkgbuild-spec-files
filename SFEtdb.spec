@@ -8,14 +8,15 @@
 Name:                SFEtdb
 Summary:             A trivial database used by samba.
 Version:             1.1.3
-Source:              http://us5.samba.org/samba/ftp/samba4/samba-4.0.0alpha6.tar.gz
+Source:              http://us5.samba.org/samba/ftp/samba4/samba-4.0.0alpha7.tar.gz
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 
 
 %prep
-%setup -q -n samba-4.0.0alpha6/lib/tdb
+rm -rf samba-4.0.0alpha7
+%setup -q -n samba-4.0.0alpha7/lib/tdb
 
 %build
 

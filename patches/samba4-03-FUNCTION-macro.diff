@@ -1,0 +1,11 @@
+--- samba-4.0.0alpha7/lib/util/debug.h.old	2009-05-15 15:18:14.943133700 +0800
++++ samba-4.0.0alpha7/lib/util/debug.h	2009-05-15 15:18:26.179099820 +0800
+@@ -52,7 +52,7 @@
+ 	if (DEBUGLVL(level)) { \
+ 		void* _debug_ctx=NULL; \
+ 		if (header) { \
+-			dbghdr(level, __location__, __FUNCTION__); \
++			dbghdr(level, __location__, __func__); \
+ 		} \
+ 		dbgtext body; \
+ 		talloc_free(_debug_ctx); \

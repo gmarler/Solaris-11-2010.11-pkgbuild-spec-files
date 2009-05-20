@@ -1,3 +1,10 @@
+2009-05-20  Brian Lu <brian.lu@sun.com>
+	* SFEtalloc.spec SFEtdb.spec SFEtevent.spec SFEsamba4.spec
+	  SFElibmapi.spec patches/samba4-02-map-rename.diff,
+	  patches/samba4-03-FUNCTION-macro.diff,
+	  patches/libmapi-02-private-name-change.diff:
+	  Upgrade smaba4 to 4.0.0 alpha07
+
 2009-05-19  Brian Cameron  <brian.cameron@sun.com>
 
 	* SUNWgnome-screensaver.spec, base-specs/gnome-screensaver.spec,

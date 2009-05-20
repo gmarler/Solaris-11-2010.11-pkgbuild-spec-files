@@ -7,15 +7,16 @@
 
 Name:                SFEtevent
 Summary:             An event system library.
-Version:             0.9.2
-Source:              http://us5.samba.org/samba/ftp/samba4/samba-4.0.0alpha6.tar.gz
+Version:             0.9.3
+Source:              http://us5.samba.org/samba/ftp/samba4/samba-4.0.0alpha7.tar.gz
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 
 
 %prep
-%setup -q -n samba-4.0.0alpha6/lib/tevent
+rm -rf samba-4.0.0alpha7
+%setup -q -n samba-4.0.0alpha7/lib/tevent
 
 %build
 

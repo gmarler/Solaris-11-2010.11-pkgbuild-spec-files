@@ -8,8 +8,10 @@
 Name:                SFEsamba4
 Summary:             samba - CIFS Server and Domain Controller v4
 Version:             4.0.0
-Source:              http://us5.samba.org/samba/ftp/samba4/samba-4.0.0alpha6.tar.gz
+Source:              http://us5.samba.org/samba/ftp/samba4/samba-4.0.0alpha7.tar.gz
 Patch1:              samba4-01-solaris.diff
+Patch2:              samba4-02-map-rename.diff
+Patch3:              samba4-03-FUNCTION-macro.diff
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -22,8 +24,10 @@ SUNW_BaseDir:            /
 
 
 %prep
-%setup -q -n samba-4.0.0alpha6/
+%setup -q -n samba-4.0.0alpha7/
 %patch1 -p1
+%patch2 -p1
+%patch3 -p1
 
 %build
 
