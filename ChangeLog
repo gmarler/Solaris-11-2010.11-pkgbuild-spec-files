@@ -1,3 +1,15 @@
+2009-05-22  Brian Cameron  <brian.cameron@sun.com>
+
+	* SFEgst-plugins-bad.spec, base-specs-gst-plugins-bad.spec:  Bump to
+	  0.10.12.
+	* patches/gst-plugins-bad-03-dccp.diff, 
+	  patches/gst-plugins-bad-04-makefile.diff,
+	  patches/gst-plugins-bad-05-deinterlace.diff:  Remove upstream
+	  patches.
+	* SFEgnome-zeitgeist.spec: Fix so it builds.
+	* patches/gnome-zeitgeist-01-makefile.diff: Remove patch no longer
+	  needed.  Renumber rest.
+
 2009-05-22  Elaine Xiong  <elaine.xiong@sun.com>
 
 	* SFEtransmission.spec:
@@ -5,6 +17,7 @@
 	  upstream patches.
 
 2009-05-20  Brian Lu <brian.lu@sun.com>
+
 	* SFEtalloc.spec SFEtdb.spec SFEtevent.spec SFEsamba4.spec
 	  SFElibmapi.spec patches/samba4-02-map-rename.diff,
 	  patches/samba4-03-FUNCTION-macro.diff,

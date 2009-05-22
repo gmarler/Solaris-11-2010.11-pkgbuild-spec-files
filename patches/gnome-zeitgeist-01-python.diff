@@ -1,0 +1,56 @@
+--- gnome-zeitgeist/extra/test-daemon.py-orig	2009-05-12 20:17:36.200981000 -0500
++++ gnome-zeitgeist/extra/test-daemon.py	2009-05-12 20:17:41.154058000 -0500
+@@ -1,4 +1,4 @@
+-#! /usr/bin/env python
++#! /usr/bin/python2.6
+ # -.- coding: utf-8 -.-
+ 
+ import sys
+--- gnome-zeitgeist/zeitgeist/experimental/zeitgeist-timeline.py-orig	2009-05-12 20:15:27.724852000 -0500
++++ gnome-zeitgeist/zeitgeist/experimental/zeitgeist-timeline.py	2009-05-12 20:15:34.317458000 -0500
+@@ -1,4 +1,4 @@
+-#! /usr/bin/env python
++#! /usr/bin/python2.6
+ # -.- encoding: utf-8 -.-
+ 
+ import sys
+--- gnome-zeitgeist/zeitgeist/experimental/zeitgeist-projectviewer.py-orig	2009-05-12 20:15:48.872799000 -0500
++++ gnome-zeitgeist/zeitgeist/experimental/zeitgeist-projectviewer.py	2009-05-12 20:15:55.424975000 -0500
+@@ -1,4 +1,4 @@
+-#! /usr/bin/env python
++#! /usr/bin/python2.6
+ # -.- encoding: utf-8 -.-
+ 
+ import sys
+--- gnome-zeitgeist/zeitgeist-daemon-orig	2009-05-22 16:46:35.607320000 -0500
++++ gnome-zeitgeist/zeitgeist-daemon	2009-05-22 16:47:14.216926000 -0500
+@@ -1,4 +1,4 @@
+-#! /usr/bin/env python
++#! /usr/bin/python2.6
+ # -.- encoding: utf-8 -.-
+ 
+ import sys
+--- gnome-zeitgeist/zeitgeist-datahub-orig	2009-05-22 16:46:42.788287000 -0500
++++ gnome-zeitgeist/zeitgeist-datahub	2009-05-22 16:47:24.212402000 -0500
+@@ -1,4 +1,4 @@
+-#! /usr/bin/env python
++#! /usr/bin/python2.6
+ # -.- encoding: utf-8 -.-
+ 
+ import sys
+--- gnome-zeitgeist/zeitgeist-journal-orig	2009-05-22 16:46:50.116108000 -0500
++++ gnome-zeitgeist/zeitgeist-journal	2009-05-22 16:47:34.057577000 -0500
+@@ -1,4 +1,4 @@
+-#! /usr/bin/env python
++#! /usr/bin/python2.6
+ # -.- encoding: utf-8 -.-
+ 
+ import sys
+--- gnome-zeitgeist/zeitgeist-trayicon-orig	2009-05-22 16:47:03.181613000 -0500
++++ gnome-zeitgeist/zeitgeist-trayicon	2009-05-22 16:47:42.487307000 -0500
+@@ -1,4 +1,4 @@
+-#! /usr/bin/env python
++#! /usr/bin/python2.6
+ # -.- encoding: utf-8 -.-
+ 
+ import sys
