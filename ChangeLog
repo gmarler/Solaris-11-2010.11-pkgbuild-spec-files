@@ -1,3 +1,9 @@
+2009-05-22  Elaine Xiong  <elaine.xiong@sun.com>
+
+	* SFEtransmission.spec:
+	* patches/transmission-01-solaris.diff: bump to 1.61. Remove 
+	  upstream patches.
+
 2009-05-20  Brian Lu <brian.lu@sun.com>
 	* SFEtalloc.spec SFEtdb.spec SFEtevent.spec SFEsamba4.spec
 	  SFElibmapi.spec patches/samba4-02-map-rename.diff,

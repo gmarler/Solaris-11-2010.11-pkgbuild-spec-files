@@ -6,16 +6,19 @@
 
 Name:                    SFEtransmission
 Summary:                 Transmission - GTK and console BitTorrent client
-Version:                 1.22
+Version:                 1.61
 Source:                  http://download.m0k.org/transmission/files/transmission-%{version}.tar.bz2
-Patch:                   transmission-01-solaris.diff
 URL:                     http://transmission.m0k.org/
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{source_name}-%{version}-build
 %include default-depend.inc
-BuildRequires: SUNWgnome-base-libs
+BuildRequires: SUNWgtk2-devel
 BuildRequires: SUNWopenssl-include
-Requires: SUNWgnome-base-libs
+BuildRequires: SUNWgnome-panel-devel
+BuildRequires: SUNWdbus-glib-devel
+Requires: SUNWgtk2
+Requires: SUNWgnome-panel
+Requires: SUNWdbus-glib
 Requires: SUNWopenssl-libraries
 Requires: SUNWcurl
 %if %option_with_gnu_iconv
@@ -36,7 +39,6 @@ Requires:        %{name}
 
 %prep
 %setup -q -n %{source_name}-%{version}
-%patch0 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -44,18 +46,16 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
      CPUS=1
 fi
 
-export CFLAGS="%optflags -mt -I/usr/sfw/include"
-export CXXFLAGS="%cxx_optflags -mt -I/usr/sfw/include"
+export CFLAGS="%optflags -mt -D__inline=inline -xc99"
 %if %option_with_gnu_iconv
 export CFLAGS="$CFLAGS -I/usr/gnu/include -L/usr/gnu/lib -R/usr/gnu/lib -lintl"
 export CXXFLAGS="$CXXFLAGS -I/usr/gnu/include -L/usr/gnu/lib -R/usr/gnu/lib -lintl"
 %endif
 
-export LDFLAGS="%_ldflags -L/usr/sfw/lib -R/usr/sfw/lib"
-
 ./configure --prefix=%{_prefix}   \
             --datadir=%{_datadir} \
 	    --mandir=%{_mandir}   \
+	    --disable-wx	\
             --program-prefix=""
 
 make -j$CPUS
@@ -89,6 +89,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/applications/*
 %dir %attr (0755, root, other) %{_datadir}/pixmaps
 %{_datadir}/pixmaps/*
+%dir %attr (0755, root, other) %{_datadir}/transmission
+%{_datadir}/transmission/*
 %dir %attr (0755, root, other) %{_datadir}/icons
 %dir %attr (-, root, other) %{_datadir}/icons/hicolor
 %dir %attr (-, root, other) %{_datadir}/icons/hicolor/16x16
@@ -118,6 +120,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Fri May 22 2009 - elaine.xiong@sun.com
+- Bump to 1.61. Remove upstream patches.
 * Wed Jun 25 2008 - darren.kenny@sun.com
 - Bump to 1.2.2 and remove upstream patch for compiler. Add patch for solaris
   getgateway implementation.
