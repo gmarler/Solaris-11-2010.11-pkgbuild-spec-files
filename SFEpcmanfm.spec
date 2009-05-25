@@ -10,8 +10,8 @@
 Name:                    SFEpcmanfm
 Summary:                 LXDE lightweight file manager
 Version:                 0.5
-Source:                  http://downloads.sourceforge.net/lxde/pcmanfm-%{version}.tar.gz
-URL:                     http://sourceforge.net/projects/lxde/
+Source:                  http://downloads.sourceforge.net/pcmanfm/pcmanfm-%{version}.tar.gz
+URL:                     http://sourceforge.net/projects/pcmanfm/
 
 # owner:alfred date:2009-03-16 type:bug bugid:2688199
 Patch1:                  pcmanfm-01-mnttab.diff
@@ -52,6 +52,7 @@ fi
 
 export LDFLAGS="-lsocket"
 
+export GMSGFMT=/usr/bin/gmsgfmt
 autoconf
 ./configure --prefix=%{_prefix} --libdir=%{_libdir}
 make -j$CPUS 
@@ -92,5 +93,7 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Mon May 25 2009 - alfred.peng@sun.com
+- Update source URL and set correct GMSGFMT.
 * Mon Mar 16 2009 - alfred.peng@sun.com
 - Initial version

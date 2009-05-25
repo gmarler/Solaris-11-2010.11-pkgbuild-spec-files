@@ -1,0 +1,52 @@
+--- pcmanfm-0.5/src/vfs/vfs-dir.h.orig	2009-03-14 19:49:06.244577593 +0800
++++ pcmanfm-0.5/src/vfs/vfs-dir.h	2009-03-14 20:06:25.929693165 +0800
+@@ -50,8 +50,8 @@
+             gboolean is_mount_point : 1;
+             gboolean is_remote : 1;
+             gboolean is_virtual : 1;
+-        };
+-    };
++        } bb;
++    } aa;
+ 
+     /*<private>*/
+     VFSFileMonitor* monitor;
+@@ -67,6 +67,14 @@
+     GSList* changed_files;
+ };
+ 
++#define flag aa.flags
++#define is_home aa.bb.is_home
++#define is_desktop aa.bb.is_desktop
++#define is_trash aa.bb.is_trash
++#define is_mount_point aa.bb.is_mount_point
++#define is_remote aa.bb.is_remote
++#define is_virtual aa.bb.is_virtual
++
+ struct _VFSDirClass
+ {
+     GObjectClass parent;
+--- pcmanfm-0.5/src/vfs/vfs-dir.c.orig	2009-03-14 23:26:49.722237883 +0800
++++ pcmanfm-0.5/src/vfs/vfs-dir.c	2009-03-14 20:06:38.227424328 +0800
+@@ -533,7 +533,7 @@
+     if ( G_LIKELY(dir->path) )
+     {
+         dir->disp_path = g_filename_display_name( dir->path );
+-        dir->flags = 0;
++        dir->flag = 0;
+ 
+         /* FIXME: We should check access here! */
+ 
+--- pcmanfm-0.5/src/exo/exo-private.h.orig	2009-03-14 23:27:21.328490575 +0800
++++ pcmanfm-0.5/src/exo/exo-private.h	2009-03-14 23:41:01.787415687 +0800
+@@ -36,6 +36,10 @@
+ 
+ G_BEGIN_DECLS;
+ 
++#if defined(__SUNPRO_C)
++#define G_GNUC_INTERNAL
++#endif
++
+ /* support macros for debugging */
+ #ifndef NDEBUG
+ #define _exo_assert(expr)                  g_assert (expr)
