@@ -1,0 +1,57 @@
+--- telepathy-mission-control-4.67-ori/src/mcd-account.c	2008-04-08 19:25:55.000000000 +0800
++++ telepathy-mission-control-4.67-my/src/mcd-account.c	2008-11-06 11:02:32.641206000 +0800
+@@ -42,6 +42,7 @@
+ 
+ struct _McdAccountPrivate
+ {
++  int stuff;
+ };
+ 
+ enum
+--- telepathy-mission-control-4.67-ori/src/mcd-debug.c	2008-04-08 19:25:55.000000000 +0800
++++ telepathy-mission-control-4.67-my/src/mcd-debug.c	2008-11-06 11:02:38.534488000 +0800
+@@ -119,7 +119,7 @@
+ 	mc_debug = atoi (mc_debug_str);
+ }
+ 
+-inline gint mcd_debug_get_level ()
++gint mcd_debug_get_level ()
+ {
+     return mc_debug;
+ }
+--- telepathy-mission-control-4.67-ori/src/mcd-debug.h	2008-04-08 19:25:55.000000000 +0800
++++ telepathy-mission-control-4.67-my/src/mcd-debug.h	2008-11-06 11:02:57.588466000 +0800
+@@ -35,7 +35,7 @@
+ 
+ void mcd_debug_init ();
+ 
+-inline gint mcd_debug_get_level ();
++gint mcd_debug_get_level ();
+ 
+ void mcd_debug_ref (gpointer obj, const gchar *filename, gint linenum);
+ void mcd_debug_unref (gpointer obj, const gchar *filename, gint linenum);
+--- telepathy-mission-control-4.67-ori/src/mcd-service.c	2008-07-07 18:25:28.000000000 +0800
++++ telepathy-mission-control-4.67-my/src/mcd-service.c	2008-11-06 11:04:20.798962000 +0800
+@@ -54,6 +54,10 @@
+ #include "mcd-connection.h"
+ #include "mcd-service.h"
+ 
++#ifndef __FUNCTION__
++#define __FUNCTION__ __func__
++#endif
++
+ /* DBus service specifics */
+ #define MISSION_CONTROL_DBUS_SERVICE "org.freedesktop.Telepathy.MissionControl"
+ #define MISSION_CONTROL_DBUS_OBJECT  "/org/freedesktop/Telepathy/MissionControl"
+diff -ru telepathy-mission-control-4.67.orig/configure.ac telepathy-mission-control-4.67/configure.ac
+--- telepathy-mission-control-4.67.orig/configure.ac	2008-09-23 14:34:00.000000000 +0200
++++ telepathy-mission-control-4.67/configure.ac	2008-09-23 14:34:18.000000000 +0200
+@@ -146,7 +146,7 @@
+ AC_SUBST(GLIB_LIBS)
+ AC_SUBST(GLIB_CFLAGS)
+ 
+-PKG_CHECK_MODULES(GMODULE, gmodule-2.0)
++PKG_CHECK_MODULES(GMODULE, gmodule-no-export-2.0)
+ AC_SUBST(GMODULE_LIBS)
+ AC_SUBST(GMODULE_CFLAGS)
+ 

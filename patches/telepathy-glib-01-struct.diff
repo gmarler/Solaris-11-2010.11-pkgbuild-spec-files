@@ -1,0 +1,24 @@
+--- ./telepathy-glib/base-connection.c.orig	2009-05-19 15:19:52.302198000 +0800
++++ ./telepathy-glib/base-connection.c	2009-05-19 15:20:27.781925000 +0800
+@@ -3117,8 +3117,9 @@
+ {
+   TpBaseConnection *self = TP_BASE_CONNECTION (svc);
+ 
+-  return conn_requests_requestotron (self, requested_properties,
++  conn_requests_requestotron (self, requested_properties,
+       METHOD_CREATE_CHANNEL, context);
++  return;
+ }
+ 
+ 
+@@ -3129,8 +3130,9 @@
+ {
+   TpBaseConnection *self = TP_BASE_CONNECTION (svc);
+ 
+-  return conn_requests_requestotron (self, requested_properties,
++  conn_requests_requestotron (self, requested_properties,
+       METHOD_ENSURE_CHANNEL, context);
++  return;
+ }
+ 
+ 

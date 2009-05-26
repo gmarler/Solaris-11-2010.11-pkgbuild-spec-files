@@ -1,0 +1,8 @@
+--- libtelepathy-0.3.3-ori/src/Makefile.am	2008-02-04 23:35:51.000000000 +0800
++++ libtelepathy-0.3.3-my/src/Makefile.am	2008-11-05 15:55:44.687746000 +0800
+@@ -1,4 +1,4 @@
+-SUBDIRS = . check-compat
++SUBDIRS = . 
+ 
+ AM_CFLAGS = $(ERROR_CFLAGS) $(TP_GLIB_CFLAGS)
+ ALL_LIBS = $(TP_GLIB_LIBS)

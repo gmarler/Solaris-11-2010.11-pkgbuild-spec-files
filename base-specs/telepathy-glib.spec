@@ -11,7 +11,7 @@
 Name:			  telepathy-glib
 License:		GPL
 Group:			Applications/Internet
-Version:		0.7.19
+Version:		0.7.30
 Release:	 	1
 Distribution:		Java Desktop System
 Vendor:			Sun Microsystems, Inc.
@@ -68,6 +68,9 @@ make -j $CPUS
 make install DESTDIR=$RPM_BUILD_ROOT
 rm -rf $RPM_BUILD_ROOT%{_libdir}/*.la
 rm -rf $RPM_BUILD_ROOT%{_libdir}/*.a
+rm -rf $RPM_BUILD_ROOT/usr/bin
+rm -rf $RPM_BUILD_ROOT/usr/libexec
+rm -rf $RPM_BUILD_ROOT/usr/share/dbus-1
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -86,6 +89,8 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755, root, root) %{_includedir}/telepathy-1.0/*
 
 %changelog
+* Tue May 26 2009 - elaine.xiong@sun.com
+- Bump to 0.7.30.
 * Thu Mar 12 2009 - elaine.xiong@sun.com
 - Move from spec-files/trunk.
 * Tus Dec 08 2008 - rick.ju@sun.com

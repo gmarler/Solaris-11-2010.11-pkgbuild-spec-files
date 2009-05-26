@@ -1,3 +1,11 @@
+2009-05-26  Elaine Xiong  <elaine.xiong@sun.com>
+
+	* base-specs/telepathy-glib.spec: Bump to 0.7.30.
+	* patches/telepathy-glib-01-struct.diff:
+	* patches/libtelepathy-01-check-compat.diff:
+	* patches/telepathy-mission-control-01-branding.diff: Add missing 
+	  patches.
+
 2009-05-22  Brian Cameron  <brian.cameron@sun.com>
 
 	* SFEgst-plugins-bad.spec, base-specs-gst-plugins-bad.spec:  Bump to
