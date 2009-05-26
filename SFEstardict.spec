@@ -69,13 +69,9 @@ rm -rf ${RPM_BUILD_ROOT}
 %{_libdir}/stardict/*
 %dir %attr (0755, root, sys) %{_datadir}
 %dir %attr (0755, root, other) %{_datadir}/gnome
-%dir %attr (0755, root, other) %{_datadir}/applications
-%dir %attr (0755, root, other) %{_datadir}/pixmaps
-%attr (0755, root, other) %{_datadir}/locale
-%dir %attr (0755, root, bin) %{_datadir}/omf
-%dir %attr (0755, root, bin) %{_datadir}/idl
-%{_datadir}/applications/*
-%{_datadir}/pixmaps/*
+%attr (-, root, other) %{_datadir}/applications
+%attr (-, root, other) %{_datadir}/pixmaps
+%attr (-, root, other) %{_datadir}/locale
 %{_datadir}/omf/*
 %{_datadir}/idl/*
 %{_datadir}/stardict/*
@@ -83,7 +79,8 @@ rm -rf ${RPM_BUILD_ROOT}
 %{_datadir}/man/*
 
 %files root
-%attr (0755, root, sys) %{_sysconfdir}
+%defattr (-, root, sys)
+%attr (-, root, sys) %{_sysconfdir}
 
 %changelog
 * Tue Aug 26 2008 - yongsun@users.sourceforge.net
