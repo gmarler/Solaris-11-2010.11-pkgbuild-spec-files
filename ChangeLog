@@ -1,3 +1,17 @@
+2009-05-27  Alfred Peng  <alfred.peng@sun.com>
+
+	* SFElxde-setting-deamon.spec: Added.
+	* SFElxinput.spec: Added.
+	* SFElxsession.spec: Bump to 0.3.8 and remove upstreamed patch.
+	* patches/lxinput-01-Werror.diff: Added.
+	* patches/pcmanfm-02-Werror.diff: Add missing patch.
+
+	Add missing ChangeLog from 2009-05-25.
+	* SFEpcmanfm.spec: Update source URL and set correct GMSGFMT.
+	* patches/lxpanel-04-crash.diff,
+	  patches/pcmanfm-03-union-struct-naming.diff:
+	  Add missing patches.
+
 2009-05-27  Wang Xin  <jedy.wang@sun.com>
 
 	* SFEvim.spec: Bump to release 191.

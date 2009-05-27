@@ -1,0 +1,24 @@
+--- pcmanfm-0.5/src/Makefile.am.orig	2009-03-13 00:37:47.504691870 +0800
++++ pcmanfm-0.5/src/Makefile.am	2009-03-13 00:38:01.989683414 +0800
+@@ -126,8 +126,7 @@
+     @GTK_CFLAGS@ \
+     @SN_CFLAGS@ \
+     @HAL_CFLAGS@ \
+-    @G_CAST_CHECKS@ \
+-    -Werror-implicit-function-declaration
++    @G_CAST_CHECKS@
+ 
+ pcmanfm_LDADD = @GTK_LIBS@ $(INTLLIBS) @FAM_LIBS@ @HAL_LIBS@ @SN_LIBS@
+ 
+--- pcmanfm-0.5/src/Makefile.in.orig	2009-03-13 00:40:46.658473594 +0800
++++ pcmanfm-0.5/src/Makefile.in	2009-03-13 00:40:53.955876118 +0800
+@@ -446,8 +446,7 @@
+     @GTK_CFLAGS@ \
+     @SN_CFLAGS@ \
+     @HAL_CFLAGS@ \
+-    @G_CAST_CHECKS@ \
+-    -Werror-implicit-function-declaration
++    @G_CAST_CHECKS@
+ 
+ pcmanfm_LDADD = @GTK_LIBS@ $(INTLLIBS) @FAM_LIBS@ @HAL_LIBS@ @SN_LIBS@
+ all: all-am

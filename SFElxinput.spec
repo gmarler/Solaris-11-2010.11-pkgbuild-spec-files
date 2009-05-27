@@ -1,17 +1,18 @@
 #
-# spec file for package SFElxsession
+# spec file for package SFElxinput
 #
-# includes module(s): lxsession
-#
-# https://sourceforge.net/tracker/index.php?func=detail&aid=$bugid&group_id=180858&atid=894869
+# includes module(s): lxinput
 #
 %include Solaris.inc
 
-Name:                    SFElxsession
-Summary:                 LXDE session manager
-Version:                 0.3.8
-Source:                  http://nchc.dl.sourceforge.net/sourceforge/lxde/lxsession-%{version}.tar.gz
+Name:                    SFElxinput
+Summary:                 LXInput (Kbd & mouse config)
+Version:                 0.1
+Source:                  http://nchc.dl.sourceforge.net/sourceforge/lxde/lxinput-%{version}.tar.gz
 URL:                     http://sourceforge.net/projects/lxde/
+
+# owner:alfred date:2009-05-27 type:bug
+Patch1:                  lxinput-01-Werror.diff
 
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -26,7 +27,8 @@ Requires:                %{name}
 %endif
 
 %prep
-%setup -q -n lxsession-%version
+%setup -q -n lxinput-%version
+%patch1 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -34,10 +36,8 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
     CPUS=1
 fi
 
-export LDFLAGS="-lsocket"
-
 autoconf
-./configure --prefix=%{_prefix} --libdir=%{_libdir}
+./configure --prefix=%{_prefix} --libdir=%{_libdir} --mandir=%{_mandir}
 make -j$CPUS 
 
 %install
@@ -58,10 +58,10 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, bin) %{_bindir}
 %{_bindir}/*
 %dir %attr (0755, root, sys) %{_datadir}
-%dir %attr (0755, root, other) %{_datadir}/lxsession
-%{_datadir}/lxsession/*
-%dir %attr (0755, root, bin) %{_datadir}/man
-%{_datadir}/man/*
+%dir %attr (0755, root, other) %{_datadir}/applications
+%{_datadir}/applications/*
+%dir %attr (0755, root, other) %{_datadir}/lxinput
+%{_datadir}/lxinput/*
 
 %if %build_l10n
 %files l10n
@@ -72,7 +72,4 @@ rm -rf $RPM_BUILD_ROOT
 
 %changelog
 * Wed May 27 2009 - alfred.peng@sun.com
-- Bump to 0.3.8.
-  Remove upstreamed patch docbook2man.diff for bug 2688183.
-* Mon Mar 16 2009 - alfred.peng@sun.com
 - Initial version
