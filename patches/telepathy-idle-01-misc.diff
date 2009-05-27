@@ -1,0 +1,158 @@
+--- ./src/idle-connection.c.ori	2009-05-20 14:37:59.290532000 +0800
++++ ./src/idle-connection.c	2009-05-20 14:38:33.290472000 +0800
+@@ -725,7 +725,8 @@
+ }
+ 
+ void idle_connection_send(IdleConnection *conn, const gchar *msg) {
+-	return _send_with_priority(conn, msg, SERVER_CMD_NORMAL_PRIORITY);
++	_send_with_priority(conn, msg, SERVER_CMD_NORMAL_PRIORITY);
++	return;
+ }
+ 
+ gsize
+--- ./src/idle-muc-channel.c.ori	2009-05-20 14:49:30.836032000 +0800
++++ ./src/idle-muc-channel.c	2009-05-20 14:53:06.645611000 +0800
+@@ -961,15 +961,17 @@
+ }
+ 
+ void idle_muc_channel_part(IdleMUCChannel *chan, TpHandle leaver, const gchar *message) {
+-	return _network_member_left(chan, leaver, leaver, message, TP_CHANNEL_GROUP_CHANGE_REASON_NONE);
++	_network_member_left(chan, leaver, leaver, message, TP_CHANNEL_GROUP_CHANGE_REASON_NONE);
++	return;
+ }
+ 
+ void idle_muc_channel_kick(IdleMUCChannel *chan, TpHandle kicked, TpHandle kicker, const gchar *message) {
+-	return _network_member_left(chan, kicked, kicker, message, TP_CHANNEL_GROUP_CHANGE_REASON_KICKED);
++	_network_member_left(chan, kicked, kicker, message, TP_CHANNEL_GROUP_CHANGE_REASON_KICKED);
++	return;
+ }
+ 
+ void idle_muc_channel_quit(IdleMUCChannel *chan, TpHandle quitter, const gchar *message) {
+-	return _network_member_left(chan, quitter, quitter, message, TP_CHANNEL_GROUP_CHANGE_REASON_OFFLINE);
++	_network_member_left(chan, quitter, quitter, message, TP_CHANNEL_GROUP_CHANGE_REASON_OFFLINE);
+ }
+ 
+ void idle_muc_channel_invited(IdleMUCChannel *chan, TpHandle inviter) {
+@@ -1408,7 +1410,8 @@
+ }
+ 
+ void idle_muc_channel_join_attempt(IdleMUCChannel *obj) {
+-	return send_join_request(obj, NULL);
++	send_join_request(obj, NULL);
++	return;
+ }
+ 
+ static gboolean send_invite_request(IdleMUCChannel *obj, TpHandle handle, GError **error) {
+--- ./src/idle-parser.c.ori	2009-05-20 15:10:23.342015000 +0800
++++ ./src/idle-parser.c	2009-05-20 15:10:42.932772000 +0800
+@@ -241,7 +241,8 @@
+ }
+ 
+ void idle_parser_add_handler(IdleParser *parser, IdleParserMessageCode code, IdleParserMessageHandler handler, gpointer user_data) {
+-	return idle_parser_add_handler_with_priority(parser, code, handler, user_data, IDLE_PARSER_HANDLER_PRIORITY_DEFAULT);
++	idle_parser_add_handler_with_priority(parser, code, handler, user_data, IDLE_PARSER_HANDLER_PRIORITY_DEFAULT);
++	return;
+ }
+ 
+ static gint _message_handler_closure_priority_compare(gconstpointer a, gconstpointer b) {
+--- ./src/idle-ssl-server-connection.c.ori	2009-05-20 15:13:26.267616000 +0800
++++ ./src/idle-ssl-server-connection.c	2009-05-20 15:17:24.599890000 +0800
+@@ -350,8 +350,10 @@
+ 	int status;
+ 	int opt;
+ 
+-	if (!success)
+-		return ssl_conn_change_state(conn, SERVER_CONNECTION_STATE_NOT_CONNECTED, SERVER_CONNECTION_STATE_REASON_ERROR);
++	if (!success) {
++		ssl_conn_change_state(conn, SERVER_CONNECTION_STATE_NOT_CONNECTED, SERVER_CONNECTION_STATE_REASON_ERROR);
++		return;
++	}	
+ 
+ 	priv->io_chan = priv->connect_data->io_chan;
+ 	priv->connect_data->io_chan = NULL;
+@@ -377,35 +379,40 @@
+ 
+ 	if (!ctx) {
+ 		IDLE_DEBUG("failed to get SSL context object");
+-		return ssl_async_connecting_finished_cb(conn, FALSE);
++		ssl_async_connecting_finished_cb(conn, FALSE);
++		return;
+ 	}
+ 
+ 	priv->ssl = SSL_new(ctx);
+ 
+ 	if (!priv->ssl) {
+ 		IDLE_DEBUG("failed to create SSL object");
+-		return ssl_async_connecting_finished_cb(conn, FALSE);
++		ssl_async_connecting_finished_cb(conn, FALSE);
++		return;
+ 	}
+ 
+ 	status = SSL_set_fd(priv->ssl, fd);
+ 
+ 	if (!status) {
+ 		IDLE_DEBUG("failed to set SSL socket");
+-		return ssl_async_connecting_finished_cb(conn, FALSE);
++		ssl_async_connecting_finished_cb(conn, FALSE);
++		return;
+ 	}
+ 
+ 	status = SSL_connect(priv->ssl);
+ 
+ 	if (status <= 0) {
+ 		IDLE_DEBUG("SSL_connect failed with status %i (error %i)", status, SSL_get_error(priv->ssl, status));
+-		return ssl_async_connecting_finished_cb(conn, FALSE);
++		ssl_async_connecting_finished_cb(conn, FALSE);
++		return;
+ 	}
+ 
+ 	cert = SSL_get_peer_certificate(priv->ssl);
+ 
+ 	if (!cert) {
+ 		IDLE_DEBUG("failed to get SSL peer certificate");
+-		return ssl_async_connecting_finished_cb(conn, FALSE);
++		ssl_async_connecting_finished_cb(conn, FALSE);
++		return;
+ 	}
+ 
+ 	/* TODO sometime in the future implement certificate verification */
+@@ -459,7 +466,8 @@
+ 
+ 	if (fd == -1) {
+ 		IDLE_DEBUG("failed: %s", g_strerror(errno));
+-		return data->finished_cb(data->conn, FALSE);
++		data->finished_cb(data->conn, FALSE);
++		return;
+ 	}
+ 
+ 	rc = fcntl(fd, F_SETFL, O_NONBLOCK);
+@@ -467,7 +475,8 @@
+ 	if (rc != 0) {
+ 		IDLE_DEBUG("failed to set socket to non-blocking mode: %s", g_strerror(errno));
+ 		close(fd);
+-		return data->finished_cb(data->conn, FALSE);
++		data->finished_cb(data->conn, FALSE);
++		return;
+ 	}
+ 
+ 	rc = connect(fd, data->cur->ai_addr, data->cur->ai_addrlen);
+@@ -475,7 +484,8 @@
+ 	if ((errno != EINPROGRESS) && (rc == -1)) {
+ 		IDLE_DEBUG("connect() failed: %s", g_strerror(errno));
+ 		close(fd);
+-		return data->finished_cb(data->conn, FALSE);
++		data->finished_cb(data->conn, FALSE);
++		return;
+ 	}
+ 
+ 	io_chan = g_io_channel_unix_new(fd);
+@@ -502,7 +512,8 @@
+ 	data->cur = results;
+ 	data->finished_cb = ssl_async_connecting_finished_cb;
+ 
+-	return ssl_do_connect(data);
++	ssl_do_connect(data);
++	return;
+ }
+ 
+ static gboolean iface_ssl_connect_impl(IdleServerConnectionIface *iface, GError **error) {

@@ -1,3 +1,9 @@
+2009-05-27  Elaine Xiong  <elaine.xiong@sun.com>
+
+	* SFEtelepathy-idle.spec:
+	* base-specs/telepathy-idle.spec:
+	* patches/telepathy-idle-01-misc.diff: Create telepathy-idle specs.
+
 2009-05-26  Elaine Xiong  <elaine.xiong@sun.com>
 
 	* base-specs/telepathy-glib.spec: Bump to 0.7.30.
