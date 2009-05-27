@@ -1,3 +1,7 @@
+2009-05-27  Wang Xin  <jedy.wang@sun.com>
+
+	* SFEvim.spec: Bump to release 191.
+
 2009-05-27  Elaine Xiong  <elaine.xiong@sun.com>
 
 	* SFEtelepathy-idle.spec:

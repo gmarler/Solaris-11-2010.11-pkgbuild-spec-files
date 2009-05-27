@@ -185,6 +185,56 @@ Patch138: ftp://ftp.vim.org/pub/vim/patches/7.2/7.2.138
 Patch139: ftp://ftp.vim.org/pub/vim/patches/7.2/7.2.139
 Patch140: ftp://ftp.vim.org/pub/vim/patches/7.2/7.2.140
 Patch141: ftp://ftp.vim.org/pub/vim/patches/7.2/7.2.141
+Patch142: ftp://ftp.vim.org/pub/vim/patches/7.2/7.2.142
+Patch143: ftp://ftp.vim.org/pub/vim/patches/7.2/7.2.143
+Patch144: ftp://ftp.vim.org/pub/vim/patches/7.2/7.2.144
+Patch145: ftp://ftp.vim.org/pub/vim/patches/7.2/7.2.145
+Patch146: ftp://ftp.vim.org/pub/vim/patches/7.2/7.2.146
+Patch147: ftp://ftp.vim.org/pub/vim/patches/7.2/7.2.147
+Patch148: ftp://ftp.vim.org/pub/vim/patches/7.2/7.2.148
+Patch149: ftp://ftp.vim.org/pub/vim/patches/7.2/7.2.149
+Patch150: ftp://ftp.vim.org/pub/vim/patches/7.2/7.2.150
+Patch151: ftp://ftp.vim.org/pub/vim/patches/7.2/7.2.151
+Patch152: ftp://ftp.vim.org/pub/vim/patches/7.2/7.2.152
+Patch153: ftp://ftp.vim.org/pub/vim/patches/7.2/7.2.153
+Patch154: ftp://ftp.vim.org/pub/vim/patches/7.2/7.2.154
+Patch155: ftp://ftp.vim.org/pub/vim/patches/7.2/7.2.155
+Patch156: ftp://ftp.vim.org/pub/vim/patches/7.2/7.2.156
+Patch157: ftp://ftp.vim.org/pub/vim/patches/7.2/7.2.157
+Patch158: ftp://ftp.vim.org/pub/vim/patches/7.2/7.2.158
+Patch159: ftp://ftp.vim.org/pub/vim/patches/7.2/7.2.159
+Patch160: ftp://ftp.vim.org/pub/vim/patches/7.2/7.2.160
+Patch161: ftp://ftp.vim.org/pub/vim/patches/7.2/7.2.161
+Patch162: ftp://ftp.vim.org/pub/vim/patches/7.2/7.2.162
+Patch163: ftp://ftp.vim.org/pub/vim/patches/7.2/7.2.163
+Patch164: ftp://ftp.vim.org/pub/vim/patches/7.2/7.2.164
+Patch165: ftp://ftp.vim.org/pub/vim/patches/7.2/7.2.165
+Patch166: ftp://ftp.vim.org/pub/vim/patches/7.2/7.2.166
+Patch167: ftp://ftp.vim.org/pub/vim/patches/7.2/7.2.167
+Patch168: ftp://ftp.vim.org/pub/vim/patches/7.2/7.2.168
+Patch169: ftp://ftp.vim.org/pub/vim/patches/7.2/7.2.169
+Patch170: ftp://ftp.vim.org/pub/vim/patches/7.2/7.2.170
+Patch171: ftp://ftp.vim.org/pub/vim/patches/7.2/7.2.171
+Patch172: ftp://ftp.vim.org/pub/vim/patches/7.2/7.2.172
+Patch173: ftp://ftp.vim.org/pub/vim/patches/7.2/7.2.173
+Patch174: ftp://ftp.vim.org/pub/vim/patches/7.2/7.2.174
+Patch175: ftp://ftp.vim.org/pub/vim/patches/7.2/7.2.175
+Patch176: ftp://ftp.vim.org/pub/vim/patches/7.2/7.2.176
+Patch177: ftp://ftp.vim.org/pub/vim/patches/7.2/7.2.177
+Patch178: ftp://ftp.vim.org/pub/vim/patches/7.2/7.2.178
+Patch179: ftp://ftp.vim.org/pub/vim/patches/7.2/7.2.179
+Patch180: ftp://ftp.vim.org/pub/vim/patches/7.2/7.2.180
+Patch181: ftp://ftp.vim.org/pub/vim/patches/7.2/7.2.181
+Patch182: ftp://ftp.vim.org/pub/vim/patches/7.2/7.2.182
+Patch183: ftp://ftp.vim.org/pub/vim/patches/7.2/7.2.183
+Patch184: ftp://ftp.vim.org/pub/vim/patches/7.2/7.2.184
+Patch185: ftp://ftp.vim.org/pub/vim/patches/7.2/7.2.185
+Patch186: ftp://ftp.vim.org/pub/vim/patches/7.2/7.2.186
+Patch187: ftp://ftp.vim.org/pub/vim/patches/7.2/7.2.187
+Patch188: ftp://ftp.vim.org/pub/vim/patches/7.2/7.2.188
+Patch189: ftp://ftp.vim.org/pub/vim/patches/7.2/7.2.189
+Patch190: ftp://ftp.vim.org/pub/vim/patches/7.2/7.2.190
+Patch191: ftp://ftp.vim.org/pub/vim/patches/7.2/7.2.191
 
 %if %build_l10n
 %package l10n
@@ -346,6 +396,56 @@ cd vim%{vim_version}
 %patch139 -p0 
 %patch140 -p0 
 %patch141 -p0 
+%patch142 -p0 
+%patch143 -p0 
+%patch144 -p0 
+%patch145 -p0 
+%patch146 -p0 
+%patch147 -p0 
+%patch148 -p0 
+%patch149 -p0 
+%patch150 -p0 
+%patch151 -p0 
+%patch152 -p0 
+%patch153 -p0 
+%patch154 -p0 
+%patch155 -p0 
+%patch156 -p0 
+%patch157 -p0 
+%patch158 -p0 
+%patch159 -p0 
+%patch160 -p0 
+%patch161 -p0 
+%patch162 -p0 
+%patch163 -p0 
+%patch164 -p0 
+%patch165 -p0 
+%patch166 -p0 
+%patch167 -p0 
+%patch168 -p0 
+%patch169 -p0 
+%patch170 -p0 
+%patch171 -p0 
+%patch172 -p0 
+%patch173 -p0 
+%patch174 -p0 
+%patch175 -p0 
+%patch176 -p0 
+%patch177 -p0 
+%patch178 -p0 
+%patch179 -p0 
+%patch180 -p0 
+%patch181 -p0 
+%patch182 -p0 
+%patch183 -p0 
+%patch184 -p0 
+%patch185 -p0 
+%patch186 -p0 
+%patch187 -p0 
+%patch188 -p0 
+%patch189 -p0 
+%patch190 -p0 
+%patch191 -p0 
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -442,6 +542,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Wed May 27 2009 - jedy.wang@sun.com
+- Bump to release 191.
 * Fri Mar 13 2008 - jedy.wang@sun.com
 - Bump to release 141.
 * Tue Nov 19 2008 - alexander@skwar.name
