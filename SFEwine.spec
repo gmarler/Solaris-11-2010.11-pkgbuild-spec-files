@@ -6,14 +6,13 @@
 # Owner: trisk
 %include Solaris.inc
 
-%define src_name	wine
-%define src_url		%{sf_download}/%{src_name}
+%define src_url		%{sf_download}/%{sname}
 
 Name:                   SFEwine
 Summary:                Windows compatibility
-Version:                1.1.19
+Version:                1.1.22
 URL:                    http://www.winehq.org/
-Source:                 %{src_url}/%{src_name}-%{version}.tar.bz2
+Source:                 %{src_url}/%{sname}-%{version}.tar.bz2
 Source101:		http://trisk.acm.jhu.edu/winetricks-20080627
 #we need this because pkg can't handle 2 source_url
 Nosource:               101
@@ -66,7 +65,7 @@ Requires: %name
 %include default-depend.inc
 
 %prep
-%setup -q -n %{src_name}-%{version}
+%setup -q -n %{sname}-%{version}
 %patch1 -p1
 #%patch2 -p1
 #%patch3 -p1
@@ -154,6 +153,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/aclocal/*
 
 %changelog
+* Sat May 30 2009 - andras.barna@gmail.com
+- bump to 1.1.22
 * Sat Apr 11 2009 - andras.barna@gmail.com
 - bump to 1.1.19
 * Tue Mar 24 2009 - andras.barna@gmail.com

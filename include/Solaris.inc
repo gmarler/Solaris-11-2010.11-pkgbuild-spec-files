@@ -16,6 +16,7 @@ SUNW_Pkg_ThisZone:         false
 %define is_nevada %(test `uname -r` = 5.11 && echo 1 || echo 0)
 %define is_s10    %(test `uname -r` = 5.10 && echo 1 || echo 0)
 %define _patch_options --fuzz=0 --unified
+%define sname %(echo %name|sed 's/SFE//')
 
 SUNW_Category:             %{default_category}
 SUNW_HotLine:              Please contact your local service provider
@@ -79,6 +80,8 @@ SUNW_Copyright:            default-copyright.txt
 %define _pkg_config_path   %{_libdir}/pkgconfig
 
 # ChangeLog:
+# 2009-05-30  Andras Barna <andras.barna@gmail.com>
+# - define sname = Name-SFE to make life easier
 # 2008-02-18  Laszlo (Laca) Peter  <laca@sun.com>
 # - allow user to redefine _basedir
 # 2007-09-28  Laszlo (Laca) Peter  <laca@sun.com>

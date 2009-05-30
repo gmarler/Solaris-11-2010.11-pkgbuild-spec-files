@@ -6,7 +6,7 @@
 
 Name:                SFEgeoip
 Summary:             The GeoIP library and cli tools
-Version:             1.4.5
+Version:             1.4.6
 Source:              http://www.maxmind.com/download/geoip/api/c/GeoIP-%{version}.tar.gz
 Patch1:              geoip-01-solaris.diff
 SUNW_BaseDir:        %{_basedir}
@@ -77,6 +77,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sat May 30 2009 - Andras Barna (andras.barna@gmail.com)
+- bump to 1.4.6
 * Tue Oct 28 2008 - Andras Barna (andras.barna@gmail.com)
 - Initial spec.
 

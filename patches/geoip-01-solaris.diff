@@ -1,72 +1,3 @@
-diff -Naur GeoIP-1.4.5.old/Makefile.am GeoIP-1.4.5/Makefile.am
---- GeoIP-1.4.5.old/Makefile.am	2008-10-27 20:05:14.015985938 +0200
-+++ GeoIP-1.4.5/Makefile.am	2008-10-27 20:31:58.385580374 +0200
-@@ -1,6 +1,6 @@
- NULL =
- 
--INCLUDES = -Wall -ansi
-+INCLUDES =
- 
- SUBDIRS =		\
- 	libGeoIP	\
-diff -Naur GeoIP-1.4.5.old/Makefile.in GeoIP-1.4.5/Makefile.in
---- GeoIP-1.4.5.old/Makefile.in	2008-10-27 20:05:13.952071131 +0200
-+++ GeoIP-1.4.5/Makefile.in	2008-10-27 20:31:45.725524309 +0200
-@@ -89,7 +89,7 @@
- 
- NULL = 
- 
--INCLUDES = -Wall
-+INCLUDES =
- 
- SUBDIRS =  	libGeoIP		apps			conf			data			test			man			$(NULL)
- 
-diff -Naur GeoIP-1.4.5.old/apps/Makefile.am GeoIP-1.4.5/apps/Makefile.am
---- GeoIP-1.4.5.old/apps/Makefile.am	2008-10-27 20:05:14.027048801 +0200
-+++ GeoIP-1.4.5/apps/Makefile.am	2008-10-27 20:34:25.411562926 +0200
-@@ -1,8 +1,8 @@
- INCLUDES = 	\
--	-I$(top_srcdir)/libGeoIP		\
--	-Wall
-+	-I$(top_srcdir)/libGeoIP		
- 
--AM_CPPFLAGS = -DSYSCONFDIR=\"$(sysconfdir)\" -Wall
-+
-+AM_CPPFLAGS = -DSYSCONFDIR=\"$(sysconfdir)\"
- 
- DEPS = $(top_builddir)/libGeoIP/libGeoIP.la
- LDADDS = $(top_builddir)/libGeoIP/libGeoIP.la
-diff -Naur GeoIP-1.4.5.old/apps/Makefile.in GeoIP-1.4.5/apps/Makefile.in
---- GeoIP-1.4.5.old/apps/Makefile.in	2008-10-27 20:05:14.026242730 +0200
-+++ GeoIP-1.4.5/apps/Makefile.in	2008-10-27 20:34:39.595585673 +0200
-@@ -87,10 +87,10 @@
- VERSION = @VERSION@
- WITH_CITY = @WITH_CITY@
- 
--INCLUDES =  	-I$(top_srcdir)/libGeoIP			-Wall
-+INCLUDES =  	-I$(top_srcdir)/libGeoIP
- 
- 
--AM_CPPFLAGS = -DSYSCONFDIR=\"$(sysconfdir)\" -Wall
-+AM_CPPFLAGS = -DSYSCONFDIR=\"$(sysconfdir)\"
- 
- DEPS = $(top_builddir)/libGeoIP/libGeoIP.la
- LDADDS = $(top_builddir)/libGeoIP/libGeoIP.la
-diff -Naur GeoIP-1.4.5.old/libGeoIP/GeoIPCity.h GeoIP-1.4.5/libGeoIP/GeoIPCity.h
---- GeoIP-1.4.5.old/libGeoIP/GeoIPCity.h	2008-10-27 20:05:14.020398096 +0200
-+++ GeoIP-1.4.5/libGeoIP/GeoIPCity.h	2008-10-27 22:51:49.822806357 +0200
-@@ -36,10 +36,7 @@
- 	char *postal_code;
- 	float latitude;
- 	float longitude;
--	union {
--	  int metro_code; /* metro_code is a alias for dma_code */
--	  int dma_code;
--        };
-+	int metro_code;
- 	int area_code;
- 	int charset;
- 	char *continent_code;
 diff -Naur GeoIP-1.4.5.old/libGeoIP/GeoIPUpdate.c GeoIP-1.4.5/libGeoIP/GeoIPUpdate.c
 --- GeoIP-1.4.5.old/libGeoIP/GeoIPUpdate.c	2008-10-27 20:05:14.025348346 +0200
 +++ GeoIP-1.4.5/libGeoIP/GeoIPUpdate.c	2008-10-27 21:55:02.806511890 +0200
@@ -78,30 +9,6 @@ diff -Naur GeoIP-1.4.5.old/libGeoIP/GeoIPUpdate.c GeoIP-1.4.5/libGeoIP/GeoIPUpda
  
  #include "global.h"
  #include "md5.h"
-diff -Naur GeoIP-1.4.5.old/libGeoIP/Makefile.am GeoIP-1.4.5/libGeoIP/Makefile.am
---- GeoIP-1.4.5.old/libGeoIP/Makefile.am	2008-10-27 20:05:14.023969014 +0200
-+++ GeoIP-1.4.5/libGeoIP/Makefile.am	2008-10-27 20:33:37.454787884 +0200
-@@ -2,7 +2,7 @@
- 
- EXTRA_DIST = md5.h global.h types.h GeoIP_internal.h
- 
--AM_CPPFLAGS = -DGEOIPDATADIR=\"$(pkgdatadir)\" -Wall
-+AM_CPPFLAGS = -DGEOIPDATADIR=\"$(pkgdatadir)\"
- 
- if WITH_CITY
- libGeoIP_la_SOURCES = GeoIP.c GeoIPCity.c regionName.c timeZone.c
-diff -Naur GeoIP-1.4.5.old/libGeoIP/Makefile.in GeoIP-1.4.5/libGeoIP/Makefile.in
---- GeoIP-1.4.5.old/libGeoIP/Makefile.in	2008-10-27 20:05:14.025065840 +0200
-+++ GeoIP-1.4.5/libGeoIP/Makefile.in	2008-10-27 20:34:00.748334148 +0200
-@@ -91,7 +91,7 @@
- 
- EXTRA_DIST = md5.h global.h types.h GeoIP_internal.h
- 
--AM_CPPFLAGS = -DGEOIPDATADIR=\"$(pkgdatadir)\" -Wall
-+AM_CPPFLAGS = -DGEOIPDATADIR=\"$(pkgdatadir)\"
- @WITH_CITY_TRUE@libGeoIP_la_SOURCES = GeoIP.c GeoIPCity.c regionName.c timeZone.c
- @WITH_CITY_FALSE@libGeoIP_la_SOURCES = GeoIP.c regionName.c timeZone.c
- @WITH_CITY_TRUE@include_HEADERS = GeoIP.h GeoIPCity.h GeoIPUpdate.h
 diff -Naur GeoIP-1.4.5.old/libGeoIP/vasprintf.h GeoIP-1.4.5/libGeoIP/vasprintf.h
 --- GeoIP-1.4.5.old/libGeoIP/vasprintf.h	1970-01-01 02:00:00.000000000 +0200
 +++ GeoIP-1.4.5/libGeoIP/vasprintf.h	2008-10-27 21:53:59.233652558 +0200
@@ -185,26 +92,102 @@ diff -Naur GeoIP-1.4.5.old/libGeoIP/vasprintf.h GeoIP-1.4.5/libGeoIP/vasprintf.h
 +#endif
 +
 +#endif /* VASPRINTF_H */
-diff -Naur GeoIP-1.4.5.old/test/Makefile.am GeoIP-1.4.5/test/Makefile.am
---- GeoIP-1.4.5.old/test/Makefile.am	2008-10-27 20:05:13.947914268 +0200
-+++ GeoIP-1.4.5/test/Makefile.am	2008-10-27 20:35:08.668756354 +0200
-@@ -2,7 +2,6 @@
+diff -Naur GeoIP-1.4.6.old/apps/Makefile.am GeoIP-1.4.6/apps/Makefile.am
+--- GeoIP-1.4.6.old/apps/Makefile.am	2009-05-03 09:16:28.934137141 +0300
++++ GeoIP-1.4.6/apps/Makefile.am	2009-05-03 09:17:43.463447736 +0300
+@@ -1,8 +1,7 @@
+ INCLUDES = 	\
+-	-I$(top_srcdir)/libGeoIP		\
+-	-Wall
++	-I$(top_srcdir)/libGeoIP		
  
+-AM_CPPFLAGS = -DSYSCONFDIR=\"$(sysconfdir)\" -Wall
++AM_CPPFLAGS = -DSYSCONFDIR=\"$(sysconfdir)\"
+ 
+ DEPS = $(top_builddir)/libGeoIP/libGeoIP.la
+ LDADDS = $(top_builddir)/libGeoIP/libGeoIP.la
+diff -Naur GeoIP-1.4.6.old/apps/Makefile.in GeoIP-1.4.6/apps/Makefile.in
+--- GeoIP-1.4.6.old/apps/Makefile.in	2009-05-03 09:16:28.936234828 +0300
++++ GeoIP-1.4.6/apps/Makefile.in	2009-05-03 09:18:13.117975071 +0300
+@@ -190,10 +190,9 @@
+ top_builddir = @top_builddir@
+ top_srcdir = @top_srcdir@
+ INCLUDES = \
+-	-I$(top_srcdir)/libGeoIP		\
+-	-Wall
++	-I$(top_srcdir)/libGeoIP		
+ 
+-AM_CPPFLAGS = -DSYSCONFDIR=\"$(sysconfdir)\" -Wall
++AM_CPPFLAGS = -DSYSCONFDIR=\"$(sysconfdir)\"
+ DEPS = $(top_builddir)/libGeoIP/libGeoIP.la
+ LDADDS = $(top_builddir)/libGeoIP/libGeoIP.la
+ geoiplookup_SOURCES = geoiplookup.c
+diff -Naur GeoIP-1.4.6.old/libGeoIP/Makefile.am GeoIP-1.4.6/libGeoIP/Makefile.am
+--- GeoIP-1.4.6.old/libGeoIP/Makefile.am	2009-05-03 09:16:29.053646019 +0300
++++ GeoIP-1.4.6/libGeoIP/Makefile.am	2009-05-03 09:18:54.164006699 +0300
+@@ -2,7 +2,7 @@
+ 
+ EXTRA_DIST = Makefile.vc md5.h global.h types.h GeoIP_internal.h
+ 
+-AM_CPPFLAGS = -DGEOIPDATADIR=\"$(pkgdatadir)\" -Wall
++AM_CPPFLAGS = -DGEOIPDATADIR=\"$(pkgdatadir)\"
+ 
+ libGeoIP_la_SOURCES = GeoIP.c GeoIPCity.c regionName.c timeZone.c
+ include_HEADERS = GeoIP.h GeoIPCity.h GeoIPUpdate.h
+diff -Naur GeoIP-1.4.6.old/libGeoIP/Makefile.in GeoIP-1.4.6/libGeoIP/Makefile.in
+--- GeoIP-1.4.6.old/libGeoIP/Makefile.in	2009-05-03 09:16:29.039883958 +0300
++++ GeoIP-1.4.6/libGeoIP/Makefile.in	2009-05-03 09:19:05.340410506 +0300
+@@ -192,7 +192,7 @@
+ top_srcdir = @top_srcdir@
+ lib_LTLIBRARIES = libGeoIP.la libGeoIPUpdate.la
+ EXTRA_DIST = Makefile.vc md5.h global.h types.h GeoIP_internal.h
+-AM_CPPFLAGS = -DGEOIPDATADIR=\"$(pkgdatadir)\" -Wall
++AM_CPPFLAGS = -DGEOIPDATADIR=\"$(pkgdatadir)\"
+ libGeoIP_la_SOURCES = GeoIP.c GeoIPCity.c regionName.c timeZone.c
+ include_HEADERS = GeoIP.h GeoIPCity.h GeoIPUpdate.h
+ libGeoIPUpdate_la_SOURCES = GeoIPUpdate.c md5.c
+diff -Naur GeoIP-1.4.6.old/Makefile.am GeoIP-1.4.6/Makefile.am
+--- GeoIP-1.4.6.old/Makefile.am	2009-05-03 09:16:29.345323321 +0300
++++ GeoIP-1.4.6/Makefile.am	2009-05-03 09:16:42.105126373 +0300
+@@ -1,4 +1,4 @@
+-INCLUDES = -Wall -ansi
++INCLUDES =
+ 
+ SUBDIRS =		\
+ 	libGeoIP	\
+diff -Naur GeoIP-1.4.6.old/Makefile.in GeoIP-1.4.6/Makefile.in
+--- GeoIP-1.4.6.old/Makefile.in	2009-05-03 09:16:29.135846762 +0300
++++ GeoIP-1.4.6/Makefile.in	2009-05-03 09:17:23.193855933 +0300
+@@ -181,7 +181,7 @@
+ top_build_prefix = @top_build_prefix@
+ top_builddir = @top_builddir@
+ top_srcdir = @top_srcdir@
+-INCLUDES = -Wall -ansi
++INCLUDES =
+ SUBDIRS = \
+ 	libGeoIP	\
+ 	apps		\
+diff -Naur GeoIP-1.4.6.old/test/Makefile.am GeoIP-1.4.6/test/Makefile.am
+--- GeoIP-1.4.6.old/test/Makefile.am	2009-05-03 09:16:29.344828523 +0300
++++ GeoIP-1.4.6/test/Makefile.am	2009-05-03 09:19:30.353983567 +0300
+@@ -1,6 +1,5 @@
  INCLUDES =	\
- 	-I$(top_srcdir)/libGeoIP		\
--	-Wall					\
- 	$(NULL)
+-	-I$(top_srcdir)/libGeoIP		\
+-	-Wall
++	-I$(top_srcdir)/libGeoIP		
  
  check_PROGRAMS = test-geoip
-diff -Naur GeoIP-1.4.5.old/test/Makefile.in GeoIP-1.4.5/test/Makefile.in
---- GeoIP-1.4.5.old/test/Makefile.in	2008-10-27 20:05:13.949233894 +0200
-+++ GeoIP-1.4.5/test/Makefile.in	2008-10-27 20:35:21.873243969 +0200
-@@ -89,7 +89,7 @@
  
- NULL = 
+diff -Naur GeoIP-1.4.6.old/test/Makefile.in GeoIP-1.4.6/test/Makefile.in
+--- GeoIP-1.4.6.old/test/Makefile.in	2009-05-03 09:16:29.342067618 +0300
++++ GeoIP-1.4.6/test/Makefile.in	2009-05-03 09:19:39.393407612 +0300
+@@ -218,8 +218,7 @@
+ top_builddir = @top_builddir@
+ top_srcdir = @top_srcdir@
+ INCLUDES = \
+-	-I$(top_srcdir)/libGeoIP		\
+-	-Wall
++	-I$(top_srcdir)/libGeoIP		
  
--INCLUDES =  	-I$(top_srcdir)/libGeoIP			-Wall					$(NULL)
-+INCLUDES =  	-I$(top_srcdir)/libGeoIP $(NULL)
- 
- 
- check_PROGRAMS = test-geoip
+ LDADD = $(top_builddir)/libGeoIP/libGeoIP.la
+ AM_CPPFLAGS = -DSRCDIR=\"$(top_srcdir)\"

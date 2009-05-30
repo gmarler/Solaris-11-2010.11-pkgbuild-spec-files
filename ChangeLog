@@ -1,3 +1,10 @@
+2009-05-30  Andras Barna  <andras.barna@gmail.com>
+
+	* SFEgeoip.spec: bump version
+	* SFEwine.spec: bump version
+	* include/Solaris.inc: define sname = Name-SFE to make life easier
+	* patches/geoip-01-solaris.diff: rework
+
 2009-05-27  Alfred Peng  <alfred.peng@sun.com>
 
 	* SFElxde-setting-deamon.spec: Added.
