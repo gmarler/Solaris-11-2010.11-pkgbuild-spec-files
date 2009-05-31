@@ -1,3 +1,10 @@
+2009-05-30  Albert Lee  <trisk@forkgnu.org>
+
+	* SFEnicdrv.spec: Update GLDv3 headers to 20090522 version (snv_116).
+	* SFEwine.spec: Use included soundcard.h. Use winetricks from trunk.
+	  Update patch2. Disable patch101. Explicitly disable GnuTLS to prevent
+	  schannel-related crashes. Add SUNWncurses dependency.
+
 2009-05-30  Andras Barna  <andras.barna@gmail.com>
 
 	* SFEgeoip.spec: bump version

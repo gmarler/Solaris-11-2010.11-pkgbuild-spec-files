@@ -324,12 +324,12 @@ index 0a69f7a..40c1c36 100644
  /* create an async on a given queue of a fd */
  struct async *create_async( struct thread *thread, struct async_queue *queue, const async_data_t *data )
  {
-@@ -214,6 +215,7 @@ struct async *create_async( struct thread *thread, struct async_queue *queue, co
+@@ -214,6 +214,7 @@ struct async *create_async( struct thread *thread, struct async_queue *queue, co
      async->timeout = NULL;
      async->queue   = (struct async_queue *)grab_object( queue );
      async->completion = NULL;
 +    async->locator = 0;
-     if (queue->fd) fd_assign_completion( queue->fd, &async->completion, &async->comp_key );
+     if (queue->fd) async->completion = fd_get_completion( queue->fd, &async->comp_key );
  
      list_add_tail( &queue->queue, &async->queue_entry );
 @@ -224,6 +226,15 @@ struct async *create_async( struct thread *thread, struct async_queue *queue, co
@@ -468,13 +468,12 @@ index 0eac537..aa1dd84 100644
  };
  
  /* file descriptor functions */
-@@ -137,12 +140,16 @@ extern struct async_queue *create_async_queue( struct fd *fd );
+@@ -137,12 +137,15 @@ extern struct async_queue *create_async_queue( struct fd *fd );
  extern void free_async_queue( struct async_queue *queue );
  extern struct async *create_async( struct thread *thread, struct async_queue *queue,
                                     const async_data_t *data );
 +extern struct async *create_async_l( struct thread *thread, struct async_queue *queue,
 +                                   const async_data_t *data, obj_handle_t l );
-+
  extern void async_set_timeout( struct async *async, timeout_t timeout, unsigned int status );
  extern void async_set_result( struct object *obj, unsigned int status,
                                unsigned int total, client_ptr_t apc );
@@ -482,9 +481,9 @@ index 0eac537..aa1dd84 100644
  extern void async_terminate( struct async *async, unsigned int status );
  extern void async_wake_up( struct async_queue *queue, unsigned int status );
 +extern void async_wake_up_l( struct async_queue *queue, unsigned int status, obj_handle_t l );
- extern void fd_assign_completion( struct fd *fd, struct completion **p_port, apc_param_t *p_key );
+ extern struct completion *fd_get_completion( struct fd *fd, apc_param_t *p_key );
+ extern void fd_copy_completion( struct fd *src, struct fd *dst );
  
- /* access rights that require Unix read permission */
 diff --git a/server/protocol.def b/server/protocol.def
 index 6d6be5b..4ca7cab 100644
 --- a/server/protocol.def

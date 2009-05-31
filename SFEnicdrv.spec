@@ -92,7 +92,8 @@ Source102:           drvrm
 Source103:           etc_system
 
 # Headers for building GLDv3 drivers outside of ON tree.
-Source104:           http://trisk.acm.jhu.edu/src/gldv3-headers-0.20090219.tar.bz2
+#Source104:           http://trisk.acm.jhu.edu/src/gldv3-headers-0.20090219.tar.bz2
+Source104:           http://deadgerbil.com/~trisk/src/gldv3-headers-0.20090522.tar.bz2
 Patch1:              nicdrv-01-em.diff
 Patch2:              nicdrv-02-rf.diff
 Patch3:              nicdrv-03-tu.diff
@@ -939,6 +940,8 @@ ${BASEDIR}%{_localstatedir}/nicdrv/scripts/drvrm ${BASEDIR} jmge
 %attr (0644, root, bin) %{_localstatedir}/nicdrv/scripts/jmge.postinst
 
 %changelog
+* Sun May 31 2009 - Albert Lee <trisk@forkgnu.org>
+- Update GLDv3 headers to 20090522 version (snv_116)
 * Thu Feb 19 2009 - Albert Lee
 - Update to vfe-2.6.4, rf-2.6.2, alta-2.6.3, bfe-2.6.1, ife-2.6.1, epfe-2.6.1,
   ae-2.6.1, gani-2.6.3, vel-2.6.4, nfo-2.6.3, myk-2.6.6, atge-2.6.3

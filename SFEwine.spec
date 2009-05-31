@@ -13,21 +13,29 @@ Summary:                Windows compatibility
 Version:                1.1.22
 URL:                    http://www.winehq.org/
 Source:                 %{src_url}/%{sname}-%{version}.tar.bz2
-Source101:		http://trisk.acm.jhu.edu/winetricks-20080627
+Source1:		soundcard.h
+Source101:		http://winezeug.googlecode.com/svn/trunk/winetricks
 #we need this because pkg can't handle 2 source_url
+Nosource:		1
 Nosource:               101
 Patch1:			wine-01-shell.diff
+# From http://bugs.winehq.org/attachment.cgi?id=20300
 # http://bugs.winehq.org/show_bug.cgi?id=9787
-#Patch2:			wine-02-acceptex.diff
+Patch2:			wine-02-acceptex.diff
 # Implement network statistics in iphlpapi via libkstat and STREAMS TPI
 #Patch3:			wine-03-iphlpapi.diff
+# Wrap mmap to allow allocations inside a wine reserved area
+# From http://bugs2.winehq.org/attachment.cgi?id=20483
+# http://bugs.winehq.org/show_bug.cgi?id=13335
+#Patch4:			wine-04-mmap-wrapper.diff
 # Wine assumes libraries are mapped to contiguous memory regions.
 # Use less restrictive alignment for data section to avoid "holes" between
 # sections that the OS is allowed to use for an anonymous mmap:
 # http://opensolaris.org/jive/message.jspa?messageID=229817#229799
 #Patch7:			wine-07-sun-ld.diff
+# Call __wine_spec_init and __wine_spec_fini from .init and .fini sections 
 #Patch8:			wine-08-init-fini.diff
-Patch101:		winetricks-01-sh.diff
+#Patch101:		winetricks-01-sh.diff
 SUNW_BaseDir:           %{_basedir}
 BuildRoot:              %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -50,8 +58,12 @@ Requires:	SUNWlxml
 Requires:	SUNWlxsl
 Requires:	SUNWcupsu
 Requires:	SUNWsane-backendu
+BuildRequires:	SUNWncurses-devel
+Requires:	SUNWncurses
 BuildRequires:	SUNWopenssl-include
 Requires:	SUNWopenssl-libraries
+#BuildRequires:	SUNWgnutls-devel
+#Requires:	SUNWgnutls
 #BuildRequires:	SFEfreetype-devel
 #Requires:	SFEfreetype
 Requires:	SUNWfreetype2
@@ -67,10 +79,14 @@ Requires: %name
 %prep
 %setup -q -n %{sname}-%{version}
 %patch1 -p1
-#%patch2 -p1
+%patch2 -p1
 #%patch3 -p1
+#%patch4 -p1
+#%patch8 -p1
+mkdir -p include/sys
+cp %{SOURCE1} include/sys
 cp %{SOURCE101} winetricks
-%patch101 -p1
+#%patch101 -p1
 
 # patch5 changes the server request spec, so update related files
 perl tools/make_requests
@@ -83,6 +99,8 @@ fi
 export ACLOCAL_FLAGS="-I %{_datadir}/aclocal"
 export CC=/usr/sfw/bin/gcc
 export CPPFLAGS="-I%{xorg_inc} -I%{gnu_inc} -I%{sfw_inc} -D__C99FEATURES__"
+# to find sys/soundcard.h
+export CPPFLAGS="$CPPFLAGS -I%{_builddir}/%{src_name}-%{version}/include"
 export CFLAGS="-O2 -march=i686 -Xlinker -i -fno-omit-frame-pointer" 
 export LDFLAGS="%{xorg_lib_path} %{gnu_lib_path} %{sfw_lib_path}"
 export LD=/usr/ccs/bin/ld
@@ -100,6 +118,7 @@ autoheader
 	    --disable-static		\
 	    --without-alsa		\
 	    --without-capi		\
+	    --without-gnutls		\
 	    --without-nas		\
 	    --without-jack
 
@@ -153,6 +172,13 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/aclocal/*
 
 %changelog
+* Sun May 31 2009 - trisk@forkgnu.org
+- Use included soundcard.h
+- Use winetricks from trunk
+- Update patch2
+- Disable patch101
+- Explicitly disable GnuTLS to prevent schannel-related crashes
+- Add SUNWncurses dependency
 * Sat May 30 2009 - andras.barna@gmail.com
 - bump to 1.1.22
 * Sat Apr 11 2009 - andras.barna@gmail.com
