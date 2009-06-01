@@ -69,6 +69,7 @@ Requires:	SUNWopenssl-libraries
 Requires:	SUNWfreetype2
 BuildRequires:	SFElibaudioio-devel
 Requires:	SFElibaudioio
+Requires:       SFEcabextract
 
 %package devel
 Summary:                 wine - developer files, /usr
@@ -100,7 +101,7 @@ export ACLOCAL_FLAGS="-I %{_datadir}/aclocal"
 export CC=/usr/sfw/bin/gcc
 export CPPFLAGS="-I%{xorg_inc} -I%{gnu_inc} -I%{sfw_inc} -D__C99FEATURES__"
 # to find sys/soundcard.h
-export CPPFLAGS="$CPPFLAGS -I%{_builddir}/%{src_name}-%{version}/include"
+export CPPFLAGS="$CPPFLAGS -I%{_builddir}/%{sname}-%{version}/include"
 export CFLAGS="-O2 -march=i686 -Xlinker -i -fno-omit-frame-pointer" 
 export LDFLAGS="%{xorg_lib_path} %{gnu_lib_path} %{sfw_lib_path}"
 export LD=/usr/ccs/bin/ld
@@ -172,6 +173,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/aclocal/*
 
 %changelog
+* Sun May 31 2009 - andras.barna@gmail.com
+- Add SFEcabextract dep needed by winetricks
 * Sun May 31 2009 - trisk@forkgnu.org
 - Use included soundcard.h
 - Use winetricks from trunk
