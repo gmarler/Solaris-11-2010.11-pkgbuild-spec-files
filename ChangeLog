@@ -1,3 +1,7 @@
+2009-06-01  Matt Lewandowsky <matt@greenviolet.net>
+
+	* SFEgxmessage.spec: Initial spec
+
 2009-06-01  Andras Barna  <andras.barna@gmail.com>
 
 	* SFEwine.spec: add SFEcabextract dep. it's required by winetricks
