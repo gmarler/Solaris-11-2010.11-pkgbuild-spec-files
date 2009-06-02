@@ -1,3 +1,7 @@
+2009-05-09  Thomas Wagner  <tom68@users.sourceforge.net>
+
+        * experimental/SFEmp3c.spec: *new* grap Audio CDs - currently broken with CDIO definitions missing on Solaris - volunteers welcome
+
 2009-06-02  Alfred Peng  <alfred.peng@sun.com>
 
 	* SFEcherokee.spec, patches/cherokee-01-print-error.diff:
