@@ -1,0 +1,66 @@
+--- openbox-3.4.7.2/openbox/actions/desktop.c.orig	2009-06-02 12:32:41.303067177 +0800
++++ openbox-3.4.7.2/openbox/actions/desktop.c	2009-06-02 12:34:49.882891434 +0800
+@@ -21,7 +21,7 @@
+             gboolean wrap;
+             ObDirection dir;
+         } rel;
+-    };
++    } aa;
+     gboolean send;
+     gboolean follow;
+ } Options;
+@@ -130,9 +130,9 @@
+     Options *o = g_new0(Options, 1);
+     o->type = ABSOLUTE;
+     if ((n = parse_find_node("desktop", node)))
+-        o->abs.desktop = parse_int(doc, n) - 1;
++        o->aa.abs.desktop = parse_int(doc, n) - 1;
+     else
+-        o->abs.desktop = screen_desktop;
++        o->aa.abs.desktop = screen_desktop;
+     return o;
+ }
+ 
+@@ -143,9 +143,9 @@
+     Options *o = setup_follow(i, doc, node);
+     o->type = ABSOLUTE;
+     if ((n = parse_find_node("desktop", node)))
+-        o->abs.desktop = parse_int(doc, n) - 1;
++        o->aa.abs.desktop = parse_int(doc, n) - 1;
+     else
+-        o->abs.desktop = screen_desktop;
++        o->aa.abs.desktop = screen_desktop;
+     return o;
+ }
+ 
+@@ -155,12 +155,12 @@
+     xmlNodePtr n;
+ 
+     o->type = RELATIVE;
+-    o->rel.linear = lin;
+-    o->rel.dir = dir;
+-    o->rel.wrap = TRUE;
++    o->aa.rel.linear = lin;
++    o->aa.rel.dir = dir;
++    o->aa.rel.wrap = TRUE;
+ 
+     if ((n = parse_find_node("wrap", node)))
+-        o->rel.wrap = parse_bool(doc, n);
++        o->aa.rel.wrap = parse_bool(doc, n);
+ }
+ 
+ static gpointer setup_go_next_func(ObParseInst *i, xmlDocPtr doc,
+@@ -270,11 +270,11 @@
+         d = screen_last_desktop;
+         break;
+     case ABSOLUTE:
+-        d = o->abs.desktop;
++        d = o->aa.abs.desktop;
+         break;
+     case RELATIVE:
+         d = screen_find_desktop(screen_desktop,
+-                                o->rel.dir, o->rel.wrap, o->rel.linear);
++                                o->aa.rel.dir, o->aa.rel.wrap, o->aa.rel.linear);
+         break;
+     }
+ 

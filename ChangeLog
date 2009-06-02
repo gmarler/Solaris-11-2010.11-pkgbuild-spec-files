@@ -1,3 +1,10 @@
+2009-06-02  Alfred Peng  <alfred.peng@sun.com>
+
+	* patches/openbox-01-union.diff: Added.
+	* SFEopenbox.spec: Add new patch for anonymous union usage which
+	  cerntain Sun Studio doesn't support. Also refer to bugster bugs
+	  4614572 and 6525110.
+
 2009-06-01  Albert Lee  <trisk@forkgnu.org>
 
 	* SFEbchunk.spec: *NEW* bchunk - Convert ".bin/.cue" files into ISO 9660
