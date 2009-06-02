@@ -1,5 +1,11 @@
 2009-06-02  Alfred Peng  <alfred.peng@sun.com>
 
+	* SFEcherokee.spec, patches/cherokee-01-print-error.diff:
+	  Bump to 0.99.15 and update the patch.
+	* base-specs/filezilla.spec: Bump to 3.2.4.1.
+
+2009-06-02  Alfred Peng  <alfred.peng@sun.com>
+
 	* patches/openbox-01-union.diff: Added.
 	* SFEopenbox.spec: Add new patch for anonymous union usage which
 	  cerntain Sun Studio doesn't support. Also refer to bugster bugs

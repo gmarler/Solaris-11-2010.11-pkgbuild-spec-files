@@ -10,13 +10,13 @@
 
 Name:                    SFEcherokee
 Summary:                 cherokee - Fast, flexible, lightweight web server
-Version:                 0.99.4
+Version:                 0.99.15
 Source:                  http://www.cherokee-project.com/download/0.99/%{version}/cherokee-%{version}.tar.gz
 URL:                     http://www.cherokee-project.com/
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 
-# date:2009-03-17 owner:alfred type:bug bugid:402
+# date:2009-06-02 owner:alfred type:bug
 Patch1:                  cherokee-01-print-error.diff
 
 %include default-depend.inc
@@ -31,6 +31,14 @@ Summary:                 %{summary} - development files
 SUNW_BaseDir:            %{_basedir}
 %include default-depend.inc
 Requires: %name
+
+%if %build_l10n
+%package l10n
+Summary:                 %{summary} - l10n files
+SUNW_BaseDir:            %{_basedir}
+%include default-depend.inc
+Requires:                %{name}
+%endif
 
 %prep
 %setup -q -n cherokee-%version
@@ -67,6 +75,12 @@ rm -rf $RPM_BUILD_ROOT/var/run
 
 mkdir -p ${RPM_BUILD_ROOT}/var/svc/manifest/network/
 cp http-cherokee.xml ${RPM_BUILD_ROOT}/var/svc/manifest/network/http-cherokee.xml
+
+%if %build_l10n
+%else
+# REMOVE l10n FILES
+rm -rf $RPM_BUILD_ROOT%{_datadir}/locale
+%endif
 
 %{?pkgbuild_postprocess: %pkgbuild_postprocess -v -c "%{version}:%{jds_version}:%{name}:$RPM_ARCH:%(date +%%Y-%%m-%%d):%{support_level}" $RPM_BUILD_ROOT}
 
@@ -153,8 +167,16 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, other) %{_datadir}/doc
 %{_datadir}/doc/*
 
+%if %build_l10n
+%files l10n
+%defattr (-, root, bin)
+%dir %attr (0755, root, sys) %{_datadir}
+%attr (-, root, other) %{_datadir}/locale
+%endif
 
 %changelog
+* Tue Jun 02 2009 - alfred.peng@sun.com
+- Bump to 0.99.15 and update patch print-error.diff.
 * Tue Mar 17 2009 - alfred.peng@sun.com
 - Bump to 0.99.4.
 * Sat Apr 21 2007 - dougs@truemail.co.th
