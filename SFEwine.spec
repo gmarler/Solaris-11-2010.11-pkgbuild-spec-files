@@ -25,9 +25,9 @@ Patch2:			wine-02-acceptex.diff
 # Implement network statistics in iphlpapi via libkstat and STREAMS TPI
 #Patch3:			wine-03-iphlpapi.diff
 # Wrap mmap to allow allocations inside a wine reserved area
-# From http://bugs2.winehq.org/attachment.cgi?id=20483
+# http://bugs2.winehq.org/attachment.cgi?id=21492
 # http://bugs.winehq.org/show_bug.cgi?id=13335
-#Patch4:			wine-04-mmap-wrapper.diff
+Patch4:			wine-04-mmap-wrapper.diff
 # Wine assumes libraries are mapped to contiguous memory regions.
 # Use less restrictive alignment for data section to avoid "holes" between
 # sections that the OS is allowed to use for an anonymous mmap:
@@ -173,6 +173,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/aclocal/*
 
 %changelog
+* Mon Jun 01 2009 - trisk@forkgnu.org
+- Add patch4
 * Sun May 31 2009 - andras.barna@gmail.com
 - Add SFEcabextract dep needed by winetricks
 * Sun May 31 2009 - trisk@forkgnu.org

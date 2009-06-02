@@ -1,3 +1,11 @@
+2009-06-01  Albert Lee  <trisk@forkgnu.org>
+
+	* SFEbchunk.spec: *NEW* bchunk - Convert ".bin/.cue" files into ISO 9660
+	  images
+	* SFEwine.spec: Add patch4
+	* patches/wine-04-mmap-wrapper.diff: Wrap mmap to allow allocations
+	  inside a wine reserved area
+
 2009-06-01  Matt Lewandowsky <matt@greenviolet.net>
 
 	* SFEgxmessage.spec: Initial spec
