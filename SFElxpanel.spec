@@ -9,15 +9,12 @@
 
 Name:                    SFElxpanel
 Summary:                 LXDE desktop panel
-Version:                 0.3.999
+Version:                 0.4.1
 Source:                  http://downloads.sourceforge.net/lxde/lxpanel-%{version}.tar.gz
 URL:                     http://sourceforge.net/projects/lxde/
 
 # owner:alfred date:2009-03-16 type:bug
 Patch1:                  lxpanel-01-solaris.diff
-
-# owner:alfred date:2009-03-16 type:bug bugid:2585404 status:upstream
-Patch4:                  lxpanel-04-crash.diff
 
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -34,7 +31,6 @@ Requires:                %{name}
 %prep
 %setup -q -n lxpanel-%version
 %patch1 -p1
-%patch4 -p0
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -42,7 +38,7 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
     CPUS=1
 fi
 
-export CC=/usr/bin/gcc
+export CC=gcc
 export CFLAGS="-DHAVE_SYS_SOCKIO_H"
 
 autoconf
@@ -86,5 +82,7 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Wed Jun 03 2009 - alfred.peng@sun.com
+- Bump to 0.4.1. Remove the upstreamed patch crash.diff.
 * Mon Mar 16 2009 - alfred.peng@sun.com
 - Initial version with gcc.

@@ -1,3 +1,8 @@
+2009-06-03  Alfred Peng  <alfred.peng@sun.com>
+
+	* patches/lxpanel-04-crash.diff: Deleted.
+	* SFElxpanel.spec: Bump to 0.4.1.
+
 2009-06-03  Brian Lu  <brian.lu@sun.com>
 
 	* SFEtalloc.spec:
