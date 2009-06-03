@@ -13,7 +13,7 @@ SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 
-
+Requires: SUNWPython26
 %prep
 rm -rf samba-4.0.0alpha7
 %setup -q -n samba-4.0.0alpha7/lib/tevent
@@ -61,6 +61,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/*
 
 %changelog
+* Wed Jun 03 2009 - brian.lu@sun.com
+- Add dependency SUNWPythong26
 * Wed Feb 18 2009 - jedy.wang@sun.com
 - Do not use optimization option for now.
 * Tue Feb 17 2009 - jedy.wang@sun.com

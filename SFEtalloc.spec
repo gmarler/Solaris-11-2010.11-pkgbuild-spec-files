@@ -13,6 +13,7 @@ SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 
+Requires:SUNWswig
 
 %prep
 rm -rf samba-4.0.0alpha7
@@ -65,6 +66,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/*/*
 
 %changelog
+* Wed Jun 03 2009 - brian.lu@sun.com
+- Add dependency SUNWswig
 * Wed Feb 18 2009 - jedy.wang@sun.com
 - Do not use optimization option for now.
 * Tue Feb 17 2009 - jedy.wang@sun.com

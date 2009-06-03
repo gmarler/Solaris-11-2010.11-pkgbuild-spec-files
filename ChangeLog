@@ -1,3 +1,12 @@
+2009-06-03  Brian Lu  <brian.lu@sun.com>
+
+	* SFEtalloc.spec:
+	* SFEtdb.spec:
+	* SFEtevent.spec:
+	  Add dependencies 
+	* patches/samba4-01-solaris.diff:
+	  Update the patch
+
 2009-05-09  Thomas Wagner  <tom68@users.sourceforge.net>
 
         * experimental/SFEmp3c.spec: *new* grap Audio CDs - currently broken with CDIO definitions missing on Solaris - volunteers welcome
