@@ -1,5 +1,5 @@
-#
 # spec file for package SFEwebkit
+#
 #
 # includes module(s): webkit
 #
@@ -7,9 +7,9 @@
 
 Name:                    SFEwebkit
 Summary:                 WetKit, an open source web browser engine that's used by Safari, Dashboard, Mail, and many other OS X applications.
-Version:                 38760
-Source:                  http://builds.nightly.webkit.org/files/trunk/src/WebKit-r%{version}.tar.bz2
-URL:                     http://www.webkit.org/
+Version:                 1.1.7
+Source:                  http://www.webkitgtk.org/webkit-%{version}.tar.gz
+URL:                     http://www.webkitgtk.org/
 
 # owner:alfred date:2008-11-26 type:bug
 Patch1:                  webkit-01-sun-studio-build-hack.diff
@@ -22,69 +22,106 @@ SUNW_BaseDir:            %{_basedir}
 SUNW_Copyright:          SFEwebkit.copyright
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
-Requires: SFEstdcxx
+Requires: SUNWlibstdcxx4
 Requires: SUNWcurl
 Requires: SUNWgnu-idn
 Requires: SUNWgnome-base-libs
 Requires: SUNWicu
 Requires: SUNWlxml
 Requires: SUNWopenssl
-Requires: SUNWpr
+#Requires: SUNWpr
 Requires: SUNWsqlite3
-Requires: SUNWtls
+#Requires: SUNWtls
 Requires: SUNWzlib
 BuildRequires: SUNWgcc
-BuildRequires: SFEstdcxx-devel
+
+%package devel
+Summary:                 %{summary} - development files
+SUNW_BaseDir:            %{_basedir}
+%include default-depend.inc
+Requires: SUNWlibstdcxx4
+Requires: SUNWcurl
+Requires: SUNWgnu-idn
+Requires: SUNWgnome-base-libs
+Requires: SUNWicu
+Requires: SUNWlxml
+Requires: SUNWopenssl
+#Requires: SUNWpr
+Requires: SUNWsqlite3
+#Requires: SUNWtls
+Requires: SUNWzlib
+BuildRequires: SUNWgcc
 
 %prep
 %setup -q -n %name-%version -c -a1
-cd WebKit-r%version
-%patch1 -p0
-%patch2 -p0
+cd webkit-%version
+%patch1 -p1
+%patch2 -p1
 
 %build
 
-export SunStudioPath=/opt/SunStudioExpress
-export CXXFLAGS="-features=zla -I/usr/stdcxx/include/ -library=no%Cstd"
-export LDFLAGS="-L/usr/stdcxx/lib/ -lstd -L${SunStudioPath}/lib -lCrun -R/usr/stdcxx/lib/"
+export CXXFLAGS=`pkg-config --cflags libstdcxx4`
+export LDFLAGS=`pkg-config --libs libstdcxx4`
+cd webkit-%version
 
-cd WebKit-r%version
-./WebKitTools/Scripts/build-webkit --gtk
+CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
+if test "x$CPUS" = "x" -o $CPUS = 0; then
+    CPUS=1
+fi 
+aclocal -I autotools
+automake -a -c -f
+autoconf 
+./configure --prefix=%{_prefix}			\
+	    --libdir=%{_libdir}         \
+            --sysconfdir=%{_sysconfdir}         \
+	    --mandir=%{_mandir}                 \
+	    --datadir=%{_datadir}               \
+            --infodir=%{_datadir}/info  
 
+make -j$CPUS
 %install
 rm -rf $RPM_BUILD_ROOT
 
-mkdir -p $RPM_BUILD_ROOT%{_prefix}/include/webkit-1.0/webkit
-mkdir -p $RPM_BUILD_ROOT%{_prefix}/include/webkit-1.0/JavaScriptCore/API
-mkdir -p $RPM_BUILD_ROOT%{_libdir}/pkgconfig
-
-cd %{_builddir}/%name-%version/WebKit-r%version/
-cp WebKit/gtk/webkit/*.h $RPM_BUILD_ROOT%{_prefix}/include/webkit-1.0/webkit
-cp -pr JavaScriptCore/ForwardingHeaders/JavaScriptCore/* $RPM_BUILD_ROOT%{_prefix}/include/webkit-1.0/JavaScriptCore/
-cp -pr JavaScriptCore/API/*.h $RPM_BUILD_ROOT%{_prefix}/include/webkit-1.0/JavaScriptCore/API
-
-cd WebKitBuild/Release
-chmod 644 WebKit/gtk/webkit/webkitversion.h
-cp WebKit/gtk/webkit/*.h $RPM_BUILD_ROOT%{_prefix}/include/webkit-1.0/webkit
-
-sed -e 's,local,,g' WebKit/gtk/webkit-1.0.pc > temp.pc
-mv temp.pc $RPM_BUILD_ROOT%{_libdir}/pkgconfig/webkit-1.0.pc
-cp .libs/libwebkit-1.0.so $RPM_BUILD_ROOT%{_libdir}/libwebkit-1.0.so.1
-ln -s libwebkit-1.0.so.1 $RPM_BUILD_ROOT%{_libdir}/libwebkit-1.0.so
+cd webkit-%version
+make install DESTDIR=$RPM_BUILD_ROOT
+%if %build_l10n
+%else
+#REMOVE l10n FILES
+rm -rf $RPM_BUILD_ROOT%{_datadir}/locale
+%endif
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr (-, root, bin)
+%dir %attr (0755, root, bin) %{_bindir}
+%{_bindir}/*
 %dir %attr (0755, root, bin) %{_libdir}
 %{_libdir}/libwebkit*
+%dir %attr (0755, root, sys) %{_datadir}
+%{_datadir}/webkit-1.0/*
+
+%files devel
+%defattr (-, root, bin)
 %dir %attr (0755, root, other) %{_libdir}/pkgconfig
 %{_libdir}/pkgconfig/*
 %dir %attr (0755, root, bin) %{_prefix}/include
 %{_prefix}/include/*
 
+%if %build_l10n
+%files l10n
+%defattr (-, root, bin)
+%dir %attr (0755, root, sys) %dir %{_datadir}
+%attr (-, root, other) %{_datadir}/locale
+%endif
+
+
 %changelog
+* Web Jun 03 2009 - chris.wang@sun.com
+- Update to webkitgtk 1.1.7 release, regenerated all patches, 
+  change required package to SUNWlibstdcxx4, and reformatted 
+  the spec file
 * Wed Dec 03 2008 - alfred.peng@sun.com
 - Re-arrange the development headers, pc and library.
   Verified to work with the latest 0.22 devhelp release.

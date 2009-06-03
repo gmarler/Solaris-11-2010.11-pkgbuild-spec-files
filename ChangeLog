@@ -1,3 +1,9 @@
+2009-06-03  Chris Wang <chris.wang@sun.com>
+
+	* SFEwebkit.spec: update to webkit 1.1.7 release
+	* patches/webkit-01-sun-studio-build-hack.diff: reworked
+	* patches/webkit-02-explicit-const.diff:reworked
+	
 2009-06-03  Alfred Peng  <alfred.peng@sun.com>
 
 	* patches/lxpanel-04-crash.diff: Deleted.
