@@ -42,10 +42,15 @@ rm $RPM_BUILD_ROOT%{_libdir}/python%{pythonver}/vendor-packages/coherence/extern
 # remove applet-coherence which depends on python-qt
 rm $RPM_BUILD_ROOT%{_bindir}/applet-coherence
 
+# remove misc
+rm -r $RPM_BUILD_ROOT%{_libdir}/python%{pythonver}/vendor-packages/misc
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Thu Jun 04 2009 - alfred.peng@sun.com
+- Remove misc directory from the package for now.
 * Thu Jun 04 2009 - alfred.peng@sun.com
 - Bump to 0.6.4 and remove upstreamed patch solaris.diff.
 * Fri Mar 06 2009 - alfred.peng@sun.com
