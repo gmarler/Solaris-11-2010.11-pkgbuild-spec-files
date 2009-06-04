@@ -9,7 +9,8 @@ Name:                    SFEpython-epsilon
 Summary:                 a small, display independent, and quick thumbnailing library
 URL:                     http://www.divmod.org/trac/wiki/DivmodEpsilon
 Version:                 0.5.12
-Source:                  http://divmod.org/trac/attachment/wiki/SoftwareReleases/Epsilon-%{version}.tar.gz
+License:                 LGPL
+Source:                  http://ftp.de.debian.org/debian/pool/main/e/epsilon/epsilon_%{version}.orig.tar.gz
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 Requires:                SUNWPython
@@ -47,5 +48,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/python%{pythonver}/vendor-packages/epsilon/*
 
 %changelog
+* Thu Jun 04 2009 - alfred.peng@sun.com
+- Update source URL.
 * Mon Mar 17 2009 - alfred.peng@sun.com
 - Created

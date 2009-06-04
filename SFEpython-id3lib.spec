@@ -13,6 +13,7 @@ Source:                  http://downloads.sourceforge.net/pyid3lib/pyid3lib-%{ve
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 Requires:                SUNWPython
+BuildRequires:           SUNWid3lib
 
 Patch1:                  python-id3lib-01-const-char.diff
 
@@ -47,5 +48,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/python%{pythonver}/vendor-packages/pyid3lib.so
 
 %changelog
+* Thu Jun 04 2009 - alfred.peng@sun.com
+- Add BuildRequires on SUNWid3lib.
 * Mon Mar 17 2009 - alfred.peng@sun.com
 - Created
