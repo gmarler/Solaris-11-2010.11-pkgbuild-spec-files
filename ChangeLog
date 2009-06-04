@@ -1,5 +1,14 @@
 2009-06-04  Brian Cameron  <brian.cameron@sun.com>
 
+	* SFEjokosher.spec, ext-sources/FreesoundSearch-0.3-py2.6.egg: Modify
+	  the FreeSound plugin so that it does not save the user's FreeSound
+	  username and password in plaintext in the user's $HOME directory
+	  since this is not very secure.  The jokosher community plans to make
+	  the next release of jokosher use gnome-keyring, so the need to change
+	  the code in this way should go away at that time.
+
+2009-06-04  Brian Cameron  <brian.cameron@sun.com>
+
 	* SFEjokosher.spec: Bump to 0.11.3.
 	* SFEgnonlin.spec: Add devel package for the gtk-docs.
 

@@ -3,6 +3,8 @@
 #
 # includes module(s): jokosher
 #
+# bugdb: https://bugs.launchpad.net/jokosher
+#
 %define pythonver 2.6
 
 %include Solaris.inc
@@ -12,6 +14,7 @@ Summary:	Jokosher is a multi-track studio application
 Version:	0.11.3
 URL:		http://jokosher.org
 Source0:	http://launchpad.net/jokosher/0.11/%{version}/+download/jokosher-%{version}.tar.gz
+Source1:        FreesoundSearch-0.3-py2.6.egg
 SUNW_BaseDir:   %{_basedir}
 BuildRoot:      %{_tmppath}/jokosher-%{version}-build
 Requires:       SUNWPython
@@ -44,6 +47,26 @@ Requires:                %{name}
 
 %prep
 %setup -q -n jokosher-%version
+
+# Replace the Freesound extension with a version which has been modified to not
+# save the FreeSound username/password information in plaintext in the user's
+# $HOME/.local/share/jokosher/extension-config/Extension.config file.
+# Following are instructions on how to rebuild this egg file if needed.
+#
+# Run "bzr branch lp:jokosher" to get the jokosher code from BZR, modify the
+# file extensions/eggs/FreesoundSearch/src/FreesoundSearch.py so that the
+# following lines are commented out from the function FinishLogin():
+# 
+#                       self.api.set_config_value("fsUsername", username)
+#                       self.api.set_config_value("fsPassword", password)
+#
+# Then run python2.6 setup.py bdist_egg in the extensions/eggs/FreeSoundSearch
+# directory to rebuild the egg file.  The jokosher team plans to fix this
+# plugin to use gnome-keyring in version 0.12, so the need to patch the code
+# this way should no longer be needed when that happens.
+# 
+rm extensions/FreesoundSearch-0.3-py2.6.egg
+cp %{SOURCE1} extensions
 
 %build
 python%{pythonver} setup.py build
