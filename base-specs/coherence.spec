@@ -15,20 +15,15 @@
 Name:                    Coherence
 Summary:                 DLNA/UPnP framework for the digital living
 URL:                     http://coherence.beebits.net
-Version:                 0.6.2
+Version:                 0.6.4
 Source:                  %{src_url}/%{src_name}-%{version}.tar.gz
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 Requires:                python
 
-# owner:alfred date:2009-03-06 type:bug bugid=194
-Patch1:                  coherence-01-solaris.diff
-
 %prep
 %setup -q -n %name-%version
-%patch1 -p1
 
 %build
-export PYTHON=/usr/bin/python%{pythonver}
 python%{pythonver} setup.py build
 
 %install
@@ -40,6 +35,10 @@ mv $RPM_BUILD_ROOT%{_libdir}/python%{pythonver}/site-packages/* \
    $RPM_BUILD_ROOT%{_libdir}/python%{pythonver}/vendor-packages/
 rmdir $RPM_BUILD_ROOT%{_libdir}/python%{pythonver}/site-packages
 
+# remove the log test code with GPL license
+# https://code.fluendo.com/flumotion/trac/ticket/1259
+rm $RPM_BUILD_ROOT%{_libdir}/python%{pythonver}/vendor-packages/coherence/extern/log/test_log*
+
 # remove applet-coherence which depends on python-qt
 rm $RPM_BUILD_ROOT%{_bindir}/applet-coherence
 
@@ -47,5 +46,7 @@ rm $RPM_BUILD_ROOT%{_bindir}/applet-coherence
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Thu Jun 04 2009 - alfred.peng@sun.com
+- Bump to 0.6.4 and remove upstreamed patch solaris.diff.
 * Fri Mar 06 2009 - alfred.peng@sun.com
 - initial version 0.6.2.

@@ -1,3 +1,8 @@
+2009-06-04  Alfred Peng  <alfred.peng@sun.com>
+
+	* patches/coherence-01-solaris.diff: Deleted.
+	* base-specs/coherence.spec: Bump to 0.6.4 and remove upstreamed patch.
+
 2009-06-03  Chris Wang <chris.wang@sun.com>
 
 	* SFEwebkit.spec: update to webkit 1.1.7 release
