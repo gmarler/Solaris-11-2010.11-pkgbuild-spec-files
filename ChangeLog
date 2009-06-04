@@ -1,3 +1,11 @@
+2009-06-04  Halton Huo  <halton.huo@sun.com>
+
+	* patches/ConsoleKit-04-ck-dynamic.diff: rework patch based on review
+	  at http://mail.gnome.org/archives/gdm-list/2009-May/msg00007.html
+	* patches/ConsoleKit-05-add-sunray-type.diff:rework to reflect up change
+	* patches/ConsoleKit-06-dynamic-tty.diff: rework to reflect up change 
+	* patches/gdm-04-dynamic-display.diff: rework to reflect up change
+
 2009-06-04  Alfred Peng  <alfred.peng@sun.com>
 
 	* base-specs/coherence.spec: Remove misc directory from the package.

@@ -1,8 +1,8 @@
 diff --git a/tools/ck-dynamic.c b/tools/ck-dynamic.c
-index d9279e2..5a660f7 100644
+index c148c68..14ec906 100644
 --- a/tools/ck-dynamic.c
 +++ b/tools/ck-dynamic.c
-@@ -137,6 +137,7 @@ main (int argc, char *argv[])
+@@ -317,6 +317,7 @@ main (int argc, char *argv[])
          gboolean         list = FALSE;
          gboolean         show_version = FALSE;
          char            *type = NULL;
@@ -10,7 +10,7 @@ index d9279e2..5a660f7 100644
          int              num = -1;
          gboolean         res;
  
-@@ -146,6 +147,7 @@ main (int argc, char *argv[])
+@@ -326,6 +327,7 @@ main (int argc, char *argv[])
                  { "list", 'l', 0, G_OPTION_ARG_NONE, &list, N_("List all attached displays"), NULL},
                  { "num", 'n', 0, G_OPTION_ARG_INT, &num, N_("Display number"), NULL},
                  { "type", 't', 0, G_OPTION_ARG_STRING, &type, N_("Display type"), NULL},
@@ -18,12 +18,12 @@ index d9279e2..5a660f7 100644
                  { "version", 'V', 0, G_OPTION_ARG_NONE, &show_version, N_("Version of this application"), NULL },
                  { NULL }
          };   
-@@ -213,7 +215,7 @@ main (int argc, char *argv[])
+@@ -382,7 +384,7 @@ main (int argc, char *argv[])
  
  
          if (add) {
--                create_dynamic_session (connection, proxy, num, type, NULL);
-+                create_dynamic_session (connection, proxy, num, type, tty);
+-                create_dynamic_session (connection, num, type, NULL);
++                create_dynamic_session (connection, num, type, tty);
          } else if (delete) {
-                 remove_dynamic_session (connection, proxy, num);
+                 remove_dynamic_session (connection, num);
          } else if (list) {
