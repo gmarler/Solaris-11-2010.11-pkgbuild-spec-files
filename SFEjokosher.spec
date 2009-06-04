@@ -9,7 +9,7 @@
 
 Name:		SFEjokosher
 Summary:	Jokosher is a multi-track studio application
-Version:	0.11.1
+Version:	0.11.3
 URL:		http://jokosher.org
 Source0:	http://launchpad.net/jokosher/0.11/%{version}/+download/jokosher-%{version}.tar.gz
 SUNW_BaseDir:   %{_basedir}
@@ -130,6 +130,8 @@ test -x $BASEDIR/lib/postrun || exit 0
 %endif
 
 %changelog
+* Thu Jun 04 2009 - brian.cameron@sun.com
+- Bump to 0.11.3.
 * Tue May 12 2009 - brian.cameron@sun.com
 - Now build with Python 2.6.
 * Thu Mar 19 2009 - brian.cameron@sun.com

@@ -4,6 +4,8 @@
 # includes module(s): gnonlin
 #
 
+%define         majmin          0.10
+
 %include Solaris.inc
 Name:                    SFEgnonlin
 Summary:                 Non-linear editing elements for gstreamer
@@ -12,13 +14,16 @@ Version:                 0.10.10
 Source:                  http://gstreamer.freedesktop.org/src/gnonlin/gnonlin-%{version}.tar.bz2
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
+
+%include default-depend.inc
 Requires:                SUNWglib2
 Requires:                SUNWgnome-media
 BuildRequires:           SUNWglib2-devel
 BuildRequires:           SUNWgnome-media-devel
 
-%define         majmin          0.10
-
+%package devel
+Summary:                 %{summary} - development files
+SUNW_BaseDir:            %{_basedir}
 %include default-depend.inc
 
 %prep
@@ -45,6 +50,9 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, bin) %{_libdir}
 %dir %attr (0755, root, bin) %{_libdir}/gstreamer-%{majmin}
 %{_libdir}/gstreamer-%{majmin}/libgnl.so
+
+%files devel
+%defattr (-, root, bin)
 %dir %attr (0755, root, sys) %{_datadir}
 %{_datadir}/gtk-doc
 

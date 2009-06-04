@@ -1,3 +1,8 @@
+2009-06-04  Brian Cameron  <brian.cameron@sun.com>
+
+	* SFEjokosher.spec: Bump to 0.11.3.
+	* SFEgnonlin.spec: Add devel package for the gtk-docs.
+
 2009-06-04  Alfred Peng  <alfred.peng@sun.com>
 
 	* SFEgtodo.spec: Added.
@@ -55,7 +60,8 @@
 
 2009-05-09  Thomas Wagner  <tom68@users.sourceforge.net>
 
-        * experimental/SFEmp3c.spec: *new* grap Audio CDs - currently broken with CDIO definitions missing on Solaris - volunteers welcome
+        * experimental/SFEmp3c.spec: *new* grap Audio CDs - currently broken
+	  with CDIO definitions missing on Solaris - volunteers welcome
 
 2009-06-02  Alfred Peng  <alfred.peng@sun.com>
 
