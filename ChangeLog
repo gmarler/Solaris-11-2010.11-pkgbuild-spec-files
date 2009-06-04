@@ -1,3 +1,11 @@
+2009-06-04  Brian  <brian.lu@sun.com>
+
+	* SFEevolution-mapi.spec:
+	  Upgrade to 0.27.2
+	* SFEsamba4.spec:
+	* samba4-03-FUNCTION-macro.diff
+	  Remove patch samba4-03-FUNCTION-macro.diff
+
 2009-06-04  Alfred Peng  <alfred.peng@sun.com>
 
 	* patches/coherence-01-solaris.diff: Deleted.
