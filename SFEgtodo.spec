@@ -1,14 +1,14 @@
 #
-# spec file for package SFEgtodo2
+# spec file for package SFEgtodo
 #
 # use gcc to compile
 
 %include Solaris.inc
-Name:                    SFEgtodo2
-Summary:                 gtodo2 - A gnome Task-List-Manager
+Name:                    SFEgtodo
+Summary:                 gtodo - A gnome Task-List-Manager
 URL:                     http://sarine.nl/gnome-task-list-manager
-Version:                 0.19.0
-Source:                  http://download.sarine.nl/gtodo2/gtodo2-%{version}.tar.gz
+Version:                 0.14
+Source:                  http://download.sarine.nl/gtodo/gtodo-%{version}.tar.gz
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -21,8 +21,13 @@ SUNW_BaseDir:            %{_basedir}
 Requires:                %{name}
 %endif
 
+%package root
+Summary:                 %{summary} - / filesystem
+SUNW_BaseDir:            /
+%include default-depend.inc
+
 %prep
-%setup -q -n gtodo2-%version
+%setup -q -n gtodo-%version
 
 %build
 export LDFLAGS="-lX11"
@@ -32,7 +37,7 @@ export CXX=g++
 
 #TODO: check --disable-sm 
 CC=/usr/sfw/bin/gcc CXX=/usr/sfw/bin/g++ ./configure --prefix=%{_prefix} \
-            --disable-sm
+            --disable-sm --sysconfdir=%{_sysconfdir}
 make
 
 %install
@@ -49,13 +54,18 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-, root, bin)
-#%doc README ChangeLog CREDITS COPYING INSTALL NEWS AUTHORS TODO ABOUT-NLS
 %dir %attr (0755, root, bin) %{_bindir}
 %{_bindir}/*
 %dir %attr (0755, root, sys) %{_datadir}
-%dir %attr (0755, root, other) %{_datadir}/gtodo2
-%{_datadir}/gtodo2/*
+%dir %attr (0755, root, other) %{_datadir}/applications
+%{_datadir}/applications/*.desktop
+%dir %attr (0755, root, other) %{_datadir}/pixmaps
+%{_datadir}/pixmaps/*
 
+%files root
+%defattr (0755, root, sys)
+%attr (0755, root, sys) %dir %{_sysconfdir}
+%{_sysconfdir}/gconf/*
 
 %if %build_l10n
 %files l10n
@@ -66,9 +76,5 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
-* Thu Jun 06 2009 - alfred.peng@sun.com
-* Bump to 0.19.0.
-* Wed Nov 14 2007 - daymobrew@users.sourceforge.net
-- Add l10n package.
-* Wed May 30 2007  - Thomas Wagner
+* Thu Jun 04 2009 - alfred.peng@sun.com
 - Initial spec
