@@ -1,9 +1,9 @@
 #
-# spec file for package SFEpython24-coherence
+# spec file for package SUNWpython24-coherence
 #
 # includes module(s): coherence
 #
-# Copyright 2008 Sun Microsystems, Inc.
+# Copyright 2009 Sun Microsystems, Inc.
 # This file and all modifications and additions to the pristine
 # package are under the same license as the package itself.
 #
@@ -16,7 +16,7 @@
 
 %use coherence = coherence.spec
 
-Name:                   SFEpython24-coherence
+Name:                   SUNWpython24-coherence
 Summary:                DLNA/UPnP framework for the digital living
 URL:                    %{coherence.url}
 Version:                %{coherence.version}
