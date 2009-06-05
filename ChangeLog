@@ -1,5 +1,12 @@
 2009-06-05  Alfred Peng  <alfred.peng@sun.com>
 
+	* ext-sources/coherence: Added.
+	* ext-sources/coherence.conf: Added.
+	* ext-sources/coherence.xml: Added.
+	* SUNWpython24-coherence.spec: Add SMF service for Coherence.
+
+2009-06-05  Alfred Peng  <alfred.peng@sun.com>
+
 	* SUNWpython24-coherence.spec: Added.
 	* SUNWpython26-coherence.spec: Added.
 	* SFEpython24-coherence.spec: Deleted.

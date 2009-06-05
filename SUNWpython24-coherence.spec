@@ -20,6 +20,9 @@ Name:                   SUNWpython24-coherence
 Summary:                DLNA/UPnP framework for the digital living
 URL:                    %{coherence.url}
 Version:                %{coherence.version}
+Source1:                coherence.xml
+Source2:                coherence.conf
+Source3:                coherence
 SUNW_BaseDir:           %{_basedir}
 BuildRoot:              %{_tmppath}/%{name}-%{version}-build
 
@@ -27,6 +30,11 @@ BuildRoot:              %{_tmppath}/%{name}-%{version}-build
 Requires:               SUNWPython
 BuildRequires:          SUNWPython-devel
 BuildRequires:          SUNWpython-setuptools
+
+%package root
+Summary:                 %{summary} - / filesystem
+SUNW_BaseDir:            /
+%include default-depend.inc
 
 %prep
 rm -rf %name-%version
@@ -46,10 +54,23 @@ export PYCC_CXX="$CXX"
 rm -rf $RPM_BUILD_ROOT
 %coherence.install -d %name-%version
 
+# Install SMF related files.
+mkdir -p $RPM_BUILD_ROOT/%{_localstatedir}/svc/manifest/application
+mkdir -p $RPM_BUILD_ROOT/%{_localstatedir}/coherence
+mkdir -p $RPM_BUILD_ROOT/lib/svc/method
+
+install -c -m 644 %{SOURCE1} $RPM_BUILD_ROOT/%{_localstatedir}/svc/manifest/application/
+install -c -m 644 %{SOURCE2} $RPM_BUILD_ROOT/%{_localstatedir}/coherence/
+install -c -m 644 %{SOURCE3} $RPM_BUILD_ROOT/lib/svc/method/
+
 %{?pkgbuild_postprocess: %pkgbuild_postprocess -v -c "%{version}:%{jds_version}:%{name}:$RPM_ARCH:%(date +%%Y-%%m-%%d):%{support_level}" $RPM_BUILD_ROOT}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
+
+%if %(test -f /usr/sadm/install/scripts/i.manifest && echo 0 || echo 1)
+%iclass manifest -f i.manifest
+%endif
 
 %files
 %defattr (-, root, bin)
@@ -58,7 +79,20 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, bin) %{_libdir}
 %{_libdir}/python%{pythonver}/vendor-packages
 
+%files root
+%defattr (-, root, bin)
+%dir %attr (0755, root, sys)  %{_localstatedir}
+%dir %attr (0755, root, sys)  %{_localstatedir}/svc
+%dir %attr (0755, root, sys)  %{_localstatedir}/svc/manifest
+%dir %attr (0755, root, sys)  %{_localstatedir}/svc/manifest/application
+%class(manifest) %attr (0444, root, sys) %{_localstatedir}/svc/manifest/application/coherence.xml
+%attr (0555, root, bin) /lib/svc/method/coherence
+%dir %attr (0755, upnp, upnp) %{_localstatedir}/coherence
+%attr (0644, upnp, upnp) %{_localstatedir}/coherence/coherence.conf
+
 %changelog
+* Fri Jun 05 2009 - alfred.peng@sun.com
+- Add SMF service for Coherence.
 * Fri Mar 06 2009 - alfred.peng@sun.com
 - Create SFEpython24-coherence.spec and coherence.spec to replace
   SFEcoherence.spec.
