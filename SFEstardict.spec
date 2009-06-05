@@ -44,7 +44,10 @@ Requires: SUNWpostrun-root
 %patch1 -p1
 
 %build
+export CXX="${CXX} -norunpath"
 export CFLAGS="%optflags"
+export CXXFLAGS="%cxx_optflags"
+export LDFLAGS="%_ldflags -lsocket"
 ./autogen.sh --prefix=%{_prefix}        \
              --disable-festival         \
              --disable-advertisement    \
