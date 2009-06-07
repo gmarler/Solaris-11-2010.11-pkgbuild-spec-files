@@ -1,0 +1,16 @@
+--- dar-2.3.9/configure.orig	2009-05-22 11:55:11.000000000 +0200
++++ dar-2.3.9/configure	2009-06-05 22:22:48.631504331 +0200
+@@ -29777,13 +29777,7 @@
+ cat >>conftest.$ac_ext <<_ACEOF
+ /* end confdefs.h.  */
+ extern "C" {
+-                                   #if HAVE_GETOPT_H
+-                                   #include <getopt.h>
+-                                   #else
+-                                   #if HAVE_UNISTD_H
+                                    #include <unistd.h>
+-                                   #endif
+-                                   #endif
+                                    }
+ int
+ main ()

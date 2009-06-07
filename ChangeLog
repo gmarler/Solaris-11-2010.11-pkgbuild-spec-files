@@ -1,3 +1,7 @@
+2009-06-07  Thomas Wagner  <tom68@users.sourceforge.net>
+
+        * SFEdar.spec: *new* backup and restauration tool. Writes to disks, CD/DVD ...
+
 2009-06-05  Alfred Peng  <alfred.peng@sun.com>
 
 	* ext-sources/coherence: Added.
