@@ -11,8 +11,8 @@
 Name:                    SFEpitivi
 Summary:                 Non-Linear video editor
 URL:                     http://ftp.gnome.org/pub/GNOME/sources/pitivi
-Version:                 0.11.3
-Source:                  http://ftp.gnome.org/pub/GNOME/sources/pitivi/0.11/pitivi-%{version}.tar.bz2
+Version:                 0.13.1
+Source:                  http://ftp.gnome.org/pub/GNOME/sources/pitivi/0.13/pitivi-%{version}.tar.bz2
 Patch1:                  pitivi-01-solaris.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -70,6 +70,25 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, sys) %{_datadir}
 %dir %attr (0755, root, other) %{_datadir}/applications
 %{_datadir}/applications/*
+%dir %attr (0755, root, other) %{_datadir}/icons
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/16x16
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/16x16/apps/
+%{_datadir}/icons/hicolor/16x16/apps/*
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/22x22/
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/22x22/apps/
+%{_datadir}/icons/hicolor/22x22/apps/*
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/24x24/
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/24x24/apps/
+%{_datadir}/icons/hicolor/24x24/apps/*
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/32x32/
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/32x32/apps/
+%{_datadir}/icons/hicolor/32x32/apps/*
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/48x48/
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/48x48/apps/
+%{_datadir}/icons/hicolor/48x48/apps/*
+%dir %attr (-, root, root) %{_datadir}/mime
+%attr (-, root, root) %{_datadir}/mime/*
 %{_datadir}/pitivi
 %dir %attr (0755, root, other) %{_datadir}/pixmaps
 %{_datadir}/pixmaps/*
@@ -82,6 +101,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Mon Jun 08 2009 - brian.cameron@sun.com
+- Bump to 0.13.1.  Update packaging.
 * Thu Mar 19 2009 - brian.cameron@sun.com
 - Bump to 0.11.3.
 * Mon Oct 27 2008 - brian.cameron@sun.com

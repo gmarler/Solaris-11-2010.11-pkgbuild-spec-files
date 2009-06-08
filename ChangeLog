@@ -1,6 +1,13 @@
+2009-06-08  Brian Cameron  <brian.cameron@sun.com>
+
+	* SFEpitivi.spec: Bump to 0.13.1.
+	* patches/pitivi-01-solaris.diff: Remove upstream hunks.
+	* SFEgnonlin.spec: Bump to 0.10.11.
+
 2009-06-07  Thomas Wagner  <tom68@users.sourceforge.net>
 
-        * SFEdar.spec: *new* backup and restauration tool. Writes to disks, CD/DVD ...
+	* SFEdar.spec: *new* backup and restauration tool. Writes to disks,
+	  CD/DVD ...
 
 2009-06-05  Alfred Peng  <alfred.peng@sun.com>
 
@@ -86,7 +93,7 @@
 
 2009-05-09  Thomas Wagner  <tom68@users.sourceforge.net>
 
-        * experimental/SFEmp3c.spec: *new* grap Audio CDs - currently broken
+	* experimental/SFEmp3c.spec: *new* grap Audio CDs - currently broken
 	  with CDIO definitions missing on Solaris - volunteers welcome
 
 2009-06-02  Alfred Peng  <alfred.peng@sun.com>
