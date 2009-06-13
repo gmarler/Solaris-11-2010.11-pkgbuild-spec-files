@@ -5,7 +5,7 @@
 #
 %include Solaris.inc
 
-%define	src_ver 1.2.1
+%define	src_ver 1.2.2
 %define	src_name xvidcore
 %define	src_url	http://downloads.xvid.org/downloads
 
@@ -86,6 +86,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}
 
 %changelog
+* Sat Jun 13 2009 - Milan Jurik
+- upgradde to 1.2.2
 * Sat Mar 14 2009 - Milan Jurik
 - upgrade to 1.2.1, nasm build support
 * Mon Jun 30 2008 - andras.barna@gmail.com
