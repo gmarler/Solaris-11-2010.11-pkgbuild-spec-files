@@ -11,6 +11,7 @@ Version:                 0.2.2
 Source0:                 %{sf_download}/wildmidi/wildmidi-%{version}.tar.gz
 Source1:                 soundcard.h
 Patch1:                  wildmidi-01-solaris.diff
+Patch2:                  wildmidi-02-sunstudio.diff
 URL:                     http://wildmidi.sourceforge.net/
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -26,6 +27,7 @@ Requires: %name
 %prep
 %setup -q -n wildmidi-%{version}
 %patch1 -p1
+%patch2 -p1
 mkdir -p include/sys
 cp %{SOURCE1} include/sys
 
@@ -80,5 +82,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/*
 
 %changelog
+* Sat Jan 13 2009 - Milan Jurik
+- workaround for missing __FUNCTION__ support
 * Thu Dec 11 2008 - trisk@acm.jhu.edu
 - Initial spec
