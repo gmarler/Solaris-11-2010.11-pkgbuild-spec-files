@@ -5,6 +5,8 @@
 	* SFElibofa.spec: support for SUNWfftw3
 	* encumbered/SFElibdvdcss.spec: upgrade to 1.2.10
 	* SFEwildmidi.spec: workaround for missing __FUNCTION__ support
+	* encumbered/SFElibdvdread.spec: return back, new upstream
+	* SFElibdvdnav.spec: upgrade to 4.1.3
 
 2009-06-08  Brian Cameron  <brian.cameron@sun.com>
 

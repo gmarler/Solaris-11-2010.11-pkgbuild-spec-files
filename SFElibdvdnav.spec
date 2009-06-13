@@ -7,20 +7,21 @@
 
 Name:                    SFElibdvdnav
 Summary:                 libdvdnav  - DVD navigation library
-Version:                 4.1.2
+Version:                 4.1.3
 #Source:                  %{sf_download}/dvd/libdvdnav-%{version}.tar.gz
-Source:                  http://www.mplayerhq.hu/MPlayer/releases/dvdnav/libdvdnav-%{version}.tar.gz
+Source:                  http://www1.mplayerhq.hu/MPlayer/releases/dvdnav/libdvdnav-%{version}.tar.bz2
 Patch1:                  libdvdnav-01-Wall.diff
 SUNW_BaseDir:            %{_basedir}
 buildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
+Requires: SFElibdvdread
 
 %package devel
 Summary:                 %{summary} - development files
 SUNW_BaseDir:            %{_basedir}
 %include default-depend.inc
 Requires: %name
-
+BuildRequires: SFElibdvdread-devel
 
 %prep
 %setup -q -n libdvdnav-%version
@@ -69,8 +70,12 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, sys) %{_datadir}
 %dir %attr (0755, root, other) %{_datadir}/aclocal
 %{_datadir}/aclocal/*
+%dir %attr (0755, root, other) %{_libdir}/pkgconfig
+%{_libdir}/pkgconfig/*
 
 %changelog
+* Sat Jun 13 2009 - Milan Jurik
+- upgrade to 4.1.3
 * Tue Sep 02 2008 - halton.huo@sun.com
 - Add /usr/share/aclocal to ACLOCAL_FLAGS to fix build issue
 * Tue Jul 22 2008 - trisk@acm.jhu.edu
