@@ -7,7 +7,7 @@
 
 Name:                    SFElibdvdcss
 Summary:                 libdvdcss  - a simple library designed for accessing DVDs like a block device without having to bother about the decryption.
-Version:                 1.2.9
+Version:                 1.2.10
 Source:                  http://download.videolan.org/pub/libdvdcss/%{version}/libdvdcss-%{version}.tar.bz2
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -56,8 +56,12 @@ rm -rf $RPM_BUILD_ROOT
 %defattr (-, root, bin)
 %dir %attr (0755, root, bin) %{_includedir}
 %{_includedir}/*
+%dir %attr (0755, root, other) %{_libdir}/pkgconfig
+%{_libdir}/pkgconfig/*
 
 %changelog
+* Sat Jun 13 2009 - Milan Jurik
+- upgrade to 1.2.10
 * Mon Jun 12 2006 - laca@sun.com
 - renamed to SFElibdvdcss
 - changed to root:bin to follow other JDS pkgs.
