@@ -5,6 +5,8 @@
 #
 %include Solaris.inc
 
+%define SFEfftw   %(/usr/bin/pkginfo -q SFEfftw && echo 1 || echo 0)
+
 Name:		SFElibofa
 Summary:	library for accesing MusicBrainz servers
 Version:	0.9.3
@@ -16,8 +18,13 @@ Patch3:         libofa-03-missinghdrs.diff
 SUNW_BaseDir:	%{_basedir}
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 
+%if %SFEfftw
 Requires: SFEfftw
 BuildRequires: SFEfftw-devel
+%else
+BuildRequires:	SUNWfftw3
+Requires:	SUNWfftw3
+%endif
 
 %prep
 %setup -q -n libofa-%version
@@ -59,6 +66,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/*
 
 %changelog
+* Sat Jun 13 2009 - Milan Jurik
+- support for SUNWfftw3
 * Sun Jun 29 2008 - river@wikimedia.org
 - fftw is required
 - some examples are missing <unistd.h> and do not build
