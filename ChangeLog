@@ -1,5 +1,10 @@
 2009-06-15  Halton Huo  <halton.huo@sun.com>
 
+	* base-specs/conduit.spec: Enable nautilus extension,
+	  eog plugin and totem plugin
+
+2009-06-15  Halton Huo  <halton.huo@sun.com>
+
 	* SFEpygoocanvas.spec: Bump to 0.14.1, use GNOME download url
 	  Add dependency for python2.6
 

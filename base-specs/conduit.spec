@@ -74,17 +74,17 @@ fi
 intltoolize --force --automake
 libtoolize --force
 aclocal $ACLOCAL_FLAGS -I . -I m4
-#autoheader
 automake -a -c -f
 autoconf
 
 ./configure --prefix=%{_prefix} \
-			--bindir=%{_bindir} \
-			--mandir=%{_mandir} \
-			--libdir=%{_libdir} \
-			--datadir=%{_datadir} \
-			--includedir=%{_includedir} \
-			--sysconfdir=%{_sysconfdir} \
+        --mandir=%{_mandir} \
+        --datadir=%{_datadir} \
+        --includedir=%{_includedir} \
+        --sysconfdir=%{_sysconfdir} \
+        --enable-nautilus-extension=yes \
+        --enable-eog-plugin=yes \
+        --enable-totem-plugin=yes \
 
 make -j $CPUS
 
@@ -132,6 +132,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*.pc
 
 %changelog
+* Mon Jun 15 2009 - halton.huo@sun.com
+- Enable nautilus extension, eog plugin and totem plugin
 * Tue Oct 21 2008 - halton.huo@sun.com
 - Bump to 0.3.15
 - Remove upstreamed patch test-fail.diff
