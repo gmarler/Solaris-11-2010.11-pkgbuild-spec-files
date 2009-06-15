@@ -1,3 +1,10 @@
+2009-06-15  Halton Huo  <halton.huo@sun.com>
+
+	* SFEanjuta.spec: Bump to 2.27.3.0
+	* base-specs/gdl.spec: Bump to 2.27.3
+	* patches/anjuta-01-void-return.diff: remove upstreamed patch
+	* patches/anjuta-02-solaris-ld.diff: remove upstreamed patch
+
 2009-06-13  Milan Jurik <sfnet@xylab.cz>
 
 	* encumbered/SFExvid.spec: upgrade to 1.2.2

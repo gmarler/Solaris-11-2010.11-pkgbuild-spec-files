@@ -11,7 +11,7 @@
 Name:		gdl
 License:	GPL
 Group:		Development/Libraries
-Version:	2.27.1
+Version:	2.27.3
 Release:	1
 Distribution:   Java Desktop System
 Vendor:         Sun Microsystems, Inc.
@@ -109,6 +109,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_prefix}/lib/pkgconfig/*
 
 %changelog
+* Mon Jun 15 2009 - halton.huo@sun.com
+- Bump to 2.27.3
 * Tue May 05 2009 - halton.huo@sun.com
 - Bump to 2.27.1
 * Tue Mar 03 2009 - halton.huo@sun.com
