@@ -1,3 +1,8 @@
+2009-06-15  Brian Cameron  <brian.cameron@sun.com>
+
+	* SFEjokosher.spec, patches/jokosher-01-byteorder.diff:  Add
+	  patch so that jokosher works on Sparc.
+
 2009-06-15  Halton Huo  <halton.huo@sun.com>
 
 	* base-specs/conduit.spec: Enable nautilus extension,

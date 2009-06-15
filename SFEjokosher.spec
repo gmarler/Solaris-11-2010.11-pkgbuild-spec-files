@@ -15,6 +15,7 @@ Version:	0.11.3
 URL:		http://jokosher.org
 Source0:	http://launchpad.net/jokosher/0.11/%{version}/+download/jokosher-%{version}.tar.gz
 Source1:        FreesoundSearch-0.3-py2.6.egg
+Patch1:         jokosher-01-byteorder.diff
 SUNW_BaseDir:   %{_basedir}
 BuildRoot:      %{_tmppath}/jokosher-%{version}-build
 Requires:       SUNWPython
@@ -47,6 +48,7 @@ Requires:                %{name}
 
 %prep
 %setup -q -n jokosher-%version
+%patch1 -p1
 
 # Replace the Freesound extension with a version which has been modified to not
 # save the FreeSound username/password information in plaintext in the user's
@@ -153,6 +155,8 @@ test -x $BASEDIR/lib/postrun || exit 0
 %endif
 
 %changelog
+* Mon Jun 15 2009 - brian.cameron@sun.com
+- Add patch jokosher-01-byteorder.diff so that Jokosher works on Sparc.
 * Thu Jun 04 2009 - brian.cameron@sun.com
 - Bump to 0.11.3.
 * Tue May 12 2009 - brian.cameron@sun.com
