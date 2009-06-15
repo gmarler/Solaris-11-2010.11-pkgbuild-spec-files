@@ -1,5 +1,5 @@
 #
-# Copyright 2008 Sun Microsystems, Inc.
+# Copyright 2009 Sun Microsystems, Inc.
 # This file and all modifications and additions to the pristine
 # package are under the same license as the package itself.
 #
@@ -13,15 +13,21 @@
 Name:                SFEpygoocanvas
 URL:                 http://developer.berlios.de/projects/pygoocanvas/
 Summary:             pygoocanvas - GooCanvas python bindings
-Version:             0.10.0
-Source:              http://download.berlios.de/%{src_name}/%{src_name}-%{version}.tar.gz
+Version:             0.14.1
+Source:              http://download.gnome.org/sources/%{src_name}/0.14/%{src_name}-%{version}.tar.bz2
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 
 BuildRequires: SUNWPython-devel
+BuildRequires: SUNWgnome-python-libs-devel
+BuildRequires: SUNWPython26-devel
+BuildRequires: SUNWgnome-python26-libs-devel
 BuildRequires: SFEgoocanvas-devel
 Requires: SUNWPython
+Requires: SUNWgnome-python-libs
+Requires: SUNWPython26
+Requires: SUNWgnome-python26-libs
 Requires: SFEgoocanvas
 
 %package devel
@@ -78,6 +84,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Jun 15 2009 - halton.huo@sun.com
+- Bump to 0.14.1
+- Use GNOME download url
+- Add dependency for python2.6
 * Tue May 13 2008 - nonsea@users.sourceforge.net
 - Bump to 0.10
 - Update %files
