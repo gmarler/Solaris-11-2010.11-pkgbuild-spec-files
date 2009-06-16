@@ -1,3 +1,8 @@
+2009-06-15  Willie Walker  <william.walker@sun.com>
+
+        * SFEliblouis.spec, base-specs/liblouis.spec: Upgrade to 
+          liblouis 1.6.2 to get us the 'louis' python module.
+
 2009-06-15  Brian Cameron  <brian.cameron@sun.com>
 
 	* SFEjokosher.spec, patches/jokosher-01-byteorder.diff:  Add

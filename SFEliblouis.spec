@@ -11,6 +11,7 @@ Version:           %{default_pkg_version}
 SUNW_BaseDir:      %{_basedir}
 SUNW_Copyright:    %{name}.copyright
 BuildRoot:         %{_tmppath}/%{name}-%{version}-build
+Requires:          SUNWpython24-ctypes
 
 %include default-depend.inc
 
@@ -42,7 +43,7 @@ rm -rf $RPM_BUILD_ROOT
 %post
 ( echo 'PATH=/usr/bin:/usr/sfw/bin; export PATH' ;
   echo 'infos="';
-  echo 'liblouis-guide.info' ;
+  echo 'liblouis.info' ;
   echo '"';
   echo 'retval=0';
   echo 'for info in $infos; do';
@@ -53,7 +54,7 @@ rm -rf $RPM_BUILD_ROOT
 %preun
 ( echo 'PATH=/usr/bin:/usr/sfw/bin; export PATH' ;
   echo 'infos="';
-  echo 'liblouis-guide.info' ;
+  echo 'liblouis.info' ;
   echo '"';
   echo 'for info in $infos; do';
   echo '  install-info --info-dir=%{_infodir} --delete %{_infodir}/$info';
@@ -70,13 +71,18 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/liblouis.pc
 %dir %attr (0755, root, bin) %{_infodir}
 %defattr (0444, root, bin)
-%{_infodir}/liblouis-guide.info
+%{_infodir}/liblouis.info
 %dir %attr (0755, root, sys) %{_datadir}
+%dir %attr (0755, root, other) %{_datadir}/doc
+%dir %attr (0755, root, bin) %{_datadir}/doc/liblouis
+%{_datadir}/doc/liblouis/*
 %dir %attr (0755, root, sys) %{_datadir}/liblouis
-%dir %attr (0755, root, sys) %{_datadir}/liblouis/doc
-%{_datadir}/liblouis/doc/*
 %dir %attr (0755, root, sys) %{_datadir}/liblouis/tables
 %{_datadir}/liblouis/tables/*
+%dir %attr (0755, root, bin) %{_libdir}/python?.?
+%dir %attr (0755, root, bin) %{_libdir}/python?.?/vendor-packages
+%dir %attr (0755, root, bin) %{_libdir}/python?.?/vendor-packages/louis
+%{_libdir}/python?.?/vendor-packages/louis/*
 
 %files devel
 %defattr (-, root, bin)
@@ -84,5 +90,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/liblouis/*
 
 %changelog
+* Tue Jun 16 2009 - Willie Walker
+- Upgrade to liblouis 1.6.2 to get us the 'louis' python module
 * Fri Feb 13 2009 - Willie Walker
 - Initial spec
