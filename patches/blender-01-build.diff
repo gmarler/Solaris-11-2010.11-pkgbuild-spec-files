@@ -1,7 +1,7 @@
---- blender-2.48a/extern/bullet2/src/LinearMath/btScalar.h	2008-10-23 00:38:18.000000000 +0800
-+++ blender-2.48a.mod/extern/bullet2/src/LinearMath/btScalar.h	2008-11-17 14:14:11.925252209 +0800
-@@ -20,8 +20,8 @@ subject to the following restrictions:
- #include <math.h>
+--- blender-2.49/extern/bullet2/src/LinearMath/btScalar.h.orig  Mon Jun 15 16:17:37 2009
++++ blender-2.49/extern/bullet2/src/LinearMath/btScalar.h       Mon Jun 15 16:18:13 2009
+@@ -21,8 +21,8 @@
+ 
  #include <stdlib.h>//size_t for MSVC 6.0
  
 -#include <cstdlib>
@@ -10,7 +10,7 @@
 +//#include <cfloat>
  #include <float.h>
  
- #define BT_BULLET_VERSION 272
+ #define BT_BULLET_VERSION 274
 @@ -226,11 +226,11 @@ SIMD_FORCE_INLINE btScalar btPow(btScala
  	
  #endif
@@ -46,31 +46,30 @@
  }
  
  SIMD_FORCE_INLINE btScalar btRadians(btScalar x) { return x * SIMD_RADS_PER_DEG; }
---- blender-2.48a/intern/memutil/MEM_Allocator.h	2008-10-23 00:35:42.000000000 +0800
-+++ blender-2.48a.mod/intern/memutil/MEM_Allocator.h	2008-11-17 14:16:18.991341197 +0800
-@@ -83,7 +83,9 @@ struct MEM_Allocator
+--- blender-2.49/intern/memutil/MEM_Allocator.h.orig	Mon Jun 15 17:31:59 2009
++++ blender-2.49/intern/memutil/MEM_Allocator.h	Mon Jun 15 17:34:04 2009
+@@ -83,7 +83,8 @@
  
  #ifndef MS_VISUALC_6_0_WORKAROUND
  	// __p is not permitted to be a null pointer.
 -	void deallocate(pointer __p, size_type){ 
-+	// Sun Studio CC want Void* like MS_VISUAL !!!
-+	// void deallocate(pointer __p, size_type){ 
-+	 void deallocate(void* __p, size_type){ 
++        // Sun Studio CC want Void* like MS_VISUAL !!!
++	void deallocate(void* __p, size_type){ 
  		MEM_freeN(__p);
  	}
  #else
---- blender-2.48a/source/Makefile	2008-10-23 00:36:53.000000000 +0800
-+++ blender-2.48a.mod/source/Makefile	2008-11-17 14:18:14.161805683 +0800
-@@ -104,7 +104,7 @@ COMLIB += $(NAN_IKSOLVER)/lib/libiksolve
- COMLIB += $(NAN_OPENNL)/lib/$(DEBUG_DIR)libopennl.a
+--- blender-2.49-bk/source/Makefile.orig	Mon Jun 15 18:06:23 2009
++++ blender-2.49-bk/source/Makefile	Mon Jun 15 18:06:37 2009
+@@ -103,7 +103,7 @@
+ COMLIB += $(NAN_IKSOLVER)/lib/libiksolver.a
  COMLIB += $(NAN_SUPERLU)/lib/$(DEBUG_DIR)libsuperlu.a	
  COMLIB += $(OCGDIR)/blender/avi/$(DEBUG_DIR)libavi.a
 -COMLIB += $(NAN_JPEG)/lib/libjpeg.a
 +COMLIB += $(NAN_JPEG)/lib/libjpeg.so
  COMLIB += $(OCGDIR)/blender/gpu/$(DEBUG_DIR)libgpu.a
  COMLIB += $(NAN_GLEW)/lib/libglew.a
- 
-@@ -157,7 +157,7 @@ endif
+
+@@ -160,7 +160,7 @@
  COMLIB += $(NAN_GUARDEDALLOC)/lib/libguardedalloc.a
  COMLIB += $(NAN_MEMUTIL)/lib/libmemutil.a
  COMLIB += $(NAN_BMFONT)/lib/$(DEBUG_DIR)libbmfont.a
@@ -79,17 +78,17 @@
  COMLIB += $(OCGDIR)/blender/yafray/$(DEBUG_DIR)libyafrayexport.a
  COMLIB += $(OCGDIR)/blender/blenlib/$(DEBUG_DIR)libblenlib.a
  
-@@ -328,8 +328,8 @@ ifeq ($(WITH_BF_WEBPLUGIN), true)
+@@ -337,8 +337,8 @@
  endif
- 
+
  ifeq ($(OS),solaris)
 -    PULIB += $(NAN_ZLIB)/lib/libz.a
 -    SPLIB += $(NAN_ZLIB)/lib/libz.a
 +    PULIB += $(NAN_ZLIB)/lib/libz.so
 +    SPLIB += $(NAN_ZLIB)/lib/libz.so
  endif
- 
- # OpenAL libs are already compiled as shared code! Check FMod if we switch to that. (nzc)
+
+ # OpenAL libs are already compiled as shared code!
 --- blender-2.48a/source/nan_compile.mk	2008-10-23 00:36:53.000000000 +0800
 +++ blender-2.48a.mod/source/nan_compile.mk	2008-11-17 14:20:47.174621922 +0800
 @@ -174,22 +174,22 @@ endif
@@ -226,42 +225,42 @@
  BF_ICONV = "/usr"
  BF_ICONV_INC = '${BF_ICONV}/include'
  BF_ICONV_LIB = 'iconv'
---- blender-2.48a/source/nan_definitions.mk	2008-10-23 00:36:53.000000000 +0800
-+++ blender-2.48a.mod/source/nan_definitions.mk	2009-01-15 18:03:04.886302375 +0800
-@@ -147,10 +147,10 @@ endif
-               # this only exists at the moment for i386-64 CPU Types at the moment
-               export NAN_OPENEXR ?= $(LCGDIR)/openexr
- 
--              export NAN_OPENEXR_LIBS ?= $(NAN_OPENEXR)/lib/libIlmImf.a $(NAN_OPENEXR)/lib/libHalf.a $(NAN_OPENEXR)/lib/libIex.a $(NAN_OPENEXR)/lib/libIlmThread.a -lrt
-+              export NAN_OPENEXR_LIBS ?= $(NAN_OPENEXR)/lib/libIlmImf.so $(NAN_OPENEXR)/lib/libHalf.so $(NAN_OPENEXR)/lib/libIex.so $(NAN_OPENEXR)/lib/libIlmThread.so -lrt
-           else
--            export NAN_OPENEXR ?= /usr/local
--	    export NAN_OPENEXR_LIBS ?= $(NAN_OPENEXR)/lib/libIlmImf.a $(NAN_OPENEXR)/lib/libHalf.a $(NAN_OPENEXR)/lib/libIex.a
-+           export NAN_OPENEXR ?= /usr
-+	   export NAN_OPENEXR_LIBS ?= $(NAN_OPENEXR)/lib/libIlmImf.so $(NAN_OPENEXR)/lib/libHalf.so $(NAN_OPENEXR)/lib/libIex.so
-           endif
-         endif
-       endif
-@@ -478,7 +478,8 @@ endif
+--- blender-2.49/source/nan_definitions.mk.orig Mon Jun 15 18:24:15 2009
++++ blender-2.49/source/nan_definitions.mk      Tue Jun 16 11:25:00 2009
+@@ -209,7 +209,7 @@
+     export NAN_OPENEXR ?= $(LCGDIR)/openexr
+     export NAN_OPENEXR_INC ?= -I$(NAN_OPENEXR)/include -I$(NAN_OPENEXR)/include/OpenEXR
+     ifeq ($(CPU),powerpc)
+-      export NAN_OPENEXR_LIBS ?= $(NAN_OPENEXR)/lib/libIlmImf.a $(NAN_OPENEXR)/lib/libHalf.a $(NAN_OPENEXR)/lib/libIex.a
++      export NAN_OPENEXR_LIBS ?= $(NAN_OPENEXR)/lib/libIlmImf.so $(NAN_OPENEXR)/lib/libHalf.so $(NAN_OPENEXR)/lib/libIex.so
+     else
+       export NAN_OPENEXR_LIBS ?= $(NAN_OPENEXR)/lib/libIlmImf.a $(NAN_OPENEXR)/lib/libHalf.a $(NAN_OPENEXR)/lib/libIex.a $(NAN_OPENEXR)/lib/libIlmThread.a
+     endif
+@@ -461,7 +461,7 @@
      export NAN_PYTHON ?= $(LCGDIR)/python
      export NAN_PYTHON_VERSION ?= 2.5
      export NAN_PYTHON_BINARY ?= $(NAN_PYTHON)/bin/python$(NAN_PYTHON_VERSION)
 -    export NAN_PYTHON_LIB ?= $(NAN_PYTHON)/lib/python$(NAN_PYTHON_VERSION)/config/libpython$(NAN_PYTHON_VERSION).a
-+    #export NAN_PYTHON_LIB ?= $(NAN_PYTHON)/lib/python$(NAN_PYTHON_VERSION)/config/libpython$(NAN_PYTHON_VERSION).so
 +    export NAN_PYTHON_LIB ?= $(NAN_PYTHON)/lib/libpython$(NAN_PYTHON_VERSION).so
-     export NAN_OPENAL ?= $(LCGDIR)/openal 
-     export NAN_FMOD ?= $(LCGDIR)/fmod
+     export NAN_OPENAL ?= $(LCGDIR)/openal
      export NAN_JPEG ?= $(LCGDIR)/jpeg
-@@ -494,7 +495,7 @@ endif
+     export NAN_PNG ?= $(LCGDIR)/png
+@@ -476,12 +476,12 @@
      export NAN_GETTEXT_LIB ?= $(NAN_GETTEXT)/lib/libintl.a $(NAN_GETTEXT)/lib/libiconv.a
      export NAN_SDL ?= $(LCGDIR)/sdl
      export NAN_SDLCFLAGS ?= -I$(NAN_SDL)/include/SDL
 -    export NAN_SDLLIBS ?= $(NAN_SDL)/lib/libSDL.a
 +    export NAN_SDLLIBS ?= $(NAN_SDL)/lib/libSDL.so
  
+     # this only exists at the moment for i386-64 CPU Types at the moment
+     export NAN_OPENEXR ?= $(LCGDIR)/openexr
+     export NAN_OPENEXR_INC ?= -I$(NAN_OPENEXR)/include -I$(NAN_OPENEXR)/include/OpenEXR
+-    export NAN_OPENEXR_LIBS ?= $(NAN_OPENEXR)/lib/libIlmImf.a $(NAN_OPENEXR)/lib/libHalf.a $(NAN_OPENEXR)/lib/libIex.a $(NAN_OPENEXR)/lib/libIlmThread.a -lrt
++    export NAN_OPENEXR_LIBS ?= $(NAN_OPENEXR)/lib/libIlmImf.so $(NAN_OPENEXR)/lib/libHalf.so $(NAN_OPENEXR)/lib/libIex.so $(NAN_OPENEXR)/lib/libIlmThread.so -lrt
+ 
      # Uncomment the following line to use Mozilla inplace of netscape
      # CPPFLAGS +=-DMOZ_NOT_NET
-@@ -514,6 +515,10 @@ endif
+@@ -501,6 +501,10 @@
      # enable freetype2 support for text objects
      #export WITH_FREETYPE2 ?= true
  

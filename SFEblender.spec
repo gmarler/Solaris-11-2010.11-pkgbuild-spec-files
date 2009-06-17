@@ -1,5 +1,3 @@
-#
-# spec file for package SFEblender
 # Gilles Dauphin
 #
 
@@ -7,8 +5,8 @@
 
 Name:           SFEblender
 Summary:        blender
-Version:        2.48
-Source:		http://download.blender.org/source/blender-%{version}a.tar.gz
+Version:        2.49
+Source:		http://download.blender.org/source/blender-%{version}.tar.gz
 Source1:	blender-01.sh
 Patch1:		blender-01-build.diff
 Patch2:		blender-02-install.diff
@@ -49,10 +47,10 @@ Requires:        %{name}
 
 %prep
 %setup -q -c -n %{name}
-#cd blender-%{version}
-%patch1 -p0
-%patch2 -p0
-%patch3 -p0
+cd blender-%{version}
+%patch1 -p1
+%patch2 -p1
+%patch3 -p1
 
 %build
 
@@ -115,7 +113,7 @@ rm -rf $RPM_BUILD_ROOT
 #mkdir -p $RPM_BUILD_ROOT%{_libdir}/pkgconfig
 cd blender-%{version}
 gmake release
-cd obj/blender-2.48.1-solaris-2.11-x86_64-py2.4
+cd obj/blender-2.49.0-solaris-2.11-x86_64-py2.4
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/blender
 #chown root:bin $RPM_BUILD_ROOT%{_datadir}/blender
 
@@ -164,6 +162,8 @@ rm -rf $RPM_BUILD_ROOT
 #%endif
 
 %changelog
+* Jue  17 2009 - Simonjin
+- Bump to 2.49, and update the patch blender-01-build.diff
 * April 2009 - Gilles dauphin
 - adjust version for IPS
 * Sun 18 Jan 2009 - Henry Zhang
