@@ -1,0 +1,28 @@
+commit 538599fb3515c14196dce11e761edc971dfdfa90
+Author: Halton Huo <halton.huo@sun.com>
+Date:   Fri Jun 19 16:14:50 2009 +0800
+
+    Fix bug #22361, no difference for getpwnam_r() between Solaris and others
+
+diff --git a/pam-ck-connector/pam-ck-connector.c b/pam-ck-connector/pam-ck-connector.c
+index 6e41cf5..9bdef51 100644
+--- a/pam-ck-connector/pam-ck-connector.c
++++ b/pam-ck-connector/pam-ck-connector.c
+@@ -197,17 +197,10 @@ _util_name_to_uid (const char *username,
+ 
+         bufsize = sysconf (_SC_GETPW_R_SIZE_MAX);
+         buf = calloc (sizeof (char), bufsize);
+-#ifdef __sun
+-        pwdp = getpwnam_r (username, &pwd, buf, bufsize);
+-        if (pwdp == NULL) {
+-                goto out;
+-        }
+-#else
+         rc = getpwnam_r (username, &pwd, buf, bufsize, &pwdp);
+         if (rc != 0 || pwdp == NULL) {
+                 goto out;
+         }
+-#endif
+ 
+         res = pwdp->pw_uid;
+         if (default_gid != NULL) {

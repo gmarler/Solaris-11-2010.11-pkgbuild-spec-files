@@ -27,9 +27,9 @@ Version:                 0.3.0
 URL:                     http://www.freedesktop.org/wiki/Software/ConsoleKit
 Source:                  http://people.freedesktop.org/~mccann/dist/ConsoleKit-%{version}.tar.bz2
 Source1:                 consolekit.xml
-# date:2008-01-31 owner:yippi type:bug bugid:18149
+# date:2008-01-31 owner:yippi type:bug bugid:18149 status:upstreamed
 Patch1:                  ConsoleKit-01-emptystruct.diff
-# date:2008-03-02 owner:halton type:bug bugid:18173
+# date:2008-03-02 owner:halton type:bug bugid:18173 status:upstreamed
 Patch2:                  ConsoleKit-02-pam.diff
 # date:2008-03-04 owner:halton type:bug bugid:18261
 Patch3:                  ConsoleKit-03-ck-history.diff
@@ -42,6 +42,8 @@ Patch4:                  ConsoleKit-04-ck-dynamic.diff
 Patch5:                  ConsoleKit-05-add-sunray-type.diff
 Patch6:                  ConsoleKit-06-dynamic-tty.diff
 Patch7:                  ConsoleKit-07-solaris-vtdaemon.diff
+# date:2009-07-19 owner:halton type:bug bugid:22361
+Patch8:                  ConsoleKit-08-solaris-getpwnamr.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 
@@ -103,6 +105,7 @@ Requires: %name
 %patch5 -p1
 %patch6 -p1
 %patch7 -p1
+%patch8 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -219,6 +222,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Wed Apr 08 2009 - halton.huo@sun.com
+- Add patch8: solaris-getpwnamr.diff to fix bug #22361
 * Wed Apr 08 2009 - halton.huo@sun.com
 - Add patch5: add-sunray-type.diff to add Sunray for display-typs.conf.in
 - Add patch6: dynamic-tty.diff to add --tty for ck-dynaminc

@@ -53,6 +53,7 @@ BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 BuildRequires: SUNWlibrsvg-devel
 BuildRequires: SUNWgnome-base-libs-devel
 BuildRequires: SUNWgnome-libs-devel
+BuildRequires: SUNWgnome-doc-utils
 BuildRequires: SUNWlxml
 BuildRequires: SUNWlibcroco
 BuildRequires: SUNWlibpopt-devel
@@ -146,6 +147,7 @@ intltoolize --force --copy --automake
 libtoolize --copy --force
 aclocal $ACLOCAL_FLAGS -I . -I ./m4
 autoheader
+gnome-doc-prepare --force
 automake -a -c -f
 autoconf
 ./configure \
@@ -341,6 +343,8 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 %endif
 
 %changelog
+* Fri Jun 19 2009 - halton.huo@sun.com
+- Adding gnome-doc-prepare in case of missing gnome-doc-utils.make
 * Tue Apr 28 2009 - brian.cameron@sun.com
 - Add patch gdm-10-no-system-gconf.diff so that GDM does not display a
   gconf-sanity-check-2 error on startup.

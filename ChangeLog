@@ -1,3 +1,11 @@
+2009-06-19  Halton Huo  <halton.huo@sun.com>
+
+	* SFEconsolekit.spec:
+	* SUNWgnome-display-mgr.spec:
+	  Adding gnome-doc-prepare in case of missing gnome-doc-utils.make
+	* patches/ConsoleKit-08-solaris-getpwnamr.diff:
+	  Add to fix bug #22361
+
 2009-06-19  Alfred Peng  <alfred.peng@sun.com>
 
 	* SFEwebkit.spec: Bump to webkitgtk 1.1.10 release.
@@ -6,12 +14,12 @@
 
 2009-06-16  Simonjin   <yuntong.jin@sun.com>
 
-         * patches/blender-01-build.diff :update the patch for 2.49 ,SFEblender.spec: Bump to 2.49
+	 * patches/blender-01-build.diff :update the patch for 2.49 ,SFEblender.spec: Bump to 2.49
 
 2009-06-15  Willie Walker  <william.walker@sun.com>
 
-        * SFEliblouis.spec, base-specs/liblouis.spec: Upgrade to 
-          liblouis 1.6.2 to get us the 'louis' python module.
+	* SFEliblouis.spec, base-specs/liblouis.spec: Upgrade to 
+	  liblouis 1.6.2 to get us the 'louis' python module.
 
 2009-06-15  Brian Cameron  <brian.cameron@sun.com>
 
