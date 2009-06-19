@@ -1,93 +1,3 @@
-diff -Nrup webkit-old/GNUmakefile.am webkit-1.1.7/GNUmakefile.am
---- webkit-old/GNUmakefile.am	2009-06-03 12:55:14.624295000 +0800
-+++ webkit-1.1.7/GNUmakefile.am	2009-06-03 16:03:24.892487000 +0800
-@@ -61,21 +61,10 @@ global_cppflags += \
- 	-DWTF_USE_ICU_UNICODE=1
- 
- # Default compiler flags
--global_cflags := \
--	-Wall -W -Wcast-align -Wchar-subscripts -Wreturn-type \
--	-Wformat -Wformat-security -Wno-format-y2k -Wundef \
--	-Wmissing-format-attribute -Wpointer-arith -Wwrite-strings \
--	-Wno-unused-parameter -Wno-parentheses \
--	-fno-exceptions
--
--global_cxxflags := \
--	$(SYMBOL_VISIBILITY_INLINES) \
--	-fno-rtti
-+global_cflags := 
-+
-+global_cxxflags :=
- 
--if !ENABLE_DEBUG
--global_cflags += \
--	$(SYMBOL_VISIBILITY)
--endif
- 
- # -no-undefined required for building DLLs on Windows
- # It breaks the build on other platforms, so we use it conditionally
-@@ -136,8 +125,7 @@ libJavaScriptCore_la_CXXFLAGS = \
- 	$(libJavaScriptCore_la_CFLAGS)
- 
- libJavaScriptCore_la_CFLAGS = \
--	-fstrict-aliasing \
--	-O3 \
-+	-xO3 \
- 	$(global_cflags) \
- 	$(GLIB_CFLAGS) \
- 	$(UNICODE_CFLAGS)
-@@ -172,7 +160,6 @@ libWebCore_la_CXXFLAGS = \
- 	$(libWebCore_la_CFLAGS)
- 
- libWebCore_la_CFLAGS = \
--	-fno-strict-aliasing \
- 	$(global_cflags) \
- 	$(GLIB_CFLAGS) \
- 	$(UNICODE_CFLAGS) \
-@@ -493,8 +480,7 @@ include WebKit/gtk/po/GNUmakefile.am
- noinst_PROGRAMS += $(TEST_PROGS)
- 
- webkit_tests_cflags = \
--	-fno-strict-aliasing \
--	-O2 \
-+	-xO2 \
- 	-I$(srcdir)/JavaScriptCore/ForwardingHeaders \
- 	-I$(srcdir)/WebKit/gtk \
- 	-I$(top_builddir)/WebKit/gtk \
-diff -Nrup webkit-old/JavaScriptCore/GNUmakefile.am webkit-1.1.7/JavaScriptCore/GNUmakefile.am
---- webkit-old/JavaScriptCore/GNUmakefile.am	2009-06-03 12:55:14.632148000 +0800
-+++ webkit-1.1.7/JavaScriptCore/GNUmakefile.am	2009-06-03 13:21:12.177119000 +0800
-@@ -507,17 +507,14 @@ Programs_minidom_CPPFLAGS = \
- 	$(javascriptcore_cppflags)
- 
- Programs_minidom_CFLAGS = \
--	-ansi \
--	-fno-strict-aliasing \
--	-O2 \
-+	-xO2 \
- 	$(global_cflags) \
- 	$(GLOBALDEPS_CFLAGS)
- 
- Programs_minidom_LDADD = \
- 	 libJavaScriptCore.la \
--	 -lm \
--	 -lstdc++
--
-+	 -lm 
-+	
- # jsc
- Programs_jsc_SOURCES = \
- 	JavaScriptCore/jsc.cpp
-@@ -527,8 +524,7 @@ Programs_jsc_CPPFLAGS = \
- 	$(javascriptcore_cppflags)
- 
- Programs_jsc_CXXFLAGS = \
--	-fno-strict-aliasing \
--	-O2 \
-+	-xO2 \
- 	$(global_cxxflags) \
- 	$(global_cflags) \
- 	$(GLOBALDEPS_CFLAGS) \
 diff -Nrup webkit-old/JavaScriptCore/bytecompiler/BytecodeGenerator.cpp webkit-1.1.7/JavaScriptCore/bytecompiler/BytecodeGenerator.cpp
 --- webkit-old/JavaScriptCore/bytecompiler/BytecodeGenerator.cpp	2009-06-03 12:55:14.734466000 +0800
 +++ webkit-1.1.7/JavaScriptCore/bytecompiler/BytecodeGenerator.cpp	2009-06-03 12:55:17.826432000 +0800
@@ -112,18 +22,6 @@ diff -Nrup webkit-old/JavaScriptCore/interpreter/RegisterFile.cpp webkit-1.1.7/J
  #elif HAVE(VIRTUALALLOC)
      VirtualFree(m_buffer, 0, MEM_RELEASE);
  #else
-diff -Nrup webkit-old/JavaScriptCore/interpreter/RegisterFile.h webkit-1.1.7/JavaScriptCore/interpreter/RegisterFile.h
---- webkit-old/JavaScriptCore/interpreter/RegisterFile.h	2009-06-03 12:55:14.633527000 +0800
-+++ webkit-1.1.7/JavaScriptCore/interpreter/RegisterFile.h	2009-06-03 12:55:17.386123000 +0800
-@@ -167,7 +167,7 @@ namespace JSC {
-     {
-         size_t bufferLength = (capacity + maxGlobals) * sizeof(Register);
-     #if HAVE(MMAP)
--        m_buffer = static_cast<Register*>(mmap(0, bufferLength, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANON, VM_TAG_FOR_REGISTERFILE_MEMORY, 0));
-+        m_buffer = reinterpret_cast<Register*>(mmap(0, bufferLength, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANON, VM_TAG_FOR_REGISTERFILE_MEMORY, 0));
-         if (m_buffer == MAP_FAILED) {
-             fprintf(stderr, "Could not allocate register file: %d\n", errno);
-             CRASH();
 diff -Nrup webkit-old/JavaScriptCore/jsc.cpp webkit-1.1.7/JavaScriptCore/jsc.cpp
 --- webkit-old/JavaScriptCore/jsc.cpp	2009-06-03 12:55:14.710433000 +0800
 +++ webkit-1.1.7/JavaScriptCore/jsc.cpp	2009-06-03 12:55:17.584592000 +0800
@@ -379,18 +277,6 @@ diff -Nrup webkit-old/WebCore/loader/FrameLoader.cpp webkit-1.1.7/WebCore/loader
  
      loader->setTriggeringAction(action);
      if (m_documentLoader)
-diff -Nrup webkit-old/WebCore/loader/appcache/ApplicationCacheGroup.cpp webkit-1.1.7/WebCore/loader/appcache/ApplicationCacheGroup.cpp
---- webkit-old/WebCore/loader/appcache/ApplicationCacheGroup.cpp	2009-06-03 12:55:15.176784000 +0800
-+++ webkit-1.1.7/WebCore/loader/appcache/ApplicationCacheGroup.cpp	2009-06-03 12:55:18.448106000 +0800
-@@ -729,7 +729,7 @@ void ApplicationCacheGroup::checkIfLoadI
-         ASSERT(m_cacheBeingUpdated);
-         m_cacheBeingUpdated->setManifestResource(m_manifestResource.release());
- 
--        RefPtr<ApplicationCache> oldNewestCache = (m_newestCache == m_cacheBeingUpdated) ? 0 : m_newestCache;
-+        RefPtr<ApplicationCache> oldNewestCache = (m_newestCache == m_cacheBeingUpdated) ? (WTF::RefPtr<WebCore::ApplicationCache>)0 : m_newestCache;
- 
-         setNewestCache(m_cacheBeingUpdated.release());
-         cacheStorage().storeNewestCache(this);
 diff -Nrup webkit-old/WebCore/loader/archive/ArchiveFactory.cpp webkit-1.1.7/WebCore/loader/archive/ArchiveFactory.cpp
 --- webkit-old/WebCore/loader/archive/ArchiveFactory.cpp	2009-06-03 12:55:15.176387000 +0800
 +++ webkit-1.1.7/WebCore/loader/archive/ArchiveFactory.cpp	2009-06-03 12:55:18.447727000 +0800
@@ -885,30 +771,6 @@ diff -Nrup webkit-old/WebCore/svg/SVGURIReference.h webkit-1.1.7/WebCore/svg/SVG
      class MappedAttribute;
  
      class SVGURIReference {
-diff -Nrup webkit-old/WebKitTools/GNUmakefile.am webkit-1.1.7/WebKitTools/GNUmakefile.am
---- webkit-old/WebKitTools/GNUmakefile.am	2009-06-03 12:55:14.759629000 +0800
-+++ webkit-1.1.7/WebKitTools/GNUmakefile.am	2009-06-03 12:55:17.870550000 +0800
-@@ -13,9 +13,7 @@ Programs_GtkLauncher_SOURCES = \
- 	WebKitTools/GtkLauncher/main.c
- 
- Programs_GtkLauncher_CFLAGS = \
--	-ansi \
--	-fno-strict-aliasing \
--	-O2 \
-+	-xO2 \
- 	$(global_cflags) \
- 	$(GTK_CFLAGS) \
- 	$(LIBSOUP_CFLAGS)
-@@ -63,8 +61,7 @@ Programs_DumpRenderTree_CXXFLAGS = \
- 	$(Programs_DumpRenderTree_CFLAGS)
- 
- Programs_DumpRenderTree_CFLAGS = \
--	-fno-strict-aliasing \
--	-O2 \
-+	-xO2 \
- 	$(dumprendertree_cppflags) \
- 	$(global_cflags) \
- 	$(GLOBALDEPS_CFLAGS) \
 diff -Nrup webkit-old/autotools/webkit.m4 webkit-1.1.7/autotools/webkit.m4
 --- webkit-old/autotools/webkit.m4	2009-06-03 12:55:14.758812000 +0800
 +++ webkit-1.1.7/autotools/webkit.m4	2009-06-03 12:55:17.827706000 +0800
@@ -922,75 +784,273 @@ diff -Nrup webkit-old/autotools/webkit.m4 webkit-1.1.7/autotools/webkit.m4
  	else
  		AC_PATH_PROG(icu_config, icu-config, no)
  		if test "$icu_config" = "no"; then
-diff -Nrup webkit-old/configure.ac webkit-1.1.7/configure.ac
---- webkit-old/configure.ac	2009-06-03 12:55:14.624425000 +0800
-+++ webkit-1.1.7/configure.ac	2009-06-03 12:55:17.265642000 +0800
-@@ -52,6 +52,8 @@ case "$host" in
+--- webkit-1.1.10/WebKitTools/GNUmakefile.am.orig	2009-06-16 11:44:24.064675738 +0800
++++ webkit-1.1.10/WebKitTools/GNUmakefile.am	2009-06-16 11:45:19.067062323 +0800
+@@ -13,8 +13,6 @@
+ 	WebKitTools/GtkLauncher/main.c
+ 
+ Programs_GtkLauncher_CFLAGS = \
+-	-ansi \
+-	-fno-strict-aliasing \
+ 	$(global_cflags) \
+ 	$(GTK_CFLAGS) \
+ 	$(LIBSOUP_CFLAGS)
+@@ -66,7 +64,6 @@
+ 	$(Programs_DumpRenderTree_CFLAGS)
+ 
+ Programs_DumpRenderTree_CFLAGS = \
+-	-fno-strict-aliasing \
+ 	$(dumprendertree_cppflags) \
+ 	$(global_cflags) \
+ 	$(GLOBALDEPS_CFLAGS) \
+--- webkit-1.1.10/WebCore/loader/appcache/ApplicationCacheGroup.cpp.orig	2009-06-16 11:56:16.645144864 +0800
++++ webkit-1.1.10/WebCore/loader/appcache/ApplicationCacheGroup.cpp	2009-06-16 11:58:07.474500818 +0800
+@@ -730,40 +730,40 @@
+         ASSERT(m_cacheBeingUpdated);
+         m_cacheBeingUpdated->setManifestResource(m_manifestResource.release());
+ 
+-        RefPtr<ApplicationCache> oldNewestCache = (m_newestCache == m_cacheBeingUpdated) ? 0 : m_newestCache;
++        RefPtr<ApplicationCache> oldNewestCache = (m_newestCache == m_cacheBeingUpdated) ? (WTF::RefPtr<WebCore::ApplicationCache>)0 : m_newestCache;
+ 
+         setNewestCache(m_cacheBeingUpdated.release());
+-        if (cacheStorage().storeNewestCache(this)) {
+-            // New cache stored, now remove the old cache.
+-            if (oldNewestCache)
+-                cacheStorage().remove(oldNewestCache.get());
+-            // Fire the success events.
+-            postListenerTask(isUpgradeAttempt ? &DOMApplicationCache::callUpdateReadyListener : &DOMApplicationCache::callCachedListener, m_associatedDocumentLoaders);
+-        } else {
+-            // Run the "cache failure steps"
+-            // Fire the error events to all pending master entries, as well any other cache hosts
+-            // currently associated with a cache in this group.
+-            postListenerTask(&DOMApplicationCache::callErrorListener, m_associatedDocumentLoaders);
+-            // Disassociate the pending master entries from the failed new cache. Note that
+-            // all other loaders in the m_associatedDocumentLoaders are still associated with
+-            // some other cache in this group. They are not associated with the failed new cache.
+-
++        if (cacheStorage().storeNewestCache(this)) {
++            // New cache stored, now remove the old cache.
++            if (oldNewestCache)
++                cacheStorage().remove(oldNewestCache.get());
++            // Fire the success events.
++            postListenerTask(isUpgradeAttempt ? &DOMApplicationCache::callUpdateReadyListener : &DOMApplicationCache::callCachedListener, m_associatedDocumentLoaders);
++        } else {
++            // Run the "cache failure steps"
++            // Fire the error events to all pending master entries, as well any other cache hosts
++            // currently associated with a cache in this group.
++            postListenerTask(&DOMApplicationCache::callErrorListener, m_associatedDocumentLoaders);
++            // Disassociate the pending master entries from the failed new cache. Note that
++            // all other loaders in the m_associatedDocumentLoaders are still associated with
++            // some other cache in this group. They are not associated with the failed new cache.
++
+             // Need to copy loaders, because the cache group may be destroyed at the end of iteration.
+             Vector<DocumentLoader*> loaders;
+             copyToVector(m_pendingMasterResourceLoaders, loaders);
+             size_t count = loaders.size();
+-            for (size_t i = 0; i != count; ++i)
+-                disassociateDocumentLoader(loaders[i]); // This can delete this group.
+-
+-            // Reinstate the oldNewestCache, if there was one.
+-            if (oldNewestCache) {
+-                // This will discard the failed new cache.
+-                setNewestCache(oldNewestCache.release());
+-            } else {
+-                // We must have been deleted by the last call to disassociateDocumentLoader().
+-                return;
+-            }
+-        }
++            for (size_t i = 0; i != count; ++i)
++                disassociateDocumentLoader(loaders[i]); // This can delete this group.
++
++            // Reinstate the oldNewestCache, if there was one.
++            if (oldNewestCache) {
++                // This will discard the failed new cache.
++                setNewestCache(oldNewestCache.release());
++            } else {
++                // We must have been deleted by the last call to disassociateDocumentLoader().
++                return;
++            }
++        }
+         break;
+     }
+     }
+--- webkit-1.1.10/GNUmakefile.am.orig	2009-06-16 11:59:52.884596390 +0800
++++ webkit-1.1.10/GNUmakefile.am	2009-06-16 12:02:39.529050354 +0800
+@@ -81,7 +81,6 @@
+ # Don't include them for now to reduce the noise when compiling
+ # $(GLIB_CFLAGS) $(CAIRO_CFLAGS) $(PANGO_CFLAGS)  $(FREETYPE_CFLAGS)
+ corekit_cflags += \
+-	-fno-strict-aliasing \
+ 	$(COVERAGE_CFLAGS) \
+ 	$(ENCHANT_CFLAGS) \
+ 	$(GAIL_CFLAGS) \
+@@ -112,17 +111,9 @@
+ endif
+ 
+ # Default compiler flags
+-global_cflags += \
+-	-Wall -W -Wcast-align -Wchar-subscripts -Wreturn-type \
+-	-Wformat -Wformat-security -Wno-format-y2k -Wundef \
+-	-Wmissing-format-attribute -Wpointer-arith -Wwrite-strings \
+-	-Wno-unused-parameter -Wno-parentheses \
+-	-fno-exceptions
++global_cflags :=
+ 
+-global_cxxflags += \
+-	$(global_cflags) \
+-	$(SYMBOL_VISIBILITY_INLINES) \
+-	-fno-rtti
++global_cxxflags :=
+ 
+ # -no-undefined required for building DLLs on Windows
+ # It breaks the build on other platforms, so we use it conditionally
+@@ -172,8 +163,7 @@
+ 	$(libJavaScriptCore_la_CFLAGS)
+ 
+ libJavaScriptCore_la_CFLAGS = \
+-	-fstrict-aliasing \
+-	-O3 \
++	-xO3 \
+ 	$(global_cflags) \
+ 	$(GLIB_CFLAGS) \
+ 	$(UNICODE_CFLAGS)
+@@ -293,7 +283,6 @@
+ 
+ if !ENABLE_DEBUG
+ global_cppflags += -DNDEBUG
+-global_cflags += $(SYMBOL_VISIBILITY)
+ 
+ else
+ webcoregtk_cppflags += \
+@@ -506,7 +495,6 @@
+ noinst_PROGRAMS += $(TEST_PROGS)
+ 
+ webkit_tests_cflags = \
+-	-fno-strict-aliasing \
+ 	-I$(srcdir)/JavaScriptCore/ForwardingHeaders \
+ 	-I$(srcdir)/WebKit/gtk \
+ 	-I$(top_builddir)/WebKit/gtk \
+--- webkit-1.1.10/JavaScriptCore/GNUmakefile.am.orig	2009-06-16 12:03:42.676391833 +0800
++++ webkit-1.1.10/JavaScriptCore/GNUmakefile.am	2009-06-16 12:05:35.859550644 +0800
+@@ -542,15 +542,13 @@
+ 	$(javascriptcore_cppflags)
+ 
+ Programs_minidom_CFLAGS = \
+-	-ansi \
+-	-fno-strict-aliasing \
+ 	$(global_cflags) \
+ 	$(GLOBALDEPS_CFLAGS)
+ 
+ Programs_minidom_LDADD = \
+ 	 libJavaScriptCore.la \
+ 	 -lm \
+-	 -lstdc++
++	 -lstdcxx4
+ 
+ Programs_minidom_LDFLAGS = \
+ 	-no-install \
+@@ -565,7 +563,6 @@
+ 	$(javascriptcore_cppflags)
+ 
+ Programs_jsc_CXXFLAGS = \
+-	-fno-strict-aliasing \
+ 	$(global_cxxflags) \
+ 	$(global_cflags) \
+ 	$(GLOBALDEPS_CFLAGS) \
+--- webkit-1.1.10/JavaScriptCore/interpreter/RegisterFile.h.orig	2009-06-16 12:06:25.754895495 +0800
++++ webkit-1.1.10/JavaScriptCore/interpreter/RegisterFile.h	2009-06-16 12:07:29.988031496 +0800
+@@ -174,13 +174,13 @@
+ 
+         size_t bufferLength = (capacity + maxGlobals) * sizeof(Register);
+     #if HAVE(MMAP)
+-        m_buffer = static_cast<Register*>(mmap(0, bufferLength, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANON, VM_TAG_FOR_REGISTERFILE_MEMORY, 0));
++        m_buffer = reinterpret_cast<Register*>(mmap(0, bufferLength, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANON, VM_TAG_FOR_REGISTERFILE_MEMORY, 0));
+         if (m_buffer == MAP_FAILED) {
+             fprintf(stderr, "Could not allocate register file: %d\n", errno);
+             CRASH();
+         }
+     #elif HAVE(VIRTUALALLOC)
+-        m_buffer = static_cast<Register*>(VirtualAlloc(0, roundUpAllocationSize(bufferLength, commitSize), MEM_RESERVE, PAGE_READWRITE));
++        m_buffer = reinterpret_cast<Register*>(VirtualAlloc(0, roundUpAllocationSize(bufferLength, commitSize), MEM_RESERVE, PAGE_READWRITE));
+         if (!m_buffer) {
+             fprintf(stderr, "Could not allocate register file: %d\n", errno);
+             CRASH();
+--- webkit-1.1.10/JavaScriptCore/runtime/JSONObject.cpp.orig	2009-06-16 14:34:36.186181621 +0800
++++ webkit-1.1.10/JavaScriptCore/runtime/JSONObject.cpp	2009-06-16 14:34:52.121425118 +0800
+@@ -135,7 +135,7 @@
+         if (!stringify(builder, obj, key, value))
+             return jsUndefined();
+ 
+-        return (m_exec->hadException())? m_exec->exception() : jsString(m_exec, builder);
++        return (m_exec->hadException())? m_exec->exception() : (JSC::JSValue)jsString(m_exec, builder);
+     }
+ 
+ private:
+--- webkit-1.1.10/configure.ac.orig	2009-06-16 11:46:24.300621155 +0800
++++ webkit-1.1.10/configure.ac	2009-06-16 15:36:25.606141942 +0800
+@@ -52,6 +52,9 @@
       *-*-darwin*)
         os_darwin=yes
         ;;
 +     *solaris*)
 +       os_sunos=yes
++       ;;
  esac
  
  case "$host_os" in
-@@ -495,27 +497,34 @@ AC_ARG_ENABLE([jit],
+@@ -498,27 +501,34 @@
                               [Enable JIT compilation default=yes]),
                [],[enable_jit="yes"])
  if test "$enable_jit" = "yes"; then
--    case "$target_cpu" in
+-    case "$host_cpu" in
 -        i*86|x86_64)
 -            AC_DEFINE([ENABLE_JIT], [1], [Define to enable JIT])
--            AC_DEFINE([ENABLE_WREC], [1], [Define to enable WREC])
+-            AC_DEFINE([ENABLE_YARR], [1], [Define to enable YARR])
+-            AC_DEFINE([ENABLE_YARR_JIT], [1], [Define to enable YARR JIT])
 -            AC_DEFINE([ENABLE_JIT_OPTIMIZE_CALL], [1], [Define to enable optimizing calls])
 -            AC_DEFINE([ENABLE_JIT_OPTIMIZE_PROPERTY_ACCESS], [1], [Define to enable optimized property access])
 -            AC_DEFINE([ENABLE_JIT_OPTIMIZE_ARITHMETIC], [1], [Define to enable optimized arithmetic])
--            case "$target_cpu" in
++    case "$host" in
++        *solaris*)
++            enable_jit="no (OS '$target_os' not supported)"
++        ;;
++        *)
+             case "$host_cpu" in
 -                i*86)
 -                    AC_DEFINE([WTF_USE_JIT_STUB_ARGUMENT_VA_LIST], [1], [Use stub va_list])
--                ;;
++                i*86|x86_64)
++                    AC_DEFINE([ENABLE_JIT], [1], [Define to enable JIT])
++                    AC_DEFINE([ENABLE_YARR], [1], [Define to enable YARR])
++                    AC_DEFINE([ENABLE_YARR_JIT], [1], [Define to enable YARR JIT])
++                    AC_DEFINE([ENABLE_JIT_OPTIMIZE_CALL], [1], [Define to enable optimizing calls])
++                    AC_DEFINE([ENABLE_JIT_OPTIMIZE_PROPERTY_ACCESS], [1], [Define to enable optimized property access])
++                    AC_DEFINE([ENABLE_JIT_OPTIMIZE_ARITHMETIC], [1], [Define to enable optimized arithmetic])
++                    case "$host_cpu" in
++                        i*86)
++                            AC_DEFINE([WTF_USE_JIT_STUB_ARGUMENT_VA_LIST], [1], [Use stub va_list])
++                        ;;
++                        x86_64)
++                            AC_DEFINE([WTF_USE_JIT_STUB_ARGUMENT_REGISTER], [1], [Use stub register])
++                            AC_DEFINE([WTF_USE_ALTERNATE_JSIMMEDIATE], [1], [Use alternate JSImmediate])
++                        ;;
++                    esac
+                 ;;
 -                x86_64)
 -                    AC_DEFINE([WTF_USE_JIT_STUB_ARGUMENT_REGISTER], [1], [Use stub register])
 -                    AC_DEFINE([WTF_USE_ALTERNATE_JSIMMEDIATE], [1], [Use alternate JSImmediate])
--                ;;
--            esac
++                *)
++                    enable_jit="no (CPU '$host_cpu' not supported)"
+                 ;;
+             esac
 -        ;;
 -        *)
--            enable_jit="no (CPU '$target_cpu' not supported)"
+-            enable_jit="no (CPU '$host_cpu' not supported)"
 -        ;;
--    esac
-+    case "$target_os" in
-+       solaris*)
-+           enable_jit="no (OS '$target_os' not supported)"	
-+	;;
-+       *)
-+           case "$target_cpu" in
-+        	i*86|x86_64)
-+            		AC_DEFINE([ENABLE_JIT], [1], [Define to enable JIT])
-+		        AC_DEFINE([ENABLE_WREC], [1], [Define to enable WREC])
-+            		AC_DEFINE([ENABLE_JIT_OPTIMIZE_CALL], [1], [Define to enable optimizing calls])
-+            		AC_DEFINE([ENABLE_JIT_OPTIMIZE_PROPERTY_ACCESS], [1], [Define to enable optimized property access])
-+          		AC_DEFINE([ENABLE_JIT_OPTIMIZE_ARITHMETIC], [1], [Define to enable optimized arithmetic])
-+            	case "$target_cpu" in
-+                	i*86)
-+                    		AC_DEFINE([WTF_USE_JIT_STUB_ARGUMENT_VA_LIST], [1], [Use stub va_list])
-+                		;;
-+                	x86_64)
-+                    		AC_DEFINE([WTF_USE_JIT_STUB_ARGUMENT_REGISTER], [1], [Use stub register])
-+                    		AC_DEFINE([WTF_USE_ALTERNATE_JSIMMEDIATE], [1], [Use alternate JSImmediate])
-+                		;;
-+            	esac
-+        	;;
-+        	*)
-+        	    enable_jit="no (CPU '$target_cpu' not supported)"
-+        	;;
-+    	  esac
-+	;;
-+	esac
++    ;;
+     esac
  fi
  AC_MSG_RESULT([$enable_jit])
- 
-@@ -542,11 +551,11 @@ fi
+@@ -546,11 +556,11 @@
  
  # Add the appropriate 'O' level for optimized builds
  if test "$enable_optimizations" = "yes"; then
@@ -1006,3 +1066,23 @@ diff -Nrup webkit-old/configure.ac webkit-1.1.7/configure.ac
  fi
  
  PKG_CHECK_MODULES([LIBSOUP],
+--- webkit-1.1.10/WebCore/html/HTMLParser.cpp.orig	2009-06-16 16:01:13.605644351 +0800
++++ webkit-1.1.10/WebCore/html/HTMLParser.cpp	2009-06-16 16:01:58.498203167 +0800
+@@ -137,7 +137,7 @@
+     , m_reportErrors(reportErrors)
+     , m_handlingResidualStyleAcrossBlocks(false)
+     , m_inStrayTableContent(0)
+-    , m_parserQuirks(m_document->page() ? m_document->page()->chrome()->client()->createHTMLParserQuirks() : 0)
++    , m_parserQuirks(m_document->page() ? m_document->page()->chrome()->client()->createHTMLParserQuirks() : (WTF::PassOwnPtr<WebCore::HTMLParserQuirks>)0)
+ {
+ }
+ 
+@@ -155,7 +155,7 @@
+     , m_reportErrors(false)
+     , m_handlingResidualStyleAcrossBlocks(false)
+     , m_inStrayTableContent(0)
+-    , m_parserQuirks(m_document->page() ? m_document->page()->chrome()->client()->createHTMLParserQuirks() : 0)
++    , m_parserQuirks(m_document->page() ? m_document->page()->chrome()->client()->createHTMLParserQuirks() : (WTF::PassOwnPtr<WebCore::HTMLParserQuirks>)0)
+ {
+     if (frag)
+         frag->ref();

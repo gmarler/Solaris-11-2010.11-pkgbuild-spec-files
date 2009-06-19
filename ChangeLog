@@ -1,3 +1,9 @@
+2009-06-19  Alfred Peng  <alfred.peng@sun.com>
+
+	* SFEwebkit.spec: Bump to webkitgtk 1.1.10 release.
+	* patches/webkit-01-sun-studio-build-hack.diff: rework.
+	* patches/webkit-02-explicit-const.diff: rework.
+
 2009-06-16  Simonjin   <yuntong.jin@sun.com>
 
          * patches/blender-01-build.diff :update the patch for 2.49 ,SFEblender.spec: Bump to 2.49

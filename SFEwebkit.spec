@@ -7,7 +7,7 @@
 
 Name:                    SFEwebkit
 Summary:                 WetKit, an open source web browser engine that's used by Safari, Dashboard, Mail, and many other OS X applications.
-Version:                 1.1.7
+Version:                 1.1.10
 Source:                  http://www.webkitgtk.org/webkit-%{version}.tar.gz
 URL:                     http://www.webkitgtk.org/
 
@@ -34,6 +34,7 @@ Requires: SUNWsqlite3
 #Requires: SUNWtls
 Requires: SUNWzlib
 BuildRequires: SUNWgcc
+BuildRequires: SUNWicud
 
 %package devel
 Summary:                 %{summary} - development files
@@ -60,7 +61,8 @@ cd webkit-%version
 
 %build
 
-export CXXFLAGS=`pkg-config --cflags libstdcxx4`
+export CPPFLAGS=`pkg-config --cflags-only-I libstdcxx4`
+export CXXFLAGS=`pkg-config --cflags-only-other libstdcxx4`
 export LDFLAGS=`pkg-config --libs libstdcxx4`
 cd webkit-%version
 
@@ -118,6 +120,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Jun 19 2009 - alfred.peng@sun.com
+- Bump to webkitgtk 1.1.10 release, rework the patches.
 * Web Jun 03 2009 - chris.wang@sun.com
 - Update to webkitgtk 1.1.7 release, regenerated all patches, 
   change required package to SUNWlibstdcxx4, and reformatted 

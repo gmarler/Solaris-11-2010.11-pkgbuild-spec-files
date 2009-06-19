@@ -106,144 +106,6 @@ diff -Nrup webkit-1.1.6/WebCore/svg/SVGExternalResourcesRequired.h webkit-new/We
                                         ExternalResourcesRequired, externalResourcesRequired)
      };
  
-diff -Nrup webkit-1.1.6/WebCore/svg/SVGFEColorMatrixElement.h webkit-new/WebCore/svg/SVGFEColorMatrixElement.h
---- webkit-1.1.6/WebCore/svg/SVGFEColorMatrixElement.h	2009-05-14 14:43:15.928746000 +0800
-+++ webkit-new/WebCore/svg/SVGFEColorMatrixElement.h	2009-05-14 14:43:40.439317000 +0800
-@@ -40,9 +40,9 @@ namespace WebCore {
-         bool build(FilterBuilder*);
- 
-     private:
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFEColorMatrixElement, SVGNames::feColorMatrixTagString, SVGNames::inAttrString, String, In1, in1)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFEColorMatrixElement, SVGNames::feColorMatrixTagString, SVGNames::typeAttrString, int, Type, type)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFEColorMatrixElement, SVGNames::feColorMatrixTagString, SVGNames::valuesAttrString, SVGNumberList, Values, values)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFEColorMatrixElement, (const char *)SVGNames::feColorMatrixTagString, (const char *)SVGNames::inAttrString, String, In1, in1)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFEColorMatrixElement, (const char *)SVGNames::feColorMatrixTagString, (const char *)SVGNames::typeAttrString, int, Type, type)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFEColorMatrixElement, (const char *)SVGNames::feColorMatrixTagString, (const char *)SVGNames::valuesAttrString, SVGNumberList, Values, values)
- 
-         mutable RefPtr<FEColorMatrix> m_filterEffect;
-     };
-diff -Nrup webkit-1.1.6/WebCore/svg/SVGFECompositeElement.h webkit-new/WebCore/svg/SVGFECompositeElement.h
---- webkit-1.1.6/WebCore/svg/SVGFECompositeElement.h	2009-05-14 14:43:15.844499000 +0800
-+++ webkit-new/WebCore/svg/SVGFECompositeElement.h	2009-05-14 14:43:40.436463000 +0800
-@@ -39,13 +39,13 @@ namespace WebCore {
-         bool build(FilterBuilder*);
- 
-     private:
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFECompositeElement, SVGNames::feCompositeTagString, SVGNames::inAttrString, String, In1, in1)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFECompositeElement, SVGNames::feCompositeTagString, SVGNames::in2AttrString, String, In2, in2)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFECompositeElement, SVGNames::feCompositeTagString, SVGNames::operatorAttrString, int, _operator, _operator)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFECompositeElement, SVGNames::feCompositeTagString, SVGNames::k1AttrString, float, K1, k1)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFECompositeElement, SVGNames::feCompositeTagString, SVGNames::k2AttrString, float, K2, k2)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFECompositeElement, SVGNames::feCompositeTagString, SVGNames::k3AttrString, float, K3, k3)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFECompositeElement, SVGNames::feCompositeTagString, SVGNames::k4AttrString, float, K4, k4)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFECompositeElement, (const char *)SVGNames::feCompositeTagString, (const char *)SVGNames::inAttrString, String, In1, in1)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFECompositeElement, (const char *)SVGNames::feCompositeTagString, (const char *)SVGNames::in2AttrString, String, In2, in2)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFECompositeElement, (const char *)SVGNames::feCompositeTagString, (const char *)SVGNames::operatorAttrString, int, _operator, _operator)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFECompositeElement, (const char *)SVGNames::feCompositeTagString, (const char *)SVGNames::k1AttrString, float, K1, k1)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFECompositeElement, (const char *)SVGNames::feCompositeTagString, (const char *)SVGNames::k2AttrString, float, K2, k2)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFECompositeElement, (const char *)SVGNames::feCompositeTagString, (const char *)SVGNames::k3AttrString, float, K3, k3)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFECompositeElement, (const char *)SVGNames::feCompositeTagString, (const char *)SVGNames::k4AttrString, float, K4, k4)
- 
-         mutable RefPtr<FEComposite> m_filterEffect;
-     };
-diff -Nrup webkit-1.1.6/WebCore/svg/SVGFEDiffuseLightingElement.h webkit-new/WebCore/svg/SVGFEDiffuseLightingElement.h
---- webkit-1.1.6/WebCore/svg/SVGFEDiffuseLightingElement.h	2009-05-14 14:43:15.844421000 +0800
-+++ webkit-new/WebCore/svg/SVGFEDiffuseLightingElement.h	2009-05-14 14:43:40.437150000 +0800
-@@ -44,11 +44,11 @@ namespace WebCore {
-         bool build(FilterBuilder*);
- 
-     private:
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFEDiffuseLightingElement, SVGNames::feDiffuseLightingTagString, SVGNames::inAttrString, String, In1, in1)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFEDiffuseLightingElement, SVGNames::feDiffuseLightingTagString, SVGNames::diffuseConstantAttrString, float, DiffuseConstant, diffuseConstant)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFEDiffuseLightingElement, SVGNames::feDiffuseLightingTagString, SVGNames::surfaceScaleAttrString, float, SurfaceScale, surfaceScale)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFEDiffuseLightingElement, SVGNames::feDiffuseLightingTagString, SVGKernelUnitLengthXIdentifier, float, KernelUnitLengthX, kernelUnitLengthX)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFEDiffuseLightingElement, SVGNames::feDiffuseLightingTagString, SVGKernelUnitLengthYIdentifier, float, KernelUnitLengthY, kernelUnitLengthY)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFEDiffuseLightingElement, (const char *)SVGNames::feDiffuseLightingTagString, (const char *)SVGNames::inAttrString, String, In1, in1)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFEDiffuseLightingElement, (const char *)SVGNames::feDiffuseLightingTagString, (const char *)SVGNames::diffuseConstantAttrString, float, DiffuseConstant, diffuseConstant)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFEDiffuseLightingElement, (const char *)SVGNames::feDiffuseLightingTagString, (const char *)SVGNames::surfaceScaleAttrString, float, SurfaceScale, surfaceScale)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFEDiffuseLightingElement, (const char *)SVGNames::feDiffuseLightingTagString, (const char *)SVGKernelUnitLengthXIdentifier, float, KernelUnitLengthX, kernelUnitLengthX)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFEDiffuseLightingElement, (const char *)SVGNames::feDiffuseLightingTagString, (const char *)SVGKernelUnitLengthYIdentifier, float, KernelUnitLengthY, kernelUnitLengthY)
- 
-         LightSource* findLights() const;
-         
-diff -Nrup webkit-1.1.6/WebCore/svg/SVGFEDisplacementMapElement.h webkit-new/WebCore/svg/SVGFEDisplacementMapElement.h
---- webkit-1.1.6/WebCore/svg/SVGFEDisplacementMapElement.h	2009-05-14 14:43:15.840186000 +0800
-+++ webkit-new/WebCore/svg/SVGFEDisplacementMapElement.h	2009-05-14 14:43:40.438269000 +0800
-@@ -38,11 +38,11 @@ namespace WebCore {
-         bool build(FilterBuilder*);
-         
-     private:
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFEDisplacementMapElement, SVGNames::feDisplacementMapTagString, SVGNames::inAttrString, String, In1, in1)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFEDisplacementMapElement, SVGNames::feDisplacementMapTagString, SVGNames::in2AttrString, String, In2, in2)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFEDisplacementMapElement, SVGNames::feDisplacementMapTagString, SVGNames::xChannelSelectorAttrString, int, XChannelSelector, xChannelSelector)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFEDisplacementMapElement, SVGNames::feDisplacementMapTagString, SVGNames::yChannelSelectorAttrString, int, YChannelSelector, yChannelSelector)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFEDisplacementMapElement, SVGNames::feDisplacementMapTagString, SVGNames::scaleAttrString, float, Scale, scale)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFEDisplacementMapElement, (const char *)SVGNames::feDisplacementMapTagString, (const char *)SVGNames::inAttrString, String, In1, in1)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFEDisplacementMapElement, (const char *)SVGNames::feDisplacementMapTagString, (const char *)SVGNames::in2AttrString, String, In2, in2)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFEDisplacementMapElement, (const char *)SVGNames::feDisplacementMapTagString, (const char *)SVGNames::xChannelSelectorAttrString, int, XChannelSelector, xChannelSelector)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFEDisplacementMapElement, (const char *)SVGNames::feDisplacementMapTagString, (const char *)SVGNames::yChannelSelectorAttrString, int, YChannelSelector, yChannelSelector)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFEDisplacementMapElement, (const char *)SVGNames::feDisplacementMapTagString, (const char *)SVGNames::scaleAttrString, float, Scale, scale)
- 
-         mutable RefPtr<FEDisplacementMap> m_filterEffect;
-     };
-diff -Nrup webkit-1.1.6/WebCore/svg/SVGFEGaussianBlurElement.h webkit-new/WebCore/svg/SVGFEGaussianBlurElement.h
---- webkit-1.1.6/WebCore/svg/SVGFEGaussianBlurElement.h	2009-05-14 14:43:15.756394000 +0800
-+++ webkit-new/WebCore/svg/SVGFEGaussianBlurElement.h	2009-05-14 14:43:40.448933000 +0800
-@@ -44,9 +44,9 @@ namespace WebCore {
-         bool build(FilterBuilder*);
- 
-     private:
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFEGaussianBlurElement, SVGNames::feGaussianBlurTagString, SVGNames::inAttrString, String, In1, in1)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFEGaussianBlurElement, SVGNames::feGaussianBlurTagString, SVGStdDeviationXAttrIdentifier, float, StdDeviationX, stdDeviationX)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFEGaussianBlurElement, SVGNames::feGaussianBlurTagString, SVGStdDeviationYAttrIdentifier, float, StdDeviationY, stdDeviationY)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFEGaussianBlurElement, (const char *)SVGNames::feGaussianBlurTagString, (const char *)SVGNames::inAttrString, String, In1, in1)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFEGaussianBlurElement, (const char *)SVGNames::feGaussianBlurTagString, (const char *)SVGStdDeviationXAttrIdentifier, float, StdDeviationX, stdDeviationX)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFEGaussianBlurElement, (const char *)SVGNames::feGaussianBlurTagString, (const char *)SVGStdDeviationYAttrIdentifier, float, StdDeviationY, stdDeviationY)
- 
-         mutable RefPtr<FEGaussianBlur> m_filterEffect;
-     };
-diff -Nrup webkit-1.1.6/WebCore/svg/SVGFEImageElement.h webkit-new/WebCore/svg/SVGFEImageElement.h
---- webkit-1.1.6/WebCore/svg/SVGFEImageElement.h	2009-05-14 14:43:15.766101000 +0800
-+++ webkit-new/WebCore/svg/SVGFEImageElement.h	2009-05-14 14:43:40.451254000 +0800
-@@ -54,7 +54,7 @@ namespace WebCore {
-         virtual const SVGElement* contextElement() const { return this; }
- 
-     private:
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFEImageElement, SVGNames::feImageTagString, SVGNames::preserveAspectRatioAttrString, SVGPreserveAspectRatio, PreserveAspectRatio, preserveAspectRatio)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFEImageElement, (const char *)SVGNames::feImageTagString, (const char *)SVGNames::preserveAspectRatioAttrString, SVGPreserveAspectRatio, PreserveAspectRatio, preserveAspectRatio)
- 
-         CachedResourceHandle<CachedImage> m_cachedImage;
-         mutable RefPtr<FEImage> m_filterEffect;
-diff -Nrup webkit-1.1.6/WebCore/svg/SVGFELightElement.h webkit-new/WebCore/svg/SVGFELightElement.h
---- webkit-1.1.6/WebCore/svg/SVGFELightElement.h	2009-05-14 14:43:15.777121000 +0800
-+++ webkit-new/WebCore/svg/SVGFELightElement.h	2009-05-14 14:43:40.446745000 +0800
-@@ -42,16 +42,16 @@ namespace WebCore {
-         virtual const SVGElement* contextElement() const { return this; }
- 
-     private:
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFELightElement, SVGFELightElementIdentifier, SVGNames::azimuthAttrString, float, Azimuth, azimuth)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFELightElement, SVGFELightElementIdentifier, SVGNames::elevationAttrString, float, Elevation, elevation)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFELightElement, SVGFELightElementIdentifier, SVGNames::xAttrString, float, X, x)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFELightElement, SVGFELightElementIdentifier, SVGNames::yAttrString, float, Y, y)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFELightElement, SVGFELightElementIdentifier, SVGNames::zAttrString, float, Z, z)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFELightElement, SVGFELightElementIdentifier, SVGNames::pointsAtXAttrString, float, PointsAtX, pointsAtX)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFELightElement, SVGFELightElementIdentifier, SVGNames::pointsAtYAttrString, float, PointsAtY, pointsAtY)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFELightElement, SVGFELightElementIdentifier, SVGNames::pointsAtZAttrString, float, PointsAtZ, pointsAtZ)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFELightElement, SVGFELightElementIdentifier, SVGNames::specularExponentAttrString, float, SpecularExponent, specularExponent)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFELightElement, SVGFELightElementIdentifier, SVGNames::limitingConeAngleAttrString, float, LimitingConeAngle, limitingConeAngle)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFELightElement, SVGFELightElementIdentifier, (const char *)SVGNames::azimuthAttrString, float, Azimuth, azimuth)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFELightElement, SVGFELightElementIdentifier, (const char *)SVGNames::elevationAttrString, float, Elevation, elevation)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFELightElement, SVGFELightElementIdentifier, (const char *)SVGNames::xAttrString, float, X, x)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFELightElement, SVGFELightElementIdentifier, (const char *)SVGNames::yAttrString, float, Y, y)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFELightElement, SVGFELightElementIdentifier, (const char *)SVGNames::zAttrString, float, Z, z)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFELightElement, SVGFELightElementIdentifier, (const char *)SVGNames::pointsAtXAttrString, float, PointsAtX, pointsAtX)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFELightElement, SVGFELightElementIdentifier, (const char *)SVGNames::pointsAtYAttrString, float, PointsAtY, pointsAtY)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFELightElement, SVGFELightElementIdentifier, (const char *)SVGNames::pointsAtZAttrString, float, PointsAtZ, pointsAtZ)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFELightElement, SVGFELightElementIdentifier, (const char *)SVGNames::specularExponentAttrString, float, SpecularExponent, specularExponent)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFELightElement, SVGFELightElementIdentifier, (const char *)SVGNames::limitingConeAngleAttrString, float, LimitingConeAngle, limitingConeAngle)
-     };
- 
- } // namespace WebCore
 diff -Nrup webkit-1.1.6/WebCore/svg/SVGFEMergeNodeElement.h webkit-new/WebCore/svg/SVGFEMergeNodeElement.h
 --- webkit-1.1.6/WebCore/svg/SVGFEMergeNodeElement.h	2009-05-14 14:43:15.845644000 +0800
 +++ webkit-new/WebCore/svg/SVGFEMergeNodeElement.h	2009-05-14 14:43:40.444392000 +0800
@@ -256,80 +118,6 @@ diff -Nrup webkit-1.1.6/WebCore/svg/SVGFEMergeNodeElement.h webkit-new/WebCore/s
      };
  
  } // namespace WebCore
-diff -Nrup webkit-1.1.6/WebCore/svg/SVGFEOffsetElement.h webkit-new/WebCore/svg/SVGFEOffsetElement.h
---- webkit-1.1.6/WebCore/svg/SVGFEOffsetElement.h	2009-05-14 14:43:15.962992000 +0800
-+++ webkit-new/WebCore/svg/SVGFEOffsetElement.h	2009-05-14 14:43:40.450691000 +0800
-@@ -39,9 +39,9 @@ namespace WebCore {
-         bool build(FilterBuilder*);
- 
-     private:
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFEOffsetElement, SVGNames::feOffsetTagString, SVGNames::inAttrString, String, In1, in1)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFEOffsetElement, SVGNames::feOffsetTagString, SVGNames::dxAttrString, float, Dx, dx)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFEOffsetElement, SVGNames::feOffsetTagString, SVGNames::dyAttrString, float, Dy, dy)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFEOffsetElement, (const char *)SVGNames::feOffsetTagString, (const char *)SVGNames::inAttrString, String, In1, in1)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFEOffsetElement, (const char *)SVGNames::feOffsetTagString, (const char *)SVGNames::dxAttrString, float, Dx, dx)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFEOffsetElement, (const char *)SVGNames::feOffsetTagString, (const char *)SVGNames::dyAttrString, float, Dy, dy)
- 
-         mutable RefPtr<FEOffset> m_filterEffect;
-     };
-diff -Nrup webkit-1.1.6/WebCore/svg/SVGFESpecularLightingElement.h webkit-new/WebCore/svg/SVGFESpecularLightingElement.h
---- webkit-1.1.6/WebCore/svg/SVGFESpecularLightingElement.h	2009-05-14 14:43:15.825759000 +0800
-+++ webkit-new/WebCore/svg/SVGFESpecularLightingElement.h	2009-05-14 14:43:40.450318000 +0800
-@@ -43,12 +43,12 @@ namespace WebCore {
-         bool build(FilterBuilder*);
- 
-     private:
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFESpecularLightingElement, SVGNames::feSpecularLightingTagString, SVGNames::inAttrString, String, In1, in1)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFESpecularLightingElement, SVGNames::feSpecularLightingTagString, SVGNames::specularConstantAttrString, float, SpecularConstant, specularConstant)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFESpecularLightingElement, SVGNames::feSpecularLightingTagString, SVGNames::specularExponentAttrString, float, SpecularExponent, specularExponent)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFESpecularLightingElement, SVGNames::feSpecularLightingTagString, SVGNames::surfaceScaleAttrString, float, SurfaceScale, surfaceScale)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFESpecularLightingElement, SVGNames::feSpecularLightingTagString, SVGKernelUnitLengthXIdentifier, float, KernelUnitLengthX, kernelUnitLengthX)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFESpecularLightingElement, SVGNames::feSpecularLightingTagString, SVGKernelUnitLengthYIdentifier, float, KernelUnitLengthY, kernelUnitLengthY)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFESpecularLightingElement, (const char *)SVGNames::feSpecularLightingTagString, (const char *)SVGNames::inAttrString, String, In1, in1)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFESpecularLightingElement, (const char *)SVGNames::feSpecularLightingTagString, (const char *)SVGNames::specularConstantAttrString, float, SpecularConstant, specularConstant)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFESpecularLightingElement, (const char *)SVGNames::feSpecularLightingTagString, (const char *)SVGNames::specularExponentAttrString, float, SpecularExponent, specularExponent)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFESpecularLightingElement, (const char *)SVGNames::feSpecularLightingTagString, (const char *)SVGNames::surfaceScaleAttrString, float, SurfaceScale, surfaceScale)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFESpecularLightingElement, (const char *)SVGNames::feSpecularLightingTagString, (const char *)SVGKernelUnitLengthXIdentifier, float, KernelUnitLengthX, kernelUnitLengthX)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFESpecularLightingElement, (const char *)SVGNames::feSpecularLightingTagString, (const char *)SVGKernelUnitLengthYIdentifier, float, KernelUnitLengthY, kernelUnitLengthY)
- 
-         mutable RefPtr<FESpecularLighting> m_filterEffect;
-         
-diff -Nrup webkit-1.1.6/WebCore/svg/SVGFETileElement.h webkit-new/WebCore/svg/SVGFETileElement.h
---- webkit-1.1.6/WebCore/svg/SVGFETileElement.h	2009-05-14 14:43:15.949386000 +0800
-+++ webkit-new/WebCore/svg/SVGFETileElement.h	2009-05-14 14:43:40.447327000 +0800
-@@ -39,7 +39,7 @@ namespace WebCore {
-         bool build(FilterBuilder*);
- 
-     private:
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFETileElement, SVGNames::feTileTagString, SVGNames::inAttrString, String, In1, in1)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFETileElement, (const char *)SVGNames::feTileTagString, (const char *)SVGNames::inAttrString, String, In1, in1)
- 
-         mutable RefPtr<FETile> m_filterEffect;
-     };
-diff -Nrup webkit-1.1.6/WebCore/svg/SVGFETurbulenceElement.h webkit-new/WebCore/svg/SVGFETurbulenceElement.h
---- webkit-1.1.6/WebCore/svg/SVGFETurbulenceElement.h	2009-05-14 14:43:15.990465000 +0800
-+++ webkit-new/WebCore/svg/SVGFETurbulenceElement.h	2009-05-14 14:43:40.442347000 +0800
-@@ -48,12 +48,14 @@ namespace WebCore {
-         bool build(FilterBuilder*);
- 
-     private:
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFETurbulenceElement, SVGNames::feTurbulenceTagString, SVGBaseFrequencyXIdentifier, float, BaseFrequencyX, baseFrequencyX)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFETurbulenceElement, SVGNames::feTurbulenceTagString, SVGBaseFrequencyYIdentifier, float, BaseFrequencyY, baseFrequencyY)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFETurbulenceElement, SVGNames::feTurbulenceTagString, SVGNames::numOctavesAttrString, long, NumOctaves, numOctaves)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFETurbulenceElement, SVGNames::feTurbulenceTagString, SVGNames::seedAttrString, float, Seed, seed)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFETurbulenceElement, SVGNames::feTurbulenceTagString, SVGNames::stitchTilesAttrString, int, StitchTiles, stitchTiles)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFETurbulenceElement, SVGNames::feTurbulenceTagString, SVGNames::typeAttrString, int, Type, type)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFETurbulenceElement, (const char *)SVGNames::feTurbulenceTagString, SVGBaseFrequencyXIdentifier, float, BaseFrequencyX, baseFrequencyX)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFETurbulenceElement, (const char *)SVGNames::feTurbulenceTagString, SVGBaseFrequencyYIdentifier, float, BaseFrequencyY, baseFrequencyY)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFETurbulenceElement, (const char *)SVGNames::feTurbulenceTagString, SVGBaseFrequencyYIdentifier, float, BaseFrequencyY, baseFrequencyY)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFETurbulenceElement, (const char *)SVGNames::feTurbulenceTagString, SVGBaseFrequencyYIdentifier, float, BaseFrequencyY, baseFrequencyY)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFETurbulenceElement, (const char *)SVGNames::feTurbulenceTagString, (const char *)SVGNames::numOctavesAttrString, long, NumOctaves, numOctaves)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFETurbulenceElement, (const char *)SVGNames::feTurbulenceTagString, (const char *)SVGNames::seedAttrString, float, Seed, seed)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFETurbulenceElement, (const char *)SVGNames::feTurbulenceTagString, (const char *)SVGNames::stitchTilesAttrString, int, StitchTiles, stitchTiles)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFETurbulenceElement, (const char *)SVGNames::feTurbulenceTagString, (const char *)SVGNames::typeAttrString, int, Type, type)
- 
-         mutable RefPtr<FETurbulence> m_filterEffect;
-     };
 diff -Nrup webkit-1.1.6/WebCore/svg/SVGFilterElement.h webkit-new/WebCore/svg/SVGFilterElement.h
 --- webkit-1.1.6/WebCore/svg/SVGFilterElement.h	2009-05-14 14:43:15.757005000 +0800
 +++ webkit-new/WebCore/svg/SVGFilterElement.h	2009-05-14 14:43:40.444932000 +0800
@@ -356,26 +144,6 @@ diff -Nrup webkit-1.1.6/WebCore/svg/SVGFilterElement.h webkit-new/WebCore/svg/SV
  
          RefPtr<SVGResourceFilter> m_filter;
      };
-diff -Nrup webkit-1.1.6/WebCore/svg/SVGFilterPrimitiveStandardAttributes.h webkit-new/WebCore/svg/SVGFilterPrimitiveStandardAttributes.h
---- webkit-1.1.6/WebCore/svg/SVGFilterPrimitiveStandardAttributes.h	2009-05-14 14:43:15.928119000 +0800
-+++ webkit-new/WebCore/svg/SVGFilterPrimitiveStandardAttributes.h	2009-05-14 14:43:40.445153000 +0800
-@@ -51,11 +51,11 @@ namespace WebCore {
-         void setStandardAttributes(SVGFilterEffect*) const;
- 
-     private:
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFilterPrimitiveStandardAttributes, SVGFilterPrimitiveStandardAttributesIdentifier, SVGNames::xAttrString, SVGLength, X, x)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFilterPrimitiveStandardAttributes, SVGFilterPrimitiveStandardAttributesIdentifier, SVGNames::yAttrString, SVGLength, Y, y)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFilterPrimitiveStandardAttributes, SVGFilterPrimitiveStandardAttributesIdentifier, SVGNames::widthAttrString, SVGLength, Width, width)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFilterPrimitiveStandardAttributes, SVGFilterPrimitiveStandardAttributesIdentifier, SVGNames::heightAttrString, SVGLength, Height, height)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFilterPrimitiveStandardAttributes, SVGFilterPrimitiveStandardAttributesIdentifier, SVGNames::resultAttrString, String, Result, result)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFilterPrimitiveStandardAttributes, SVGFilterPrimitiveStandardAttributesIdentifier, (const char *)SVGNames::xAttrString, SVGLength, X, x)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFilterPrimitiveStandardAttributes, SVGFilterPrimitiveStandardAttributesIdentifier, (const char *)SVGNames::yAttrString, SVGLength, Y, y)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFilterPrimitiveStandardAttributes, SVGFilterPrimitiveStandardAttributesIdentifier, (const char *)SVGNames::widthAttrString, SVGLength, Width, width)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFilterPrimitiveStandardAttributes, SVGFilterPrimitiveStandardAttributesIdentifier, (const char *)SVGNames::heightAttrString, SVGLength, Height, height)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFilterPrimitiveStandardAttributes, SVGFilterPrimitiveStandardAttributesIdentifier, (const char *)SVGNames::resultAttrString, String, Result, result)
-     };
- 
- } // namespace WebCore
 diff -Nrup webkit-1.1.6/WebCore/svg/SVGFitToViewBox.h webkit-new/WebCore/svg/SVGFitToViewBox.h
 --- webkit-1.1.6/WebCore/svg/SVGFitToViewBox.h	2009-05-14 14:43:15.756326000 +0800
 +++ webkit-new/WebCore/svg/SVGFitToViewBox.h	2009-05-14 14:43:40.440566000 +0800
@@ -750,3 +518,192 @@ diff -Nrup webkit-1.1.6/WebCore/svg/SVGUseElement.h webkit-new/WebCore/svg/SVGUs
  
      private:
          // Instance tree handling
+--- webkit-1.1.10/WebCore/svg/SVGFEColorMatrixElement.h.orig	2009-06-16 13:52:51.595363229 +0800
++++ webkit-1.1.10/WebCore/svg/SVGFEColorMatrixElement.h	2009-06-16 13:57:31.377727610 +0800
+@@ -39,9 +39,9 @@
+         virtual bool build(SVGResourceFilter*);
+ 
+     private:
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGFEColorMatrixElement, SVGNames::feColorMatrixTagString, SVGNames::inAttrString, String, In1, in1)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGFEColorMatrixElement, SVGNames::feColorMatrixTagString, SVGNames::typeAttrString, int, Type, type)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGFEColorMatrixElement, SVGNames::feColorMatrixTagString, SVGNames::valuesAttrString, SVGNumberList, Values, values)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGFEColorMatrixElement, (const char *)SVGNames::feColorMatrixTagString, (const char *)SVGNames::inAttrString, String, In1, in1)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGFEColorMatrixElement, (const char *)SVGNames::feColorMatrixTagString, (const char *)SVGNames::typeAttrString, int, Type, type)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGFEColorMatrixElement, (const char *)SVGNames::feColorMatrixTagString, (const char *)SVGNames::valuesAttrString, SVGNumberList, Values, values)
+     };
+ 
+ } // namespace WebCore
+--- webkit-1.1.10/WebCore/svg/SVGFECompositeElement.h.orig	2009-06-16 14:00:18.806927894 +0800
++++ webkit-1.1.10/WebCore/svg/SVGFECompositeElement.h	2009-06-16 14:02:05.831170446 +0800
+@@ -38,13 +38,13 @@
+         virtual bool build(SVGResourceFilter*);
+ 
+     private:
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGFECompositeElement, SVGNames::feCompositeTagString, SVGNames::inAttrString, String, In1, in1)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGFECompositeElement, SVGNames::feCompositeTagString, SVGNames::in2AttrString, String, In2, in2)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGFECompositeElement, SVGNames::feCompositeTagString, SVGNames::operatorAttrString, int, _operator, _operator)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGFECompositeElement, SVGNames::feCompositeTagString, SVGNames::k1AttrString, float, K1, k1)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGFECompositeElement, SVGNames::feCompositeTagString, SVGNames::k2AttrString, float, K2, k2)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGFECompositeElement, SVGNames::feCompositeTagString, SVGNames::k3AttrString, float, K3, k3)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGFECompositeElement, SVGNames::feCompositeTagString, SVGNames::k4AttrString, float, K4, k4)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGFECompositeElement, (const char *)SVGNames::feCompositeTagString, (const char *)SVGNames::inAttrString, String, In1, in1)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGFECompositeElement, (const char *)SVGNames::feCompositeTagString, (const char *)SVGNames::in2AttrString, String, In2, in2)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGFECompositeElement, (const char *)SVGNames::feCompositeTagString, (const char *)SVGNames::operatorAttrString, int, _operator, _operator)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGFECompositeElement, (const char *)SVGNames::feCompositeTagString, (const char *)SVGNames::k1AttrString, float, K1, k1)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGFECompositeElement, (const char *)SVGNames::feCompositeTagString, (const char *)SVGNames::k2AttrString, float, K2, k2)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGFECompositeElement, (const char *)SVGNames::feCompositeTagString, (const char *)SVGNames::k3AttrString, float, K3, k3)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGFECompositeElement, (const char *)SVGNames::feCompositeTagString, (const char *)SVGNames::k4AttrString, float, K4, k4)
+     };
+ 
+ } // namespace WebCore
+--- webkit-1.1.10/WebCore/svg/SVGFEDiffuseLightingElement.h.orig	2009-06-16 14:05:17.520869924 +0800
++++ webkit-1.1.10/WebCore/svg/SVGFEDiffuseLightingElement.h	2009-06-16 14:06:13.900849861 +0800
+@@ -43,11 +43,11 @@
+         virtual bool build(SVGResourceFilter*);
+ 
+     private:
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGFEDiffuseLightingElement, SVGNames::feDiffuseLightingTagString, SVGNames::inAttrString, String, In1, in1)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGFEDiffuseLightingElement, SVGNames::feDiffuseLightingTagString, SVGNames::diffuseConstantAttrString, float, DiffuseConstant, diffuseConstant)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGFEDiffuseLightingElement, SVGNames::feDiffuseLightingTagString, SVGNames::surfaceScaleAttrString, float, SurfaceScale, surfaceScale)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGFEDiffuseLightingElement, SVGNames::feDiffuseLightingTagString, SVGKernelUnitLengthXIdentifier, float, KernelUnitLengthX, kernelUnitLengthX)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGFEDiffuseLightingElement, SVGNames::feDiffuseLightingTagString, SVGKernelUnitLengthYIdentifier, float, KernelUnitLengthY, kernelUnitLengthY)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGFEDiffuseLightingElement, (const char *)SVGNames::feDiffuseLightingTagString, (const char *)SVGNames::inAttrString, String, In1, in1)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGFEDiffuseLightingElement, (const char *)SVGNames::feDiffuseLightingTagString, (const char *)SVGNames::diffuseConstantAttrString, float, DiffuseConstant, diffuseConstant)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGFEDiffuseLightingElement, (const char *)SVGNames::feDiffuseLightingTagString, (const char *)SVGNames::surfaceScaleAttrString, float, SurfaceScale, surfaceScale)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGFEDiffuseLightingElement, (const char *)SVGNames::feDiffuseLightingTagString, (const char *)SVGKernelUnitLengthXIdentifier, float, KernelUnitLengthX, kernelUnitLengthX)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGFEDiffuseLightingElement, (const char *)SVGNames::feDiffuseLightingTagString, (const char *)SVGKernelUnitLengthYIdentifier, float, KernelUnitLengthY, kernelUnitLengthY)
+ 
+         LightSource* findLights() const;
+     };
+--- webkit-1.1.10/WebCore/svg/SVGFEDisplacementMapElement.h.orig	2009-06-16 14:09:58.699366252 +0800
++++ webkit-1.1.10/WebCore/svg/SVGFEDisplacementMapElement.h	2009-06-16 14:10:37.558178086 +0800
+@@ -37,11 +37,11 @@
+         virtual bool build(SVGResourceFilter*);
+         
+     private:
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGFEDisplacementMapElement, SVGNames::feDisplacementMapTagString, SVGNames::inAttrString, String, In1, in1)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGFEDisplacementMapElement, SVGNames::feDisplacementMapTagString, SVGNames::in2AttrString, String, In2, in2)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGFEDisplacementMapElement, SVGNames::feDisplacementMapTagString, SVGNames::xChannelSelectorAttrString, int, XChannelSelector, xChannelSelector)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGFEDisplacementMapElement, SVGNames::feDisplacementMapTagString, SVGNames::yChannelSelectorAttrString, int, YChannelSelector, yChannelSelector)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGFEDisplacementMapElement, SVGNames::feDisplacementMapTagString, SVGNames::scaleAttrString, float, Scale, scale)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGFEDisplacementMapElement, (const char *)SVGNames::feDisplacementMapTagString, (const char *)SVGNames::inAttrString, String, In1, in1)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGFEDisplacementMapElement, (const char *)SVGNames::feDisplacementMapTagString, (const char *)SVGNames::in2AttrString, String, In2, in2)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGFEDisplacementMapElement, (const char *)SVGNames::feDisplacementMapTagString, (const char *)SVGNames::xChannelSelectorAttrString, int, XChannelSelector, xChannelSelector)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGFEDisplacementMapElement, (const char *)SVGNames::feDisplacementMapTagString, (const char *)SVGNames::yChannelSelectorAttrString, int, YChannelSelector, yChannelSelector)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGFEDisplacementMapElement, (const char *)SVGNames::feDisplacementMapTagString, (const char *)SVGNames::scaleAttrString, float, Scale, scale)
+     };
+ 
+ } // namespace WebCore
+--- webkit-1.1.10/WebCore/svg/SVGFEGaussianBlurElement.h.orig	2009-06-16 14:11:14.552731329 +0800
++++ webkit-1.1.10/WebCore/svg/SVGFEGaussianBlurElement.h	2009-06-16 14:13:52.661315656 +0800
+@@ -43,9 +43,9 @@
+         virtual bool build(SVGResourceFilter*);
+ 
+     private:
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGFEGaussianBlurElement, SVGNames::feGaussianBlurTagString, SVGNames::inAttrString, String, In1, in1)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGFEGaussianBlurElement, SVGNames::feGaussianBlurTagString, SVGStdDeviationXAttrIdentifier, float, StdDeviationX, stdDeviationX)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGFEGaussianBlurElement, SVGNames::feGaussianBlurTagString, SVGStdDeviationYAttrIdentifier, float, StdDeviationY, stdDeviationY)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGFEGaussianBlurElement, (const char *)SVGNames::feGaussianBlurTagString, (const char *)SVGNames::inAttrString, String, In1, in1)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGFEGaussianBlurElement, (const char *)SVGNames::feGaussianBlurTagString, (const char *)SVGStdDeviationXAttrIdentifier, float, StdDeviationX, stdDeviationX)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGFEGaussianBlurElement, (const char *)SVGNames::feGaussianBlurTagString, (const char *)SVGStdDeviationYAttrIdentifier, float, StdDeviationY, stdDeviationY)
+     };
+ 
+ } // namespace WebCore
+--- webkit-1.1.10/WebCore/svg/SVGFEImageElement.h.orig	2009-06-16 14:14:24.967923674 +0800
++++ webkit-1.1.10/WebCore/svg/SVGFEImageElement.h	2009-06-16 14:14:39.313215347 +0800
+@@ -53,7 +53,7 @@
+         virtual const SVGElement* contextElement() const { return this; }
+ 
+     private:
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGFEImageElement, SVGNames::feImageTagString, SVGNames::preserveAspectRatioAttrString, SVGPreserveAspectRatio, PreserveAspectRatio, preserveAspectRatio)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGFEImageElement, (const char *)SVGNames::feImageTagString, (const char *)SVGNames::preserveAspectRatioAttrString, SVGPreserveAspectRatio, PreserveAspectRatio, preserveAspectRatio)
+ 
+         CachedResourceHandle<CachedImage> m_cachedImage;
+     };
+--- webkit-1.1.10/WebCore/svg/SVGFEOffsetElement.h.orig	2009-06-16 14:15:05.966286948 +0800
++++ webkit-1.1.10/WebCore/svg/SVGFEOffsetElement.h	2009-06-16 14:15:31.051975503 +0800
+@@ -38,9 +38,9 @@
+         virtual bool build(SVGResourceFilter*);
+ 
+     private:
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGFEOffsetElement, SVGNames::feOffsetTagString, SVGNames::inAttrString, String, In1, in1)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGFEOffsetElement, SVGNames::feOffsetTagString, SVGNames::dxAttrString, float, Dx, dx)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGFEOffsetElement, SVGNames::feOffsetTagString, SVGNames::dyAttrString, float, Dy, dy)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGFEOffsetElement, (const char *)SVGNames::feOffsetTagString, (const char *)SVGNames::inAttrString, String, In1, in1)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGFEOffsetElement, (const char *)SVGNames::feOffsetTagString, (const char *)SVGNames::dxAttrString, float, Dx, dx)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGFEOffsetElement, (const char *)SVGNames::feOffsetTagString, (const char *)SVGNames::dyAttrString, float, Dy, dy)
+     };
+ 
+ } // namespace WebCore
+--- webkit-1.1.10/WebCore/svg/SVGFESpecularLightingElement.h.orig	2009-06-16 14:18:08.637937161 +0800
++++ webkit-1.1.10/WebCore/svg/SVGFESpecularLightingElement.h	2009-06-16 14:18:53.182113588 +0800
+@@ -42,12 +42,12 @@
+         virtual bool build(SVGResourceFilter*);
+ 
+     private:
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGFESpecularLightingElement, SVGNames::feSpecularLightingTagString, SVGNames::inAttrString, String, In1, in1)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGFESpecularLightingElement, SVGNames::feSpecularLightingTagString, SVGNames::specularConstantAttrString, float, SpecularConstant, specularConstant)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGFESpecularLightingElement, SVGNames::feSpecularLightingTagString, SVGNames::specularExponentAttrString, float, SpecularExponent, specularExponent)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGFESpecularLightingElement, SVGNames::feSpecularLightingTagString, SVGNames::surfaceScaleAttrString, float, SurfaceScale, surfaceScale)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGFESpecularLightingElement, SVGNames::feSpecularLightingTagString, SVGKernelUnitLengthXIdentifier, float, KernelUnitLengthX, kernelUnitLengthX)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGFESpecularLightingElement, SVGNames::feSpecularLightingTagString, SVGKernelUnitLengthYIdentifier, float, KernelUnitLengthY, kernelUnitLengthY)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGFESpecularLightingElement, (const char *)SVGNames::feSpecularLightingTagString, (const char *)SVGNames::inAttrString, String, In1, in1)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGFESpecularLightingElement, (const char *)SVGNames::feSpecularLightingTagString, (const char *)SVGNames::specularConstantAttrString, float, SpecularConstant, specularConstant)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGFESpecularLightingElement, (const char *)SVGNames::feSpecularLightingTagString, (const char *)SVGNames::specularExponentAttrString, float, SpecularExponent, specularExponent)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGFESpecularLightingElement, (const char *)SVGNames::feSpecularLightingTagString, (const char *)SVGNames::surfaceScaleAttrString, float, SurfaceScale, surfaceScale)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGFESpecularLightingElement, (const char *)SVGNames::feSpecularLightingTagString, (const char *)SVGKernelUnitLengthXIdentifier, float, KernelUnitLengthX, kernelUnitLengthX)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGFESpecularLightingElement, (const char *)SVGNames::feSpecularLightingTagString, (const char *)SVGKernelUnitLengthYIdentifier, float, KernelUnitLengthY, kernelUnitLengthY)
+         
+         LightSource* findLights() const;
+     };
+--- webkit-1.1.10/WebCore/svg/SVGFETileElement.h.orig	2009-06-16 14:19:54.707423018 +0800
++++ webkit-1.1.10/WebCore/svg/SVGFETileElement.h	2009-06-16 14:20:10.132304810 +0800
+@@ -38,7 +38,7 @@
+         virtual bool build(SVGResourceFilter*);
+ 
+     private:
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGFETileElement, SVGNames::feTileTagString, SVGNames::inAttrString, String, In1, in1)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGFETileElement, (const char *)SVGNames::feTileTagString, SVGNames::inAttrString, String, In1, in1)
+     };
+ 
+ } // namespace WebCore
+--- webkit-1.1.10/WebCore/svg/SVGFETurbulenceElement.h.orig	2009-06-16 14:20:46.308761794 +0800
++++ webkit-1.1.10/WebCore/svg/SVGFETurbulenceElement.h	2009-06-16 14:21:34.800147091 +0800
+@@ -47,12 +47,12 @@
+         virtual bool build(SVGResourceFilter*);
+ 
+     private:
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGFETurbulenceElement, SVGNames::feTurbulenceTagString, SVGBaseFrequencyXIdentifier, float, BaseFrequencyX, baseFrequencyX)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGFETurbulenceElement, SVGNames::feTurbulenceTagString, SVGBaseFrequencyYIdentifier, float, BaseFrequencyY, baseFrequencyY)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGFETurbulenceElement, SVGNames::feTurbulenceTagString, SVGNames::numOctavesAttrString, long, NumOctaves, numOctaves)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGFETurbulenceElement, SVGNames::feTurbulenceTagString, SVGNames::seedAttrString, float, Seed, seed)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGFETurbulenceElement, SVGNames::feTurbulenceTagString, SVGNames::stitchTilesAttrString, int, StitchTiles, stitchTiles)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGFETurbulenceElement, SVGNames::feTurbulenceTagString, SVGNames::typeAttrString, int, Type, type)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGFETurbulenceElement, (const char *)SVGNames::feTurbulenceTagString, (const char *)SVGBaseFrequencyXIdentifier, float, BaseFrequencyX, baseFrequencyX)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGFETurbulenceElement, (const char *)SVGNames::feTurbulenceTagString, (const char *)SVGBaseFrequencyYIdentifier, float, BaseFrequencyY, baseFrequencyY)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGFETurbulenceElement, (const char *)SVGNames::feTurbulenceTagString, (const char *)SVGNames::numOctavesAttrString, long, NumOctaves, numOctaves)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGFETurbulenceElement, (const char *)SVGNames::feTurbulenceTagString, (const char *)SVGNames::seedAttrString, float, Seed, seed)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGFETurbulenceElement, (const char *)SVGNames::feTurbulenceTagString, (const char *)SVGNames::stitchTilesAttrString, int, StitchTiles, stitchTiles)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGFETurbulenceElement, (const char *)SVGNames::feTurbulenceTagString, (const char *)SVGNames::typeAttrString, int, Type, type)
+     };
+ 
+ } // namespace WebCore
+--- webkit-1.1.10/WebCore/svg/SVGFilterPrimitiveStandardAttributes.h.orig	2009-06-16 14:21:53.704641243 +0800
++++ webkit-1.1.10/WebCore/svg/SVGFilterPrimitiveStandardAttributes.h	2009-06-16 14:23:06.243506003 +0800
+@@ -52,11 +52,11 @@
+         virtual const SVGElement* contextElement() const { return this; }
+ 
+     private:
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGFilterPrimitiveStandardAttributes, SVGFilterPrimitiveStandardAttributesIdentifier, SVGNames::xAttrString, SVGLength, X, x)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGFilterPrimitiveStandardAttributes, SVGFilterPrimitiveStandardAttributesIdentifier, SVGNames::yAttrString, SVGLength, Y, y)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGFilterPrimitiveStandardAttributes, SVGFilterPrimitiveStandardAttributesIdentifier, SVGNames::widthAttrString, SVGLength, Width, width)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGFilterPrimitiveStandardAttributes, SVGFilterPrimitiveStandardAttributesIdentifier, SVGNames::heightAttrString, SVGLength, Height, height)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGFilterPrimitiveStandardAttributes, SVGFilterPrimitiveStandardAttributesIdentifier, SVGNames::resultAttrString, String, Result, result)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGFilterPrimitiveStandardAttributes, SVGFilterPrimitiveStandardAttributesIdentifier, (const char *)SVGNames::xAttrString, SVGLength, X, x)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGFilterPrimitiveStandardAttributes, SVGFilterPrimitiveStandardAttributesIdentifier, (const char *)SVGNames::yAttrString, SVGLength, Y, y)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGFilterPrimitiveStandardAttributes, SVGFilterPrimitiveStandardAttributesIdentifier, (const char *)SVGNames::widthAttrString, SVGLength, Width, width)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGFilterPrimitiveStandardAttributes, SVGFilterPrimitiveStandardAttributesIdentifier, (const char *)SVGNames::heightAttrString, SVGLength, Height, height)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGFilterPrimitiveStandardAttributes, SVGFilterPrimitiveStandardAttributesIdentifier, (const char *)SVGNames::resultAttrString, String, Result, result)
+     };
+ 
+ } // namespace WebCore
