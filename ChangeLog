@@ -1,3 +1,12 @@
+2009-06-21 Brian Cameron  <brian.cameron@sun.com>
+
+	* SFEwxwidgets.spec, SFEwxwidgets-gnu.spec: Bump to 2.8.10.
+	* patches/wxwidgets-02-Tmacro.diff:  Add patch to resolve compile
+	  issue when building with the latest Sun Studio patches.
+	* SFEaudacity.spec, patches/audacity-06-Tmacro.diff:  Add patch
+	  to resolve compile issue when building with the latest Sun Studio
+	  patches.
+
 2009-06-19  Halton Huo  <halton.huo@sun.com>
 
 	* SFEconsolekit.spec:
@@ -14,7 +23,8 @@
 
 2009-06-16  Simonjin   <yuntong.jin@sun.com>
 
-	 * patches/blender-01-build.diff :update the patch for 2.49 ,SFEblender.spec: Bump to 2.49
+	 * patches/blender-01-build.diff: update the patch for 2.49,
+	   SFEblender.spec: Bump to 2.49
 
 2009-06-15  Willie Walker  <william.walker@sun.com>
 

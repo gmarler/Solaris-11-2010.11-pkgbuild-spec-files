@@ -1,0 +1,230 @@
+--- lib-src/FileDialog/win/FileDialogPrivate.cpp-orig	2009-06-21 17:26:33.255108000 -0500
++++ lib-src/FileDialog/win/FileDialogPrivate.cpp	2009-06-21 17:26:47.125017000 -0500
+@@ -439,8 +439,8 @@ void FileDialog::GetPaths(wxArrayString&
+    paths.Empty();
+    
+    wxString dir(m_dir);
+-   if ( m_dir.Last() != _T('\\') )
+-      dir += _T('\\');
++   if ( m_dir.Last() != wxT('\\') )
++      dir += wxT('\\');
+    
+    size_t count = m_fileNames.GetCount();
+    for ( size_t n = 0; n < count; n++ )
+@@ -462,7 +462,7 @@ void FileDialog::SetPath(const wxString&
+    wxString ext;
+    wxSplitPath(path, &m_dir, &m_fileName, &ext);
+    if ( !ext.empty() )
+-      m_fileName << _T('.') << ext;
++      m_fileName << wxT('.') << ext;
+ }
+ 
+ void FileDialog::DoGetPosition( int *x, int *y ) const
+@@ -600,17 +600,17 @@ int FileDialog::ShowModal()
+       wxChar ch = m_dir[i];
+       switch ( ch )
+       {
+-         case _T('/'):
++         case wxT('/'):
+             // convert to backslash
+-            ch = _T('\\');
++            ch = wxT('\\');
+             
+             // fall through
+             
+-         case _T('\\'):
++         case wxT('\\'):
+             while ( i < len - 1 )
+             {
+                wxChar chNext = m_dir[i + 1];
+-               if ( chNext != _T('\\') && chNext != _T('/') )
++               if ( chNext != wxT('\\') && chNext != wxT('/') )
+                   break;
+                
+                // ignore the next one, unless it is at the start of a UNC path
+@@ -636,7 +636,7 @@ int FileDialog::ShowModal()
+    
+    size_t items = wxParseCommonDialogsFilter(m_wildCard, wildDescriptions, m_FilterGroups);
+    
+-   wxASSERT_MSG( items > 0 , _T("empty wildcard list") );
++   wxASSERT_MSG( items > 0 , wxT("empty wildcard list") );
+    
+    wxString filterBuffer;
+    
+@@ -764,7 +764,7 @@ int FileDialog::ShowModal()
+             i += wxStrlen(&fileNameBuffer[i]) + 1;
+          }
+ #else
+-         wxStringTokenizer toke(fileNameBuffer, _T(" \t\r\n"));
++         wxStringTokenizer toke(fileNameBuffer, wxT(" \t\r\n"));
+          m_dir = toke.GetNextToken();
+          m_fileName = toke.GetNextToken();
+          m_fileNames.Add(m_fileName);
+@@ -774,8 +774,8 @@ int FileDialog::ShowModal()
+ #endif // OFN_EXPLORER
+          
+          wxString dir(m_dir);
+-         if ( m_dir.Last() != _T('\\') )
+-            dir += _T('\\');
++         if ( m_dir.Last() != wxT('\\') )
++            dir += wxT('\\');
+          
+          m_path = dir + m_fileName;
+          m_filterIndex = (int)of.nFilterIndex - 1;
+--- lib-src/FileDialog/generic/FileDialogPrivate.cpp-orig	2009-06-21 17:26:55.206447000 -0500
++++ lib-src/FileDialog/generic/FileDialogPrivate.cpp	2009-06-21 17:27:15.220794000 -0500
+@@ -255,25 +255,25 @@ void FileData::ReadData()
+    // __WXWINCE__
+    
+ #if defined(__UNIX__)
+-   m_permissions.Printf(_T("%c%c%c%c%c%c%c%c%c"),
+-                        buff.st_mode & wxS_IRUSR ? _T('r') : _T('-'),
+-                        buff.st_mode & wxS_IWUSR ? _T('w') : _T('-'),
+-                        buff.st_mode & wxS_IXUSR ? _T('x') : _T('-'),
+-                        buff.st_mode & wxS_IRGRP ? _T('r') : _T('-'),
+-                        buff.st_mode & wxS_IWGRP ? _T('w') : _T('-'),
+-                        buff.st_mode & wxS_IXGRP ? _T('x') : _T('-'),
+-                        buff.st_mode & wxS_IROTH ? _T('r') : _T('-'),
+-                        buff.st_mode & wxS_IWOTH ? _T('w') : _T('-'),
+-                        buff.st_mode & wxS_IXOTH ? _T('x') : _T('-'));
++   m_permissions.Printf(wxT("%c%c%c%c%c%c%c%c%c"),
++                        buff.st_mode & wxS_IRUSR ? wxT('r') : wxT('-'),
++                        buff.st_mode & wxS_IWUSR ? wxT('w') : wxT('-'),
++                        buff.st_mode & wxS_IXUSR ? wxT('x') : wxT('-'),
++                        buff.st_mode & wxS_IRGRP ? wxT('r') : wxT('-'),
++                        buff.st_mode & wxS_IWGRP ? wxT('w') : wxT('-'),
++                        buff.st_mode & wxS_IXGRP ? wxT('x') : wxT('-'),
++                        buff.st_mode & wxS_IROTH ? wxT('r') : wxT('-'),
++                        buff.st_mode & wxS_IWOTH ? wxT('w') : wxT('-'),
++                        buff.st_mode & wxS_IXOTH ? wxT('x') : wxT('-'));
+ #elif defined(__WIN32__)
+    DWORD attribs = GetFileAttributes(m_filePath.fn_str());
+    if (attribs != (DWORD)-1)
+    {
+-      m_permissions.Printf(_T("%c%c%c%c"),
+-                           attribs & FILE_ATTRIBUTE_ARCHIVE  ? _T('A') : _T(' '),
+-                           attribs & FILE_ATTRIBUTE_READONLY ? _T('R') : _T(' '),
+-                           attribs & FILE_ATTRIBUTE_HIDDEN   ? _T('H') : _T(' '),
+-                           attribs & FILE_ATTRIBUTE_SYSTEM   ? _T('S') : _T(' '));
++      m_permissions.Printf(wxT("%c%c%c%c"),
++                           attribs & FILE_ATTRIBUTE_ARCHIVE  ? wxT('A') : wxT(' '),
++                           attribs & FILE_ATTRIBUTE_READONLY ? wxT('R') : wxT(' '),
++                           attribs & FILE_ATTRIBUTE_HIDDEN   ? wxT('H') : wxT(' '),
++                           attribs & FILE_ATTRIBUTE_SYSTEM   ? wxT('S') : wxT(' '));
+    }
+ #endif
+    
+@@ -347,7 +347,7 @@ wxString FileData::GetEntry( fileListFie
+          
+       case FileList_Size:
+          if (!IsDir() && !IsLink() && !IsDrive())
+-            s.Printf(_T("%ld"), m_size);
++            s.Printf(wxT("%ld"), m_size);
+          break;
+          
+          case FileList_Type:
+@@ -366,7 +366,7 @@ wxString FileData::GetEntry( fileListFie
+ #endif // defined(__UNIX__) || defined(__WIN32__)
+          
+          default:
+-         wxFAIL_MSG( _T("unexpected field in FileData::GetEntry()") );
++         wxFAIL_MSG( wxT("unexpected field in FileData::GetEntry()") );
+    }
+    
+    return s;
+@@ -391,7 +391,7 @@ void FileData::MakeItem( wxListItem &ite
+    
+    if (IsLink())
+    {
+-      wxColour dg = wxTheColourDatabase->Find( _T("MEDIUM GREY") );
++      wxColour dg = wxTheColourDatabase->Find( wxT("MEDIUM GREY") );
+       if ( dg.Ok() )
+          item.SetTextColour(dg);
+    }
+@@ -1215,7 +1215,7 @@ void FileDialog::DoSetFilterIndex(int fi
+    if ( str->Left(2) == wxT("*.") )
+    {
+       m_filterExtension = str->Mid(1);
+-      if (m_filterExtension == _T(".*"))
++      if (m_filterExtension == wxT(".*"))
+          m_filterExtension.clear();
+    }
+    else
+--- src/export/ExportCL.cpp-orig	2009-06-21 17:26:00.172867000 -0500
++++ src/export/ExportCL.cpp	2009-06-21 17:26:05.264322000 -0500
+@@ -120,7 +120,7 @@ static void Drain(wxInputStream *s, wxSt
+       char buffer[4096];
+ 
+       s->Read(buffer, WXSIZEOF(buffer) - 1);
+-      buffer[s->LastRead()] = _T('\0');
++      buffer[s->LastRead()] = wxT('\0');
+       *o += LAT1CTOWX(buffer);
+    }
+ }
+--- src/UploadDialog.cpp-orig	2009-06-21 17:24:56.715591000 -0500
++++ src/UploadDialog.cpp	2009-06-21 17:25:05.723174000 -0500
+@@ -244,7 +244,7 @@ void UploadDialog::OnConnect(wxCommandEv
+         system = ftp->GetLastResult();
+         system = system.Lower();
+ 
+-        //wxMessageBox(system, _T("FTP Status"), wxOK | wxICON_INFORMATION, this);
++        //wxMessageBox(system, wxT("FTP Status"), wxOK | wxICON_INFORMATION, this);
+ 
+         if (system.Find(wxT("unix"))==-1 && system.Find(wxT("windows"))==-1)
+         {
+@@ -900,7 +900,7 @@ void UploadDialog::DownloadFile (wxStrin
+                         
+                     if (!mProgress->Update(count, iterations, src))
+                     {
+-                        //wxMessageBox("ABORT", _T("FTP Status"), wxOK | wxICON_INFORMATION, NULL);
++                        //wxMessageBox("ABORT", wxT("FTP Status"), wxOK | wxICON_INFORMATION, NULL);
+ 
+                         abort = true;
+                         break;
+@@ -1308,7 +1308,7 @@ void UploadDialog::OnDeleteSite (wxComma
+     wxString debug;
+ 
+ //  debug.Printf("%d", index);
+-//  wxMessageBox(debug, _T("FTP Status"), wxOK | wxICON_INFORMATION, this);
++//  wxMessageBox(debug, wxT("FTP Status"), wxOK | wxICON_INFORMATION, this);
+     
+     wxFileName fn( FileNames::DataDir(), wxT("connections.ini") );
+ 
+@@ -1352,7 +1352,7 @@ void UploadDialog::OnSelectSite (wxListE
+ 
+     //wxString debug;
+     //debug.Printf("ftpIndex %d", ftpIndex);
+-    //wxMessageBox(debug, _T("FTP Status"), wxOK | wxICON_INFORMATION, NULL);
++    //wxMessageBox(debug, wxT("FTP Status"), wxOK | wxICON_INFORMATION, NULL);
+ 
+ 
+ }
+@@ -1461,7 +1461,7 @@ void UploadDialog::UpdateSiteList (void)
+ 
+     while (count < ftpList->GetCount())
+     {
+-        //wxMessageBox(ftpList->Item(count), _T("Error"), wxOK, NULL);
++        //wxMessageBox(ftpList->Item(count), wxT("Error"), wxOK, NULL);
+ 
+         tmp = siteList->InsertItem(insert_count, ftpList->Item(count), 0);
+         siteList->SetItemData(tmp, insert_count);
+--- src/AutoRecovery.cpp-orig	2009-06-21 17:25:24.245693000 -0500
++++ src/AutoRecovery.cpp	2009-06-21 17:25:30.198261000 -0500
+@@ -158,7 +158,7 @@ static bool RemoveAllAutoSaveFiles()
+ {
+    wxArrayString files;
+    wxDir::GetAllFiles(FileNames::AutoSaveDir(), &files,
+-                      _T("*.autosave"), wxDIR_FILES);
++                      wxT("*.autosave"), wxDIR_FILES);
+ 
+    for (unsigned int i = 0; i < files.GetCount(); i++)
+    {
+@@ -191,7 +191,7 @@ static bool RecoverAllProjects(AudacityP
+    
+    wxArrayString files;
+    wxDir::GetAllFiles(FileNames::AutoSaveDir(), &files,
+-                      _T("*.autosave"), wxDIR_FILES);
++                      wxT("*.autosave"), wxDIR_FILES);
+ 
+    for (unsigned int i = 0; i < files.GetCount(); i++)
+    {

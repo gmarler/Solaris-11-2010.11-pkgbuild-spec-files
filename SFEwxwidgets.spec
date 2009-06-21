@@ -1,17 +1,15 @@
 #
-# spec file for package SFEwxwidgets-gnu
+# spec file for package SFEwxwidgets
 #
 # includes module(s): wxWidgets
 #
 
 %include Solaris.inc
-%include usr-gnu.inc
 
-%define using_gld %(gcc -v 2>&1 | /usr/xpg4/bin/grep -q with-gnu-ld && echo 1 || echo 0)
-%define SUNWlibsdl      %(/usr/bin/pkginfo -q SUNWlibsdl && echo 1 || echo 0)
+%define SUNWlibsdl       %(/usr/bin/pkginfo -q SUNWlibsdl && echo 1 || echo 0)
 
-Name:                    SFEwxwidgets-gnu
-Summary:                 wxWidgets - Cross-Platform GUI Library (g++)
+Name:                    SFEwxwidgets
+Summary:                 wxWidgets - Cross-Platform GUI Library
 URL:                     http://wxwidgets.org/
 Version:                 2.8.10
 %define tarball_version  2.8.10
@@ -23,6 +21,7 @@ BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 Requires:      SUNWgnome-libs
 Requires:      SUNWgnome-vfs
+Requires:      SUNWlibC
 %if %SUNWlibsdl
 Requires:      SUNWlibsdl
 %else
@@ -38,12 +37,13 @@ BuildRequires: SUNWlibsdl-devel
 %else
 BuildRequires: SFEsdl-devel
 %endif
+Conflicts:     SFEwxGTK
 
 %package devel
-Summary:		 %{summary} - development files
+Summary:                 %{summary} - development files
 SUNW_BaseDir:            %{_basedir}
 %include default-depend.inc
-Requires:      %name
+Requires:                %name
 
 %if %build_l10n
 %package l10n
@@ -54,8 +54,7 @@ Requires:                %{name}
 %endif
 
 %prep
-rm -rf %name-%version
-%setup -q -n wxWidgets-%tarball_version
+%setup -q -n wxWidgets-%{tarball_version}
 %patch1 -p1
 %patch2 -p0
 
@@ -64,44 +63,38 @@ CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
 if test "x$CPUS" = "x" -o $CPUS = 0; then
     CPUS=1
 fi
-
-export CPPFLAGS="-I/usr/X11/include"
-export CC=gcc
-export CFLAGS="%{gcc_optflags}"
-export CXX=g++
-export CXXFLAGS="%{gcc_cxx_optflags}"
-%if %using_gld
-  export LDFLAGS="-L%{_libdir} -L/usr/X11/lib -R%{_libdir} -R/usr/X11/lib -lm"
-  CFLAGS="$( echo $CFLAGS | sed 's/ -Xlinker -i//' )"
-  CXXFLAGS="$( echo $CXXFLAGS | sed 's/ -Xlinker -i//' )"
+export CFLAGS="%optflags"
+export LD=/usr/ccs/bin/ld
+export LDFLAGS="-lCrun -lCstd"
+%if %cc_is_gcc
 %else
-  export LDFLAGS="%{_ldflags} -lm"
-  export LD_OPTIONS="-i -L%{_libdir} -L/usr/X11/lib -R%{_libdir}:/usr/X11/lib"
+export CXX="${CXX}"
 %endif
+export CXXFLAGS="%cxx_optflags -norunpath -xlibmil -xlibmopt -features=tmplife"
 
 # keep PATH from being mangled by SDL check (breaks grep -E and tr A-Z a-z)
 perl -pi -e 's,PATH=".*\$PATH",:,' configure
-./configure --prefix=%{_prefix}			\
-	    --bindir=%{_bindir}			\
-	    --includedir=%{_includedir}		\
-            --libdir=%{_libdir}			\
-            --enable-gtk2			\
-            --enable-unicode			\
-            --enable-mimetype			\
-            --enable-gui			\
-            --enable-xrc			\
-            --with-gtk				\
-            --with-subdirs			\
-            --without-expat                     \
-            --with-sdl                          \
-            --with-gnomeprint			\
-            --with-gnomevfs			\
-            --with-opengl			\
-            --without-libmspack
+./configure --prefix=%{_prefix}				\
+			--bindir=%{_bindir}				\
+			--includedir=%{_includedir}			\
+			--libdir=%{_libdir}				\
+			--enable-gtk2					\
+			--enable-unicode				\
+			--enable-mimetype				\
+			--enable-gui					\
+			--enable-xrc					\
+			--with-gtk					\
+			--with-subdirs					\
+			--with-expat					\
+			--with-sdl					\
+			--with-gnomeprint				\
+			--with-gnomevfs					\
+			--with-opengl					\
+			--without-libmspack
 
 make -j$CPUS
 cd contrib
-make -j$CPUS
+make -j$CPUSs %{_builddir}/wxWidgets-%{tarball_version}/configure.in 
 cd ..
 cd locale
 make allmo
@@ -117,7 +110,6 @@ cd ..
 cd $RPM_BUILD_ROOT%{_bindir}
 rm -f wx-config
 ln -s ../lib/wx/config/gtk2-unicode-release-* wx-config
-perl -pi -e 's,-pthreads,,' wx-config
 
 %if %build_l10n
 # Rename zh dir to zh_CN as zh is a symlink to zh_CN and causing installation
@@ -161,20 +153,36 @@ rm -rf $RPM_BUILD_ROOT
 - Bump to 2.8.10.  Remove upstream ptach wxwidgets-02-fixcompile.diff.
   Add patch wxwidgets-02-Tmacro.diff to resolve compile issue when building
   with the latest Sun Studio patches.
-* Tue Sep 02 2008 - halton.huo@sun.com
-- Bump to 2.8.8
-- Add patch fixcompile.diff (copy from SFEwxwidgets.spec)
+* Fri Jul 25 2008 - brian.cameron@sun.com
+- Bump to 2.8.8.  Add patch wxwidgets-02-fixcompile to address a
+  compile issue.
+* Mon Mar 17 2008 - laca@sun.com
+- use %_builddir instead of ~/packages
 * Thu Feb 21 2008 - trisk@acm.jhu.edu
 - Bump to 2.8.7
 - Add SFEsdl dependency, add --with-gnomevfs, fix building subdirs
-* Sat Sep 22 2007 - dougs@truemail.co.th
-- Modified for GNU ld with gcc
+* Tue Oct 16 2007 - laca@sun.com
+- add /usr/gnu to search paths for the indiana build
 * Tue Sep 18 2007 - brian.cameron@sun.com
 - Bump to 2.8.5.  Remove upstream patch wxwidgets-02-sqrt.diff.
-* Wed Aug 15 2007 - dougs@truemail.co.th
-- removed -pthreads from wx-config to stop it infecting other builds
-* Sat Aug 11 2007 - trisk@acm.jhu.edu
-- Bump to 2.8.4 for compatibility with SFEwxwidgets
-- Use CC=gcc to be consistent and not confuse build system
-* Sat Jul 14 2007 - dougs@truemail.co.th
-- Converted from SFEwxwidgets.spec
+* Tue Aug 07 2007 - nonsea@users.sourceforge.net
+- Bump to 2.8.4
+- Add --enable-gui --enable-xrc --with-expat for ./configure.
+* Thu Mar 29 2007 - daymobrew@users.sourceforge.net
+- Rename zh dir to zh_CN in %install as zh a symlink to zh_CN and causing
+  installation problems as a dir.
+* Tue Nov 28 2006 - laca@sun.com
+- enable mimetype (wxUSE_MIMETYPE), needed by dvdstyler
+- disable expat support as it conflicts with wxXML, which is also included
+  in wxSVG
+* Sat Oct 14 2006 - laca@sun.com
+- fix wx-config to be a relative symlink
+* Mon Jul 10 2006 - laca@sun.com
+- rename to SFEwxwidgets
+- delete -share subpkg
+- delete unnecessary env variables
+- fix building .mo files, add l10n subpkg
+* Thu May 04 2006 - damien.carbery@sun.com
+- Remove l10n package (no files in it, only empty dirs). Correct aclocal perms.
+* Mon Mar 27 2006 - mike kiedrowski (lakeside-AT-cybrzn-DOT-com)
+- Initial spec

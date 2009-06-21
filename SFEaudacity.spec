@@ -24,6 +24,7 @@ Patch2:              audacity-02-fixsed.diff
 Patch3:              audacity-03-addgtklibs.diff
 Patch4:              audacity-04-allegrord.diff
 Patch5:              audacity-05-m4.diff
+Patch6:              audacity-06-Tmacro.diff
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -45,8 +46,8 @@ BuildRequires: SFEgcc
 BuildRequires: SFEwxwidgets-gnu-devel
 Requires: SFEwxwidgets-gnu
 %else
-BuildRequires: SUNWwxwidgets-devel
-Requires: SUNWwxwidgets
+#BuildRequires: SUNWwxwidgets-devel
+#Requires: SUNWwxwidgets
 %endif
 
 # If building with libmad, then also require id3tag.  If
@@ -85,6 +86,7 @@ Requires:                %{name}
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
+%patch6 -p0
 mkdir -p lib-src/portaudio-v19/include/sys
 cp %{SOURCE1} lib-src/portaudio-v19/include/sys
 
@@ -218,6 +220,9 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Sun Jun 21 2009 - brian.cameron@sun.com
+- Add patch audacity-06-Tmacro.diff to resolve compile issue when
+  building with the latest Sun Studio patches.
 * Wed Feb 25 2009 - Albert Lee
 - Use included soundcard.h
 - Add patch5
