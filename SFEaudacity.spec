@@ -46,8 +46,8 @@ BuildRequires: SFEgcc
 BuildRequires: SFEwxwidgets-gnu-devel
 Requires: SFEwxwidgets-gnu
 %else
-#BuildRequires: SUNWwxwidgets-devel
-#Requires: SUNWwxwidgets
+BuildRequires: SUNWwxwidgets-devel
+Requires: SUNWwxwidgets
 %endif
 
 # If building with libmad, then also require id3tag.  If
