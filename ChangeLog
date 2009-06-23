@@ -1,3 +1,10 @@
+2009-06-23  Halton Huo  <halton.huo@sun.com>
+
+	* SFEconsolekit.spec: Add copyright
+	* SUNWgnome-display-mgr.spec: Add copyright
+	* copyright/SFEconsolekit.copyright: (new)
+	* copyright/SUNWgnome-display-mgr.copyright: updated
+
 2009-06-21 Brian Cameron  <brian.cameron@sun.com>
 
 	* SFEwxwidgets.spec, SFEwxwidgets-gnu.spec: Bump to 2.8.10.

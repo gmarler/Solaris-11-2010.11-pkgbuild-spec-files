@@ -44,6 +44,7 @@ Patch6:                  ConsoleKit-06-dynamic-tty.diff
 Patch7:                  ConsoleKit-07-solaris-vtdaemon.diff
 # date:2009-07-19 owner:halton type:bug bugid:22361
 Patch8:                  ConsoleKit-08-solaris-getpwnamr.diff
+SUNW_Copyright:          %{name}.copyright
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 
@@ -182,6 +183,9 @@ install --mode=0444 %SOURCE1 $RPM_BUILD_ROOT/var/svc/manifest/system
 rm -rf $RPM_BUILD_ROOT
 
 %files
+%doc README AUTHORS
+%doc(bzip2) COPYING NEWS
+%dir %attr (0755, root, other) %{_datadir}/doc
 %defattr (-, root, bin)
 %{_bindir}/*
 %{_sbindir}/*
@@ -222,6 +226,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Tue Jun 23 2009 - halton.huo@sun.com
+- Add copyright
 * Wed Apr 08 2009 - halton.huo@sun.com
 - Add patch8: solaris-getpwnamr.diff to fix bug #22361
 * Wed Apr 08 2009 - halton.huo@sun.com

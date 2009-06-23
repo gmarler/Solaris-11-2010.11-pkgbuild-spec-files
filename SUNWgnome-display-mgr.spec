@@ -46,6 +46,7 @@ Patch8:                  gdm-08-hide-face-browser-pt2.diff
 Patch9:                  gdm-09-fixcompile.diff
 # date:2009-04-28 owner:yippi type:branding
 Patch10:                 gdm-10-no-system-gconf.diff
+SUNW_Copyright:          %{name}.copyright
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 
@@ -274,6 +275,9 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 ) | $BASEDIR/var/lib/postrun/postrun -i -c JDS_wait -a
 
 %files
+%doc AUTHORS README
+%doc(bzip2) COPYING NEWS
+%dir %attr (0755, root, other) %{_datadir}/doc
 %defattr (-, root, bin)
 %dir %attr (0755, root, bin) %{_bindir}
 %{_bindir}/*
@@ -343,6 +347,8 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 %endif
 
 %changelog
+* Tue Jun 23 2009 - halton.huo@sun.com
+- Add copyright
 * Fri Jun 19 2009 - halton.huo@sun.com
 - Adding gnome-doc-prepare in case of missing gnome-doc-utils.make
 * Tue Apr 28 2009 - brian.cameron@sun.com

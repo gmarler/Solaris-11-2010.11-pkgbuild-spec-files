@@ -11,21 +11,18 @@ is applied is otherwise unspecified.
 
 --------------------------------------------------------------------
 
-Licensing and copyright information for gdm:
+Licensing and copyright information for %{name}:
 
  License: GNU General Public License Version 2
- License: GNU Lesser General Public License Version 2 and Version 2.1
- License: GNU Library General Public License Version 2
- License: BSD License
- License: MIT License
- 
+
  You can find more information in the following directory:
  %{_pkg_docdir}
 
-  AUTHORS: List of authors of gdm
-  NEWS.bz2: List of the most important changes in gdm
-  COPYING.bz2: List of all changes and authors of gdm
-  README: More information about gdm
+  COPYING.bz2: GNU GPL
+  AUTHORS: List of authors of ConsoleKit
+  NEWS.bz2: List of the most important changes in ConsoleKit
+  README: More information about ConsoleKit
 
- The sources of gdm-%{version} were downloaded
+ The sources of ConsoleKit-%{version} were downloaded
  from %{SOURCE0.url}
+
