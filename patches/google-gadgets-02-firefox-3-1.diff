@@ -1,0 +1,24 @@
+--- google-gadgets-for-linux-0.11.0/extensions/smjs_script_runtime/js_script_context.cc.orig	2009-06-04 22:55:28.605841161 +0800
++++ google-gadgets-for-linux-0.11.0/extensions/smjs_script_runtime/js_script_context.cc	2009-06-04 22:56:37.225491076 +0800
+@@ -44,8 +44,8 @@
+ static const uint32 kOperationCallbackMultiply = 100;
+ #ifdef JS_OPERATION_WEIGHT_BASE
+ // The accumulated operation weight before OperationCallback is called.
+-static const uint32 kOperationCallbackWeight =
+-    kOperationCallbackMultiply * JS_OPERATION_WEIGHT_BASE;
++//static const uint32 kOperationCallbackWeight =
++//    kOperationCallbackMultiply * JS_OPERATION_WEIGHT_BASE;
+ #endif
+ 
+ static const uint64_t kMaxGCInterval = 5000; // 5 seconds.
+@@ -159,8 +159,8 @@
+   JS_SetLocaleCallbacks(context_, &gLocaleCallbacks);
+ #ifdef HAVE_JS_SetOperationCallback
+ #ifdef JS_OPERATION_WEIGHT_BASE
+-  JS_SetOperationCallback(context_, OperationCallback,
+-                          kOperationCallbackWeight);
++//  JS_SetOperationCallback(context_, OperationCallback,
++//                          kOperationCallbackWeight);
+ #else
+   // This func in newer SpiderMonkey in xulrunner 1.9.1 has a different
+   // prototype.

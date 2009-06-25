@@ -27,11 +27,12 @@ Index: extensions/linux_system_framework/process.cc
 ===================================================================
 --- extensions/linux_system_framework/process.cc	(revision 1038)
 +++ extensions/linux_system_framework/process.cc	(working copy)
-@@ -18,6 +18,8 @@
+@@ -18,6 +18,9 @@
  #include <dirent.h>
  #include <cstdlib>
  
 +#include <unistd.h>
++#include <limits.h>
 +
  #ifdef HAVE_X11
  #include <X11/Xlib.h>
@@ -368,7 +369,7 @@ Index: hosts/gtk/main.cc
 +#ifdef GGL_HOST_SOLARIS
    "linux-system-framework",
  #endif
-   "smjs-script-runtime",
+   "analytics-usage-collector",
 @@ -444,8 +444,8 @@
  
    // Puth the process into background in the early stage to prevent from
@@ -512,35 +513,6 @@ Index: ggadget/uuid.cc
  #include "string_utils.h"
  
  namespace ggadget {
-Index: ggadget/common.h
-===================================================================
---- ggadget/common.h	(revision 1038)
-+++ ggadget/common.h	(working copy)
-@@ -183,10 +183,10 @@
-  * Note that the function doesn't need an implementation, as we only
-  * use its type.
-  */
--template <typename T, size_t N>
--char (&ArraySizeHelper(T (&array)[N]))[N];
--template <typename T, size_t N>
--char (&ArraySizeHelper(const T (&array)[N]))[N];
-+//template <typename T, size_t N>
-+//char (&ArraySizeHelper(T (&array)[N]))[N];
-+//template <typename T, size_t N>
-+//char (&ArraySizeHelper(const T (&array)[N]))[N];
- 
- /**
-  * The @c arraysize(arr) macro returns the # of elements in an array arr.
-@@ -199,7 +199,8 @@
-  * due to a limitation in C++'s template system.  The limitation might
-  * eventually be removed, but it hasn't happened yet.
-  */
--#define arraysize(array) (sizeof(::ggadget::ArraySizeHelper(array)))
-+//#define arraysize(array) (sizeof(::ggadget::ArraySizeHelper(array)))
-+#define arraysize(array) (sizeof(array)/sizeof(array[0]))
- 
- /**
-  * Used to indicate an invalid index when size_t is used for the type of the
 Index: ggadget/gadget.h
 ===================================================================
 --- ggadget/gadget.h	(revision 1038)
@@ -652,14 +624,14 @@ Index: gadgets/designer/designer_script_utils.cc
  namespace ggadget {
  namespace designer {
  
---- configure.ac.orig	2009-01-08 10:51:11.000000000 +0800
-+++ configure.ac	2009-01-12 16:22:11.593201434 +0800
-@@ -365,21 +365,26 @@
- GGL_CHECK_STACK_PROTECTOR([has_stack_protector=yes], [has_stack_protector=no])
+--- configure.ac.orig	2009-06-04 22:50:24.471326569 +0800
++++ configure.ac	2009-06-04 22:52:49.572821483 +0800
+@@ -454,16 +454,20 @@
+ fi
  
  if test x$enable_debug = xyes; then
 -  DEFAULT_COMPILE_FLAGS="-g -O0 -Wall"
-+#DEFAULT_COMPILE_FLAGS="-g -O0 -Wall"
++#  DEFAULT_COMPILE_FLAGS="-g -O0 -Wall"
 +  DEFAULT_COMPILE_FLAGS="-g -xO0"
    DEBUG_MACROS="_DEBUG";
    if test x$has_stack_protector = xyes; then
@@ -669,7 +641,7 @@ Index: gadgets/designer/designer_script_utils.cc
    fi
  else
 -  DEFAULT_COMPILE_FLAGS="-O2 -Wall"
-+#DEFAULT_COMPILE_FLAGS="-O2 -Wall"
++#  DEFAULT_COMPILE_FLAGS="-O2 -Wall"
 +  DEFAULT_COMPILE_FLAGS="-xO2"
    DEBUG_MACROS="NDEBUG";
    if test x$has_stack_protector = xyes; then
@@ -679,18 +651,24 @@ Index: gadgets/designer/designer_script_utils.cc
    fi
  fi
  
- if test x$use_werror = xyes; then
--  DEFAULT_COMPILE_FLAGS="$DEFAULT_COMPILE_FLAGS -Werror"
-+#DEFAULT_COMPILE_FLAGS="$DEFAULT_COMPILE_FLAGS -Werror"
-+  DEFAULT_COMPILE_FLAGS="$DEFAULT_COMPILE_FLAGS"
- fi
- 
- 
-@@ -427,6 +432,7 @@
+@@ -506,6 +510,7 @@
      PREDEFINED_MACROS="$PREDEFINED_MACROS -DGGL_HOST_SOLARIS=1"
-     SMJS_CFLAGS="-DXP_UNIX"
      GGL_PLATFORM_SHORT="\"solaris\""
-+    build_linux_system_framework=yes
      GGL_PLATFORM="\"solaris\""
++    build_linux_system_framework=yes
      ;;
    * )
+     ggl_host_type=unknown
+--- ggadget/unicode_utils.h.orig	2009-06-13 00:24:47.316406896 +0800
++++ ggadget/unicode_utils.h	2009-06-13 00:24:55.646421178 +0800
+@@ -27,8 +27,8 @@
+ 
+ namespace std {
+ /* To meet the ODR(One Definition Rule) requirement */
+-extern template class std::basic_string<ggadget::UTF16Char>;
+-extern template class std::basic_string<ggadget::UTF32Char>;
++//extern template class std::basic_string<ggadget::UTF16Char>;
++//extern template class std::basic_string<ggadget::UTF32Char>;
+ }
+ 
+ namespace ggadget {

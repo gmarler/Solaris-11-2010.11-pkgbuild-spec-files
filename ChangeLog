@@ -1,3 +1,10 @@
+2009-06-25  Alfred Peng  <alfred.peng@sun.com>
+
+	* patches/google-gadgets-01-solaris-build.diff: Rework.
+	* patches/google-gadgets-02-firefox-3-1.diff: Added.
+	* SFEgoogle-gadgets.spec:
+	  Bump to 0.11.0. Add patch to build with Firefox 3.5.
+
 2009-06-23  Halton Huo  <halton.huo@sun.com>
 
 	* SFEconsolekit.spec: Add copyright

@@ -7,12 +7,14 @@
 
 Name:                    SFEgoogle-gadgets
 Summary:                 Google Gadgets - a platform for running desktop gadgets.
-Version:                 0.10.5
+Version:                 0.11.0
 Source:                  http://google-gadgets-for-linux.googlecode.com/files/google-gadgets-for-linux-%{version}.tar.bz2
 URL:                     http://code.google.com/p/google-gadgets-for-linux/
 
 # owner:alfred date:2009-01-12 type:bug
 Patch1:                  google-gadgets-01-solaris-build.diff
+
+Patch2:                  google-gadgets-02-firefox-3-1.diff
 
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -45,13 +47,16 @@ Requires: %{name}
 %prep
 %setup -q -n google-gadgets-for-linux-%{version}
 %patch1 -p0
+%patch2 -p1
 
 %build
-export CXXFLAGS="-library=no%Cstd -features=anachronisms,except,rtti,export,extensions,nestedaccess,tmplife,tmplrefstatic -instances=global -template=geninlinefuncs -verbose=template -Qoption ccfe ++boolflag:sunwcch=false -Qoption ccfe -features=gcc -Qoption ccfe -features=zla -mt -D_REENTRANT -D__EXTENSIONS__ -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -D_XOPEN_SOURCE=500 -D_XPG5 -D_POSIX_PTHREAD_SEMANTICS -I/usr/include/stdcxx4/ansi -I/usr/include/stdcxx4"
-export LDFLAGS="-lc -lm -lCrun -lstdcxx4"
-export CPPFLAGS="-I/usr/include/stdcxx4/ansi -I/usr/include/stdcxx"
+export PKG_CONFIG_PATH=/opt/sfw/lib/pkgconfig:%{_pkg_config_path}
 
-gnome-autogen.sh --prefix=/usr
+export CPPFLAGS=`pkg-config --cflags-only-I libstdcxx4`
+export CXXFLAGS=`pkg-config --cflags-only-other libstdcxx4`
+export LDFLAGS=`pkg-config --libs libstdcxx4`
+
+gnome-autogen.sh --prefix=/usr --disable-werror
 make
 
 %install
@@ -94,5 +99,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*
 
 %changelog
+* Thu Jun 25 2009 - alfred.peng@sun.com
+- Bump to 0.11.0.
+  Add patch to build with Firefox 3.5.
 * Mon Jan 14 2009 - alfred.peng@sun.com
 - Initial version
