@@ -1,0 +1,11 @@
+--- postgis-1.3.6.orig/loader/Makefile	2006-10-14 11:26:13.000000000 +0200
++++ postgis-1.3.6/loader/Makefile	2009-06-26 11:50:28.420273000 +0200
+@@ -17,7 +17,7 @@
+ 	override LDFLAGS += $(ICONV_LDFLAGS)
+ endif
+ 
+-override CFLAGS := -g -Wall -I.. $(CFLAGS) -DUSE_VERSION=$(USE_VERSION) -DPOSTGIS_VERSION='"$(POSTGIS_VERSION)"'
++override CFLAGS := -g -I.. $(CFLAGS) -DUSE_VERSION=$(USE_VERSION) -DPOSTGIS_VERSION='"$(POSTGIS_VERSION)"'
+ 
+ all: shp2pgsql$(EXE) pgsql2shp$(EXE)
+ 

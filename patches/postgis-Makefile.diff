@@ -1,0 +1,36 @@
+--- postgis-1.3.6.orig/lwgeom/Makefile	2008-04-24 03:04:52.000000000 +0200
++++ postgis-1.3.6/lwgeom/Makefile	2009-06-26 11:47:48.108705000 +0200
+@@ -6,7 +6,7 @@
+ # Default missing CXX variable to c++
+ # 
+ ifndef $(CXX) 
+-	CXX = c++
++	CXX = CC
+ endif
+ 
+ #---------------------------------------------------------------
+@@ -28,13 +28,14 @@
+ 
+ #---------------------------------------------------------------
+ 
+-CSTAR_FLAGS = -Wall -g -O2 -fPIC -fexceptions
++CSTAR_FLAGS = -g -O2 -KPIC -library=stlport4
+ 
+ override CFLAGS += -DUSE_VERSION=$(USE_VERSION)
+ override CFLAGS += -DPOSTGIS_LIB_VERSION='"$(POSTGIS_LIB_VERSION)"'
+ override CFLAGS += -DPOSTGIS_VERSION='"$(POSTGIS_VERSION)"'
+ override CFLAGS += -DPOSTGIS_SCRIPTS_VERSION='"$(SCRIPTS_VERSION)"'
+ override CFLAGS += -DPOSTGIS_BUILD_DATE='"$(POSTGIS_BUILD_DATE)"'
++override CFLAGS += -DHAVE_ISINF=1
+ 
+ JTS_OBJ=lwgeom_nojts.o
+ ifeq ($(USE_GEOS),1)
+@@ -166,7 +167,7 @@
+ 
+ 
+ test: liblwgeom_sa.so liblwgeom_sa.a test.c
+-	$(CC) -Wall -lm -g -o test test.c liblwgeom_sa.a 
++	$(CC) -lm -g -o test test.c liblwgeom_sa.a 
+ 
+ tsort:
+ 	lorder $(SA_OBJS) | tsort

@@ -1,3 +1,9 @@
+2009-06-26  Gilles Dauphin
+
+	* create SFEpostgis.spec
+	* patches/postgis-*.diff
+	* copyright/*postgis*
+
 2009-06-25  Alfred Peng  <alfred.peng@sun.com>
 
 	* patches/google-gadgets-01-solaris-build.diff: Rework.
