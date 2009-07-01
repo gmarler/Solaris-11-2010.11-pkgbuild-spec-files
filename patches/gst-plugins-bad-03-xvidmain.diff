@@ -1,0 +1,13 @@
+--- gst-plugins-bad-0.10.13/ext/xvid/gstxvid.c	2009-06-27 18:12:41.498803935 +0200
++++ gst-plugins-bad-0.10.13-patch/ext/xvid/gstxvid.c	2009-06-27 18:12:31.451579285 +0200
+@@ -28,6 +28,10 @@
+ #include "gstxviddec.h"
+ #include "gstxvidenc.h"
+ 
++int
++main()
++{}
++
+ gboolean
+ gst_xvid_init (void)
+ {

@@ -82,10 +82,10 @@ bash ./configure	\
     --extra-ldflags=-mimpure-text \
     --enable-shared
 
-make 
+gmake 
 
 %install
-make install DESTDIR=$RPM_BUILD_ROOT BINDIR=$RPM_BUILD_ROOT%{_bindir}
+gmake install DESTDIR=$RPM_BUILD_ROOT BINDIR=$RPM_BUILD_ROOT%{_bindir}
 
 mkdir $RPM_BUILD_ROOT%{_libdir}/ffmpeg
 cp config.mak $RPM_BUILD_ROOT%{_libdir}/ffmpeg
@@ -109,6 +109,8 @@ EOM
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* San Jun 28 2009 - Milan Jurik
+- switch to GNU make
 * Mon Mar 16 2009 - Milan Jurik
 - version 0.5
 * Thu Aug 07 2008 - trisk@acm.jhu.edu

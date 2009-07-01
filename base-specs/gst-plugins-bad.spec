@@ -7,7 +7,7 @@
 #
 Name:           gst-plugins-bad
 License:        GPL
-Version:        0.10.12
+Version:        0.10.13
 Release:        1
 Distribution:   Java Desktop System
 Vendor:         Sun Microsystems, Inc.
@@ -18,6 +18,9 @@ Source0:        http://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins
 Source1:        soundcard.h
 Patch1:         gst-plugins-bad-01-gettext.diff
 Patch2:         gst-plugins-bad-02-gstapexraop.diff
+Patch3:         gst-plugins-bad-03-xvidmain.diff
+Patch4:         gst-plugins-bad-04-equal.diff
+Patch5:         gst-plugins-bad-05-xsi_shell.diff
 BuildRoot:      %{_tmppath}/%{name}-%{version}-root
 Docdir:         %{_defaultdocdir}/doc
 Autoreqprov:    on
@@ -36,6 +39,9 @@ plug-ins.
 %setup -n gst-plugins-bad-%{version} -q
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
+%patch4 -p1
+%patch5 -p1
 mkdir -p include/sys
 cp %{SOURCE1} include/sys
 
@@ -46,23 +52,19 @@ CFLAGS="${CFLAGS:-%optflags}" ; export CFLAGS ; \
 CXXFLAGS="${CXXFLAGS:-%optflags}" ; export CXXFLAGS ; \
 FFLAGS="${FFLAGS:-%optflags}" ; export FFLAGS ; \
 glib-gettextize -f
-# common/m4/libtool.m4 is not compatible (uses $ECHO instead of $echo)
-#libtoolize --copy --force
 intltoolize --copy --force --automake
 aclocal -I ./m4 -I ./common/m4 $ACLOCAL_FLAGS
 autoheader
 autoconf
 automake -a -c -f
+CONFIG_SHELL=/bin/bash \
 bash ./configure \
   --prefix=%{_prefix}	\
   --sysconfdir=%{_sysconfdir} \
   --mandir=%{_mandir}   \
-  --disable-app \
   --disable-bayer \
   --disable-dccp \
-  --disable-interleave \
   --disable-festival \
-  --disable-filter \
   --disable-freeze \
   --disable-interleave \
   --disable-librfb \
@@ -71,7 +73,6 @@ bash ./configure \
   --disable-nuvdemux \
   --disable-pcapparse \
   --disable-rawparse \
-  --disable-speexresample \
   --disable-subenc \
   --disable-scaletempo \
   --disable-speed \
@@ -79,11 +80,9 @@ bash ./configure \
   --disable-tta \
   --disable-videosignal \
   --disable-vmnc \
-  --disable-y4m \
   --disable-quicktime \
   --disable-vcd \
   --disable-alsa \
-  --disable-amrwb \
   --disable-apexsink \
   --disable-cdaudio \
   --disable-celt \
@@ -107,14 +106,15 @@ bash ./configure \
   --disable-nas \
   --disable-neon \
   --disable-timidity \
-  --disable-twolame \
   --disable-soundtouch \
   --disable-spc \
   --disable-swfdec \
-  --disable-x264 \
   --disable-dvb \
+  --disable-oss4 \
+  --disable-selector \
   %{gtk_doc_option}	\
-  --enable-external --with-check=no
+  --enable-external \
+  --disable-shave
 
 # FIXME: hack: stop the build from looping
 touch po/stamp-it
@@ -169,6 +169,12 @@ GStreamer support libraries header files.
 %{_datadir}/gtk-doc
 
 %changelog
+* Sun Jun 28 2009 - Milan Jurik
+- upgrade to 0.10.13
+- build cleanup, libtool shave disable (problematic shell script)
+- amrwb optional
+- x264 by default
+- oss4 and selector already in SUNW
 * Thu May 21 2009 - brian.cameron@sun.com
 - Bump to 0.10.12 and remove upstream patches.
 * Tue Jan 20 2009 - brian.cameron@sun.com

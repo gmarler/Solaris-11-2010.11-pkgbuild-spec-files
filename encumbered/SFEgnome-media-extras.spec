@@ -13,6 +13,8 @@
 
 %define with_hal %(pkginfo -q SUNWhal && echo 1 || echo 0)
 %define SFElibsndfile   %(/usr/bin/pkginfo -q SFElibsndfile && echo 1 || echo 0)
+%define with_amrnb %(pkginfo -q SFEamrnb && echo 1 || echo 0)
+%define with_amrwb %(pkginfo -q SFEamrwb && echo 1 || echo 0)
 
 %use gst_ffmpeg = gst-ffmpeg.spec
 %use gst_plugins_ugly = gst-plugins-ugly.spec
@@ -66,8 +68,8 @@ BuildRequires: SFEffmpeg-devel
 ##### for gst-plugins-ugly #####
 Requires: SFEliba52
 BuildRequires: SFEliba52-devel
-#Requires: SFElibcdio
-#BuildRequires: SFElibcdio-devel
+Requires: SFElibcdio
+BuildRequires: SFElibcdio-devel
 Requires: SFElibdvdnav
 BuildRequires: SFElibdvdnav-devel
 Requires: SFElibid3tag
@@ -76,6 +78,8 @@ Requires: SFElibmad
 BuildRequires: SFElibmad-devel
 Requires: SFElibmpeg2
 BuildRequires: SFElibmpeg2-devel
+Requires: SFElame
+BuildRequires: SFElame-devel
 ##### for gst-plugins-bad #####
 # Notes: metadata plugin which uses libexif may be unstable
 #Requires: SUNWlibexif
@@ -86,9 +90,6 @@ Requires: SUNWlibsdl
 BuildRequires:  SUNWlibsdl-devel
 Requires: SUNWlibtheora
 BuildRequires: SUNWlibtheora-devel
-# Note: amrnb code is non-distributable, so don't depend on it
-#Requires: SFEamrnb
-#BuildRequires: SFEamrnb-devel
 #BuildRequires: SFEdirac-devel
 Requires: SFEfaad2
 BuildRequires: SFEfaad2-devel
@@ -101,6 +102,8 @@ Requires: SFEwildmidi
 BuildRequires: SFEwildmidi-devel
 Requires: SFExvid
 BuildRequires: SFExvid-devel
+Requires: SFElibx264
+BuildRequires: SFElibx264-devel
 
 %ifarch sparc
 %define arch_opt --enable-mlib
@@ -111,6 +114,14 @@ Requires: SUNWmlib
 %endif
 %if %with_hal
 Requires: SUNWhal
+%endif
+%if %with_amrnb
+Requires: SFEamrnb
+BuildRequires: SFEamrnb-devel
+%endif
+%if %with_amrwb
+Requires: SFEamrwb
+BuildRequires: SFEamrwb-devel
 %endif
 
 %package root
@@ -191,6 +202,9 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, bin) %{_libdir}
 %{_libdir}/libgst*.so*
 %{_libdir}/gstreamer-%{gst_minmaj}/lib*.so*
+%dir %attr (0755, root, sys) %{_datadir}
+%dir %attr (0755, root, other) %{_datadir}/gstreamer-*
+%{_datadir}/gstreamer-*/presets/*
 
 %files devel
 %defattr (-, root, bin)
@@ -208,6 +222,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr (-, root, other) %{_datadir}/locale
 %endif
 %changelog
+* Sun Jun 28 2009 - Milan Jurik
+- amrwb and amrwb as optional
+- x264 and cdio and lame enabled
 * Tue Feb 17 2009 - Thomas Wagner
 - make (Build-)Requires conditional SUNWlibsndfile|SFElibsndfile(-devel)
 * Fri Dec 12 2008 - trisk@acm.jhu.edu

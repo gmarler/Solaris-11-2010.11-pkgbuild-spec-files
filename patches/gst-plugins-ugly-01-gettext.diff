@@ -4,7 +4,7 @@
  
  dnl set up gettext
  dnl the version check needs to stay here because autopoint greps for it
--AM_GNU_GETTEXT_VERSION(0.11.5)
+-AM_GNU_GETTEXT_VERSION(0.17)
 -AM_GNU_GETTEXT([external])
 +ALL_LINGUAS="cs de es fr hu it ja ko pl pt_BR ru sv zh_CN zh_HK zh_TW"
 +AM_GLIB_GNU_GETTEXT

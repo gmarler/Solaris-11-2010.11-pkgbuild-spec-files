@@ -1,0 +1,11 @@
+--- gst-plugins-ugly-0.10.11/m4/libtool.m4	so bře 14 00:59:36 2009
++++ gst-plugins-ugly-0.10.11-patch/m4/libtool.m4	ne črn 14 19:30:33 2009
+@@ -7082,7 +7082,7 @@
+       = c,a/b,, \
+     && eval 'test $(( 1 + 1 )) -eq 2 \
+     && test "${#_lt_dummy}" -eq 5' ) >/dev/null 2>&1 \
+-  && xsi_shell=yes
++  && xsi_shell=no
+ AC_MSG_RESULT([$xsi_shell])
+ _LT_CONFIG_LIBTOOL_INIT([xsi_shell='$xsi_shell'])
+ 

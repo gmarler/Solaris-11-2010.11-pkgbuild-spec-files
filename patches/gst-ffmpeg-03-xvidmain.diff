@@ -1,0 +1,25 @@
+--- gst-ffmpeg-0.10.7/ext/ffmpeg/gstffmpeg.c	pá bře  6 18:48:43 2009
++++ gst-ffmpeg-0.10.7-patch/ext/ffmpeg/gstffmpeg.c	so črn 27 23:18:20 2009
+@@ -42,6 +42,9 @@
+ 
+ static GStaticMutex gst_avcodec_mutex = G_STATIC_MUTEX_INIT;
+ 
++int
++main()
++{}
+ 
+ int
+ gst_ffmpeg_avcodec_open (AVCodecContext * avctx, AVCodec * codec)
+--- gst-ffmpeg-0.10.7/ext/libpostproc/gstpostproc.c	st led 21 11:15:52 2009
++++ gst-ffmpeg-0.10.7-patch/ext/libpostproc/gstpostproc.c	so črn 27 23:18:05 2009
+@@ -226,6 +226,10 @@
+ 
+ static GstElementClass *parent_class = NULL;
+ 
++int
++main()
++{}
++
+ #define GST_TYPE_PP_SCOPE (gst_pp_scope_get_type())
+ static GType
+ gst_pp_scope_get_type (void)

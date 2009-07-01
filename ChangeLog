@@ -1,3 +1,12 @@
+2009-06-28  Milan Jurik <sfnet@xylab.cz>
+
+	* base-specs/gst-plugins-bad.spec: upgrade to 0.10.13
+	* base-specs/gst-plugins-ugly.spec: upgrade to 0.10.12
+	* base-specs/gst-ffmpeg.spec: upgrade to 0.10.7
+	* base-specs/ffmpeg.spec: switch to GNU make
+	* encumbered/SFEgnome-media-extras.spec: amrwb and amrwb as optional
+	* encumbered/SFEgnome-media-extras.spec: x264 and cdio and lame enabled
+
 2009-06-26  Gilles Dauphin
 
 	* create SFEpostgis.spec

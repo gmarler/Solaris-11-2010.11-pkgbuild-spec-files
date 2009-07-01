@@ -9,7 +9,7 @@
 #
 Name:           gst-ffmpeg
 License:        LGPL
-Version:        0.10.4
+Version:        0.10.7
 Release:        1
 Distribution:   Java Desktop System
 Vendor:         Sun Microsystems, Inc.
@@ -17,12 +17,7 @@ Group:          Libraries/Multimedia
 Summary:        GStreamer Streaming-media framework plug-ins - FFmpeg.
 URL:            http://gstreamer.freedesktop.org/
 Source:         http://gstreamer.freedesktop.org/src/gst-ffmpeg/gst-ffmpeg-%{version}.tar.bz2
-Patch1:         gst-ffmpeg-01-BE_16.diff 
-Patch2:         gst-ffmpeg-02-ext-ffmpeg.diff
-Patch3:         gst-ffmpeg-03-new-codec-ids.diff
-Patch4:         gst-ffmpeg-04-av_picture_copy.diff
-Patch5:         gst-ffmpeg-05-disable-aac.diff
-Patch6:         gst-ffmpeg-06-disable-mpegts.diff
+Patch3:         gst-ffmpeg-03-xvidmain.diff
 BuildRoot:      %{_tmppath}/%{name}-%{version}-root
 Docdir:         %{_defaultdocdir}/doc
 Autoreqprov:    on
@@ -39,12 +34,7 @@ plug-ins.
 
 %prep
 %setup -n gst-ffmpeg-%{version} -q
-%patch1 -p1
-%patch2 -p1
 %patch3 -p1
-%patch4 -p1
-%patch5 -p1
-%patch6 -p1
 
 %build
 #CC=/usr/sfw/bin/gcc ; export CC ; \
@@ -54,21 +44,20 @@ CXXFLAGS="${CXXFLAGS:-%optflags}" ; export CXXFLAGS ; \
 FFLAGS="${FFLAGS:-%optflags}" ; export FFLAGS ; \
 glib-gettextize -f
 aclocal -I ./common/m4 $ACLOCAL_FLAGS
-libtoolize --copy --force
 intltoolize --copy --force --automake
 autoheader
 autoconf
 automake -a -c -f
+CONFIG_SHELL=/bin/bash \
 bash ./configure \
   --prefix=%{_prefix}	\
   --sysconfdir=%{_sysconfdir} \
   --mandir=%{_mandir}   \
   %{arch_opt}	\
   %{gtk_doc_option}	\
-  --with-system-ffmpeg --with-check=no
+  --with-system-ffmpeg  \
+  --disable-shave
 
-# FIXME: hack: -mimpure-text is needed for linking non-PIC code
-perl -pi -e 's/-shared /-shared -mimpure-text /' libtool
 # FIXME: hack: stop the build from looping
 touch po/stamp-it
 
@@ -87,8 +76,8 @@ unset GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL
 
 # Clean out files that should not be part of the rpm.
 # This is the recommended way of dealing with it for RH8
-rm $RPM_BUILD_ROOT%{_libdir}/gstreamer-%{majorminor}/*.la
-rm $RPM_BUILD_ROOT%{_libdir}/gstreamer-%{majorminor}/*.a
+rm $RPM_BUILD_ROOT%{_libdir}/gstreamer-%{majorminor}/*.la || true
+rm $RPM_BUILD_ROOT%{_libdir}/gstreamer-%{majorminor}/*.a || true
 
 %clean
 [ -n "$RPM_BUILD_ROOT" -a "$RPM_BUILD_ROOT" != / ] && rm -rf $RPM_BUILD_ROOT
@@ -122,6 +111,9 @@ GStreamer support libraries header files.
 %{_datadir}/gtk-doc
 
 %changelog
+* Sun Jun 28 2009 - Milan Jurik
+- upgrade to 0.10.7
+- build cleanup, libtool shave disable (problematic shell script)
 * Wed Jul 23 2008 - trisk@acm.jhu.edu
 - Add patch3, patch4, patch5, patch6 from Debian
 * Tue Jul 22 2008 - trisk@acm.jhu.edu

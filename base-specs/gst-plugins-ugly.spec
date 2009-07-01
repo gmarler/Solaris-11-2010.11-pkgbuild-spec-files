@@ -7,7 +7,7 @@
 #
 Name:           gst-plugins-ugly
 License:        GPL
-Version:        0.10.10
+Version:        0.10.12
 Release:        1
 Distribution:   Java Desktop System
 Vendor:         Sun Microsystems, Inc.
@@ -17,6 +17,7 @@ URL:            http://gstreamer.freedesktop.org/
 Source:         http://gstreamer.freedesktop.org/src/gst-plugins-ugly/gst-plugins-ugly-%{version}.tar.bz2
 Patch1:         gst-plugins-ugly-01-gettext.diff
 Patch2:         gst-plugins-ugly-02-dvdnav.diff
+Patch4:         gst-plugins-ugly-04-xsi_shell.diff
 BuildRoot:      %{_tmppath}/%{name}-%{version}-root
 Docdir:         %{_defaultdocdir}/doc
 Autoreqprov:    on
@@ -36,29 +37,27 @@ plug-ins.
 %setup -n gst-plugins-ugly-%{version} -q
 %patch1 -p1
 %patch2 -p1
+%patch4 -p1
 
 %build
 CFLAGS="${CFLAGS:-%optflags}" ; export CFLAGS ; \
 CXXFLAGS="${CXXFLAGS:-%optflags}" ; export CXXFLAGS ; \
 FFLAGS="${FFLAGS:-%optflags}" ; export FFLAGS ; \
 glib-gettextize -f
-# common/m4/libtool.m4 is not compatible (uses $ECHO instead of $echo)
-#libtoolize --copy --force
 intltoolize --copy --force --automake
 aclocal -I ./m4 -I ./common/m4 $ACLOCAL_FLAGS
 autoheader
 autoconf
 automake -a -c -f
+CONFIG_SHELL=/bin/bash \
 bash ./configure \
   --prefix=%{_prefix}	\
   --sysconfdir=%{_sysconfdir} \
   --mandir=%{_mandir}   \
-  --disable-amrnb       \
-  --disable-cdio        \
-  --disable-lame        \
   --disable-sidplay     \
   --enable-dvdnav       \
-  --enable-external --with-check=no
+  --enable-external     \
+  --disable-shave
 
 # FIXME: hack: stop the build from looping
 touch po/stamp-it
@@ -113,6 +112,11 @@ GStreamer support libraries header files.
 %{_datadir}/gtk-doc
 
 %changelog
+* Sun Jun 28 2009 - Milan Jurik
+- upgrade to 0.10.12
+- build cleanup, libtool shave disable (problematic shell script)
+- amrnb as optional
+- cdio and lame by default
 * Fri Dec 12 2008 - trisk@acm.jhu.edu
 - Bump to 0.10.10
 - Disable more plugins

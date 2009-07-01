@@ -1,0 +1,11 @@
+--- gst-plugins-bad-0.10.12/common/glib-gen.mak	ne črn 21 18:59:20 2009
++++ gst-plugins-bad-0.10.12-patch/common/glib-gen.mak	ne črn 21 19:00:12 2009
+@@ -26,7 +26,7 @@
+ 	$^ > $@
+ 
+ %-enumtypes.c: $(glib_enum_headers)
+-	@if test "x$(glib_enum_headers)" == "x"; then echo "ERROR: glib_enum_headers is empty, please fix Makefile"; exit 1; fi
++	@if test "x$(glib_enum_headers)" = "x"; then echo "ERROR: glib_enum_headers is empty, please fix Makefile"; exit 1; fi
+ 	glib-mkenums \
+ 	--fhead "#include \"$*-enumtypes.h\"\n$(enum_headers)" \
+ 	--fprod "\n/* enumerations from \"@filename@\" */" \
