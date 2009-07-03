@@ -10,13 +10,11 @@
 Name:                    SFEgobject-introspection
 Summary:                 GObject introspection support
 Version:                 0.6.3
-#owner:yippi date:2009-04-07 type:bug bugzilla:578199
-Patch1:                  gobject-introspection-01-union.diff
 #owner:yippi date:2009-04-07 type:bug bugzilla:578200
-Patch2:                  gobject-introspection-02-scanner.diff
+Patch1:                  gobject-introspection-01-scanner.diff
 #owner:yippi date:2009-04-07 type:bug bugzilla:578202
-Patch3:                  gobject-introspection-03-fixshave.diff
-Patch4:                  gobject-introspection-04-dumper.diff
+Patch2:                  gobject-introspection-02-fixshave.diff
+Patch3:                  gobject-introspection-03-dumper.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 BuildRequires:           SUNWPython26-devel
@@ -41,7 +39,6 @@ cd gobject-introspection
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
-%patch4 -p1
 
 %build
 cd gobject-introspection-%version
@@ -92,5 +89,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/aclocal/*
 
 %changelog
-* Sat Apr 04 2009 - Brian.Cameron  <brian.cameron@sun.com>
+* Fri Jul 03 2009 - Brian Cameron  <brian.cameron@sun.com
+- Remove upstream patch gobject-introspection-01-union.diff,
+  renumber rest.
+* Sat Apr 04 2009 - Brian Cameron  <brian.cameron@sun.com>
 - Created.
