@@ -7,6 +7,7 @@
 	* encumbered/SFEmplayer.spec: disable x264 support for now,
 	  incompatible with the latest x264 
 	* SFElibx264.spec: update to yesterday snapshot
+	* SFEopenttd.spec: Initial version
 
 2009-07-03 Brian Cameron  <brian.cameron@sun.com>
 
