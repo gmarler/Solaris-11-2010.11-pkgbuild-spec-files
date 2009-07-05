@@ -9,7 +9,7 @@
 #
 Name:           gst-ffmpeg
 License:        LGPL
-Version:        0.10.7
+Version:        0.10.8
 Release:        1
 Distribution:   Java Desktop System
 Vendor:         Sun Microsystems, Inc.
@@ -111,6 +111,8 @@ GStreamer support libraries header files.
 %{_datadir}/gtk-doc
 
 %changelog
+* Sun Jul 05 2009 - Milan Jurik
+- upgrade to 0.10.8
 * Sun Jun 28 2009 - Milan Jurik
 - upgrade to 0.10.7
 - build cleanup, libtool shave disable (problematic shell script)

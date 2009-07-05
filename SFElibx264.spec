@@ -6,14 +6,14 @@
 
 %include Solaris.inc
 
-%define         snap    20090314
+%define         snap    20090704
 %define         snaph   2245
 %define src_name x264-snapshot
 %define src_url	 http://download.videolan.org/pub/videolan/x264/snapshots/
 
 Name:                    SFElibx264
 Summary:                 H264 encoder library
-Version:                 20090314
+Version:                 20090704
 Source:                  %{src_url}/%{src_name}-%{snap}-%{snaph}.tar.bz2
 URL:                     http://www.videolan.org/developers/x264.html
 #Patch1:			 libx264-01-gccisms.diff

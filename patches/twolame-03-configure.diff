@@ -1,0 +1,20 @@
+--- twolame-0.3.12/configure.ac	so črc  4 12:47:41 2009
++++ twolame-0.3.12-patch/configure.ac	so črc  4 12:50:45 2009
+@@ -113,7 +113,7 @@
+ 
+ dnl ############## Compiler and Linker Flags
+ 
+-CFLAGS="$CFLAGS -std=c99"
++CFLAGS="$CFLAGS"
+ LDFLAGS="$LDFLAGS"
+ 
+ # If debugging is enabled then make warnings errors
+@@ -124,7 +124,7 @@
+ 	fi
+ else
+ 	# Optimize flag. 3 is about as high as you can sanely go with GCC3.2.
+-	CFLAGS="$CFLAGS -O3"
++	CFLAGS="$CFLAGS"
+ fi
+ 
+ 

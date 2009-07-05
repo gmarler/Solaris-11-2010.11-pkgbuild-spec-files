@@ -181,6 +181,7 @@ bash ./configure				\
 	    --enable-crash-debug		\
             --enable-dynamic-plugins            \
             --disable-directfb			\
+            --disable-x264			\
 	    $dbgflag
 
 make -j$CPUS 
@@ -223,6 +224,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/pixmaps/*
 
 %changelog
+* Sun Jul 05 2009 - Milan Jurik
+- disable x264 support for now, incompatible with the latest x264
 * Sat Mar 14 2009 - Milan Jurik
 - Xvid support
 - Dynamic plugin support

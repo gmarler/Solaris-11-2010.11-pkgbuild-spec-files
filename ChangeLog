@@ -1,3 +1,13 @@
+2009-07-05  Milan Jurik <sfnet@xylab.cz>
+
+	* SFEliveMedia.spec: upgrade to 2009.06.02
+	* base-specs/gst-ffmpeg.spec: upgrade to 0.10.8
+	* encumbered/SFEtwolame.spec: 02/03-configure.diff to remove potential
+	  building problems
+	* encumbered/SFEmplayer.spec: disable x264 support for now,
+	  incompatible with the latest x264 
+	* SFElibx264.spec: update to yesterday snapshot
+
 2009-07-03 Brian Cameron  <brian.cameron@sun.com>
 
 	* SFEgobject-introspection.diff,

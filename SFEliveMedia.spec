@@ -11,11 +11,11 @@
 
 %include Solaris.inc
 
-%define src_version 2009.04.06
+%define src_version 2009.06.02
 
 Name:                    SFEliveMedia
 Summary:                 liveMedia - live555 Streaming Media
-Version:                 2009.4.6
+Version:                 2009.6.2
 Source:                  http://www.live555.com/liveMedia/public/live.%{src_version}.tar.gz
 Patch1:                  liveMedia-01-SOLARIS-macro.diff
 Patch2:                  liveMedia-02-config.diff
@@ -52,6 +52,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/*
 
 %changelog
+* Sun Jul 05 - Milan Jurik
+- upgrade to 2009.06.02
 * April 2009 - Gilles dauphin
 - Bump to 2009.04.06
 - link to config.solaris (32bits)
