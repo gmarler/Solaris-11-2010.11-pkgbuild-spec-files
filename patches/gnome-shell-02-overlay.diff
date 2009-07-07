@@ -1,10 +1,11 @@
 From 10736d94e94cdd1611443fdcde8a91e9fe6340e4 Mon Sep 17 00:00:00 2001
 From: Colin Walters <walters@verbum.org>
 Date: Wed, 8 Apr 2009 15:32:20 -0400
-Subject: [PATCH] Bug 578197 - Handle builtin icons
+Subject: [PATCH] Bug 578197 - Handle builtin and SVG icons
 
 We should be able to handle icons being builtin by converting from
-pixbuf to texture directly, so do that.
+pixbuf to texture directly, so do that. And there's no reason to
+refuse SVG icons, so remove that wrong flag.
 ---
  js/ui/gtkutil.js |   35 ++++++++++++++++++++++++++---------
  js/ui/overlay.js |    5 ++---
@@ -56,14 +57,14 @@ index 56a9004..7b95cd6 100644
 +    let iconTheme = Gtk.IconTheme.get_default();
 +    let iconinfo = null;
 +    if (gicon != null) {
-+        iconinfo = iconTheme.lookup_by_gicon(gicon, size, Gtk.IconLookupFlags.NO_SVG | Gtk.IconLookupFlags.USE_BUILTIN);
++        iconinfo = iconTheme.lookup_by_gicon(gicon, size, Gtk.IconLookupFlags.USE_BUILTIN);
 +    }
 +    return _loadIconInfo(iconinfo, size, fallback);
 +}
 +
 +function loadStockToTexture(stockid, size, fallback) {
 +    let iconTheme = Gtk.IconTheme.get_default();
-+    let iconinfo = iconTheme.lookup_icon(stockid, size, Gtk.IconLookupFlags.NO_SVG | Gtk.IconLookupFlags.USE_BUILTIN);
++    let iconinfo = iconTheme.lookup_icon(stockid, size, Gtk.IconLookupFlags.USE_BUILTIN);
 +    return _loadIconInfo(iconinfo, size, fallback);
 +}
 diff --git a/js/ui/overlay.js b/js/ui/overlay.js

@@ -10,8 +10,6 @@
 Name:                    SFEmutter
 Summary:                 Clutter enabled metacity window manager
 Version:                 2.27.0
-# Reported as bugzilla bug #580662.
-Patch1:                  mutter-01-xopen-source.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 BuildRequires:           SUNWPython26-devel
@@ -52,7 +50,6 @@ cd mutter-%version
 rm -fR mutter
 git-clone git://git.gnome.org/mutter
 cd mutter
-%patch1 -p1
 
 %build
 cd mutter-%version
@@ -101,7 +98,7 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
   echo 'LD_LIBRARY_PATH=$PKG_INSTALL_ROOT/usr/lib';
   echo 'export GCONF_CONFIG_SOURCE GCONF_BACKEND_DIR LD_LIBRARY_PATH';
   echo 'SDIR=$BASEDIR%{_sysconfdir}/gconf/schemas';
-  echo 'schemas="$SDIR/metacity.schemas"';
+  echo 'schemas="$SDIR/mutter.schemas"';
   echo '$PKG_INSTALL_ROOT/usr/bin/gconftool-2 --makefile-uninstall-rule $schemas'
 ) | $BASEDIR/var/lib/postrun/postrun -i -c JDS -a
 
@@ -111,17 +108,13 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 %{_bindir}/*
 %dir %attr (0755, root, bin) %{_libdir}
 %{_libdir}/*.so*
-%{_libdir}/metacity
-%{_libdir}/metacity-dialog
+%{_libdir}/mutter
 %dir %attr (0755, root, sys) %{_datadir}
 %dir %attr (0755, root, other) %{_datadir}/applications
 %{_datadir}/applications/*
 %dir %attr (0755, root, other) %{_datadir}/gnome
-%{_datadir}/gnome-control-center
-%{_datadir}/gnome/help
 %{_datadir}/gnome/wm-properties
-%{_datadir}/metacity
-%{_datadir}/themes
+%{_datadir}/mutter
 %dir %attr(0755, root, bin) %{_mandir}
 %dir %attr(0755, root, bin) %{_mandir}/*
 %{_mandir}/*/*
@@ -129,7 +122,7 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 %files root
 %defattr(-, root, sys)
 %attr(0755, root, sys) %dir %{_sysconfdir}
-%{_sysconfdir}/gconf/schemas/metacity.schemas
+%{_sysconfdir}/gconf/schemas/mutter.schemas
 
 %files devel
 %defattr (-, root, bin)
@@ -147,5 +140,7 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 %endif
 
 %changelog
-* Sat Apr 06 2009 - Brian.Cameron  <brian.cameron@sun.com>
+* Tue Jul 07 2009 - Brian Cameron  <brian.cameron@sun.com>
+- Remove upstream patch mutter-01-xopen-source.diff.
+* Sat Apr 06 2009 - Brian Cameron  <brian.cameron@sun.com>
 - Created.

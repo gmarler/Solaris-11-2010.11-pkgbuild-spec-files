@@ -11,8 +11,6 @@ Version:                 0.0.1
 Source1:                 shell.desktop
 #owner:yippi date:2009-04-07 type:bug bugzilla:578196
 Patch1:                  gnome-shell-01-launch.diff
-#owner:yippi date:2009-04-07 type:bug bugzilla:578197
-Patch2:                  gnome-shell-02-overlay.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 BuildRequires:           SUNWPython26-devel
@@ -46,7 +44,6 @@ rm -fR gnome-shell
 git-clone git://git.gnome.org/gnome-shell
 cd gnome-shell
 %patch1 -p1
-%patch2 -p1
 
 %build
 cd gnome-shell-%version
@@ -79,12 +76,14 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, bin) %{_libdir}
 %{_libdir}/gnome-shell
 %{_libdir}/gnomeshell-taskpanel
-%{_libdir}/metacity/plugins
+%{_libdir}/mutter/plugins
 %dir %attr (0755, root, sys) %{_datadir}
 %{_datadir}/gnome-shell
 %{_datadir}/xsessions
 
 %changelog
+* Tue Jul 07 2009 - Brian Cameron  <brian.cameron@sun.com>
+- Remove patch gnome-shell-02-overlay.diff which no longer applies.
 * Tue Apr 28 2009 - Brian Cameron  <brian.cameron@sun.com>
 - Install dekstop file for GNOME Shell.
 * Sat Apr 06 2009 - Brian Cameron  <brian.cameron@sun.com>
