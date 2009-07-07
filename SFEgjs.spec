@@ -3,6 +3,20 @@
 #
 # includes module(s): gjs
 #
+# Note that there are some issues that you need to address to avoid build
+# issues when building this module:
+#
+# 1) For some reason SUNWPython26.spec has a problem with ctypes that causes
+#    gjs to fail to build.  Uninstalling and rebuilding this package from
+#    spec-files seems to fix this problem.  Need to figure this out and
+#    get it fixed in the SUNWPython26 package.
+# 2) The link fails due to some errors about symbols in the Firefox JavaScript
+#    include files not being defined.  These include files are found in the
+#    /usr/include/firefox/js directory.  The gjs module does not actually use
+#    these symbols.  Simply comment them out in the Firefox header files and
+#    gjs will compile.  I am working to get this fixed upstream in the Firefox
+#    header files.
+#
 
 %include Solaris.inc
 Name:                    SFEgjs

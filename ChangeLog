@@ -1,5 +1,13 @@
 2009-07-07 Brian Cameron  <brian.cameron@sun.com>
 
+	* SFEgnome-zeitgeist.spec, patches/gnome-zeitgeist-01-python.diff:
+	  Remove upstream patch.
+	* SFEgjs.spec: Add comments to add instructions needed to build.
+	* patches/gnome-shell-01-launch.diff: Update patch so gnome-shell
+	  starts up properly.
+
+2009-07-07 Brian Cameron  <brian.cameron@sun.com>
+
 	* SFEmutter.spec, patches/mutter-01-xopen-source.diff: Fix packaging.
 	  Remove upstream patch.
 	* SFEgnome-shell.spec, gnome-shell-01-launch.diff: Fix packaging.

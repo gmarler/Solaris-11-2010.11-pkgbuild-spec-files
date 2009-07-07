@@ -11,7 +11,6 @@ Name:                    SFEgnome-zeitgeist
 Summary:                 GNOME Shell
 Version:                 0.0.1
 Source1:                 shell.desktop
-Patch1:                  gnome-zeitgeist-01-python.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 # SFEbzr is needed since there isn't a release yet, and the spec-file
@@ -30,7 +29,6 @@ cd gnome-zeitgeist-%version
 rm -fR gnome-zeitgeist
 bzr branch lp:gnome-zeitgeist
 cd gnome-zeitgeist
-%patch1 -p1 
 
 %build
 export PYTHON="/usr/bin/python2.6"
@@ -68,16 +66,31 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, sys) %{_datadir}
 %dir %attr (0755, root, other) %{_datadir}/applications
 %{_datadir}/applications/*
-%dir %attr (0755, root, bin) %{_datadir}/dbus-1
-%dir %attr (0755, root, bin) %{_datadir}/dbus-1/services
-%{_datadir}/dbus-1/services/org.gnome.Zeitgeist.service
-%attr (-, root, other) %{_datadir}/locale
 %{_datadir}/gnome-zeitgeist
+%dir %attr (0755, root, other) %{_datadir}/icons
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/22x22
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/22x22/apps
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/24x24
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/24x24/apps
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/32x32
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/32x32/apps
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/scalable
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/scalable/apps
+%attr (-, root, other) %{_datadir}/icons/hicolor/22x22/apps/*
+%attr (-, root, other) %{_datadir}/icons/hicolor/24x24/apps/*
+%attr (-, root, other) %{_datadir}/icons/hicolor/32x32/apps/*
+%attr (-, root, other) %{_datadir}/icons/hicolor/scalable/apps/*
+%attr (-, root, other) %{_datadir}/locale
+%{_datadir}/gnome-zeitgeist.xpm
 %dir %attr (0755, root, bin) %{_mandir}
 %dir %attr (0755, root, bin) %{_mandir}/man1
 %{_mandir}/man1/*
 
 %changelog
+* Tue Jul 07 2009 - Brian CAmeron  <brian.cameron@sun.com>
+- Remove patch gnome-zeitgeist-01-python.diff: Remove upstream patch.  Update
+  packagaing.
 * Fri May 22 2009 - Brian Cameron  <brian.cameron@sun.com>
 - Fix so it builds now that gnome-zeitgeist has a proper autogen.sh script,
   and fix packaging.
