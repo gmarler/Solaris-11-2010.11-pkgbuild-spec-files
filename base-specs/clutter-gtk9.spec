@@ -10,7 +10,7 @@
 
 Summary:      clutter-gtk - GTK+ integration library for clutter
 Name:         clutter-gtk
-Version:      0.9.0
+Version:      0.9.2
 Release:      1
 License:      GPL
 Group:        System/Libraries
@@ -19,14 +19,12 @@ Vendor:       Sun Microsystems, Inc.
 Source:	  http://www.clutter-project.org/sources/clutter-gtk/0.9/clutter-gtk-%{version}.tar.bz2
 # Patch taken from here:
 # http://bugzilla.o-hand.com/show_bug.cgi?id=1490
-Patch1:                  clutter-gtk9-01-introspection.diff
 URL:          http://www.clutter-project.org/
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 
 
 %prep
 %setup -q -n clutter-gtk-%version
-%patch1 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -56,7 +54,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
-* Tue May 12 2009  brian.cameron@sun.com
+* Tue Jul 07 2009 - Brian Cameron  <brian.cameron@sun.com>
+- Bump to 0.9.2.  Remove upstream patch clutter-gtk9-01-introspection.diff.
+* Tue May 12 2009 - Brian Cameron  <brian.cameron@sun.com>
 - Created.
 
 

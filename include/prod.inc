@@ -21,6 +21,8 @@ Vendor:			   http://pkgbuild.sf.net/spec-files-extra
 
 %{?sf_download:#}%define sf_download http://downloads.sourceforge.net
 
+%define			   restart_fmri $BASEDIR/share/desktop-cache/restart_fmri
+
 # ChangeLog:
 # 2007-03-16  Laszlo (Laca) Peter  <laca@sun.com>
 # - copied from the JDS spec-files and updated for SFE

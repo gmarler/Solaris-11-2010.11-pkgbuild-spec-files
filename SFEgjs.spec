@@ -8,6 +8,7 @@
 Name:                    SFEgjs
 Summary:                 GNOME JavaScript bindings
 Version:                 0.3
+Patch1:                  gjs-01-solaris.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 BuildRequires:           SUNWfirefox-devel
@@ -26,6 +27,8 @@ mkdir -p gjs-%version
 cd gjs-%version
 rm -fR gjs
 git-clone git://git.gnome.org/gjs
+cd gjs
+%patch1 -p1
 
 %build
 cd gjs-%version
@@ -68,5 +71,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/*
 
 %changelog
+* Tue Jul 07 2009 - Brian.Cameron  <brian.cameron@sun.com>
+- Add patch gjs-01-solaris.diff.
 * Sat Apr 04 2009 - Brian.Cameron  <brian.cameron@sun.com>
 - Created.

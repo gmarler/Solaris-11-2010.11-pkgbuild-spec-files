@@ -1,0 +1,95 @@
+--- gjs/gi/arg.c-orig	2009-07-07 10:14:05.794424000 -0500
++++ gjs/gi/arg.c	2009-07-07 10:14:33.936556000 -0500
+@@ -461,7 +461,7 @@ gjs_array_to_intarray(JSContext   *conte
+ {
+     /* nasty union types in an attempt to unify the various int types */
+     union { guint32 u; gint32 i; } intval;
+-    union { guint8 u8[0]; guint16 u16[0]; guint32 u32[0]; } *result;
++    union { guint8 *u8; guint16 *u16; guint32 *u32; } *result;
+     unsigned i;
+ 
+     result = g_malloc0(length * intsize);
+--- gjs/gjs-dbus/dbus.c-orig	2009-07-07 10:15:25.363639000 -0500
++++ gjs/gjs-dbus/dbus.c	2009-07-07 10:18:08.124492000 -0500
+@@ -1609,7 +1609,7 @@ typedef struct {
+     /* strict aliasing rules require us to relate the 'gobj' field to a
+      * void * type here, in order to be able to pass it to
+      * g_object_*_weak_pointer (which takes a void **) */
+-    union { GObject *gobj; void *weak_ptr; };
++    union { GObject *gobj; void *weak_ptr; } gobj;
+     char *iface_name;
+ } GjsDBusGObject;
+ 
+@@ -1621,9 +1621,9 @@ gobj_path_unregistered(DBusConnection  *
+ 
+     g = user_data;
+ 
+-    if (g->gobj) {
+-        g_object_remove_weak_pointer(g->gobj, &g->weak_ptr /* aka, gobj */);
+-        g->gobj = NULL;
++    if (g->gobj.gobj) {
++        g_object_remove_weak_pointer(g->gobj.gobj, &g->gobj.weak_ptr /* aka, gobj */);
++        g->gobj.gobj = NULL;
+     }
+ 
+     g_free(g->iface_name);
+@@ -1649,9 +1649,9 @@ gobj_path_message(DBusConnection  *conne
+     g = user_data;
+ 
+     gjs_debug(GJS_DEBUG_DBUS, "Received message to iface %s gobj %p",
+-            g->iface_name, g->gobj);
++            g->iface_name, g->gobj.gobj);
+ 
+-    if (g->gobj == NULL) {
++    if (g->gobj.gobj == NULL) {
+         /* GObject was destroyed */
+         return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+     }
+@@ -1728,12 +1728,12 @@ gobj_path_message(DBusConnection  *conne
+                                          DBUS_TYPE_ARRAY, "{sv}",
+                                          &out_dict_iter);
+ 
+-        g_object_ref(g->gobj);
++        g_object_ref(g->gobj.gobj);
+         (* method->sync_func) (connection, message,
+                                &dict_iter, &out_dict_iter,
+-                               g->gobj,
++                               g->gobj.gobj,
+                                &derror);
+-        g_object_unref(g->gobj);
++        g_object_unref(g->gobj.gobj);
+ 
+         dbus_message_iter_close_container(&out_arg_iter, &out_dict_iter);
+ 
+@@ -1743,11 +1743,11 @@ gobj_path_message(DBusConnection  *conne
+         dbus_message_unref(reply);
+ 
+     } else if (method->async_func != NULL) {
+-        g_object_ref(g->gobj);
++        g_object_ref(g->gobj.gobj);
+         (* method->async_func) (connection, message,
+                                 &dict_iter,
+-                                g->gobj);
+-        g_object_unref(g->gobj);
++                                g->gobj.gobj);
++        g_object_unref(g->gobj.gobj);
+     } else {
+         g_warning("Method %s does not have any implementation", method->name);
+     }
+@@ -1796,14 +1796,14 @@ gjs_dbus_register_g_object(DBusConnectio
+ 
+     g = g_slice_new0(GjsDBusGObject);
+     g->iface_name = g_strdup(iface_name);
+-    g->gobj = gobj;
++    g->gobj.gobj = gobj;
+ 
+     if (!dbus_connection_register_object_path(connection, path,
+                                               &gobj_vtable, g)) {
+         g_warning("Failed to register object path %s", path);
+     }
+ 
+-    g_object_add_weak_pointer(g->gobj, &g->weak_ptr /* aka, gobj */);
++    g_object_add_weak_pointer(g->gobj.gobj, &g->gobj.weak_ptr /* aka, gobj */);
+ }
+ 
+ void
