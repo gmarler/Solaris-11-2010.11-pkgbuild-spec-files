@@ -11,6 +11,7 @@ Version:                 0.0.1
 Source1:                 shell.desktop
 #owner:yippi date:2009-04-07 type:bug bugzilla:578196
 Patch1:                  gnome-shell-01-launch.diff
+Patch2:                  gnome-shell-02-gtk-find.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 BuildRequires:           SUNWPython26-devel
@@ -49,6 +50,7 @@ rm -fR gnome-shell
 git-clone git://git.gnome.org/gnome-shell
 cd gnome-shell
 %patch1 -p1
+%patch2 -p1
 
 %build
 cd gnome-shell-%version

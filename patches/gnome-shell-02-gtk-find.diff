@@ -1,0 +1,23 @@
+--- gnome-shell/js/ui/overlay.js-orig	2009-07-07 18:38:53.941095000 -0500
++++ gnome-shell/js/ui/overlay.js	2009-07-07 18:50:26.223825000 -0500
+@@ -125,11 +125,15 @@ SearchEntry.prototype = {
+                                    height: 24
+                                  });
+ 
+-        let icontheme = Gtk.IconTheme.get_default();
+-        let searchIconTexture = new Clutter.Texture({});
+-        let searchIconPath = icontheme.lookup_icon('gtk-find', 16, 0).get_filename();
+-        searchIconTexture.set_from_file(searchIconPath);
+-        this.actor.append(searchIconTexture, 0);
++        try {
++            let icontheme = Gtk.IconTheme.get_default();
++            let searchIconTexture = new Clutter.Texture({});
++            let searchIconPath = icontheme.lookup_icon('gtk-find', 16, 0).get_filename();
++            searchIconTexture.set_from_file(searchIconPath);
++            this.actor.append(searchIconTexture, 0);
++        } catch (e) {
++            logError(e, 'Problem running gtk-find');
++        }
+ 
+         // We need to initialize the text for the entry to have the cursor displayed
+         // in it. See http://bugzilla.openedhand.com/show_bug.cgi?id=1365
