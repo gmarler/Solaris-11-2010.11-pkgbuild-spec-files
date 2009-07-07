@@ -37,6 +37,11 @@ Requires:                SFEgobject-introspection
 Requires:                SFEmutter
 %include default-depend.inc
 
+%package root
+Summary:		 %{summary} - / filesystem
+SUNW_BaseDir:		 /
+%include default-depend.inc
+
 %prep
 mkdir -p gnome-shell-%version
 cd gnome-shell-%version
@@ -50,7 +55,8 @@ cd gnome-shell-%version
 cd gnome-shell
 ./autogen.sh \
    --prefix=%{_prefix} \
-   --libexecdir=%{_libexecdir}
+   --libexecdir=%{_libexecdir} \
+   --sysconfdir=%{_sysconfdir}
 make
 
 %install
@@ -69,6 +75,22 @@ install --mode=0444 %SOURCE1 $RPM_BUILD_ROOT%{_datadir}/xsessions
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+%preun root
+test -x $BASEDIR/var/lib/postrun/postrun || exit 0
+( echo 'test -x $PKG_INSTALL_ROOT/usr/bin/gconftool-2 || {';
+  echo '  echo "WARNING: gconftool-2 not found; not uninstalling gconf schemas"';
+  echo '  exit 0';
+  echo '}';
+  echo 'umask 0022';
+  echo 'GCONF_CONFIG_SOURCE=xml:merged:$BASEDIR/etc/gconf/gconf.xml.defaults';
+  echo 'GCONF_BACKEND_DIR=$PKG_INSTALL_ROOT/usr/lib/GConf/2';
+  echo 'LD_LIBRARY_PATH=$PKG_INSTALL_ROOT/usr/lib';
+  echo 'export GCONF_CONFIG_SOURCE GCONF_BACKEND_DIR LD_LIBRARY_PATH';
+  echo 'SDIR=$BASEDIR%{_sysconfdir}/gconf/schemas';
+  echo 'schemas="$SDIR/gnome-shell.schemas"';
+  echo '$PKG_INSTALL_ROOT/usr/bin/gconftool-2 --makefile-uninstall-rule $schemas'
+) | $BASEDIR/var/lib/postrun/postrun -i -c JDS -a
+
 %files
 %defattr (-, root, bin)
 %dir %attr (0755, root, bin) %{_bindir}
@@ -80,6 +102,11 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, sys) %{_datadir}
 %{_datadir}/gnome-shell
 %{_datadir}/xsessions
+
+%files root
+%defattr(-, root, sys)
+%attr(0755, root, sys) %dir %{_sysconfdir}
+%{_sysconfdir}/gconf/schemas/gnome-shell.schemas
 
 %changelog
 * Tue Jul 07 2009 - Brian Cameron  <brian.cameron@sun.com>
