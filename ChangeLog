@@ -1,5 +1,12 @@
 2009-07-07 Brian Cameron  <brian.cameron@sun.com>
 
+	* SFEstorm.spec: Added.
+	* SFEgnome-zeitgeist.spec, patches/gnome-zeitgeist-01-python.diff:
+	  Add patch and build with Python 2.6.
+	* SFEzeitgeist.spec, patches/zeitgeist-01-python.diff: Added.
+
+2009-07-07 Brian Cameron  <brian.cameron@sun.com>
+
 	* SFEgnome-shell.spec, patches/gnome-shell-02-gtk-find.diff:  Fix
 	  runtime issue with GNOME shell.
 

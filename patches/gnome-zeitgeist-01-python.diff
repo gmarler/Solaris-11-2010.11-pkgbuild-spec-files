@@ -1,0 +1,16 @@
+--- gnome-zeitgeist/zeitgeist-journal-orig	2009-07-07 19:19:43.452688000 -0500
++++ gnome-zeitgeist/zeitgeist-journal	2009-07-07 19:20:01.359065000 -0500
+@@ -1,4 +1,4 @@
+-#! /usr/bin/env python
++#! /usr/bin/python2.6
+ # -.- encoding: utf-8 -.-
+ 
+ import sys
+--- gnome-zeitgeist/zeitgeist-trayicon-orig	2009-07-07 19:19:50.998141000 -0500
++++ gnome-zeitgeist/zeitgeist-trayicon	2009-07-07 19:20:08.452632000 -0500
+@@ -1,4 +1,4 @@
+-#! /usr/bin/env python
++#! /usr/bin/python2.6
+ # -.- encoding: utf-8 -.-
+ 
+ import sys

@@ -1,0 +1,24 @@
+--- zeitgeist/extra/test-daemon.py-orig	2009-07-07 19:46:58.972156000 -0500
++++ zeitgeist/extra/test-daemon.py	2009-07-07 19:47:04.300433000 -0500
+@@ -1,4 +1,4 @@
+-#! /usr/bin/env python
++#! /usr/bin/python2.6
+ # -.- coding: utf-8 -.-
+ 
+ # FIXME: THIS IS OUTDATED AND WON'T WORK!
+--- zeitgeist/zeitgeist-daemon-orig	2009-07-07 19:47:14.653617000 -0500
++++ zeitgeist/zeitgeist-daemon	2009-07-07 19:47:28.608152000 -0500
+@@ -1,4 +1,4 @@
+-#! /usr/bin/env python
++#! /usr/bin/python2.6
+ # -.- encoding: utf-8 -.-
+ 
+ import sys
+--- zeitgeist/zeitgeist-datahub-orig	2009-07-07 19:47:22.029807000 -0500
++++ zeitgeist/zeitgeist-datahub	2009-07-07 19:47:36.433911000 -0500
+@@ -1,4 +1,4 @@
+-#! /usr/bin/env python
++#! /usr/bin/python2.6
+ # -.- encoding: utf-8 -.-
+ 
+ import sys

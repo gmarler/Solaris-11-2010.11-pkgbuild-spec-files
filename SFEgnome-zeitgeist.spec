@@ -8,9 +8,9 @@
 
 %include Solaris.inc
 Name:                    SFEgnome-zeitgeist
-Summary:                 GNOME Shell
+Summary:                 GNOME Zeitgeist
 Version:                 0.0.1
-Source1:                 shell.desktop
+Patch1:                  gnome-zeitgeist-01-python.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 # SFEbzr is needed since there isn't a release yet, and the spec-file
@@ -18,8 +18,10 @@ BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 BuildRequires:           SFEbzr
 BuildRequires:           SUNWdbus-python26
 BuildRequires:           SUNWgnome-python26-libs-devel
+BuildRequires:           SUNWgnome-python26-desktop
 Requires:                SUNWdbus-python26
 Requires:                SUNWgnome-python26-libs
+Requires:                SUNWgnome-python26-desktop
 
 %include default-depend.inc
 
@@ -29,6 +31,7 @@ cd gnome-zeitgeist-%version
 rm -fR gnome-zeitgeist
 bzr branch lp:gnome-zeitgeist
 cd gnome-zeitgeist
+%patch1 -p1
 
 %build
 export PYTHON="/usr/bin/python2.6"
@@ -90,7 +93,7 @@ rm -rf $RPM_BUILD_ROOT
 %changelog
 * Tue Jul 07 2009 - Brian CAmeron  <brian.cameron@sun.com>
 - Remove patch gnome-zeitgeist-01-python.diff: Remove upstream patch.  Update
-  packagaing.
+  packagaing.  Add patch so it uses Python 2.6.
 * Fri May 22 2009 - Brian Cameron  <brian.cameron@sun.com>
 - Fix so it builds now that gnome-zeitgeist has a proper autogen.sh script,
   and fix packaging.
