@@ -7,7 +7,7 @@
 
 Name:                SFElibassuan
 Summary:             An IPC libbray used by GnuPG 2, GPGME etc. 
-Version:             1.0.4
+Version:             1.0.5
 Source:              ftp://ftp.gnupg.org/gcrypt/libassuan/libassuan-%{version}.tar.bz2
 
 SUNW_BaseDir:        %{_basedir}
@@ -82,5 +82,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/info/*
 
 %changelog
+* Sat Jul 11 2009 - Thomas Wagner
+- bump to 1.0.5
 * Sat Dec 29 2007 - jijun.yu@sun.com
 - Initial spec
