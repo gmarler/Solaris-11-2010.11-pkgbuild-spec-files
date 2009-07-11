@@ -140,6 +140,8 @@ mail.
 %prep
 %setup -q -n Mail-SpamAssassin-%{version}
 
+#we have gpg2 in requirements, but sa-update only knows the gpg binary
+perl -w -pi.bak -e "s,GPGPath = \'gpg\' ,GPGPath = \'gpg2\' ," sa-update.raw
 
 # below: not rock solid detection of missing perl modules because manually installed perl modules would not"
 # result in complete (Build)Requires entries (package dependencies) in this spec file
