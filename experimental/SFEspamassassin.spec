@@ -49,6 +49,20 @@ Requires: SFEperl-encode-detect
 BuildRequires: SFEperl-mail-spf
 Requires: SFEperl-mail-spf
 
+Requires: SFEperl-razor-agents
+#http://www.opensourcehowto.org/how-to/postfix/fighting-spam-with-spamassassin-pyzor-dcc-razor--rules-du-jour.html#Rules Du Jour
+#8. Next make a razor user
+#useradd -d /bin/null -s /bin/bash razor
+#9. now change into the razor user and
+#su razor
+#razor-admin -create
+#exit
+#10. Register your Razor install with the Razor servers. Replace the address with your admin’s e-mail address:
+#razor-admin -register -user= admin@mydomain.comThis e-mail address is being protected from spam bots, you need JavaScript enabled to view it This email address is being protected from spam bots, you need Javascript enabled to view it
+#11.  comming soon ... 
+
+
+#TODO# make the spec file for that: Requires: SFEperl-pyzor
 
 #optional perl modules for improvements/special features
 
@@ -57,17 +71,25 @@ Requires: SUNWopenssl-libraries
 
 #obsolete pkgbuild: Requires: SFEperl-mail-spf-query
 #pkgbuild: Requires: SFEperl-ip-country
-#we *want* this one
-#pkgbuild: Requires: SFEperl-razor2
+
+
+#we *want* this one   (Note: this is the output of a pkgbuild run of *this* spec file, just in case you want to refresh the list below by copy&paste)
 #pkgbuild: Requires: SFEperl-net-ident
 #pkgbuild: Requires: SFEperl-io-socket-sl
-#pkgbuild: Requires: SFEperl-compres-zlib
 #pkgbuild: Requires: SFEperl-mail-domainkeys
 #pkgbuild: Requires: SFEperl-mail-dkim
 #pkgbuild: Requires: SFEperl-lwp-useragent
 #pkgbuild: Requires: SFEperl-htp-date
 #pkgbuild: Requires: SFEperl-archive-tar
 #pkgbuild: Requires: SFEperl-io-zlib
+
+#we have in SFE a special naming mess for the perl modules. :)
+Requires: SFEperl-compress-zlib
+Requires: SFEperl-archive-tar
+Requires: SFEperl-io-zlib
+#for sa-update we need more
+Requires: SFEperl-package-constants
+Requires: SFEgnupg2
 
 #INSTALL file says this is highly recommended:
 #DB_File
@@ -85,6 +107,17 @@ Requires: SUNWopenssl-libraries
 #install MIME::QuotedPrint
 #install Net::DNS
 #install DB_File
+
+
+#from: http://www.opensourcehowto.org/how-to/postfix/fighting-spam-with-spamassassin-pyzor-dcc-razor--rules-du-jour.html#Rules Du Jour
+# 5. Once it has installed change the local.cf configuration file
+# nano /etc/mail/spamassassin/local.cf
+# local.cf:
+# dcc_path /usr/local/bin/dccproc
+# dcc_body_max 999999
+# dcc_timeout 10
+# dcc_fuz1_max 999999
+# dcc_fuz2_max 999999 
 
 %ifarch sparc
 %define perl_dir sun4-solaris-64int
@@ -128,7 +161,7 @@ if echo $REQUIREDPERLMODULES | grep -v "^$"
   exit 1
 fi #$REQUIREDPERLMODULES
 
-
+#below: only tell about the optional modules. e.g. Archive::Tar for having sa-update working
 WANTEDPERLMODULES=`build/check_dependencies 2>/dev/null| grep -i " module missing: " | sed -e 's/^.*missing: //' -e 's/::/-/g' | tr -s '[:upper:]' '[:lower:]'`
 
 if echo $WANTEDPERLMODULES | grep -v "^$" 
@@ -151,24 +184,33 @@ cp -p %{SOURCE1} spamassassin.xml
 #NOTE# special to this module: --no-online-tests
 
 perl Makefile.PL \
-    UNINST=0 \
-    PREFIX=$RPM_BUILD_ROOT%{_prefix} \
-    SYSCONFDIR=$RPM_BUILD_ROOT%{_sysconfdir} \
-    CONFDIR=$RPM_BUILD_ROOT%{_sysconfdir}/%{src_name} \
-    INSTALLSITELIB=$RPM_BUILD_ROOT%{_prefix}/perl5/vendor_perl/%{perl_version} \
-    INSTALLSITEARCH=$RPM_BUILD_ROOT%{_prefix}/perl5/vendor_perl/%{perl_version}/%{perl_dir} \
-    INSTALLSITEMAN1DIR=$RPM_BUILD_ROOT%{_mandir}/man1 \
-    INSTALLSITEMAN3DIR=$RPM_BUILD_ROOT%{_mandir}/man3 \
-    INSTALLMAN1DIR=$RPM_BUILD_ROOT%{_mandir}/man1 \
-    INSTALLMAN3DIR=$RPM_BUILD_ROOT%{_mandir}/man3 \
-    ENABLE_SSL=yes \
-    CONTACT_ADDRESS=%{contact_address_spamreport} \
-    --no-online-tests
-make CC=$CC CCCDLFLAGS="%picflags" OPTIMIZE="%optflags" LD=$CC
+	PREFIX=%{_prefix} SYSCONFDIR=%{_sysconfdir} DESTDIR=$RPM_BUILD_ROOT \
+	CONFDIR=%{_sysconfdir}/%{src_name} \
+	INSTALLSITELIB=%{_prefix}/perl5/vendor_perl/%{perl_version} \
+	INSTALLSITEARCH=%{_prefix}/perl5/vendor_perl/%{perl_version}/%{perl_dir} \
+	ENABLE_SSL=yes \
+	CONTACT_ADDRESS=%{contact_address_spamreport} \
+	--no-online-tests
+
+make CC=$CC CCCDLFLAGS="%picflags" OPTIMIZE="%optflags" LD=$CC \
+
+#TODO# check if the make libspamc.so is needed
+[ -f spamd/libspamc.so ] && cp -p spamd/libspamc.so spamd/libspamc.so.$$
+make CC=$CC CCCDLFLAGS="%picflags" OPTIMIZE="%optflags" LD=$CC \
+      spamc/libspamc.so
+
 
 %install
 rm -rf $RPM_BUILD_ROOT
-make install
+make install \
+	INSTALLSITELIB=%{_prefix}/perl5/vendor_perl/%{perl_version} \
+	INSTALLSITEARCH=%{_prefix}/perl5/vendor_perl/%{perl_version}/%{perl_dir} \
+	INSTALLMAN1DIR=%{_mandir}/man1 \
+	INSTALLMAN3DIR=%{_mandir}/man3 \
+	INSTALLSITEMAN1DIR=%{_mandir}/man1 \
+	INSTALLSITEMAN3DIR=%{_mandir}/man3 \
+	INSTALLVENDORMAN1DIR=%{_mandir}/man1 \
+	INSTALLVENDORMAN3DIR=%{_mandir}/man3
 
 mkdir -p ${RPM_BUILD_ROOT}/var/svc/manifest/site/
 cp spamassassin.xml ${RPM_BUILD_ROOT}/var/svc/manifest/site/
@@ -220,7 +262,15 @@ rm -rf $RPM_BUILD_ROOT
 %class(manifest) %attr(0444, root, sys)/var/svc/manifest/site/spamassassin.xml
 
 
+
 %changelog
+* Sat Jul 11 2009 - Thomas Wagner
+- add Requires: SFEperl-archive-tar, SFEperl-io-zlib, SFEgnupg2.spec to have sa-update working
+- add patch to sa-update (use /usr/bin/gpg2 instead /usr/bin/gpg)
+- add Requires: SFEperl-compres-zlib
+- adjust paths in sa-update/sa-compile/sa-learn by complete refresh of the "make" parameters. The
+  spamassassin.spec form the source tarball was of great help
+- add Requires: SFEperl-razor-agents
 * Sat Mai 02 2009 - Thomas Wagner
 - add (Build)Requires: SFEperl-encode-detect and (Build)Requires: SFEperl-mail-spf
 * Sun Apr 26 2009  - Thomas Wagner
