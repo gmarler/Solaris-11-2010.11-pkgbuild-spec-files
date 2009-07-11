@@ -20,8 +20,10 @@ BuildRoot:     %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 Requires: SUNWbzip
 Requires: SUNWzlib
-Requires: SFEreadline
-BuildRequires: SFEreadline-devel
+#Requires: SFEreadline
+Requires: SUNWgnu-readline
+#BuildRequires: SFEreadline-devel
+BuildRequires: SUNWgnu-readline
 BuildRequires: SFElibksba
 BuildRequires: SFEpth
 BuildRequires: SFElibassuan
@@ -111,6 +113,7 @@ rm -rf $RPM_BUILD_ROOT
 %changelog
 * Sat Jul 11 2009 - Thomas Wagner
 - add (Build-)Requires: SFElibksba, SFEpth, SFElibassuan
+- switch (Build-)Requires: from SFEreadline(-devel) to SUNWgnu-readline
 * Thu Oct 2 2008 - markwright@internode.on.net
 - Add patch 3 and 4 from KDE4 project to fix build issues on sol10
 * Sun Jan 20 2008 - moinak.ghosh@sun.com
