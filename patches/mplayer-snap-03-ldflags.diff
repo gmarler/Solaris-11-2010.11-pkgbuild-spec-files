@@ -1,0 +1,35 @@
+--- configure	2009-07-11 16:16:56.862018659 +0200
++++ configure	2009-07-11 16:16:25.414354726 +0200
+@@ -2900,6 +2900,15 @@
+ fi
+ echores "$_builtin_expect"
+ 
++echocheck "rpath"
++netbsd &&_rpath=yes
++if test "$_rpath" = yes ; then
++  for I in $(echo $extra_ldflags | sed 's/-L//g') ; do
++    tmp="$tmp $(echo $I | sed 's/.*/ -L& -Wl,-R&/')"
++  done
++extra_ldflags=$tmp
++fi
++echores "$_rpath"
+ 
+ echocheck "kstat"
+ cat > $TMPC << EOF
+@@ -3387,16 +3396,6 @@
+ test "$_w32threads" = yes && def_threads='#define HAVE_THREADS 1'
+ echores "$_w32threads"
+ 
+-echocheck "rpath"
+-netbsd &&_rpath=yes
+-if test "$_rpath" = yes ; then
+-  for I in $(echo $extra_ldflags | sed 's/-L//g') ; do
+-    tmp="$tmp $(echo $I | sed 's/.*/ -L& -Wl,-R&/')"
+-  done
+-extra_ldflags=$tmp
+-fi
+-echores "$_rpath"
+-
+ echocheck "iconv"
+ if test "$_iconv" = auto ; then
+   cat > $TMPC << EOF
