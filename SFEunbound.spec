@@ -116,5 +116,5 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 %{_libdir}/libunbound*
 
 %changelog
-* Sun 12 2009 - Milan Jurik
+* Sun Jul 12 2009 - Milan Jurik
 - Initial version.
