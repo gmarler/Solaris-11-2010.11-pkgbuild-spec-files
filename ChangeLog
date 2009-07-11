@@ -1,3 +1,7 @@
+2009-07-12  Milan Jurik <sfnet@xylab.cz>
+
+	* SFEunbound.spec: Added
+
 2009-07-12  Thomas Wagner  <tom68@users.sourceforge.net>
 
         * experimental/SFEspamassassin.spec: rewrite make/make install parameters
