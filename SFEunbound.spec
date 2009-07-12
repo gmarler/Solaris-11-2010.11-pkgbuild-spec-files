@@ -11,6 +11,7 @@ Version:	1.3.1
 License:	BSD
 URL:		http://www.nlnetlabs.nl/unbound/
 Source:		http://www.unbound.net/downloads/unbound-%{version}.tar.gz
+Source1:	unbound.xml
 Group: System Environment/Daemons
 BuildRoot:	%{_tmppath}/unbound-%{version}-build
 SUNW_BaseDir:	/
@@ -43,7 +44,7 @@ LDFLAGS="-lsocket -lnsl" \
 	--enable-static=no \
 	--enable-sha2 \
 	--with-conf-file=%{_sysconfdir}/unbound/unbound.conf \
-	--with-pidfile=%{_localstatedir}/run/unbound/unbound.pid
+	--with-pidfile=%{_localstatedir}/run/unbound.pid
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -56,15 +57,14 @@ make -j$CPU
 %install
 rm -rf %{buildroot}
 make DESTDIR=%{buildroot} install
-install -d 0755 %{buildroot}%{_initrddir}
-install -m 0755 contrib/unbound.init %{buildroot}%{_initrddir}/unbound
 install -d 0755 %{buildroot}%{_datadir}/doc/unbound
 install -m 0644 doc/README %{buildroot}%{_datadir}/doc/unbound
 install -m 0644 doc/CREDITS %{buildroot}%{_datadir}/doc/unbound
 install -m 0644 doc/LICENSE %{buildroot}%{_datadir}/doc/unbound
 install -m 0644 doc/FEATURES %{buildroot}%{_datadir}/doc/unbound
 install -d 0700 %{buildroot}%{_sysconfdir}/unbound
-install -d 0755 %{buildroot}%{_localstatedir}/run/unbound
+install -d 0755 %{buildroot}%/var/svc/manifest/network/dns
+install -m 0644 %{SOURCE1} %{buildroot}%/var/svc/manifest/network/dns
 
 # no section 8
 install -d 0755 %{buildroot}%{_datadir}/man/man1m
@@ -98,18 +98,20 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 
 %files
 %defattr(-,root,bin)
-%dir %attr (0755, root, sys) %{_basedir}
+%dir %attr (0755, root, sys) %{_prefix}
 %dir %attr (0755, root, sys) %{_datadir}
 %dir %attr (0755, root, other) %{_datadir}/doc
 %dir %attr (0755, root, other) %{_datadir}/doc/unbound
 %attr(0644, root, other) %{_datadir}/doc/unbound/*
-%dir %attr(0755, root, sys) %{_initrddir}
-%attr(0755, root, sys) %{_initrddir}/unbound
-%dir %attr (0755, root, sys) %{_localstatedir}
-%dir %attr (0755, root, sys) %{_localstatedir}/run
-%dir %attr(0755, unbound, unbound) %{_localstatedir}/run/unbound
 %dir %attr (0755, root, sys) %{_sysconfdir}
+%dir %attr(0700, unbound, unbound) %{_sysconfdir}/unbound
 %attr(0644, unbound, unbound) %config(noreplace) %{_sysconfdir}/unbound/unbound.conf
+%dir %attr (0755, root, sys) %{_localstatedir}
+%dir %attr (0755, root, sys) %{_localstatedir}/svc
+%dir %attr (0755, root, sys) %{_localstatedir}/svc/manifest
+%dir %attr (0755, root, sys) %{_localstatedir}/svc/manifest/network
+%dir %attr (0755, root, sys) %{_localstatedir}/svc/manifest/network/dns
+%class(manifest) %attr(0444, root, sys) %{_localstatedir}/svc/manifest/network/dns/unbound.xml
 %{_sbindir}/*
 %{_mandir}/*/*
 %{_includedir}/*
@@ -117,4 +119,5 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 
 %changelog
 * Sun Jul 12 2009 - Milan Jurik
+- Added SMF manifest, removed init.d script
 - Initial version.
