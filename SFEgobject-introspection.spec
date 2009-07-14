@@ -3,6 +3,15 @@
 #
 # includes module(s): gobject-introspection
 #
+# Note that there are some issues that you need to address to avoid build
+# issues when building this module:
+#
+# 1) For some reason SUNWPython26.spec has a problem with ctypes that causes
+#    gobject-introspection to fail to build.  Uninstalling and rebuilding this
+#    package from spec-files seems to fix this problem. Need to figure this
+#    out and get it fixed in the SUNWPython26 package.
+#
+
 %include Solaris.inc
 
 %define pythonver 2.6
