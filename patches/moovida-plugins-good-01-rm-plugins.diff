@@ -1,0 +1,10 @@
+--- elisa-plugins-good-0.5.17/setup.py.orig	2008-11-11 16:10:52.593703000 +0800
++++ elisa-plugins-good-0.5.17/setup.py	2008-11-11 16:11:01.423955000 +0800
+@@ -5,7 +5,6 @@ from setup_bundle import setup
+ good_plugins = ['base',
+                 'gnome',
+                 'hal',
+-                'winscreensaver',
+                ]
+ 
+ if __name__ == '__main__':

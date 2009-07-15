@@ -1,0 +1,14 @@
+--- elisa-1.0.5/elisa/core/utils/i18n.py-orig	2009-07-15 16:43:33.727389000 -0500
++++ elisa-1.0.5/elisa/core/utils/i18n.py	2009-07-15 16:43:59.729822000 -0500
+@@ -96,7 +96,10 @@ def install_translation(plugin_name, plu
+     fallback_locale = current_locale.split('_')[0]
+ 
+     try:
+-        t = gettext.translation(domain, i18n_dir, languages=[current_locale, fallback_locale])
++        if current_locale == None:
++            t = gettext.translation(domain, i18n_dir)
++        else:
++            t = gettext.translation(domain, i18n_dir, languages=[current_locale,])
+         translator = t.ugettext
+         translator_plural = t.ungettext
+     except IOError:

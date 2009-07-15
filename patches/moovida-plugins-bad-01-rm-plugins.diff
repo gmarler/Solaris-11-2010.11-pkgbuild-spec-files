@@ -1,0 +1,32 @@
+--- elisa-plugins-bad-0.5.22/setup.py.orig	2008-12-15 20:11:26.000000000 +0800
++++ elisa-plugins-bad-0.5.22/setup.py	2008-12-16 14:30:16.736608000 +0800
+@@ -4,29 +4,19 @@ from setup_bundle import setup
+ # List of plugins to be packaged in the 'bad' bundle
+ bad_plugins = ['amazon',
+                'amp',
+-               'avahi',
+                'coherence',
+-               'daap',
+                'database',
+-               'discogs',
+-               'dvd',
+                'elisa_updater',
+                'favorites',
+-               'filtered_shares',
+                'gstreamer',
+                'http_client',
+-               'ipod',
+-               'osso',
+                'pigment',
+                'poblesec',
+                'rss',
+                'search',
+                'shelf',
+-               'smbwin32',
+                'themoviedb',
+                'thetvdb',
+-               'winremote',
+-               'wmd',
+               ]
+ 
+ if __name__ == '__main__':

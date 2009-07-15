@@ -1,0 +1,15 @@
+--- elisa-1.0.1/elisa/core/plugin_registry.py-orig	2009-05-28 11:59:06.113068000 -0500
++++ elisa-1.0.1/elisa/core/plugin_registry.py	2009-05-28 11:59:33.201598000 -0500
+@@ -159,9 +159,9 @@ class PluginRegistry(Loggable):
+     config_section_name = 'plugin_registry'
+     default_config = \
+         {'repository': 'http://plugins.moovida.com/plugin_list',
+-         'update_plugin_cache': True,
+-         'auto_update_plugins': True,
+-         'auto_install_new_recommended_plugins': True}
++         'update_plugin_cache': False,
++         'auto_update_plugins': False,
++         'auto_install_new_recommended_plugins': False}
+     config_doc = \
+         {'repository': 'The plugin repository to query for new plugins and ' \
+             'plugin updates.',

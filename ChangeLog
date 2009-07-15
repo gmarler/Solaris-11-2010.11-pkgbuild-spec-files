@@ -1,7 +1,25 @@
-2008-07-23  Matt Keenan  <matt.keenan@sun.com>
+2009-07 15 Brian Cameron  <brian.cameron@sun.com>
+
+	* SFEmoovida.spec, SFEmoovida-plugins.spec,
+	  base-specs/moovida-plugins-good.spec,
+	  base-specs/moovida-plugins-bad.spec,
+	  base-specs/moovida.spec,
+	  patches/moovida-04-fixlocale.diff,
+	  patches/moovida-01-g11n-localedir.diff,
+	  patches/moovida-plugins-bad-01-rm-plugins.diff,
+	  patches/moovida-plugins-bad-02-exit.diff,
+	  patches/moovida-plugins-good-02-solaris.diff,
+	  patches/moovida-03-manpage.diff,
+	  patches/moovida-05-noautoupdate.diff,
+	  patches/moovida-02-docs.diff,
+	  patches/moovida-plugins-good-01-rm-plugins.diff:  Add spec-files
+	  for building moovida.
+
+2008-07-13  Matt Keenan  <matt.keenan@sun.com>
 
 	* SFEgjs.spec : Move build error note, to SFEgobject-introspection.spec
-	* SFEgobject-introspection.spec : Add build error note, from SFEgjs.spec
+	* SFEgobject-introspection.spec : Add build error note, from
+	  SFEgjs.spec
 
 2009-07-12  Milan Jurik <sfnet@xylab.cz>
 
@@ -9,17 +27,18 @@
 
 2009-07-12  Thomas Wagner  <tom68@users.sourceforge.net>
 
-        * experimental/SFEspamassassin.spec: rewrite make/make install parameters
-          to fix internal paths to rules files, add reqiures to get sa-update working,
-          change gpg to gpg2 in sa-update
-        * SFEperl-archive-tar.spec: *new*
-        * SFEperl-io-zlib.spec: *new*
-        * SFEperl-package-constants.spec: *new* 
-        * SFElibksba.spec:  bump to 1.0.7
-        * SFElibassuan.spec: bump to 1.0.5 
-        * SFEgnupg2.spec: add requires SFEpth, SFElibassuan, SFElibksba to resolve dependencies (not necessarily complete now),
-          change (Build-)Requires from SFEreadline(-devel) to SUNWgnu-readline
-  
+	* experimental/SFEspamassassin.spec: rewrite make/make install
+	  parameters to fix internal paths to rules files, add reqiures to get
+	  sa-update working, change gpg to gpg2 in sa-update
+	* SFEperl-archive-tar.spec: *new*
+	* SFEperl-io-zlib.spec: *new*
+	* SFEperl-package-constants.spec: *new* 
+	* SFElibksba.spec:  bump to 1.0.7
+	* SFElibassuan.spec: bump to 1.0.5 
+	* SFEgnupg2.spec: add requires SFEpth, SFElibassuan, SFElibksba to
+	  resolve dependencies (not necessarily complete now), change
+	  (Build-)Requires from SFEreadline(-devel) to SUNWgnu-readline
+
 2009-07-11  Milan Jurik <sfnet@xylab.cz>
 
 	* encumbered/SFEmplayer-snap.spec: Added

@@ -1,0 +1,15 @@
+--- elisa-plugins-bad-0.5.37/elisa/plugins/amp/slave.py-orig	2009-05-05 16:34:09.521636000 -0500
++++ elisa-plugins-bad-0.5.37/elisa/plugins/amp/slave.py	2009-05-05 16:38:51.742466000 -0500
+@@ -1,4 +1,5 @@
+ import sys
++import os
+ from twisted.python.reflect import namedAny
+ 
+ def main():
+@@ -16,4 +17,5 @@ def main():
+     return runner(cookie, connection_string)
+ 
+ if __name__ == '__main__':
+-    sys.exit(main())
++    main()
++    os._exit(0)
