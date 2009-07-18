@@ -35,7 +35,7 @@ Source4:                 http://www.mplayerhq.hu/MPlayer/skins/Abyss-1.7.tar.bz2
 Source5:                 http://www.mplayerhq.hu/MPlayer/skins/neutron-1.5.tar.bz2
 Source6:                 http://www.mplayerhq.hu/MPlayer/skins/proton-1.2.tar.bz2
 SUNW_BaseDir:            %{_basedir}
-BuildRoot:               %{_tmppath}/%{name}-%{tarball_version}-build
+BuildRoot:               %{_tmppath}/%{name}-build
 
 %include default-depend.inc
 Requires: SUNWsmbau
@@ -100,14 +100,19 @@ BuildRequires: SFElibx264-devel
 %endif
 
 %prep
-%define tarball_version %(bzcat %SOURCE | tar tf - | head -1 | cut -f 1 -d /)
-%setup -q -n %tarball_version
+rm -rf %name-build
+mkdir -p %name-build
+cd %name-build
+bzcat %SOURCE | tar xf -
+mv mplayer-export-* mplayer-export
+cd mplayer-export
 %patch1 -p0
 %patch2 -p0
 %patch3 -p0
 %patch4 -p0
 
 %build
+cd %name-build/mplayer-export
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
 if test "x$CPUS" = "x" -o $CPUS = 0; then
     CPUS=1
@@ -154,6 +159,7 @@ make -j$CPUS
 
 %install
 rm -rf $RPM_BUILD_ROOT
+cd %name-build/mplayer-export
 gmake install DESTDIR=$RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT%{_libdir}/mplayer/codecs
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/mplayer/skins
@@ -190,5 +196,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/pixmaps/*
 
 %changelog
+* Sat Jul 18 2009 - Milan Jurik
+- improved handling of tarball
 * Sat Jul 11 2009 - Milan Jurik
 - Initial version
