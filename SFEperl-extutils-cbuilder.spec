@@ -4,7 +4,7 @@
 # includes module(s): ExtUtils-CBuilder
 #
 
-%define module_version 0.22
+%define module_version 0.2603
 %define module_name ExtUtils-CBuilder
 %define module_name_major ExtUtils
 %define module_package_name extutils-cbuilder
@@ -73,5 +73,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man3/*
 
 %changelog
+* Sat Jul 18 2009 - matt@greenviolet.net 
+- Bump version to 0.2603
 * Tue Apr 08 2008 - trisk@acm.jhu.edu
 - Initial spec

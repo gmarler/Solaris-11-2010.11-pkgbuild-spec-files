@@ -6,7 +6,7 @@
 
 %include Solaris.inc
 
-%define tarball_version 1.151
+%define tarball_version 1.221
 %define perl_version 5.8.4
 
 Name:                    SFEperl-gtk2
@@ -68,6 +68,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man3/*
 
 %changelog
+* Sat Jul 18 2009 - matt@greenviolet.net
+- Bump to version 1.221
 * Sun Jan 28 2007 - mike kiedrowski (lakeside-AT-cybrzn-DOT-com)
 - Updated how version is defined.
 * Fri Jan 12 2007 - mike kiedrowski (lakeside-AT-cybrzn-DOT-com)

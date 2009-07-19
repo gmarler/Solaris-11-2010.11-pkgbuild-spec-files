@@ -6,7 +6,7 @@
 
 %include Solaris.inc
 
-%define tarball_version 0.205
+%define tarball_version 0.302
 %define perl_version 5.8.4
 
 Name:                    SFEperl-extutils-dep
@@ -64,6 +64,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man3/*
 
 %changelog
+* Sat Jul 18 2009 - matt@greenviolet.net
+- Bump version to 0.302
 * Sun Jan 28 2007 - mike kiedrowski (lakeside-AT-cybrzn-DOT-com)
 - Updated how version is defined.
 * Fri Aug 18 2006 - mike kiedrowski (lakeside-AT-cybrzn-DOT-com)

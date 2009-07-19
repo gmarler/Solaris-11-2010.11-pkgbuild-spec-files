@@ -1,5 +1,14 @@
 2009-07-18 - Matt Lewandowsky <matt@greenviolet.net>
 
+	* SFEperl-gtk2.spec: bump to version 1.221
+	* SFEperl-extutils-cbuilder.spec: bump to version 0.2603
+	* SFEperl-extutils-dep.spec: bump to version 0.302
+	* SFEperl-extutils-pkg.spec: bump to version 1.12
+	* SFEperl-cairo.spec: bump to version 1.061
+	* SFEperl-glib.spec: bump to version 1.222
+
+2009-07-18 - Matt Lewandowsky <matt@greenviolet.net>
+
 	* SFEseamonkey.spec: bump to version 1.1.17
 
 2009-07-18 - Milan Jurik <sfnet@xylab.cz>
