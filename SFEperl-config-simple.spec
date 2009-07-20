@@ -1,53 +1,48 @@
 #
-# spec file for package SFEperl-compress-zlib
+# spec file for package SFEperl-config-simple
 #
-# includes module(s): Compress-Zlib
+# includes module(s): perl-config-simple
 #
-
 
 %include Solaris.inc
 
-%define compress_zlib_version 2.015
+%define tarball_version 4.59
 %define perl_version 5.8.4
 
-Name:                    SFEperl-compress-zlib
-Summary:                 Compress-Zlib-%{compress_zlib_version} PERL module
-Version:                 %{perl_version}.%{compress_zlib_version}
-Source:                  http://www.cpan.org/modules/by-module/Compress/Compress-Zlib-%{compress_zlib_version}.tar.gz
+Name:                    SFEperl-config-simple
+Summary:                 Config-Simple-%{tarball_version} PERL Module
+Version:                 %{perl_version}.%{tarball_version}
+Source:                  http://search.cpan.org/CPAN/authors/id/S/SH/SHERZODR/Config-Simple-%{tarball_version}.tar.gz
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
-Requires:                SUNWperl584core
-Requires:                SFEperl-io-compress-base
-Requires:                SFEperl-io-compress-zlib
-Requires:                SFEperl-compress-raw-zlib
-BuildRequires:           SUNWperl584core
-BuildRequires:           SUNWsfwhea
+%include default-depend.inc
+BuildRequires:  SUNWperl584core
+Requires:       SUNWperl584core
+BuildRequires:	SFEperl-extutils-dep
+BuildRequires:	SFEperl-extutils-pkg
 
 %ifarch sparc
 %define perl_dir sun4-solaris-64int
 %else
 %define perl_dir i86pc-solaris-64int 
 %endif
-%include default-depend.inc
 
 %prep
-%setup -q            -c -n %name-%version
+%setup -q	-c -n %name-%version
 
 %build
-cd Compress-Zlib-%{compress_zlib_version}
+cd Config-Simple-%{tarball_version}
 perl Makefile.PL \
     PREFIX=$RPM_BUILD_ROOT%{_prefix} \
     INSTALLSITELIB=$RPM_BUILD_ROOT%{_prefix}/perl5/vendor_perl/%{perl_version} \
     INSTALLSITEARCH=$RPM_BUILD_ROOT%{_prefix}/perl5/vendor_perl/%{perl_version}/%{perl_dir} \
-    INSTALLSITEMAN1DIR=$RPM_BUILD_ROOT%{_mandir}/man1 \
     INSTALLSITEMAN3DIR=$RPM_BUILD_ROOT%{_mandir}/man3 \
-    INSTALLMAN1DIR=$RPM_BUILD_ROOT%{_mandir}/man1 \
     INSTALLMAN3DIR=$RPM_BUILD_ROOT%{_mandir}/man3
 make CC=$CC CCCDLFLAGS="%picflags" OPTIMIZE="%optflags" LD=$CC
 
 %install
 rm -rf $RPM_BUILD_ROOT
-cd Compress-Zlib-%{compress_zlib_version}
+cd Config-Simple-%{tarball_version}
 make install
 
 rm -rf $RPM_BUILD_ROOT%{_prefix}/lib
@@ -62,10 +57,10 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr(0755, root, bin) %{_prefix}/perl5
 %dir %attr(0755, root, bin) %{_prefix}/perl5/vendor_perl
 %dir %attr(0755, root, bin) %{_prefix}/perl5/vendor_perl/%{perl_version}
-%dir %attr(0755, root, bin) %{_prefix}/perl5/vendor_perl/%{perl_version}/Compress
-%{_prefix}/perl5/vendor_perl/%{perl_version}/Compress/*
 %dir %attr(0755, root, bin) %{_prefix}/perl5/vendor_perl/%{perl_version}/auto
 %{_prefix}/perl5/vendor_perl/%{perl_version}/auto/*
+%dir %attr(0755, root, bin) %{_prefix}/perl5/vendor_perl/%{perl_version}/Config
+%{_prefix}/perl5/vendor_perl/%{perl_version}/Config/*
 %dir %attr(0755, root, bin) %{_prefix}/perl5/vendor_perl/%{perl_version}/%{perl_dir}/auto
 %{_prefix}/perl5/vendor_perl/%{perl_version}/%{perl_dir}/auto/*
 %dir %attr(0755, root, sys) %{_datadir}
@@ -75,6 +70,4 @@ rm -rf $RPM_BUILD_ROOT
 
 %changelog
 * Sun Jul 19 2009 - matt@greenviolet.net
-- Bumped to version 2.015
-* Tue Nov 13 2007 - trisk@acm.jhu.edu
-- Initial spec
+- Initial spec file

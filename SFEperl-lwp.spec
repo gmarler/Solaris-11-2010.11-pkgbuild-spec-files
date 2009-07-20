@@ -6,7 +6,7 @@
 
 # Note: Sourcefile does not follow standard naming
 
-%define module_version 5.805
+%define module_version 5.829
 %define module_name libwww-perl
 %define module_name_major LWP
 %define module_name_major_2 NET
@@ -29,6 +29,9 @@ BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 Requires:                SUNWperl584core
 BuildRequires:           SUNWperl584core
 BuildRequires:           SUNWsfwhea
+Requires:                SFEperl-compress-zlib
+Requires:                SFEperl-html-parser
+Requires:                SFEperl-uri
 
 #  URI
 #  MIME-Base64
@@ -107,6 +110,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sun Jul 19 2009 - matt@greenviolet.net
+- bumped verion to 5.829
+- Added missing Requires
 * Wed Nov 28 2007 - Thomas Wagner
 - renamed package and if necessary (Build-)Requires
 * Sat Nov 24 2007 - Thomas Wagner

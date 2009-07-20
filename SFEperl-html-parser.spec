@@ -10,7 +10,7 @@
 
 %include Solaris.inc
 
-%define html_parser_version 3.56
+%define html_parser_version 3.61
 %define perl_version 5.8.4
 
 Name:                    SFEperl-html-parser
@@ -75,6 +75,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man3/*
 
 %changelog
+* Sun Jul 19 2009 - matt@greenviolet.net
+- Bumped to version 3.61
 * Sat Aug 17 2008 - rafael.alfaro@gmail.com
 - Add license and group
 * Thu Jun 22 2008 - rafael.alfaro@gmail.com
