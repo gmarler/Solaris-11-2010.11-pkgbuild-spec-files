@@ -23,16 +23,16 @@ Summary:           Media center written in Python
 URL:               http://www.moovida.com/
 Version:           1.0.5
 Source:            http://www.moovida.com/media/public/%{name}-%{version}.tar.gz
-#date:2008-12-01 owner:fujiwara type:feature
+#date:2008-12-01 owner:fujiwara type:feature bugid:249822
 Patch1:            moovida-01-g11n-localedir.diff
 #date:2008-11-26 owner:yippi type:bug bugid:293805 bugster:6767189
 Patch2:            moovida-02-docs.diff
 #date:2008-11-26 owner:yippi type:branding 
 Patch3:            moovida-03-manpage.diff
-#date:2008-07-18 owner:yippi type:bug bugid:249822
-Patch4:            moovida-04-fixlocale.diff
 #date:2009-03-03 owner:yippi type:feature
-Patch5:            moovida-05-noautoupdate.diff
+Patch4:            moovida-04-noautoupdate.diff
+#date:2009-03-03 owner:yippi type:bug bugid:400137
+Patch5:            moovida-05-pidof.diff
 
 %description
 Moovida is an open source cross-platform media center solution.
@@ -67,5 +67,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/python%{pythonver}/vendor-packages/elisa-*-py%{pythonver}-nspkg.pth
 
 %changelog
+* Tue Jul 21 2009 Brian Cameron <brian.cameron@sun.com>
+- Merge patch 1 and 4, and also fix upstream bug #400137.  Add patch 
+  moovida-05-pidof.diff to address bug #400134.
 * Wed Jul 15 2009 Brian Cameron <brian.cameron@sun.com>
 - Created with version 1.0.5.

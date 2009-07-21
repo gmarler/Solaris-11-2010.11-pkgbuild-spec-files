@@ -12,7 +12,7 @@
  def pidof(command):
 -    pidof_cmd = find_cmd(["/sbin/pidof", "/bin/pidof", "/usr/bin/pidof"])
 -    pidof = subprocess.Popen([pidof_cmd, command], stdout=subprocess.PIPE)
-+    pidof = subprocess.Popen(["/bin/sh", "-c", "/usr/bin/ps -u $USER -o pid,comm | /usr/bin/grep %s | /usr/bin/awk '{print $1}'" % command], stdout=subprocess. PIPE)
++    pidof = subprocess.Popen(["/bin/sh", "-c", "/usr/bin/pgrep -u `whoami` %s" % command], stdout=subprocess. PIPE)
      pids = pidof.communicate()[0].split()
      pidof.wait()
  

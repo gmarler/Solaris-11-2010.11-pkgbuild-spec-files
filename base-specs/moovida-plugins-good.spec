@@ -19,6 +19,7 @@ Source:            http://www.moovida.com/media/public/%{name}-%{version}.tar.gz
 #date:2008-10-24 owner:yippi type:branding
 # We remove winscreensaver plugin since it only works on the Windows platform.
 Patch1:		   moovida-plugins-good-01-rm-plugins.diff
+#date:2009-07-15 owner:yippi type:branding bugid:399977
 Patch2:            moovida-plugins-good-02-solaris.diff
 
 %description

@@ -1,0 +1,15 @@
+--- elisa-1.0.5/elisa/core/utils/misc.py-orig	2009-07-21 04:59:22.299642000 -0500
++++ elisa-1.0.5/elisa/core/utils/misc.py	2009-07-21 04:59:59.222810000 -0500
+@@ -219,9 +219,10 @@ def linux_pidof(program_name):
+     @rtype: C{list} of C{int}
+     @returns: the list of running pids of given program name
+     """
+-    output = subprocess.Popen(["pidof", program_name],
++    output = subprocess.Popen(["/bin/sh", "-c", "/usr/bin/pgrep -u `whoami` %s" % program_name],
+                               stderr=subprocess.STDOUT,
+-                              stdout=subprocess.PIPE).communicate()[0]
++                              stdout=subprocess.PIPE,
++                              close_fds=True).communicate()[0]
+     return [int(pid) for pid in output.split()]
+ 
+ def get_user_desktop_name():
