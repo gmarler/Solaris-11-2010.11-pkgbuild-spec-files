@@ -6,7 +6,7 @@ Name:                    SFEnicstat
 Summary:                 nicstat - tool for displaying network load similar to iostat/prstat
 URL:                     http://blogs.sun.com/timc/entry/nicstat_the_solaris_network_monitoring
 Version:                 %(date +%Y.%m.%d)
-Source:                  http://blogs.sun.com/roller/resources/timc/nicstat.c
+Source:                  http://blogs.sun.com/timc/resource/nicstat/nicstat.c
 
 
 SUNW_BaseDir:            %{_basedir}
@@ -48,6 +48,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Jul 20 2009 - matt@greenviolet.net
+- Update Source URL
 * Sun Jun 01 2008 - trisk@acm.jhu.edu
 - Don't hardcode /usr/bin
 * Wed Jan 02 2008 - Thomas Wagner

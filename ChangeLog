@@ -1,3 +1,7 @@
+2009-07-20 - Matt Lewandowsky <matt@greenviolet.net>
+
+	* SFEnicstat.spec: Update Source URL
+
 2009-07-19 - Matt Lewandowsky <matt@greenviolet.net>
 
 	* SFEperl-compress-zlib.spec: bump to version 2.015
