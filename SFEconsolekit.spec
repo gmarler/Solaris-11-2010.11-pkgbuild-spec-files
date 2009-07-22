@@ -42,7 +42,7 @@ Patch4:                  ConsoleKit-04-ck-dynamic.diff
 Patch5:                  ConsoleKit-05-add-sunray-type.diff
 Patch6:                  ConsoleKit-06-dynamic-tty.diff
 Patch7:                  ConsoleKit-07-solaris-vtdaemon.diff
-# date:2009-07-19 owner:halton type:bug bugid:22361
+# date:2009-06-19 owner:halton type:bug bugid:22361 status:upstreamed
 Patch8:                  ConsoleKit-08-solaris-getpwnamr.diff
 SUNW_Copyright:          %{name}.copyright
 SUNW_BaseDir:            %{_basedir}

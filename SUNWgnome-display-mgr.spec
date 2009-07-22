@@ -3,7 +3,7 @@
 #
 # includes module(s): gdm
 #
-# Copyright 2008 Sun Microsystems, Inc.
+# Copyright 2009 Sun Microsystems, Inc.
 # This file and all modifications and additions to the pristine
 # package are under the same license as the package itself.
 #
@@ -13,9 +13,9 @@
 
 Summary:                 GNOME display manager
 Name:                    SUNWgnome-display-mgr
-Version:                 2.26.1
+Version:                 2.27.4
 Release:                 1
-Source:                  http://download.gnome.org/sources/gdm/2.26/gdm-%{version}.tar.bz2
+Source:                  http://download.gnome.org/sources/gdm/2.27/gdm-%{version}.tar.bz2
 Source1:                 gdm.xml
 Source2:                 svc-gdm
 # date:2009-02-13 owner:yippi type:branding
@@ -36,16 +36,10 @@ Patch4:                  gdm-04-dynamic-display.diff
 # Add support for /etc/default/login configuration.
 # date:2009-03-31 owner:yippi type:feature
 Patch5:                  gdm-05-default.diff
-# date:2009-04-02 owner:yippi type:bug bugzilla:568323
-Patch6:                  gdm-06-hide-face-browser.diff
-# date:2009-04-01 owner:halton type:bug bugzilla:580060
-Patch7:                  gdm-07-solaris-xinerama.diff
-# date:2009-04-02 owner:yippi type:bug bugzilla:568323
-Patch8:                  gdm-08-hide-face-browser-pt2.diff
 # date:2009-04-14 owner:yippi type:bug bugzilla:580676
-Patch9:                  gdm-09-fixcompile.diff
+Patch6:                  gdm-06-fixcompile.diff
 # date:2009-04-28 owner:yippi type:branding
-Patch10:                 gdm-10-no-system-gconf.diff
+Patch7:                  gdm-07-no-system-gconf.diff
 SUNW_Copyright:          %{name}.copyright
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -108,11 +102,8 @@ Requires:                %{name}
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
-%patch6 -p0
+%patch6 -p1
 %patch7 -p1
-%patch8 -p1
-%patch9 -p1
-%patch10 -p1
 
 %build
 export LDFLAGS="%_ldflags"
@@ -347,6 +338,10 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 %endif
 
 %changelog
+* Wed Jul 22 2009 - halton.huo@sun.com
+- Bump to 2.27.4
+- Remove upstreamed patches: hide-face-browser.diff, solaris-xinerama.diff
+  hide-face-browser-pt2.diff. And reorder
 * Tue Jun 23 2009 - halton.huo@sun.com
 - Add copyright
 * Fri Jun 19 2009 - halton.huo@sun.com

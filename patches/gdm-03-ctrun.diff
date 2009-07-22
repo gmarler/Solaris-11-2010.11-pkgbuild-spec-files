@@ -1,5 +1,5 @@
 diff --git a/acconfig.h b/acconfig.h
-index dad371b..4307fd3 100644
+index c8a1d96..7a625d2 100644
 --- a/acconfig.h
 +++ b/acconfig.h
 @@ -14,6 +14,7 @@
@@ -7,14 +7,14 @@ index dad371b..4307fd3 100644
  #undef HAVE_CLEARENV
  #undef HAVE_CRYPT
 +#undef HAVE_CTRUN
- #undef HAVE_DEFOPEN
  #undef HAVE_GETTEXT
  #undef HAVE_LC_MESSAGES
+ #undef HAVE_LIBSM
 diff --git a/configure.ac b/configure.ac
-index ff0449b..75b6771 100644
+index 4470557..aafbb4e 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -843,6 +843,23 @@ AC_SUBST(XINERAMA_LIBS)
+@@ -810,6 +810,23 @@ AC_SUBST(XINERAMA_LIBS)
  CPPFLAGS="$xinerama_save_cppflags"
  
  dnl ---------------------------------------------------------------------------
@@ -39,10 +39,10 @@ index ff0449b..75b6771 100644
  dnl ---------------------------------------------------------------------------
  
 diff --git a/daemon/gdm-session-worker.c b/daemon/gdm-session-worker.c
-index a6ac9d3..7623ee5 100644
+index c1331df..6f5d9e6 100644
 --- a/daemon/gdm-session-worker.c
 +++ b/daemon/gdm-session-worker.c
-@@ -371,17 +371,25 @@ script_execute (const gchar *file,
+@@ -256,17 +256,25 @@ script_execute (const gchar *file,
  
          /* Construct an argument list for the shell.  */
          {
@@ -72,7 +72,7 @@ index a6ac9d3..7623ee5 100644
                  /* Execute the shell. */
                  if (envp) {
                          execve (new_argv[0], new_argv, envp);
-@@ -389,7 +397,8 @@ script_execute (const gchar *file,
+@@ -274,7 +282,8 @@ script_execute (const gchar *file,
                          execv (new_argv[0], new_argv);
                  }
  
@@ -82,7 +82,7 @@ index a6ac9d3..7623ee5 100644
          }
  }
  
-@@ -2480,8 +2489,16 @@ on_start_program (GdmSessionWorker *worker,
+@@ -2331,8 +2340,16 @@ on_start_program (GdmSessionWorker *worker,
                                       DBUS_TYPE_INVALID);
          if (res) {
                  GError *parse_error;
@@ -100,7 +100,7 @@ index a6ac9d3..7623ee5 100644
  
                  if (worker->priv->arguments != NULL) {
                          g_strfreev (worker->priv->arguments);
-@@ -2489,12 +2506,13 @@ on_start_program (GdmSessionWorker *worker,
+@@ -2340,12 +2357,13 @@ on_start_program (GdmSessionWorker *worker,
                  }
  
                  parse_error = NULL;

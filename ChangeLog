@@ -1,3 +1,14 @@
+2009-07-22  Halton Huo  <halton.huo@sun.com>
+
+	* SFEconsolekit.spec: minor change on comment for patch8
+	* SUNWgnome-display-mgr.spec: Bump to 2.27.4
+	* patches/gdm-03-ctrun.diff: rework
+	* patches/gdm-06-hide-face-browser.diff: remove upstreamed patch
+	* patches/gdm-07-solaris-xinerama.diff: remove upstreamed patch
+	* patches/gdm-08-hide-face-browser-pt2.diff: remove upstreamed patch
+	* patches/gdm-09-fixcompile.diff: reorder
+	* patches/gdm-10-no-system-gconf.diff: reorder
+
 2009-07 22 Brian Cameron  <brian.cameron@sun.com>
 
 	* patches/moovida-05-pidof.diff: Add locking to the patch.  This
