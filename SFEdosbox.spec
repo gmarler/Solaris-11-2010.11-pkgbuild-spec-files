@@ -9,12 +9,10 @@
 %define SUNWlibsdl      %(/usr/bin/pkginfo -q SUNWlibsdl && echo 1 || echo 0)
 
 %define src_name	dosbox
-%define src_url		http://jaist.dl.sourceforge.net/sourceforge/dosbox
-
 Name:                   SFEdosbox
 Summary:                DOS emulator
-Version:                0.72
-Source:                 %{src_url}/%{src_name}-%{version}.tar.gz
+Version:                0.73
+Source:                 %{sf_download}/%{src_name}/%{src_name}-%{version}.tar.gz
 Patch1:			dosbox-01-socket.diff
 SUNW_BaseDir:           %{_basedir}
 BuildRoot:              %{_tmppath}/%{name}-%{version}-build
@@ -32,10 +30,11 @@ BuildRequires: SFEsdl-sound-devel
 Requires: SFEsdl-sound
 
 %prep
-%setup -q -n %{src_name}-%{version}
-%patch1 -p1
+%setup -q -c -n %name-%version
+%patch1
 
 %build
+cd %{src_name}-%{version}
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
 if test "x$CPUS" = "x" -o $CPUS = 0; then
     CPUS=1
@@ -69,6 +68,7 @@ make -j$CPUS
 
 %install
 rm -rf $RPM_BUILD_ROOT
+cd %{src_name}-%{version}
 make install DESTDIR=$RPM_BUILD_ROOT
 
 %clean
@@ -81,6 +81,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}
 
 %changelog
+* Wed Jul 22 2009 - matt@greenviolet.net
+- Bump to 0.73, update patch1 to be cleaner, clean up spec file slightly
 * Mon Feb 25 2008 - trisk@acm.jhu.edu
 - Bump to 0.72, update dependencies, replace patch1
 * Thu Apr 26 2006 - dougs@truemail.co.th

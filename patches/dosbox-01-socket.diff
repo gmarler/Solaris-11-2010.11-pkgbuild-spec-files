@@ -1,35 +1,38 @@
---- dosbox-0.72/configure.in.orig	Thu Aug 23 06:24:49 2007
-+++ dosbox-0.72/configure.in	Mon Feb 25 01:19:36 2008
-@@ -371,6 +371,11 @@
-   AC_MSG_WARN([Can't find libSDL_sound, libSDL_sound support disabled])
- fi
- 
-+dnl Check for -lsocket -lnsl
-+
-+AC_CHECK_FUNC(gethostent, , AC_CHECK_LIB(nsl, gethostent))
-+AC_CHECK_FUNC(setsockopt, , AC_CHECK_LIB(socket, setsockopt))
-+
- dnl Check for mprotect. Needed for 64 bits linux 
- AH_TEMPLATE(C_HAVE_MPROTECT,[Define to 1 if you have the mprotect function])
- AC_CHECK_HEADER([sys/mman.h], [
-@@ -407,6 +412,9 @@
-        LIBS="$LIBS -framework AudioUnit"
+--- dosbox-0.73/configure.in.orig	2009-05-20 10:34:13.000000000 -0700
++++ dosbox-0.73/configure.in	2009-07-22 00:55:55.769937244 -0700
+@@ -466,6 +466,13 @@
+        LIBS="$LIBS -framework CoreMIDI -framework AudioUnit -framework AudioToolbox"
         AC_DEFINE(C_DIRECTSERIAL, 1, [ Define to 1 if you want serial passthrough support (Win32, Posix and OS/2).])
         ;;
 +    *-*-solaris*)
++       AC_DEFINE(SOLARIS, 1, [Compiling on Sun Solaris])
 +       AC_DEFINE(C_DIRECTSERIAL, 1, [ Define to 1 if you want serial passthrough support (Win32, Posix and OS/2).])
++       dnl Check for -lsocket -lnsl
++       AC_CHECK_FUNC(gethostent, , AC_CHECK_LIB(nsl, gethostent))
++       AC_CHECK_FUNC(setsockopt, , AC_CHECK_LIB(socket, setsockopt))
 +       ;;
      *-*-linux*)
         AC_DEFINE(LINUX, 1, [Compiling on GNU/Linux])
         AC_DEFINE(C_DIRECTSERIAL, 1, [ Define to 1 if you want serial passthrough support (Win32, Posix and OS/2).])
---- dosbox-0.72/src/hardware/serialport/directserial_posix.cpp.orig	Sun Aug 26 13:19:46 2007
-+++ dosbox-0.72/src/hardware/serialport/directserial_posix.cpp	Mon Feb 25 01:16:56 2008
+--- dosbox-0.73/src/hardware/serialport/directserial_posix.cpp.orig	2009-05-27 02:15:41.000000000 -0700
++++ dosbox-0.73/src/hardware/serialport/directserial_posix.cpp	2009-07-22 00:54:26.629247089 -0700
 @@ -23,7 +23,7 @@
  #if C_DIRECTSERIAL
  
  // Posix version
--#if defined (LINUX) || defined (MACOSX)
-+#if defined (LINUX) || defined (MACOSX) || defined (_sun)
+-#if defined (LINUX) || defined (MACOSX) || defined (BSD)
++#if defined (LINUX) || defined (MACOSX) || defined (BSD) || defined (SOLARIS)
  
  #include "serialport.h"
  #include "directserial_posix.h"
+--- dosbox-0.73/src/hardware/serialport/directserial_posix.h.orig	2009-07-22 01:13:53.073362059 -0700
++++ dosbox-0.73/src/hardware/serialport/directserial_posix.h	2009-07-22 01:13:15.877764031 -0700
+@@ -25,7 +25,7 @@
+ #include "dosbox.h"
+ 
+ #if C_DIRECTSERIAL
+-#if defined (LINUX) || defined (MACOSX) || defined (BSD)
++#if defined (LINUX) || defined (MACOSX) || defined (BSD) || defined (SOLARIS)
+ 
+ 
+ 
