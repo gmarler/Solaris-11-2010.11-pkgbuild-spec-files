@@ -1,0 +1,404 @@
+--- HippoDraw-1.21.3/datareps/CompositeFunctionRep.cxx-orig	2009-07-06 07:09:35.248681000 -0500
++++ HippoDraw-1.21.3/datareps/CompositeFunctionRep.cxx	2009-07-06 07:09:49.954251000 -0500
+@@ -140,7 +140,7 @@ setFixedFlags ( const std::vector < int 
+     vector < int > tmp = frep -> getFixedFlags ();// a copy
+     unsigned int number = tmp.size ();
+     vector<int>::const_iterator end = first + number;
+-    copy ( first, end, tmp.begin() );
++    std::copy ( first, end, tmp.begin() );
+     frep -> setFixedFlags ( tmp );
+     first = end;
+   }
+--- HippoDraw-1.21.3/axes/AxisModelLog.cxx-orig	2009-07-06 07:02:12.253155000 -0500
++++ HippoDraw-1.21.3/axes/AxisModelLog.cxx	2009-07-06 08:31:55.907284000 -0500
+@@ -24,6 +24,7 @@ $Id: AxisModelLog.cxx,v 1.106 2005/12/05
+ 
+ #include <algorithm>
+ 
++#include <math.h>
+ #include <cassert>
+ #include <cmath>
+ #include <cstdio>
+--- HippoDraw-1.21.3/axes/Range.cxx-orig	2009-07-06 07:02:52.910899000 -0500
++++ HippoDraw-1.21.3/axes/Range.cxx	2009-07-06 08:32:03.956554000 -0500
+@@ -18,8 +18,10 @@ $Id: Range.cxx,v 1.57 2007/05/08 18:47:2
+ 
+ #include <algorithm>
+ 
++#include <math.h>
+ #include <cassert>
+ #include <cmath>
++#include <iostream.h>
+ 
+ #ifndef _MSC_VER
+ using std::floor;
+--- HippoDraw-1.21.3/minimizers/BFGSFitter.cxx-orig	2009-07-06 07:17:46.259074000 -0500
++++ HippoDraw-1.21.3/minimizers/BFGSFitter.cxx	2009-07-06 08:37:18.470179000 -0500
+@@ -33,6 +33,7 @@ $Id: BFGSFitter.cxx,v 1.41 2006/09/22 13
+ using std::cout;
+ using std::endl;
+ 
++#include <math.h>
+ #include <cfloat>
+ #include <cstdlib>
+ #include <cassert>
+--- HippoDraw-1.21.3/minimizers/NumLinAlg.cxx-orig	2009-07-06 07:18:05.035382000 -0500
++++ HippoDraw-1.21.3/minimizers/NumLinAlg.cxx	2009-07-06 08:37:29.152729000 -0500
+@@ -13,6 +13,7 @@ $Id: NumLinAlg.cxx,v 1.13 2005/05/16 18:
+ 
+ #include "NumLinAlg.h"
+ 
++#include <math.h>
+ #include <fstream>
+ #include <iostream>
+ #include <iomanip>
+--- HippoDraw-1.21.3/binners/BinnerAxisLinear.cxx-orig	2009-07-06 07:03:37.255885000 -0500
++++ HippoDraw-1.21.3/binners/BinnerAxisLinear.cxx	2009-07-06 08:32:20.772817000 -0500
+@@ -17,6 +17,7 @@ $Id: BinnerAxisLinear.cxx,v 1.73 2007/07
+ 
+ #include <algorithm>
+ 
++#include <math.h>
+ #include <cmath> // for ciel()
+ 
+ #include <cassert>
+--- HippoDraw-1.21.3/binners/BinnerAxisLog.cxx-orig	2009-07-06 07:04:14.015873000 -0500
++++ HippoDraw-1.21.3/binners/BinnerAxisLog.cxx	2009-07-06 08:32:30.082252000 -0500
+@@ -18,6 +18,7 @@ $Id: BinnerAxisLog.cxx,v 1.78 2007/04/23
+ #include <algorithm>
+ #include <stdexcept>
+ 
++#include <math.h>
+ #include <cmath>
+ #include <cassert>
+ 
+--- HippoDraw-1.21.3/binners/Bins1DHist.cxx-orig	2009-07-06 07:04:34.206600000 -0500
++++ HippoDraw-1.21.3/binners/Bins1DHist.cxx	2009-07-06 08:32:39.188431000 -0500
+@@ -22,6 +22,7 @@ $Id: Bins1DHist.cxx,v 1.122 2007/04/23 2
+ #include <algorithm>
+ #include <numeric>
+ 
++#include <math.h>
+ #include <cmath>
+ 
+ #include <cassert>
+@@ -166,7 +167,7 @@ fillDataSource ( DataSource * ntuple ) c
+       }
+   }
+   else {
+-      swap ( first_non_zero, last_non_zero );
++      std::swap ( first_non_zero, last_non_zero );
+   }
+ 
+   double x = getLow ( Axes::X );
+--- HippoDraw-1.21.3/graphics/Rectangle.cxx-orig	2009-07-06 07:17:23.964436000 -0500
++++ HippoDraw-1.21.3/graphics/Rectangle.cxx	2009-07-06 08:36:42.553490000 -0500
+@@ -31,6 +31,7 @@ $Id: Rectangle.cxx,v 1.33 2007/01/29 17:
+ #include <functional>
+ #include <iostream>
+ 
++#include <math.h>
+ #include <cmath>
+ #include <cfloat>
+ 
+--- HippoDraw-1.21.3/projectors/FunctionProjector.cxx-orig	2009-07-06 07:19:13.504559000 -0500
++++ HippoDraw-1.21.3/projectors/FunctionProjector.cxx	2009-07-06 08:37:57.711445000 -0500
+@@ -23,6 +23,7 @@ $Id: FunctionProjector.cxx,v 1.214 2007/
+ #include "functions/FunctionBase.h"
+ #include "minimizers/Fitter.h"
+ 
++#include <math.h>
+ #include <cmath>
+ 
+ #include <cassert>
+--- HippoDraw-1.21.3/projectors/StripChartProjector.cxx-orig	2009-07-06 08:30:13.925200000 -0500
++++ HippoDraw-1.21.3/projectors/StripChartProjector.cxx	2009-07-06 08:30:28.693734000 -0500
+@@ -16,6 +16,7 @@ $Id: StripChartProjector.cxx,v 1.50 2005
+ 
+ #include "StripChartProjector.h"
+ 
++#include "axes/Range.h"
+ #include "datasrcs/DataPointTuple.h"
+ #include "datasrcs/DataSource.h"
+ 
+--- HippoDraw-1.21.3/reps/AxisRepBase.cxx-orig	2009-07-06 08:30:49.085904000 -0500
++++ HippoDraw-1.21.3/reps/AxisRepBase.cxx	2009-07-06 08:31:40.107426000 -0500
+@@ -28,6 +28,9 @@ $Id: AxisRepBase.cxx,v 1.100 2007/07/02 
+ #include "pattern/string_convert.h"
+ #include "transforms/PeriodicBinaryTransform.h"
+ 
++#include <stdio.h>
++#include <math.h>
++#include <ieeefp.h>
+ #include <cmath>
+ #include <cassert>
+ 
+--- HippoDraw-1.21.3/reps/ColorBoxPointRep.cxx-orig	2009-07-06 08:40:02.445776000 -0500
++++ HippoDraw-1.21.3/reps/ColorBoxPointRep.cxx	2009-07-06 08:40:10.607755000 -0500
+@@ -25,6 +25,7 @@ $Id: ColorBoxPointRep.cxx,v 1.118 2007/0
+ #include "plotters/PlotterBase.h"
+ 
+ 
++#include <math.h>
+ #include <cassert>
+ #include <cmath>
+ 
+--- HippoDraw-1.21.3/reps/ContourPointRep.cxx-orig	2009-07-06 08:40:22.289563000 -0500
++++ HippoDraw-1.21.3/reps/ContourPointRep.cxx	2009-07-06 08:40:29.499579000 -0500
+@@ -25,6 +25,7 @@ $Id: ContourPointRep.cxx,v 1.66 2007/04/
+ #include "projectors/NTupleProjector.h"
+ #include "transforms/PeriodicBinaryTransform.h"
+ 
++#include <math.h>
+ #include <cassert>
+ #include <cmath>
+ 
+--- HippoDraw-1.21.3/reps/LinePointRep.cxx-orig	2009-07-06 08:40:39.651622000 -0500
++++ HippoDraw-1.21.3/reps/LinePointRep.cxx	2009-07-06 08:40:48.136705000 -0500
+@@ -22,6 +22,7 @@ $Id: LinePointRep.cxx,v 1.81 2006/09/22 
+ #include "graphics/ViewBase.h"
+ #include "transforms/BinaryTransform.h"
+ 
++#include <math.h>
+ #include <cmath>
+ 
+ using std::vector;
+--- HippoDraw-1.21.3/reps/SymbolPointRep.cxx-orig	2009-07-06 08:40:57.679917000 -0500
++++ HippoDraw-1.21.3/reps/SymbolPointRep.cxx	2009-07-06 08:41:05.182519000 -0500
+@@ -25,6 +25,7 @@ $Id: SymbolPointRep.cxx,v 1.133 2007/03/
+ #include "projectors/NTupleProjector.h"
+ #include "transforms/PeriodicBinaryTransform.h"
+ 
++#include <math.h>
+ #include <cmath>
+ 
+ #include <cassert>
+--- HippoDraw-1.21.3/transforms/PeriodicBinaryTransform.cxx-orig	2009-07-06 08:41:27.763004000 -0500
++++ HippoDraw-1.21.3/transforms/PeriodicBinaryTransform.cxx	2009-07-06 08:41:52.848453000 -0500
+@@ -27,6 +27,8 @@ Stanford Junior University.  All Rights 
+ #endif
+ #endif
+ 
++#include <math.h>
++#include <stdio.h>
+ #include <cmath>
+ #include <cstdio>
+ #include <stdexcept>
+--- HippoDraw-1.21.3/transforms/LinearTransform.cxx-orig	2009-07-06 08:42:08.996307000 -0500
++++ HippoDraw-1.21.3/transforms/LinearTransform.cxx	2009-07-06 08:42:27.101909000 -0500
+@@ -14,6 +14,8 @@ $Id: LinearTransform.cxx,v 1.35 2007/08/
+ #include "axes/AxisModelBase.h"
+ #include "axes/AxisTick.h"
+ 
++#include <math.h>
++#include <stdio.h>
+ #include <cmath>
+ #include <cstdio>
+ 
+--- HippoDraw-1.21.3/transforms/LogTransform.cxx-orig	2009-07-06 08:42:35.756536000 -0500
++++ HippoDraw-1.21.3/transforms/LogTransform.cxx	2009-07-06 08:42:52.293450000 -0500
+@@ -21,6 +21,8 @@ $Id: LogTransform.cxx,v 1.48 2006/09/26 
+ #include <algorithm>
+ #include <vector>
+ 
++#include <math.h>
++#include <stdio.h>
+ #include <cmath>
+ #include <cstdio>
+ 
+--- HippoDraw-1.21.3/functions/BrokenPowerLaw.cxx-orig	2009-07-06 07:15:18.803005000 -0500
++++ HippoDraw-1.21.3/functions/BrokenPowerLaw.cxx	2009-07-06 08:35:49.027107000 -0500
+@@ -17,6 +17,7 @@ $Id: BrokenPowerLaw.cxx,v 1.4 2007/04/23
+ 
+ #include "FunctionHelper.h"
+ 
++#include <math.h>
+ #include <cmath>
+ #include <cassert>
+ 
+--- HippoDraw-1.21.3/functions/Chi2Dist.cxx-orig	2009-07-06 07:15:34.646112000 -0500
++++ HippoDraw-1.21.3/functions/Chi2Dist.cxx	2009-07-06 08:35:54.449524000 -0500
+@@ -17,6 +17,7 @@ $Id: Chi2Dist.cxx,v 1.6 2007/04/23 21:57
+ 
+ #include "FunctionHelper.h"
+ 
++#include <math.h>
+ #include <cmath>
+ #include <cassert>
+ #include <iostream>
+--- HippoDraw-1.21.3/functions/Exponential.cxx-orig	2009-07-06 07:15:49.928653000 -0500
++++ HippoDraw-1.21.3/functions/Exponential.cxx	2009-07-06 08:36:00.396282000 -0500
+@@ -17,6 +17,7 @@ $Id: Exponential.cxx,v 1.4 2007/04/23 21
+ 
+ #include "FunctionHelper.h"
+ 
++#include <math.h>
+ #include <cmath>
+ #include <cassert>
+ #include <iostream>
+--- HippoDraw-1.21.3/functions/Gaussian.cxx-orig	2009-07-06 07:16:04.756718000 -0500
++++ HippoDraw-1.21.3/functions/Gaussian.cxx	2009-07-06 08:36:05.993003000 -0500
+@@ -17,6 +17,7 @@ $Id: Gaussian.cxx,v 1.58 2007/08/24 22:1
+ 
+ #include "FunctionHelper.h"
+ 
++#include <math.h>
+ #include <cmath>
+ #include <cassert>
+ 
+--- HippoDraw-1.21.3/functions/Landau.cxx-orig	2009-07-06 07:16:17.414795000 -0500
++++ HippoDraw-1.21.3/functions/Landau.cxx	2009-07-06 08:36:10.482149000 -0500
+@@ -17,6 +17,7 @@ $Id: Landau.cxx,v 1.11 2007/09/30 15:57:
+ 
+ #include "FunctionHelper.h"
+ 
++#include <math.h>
+ #include <cmath>
+ #include <cassert>
+ 
+--- HippoDraw-1.21.3/functions/LogNormal.cxx-orig	2009-07-06 07:16:30.247042000 -0500
++++ HippoDraw-1.21.3/functions/LogNormal.cxx	2009-07-06 08:36:15.802815000 -0500
+@@ -17,6 +17,7 @@ $Id: LogNormal.cxx,v 1.11 2007/08/24 22:
+ 
+ #include "FunctionHelper.h"
+ 
++#include <math.h>
+ #include <cmath>
+ #include <cassert>
+ 
+--- HippoDraw-1.21.3/functions/Novosibirsk.cxx-orig	2009-07-06 07:16:47.932815000 -0500
++++ HippoDraw-1.21.3/functions/Novosibirsk.cxx	2009-07-06 08:36:24.847472000 -0500
+@@ -17,6 +17,7 @@ $Id: Novosibirsk.cxx,v 1.9 2007/08/24 22
+ 
+ #include "FunctionHelper.h"
+ 
++#include <math.h>
+ #include <cmath>
+ #include <cassert>
+ 
+--- HippoDraw-1.21.3/functions/PowerLaw.cxx-orig	2009-07-06 07:17:02.735874000 -0500
++++ HippoDraw-1.21.3/functions/PowerLaw.cxx	2009-07-06 08:36:30.164584000 -0500
+@@ -17,6 +17,7 @@ $Id: PowerLaw.cxx,v 1.5 2007/04/23 21:57
+ 
+ #include "FunctionHelper.h"
+ 
++#include <math.h>
+ #include <cmath>
+ #include <cassert>
+ 
+--- HippoDraw-1.21.3/controllers/CutController.cxx-orig	2009-07-06 07:07:52.678674000 -0500
++++ HippoDraw-1.21.3/controllers/CutController.cxx	2009-07-06 07:08:06.133051000 -0500
+@@ -612,7 +612,7 @@ createIdCut ( const DataSource * source,
+     vector < double > ::const_iterator first 
+       = find ( destcol.begin(), destcol.end(),
+ 	       dequal< double> ( value ) );
+-    std::size_t d = distance ( destcol.begin(), first );
++    std::size_t d = std::distance ( destcol.begin(), first );
+     dest_cut [d] = 1.0;
+   }
+   dest -> addColumn ( colname_cut, dest_cut );
+--- HippoDraw-1.21.3/controllers/Gammaq.cxx-orig	2009-07-06 07:08:58.576551000 -0500
++++ HippoDraw-1.21.3/controllers/Gammaq.cxx	2009-07-06 08:33:46.340058000 -0500
+@@ -9,8 +9,8 @@ Code is taken from Numerical Recipes in 
+ 
+ #include "Gammaq.h"
+ 
++#include <math.h>
+ #include <iostream>
+-
+ #include <cassert>
+ #include <cmath>
+ 
+--- HippoDraw-1.21.3/controllers/FunctionController.cxx-orig	2009-07-06 07:08:18.311084000 -0500
++++ HippoDraw-1.21.3/controllers/FunctionController.cxx	2009-07-06 08:33:35.499614000 -0500
+@@ -45,6 +45,7 @@ $Id: FunctionController.cxx,v 1.274 2007
+ #include <iterator>
+ #include <stdexcept>
+ 
++#include <math.h>
+ #include <cmath>
+ #include <cassert>
+ 
+--- HippoDraw-1.21.3/plotters/CompositePlotter.cxx-orig	2009-07-06 07:18:41.650627000 -0500
++++ HippoDraw-1.21.3/plotters/CompositePlotter.cxx	2009-07-06 08:37:45.013002000 -0500
+@@ -37,6 +37,7 @@ $Id: CompositePlotter.cxx,v 1.301 2007/0
+ #include <algorithm>
+ #include <functional>
+ 
++#include <math.h>
+ #include <cmath>
+ #include <cassert>
+ 
+--- HippoDraw-1.21.3/datasrcs/DataSource.cxx-orig	2009-07-06 07:10:39.856320000 -0500
++++ HippoDraw-1.21.3/datasrcs/DataSource.cxx	2009-07-06 08:34:27.912587000 -0500
+@@ -35,6 +35,7 @@ $Id: DataSource.cxx,v 1.63 2007/07/02 18
+ #include <functional>
+ #include <stdexcept>
+ 
++#include <math.h>
+ #include <cmath>
+ 
+ #include <cassert>
+--- HippoDraw-1.21.3/datasrcs/DataSourceController.cxx-orig	2009-07-06 07:11:10.711498000 -0500
++++ HippoDraw-1.21.3/datasrcs/DataSourceController.cxx	2009-07-06 07:13:34.850689000 -0500
+@@ -133,7 +133,7 @@ DataSourceController::
+ isFromFile ( const DataSource * source ) const
+ {
+   DataSourceList_t::const_iterator first 
+-    = find ( m_ds_files.begin (), m_ds_files.end (), source );
++    = std::find ( m_ds_files.begin (), m_ds_files.end (), source );
+ 
+   return first != m_ds_files.end ();
+ }
+--- HippoDraw-1.21.3/datasrcs/DataSourceController.h-orig	2009-07-06 07:12:16.674568000 -0500
++++ HippoDraw-1.21.3/datasrcs/DataSourceController.h	2009-07-06 07:13:20.013620000 -0500
+@@ -14,6 +14,8 @@ $Id: DataSourceController.h,v 1.22 2006/
+ #ifndef _DataSourceController_H_
+ #define _DataSourceController_H_
+ 
++#include <string>
++
+ #include "pattern/Observer.h"
+ 
+ #ifdef _MSC_VER
+--- HippoDraw-1.21.3/datasrcs/NTupleController.cxx-orig	2009-07-06 07:14:17.677915000 -0500
++++ HippoDraw-1.21.3/datasrcs/NTupleController.cxx	2009-07-06 08:35:00.910706000 -0500
+@@ -23,7 +23,7 @@ $Id: NTupleController.cxx,v 1.131 2007/0
+ #include "pattern/string_convert.h"
+ 
+ 
+-
++#include <stdlib.h>
+ #include <algorithm>
+ #include <stdexcept>
+ #include <fstream>
+--- HippoDraw-1.21.3/datasrcs/NTuple.cxx-orig	2009-07-06 07:13:44.271012000 -0500
++++ HippoDraw-1.21.3/datasrcs/NTuple.cxx	2009-07-06 07:13:54.287764000 -0500
+@@ -628,5 +628,5 @@ sum ( unsigned int column ) const
+   double sum = 0.0;
+   const vector < double > & data = *m_data[ column ];
+ 
+-  return accumulate ( data.begin(), data.end(), sum );
++  return std::accumulate ( data.begin(), data.end(), sum );
+ }
+--- HippoDraw-1.21.3/colorreps/BinToKamaeScale.cxx-orig	2009-07-06 07:07:07.280382000 -0500
++++ HippoDraw-1.21.3/colorreps/BinToKamaeScale.cxx	2009-07-06 08:32:55.123465000 -0500
+@@ -11,6 +11,7 @@ $Id: BinToKamaeScale.cxx,v 1.6 2005/10/3
+ 
+ #include "BinToKamaeScale.h"
+ 
++#include <math.h>
+ #include <cmath>
+ 
+ #include <cassert>
+--- HippoDraw-1.21.3/aclocal.m4-orig	2009-07-08 10:03:57.429569000 -0500
++++ HippoDraw-1.21.3/aclocal.m4	2009-07-08 10:04:16.653555000 -0500
+@@ -3881,7 +3881,7 @@ solaris*)
+     # Adding this requires a known-good setup of shared libraries for
+     # Sun compiler versions before 5.6, else PIC objects from an old
+     # archive will be linked into the output, leading to subtle bugs.
+-    _LT_AC_TAGVAR(postdeps,$1)='-lCstd -lCrun'
++    #_LT_AC_TAGVAR(postdeps,$1)='-lCstd -lCrun'
+     ;;
+   esac
+   ;;

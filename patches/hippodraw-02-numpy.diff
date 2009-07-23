@@ -1,0 +1,11 @@
+--- HippoDraw-1.21.3/config/m4/pfkeb_have_numpy.m4-orig	2009-07-08 07:08:54.564493000 -0500
++++ HippoDraw-1.21.3/config/m4/pfkeb_have_numpy.m4	2009-07-08 07:09:00.212379000 -0500
+@@ -8,7 +8,7 @@ AC_DEFUN([PFK_HAVE_NUMPY],
+   have_numeric=yes
+ 
+   pfkeb_numpy_lib="$pfk_py_lib_path"
+-  pfkeb_numpy_include="$pfk_py_lib_path"/site-packages/numpy/core/include
++  pfkeb_numpy_include="$pfk_py_lib_path"/vendor-packages/numpy/core/include
+   no_good=no
+   AC_CHECK_FILE($pfkeb_numpy_include/numpy/arrayobject.h, , no_good=yes )
+ 

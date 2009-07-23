@@ -1,0 +1,52 @@
+--- sugar-toolkit-0.84.4/configure.ac-orig	2009-07-05 08:07:38.661236000 -0500
++++ sugar-toolkit-0.84.4/configure.ac	2009-07-05 08:22:53.096803000 -0500
+@@ -19,7 +19,15 @@ AM_CHECK_PYTHON_HEADERS(,[AC_MSG_ERROR(c
+ 
+ AC_PATH_PROG(PYGTK_CODEGEN, pygtk-codegen-2.0, no)
+ 
+-PKG_CHECK_MODULES(EXT, pygtk-2.0 gtk+-2.0 sm ice alsa)
++PKG_CHECK_MODULES(EXT, pygtk-2.0 gtk+-2.0 sm ice)
++
++PKG_CHECK_MODULES(alsa,, 
++	have_alsa=yes,
++	have_alsa=no)
++if test "x$have_alsa" = "xyes" ; then
++  AC_DEFINE(HAVE_ALSA, [], [Define if we have ALSA])
++fi
++AM_CONDITIONAL(HAVE_ALSA, test x$have_alsa = xyes)
+ 
+ PYGTK_DEFSDIR=`$PKG_CONFIG --variable=defsdir pygtk-2.0`
+ AC_SUBST(PYGTK_DEFSDIR)
+--- sugar-toolkit-0.84.4/src/sugar/Makefile.am-orig	2009-07-05 08:14:15.014655000 -0500
++++ sugar-toolkit-0.84.4/src/sugar/Makefile.am	2009-07-05 08:24:34.580438000 -0500
+@@ -13,9 +13,13 @@ pkgpyexecdir = $(pythondir)/sugar
+ 
+ pkgpyexec_LTLIBRARIES = _sugarext.la
+ 
++if HAVE_ALSA
++ALSA_FLAGS="-DHAVE_ALSA"
++endif
++
+ _sugarext_la_CFLAGS = 		\
+-	-DHAVE_ALSA		\
+-        $(WARN_CFLAGS)		\
++        $(ALSA_FLAGS)		\
++       $(WARN_CFLAGS)		\
+ 	$(EXT_CFLAGS)		\
+ 	$(PYTHON_INCLUDES)
+ 
+--- sugar-toolkit-0.84.4/src/sugar/acme-volume-alsa.c-orig	2009-07-05 08:29:28.181254000 -0500
++++ sugar-toolkit-0.84.4/src/sugar/acme-volume-alsa.c	2009-07-05 08:29:43.693795000 -0500
+@@ -24,6 +24,7 @@
+ #include "config.h"
+ #endif
+ 
++#ifdef HAVE_ALSA
+ #include "acme-volume-alsa.h"
+ 
+ #include <alsa/asoundlib.h>
+@@ -315,3 +316,4 @@ acme_volume_alsa_class_init (AcmeVolumeA
+ 	volume_class->get_threshold = acme_volume_alsa_get_threshold;
+ }
+ 
++#endif
