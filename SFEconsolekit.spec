@@ -23,27 +23,26 @@
 
 Name:                    SFEconsolekit
 Summary:                 Framework for tracking users, login sessions, and seats.
-Version:                 0.3.0
+Version:                 0.3.1
 URL:                     http://www.freedesktop.org/wiki/Software/ConsoleKit
-Source:                  http://people.freedesktop.org/~mccann/dist/ConsoleKit-%{version}.tar.bz2
+Source:                  http://www.freedesktop.org/software/ConsoleKit/dist/ConsoleKit-%{version}.tar.bz2
 Source1:                 consolekit.xml
-# date:2008-01-31 owner:yippi type:bug bugid:18149 status:upstreamed
-Patch1:                  ConsoleKit-01-emptystruct.diff
-# date:2008-03-02 owner:halton type:bug bugid:18173 status:upstreamed
-Patch2:                  ConsoleKit-02-pam.diff
 # date:2008-03-04 owner:halton type:bug bugid:18261
-Patch3:                  ConsoleKit-03-ck-history.diff
+Patch1:                  ConsoleKit-01-ck-history.diff
 # date:2008-12-30 owner:halton type:bug bugid:19333
-Patch4:                  ConsoleKit-04-ck-dynamic.diff
+Patch2:                  ConsoleKit-02-ck-dynamic.diff
 # date:2008-06-24 owner:halton type:bug bugid:15866
 # Disable getcurrentsession.diff for now, since halton think it is not
 # a bug actually
 #Patch5:                  ConsoleKit-05-getcurrentsession.diff
-Patch5:                  ConsoleKit-05-add-sunray-type.diff
-Patch6:                  ConsoleKit-06-dynamic-tty.diff
-Patch7:                  ConsoleKit-07-solaris-vtdaemon.diff
-# date:2009-06-19 owner:halton type:bug bugid:22361 status:upstreamed
-Patch8:                  ConsoleKit-08-solaris-getpwnamr.diff
+# date:2009-07-23 owner:halton type:branding
+Patch3:                  ConsoleKit-03-add-sunray-type.diff
+# date:2009-07-23 owner:halton type:branding
+Patch4:                  ConsoleKit-04-dynamic-tty.diff
+# date:2009-07-23 owner:halton type:branding
+Patch5:                  ConsoleKit-05-solaris-vtdaemon.diff
+# date:2009-07-23 owner:yippi type:branding
+Patch6:                  ConsoleKit-06-dev-console.diff
 SUNW_Copyright:          %{name}.copyright
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -105,8 +104,6 @@ Requires: %name
 %patch4 -p1
 %patch5 -p1
 %patch6 -p1
-%patch7 -p1
-%patch8 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -226,6 +223,11 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Thu Jul 23 2009 - halton.huo@sun.com
+- Bump to 0.3.1
+- Remove upstreamed patch: emptystruct.diff, pam.diff, solaris-getpwnamr.diff
+  and reorder rest
+- Add patch dev-console.diff to change owner of /dev/console for console login
 * Tue Jun 23 2009 - halton.huo@sun.com
 - Add copyright
 * Wed Apr 08 2009 - halton.huo@sun.com

@@ -1,5 +1,5 @@
 diff --git a/configure.ac b/configure.ac
-index 77a8844..ea74469 100644
+index 5484557..8e348c4 100644
 --- a/configure.ac
 +++ b/configure.ac
 @@ -45,7 +45,7 @@ AC_CHECK_HEADERS(paths.h)
@@ -11,7 +11,7 @@ index 77a8844..ea74469 100644
  
  AC_TYPE_UID_T
  
-@@ -200,6 +200,18 @@ AM_CONDITIONAL(CK_COMPILE_SOLARIS, test x$CK_BACKEND = xsolaris, [Compiling for
+@@ -203,6 +203,18 @@ AM_CONDITIONAL(CK_COMPILE_SOLARIS, test x$CK_BACKEND = xsolaris, [Compiling for
  AC_SUBST(CK_BACKEND)
  
  dnl ---------------------------------------------------------------------------
@@ -30,7 +30,7 @@ index 77a8844..ea74469 100644
  dnl Check for PAM
  dnl ---------------------------------------------------------------------------
  
-@@ -395,6 +407,7 @@ tools/linux/Makefile
+@@ -401,6 +413,7 @@ tools/linux/Makefile
  tools/freebsd/Makefile
  tools/solaris/Makefile
  data/Makefile
@@ -81,20 +81,21 @@ index 6e61db4..472fd77 100644
 +# Zero or negative number or no value means choose next available vt number
 +TtyDevices=
 diff --git a/data/ConsoleKit.conf b/data/ConsoleKit.conf
-index dbe29f8..e2ee1b1 100644
+index 948f95f..0ab98c9 100644
 --- a/data/ConsoleKit.conf
 +++ b/data/ConsoleKit.conf
-@@ -84,6 +84,8 @@
-     <allow send_interface="org.freedesktop.ConsoleKit.Session"
+@@ -127,6 +127,9 @@
             send_member="IsLocal"/>
-     <allow send_interface="org.freedesktop.ConsoleKit.Session"
+     <allow send_destination="org.freedesktop.ConsoleKit"
+            send_interface="org.freedesktop.ConsoleKit.Session"
 +           send_member="IsDynamic"/>
-+    <allow send_interface="org.freedesktop.ConsoleKit.Session"
++    <allow send_destination="org.freedesktop.ConsoleKit"
++           send_interface="org.freedesktop.ConsoleKit.Session"
             send_member="GetCreationTime"/>
-     <allow send_interface="org.freedesktop.ConsoleKit.Session"
-            send_member="Activate"/>
+     <allow send_destination="org.freedesktop.ConsoleKit"
+            send_interface="org.freedesktop.ConsoleKit.Session"
 diff --git a/data/Makefile.am b/data/Makefile.am
-index ca51570..83b61cd 100644
+index 041b431..0f20cfd 100644
 --- a/data/Makefile.am
 +++ b/data/Makefile.am
 @@ -1,5 +1,9 @@
@@ -521,7 +522,7 @@ index 0000000..1b290f7
 +
 +#endif /* __CK_DISPLAY_TYPE_H */
 diff --git a/src/ck-log-event.c b/src/ck-log-event.c
-index 7e8ce10..398c570 100644
+index 965a036..203c058 100644
 --- a/src/ck-log-event.c
 +++ b/src/ck-log-event.c
 @@ -213,6 +213,7 @@ event_seat_session_added_copy (CkLogSeatSessionAddedEvent *event,
@@ -544,8 +545,8 @@ index 7e8ce10..398c570 100644
  
          e = (CkLogSeatSessionAddedEvent *)event;
          g_string_append_printf (str,
--                                " seat-id='%s' session-id='%s' session-type='%s' session-x11-display='%s' session-x11-display-device='%s' session-display-device='%s' session-remote-host-name='%s' session-is-local=%s session-unix-user=%u session-creation-time='%s'",
-+                                " seat-id='%s' session-id='%s' session-type='%s' session-x11-display='%s' session-x11-display-device='%s' session-display-device='%s' session-remote-host-name='%s' session-is-local=%s session-is-dynamic=%s session-unix-user=%u session-creation-time='%s'",
+-                                "seat-id='%s' session-id='%s' session-type='%s' session-x11-display='%s' session-x11-display-device='%s' session-display-device='%s' session-remote-host-name='%s' session-is-local=%s session-unix-user=%u session-creation-time='%s'",
++                                "seat-id='%s' session-id='%s' session-type='%s' session-x11-display='%s' session-x11-display-device='%s' session-display-device='%s' session-remote-host-name='%s' session-is-local=%s session-is-dynamic=%s session-unix-user=%u session-creation-time='%s'",
                                  e->seat_id ? e->seat_id : "",
                                  e->session_id ? e->session_id : "",
                                  e->session_type ? e->session_type : "",
@@ -561,8 +562,8 @@ index 7e8ce10..398c570 100644
  
          e = (CkLogSeatSessionRemovedEvent *)event;
          g_string_append_printf (str,
--                                " seat-id='%s' session-id='%s' session-type='%s' session-x11-display='%s' session-x11-display-device='%s' session-display-device='%s' session-remote-host-name='%s' session-is-local=%s session-unix-user=%u session-creation-time='%s'",
-+                                " seat-id='%s' session-id='%s' session-type='%s' session-x11-display='%s' session-x11-display-device='%s' session-display-device='%s' session-remote-host-name='%s' session-is-local=%s session-is-dynamic=%s session-unix-user=%u session-creation-time='%s'",
+-                                "seat-id='%s' session-id='%s' session-type='%s' session-x11-display='%s' session-x11-display-device='%s' session-display-device='%s' session-remote-host-name='%s' session-is-local=%s session-unix-user=%u session-creation-time='%s'",
++                                "seat-id='%s' session-id='%s' session-type='%s' session-x11-display='%s' session-x11-display-device='%s' session-display-device='%s' session-remote-host-name='%s' session-is-local=%s session-is-dynamic=%s session-unix-user=%u session-creation-time='%s'",
                                  e->seat_id ? e->seat_id : "",
                                  e->session_id ? e->session_id : "",
                                  e->session_type ? e->session_type : "",
@@ -574,7 +575,7 @@ index 7e8ce10..398c570 100644
                                  e->session_unix_user,
                                  e->session_creation_time ? e->session_creation_time : "");
  }
-@@ -890,7 +894,7 @@ parse_log_for_seat_session_added (const GString *str,
+@@ -899,7 +903,7 @@ parse_log_for_seat_session_added (const GString *str,
          }
  
          error = NULL;
@@ -583,7 +584,7 @@ index 7e8ce10..398c570 100644
          if (re == NULL) {
                  g_warning (error->message);
                  goto out;
-@@ -922,6 +926,14 @@ parse_log_for_seat_session_added (const GString *str,
+@@ -931,6 +935,14 @@ parse_log_for_seat_session_added (const GString *str,
          }
          g_free (tmp);
  
@@ -598,7 +599,7 @@ index 7e8ce10..398c570 100644
          tmp = g_match_info_fetch_named (match_info, "sessionunixuser");
          if (tmp != NULL) {
                  gulong l;
-@@ -965,7 +977,7 @@ parse_log_for_seat_session_removed (const GString *str,
+@@ -974,7 +986,7 @@ parse_log_for_seat_session_removed (const GString *str,
          }
  
          error = NULL;
@@ -607,7 +608,7 @@ index 7e8ce10..398c570 100644
          if (re == NULL) {
                  g_warning (error->message);
                  goto out;
-@@ -997,6 +1009,14 @@ parse_log_for_seat_session_removed (const GString *str,
+@@ -1006,6 +1018,14 @@ parse_log_for_seat_session_removed (const GString *str,
          }
          g_free (tmp);
  
@@ -623,7 +624,7 @@ index 7e8ce10..398c570 100644
          if (tmp != NULL) {
                  gulong l;
 diff --git a/src/ck-log-event.h b/src/ck-log-event.h
-index a54a34e..f95fb37 100644
+index 0c04c1d..6d600b7 100644
 --- a/src/ck-log-event.h
 +++ b/src/ck-log-event.h
 @@ -85,6 +85,7 @@ typedef struct
@@ -643,7 +644,7 @@ index a54a34e..f95fb37 100644
          char    *session_creation_time;
  } CkLogSeatSessionRemovedEvent;
 diff --git a/src/ck-manager.c b/src/ck-manager.c
-index bcb9350..1119e95 100644
+index bb65d73..728bfbb 100644
 --- a/src/ck-manager.c
 +++ b/src/ck-manager.c
 @@ -49,6 +49,7 @@
@@ -670,23 +671,7 @@ index bcb9350..1119e95 100644
                                "unix-user", &event.event.seat_session_removed.session_unix_user,
                                NULL);
                  ck_session_get_creation_time (session, &event.event.seat_session_removed.session_creation_time, NULL);
-@@ -779,6 +782,7 @@ new_polkit_session_from_session (CkManager *manager,
-         uid_t          uid;
-         gboolean       is_active;
-         gboolean       is_local;
-+        gboolean       is_dynamic;
-         char          *sid;
-         char          *ssid;
-         char          *remote_host;
-@@ -792,6 +796,7 @@ new_polkit_session_from_session (CkManager *manager,
-         g_object_get (ck_session,
-                       "active", &is_active,
-                       "is-local", &is_local,
-+                      "is-dynamic", &is_dynamic,
-                       "id", &ssid,
-                       "unix-user", &uid,
-                       "remote-host-name", &remote_host,
-@@ -1596,57 +1601,17 @@ find_seat_for_session (CkManager *manager,
+@@ -1383,57 +1386,17 @@ find_seat_for_session (CkManager *manager,
                         CkSession *session)
  {
          CkSeat  *seat;
@@ -751,7 +736,7 @@ index bcb9350..1119e95 100644
          return seat;
  }
  
-@@ -2635,6 +2600,30 @@ ck_manager_get_seats (CkManager  *manager,
+@@ -2372,6 +2335,30 @@ ck_manager_get_seats (CkManager  *manager,
          return TRUE;
  }
  
@@ -782,7 +767,7 @@ index bcb9350..1119e95 100644
  static void
  listify_session_ids (char       *id,
                       CkSession  *session,
-@@ -2660,6 +2649,159 @@ ck_manager_get_sessions (CkManager  *manager,
+@@ -2397,6 +2384,159 @@ ck_manager_get_sessions (CkManager  *manager,
          return TRUE;
  }
  
@@ -942,7 +927,7 @@ index bcb9350..1119e95 100644
  static void
  add_seat_for_file (CkManager  *manager,
                     const char *filename)
-@@ -2673,6 +2815,7 @@ add_seat_for_file (CkManager  *manager,
+@@ -2410,6 +2550,7 @@ add_seat_for_file (CkManager  *manager,
          if (seat == NULL) {
                  /* returns null if connection to bus fails */
                  g_free (sid);
@@ -950,7 +935,7 @@ index bcb9350..1119e95 100644
                  return;
          }
  
-@@ -2750,8 +2893,6 @@ ck_manager_init (CkManager *manager)
+@@ -2487,8 +2628,6 @@ ck_manager_init (CkManager *manager)
                                                          (GDestroyNotify) g_object_unref);
  
          manager->priv->logger = ck_event_logger_new (LOG_FILE);
@@ -959,7 +944,7 @@ index bcb9350..1119e95 100644
  }
  
  static void
-@@ -2796,6 +2937,8 @@ ck_manager_new (void)
+@@ -2533,6 +2672,8 @@ ck_manager_new (void)
                          g_object_unref (manager_object);
                          return NULL;
                  }
@@ -969,10 +954,10 @@ index bcb9350..1119e95 100644
  
          return CK_MANAGER (manager_object);
 diff --git a/src/ck-manager.h b/src/ck-manager.h
-index 45910b7..c4c307d 100644
+index 4bd56e8..f339046 100644
 --- a/src/ck-manager.h
 +++ b/src/ck-manager.h
-@@ -91,6 +91,9 @@ gboolean            ck_manager_get_sessions                   (CkManager
+@@ -96,6 +96,9 @@ gboolean            ck_manager_get_sessions                   (CkManager
  gboolean            ck_manager_get_seats                      (CkManager             *manager,
                                                                 GPtrArray            **seats,
                                                                 GError               **error);
@@ -982,7 +967,7 @@ index 45910b7..c4c307d 100644
  gboolean            ck_manager_close_session                  (CkManager             *manager,
                                                                 const char            *cookie,
                                                                 DBusGMethodInvocation *context);
-@@ -123,6 +126,17 @@ gboolean            ck_manager_open_session_with_parameters   (CkManager
+@@ -128,6 +131,17 @@ gboolean            ck_manager_open_session_with_parameters   (CkManager
                                                                 const GPtrArray       *parameters,
                                                                 DBusGMethodInvocation *context);
  
@@ -1407,7 +1392,7 @@ index 5977781..2155c62 100644
  G_END_DECLS
  
 diff --git a/src/ck-session.c b/src/ck-session.c
-index 8ba8791..d4cc615 100644
+index 4009ee1..c4cc64a 100644
 --- a/src/ck-session.c
 +++ b/src/ck-session.c
 @@ -67,6 +67,7 @@ struct CkSessionPrivate
@@ -1542,7 +1527,7 @@ index 8ba8791..d4cc615 100644
  
          g_object_class_install_property (object_class,
                                           PROP_SESSION_TYPE,
-@@ -1281,6 +1338,7 @@ ck_session_run_programs (CkSession  *session,
+@@ -1283,6 +1340,7 @@ ck_session_run_programs (CkSession  *session,
          }
          extra_env[n++] = g_strdup_printf ("CK_SESSION_IS_ACTIVE=%s", session->priv->active ? "true" : "false");
          extra_env[n++] = g_strdup_printf ("CK_SESSION_IS_LOCAL=%s", session->priv->is_local ? "true" : "false");
@@ -1550,7 +1535,7 @@ index 8ba8791..d4cc615 100644
          extra_env[n++] = NULL;
  
          ck_run_programs (SYSCONFDIR "/ConsoleKit/run-session.d", action, extra_env);
-@@ -1350,6 +1408,7 @@ ck_session_dump (CkSession *session,
+@@ -1352,6 +1410,7 @@ ck_session_dump (CkSession *session,
                                 NONULL_STRING (session->priv->remote_host_name));
          g_key_file_set_boolean (key_file, group_name, "is_active", session->priv->active);
          g_key_file_set_boolean (key_file, group_name, "is_local", session->priv->is_local);
@@ -1583,10 +1568,10 @@ index c9ebd08..c288745 100644
                                                         guint                 *uid,
                                                         GError               **error);
 diff --git a/src/org.freedesktop.ConsoleKit.Manager.xml b/src/org.freedesktop.ConsoleKit.Manager.xml
-index f405c25..7d3145b 100644
+index f903b55..6cf4b0a 100644
 --- a/src/org.freedesktop.ConsoleKit.Manager.xml
 +++ b/src/org.freedesktop.ConsoleKit.Manager.xml
-@@ -150,6 +150,23 @@
+@@ -160,6 +160,23 @@
        </doc:doc>
      </method>
  
@@ -1610,7 +1595,7 @@ index f405c25..7d3145b 100644
      <method name="GetSessions">
        <arg name="sessions" direction="out" type="ao">
          <doc:doc>
-@@ -300,6 +317,44 @@
+@@ -310,6 +327,44 @@
        </doc:doc>
      </method>
  
@@ -1656,10 +1641,10 @@ index f405c25..7d3145b 100644
        <arg name="sid" type="o">
          <doc:doc>
 diff --git a/src/org.freedesktop.ConsoleKit.Seat.xml b/src/org.freedesktop.ConsoleKit.Seat.xml
-index 0e13a0f..b3dd117 100644
+index d95990b..b068558 100644
 --- a/src/org.freedesktop.ConsoleKit.Seat.xml
 +++ b/src/org.freedesktop.ConsoleKit.Seat.xml
-@@ -99,6 +99,14 @@ seat at a time.</doc:para>
+@@ -100,6 +100,14 @@ seat at a time.</doc:para>
        </doc:doc>
      </method>
  
@@ -1674,7 +1659,7 @@ index 0e13a0f..b3dd117 100644
      <signal name="ActiveSessionChanged">
        <arg name="ssid" type="o">
          <doc:doc>
-@@ -159,5 +167,34 @@ seat at a time.</doc:para>
+@@ -160,5 +168,34 @@ seat at a time.</doc:para>
          </doc:description>
        </doc:doc>
      </signal>
@@ -2177,10 +2162,10 @@ index 0000000..c148c68
 +        return 0;
 +}
 diff --git a/tools/list-sessions.c b/tools/list-sessions.c
-index 0a026c8..120f583 100644
+index 3933772..d7839ab 100644
 --- a/tools/list-sessions.c
 +++ b/tools/list-sessions.c
-@@ -173,6 +173,7 @@ list_session (DBusGConnection *connection,
+@@ -184,6 +184,7 @@ list_session (DBusGConnection *connection,
          char       *idle_since_hint;
          gboolean    is_active;
          gboolean    is_local;
@@ -2188,7 +2173,7 @@ index 0a026c8..120f583 100644
          char       *short_sid;
          const char *short_ssid;
  
-@@ -204,6 +205,7 @@ list_session (DBusGConnection *connection,
+@@ -215,6 +216,7 @@ list_session (DBusGConnection *connection,
          get_string (proxy, "GetRemoteHostName", &remote_host_name);
          get_boolean (proxy, "IsActive", &is_active);
          get_boolean (proxy, "IsLocal", &is_local);
@@ -2196,7 +2181,7 @@ index 0a026c8..120f583 100644
          get_string (proxy, "GetCreationTime", &creation_time);
          get_string (proxy, "GetIdleSinceHint", &idle_since_hint);
  
-@@ -219,7 +221,7 @@ list_session (DBusGConnection *connection,
+@@ -230,7 +232,7 @@ list_session (DBusGConnection *connection,
                  short_ssid = ssid + strlen (CK_PATH) + 1;
          }
  
@@ -2205,7 +2190,7 @@ index 0a026c8..120f583 100644
                  short_ssid,
                  uid,
                  realname,
-@@ -231,6 +233,7 @@ list_session (DBusGConnection *connection,
+@@ -242,6 +244,7 @@ list_session (DBusGConnection *connection,
                  display_device,
                  remote_host_name,
                  is_local ? "TRUE" : "FALSE",

@@ -1,3 +1,17 @@
+2009-07-23  Halton Huo  <halton.huo@sun.com>
+
+	* SFEconsolekit.spec: Bump to 0.3.1
+	* patches/ConsoleKit-01-emptystruct.diff: remove upstreamd patch
+	* patches/ConsoleKit-02-pam.diff: remove upstreamd patch
+	* patches/ConsoleKit-03-ck-history.diff: reorder to 01
+	* patches/ConsoleKit-04-ck-dynamic.diff: reorder to 02 and rework
+	* patches/ConsoleKit-05-add-sunray-type.diff: reorder to 03
+	* patches/ConsoleKit-06-dynamic-tty.diff: reorder to 04
+	* patches/ConsoleKit-07-solaris-vtdaemon.diff: reorder to 05
+	* patches/ConsoleKit-06-dev-console.diff: Added to change owner of
+	  /dev/console
+	* patches/ConsoleKit-08-solaris-getpwnamr.diff: remove upstreamed patch
+
 2009-07-22  Halton Huo  <halton.huo@sun.com>
 
 	* SFEconsolekit.spec: minor change on comment for patch8
