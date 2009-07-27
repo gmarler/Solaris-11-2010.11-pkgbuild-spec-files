@@ -13,14 +13,14 @@ Summary:                Bullet Physics Library
 Version:                2.50
 Source:                 %{src_url}/%{src_name}-%{version}b.tgz
 SUNW_BaseDir:           %{_basedir}
-BuildRoot:              %{_tmppath}/%{name}-%{version}-build
+BuildRoot:              %{_tmppath}/%{name}-%{version}b-build
 %include default-depend.inc
 BuildRequires: SFEjam
 BuildRequires: SFEfreeglut-devel
 Requires: SFEfreeglut
 
 %prep
-%setup -q -n %{src_name}-%{version}
+%setup -q -n %{src_name}-%{version}b
 find . -type f -exec dos2unix {} {} \;
 /bin/ex - configure.ac << EOM
 /_AC_SRCPATHS/d
@@ -83,6 +83,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*
 
 %changelog
+* Jul 2009 - Gilles Dauphin
+- version is b
 * April 2008 - Gilles Dauphin
 - adjust name for IPS
 * Sun May  6 2007 - dougs@truemail.co.th
