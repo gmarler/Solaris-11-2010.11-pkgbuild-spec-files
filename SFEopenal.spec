@@ -63,10 +63,10 @@ make
 rm -rf $RPM_BUILD_ROOT
 cd %{src_name}-%{version}
 cd build
-#make install DESTDIR=$RPM_BUILD_ROOT
-make install
 mkdir $RPM_BUILD_ROOT
-mv ./sfw_stage $RPM_BUILD_ROOT/%{_prefix}
+make install DESTDIR=$RPM_BUILD_ROOT
+#make install
+#mv ./sfw_stage $RPM_BUILD_ROOT/%{_prefix}
 #rm $RPM_BUILD_ROOT/%{_libdir}/lib*.*a
 
 %clean
@@ -86,6 +86,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*
 
 %changelog
+* Jul 20 2009 - dauphin@enst.fr
+- install with DESTDIR as usual
 * Sun Feb 15 2009 - Thomas Wagner
 - bump to 1.7.411
 - rework patch openal-new-01.diff and "cd" into sourcedir to patch version independently
