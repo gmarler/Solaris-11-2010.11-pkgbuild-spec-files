@@ -11,14 +11,15 @@
 
 Name:                SFElsof
 Summary:             List open files
-Version:             4.79
-Source:              ftp://ftp.cerias.purdue.edu/pub/tools/unix/sysutils/lsof/lsof_%{version}.tar.gz
+Version:             4.79A
+Source:              http://ftp.cerias.purdue.edu/pub/tools/unix/sysutils/lsof/NEW/lsof_%{version}.sun.tar.bz2
+#http://ftp.cerias.purdue.edu/pub/tools/unix/sysutils/lsof/NEW/lsof_4.79A.sun.tar.bz2
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 
 %prep
-%setup -q -n lsof_%version
+%setup -q -n lsof_%version.sun
 
 %build 
 
@@ -30,8 +31,8 @@ fi
 export CFLAGS="%optflags"
 export LDFLAGS="%_ldflags"
 
-tar -xf lsof_4.78_src.tar
-cd lsof_4.78_src
+#gtar -xfj lsof_4.79A.sun.tar.bz2
+#cd lsof_4.79A.sun
 export LSOF_VSTR=5.10
 ./Configure -n solariscc
 
@@ -39,7 +40,7 @@ make -j$CPUS
 
 %install
 rm -rf $RPM_BUILD_ROOT
-cd lsof_4.78_src
+cd lsof_4.79A
 install -D lsof $RPM_BUILD_ROOT%{_bindir}/lsof
 install -D lsof.8   $RPM_BUILD_ROOT%{_mandir}/man8/lsof.8
 
@@ -56,6 +57,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man8/lsof.8
 
 %changelog
+* Jul 27 2007 - Gilles Dauphin
+- update http source path.
+- TODO: does not compile on B117 because need additional source.
+  (extdirent.h)
 * Wed Apr 23 2008 - Thomas Wagner
 - Bump to 4.79
 * Mon Nov 5 2007 - markwright@internode.on.net
