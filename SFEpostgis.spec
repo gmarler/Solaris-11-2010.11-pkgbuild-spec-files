@@ -33,7 +33,7 @@ Requires:		SUNWcsu
 Requires:		SUNWpmdbdpg
 Requires:		SUNWpng
 Requires:		SUNWjpg
-Requires:		SFEreadline
+Requires:		SUNWgnu-readline
 Requires:		SUNWpcre
 Requires:		SUNWzlib
 
@@ -119,5 +119,7 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Jun 26 2009 - Gilles Dauphin
+- readline is in B117
 * Fri Jun 26 2009 - Gilles Dauphin
 - inital config 
