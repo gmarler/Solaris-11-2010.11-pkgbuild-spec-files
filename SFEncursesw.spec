@@ -20,8 +20,8 @@ Version:             5.6
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
-Requires: SFEncurses
-Requires: SFEncurses-data
+Requires: SUNWncurses
+Requires: SUNWncurses-devel
 
 
 %package devel
@@ -86,6 +86,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/*
 
 %changelog
+* jul 27 2009 - Gilles Dauphin
+- s/SFEncurses/SUNWncurses/
+- s/SFEncurses-data/SUNWncurses-devel/
 * Sun Aug 10 2008 - andras.barna@gmail.com
 - Copied from SFEncurses
 * Fri Jan 11 2008 - moinak.ghosh@sun.com
