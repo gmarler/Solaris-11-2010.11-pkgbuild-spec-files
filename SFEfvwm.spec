@@ -15,8 +15,7 @@ SUNW_BaseDir:           %{_basedir}
 BuildRoot:              %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 
-BuildRequires: SFEreadline-devel
-Requires: SFEreadline
+Requires: SUNWgnu-readline
 Requires: SFElibstroke
 
 %prep
@@ -56,5 +55,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/doc
 
 %changelog
+* Jul 2009 - dauphin@enst.fr
+- SUNWreadline is in B117
 * Fri Apr 27 2006 - dougs@truemail.co.th
 - Initial version
