@@ -40,7 +40,7 @@ Requires:	SFEblas
 Requires:	SFEgnuplot
 Requires:	SFElapack
 Requires:	SUNWzlib
-Requires:	SFEreadline
+Requires:	SUNWgnu-readline
 BuildRequires: 	SUNWPython
 #TODO
 #Requires: suitesparse examples/octave.desktop
@@ -157,6 +157,8 @@ rm -rf $RPM_BUILD_ROOT
 #%endif
 
 %changelog
+* Jul 01 2009 - Gilles Dauphin
+- readline is in B117
 * April 01 2009 - Gilles Dauphin
 - SUNWfftw2 SUNWfftw3 is still in b109
 * Mars 20 2009 - Gilles Dauphin
