@@ -1,3 +1,13 @@
+2009-07-27  Gilles Dauphin
+
+	* SFEopenal.spec: install with DESTDIR
+	* SFEfvwm.spec: SUNWreadline is in B117
+	* SFEoctave.spec: SUNWreadline is in B117
+	* SFEpostgis.spec: SUNWreadline is in B117
+	* SFElsof.spec: update source path.
+	* SFEncursesw.spec: s/SFEncurses/SUNWncurses/
+	* SFEbullet.spec: version is 'b'
+
 2009-07-23  Halton Huo  <halton.huo@sun.com>
 
 	* SFEconsolekit.spec: Bump to 0.3.1
