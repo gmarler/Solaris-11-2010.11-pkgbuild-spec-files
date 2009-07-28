@@ -103,7 +103,7 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
-* Wed Feb 06 2008 - brian.cameorn@sun.com
+* Wed Feb 06 2008 - brian.cameron@sun.com
 - cleanup
 * Thu Jan 31 2008 - Jim.li@sun.com
 - initial SFE release.
