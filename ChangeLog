@@ -1,3 +1,8 @@
+2009-07-28  Alfred Peng  <alfred.peng@sun.com>
+
+	* SFEmenu-cache.spec: Added for LXDE.
+	* patches/menu-cache-01-Werror.diff: Added.
+
 2009-07-27  Gilles Dauphin
 
 	* SFEopenal.spec: install with DESTDIR
