@@ -1,3 +1,8 @@
+2009-07 28 Brian Cameron  <brian.cameron@sun.com>
+
+	* patches/SFEmoovida-05-pidof.diff: Update based on maintainer's
+	  comments.
+
 2009-07-28  Alfred Peng  <alfred.peng@sun.com>
 
 	* SFEmenu-cache.spec: Added for LXDE.
@@ -12,6 +17,16 @@
 	* SFElsof.spec: update source path.
 	* SFEncursesw.spec: s/SFEncurses/SUNWncurses/
 	* SFEbullet.spec: version is 'b'
+
+2009-07 23 Brian Cameron  <brian.cameron@sun.com>
+
+	* SFEsugar.spec, SFEsugar-toolkit.spec, SFEsugar-base.spec,
+	  SFEhippodraw.spec, patches/sugar-01-python.diff,
+	  patches/sugar-toolkit-01-noalsa.diff,
+	  patches/hippodraw-01-solaris.diff,
+	  patches/hippodraw-02-numpy.diff:  Add spec-files for sugar and
+	  hippodraw.  The hippodraw spec-file isn't working yet, but it is
+	  a start.
 
 2009-07-23  Halton Huo  <halton.huo@sun.com>
 
