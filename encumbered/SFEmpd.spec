@@ -15,19 +15,13 @@
 
 %include Solaris.inc
 
+%define realname mpd
 %define SUNWid3lib      %(/usr/bin/pkginfo -q SUNWid3lib && echo 1 || echo 0)
 
 Name:                SFEmpd
 Summary:             Daemon for remote access music playing & managing playlists
-Version:             0.13.0
-Source:              http://www.musicpd.org/uploads/files/mpd-%{version}.tar.bz2
-Patch1:              mpd-01-include-ao-mpdconf.example.diff
-Patch2:              mpd-02-filesystem_charset-UTF-8-mpdconf.example.diff
-Patch3:              mpd-03-id3-tags-UTF-8-mpdconf.example.diff
-Patch4:              mpd-04-libao_pulse-pulseaudio-icecast-mpdconf.example.diff
-#remove patch if change to empty struct is in normal download
-Patch5:              mpd-05-empty_struct_without_libsamplerate.diff
-
+Version:             0.15.1
+Source:              http://downloads.sourceforge.net/musicpd/%{realname}-%{version}.tar.bz2
 
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
@@ -38,7 +32,7 @@ BuildRequires: SFElibmpcdec-devel
 BuildRequires: SFElibmad-devel
 BuildRequires: SFEfaad2-devel
 BuildRequires: SFElibid3tag-devel
-#BuildRequires: SFElibsamplerate-devel
+BuildRequires: SFElibsamplerate-devel
 BuildRequires: SUNWogg-vorbis-devel
 BuildRequires: SUNWgnome-audio-devel
 BuildRequires: SUNWflac-devel
@@ -51,7 +45,7 @@ Requires: SFElibmpcdec
 Requires: SFElibmad
 Requires: SFEfaad2
 Requires: SFElibid3tag
-#Requires: SFElibsamplerate
+Requires: SFElibsamplerate
 Requires: SUNWogg-vorbis
 Requires: SUNWgnome-audio
 Requires: SUNWflac
@@ -80,12 +74,6 @@ auto-network SFEpulseaudio ( via pulseaudio, libao (sun|pulse) )
 
 %prep
 %setup -q -n mpd-%version
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
-%patch4 -p1
-#remove patch if change to empty struct is in normal download
-%patch5 -p1
 
 %build
 
@@ -97,23 +85,21 @@ fi
 export CFLAGS="%optflags"
 export LDFLAGS="%{_ldflags}"
 
-
-# Note: mp3 decoding and id3tag support is not configured 
-# in here (it probably should be though)
-
-#test#libtoolize --force
+# Fix the LibMAD detection failure to enable MP3 support
+export MAD_CFLAGS="-I/usr/include/mad.h"
+export MAD_LIBS="-lmad"
 
 ./configure --prefix=%{_prefix}  \
             --mandir=%{_mandir}  \
-	    --enable-ao          \
-	    --enable-shout       \
+    	    --enable-ao          \
+	        --enable-shout       \
             --disable-alsa       \
             --disable-alsatest   \
-            --disable-lsr        \
+#            --disable-lsr        \
 
 #optional:
             # --with-zeroconf=no   \
-	    # --enable-pulse
+	        # --enable-pulse
 
 make -j$CPUS
 
@@ -147,6 +133,13 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/doc/*
 
 %changelog
+* Tue Jul 28 2009 - oliver.mauras@gmail.com
+- Version bump to 0.15.1
+- Add realname variable
+- No problems found with libsamplerate so reactivated it
+* Sun Mar 15 2009 - oliver.mauras@gmail.com 
+- Version bump
+- Fix LibMAD detection
 * Sat Dec 20 2008 - Thomas Wagner
 - add nice and clean conditional (Build-)Requires: %if %SUNWid3lib ... %else ... SFEid3lib(-devel)
 * Wed Nov 28 2007 - Thomas Wagner

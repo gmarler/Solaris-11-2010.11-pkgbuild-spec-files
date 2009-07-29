@@ -1,3 +1,12 @@
+2009-07 28 Olivier Mauras  <oliver.mauras@gmail.com>
+
+    * SFEscrot.spec: New spec-file
+    * SFEgiblib.spec: New spec-file as a dep for SFEscrot.spec
+    * SFElibshout.spec: Fix that empty bindir and missing pkgconfig dir
+    * SFEmpd.spec: Version bump to 0.15.1, fix the libMAD detection bug,
+      add a realname variable for source download, re enable libsamplerate
+      as no problem could be noticed with.
+
 2009-07 28 Brian Cameron  <brian.cameron@sun.com>
 
 	* patches/SFEmoovida-05-pidof.diff: Update based on maintainer's

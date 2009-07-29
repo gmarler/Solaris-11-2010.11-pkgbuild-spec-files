@@ -103,6 +103,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Jul 28 2009 - oliver.mauras@gmail.com
+- fix that empty bindir and missing pkgconfig
 * Sat Dec 20 2008 - Thomas Wagner
 - remove wrong line /usr in %files
 * Sat May 10 2008 - Thomas Wagner
