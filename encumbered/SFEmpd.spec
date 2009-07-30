@@ -15,13 +15,13 @@
 
 %include Solaris.inc
 
-%define realname mpd
+%define srcname mpd
 %define SUNWid3lib      %(/usr/bin/pkginfo -q SUNWid3lib && echo 1 || echo 0)
 
 Name:                SFEmpd
 Summary:             Daemon for remote access music playing & managing playlists
 Version:             0.15.1
-Source:              http://downloads.sourceforge.net/musicpd/%{realname}-%{version}.tar.bz2
+Source:              http://downloads.sourceforge.net/musicpd/%{srcname}-%{version}.tar.bz2
 
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
@@ -73,7 +73,7 @@ auto-network SFEpulseaudio ( via pulseaudio, libao (sun|pulse) )
 
 
 %prep
-%setup -q -n mpd-%version
+%setup -q -n %srcname-%version
 
 %build
 
@@ -84,10 +84,6 @@ fi
 
 export CFLAGS="%optflags"
 export LDFLAGS="%{_ldflags}"
-
-# Fix the LibMAD detection failure to enable MP3 support
-export MAD_CFLAGS="-I/usr/include/mad.h"
-export MAD_LIBS="-lmad"
 
 ./configure --prefix=%{_prefix}  \
             --mandir=%{_mandir}  \
@@ -133,6 +129,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/doc/*
 
 %changelog
+* Thu Jul 30 2009 - oliver.mauras@gmail.com
+- Remove libMAD fix as libMAD spec fixed in r1997
+* Wed Jul 29 2009 - oliver.mauras@gmail.com
+- Small fix to the srcname declaration
 * Tue Jul 28 2009 - oliver.mauras@gmail.com
 - Version bump to 0.15.1
 - Add realname variable
