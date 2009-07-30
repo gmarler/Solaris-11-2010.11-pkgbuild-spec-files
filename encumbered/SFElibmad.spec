@@ -68,6 +68,20 @@ make -j$CPUS
 rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
 rm -f $RPM_BUILD_ROOT%{_libdir}/lib*a
+# Generate pkgconfig mad.pc file
+mkdir $RPM_BUILD_ROOT%{_libdir}/pkgconfig
+cat > $RPM_BUILD_ROOT%{_libdir}/pkgconfig/mad.pc << EOF
+prefix=%{_prefix}
+exec_prefix=\${prefix}
+libdir=\${exec_prefix}/lib
+includedir=\${prefix}/include/
+
+Name: libMAD
+Description: A high-quality MPEG audio decoder
+Version: 0.15.1b
+Libs: -L\${libdir} -lmad
+Cflags: -I\${includedir}
+EOF
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -76,6 +90,8 @@ rm -rf $RPM_BUILD_ROOT
 %defattr (-, root, bin)
 %dir %attr (0755, root, bin) %{_libdir}
 %{_libdir}/lib*.so*
+%dir %attr (0755, root, other) %{_libdir}/pkgconfig
+%{_libdir}/pkgconfig/*
 
 %files devel
 %defattr (-, root, bin)
@@ -83,6 +99,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/*
 
 %changelog
+* Thu Jul 30 2009 - oliver.mauras@gmail.com
+- Add mad.pc to have a better detection for apps that needs libMAD
 * Thu Jul 27 2006 - halton.huo@sun.com
 - Correct Source url s/kend/kent
 * Mon Jun 12 2006 - laca@sun.com
