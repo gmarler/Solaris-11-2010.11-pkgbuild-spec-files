@@ -1,3 +1,7 @@
+2009-07-30 Olivier Mauras <oliver.mauras@gmail.com>
+    * encumbered/SFElibmad.spec: Add mad.pc to have a better detection for apps that needs libMAD
+    * encumbered/SFEmpd.spec: Remove libMAD detection fix as fixed since r1997
+
 2009-07 28 Olivier Mauras  <oliver.mauras@gmail.com>
 
     * SFEscrot.spec: New spec-file
