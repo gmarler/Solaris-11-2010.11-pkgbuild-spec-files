@@ -1,0 +1,11 @@
+--- xautolock-2.2/Makefile-orig	2009-07-31 14:01:12.953350000 -0500
++++ xautolock-2.2/Makefile	2009-07-31 14:01:18.638844000 -0500
+@@ -149,7 +149,7 @@ TCLIBDIR =
+   SYSTEMUSRINCDIR = /usr/include
+          SHLIBDIR = /usr/X11/lib
+        LINTLIBDIR = $(USRLIBDIR)/lint
+-          MANPATH = /usr/X11/man
++          MANPATH = /usr/X11/share/man
+     MANSOURCEPATH = $(MANPATH)/man
+            MANDIR = $(MANSOURCEPATH)1
+         LIBMANDIR = $(MANSOURCEPATH)3

@@ -1,3 +1,8 @@
+2009-07-31 Brian Cameron  <brian.cameron@sun.com>
+
+	* SFExautolock.spec, patches/xautolock-01-manpath.diff: Add spec file
+	  for xautolock.
+
 2009-07-31  Halton Huo  <halton.huo@sun.com>
 
 	* SFEbzr.spec: Bump to 1.17
@@ -34,7 +39,7 @@
 	* encumbered/SFEmpd.spec: Remove libMAD detection fix as fixed
 	  since r1997
 
-2009-07 28 Olivier Mauras  <oliver.mauras@gmail.com>
+2009-07-28 Olivier Mauras  <oliver.mauras@gmail.com>
 
 	* SFEscrot.spec: New spec-file
 	* SFEgiblib.spec: New spec-file as a dep for SFEscrot.spec
@@ -43,7 +48,7 @@
 	  add a realname variable for source download, re enable libsamplerate
 	  as no problem could be noticed with.
 
-2009-07 28 Brian Cameron  <brian.cameron@sun.com>
+2009-07-28 Brian Cameron  <brian.cameron@sun.com>
 
 	* patches/SFEmoovida-05-pidof.diff: Update based on maintainer's
 	  comments.
@@ -63,7 +68,7 @@
 	* SFEncursesw.spec: s/SFEncurses/SUNWncurses/
 	* SFEbullet.spec: version is 'b'
 
-2009-07 23 Brian Cameron  <brian.cameron@sun.com>
+2009-07-23 Brian Cameron  <brian.cameron@sun.com>
 
 	* SFEsugar.spec, SFEsugar-toolkit.spec, SFEsugar-base.spec,
 	  SFEhippodraw.spec, patches/sugar-01-python.diff,
@@ -98,7 +103,7 @@
 	* patches/gdm-09-fixcompile.diff: reorder
 	* patches/gdm-10-no-system-gconf.diff: reorder
 
-2009-07 22 Brian Cameron  <brian.cameron@sun.com>
+2009-07-22 Brian Cameron  <brian.cameron@sun.com>
 
 	* patches/moovida-05-pidof.diff: Add locking to the patch.  This
 	  resolves further issues with calling pidof.
@@ -113,7 +118,7 @@
 	* SFEperl-compress-zlib.spec: I added IPSished new package version
 	  numbering
 
-2009-07 21 Brian Cameron  <brian.cameron@sun.com>
+2009-07-21 Brian Cameron  <brian.cameron@sun.com>
 
 	* base-specs/moovida.spec, patches/moovida-01-g11n-localedir.diff,
 	  patches/moovida-04-fixlocale.diff, patches/moovida-05-pidof.diff:
@@ -157,7 +162,7 @@
 	* SFEliveMedia.spec: to 2009.07.09 (thanks to Stephen Green)
 	* encumbered/SFEmplayer-snap.spec: improved handling of tarball
 
-2009-07 15 Brian Cameron  <brian.cameron@sun.com>
+2009-07-15 Brian Cameron  <brian.cameron@sun.com>
 
 	* SFEmoovida.spec, SFEmoovida-plugins.spec,
 	  base-specs/moovida-plugins-good.spec,
