@@ -1,15 +1,43 @@
+2009-07-31  Halton Huo  <halton.huo@sun.com>
+
+	Remove ConsoleKit and new GDM stuff, they are now in spec-files/trunk
+	* SFEconsolekit.spec:
+	* SUNWgnome-display-mgr.spec:
+	* copyright/SFEconsolekit.copyright:
+	* copyright/SUNWgnome-display-mgr.copyright:
+	* ext-sources/consolekit.xml:
+	* ext-sources/gdm.xml:
+	* ext-sources/svc-gdm:
+	* patches/ConsoleKit-01-ck-history.diff:
+	* patches/ConsoleKit-02-ck-dynamic.diff:
+	* patches/ConsoleKit-03-add-sunray-type.diff:
+	* patches/ConsoleKit-04-dynamic-tty.diff:
+	* patches/ConsoleKit-05-getcurrentsession.diff:
+	* patches/ConsoleKit-05-solaris-vtdaemon.diff:
+	* patches/ConsoleKit-06-dev-console.diff:
+	* patches/gdm-01-branding.diff:
+	* patches/gdm-02-sdtlogin-devperm.diff:
+	* patches/gdm-03-ctrun.diff:
+	* patches/gdm-04-dynamic-display.diff:
+	* patches/gdm-05-default.diff:
+	* patches/gdm-06-fixcompile.diff:
+	* patches/gdm-07-no-system-gconf.diff:
+
 2009-07-30 Olivier Mauras <oliver.mauras@gmail.com>
-    * encumbered/SFElibmad.spec: Add mad.pc to have a better detection for apps that needs libMAD
-    * encumbered/SFEmpd.spec: Remove libMAD detection fix as fixed since r1997
+
+	* encumbered/SFElibmad.spec: Add mad.pc to have a better detection
+	  for apps that needs libMAD
+	* encumbered/SFEmpd.spec: Remove libMAD detection fix as fixed
+	  since r1997
 
 2009-07 28 Olivier Mauras  <oliver.mauras@gmail.com>
 
-    * SFEscrot.spec: New spec-file
-    * SFEgiblib.spec: New spec-file as a dep for SFEscrot.spec
-    * SFElibshout.spec: Fix that empty bindir and missing pkgconfig dir
-    * SFEmpd.spec: Version bump to 0.15.1, fix the libMAD detection bug,
-      add a realname variable for source download, re enable libsamplerate
-      as no problem could be noticed with.
+	* SFEscrot.spec: New spec-file
+	* SFEgiblib.spec: New spec-file as a dep for SFEscrot.spec
+	* SFElibshout.spec: Fix that empty bindir and missing pkgconfig dir
+	* SFEmpd.spec: Version bump to 0.15.1, fix the libMAD detection bug,
+	  add a realname variable for source download, re enable libsamplerate
+	  as no problem could be noticed with.
 
 2009-07 28 Brian Cameron  <brian.cameron@sun.com>
 
