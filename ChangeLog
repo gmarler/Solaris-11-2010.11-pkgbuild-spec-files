@@ -1,5 +1,9 @@
 2009-07-31  Halton Huo  <halton.huo@sun.com>
 
+	* SFEbzr.spec: Bump to 1.17
+
+2009-07-31  Halton Huo  <halton.huo@sun.com>
+
 	Remove ConsoleKit and new GDM stuff, they are now in spec-files/trunk
 	* SFEconsolekit.spec:
 	* SUNWgnome-display-mgr.spec:
