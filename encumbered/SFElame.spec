@@ -44,6 +44,9 @@ Requires:	SUNWlibsndfile
 BuildRequires: SUNWncurses-devel
 Requires: SUNWncurses
 
+BuildRequires: SUNWgnome-common-devel
+Requires: SUNWgnome-common-devel
+
 %package devel
 Summary:                 %{summary} - development files
 SUNW_BaseDir:            %{_basedir}
@@ -158,6 +161,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/doc/*
 
 %changelog
+* Sun Aug 02 2009 - Adam Retter
+- add required dependency on SUNWgnome-common-devel
 * Sat Mar 14 2009 - Milan Jurik
 - upgrade to 3.98.2 
 * Tue Feb 17 2009 - Thomas Wagner

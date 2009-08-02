@@ -1,3 +1,7 @@
+2009-08-02 Adam Retter <adam.retter@googlemail.com>
+
+	* encumbered/SFElame.spec: add required dependency on SUNWgnome-common-devel
+
 2009-07-31 Brian Cameron  <brian.cameron@sun.com>
 
 	* SFExautolock.spec, patches/xautolock-01-manpath.diff: Add spec file
