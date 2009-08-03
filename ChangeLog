@@ -1,5 +1,11 @@
 2009-08-03 Brian Cameron  <brian.cameron@sun.com>
 
+	* SFEmutter.spec, patches/mutter-01-xopen.diff,
+	  patches/mutter-02-plugin.diff:  Update to build against the 2.27.1
+	  tarball and add patches needed to build.
+
+2009-08-03 Brian Cameron  <brian.cameron@sun.com>
+
 	* SFEgjs.spec: Now build from 0.3 tarball release.
 
 2009-08-02 Adam Retter <adam.retter@googlemail.com>

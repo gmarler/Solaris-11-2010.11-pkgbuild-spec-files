@@ -9,7 +9,10 @@
 
 Name:                    SFEmutter
 Summary:                 Clutter enabled metacity window manager
-Version:                 2.27.0
+Version:                 2.27.1
+Source:	                 http://ftp.gnome.org/pub/GNOME/sources/mutter/2.27/mutter-%{version}.tar.bz2
+Patch1:                  mutter-01-xopen.diff
+Patch2:                  mutter-02-plugin.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 BuildRequires:           SUNWPython26-devel
@@ -45,18 +48,20 @@ Requires:                %{name}
 %endif
 
 %prep
-mkdir -p mutter-%version
-cd mutter-%version
-rm -fR mutter
-git-clone git://git.gnome.org/mutter
-cd mutter
+%setup -q -n mutter-%version
+%patch1 -p1
+%patch2 -p1
 
 %build
-cd mutter-%version
-cd mutter
 export CFLAGS="%optflags -xc99 -I/usr/include/clutter-0.9"
 export PYTHON=/usr/bin/python%{pythonver}
-./autogen.sh \
+
+libtoolize --force
+aclocal $ACLOCAL_FLAGS
+autoheader
+automake -a -c -f
+autoconf
+./configure \
    --prefix=%{_prefix} \
    --libexecdir=%{_libexecdir} \
    --mandir=%{_mandir} \
@@ -65,8 +70,6 @@ export PYTHON=/usr/bin/python%{pythonver}
 make
 
 %install
-cd mutter-%version
-cd mutter
 make install DESTDIR=$RPM_BUILD_ROOT
 
 find $RPM_BUILD_ROOT/%{_libdir} -type f -name "*.a" -exec rm -f {} ';'
@@ -140,6 +143,8 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 %endif
 
 %changelog
+* Mon Aug 03 2009 - Brian Cameron  <brian.cameron@sun.com>
+- Update to build against 2.27.1 tarball.
 * Tue Jul 07 2009 - Brian Cameron  <brian.cameron@sun.com>
 - Remove upstream patch mutter-01-xopen-source.diff.
 * Sat Apr 06 2009 - Brian Cameron  <brian.cameron@sun.com>
