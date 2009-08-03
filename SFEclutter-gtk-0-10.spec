@@ -22,14 +22,18 @@ SUNW_BaseDir:            %{_basedir}
 
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
-Requires: SFEclutter1
+
+Requires: SUNWgnome-base-libs
+Requires: SFEclutter-1-0
+BuildRequires: SUNWgnome-base-libs-devel
+BuildRequires: SFEclutter-1-0-devel
 
 %package devel
 Summary:                 %{summary} - developer files
 SUNW_BaseDir:            %{_basedir}
 %include default-depend.inc
 Requires: %name
-Requires: SFEclutter1-devel
+Requires: SFEclutter-1-0-devel
 
 %prep
 rm -rf %name-%version
