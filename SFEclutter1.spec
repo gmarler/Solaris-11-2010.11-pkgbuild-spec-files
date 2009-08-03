@@ -1,6 +1,6 @@
 #
 #
-# spec file for package SFEclutter09
+# spec file for package SFEclutter1
 #
 # includes module(s): clutter
 #
@@ -12,9 +12,9 @@
 
 %include Solaris.inc
 
-%use clutter = clutter9.spec
+%use clutter = clutter10.spec
 
-Name:                    SFEclutter09
+Name:                    SFEclutter1
 Summary:                 clutter - a library for creating fast, visually rich and animated graphical user interfaces.
 Version:                 %{clutter.version}
 URL:                     http://www.clutter-project.org/
@@ -85,8 +85,9 @@ rm -rf $RPM_BUILD_ROOT
 # endif for "ifnarch sparc"
 %endif
 
- 
 %changelog
+* Mon Aug 03 2009  Brian.Cameron@sun.com
+- Bump to 1.0.
 * Thu Mar 26 2009  Chris.wang@sun.com
 - Correct copyright file in file section
 * Tue Mar 24 2009  chris.wang@sun.com

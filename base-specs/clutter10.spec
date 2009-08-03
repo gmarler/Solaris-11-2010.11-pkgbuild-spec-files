@@ -13,14 +13,12 @@
 Name:         clutter
 License:      LGPL
 Group:        System/Libraries
-Version:      0.9.6
+Version:      1.0.0
 Release:      1
 Distribution: Java Desktop System
 Vendor:       Sun Microsystems, Inc.
 Summary:      clutter - a library for creating fast, visually rich and animated graphical user interfaces.
-Source:	  http://www.clutter-project.org/sources/clutter/0.9/clutter-%{version}.tar.bz2
-#owner:beiwtche date:2008-11-26 type:feature
-Patch1:       clutter9-01-fix-tests.diff
+Source:	  http://www.clutter-project.org/sources/clutter/1.0/clutter-%{version}.tar.bz2
 
 URL:          http://www.clutter-project.org/
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -28,7 +26,7 @@ BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 
 %prep
 %setup -q -n clutter-%version
-%patch1 -p1
+
 %build
 export CFLAGS="%{optflags} -I/usr/X11/include"
 export CXXFLAGS="%{?cxx_optflags}"
@@ -53,6 +51,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/lib*.so*
 
 %changelog
+* Mon Aug 03 2009 - brian.cameron@sun.com
+- Bump to 1.0.
 * Tue Jul 07 2009 - brian.cameron@sun.com
 - Created with 0.9.6.
 

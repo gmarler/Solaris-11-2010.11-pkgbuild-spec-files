@@ -1,5 +1,5 @@
 #
-# spec file for package SFEclutter-gtk09
+# spec file for package SFEclutter-gtk10
 #
 # includes module(s): clutter-gtk
 #
@@ -9,9 +9,9 @@
 #
 
 %include Solaris.inc
-%use cluttergtk = clutter-gtk9.spec
+%use cluttergtk = clutter-gtk10.spec
 
-Name:                    SFEclutter-gtk09
+Name:                    SFEclutter-gtk10
 Summary:                 clutter-gtk - GTK+ integration library for clutter
 Version:                 %{cluttergtk.version}
 URL:                     http://www.clutter-project.org/
@@ -22,14 +22,14 @@ SUNW_BaseDir:            %{_basedir}
 
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
-Requires: SFEclutter09
+Requires: SFEclutter1
 
 %package devel
 Summary:                 %{summary} - developer files
 SUNW_BaseDir:            %{_basedir}
 %include default-depend.inc
 Requires: %name
-Requires: SFEclutter09-devel
+Requires: SFEclutter1-devel
 
 %prep
 rm -rf %name-%version
@@ -66,6 +66,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Mon Aug 03 2009  Brian.Cameron@sun.com
+- Bump to 0.10.
 * Thu Mar 26 2009  Chris.wang@sun.com
 - Correct copyright file in file section
 * Fri Feb 20 2009  chris.wang@sun.com
