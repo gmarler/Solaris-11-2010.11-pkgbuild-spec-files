@@ -33,17 +33,20 @@ Requires: SUNWfftw3
 touch NEWS README AUTHORS ChangeLog COPYING
 
 %build
-export ACLOCAL_FLAGS="-I %{_datadir}/aclocal -I ."
+# GD 20090731
+#export ACLOCAL_FLAGS="-I %{_datadir}/aclocal -I ."
 export CFLAGS="%optflags"
 #export CXXFLAGS="%cxx_optflags -lCrun -lCstd"
 export LDFLAGS="%_ldflags"
 export CFLAGS="%optflags"
 
-libtoolize -f -c
-aclocal $ACLOCAL_FLAGS -I .
-autoconf -f
-autoheader
-automake -a -c -f
+#libtoolize -f -c
+#aclocal $ACLOCAL_FLAGS -I .
+#aclocal 
+#autoconf -f
+#autoheader
+#automake -a -c -f
+autoreconf -isf
 
 ./configure --prefix=%{_prefix}         \
             --bindir=%{_bindir}         \
@@ -74,6 +77,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/locale/en_GB/LC_MESSAGES/*
 
 %changelog
+* Jul 31 2009 - Gilles Dauphin
+- remove ACLOCAL_FLAGS
+- TODO: does not compile any more.
 * Thu Sep 18 2008 - jijun.yu@sun.com
 - Add patch -03-locale.diff.
 - Add files to %files.
