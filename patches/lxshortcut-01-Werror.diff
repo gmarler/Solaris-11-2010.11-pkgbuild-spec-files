@@ -1,0 +1,12 @@
+--- lxshortcut-0.1.1/src/Makefile.am-orig	2009-08-04 17:47:59.932776000 -0500
++++ lxshortcut-0.1.1/src/Makefile.am	2009-08-04 17:48:05.714371000 -0500
+@@ -1,8 +1,7 @@
+ INCLUDES = \
+ 	-DPACKAGE_DATA_DIR=\""$(datadir)"/lxshortcut\" \
+ 	-DPACKAGE_LOCALE_DIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
+-	@GTK_CFLAGS@ \
+-	-Werror-implicit-function-declaration
++	@GTK_CFLAGS@
+ 
+ bin_PROGRAMS = lxshortcut
+ 

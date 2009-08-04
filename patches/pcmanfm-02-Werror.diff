@@ -12,7 +12,7 @@
  
 --- pcmanfm-0.5/src/Makefile.in.orig	2009-03-13 00:40:46.658473594 +0800
 +++ pcmanfm-0.5/src/Makefile.in	2009-03-13 00:40:53.955876118 +0800
-@@ -446,8 +446,7 @@
+@@ -425,8 +425,7 @@ pcmanfm_CFLAGS = \
      @GTK_CFLAGS@ \
      @SN_CFLAGS@ \
      @HAL_CFLAGS@ \
@@ -21,4 +21,4 @@
 +    @G_CAST_CHECKS@
  
  pcmanfm_LDADD = @GTK_LIBS@ $(INTLLIBS) @FAM_LIBS@ @HAL_LIBS@ @SN_LIBS@
- all: all-am
+ xml_purge_SOURCES = xml-purge.c

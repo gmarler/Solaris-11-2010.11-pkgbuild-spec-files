@@ -1,3 +1,25 @@
+2009-08-04 Brian Cameron  <brian.cameron@sun.com>
+
+	* SFEgpicview.spec: Bump to 0.2.1.
+	* SFEpcmanfm.spec, patches/pcmanfm-02-Werror.diff,
+	  patches/pcmanfm-04-crash.diff: Bump to 0.5.1, rework 02 patch and
+	  remove upstream 04 patch.
+	* SFEmenu-cache.spec, patches/menu-cache-01-Werror.diff: Bump to 0.2.5
+	  and rework patch.
+	* SFElxde-common.spec: Bump to 0.4.2.
+	* SFElxshortcut.spec, patches/lxshortcut-01-Werror.diff: Bump to 0.1.1
+	  and rework patch.
+	* SFElxmenu-data.spec: Bump to 0.1.1.
+	* SFElxrandr.spec: Bump to 0.1.1.
+	* SFElxinput.spec, patches/lxinput-01-Werror.diff: Bump to 0.1.1 and
+	  rework patch.
+	* SFElxterminal.spec, patches/lxterminal-01-function-declaration.diff:
+	  Bump to 0.1.6 and remove upstream patch.
+	* SFElxlauncher.spec: Bump to 0.2.1.
+	* SFElxappearance.spec: Bump to 0.2.1.
+	* SFElxsession-edit.spec: Bump to 0.1.1.
+	* SFElxpanel.spec: Bump to 0.5.1.
+
 2009-08-04  Halton Huo  <halton.huo@sun.com>
 
 	* SFEgnome-shell.spec: Add comments

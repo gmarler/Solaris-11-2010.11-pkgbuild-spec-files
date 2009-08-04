@@ -7,7 +7,7 @@
 
 Name:                    SFElxinput
 Summary:                 LXInput (Kbd & mouse config)
-Version:                 0.1
+Version:                 0.1.1
 Source:                  http://nchc.dl.sourceforge.net/sourceforge/lxde/lxinput-%{version}.tar.gz
 URL:                     http://sourceforge.net/projects/lxde/
 
@@ -36,6 +36,10 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
     CPUS=1
 fi
 
+libtoolize --force
+aclocal $ACLOCAL_FLAGS
+autoheader
+automake -a -c -f
 autoconf
 ./configure --prefix=%{_prefix} --libdir=%{_libdir} --mandir=%{_mandir}
 make -j$CPUS 
@@ -62,6 +66,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/applications/*
 %dir %attr (0755, root, other) %{_datadir}/lxinput
 %{_datadir}/lxinput/*
+%dir %attr(0755, root, bin) %{_mandir}
+%dir %attr(0755, root, bin) %{_mandir}/man1
+%{_mandir}/man1/*
 
 %if %build_l10n
 %files l10n
@@ -71,5 +78,7 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Tue Aug 04 2009 - brian.cameron@sun.com
+- Bump to 0.1.1
 * Wed May 27 2009 - alfred.peng@sun.com
 - Initial version

@@ -9,8 +9,8 @@
 
 Name:                    SFEpcmanfm
 Summary:                 LXDE lightweight file manager
-Version:                 0.5
-Source:                  http://downloads.sourceforge.net/pcmanfm/pcmanfm-%{version}.tar.gz
+Version:                 0.5.1
+Source:                  http://downloads.sourceforge.net/pcmanfm/pcmanfm-%{version}.tar.bz2
 URL:                     http://sourceforge.net/projects/pcmanfm/
 
 # owner:alfred date:2009-03-16 type:bug bugid:2688199
@@ -21,9 +21,6 @@ Patch2:                  pcmanfm-02-Werror.diff
 
 # owner:alfred date:2009-03-16 type:bug
 Patch3:                  pcmanfm-03-union-struct-naming.diff
-
-# owner:alfred date:2009-03-16 type:bug status:upstream
-Patch4:                  pcmanfm-04-crash.diff
 
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -42,7 +39,6 @@ Requires:                %{name}
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
-%patch4 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -93,6 +89,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Tue Aug 04 2009 - brian.cameron@sun.com
+- Bump to 0.5.1
 * Mon May 25 2009 - alfred.peng@sun.com
 - Update source URL and set correct GMSGFMT.
 * Mon Mar 16 2009 - alfred.peng@sun.com

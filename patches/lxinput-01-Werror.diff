@@ -1,16 +1,3 @@
---- lxinput-0.1/src/Makefile.in.orig	2009-05-27 15:12:16.931002578 +0800
-+++ lxinput-0.1/src/Makefile.in	2009-05-27 15:14:57.557228309 +0800
-@@ -199,8 +199,8 @@
- INCLUDES = \
- 	-DPACKAGE_DATA_DIR=\""$(datadir)"/lxinput\" \
- 	-DPACKAGE_LOCALE_DIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
--	@GTK_CFLAGS@ \
--	-Werror-implicit-function-declaration
-+	@GTK_CFLAGS@
-+	
- 
- lxinput_SOURCES = \
- 	lxinput.c
 --- lxinput-0.1/src/Makefile.am.orig	2009-05-27 15:12:12.418335582 +0800
 +++ lxinput-0.1/src/Makefile.am	2009-05-27 15:14:34.816676663 +0800
 @@ -1,8 +1,7 @@

@@ -7,7 +7,7 @@
 
 Name:                    SFElxmenu-data
 Summary:                 LXDE desktop menu
-Version:                 0.1
+Version:                 0.1.1
 Source:                  http://downloads.sourceforge.net/lxde/lxmenu-data-%{version}.tar.gz
 URL:                     http://sourceforge.net/projects/lxde/
 
@@ -29,6 +29,8 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
     CPUS=1
 fi
 
+aclocal $ACLOCAL_FLAGS
+automake -a -c -f
 autoconf
 ./configure --prefix=%{_prefix} --libdir=%{_libdir} --sysconfdir=%{_sysconfdir}
 make -j$CPUS 
@@ -52,5 +54,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_sysconfdir}/xdg/*
 
 %changelog
+* Tue Aug 04 2009 - brian.cameron@sun.com
+- Bump to 0.1.1.
 * Sun Mar 16 2009 - alfred.peng@sun.com
 - Initial version

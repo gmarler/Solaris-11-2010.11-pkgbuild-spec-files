@@ -7,7 +7,7 @@
 
 Name:                    SFElxrandr
 Summary:                 LXDE screen manager
-Version:                 0.1
+Version:                 0.1.1
 Source:                  http://downloads.sourceforge.net/lxde/lxrandr-%{version}.tar.gz
 URL:                     http://sourceforge.net/projects/lxde/
 
@@ -32,8 +32,16 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
     CPUS=1
 fi
 
+libtoolize --force
+aclocal $ACLOCAL_FLAGS
+autoheader
+automake -a -c -f
 autoconf
-./configure --prefix=%{_prefix} --libdir=%{_libdir}
+./configure --prefix=%{_prefix} --libdir=%{_libdir} --mandir=%{_mandir}
+
+# Works around an inifite loop issue.
+touch -r po/Makefile po/stamp-it
+
 make -j$CPUS 
 
 %install
@@ -56,6 +64,9 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, sys) %{_datadir}
 %dir %attr (0755, root, other) %{_datadir}/applications
 %{_datadir}/applications/*
+%dir %attr(0755, root, bin) %{_mandir}
+%dir %attr(0755, root, bin) %{_mandir}/man1
+%{_mandir}/man1/*
 
 %if %build_l10n
 %files l10n
@@ -65,5 +76,7 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Tue Aug 04 2009 - brian.cameron@sun.com
+- Bump to 0.1.1.
 * Sun Mar 16 2009 - alfred.peng@sun.com
 - Initial version

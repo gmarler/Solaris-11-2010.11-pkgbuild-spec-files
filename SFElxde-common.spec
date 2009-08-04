@@ -7,7 +7,7 @@
 
 Name:                    SFElxde-common
 Summary:                 the default settings configuration file for LXDE
-Version:                 0.3.2.1
+Version:                 0.4.2
 Source:                  http://downloads.sourceforge.net/lxde/lxde-common-%{version}.tar.bz2
 URL:                     http://sourceforge.net/projects/lxde/
 
@@ -29,6 +29,8 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
     CPUS=1
 fi
 
+aclocal $ACLOCAL_FLAGS
+automake -a -c -f
 autoconf
 ./configure --prefix=%{_prefix} --libdir=%{_libdir} --mandir=%{_mandir}
 make -j$CPUS 
@@ -62,5 +64,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_sysconfdir}/xdg/*
 
 %changelog
+* Tue Aug 04 2009 - brian.cameron@sun.com
+- Bump to 0.4.2.
 * Sun Mar 16 2009 - alfred.peng@sun.com
 - Initial version

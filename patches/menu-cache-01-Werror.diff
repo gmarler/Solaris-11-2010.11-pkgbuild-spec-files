@@ -1,60 +1,30 @@
---- menu-cache-0.2.2/menu-cache-gen/Makefile.am.orig	2009-03-13 00:07:36.049956094 +0800
-+++ menu-cache-0.2.2/menu-cache-gen/Makefile.am	2009-03-13 00:08:07.044465690 +0800
-@@ -7,7 +7,6 @@
- 	$(MONITOR_CFLAGS)		\
+--- menu-cache-0.2.5/menu-cache-daemon/Makefile.am-orig	2009-08-04 18:03:48.841591000 -0500
++++ menu-cache-0.2.5/menu-cache-daemon/Makefile.am	2009-08-04 18:03:52.220917000 -0500
+@@ -7,7 +7,6 @@ INCLUDES =				\
  	$(DEBUG_CFLAGS)			\
  	$(WARN_CFLAGS)			\
--	-Werror-implicit-function-declaration \
- 	$(NULL)
- 
- bin_PROGRAMS = menu-cache-gen
---- menu-cache-0.2.2/menu-cache-daemon/Makefile.in.orig	2009-03-13 00:11:01.664774827 +0800
-+++ menu-cache-0.2.2/menu-cache-daemon/Makefile.in	2009-03-13 00:11:39.273738026 +0800
-@@ -192,7 +192,6 @@
- 	$(DEBUG_CFLAGS)			\
- 	$(WARN_CFLAGS)			\
-         -DBINDIR=\"$(bindir)\"          \
--	-Werror-implicit-function-declaration \
- 	$(NULL)
- 
- menu_cached_SOURCES = \
---- menu-cache-0.2.2/menu-cache-gen/Makefile.in.orig	2009-03-13 00:11:08.069214225 +0800
-+++ menu-cache-0.2.2/menu-cache-gen/Makefile.in	2009-03-13 00:12:02.814650364 +0800
-@@ -198,7 +198,6 @@
- 	$(MONITOR_CFLAGS)		\
- 	$(DEBUG_CFLAGS)			\
- 	$(WARN_CFLAGS)			\
--	-Werror-implicit-function-declaration \
- 	$(NULL)
- 
- menu_cache_gen_SOURCES = \
---- menu-cache-0.2.4/libmenu-cache/Makefile.am.orig	2009-07-28 12:09:38.140740492 +0800
-+++ menu-cache-0.2.4/libmenu-cache/Makefile.am	2009-07-28 12:09:44.659178487 +0800
-@@ -3,7 +3,6 @@
- INCLUDES =				\
- 	$(GLIB_CFLAGS)			\
- 	$(MONITOR_CFLAGS)		\
--	-Werror-implicit-function-declaration \
- 	-DMENUCACHED_LIBEXECDIR="\"$(libexecdir)\"" \
- 	$(NULL)
- 
---- menu-cache-0.2.4/menu-cache-daemon/Makefile.am.orig	2009-07-28 12:10:17.650876282 +0800
-+++ menu-cache-0.2.4/menu-cache-daemon/Makefile.am	2009-07-28 12:10:21.853390268 +0800
-@@ -9,7 +9,6 @@
- 	$(DEBUG_CFLAGS)			\
- 	$(WARN_CFLAGS)			\
-         -DBINDIR=\"$(bindir)\"          \
+ 	-DMENUCACHE_LIBEXECDIR="\"$(libexecdir)\"" \
 -	-Werror-implicit-function-declaration \
  	$(NULL)
  
  libexec_PROGRAMS = menu-cached
---- menu-cache-0.2.4/libmenu-cache/Makefile.in.orig	2009-07-28 12:10:50.514163077 +0800
-+++ menu-cache-0.2.4/libmenu-cache/Makefile.in	2009-07-28 12:10:55.491805528 +0800
-@@ -205,7 +205,6 @@
- INCLUDES = \
+--- menu-cache-0.2.5/libmenu-cache/Makefile.am-orig	2009-08-04 18:04:04.994837000 -0500
++++ menu-cache-0.2.5/libmenu-cache/Makefile.am	2009-08-04 18:04:09.240302000 -0500
+@@ -3,7 +3,6 @@ NULL =
+ INCLUDES =				\
  	$(GLIB_CFLAGS)			\
  	$(MONITOR_CFLAGS)		\
 -	-Werror-implicit-function-declaration \
- 	-DMENUCACHED_LIBEXECDIR="\"$(libexecdir)\"" \
+ 	-DMENUCACHE_LIBEXECDIR="\"$(libexecdir)\"" \
  	$(NULL)
  
+--- menu-cache-0.2.5/menu-cache-gen/Makefile.am-orig	2009-08-04 18:06:14.744168000 -0500
++++ menu-cache-0.2.5/menu-cache-gen/Makefile.am	2009-08-04 18:06:17.988363000 -0500
+@@ -7,7 +7,6 @@ INCLUDES =				\
+ 	$(MONITOR_CFLAGS)		\
+ 	$(DEBUG_CFLAGS)			\
+ 	$(WARN_CFLAGS)			\
+-	-Werror-implicit-function-declaration \
+ 	$(NULL)
+ 
+ libexec_PROGRAMS = menu-cache-gen

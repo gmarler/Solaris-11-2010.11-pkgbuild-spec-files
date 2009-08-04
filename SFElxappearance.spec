@@ -7,7 +7,7 @@
 
 Name:                    SFElxappearance
 Summary:                 LXDE theme switcher
-Version:                 0.2
+Version:                 0.2.1
 Source:                  http://downloads.sourceforge.net/lxde/lxappearance-%{version}.tar.gz
 URL:                     http://sourceforge.net/projects/lxde/
 
@@ -32,8 +32,16 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
     CPUS=1
 fi
 
+libtoolize --force
+aclocal $ACLOCAL_FLAGS
+autoheader
+automake -a -c -f
 autoconf
 ./configure --prefix=%{_prefix} --libdir=%{_libdir} --mandir=%{_mandir}
+
+# Works around an inifite loop issue.
+touch -r po/Makefile po/stamp-it
+
 make -j$CPUS 
 
 %install
@@ -70,5 +78,7 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Tue Aug 04 2009 - brian.cameron@sun.com
+- Bump to 0.2.1
 * Sun Mar 16 2009 - alfred.peng@sun.com
 - Initial version

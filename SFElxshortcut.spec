@@ -7,8 +7,9 @@
 
 Name:                    SFElxshortcut
 Summary:                 LXDE edit app shortcut
-Version:                 0.1
+Version:                 0.1.1
 Source:                  http://downloads.sourceforge.net/lxde/lxshortcut-%{version}.tar.gz
+Patch1:                  lxshortcut-01-Werror.diff
 URL:                     http://sourceforge.net/projects/lxde/
 
 SUNW_BaseDir:            %{_basedir}
@@ -25,6 +26,7 @@ Requires:                %{name}
 
 %prep
 %setup -q -n lxshortcut-%version
+%patch1 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -32,8 +34,16 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
     CPUS=1
 fi
 
+libtoolize --force
+aclocal $ACLOCAL_FLAGS
+autoheader
+automake -a -c -f
 autoconf
 ./configure --prefix=%{_prefix} --libdir=%{_libdir}
+
+# Works around an inifite loop issue.
+touch -r po/Makefile po/stamp-it
+
 make -j$CPUS 
 
 %install
@@ -65,5 +75,7 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Tue Aug 04 2009 - brian.cameron@sun.com
+- Bump to 0.1.1.
 * Mon Mar 19 2009 - alfred.peng@sun.com
 - Initial version

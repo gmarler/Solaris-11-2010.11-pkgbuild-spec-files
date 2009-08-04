@@ -7,12 +7,19 @@
 
 Name:                    SFElxlauncher
 Summary:                 LXDE application launcher
-Version:                 0.2
+Version:                 0.2.1
 Source:                  http://downloads.sourceforge.net/lxde/lxlauncher-%{version}.tar.gz
 URL:                     http://sourceforge.net/projects/lxde/
 
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
+%include default-depend.inc
+Requires: SFEmenu-cache
+BuildRequires: SFEmenu-cache
+
+%package root
+Summary:		 %{summary} - / filesystem
+SUNW_BaseDir:		 /
 %include default-depend.inc
 
 %if %build_l10n
@@ -32,8 +39,16 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
     CPUS=1
 fi
 
+libtoolize --force
+aclocal $ACLOCAL_FLAGS
+autoheader
+automake -a -c -f
 autoconf
-./configure --prefix=%{_prefix} --libdir=%{_libdir}
+./configure --prefix=%{_prefix} --libdir=%{_libdir} --sysconfdir=%{_sysconfdir}
+
+# Works around an inifite loop issue.
+touch -r po/Makefile po/stamp-it
+
 make -j$CPUS 
 
 %install
@@ -56,8 +71,11 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, sys) %{_datadir}
 %dir %attr (0755, root, bin) %{_datadir}/desktop-directories
 %{_datadir}/desktop-directories/*
-%dir %attr (0755, root, other) %{_datadir}/lxlauncher
-%{_datadir}/lxlauncher/*
+
+%files root
+%defattr (-, root, sys)
+%attr (0755, root, sys) %dir %{_sysconfdir}
+%{_sysconfdir}/xdg/*
 
 %if %build_l10n
 %files l10n
@@ -67,5 +85,7 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Tue Aug 04 2009 - brian.cameron@sun.com
+- Bump to 0.2.1.
 * Mon Mar 16 2009 - alfred.peng@sun.com
 - Initial version

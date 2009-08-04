@@ -9,9 +9,11 @@
 
 Name:                    SFElxpanel
 Summary:                 LXDE desktop panel
-Version:                 0.4.1
+Version:                 0.5.1
 Source:                  http://downloads.sourceforge.net/lxde/lxpanel-%{version}.tar.gz
 URL:                     http://sourceforge.net/projects/lxde/
+Requires: SFEmenu-cache
+BuildRequires: SFEmenu-cache
 
 # owner:alfred date:2009-03-16 type:bug
 Patch1:                  lxpanel-01-solaris.diff
@@ -82,6 +84,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Tue Aug 04 2009 - brian.cameron@sun.com
+- Bump to 0.5.1.
 * Wed Jun 03 2009 - alfred.peng@sun.com
 - Bump to 0.4.1. Remove the upstreamed patch crash.diff.
 * Mon Mar 16 2009 - alfred.peng@sun.com

@@ -9,12 +9,9 @@
 
 Name:                    SFElxterminal
 Summary:                 LXDE terminal emulator
-Version:                 0.1.4
+Version:                 0.1.6
 Source:                  http://downloads.sourceforge.net/lxde/lxterminal-%{version}.tar.gz
 URL:                     http://sourceforge.net/projects/lxde/
-
-# owner:alfred date:2009-03-19 type:bug bugid:2694485
-Patch1:                  lxterminal-01-function-declaration.diff
 
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -30,7 +27,6 @@ Requires:                %{name}
 
 %prep
 %setup -q -n lxterminal-%version
-%patch1 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -40,6 +36,10 @@ fi
 
 export LDFLAGS="-lsocket"
 
+libtoolize --force
+aclocal $ACLOCAL_FLAGS
+autoheader
+automake -a -c -f
 autoconf
 ./configure --prefix=%{_prefix} --libdir=%{_libdir}
 make -j$CPUS 
@@ -79,5 +79,7 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Tue Aug 04 2009 - brian.cameron@sun.com
+- Bump to 0.1.6.
 * Thr Mar 19 2009 - alfred.peng@sun.com
 - Initial version
