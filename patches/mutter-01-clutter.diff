@@ -1,0 +1,24 @@
+--- mutter-2.27.1/configure.in-orig	2009-08-03 18:58:50.509539000 -0500
++++ mutter-2.27.1/configure.in	2009-08-03 18:59:03.191066000 -0500
+@@ -228,7 +228,7 @@ else
+ fi
+ 
+ CLUTTER_VERSION=0.9.3
+-CLUTTER_PACKAGE=clutter-0.9
++CLUTTER_PACKAGE=clutter-1.0
+ AC_SUBST(CLUTTER_PACKAGE)
+ if $PKG_CONFIG --atleast-version $CLUTTER_VERSION $CLUTTER_PACKAGE ; then
+   MUTTER_PC_MODULES="$MUTTER_PC_MODULES $CLUTTER_PACKAGE "
+--- mutter-2.27.1/src/Makefile.am-orig	2009-08-03 19:04:21.818831000 -0500
++++ mutter-2.27.1/src/Makefile.am	2009-08-03 19:04:26.993046000 -0500
+@@ -206,8 +206,8 @@ Meta-$(api_version).gir: $(G_IR_SCANNER)
+ 		--include=GObject-2.0			\
+ 		--include=Gdk-2.0			\
+ 		--include=Gtk-2.0			\
+-		--include=Clutter-0.9			\
+-		--pkg=clutter-0.9			\
++		--include=Clutter-1.0			\
++		--pkg=clutter-1.0			\
+ 		--pkg=gtk+-2.0				\
+ 		--include=xfixes-4.0			\
+ 		--program=$$pwd/mutter			\
