@@ -7,10 +7,11 @@
 
 Name:                SFElibmapi
 Summary:             A client-side implementation of the MAPI protocol that is used by Microsoft Exchange and Outlook. 
-Version:             0.8
+Version:             0.8.2
 Source:              http://downloads.sourceforge.net/openchange/libmapi-%{version}-ROMULUS.tar.gz
-Patch1:              libmapi-01-solaris.diff
-Patch2:              libmapi-02-private-name-change.diff
+Patch1:              libmapi-03-solaris.diff
+Patch2:              libmapi-04-no-return-value.diff
+Patch3:              libmapi-01-solaris.diff
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -20,6 +21,7 @@ BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %setup -q -n libmapi-%{version}-ROMULUS
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 %build
 
@@ -29,7 +31,7 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
 fi
 
 #export CFLAGS="%optflags"
-export CFLAGS="-g"
+export CFLAGS="-g -D__FUNCTION__=__func__"
 export LDFLAGS="%_ldflags"
 
 ./autogen.sh
@@ -63,6 +65,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, bin) %{_libdir}
 %attr (0755, root, other) %{_libdir}/pkgconfig
 %{_libdir}/*.so*
+%{_libdir}/mapistore_backends/*
 %{_libdir}/python2.4
 %{_libdir}/nagios
 %dir %attr (0755, root, bin) %{_includedir}
@@ -72,6 +75,9 @@ rm -rf $RPM_BUILD_ROOT
 /usr/modules/*
 
 %changelog
+* Tue Aug 04 2009 - brian.lu@sun.com
+- Bump to 0.8.2 
+  Update the patch libmapi-01-solaris.diff
 * Wed Feb 18 2009 - jedy.wang@sun.com
 - Do not use optimization option for now.
 * Tue Feb 17 2009 - jedy.wang@sun.com

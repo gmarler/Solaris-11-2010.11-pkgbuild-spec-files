@@ -1,3 +1,13 @@
+2009-08-04  Brian  <brian.lu@sun.com>
+
+	* SFElibmapi.spec:
+	* patches/libmapi-01-solaris.diff:
+	  Bump to 0.8.2 
+	  Update the patch libmapi-01-solaris.diff
+
+	* patches/samba4-03-FUNCTION-macro.diff:
+	  Delete 
+
 2009-08-03 Brian Cameron  <brian.cameron@sun.com>
 
 	* SFEgir-repository.spec: Now build with 0.6.3 tarball.

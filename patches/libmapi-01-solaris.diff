@@ -1,53 +1,5 @@
---- libmapi-0.8-ROMULUS/libocpf/lex.yy.c	2009-01-21 06:23:49.000000000 +0800
-+++ libmapi-0.8-ROMULUS-new/libocpf/lex.yy.c	2009-02-12 14:20:13.889156582 +0800
-@@ -616,7 +616,6 @@ char *yytext;
- #include <stdint.h>
- #include <ctype.h>
- 
--typedef __compar_fn_t comparison_fn_t;
- 
- #include <libocpf/ocpf_api.h>
- #include <libocpf/ocpf.tab.h>
-diff -uprN libmapi-0.8-ROMULUS/config.mk.in libmapi-0.8-ROMULUS-new/config.mk.in
---- libmapi-0.8-ROMULUS/config.mk.in	2008-12-20 05:28:58.000000000 +0800
-+++ libmapi-0.8-ROMULUS-new/config.mk.in	2009-02-12 13:05:17.853626925 +0800
-@@ -27,7 +27,7 @@ pythondir=@pythondir@
- sambaprefix=@sambaprefix@
- 
- DSOOPT=-shared -fPIC
--CFLAGS=@CFLAGS@ -I. -Wall -Wmissing-prototypes -Wstrict-prototypes -g3 \
-+CFLAGS=@CFLAGS@ -I. \
- 	   -DDEFAULT_LDIF=\"$(datadir)/setup\" 
- 
- # This value should be determined by configure at some point
-@@ -35,10 +35,10 @@ SHLIBEXT=so
- PACKAGE_VERSION=@PACKAGE_VERSION@
- 
- # Portability hack...
--CFLAGS+=-Duint_t="unsigned int" 
-+#CFLAGS+=-Duint_t="unsigned int" 
- 
--CFLAGS+=@SAMBA_CFLAGS@ @LDB_CFLAGS@ @TALLOC_CFLAGS@
--LIBS+=@SAMBA_LIBS@ @LDB_LIBS@ @TALLOC_LIBS@
-+CFLAGS+=@SAMBA_CFLAGS@ @LDB_CFLAGS@ @TALLOC_CFLAGS@ @TEVENT_CFLAGS@
-+LIBS+=@SAMBA_LIBS@ @LDB_LIBS@ @TALLOC_LIBS@ @TEVENT_LIBS@
- 
- # Assign CFLAGS to CXXFLAGS
- CXXFLAGS=@CFLAGS@ -I. @SAMBA_CFLAGS@ @LDB_CFLAGS@ @TALLOC_CFLAGS@
-diff -uprN libmapi-0.8-ROMULUS/configure.ac libmapi-0.8-ROMULUS-new/configure.ac
---- libmapi-0.8-ROMULUS/configure.ac	2008-12-24 21:39:26.000000000 +0800
-+++ libmapi-0.8-ROMULUS-new/configure.ac	2009-02-12 13:00:45.553574271 +0800
-@@ -173,6 +173,7 @@ dnl ------------------------------------
- dnl Samba4 modules
- dnl ---------------------------------------------------------------------------
- PKG_CHECK_MODULES(TALLOC, talloc)
-+PKG_CHECK_MODULES(TEVENT, tevent)
- PKG_CHECK_MODULES(SAMBA, dcerpc ndr samba-hostconfig)
- PKG_CHECK_MODULES(LDB, ldb)
- 
-diff -uprN libmapi-0.8-ROMULUS/libmapi/socket/netif.c libmapi-0.8-ROMULUS-new/libmapi/socket/netif.c
---- libmapi-0.8-ROMULUS/libmapi/socket/netif.c	2007-10-10 21:43:52.000000000 +0800
-+++ libmapi-0.8-ROMULUS-new/libmapi/socket/netif.c	2009-02-10 14:51:32.941739124 +0800
+--- libmapi-0.8.2-ROMULUS/libmapi/socket/netif.c.orig	2009-08-03 15:04:09.741276000 +0800
++++ libmapi-0.8.2-ROMULUS/libmapi/socket/netif.c	2009-08-03 15:04:25.573721000 +0800
 @@ -29,6 +29,7 @@
  
  */
@@ -56,280 +8,44 @@ diff -uprN libmapi-0.8-ROMULUS/libmapi/socket/netif.c libmapi-0.8-ROMULUS-new/li
  #include <libmapi/libmapi.h>
  
  #ifdef __COMPAR_FN_T
-diff -uprN libmapi-0.8-ROMULUS/libmapi/x500.c libmapi-0.8-ROMULUS-new/libmapi/x500.c
---- libmapi-0.8-ROMULUS/libmapi/x500.c	2009-01-13 18:49:56.000000000 +0800
-+++ libmapi-0.8-ROMULUS-new/libmapi/x500.c	2009-02-10 15:02:49.475837649 +0800
-@@ -19,6 +19,19 @@
+--- libmapi-0.8.2-ROMULUS/libmapi/x500.c.orig	2009-08-03 15:04:50.606470000 +0800
++++ libmapi-0.8.2-ROMULUS/libmapi/x500.c	2009-08-03 15:05:27.597100000 +0800
+@@ -19,6 +19,20 @@
  
  #include <libmapi/libmapi.h>
  
 +char *strcasestr(const char *haystack, const char *needle)
 +{
-+	const char *s;
-+	size_t nlen = strlen(needle);
++       const char *s;
++       size_t nlen = strlen(needle);
 +
-+	for (s=haystack;*s;s++) {
-+		if (toupper(*needle) == toupper(*s) &&
-+				strncasecmp(s, needle, nlen) == 0) {
-+			return (char *)((uintptr_t)s);
-+		}
-+	}
-+	return NULL;
++       for (s=haystack;*s;s++) {
++               if (toupper(*needle) == toupper(*s) &&
++                               strncasecmp(s, needle, nlen) == 0) {
++                       return (char *)((uintptr_t)s);
++               }
++       }
++       return NULL;
 +}
++
  
  /**
     \details Extract a DN element from a given DN
-diff -uprN libmapi-0.8-ROMULUS/libmapiadmin/libmapiadmin.h libmapi-0.8-ROMULUS-new/libmapiadmin/libmapiadmin.h
---- libmapi-0.8-ROMULUS/libmapiadmin/libmapiadmin.h	2008-12-29 22:52:07.000000000 +0800
-+++ libmapi-0.8-ROMULUS-new/libmapiadmin/libmapiadmin.h	2009-02-10 14:59:56.533281660 +0800
-@@ -109,6 +109,6 @@ void arcfour_crypt_blob(uint8_t *, int, 
- __END_DECLS
- 
- #define	DEFAULT_PROFDB_PATH	"%s/.openchange/profiles.ldb"
--#define	MAPIADMIN_DEBUG_STR	"[%s:%d]: %s %s\n", __FUNCTION__, __LINE__
-+#define	MAPIADMIN_DEBUG_STR	"[%s:%d]: %s %s\n", __func__, __LINE__
- 
- #endif /* __LIBMAPIADMIN_H__ */
-diff -uprN libmapi-0.8-ROMULUS/libmapiadmin/mapiadmin_user.c libmapi-0.8-ROMULUS-new/libmapiadmin/mapiadmin_user.c
---- libmapi-0.8-ROMULUS/libmapiadmin/mapiadmin_user.c	2009-01-15 01:07:51.000000000 +0800
-+++ libmapi-0.8-ROMULUS-new/libmapiadmin/mapiadmin_user.c	2009-02-10 14:55:46.681793821 +0800
-@@ -157,7 +157,7 @@ static int tce_search_callback(struct ld
- 
-         case LDB_REPLY_ENTRY:
- 		if (ldb_msg_find_element(ares->message, "msExchMailboxGuid") != NULL) {
--			DEBUG(3, ("[%s:%d]: msExchMailboxGuid found!\n", __FUNCTION__, __LINE__));
-+			DEBUG(3, ("[%s:%d]: msExchMailboxGuid found!\n", __func__, __LINE__));
- 			actx->found = 1;
- 			talloc_free(ares);
- 			return ldb_request_done(req, LDB_SUCCESS);
-@@ -167,13 +167,13 @@ static int tce_search_callback(struct ld
-                 ret = 0;
-                 break;
-         default:
--		DEBUG(3, ("[%s:%d]: unknown Reply Type ignore it\n", __FUNCTION__, __LINE__));
-+		DEBUG(3, ("[%s:%d]: unknown Reply Type ignore it\n", __func__, __LINE__));
- 		talloc_free(ares);
-                 return LDB_ERR_OTHER;
-         }
- 
-         if (talloc_free(ares) == -1) {
--		DEBUG(3, ("[%s:%d]: talloc_free failed\n", __FUNCTION__, __LINE__));
-+		DEBUG(3, ("[%s:%d]: talloc_free failed\n", __func__, __LINE__));
-                 return LDB_ERR_OPERATIONS_ERROR;
-         }
- 	
-diff -uprN libmapi-0.8-ROMULUS/libocpf/lex.l libmapi-0.8-ROMULUS-new/libocpf/lex.l
---- libmapi-0.8-ROMULUS/libocpf/lex.l	2008-09-07 23:30:57.000000000 +0800
-+++ libmapi-0.8-ROMULUS-new/libocpf/lex.l	2009-02-12 12:09:35.026679196 +0800
-@@ -27,7 +27,6 @@
- #include <stdint.h>
- #include <ctype.h>
- 
--typedef __compar_fn_t comparison_fn_t;
- 
- #include <libocpf/ocpf_api.h>
- #include <libocpf/ocpf.tab.h>
-@@ -322,4 +322,4 @@ static void
- unterminated(const char *type, unsigned start_lineno)
- {
-     error_message("unterminated %s, possibly started on line %d\n", type, start_lineno);
--}
-\ No newline at end of file
-+}
-diff -uprN libmapi-0.8-ROMULUS/mapiproxy/dcesrv_mapiproxy_server.c libmapi-0.8-ROMULUS-new/mapiproxy/dcesrv_mapiproxy_server.c
---- libmapi-0.8-ROMULUS/mapiproxy/dcesrv_mapiproxy_server.c	2009-01-11 03:34:32.000000000 +0800
-+++ libmapi-0.8-ROMULUS-new/mapiproxy/dcesrv_mapiproxy_server.c	2009-02-10 14:59:34.765068069 +0800
-@@ -298,7 +298,7 @@ _PUBLIC_ TDB_CONTEXT *mapiproxy_server_e
- 	emsabp_tdb_ctx = tdb_open(tdb_path, 0, 0, O_RDWR|O_CREAT, 0600);
- 	talloc_free(tdb_path);
- 	if (!emsabp_tdb_ctx) {
--		DEBUG(3, ("[%s:%d]: %s\n", __FUNCTION__, __LINE__, strerror(errno)));
-+		DEBUG(3, ("[%s:%d]: %s\n", __func__, __LINE__, strerror(errno)));
- 		talloc_free(mem_ctx);
- 		return NULL;
- 	}
-diff -uprN libmapi-0.8-ROMULUS/mapiproxy/dcesrv_mapiproxy_unused.c libmapi-0.8-ROMULUS-new/mapiproxy/dcesrv_mapiproxy_unused.c
---- libmapi-0.8-ROMULUS/mapiproxy/dcesrv_mapiproxy_unused.c	2008-09-07 04:00:14.000000000 +0800
-+++ libmapi-0.8-ROMULUS-new/mapiproxy/dcesrv_mapiproxy_unused.c	2009-02-10 15:17:27.964943987 +0800
-@@ -44,7 +44,6 @@
- #include "mapiproxy/dcesrv_mapiproxy_proto.h"
- 
- #include <sys/types.h>
--#include <sys/cdefs.h>
- 
- /*
-    endpoint server for the exchange_store_admin3 pipe
-diff -uprN libmapi-0.8-ROMULUS/mapiproxy/modules/mpm_cache.h libmapi-0.8-ROMULUS-new/mapiproxy/modules/mpm_cache.h
---- libmapi-0.8-ROMULUS/mapiproxy/modules/mpm_cache.h	2008-11-01 23:53:29.000000000 +0800
-+++ libmapi-0.8-ROMULUS-new/mapiproxy/modules/mpm_cache.h	2009-02-10 14:59:45.397213897 +0800
-@@ -118,7 +118,7 @@ __END_DECLS
- #define	MPM_DB		"mpm_cache.ldb"
- #define	MPM_DB_STORAGE	"data"
- 
--#define	MPM_LOCATION	__FUNCTION__, __LINE__
-+#define	MPM_LOCATION	__func__, __LINE__
- #define	MPM_SESSION(x)	x->session->server_id.id, x->session->server_id.id2, x->session->server_id.node, x->session->context_id
- 
- #endif /* __MPM_CACHE_H */
-diff -uprN libmapi-0.8-ROMULUS/mapiproxy/servers/default/emsmdb/dcesrv_exchange_emsmdb.c libmapi-0.8-ROMULUS-new/mapiproxy/servers/default/emsmdb/dcesrv_exchange_emsmdb.c
---- libmapi-0.8-ROMULUS/mapiproxy/servers/default/emsmdb/dcesrv_exchange_emsmdb.c	2009-01-15 09:43:42.000000000 +0800
-+++ libmapi-0.8-ROMULUS-new/mapiproxy/servers/default/emsmdb/dcesrv_exchange_emsmdb.c	2009-02-10 14:59:11.037100130 +0800
-@@ -202,7 +202,7 @@ static enum MAPISTATUS dcesrv_EcDoDiscon
- 			if ((mpm_session_cmp(session->session, dce_call) == true)) {
- 				mpm_session_release(session->session);
- 				DLIST_REMOVE(emsmdb_session, session);
--				DEBUG(6, ("[%s:%d]: Session found and released\n", __FUNCTION__, __LINE__));
-+				DEBUG(6, ("[%s:%d]: Session found and released\n", __func__, __LINE__));
- 			}
- 		}
- 	}
-@@ -494,7 +494,7 @@ static NTSTATUS dcesrv_exchange_emsmdb_u
- 		if ((mpm_session_cmp_sub(session->session, server_id, context_id) == true)) {
- 			mpm_session_release(session->session);
- 			DLIST_REMOVE(emsmdb_session, session);
--			DEBUG(6, ("[%s:%d]: Session found and released\n", __FUNCTION__, __LINE__));
-+			DEBUG(6, ("[%s:%d]: Session found and released\n", __func__, __LINE__));
- 			return NT_STATUS_OK;
- 		}
- 	}
-diff -uprN libmapi-0.8-ROMULUS/mapiproxy/servers/default/emsmdb/emsmdbp.c libmapi-0.8-ROMULUS-new/mapiproxy/servers/default/emsmdb/emsmdbp.c
---- libmapi-0.8-ROMULUS/mapiproxy/servers/default/emsmdb/emsmdbp.c	2009-01-15 01:07:51.000000000 +0800
-+++ libmapi-0.8-ROMULUS-new/mapiproxy/servers/default/emsmdb/emsmdbp.c	2009-02-10 14:59:20.308844424 +0800
-@@ -81,7 +81,7 @@ _PUBLIC_ struct emsmdbp_context *emsmdbp
- 	ret = ldb_connect(emsmdbp_ctx->conf_ctx, configuration, LDB_FLG_RDONLY, NULL);
- 	talloc_free(configuration);
- 	if (ret != LDB_SUCCESS) {
--		DEBUG(0, ("[%s:%d]: Connection to \"configuration.ldb\" failed\n", __FUNCTION__, __LINE__));
-+		DEBUG(0, ("[%s:%d]: Connection to \"configuration.ldb\" failed\n", __func__, __LINE__));
- 		talloc_free(mem_ctx);
- 		return NULL;
- 	}
-@@ -98,7 +98,7 @@ _PUBLIC_ struct emsmdbp_context *emsmdbp
- 	ret = ldb_connect(emsmdbp_ctx->users_ctx, users, LDB_FLG_RDONLY, NULL);
- 	talloc_free(users);
- 	if (ret != LDB_SUCCESS) {
--		DEBUG(0, ("[%s:%d]: Connection to \"users.ldb\" failed\n", __FUNCTION__, __LINE__));
-+		DEBUG(0, ("[%s:%d]: Connection to \"users.ldb\" failed\n", __func__, __LINE__));
- 		talloc_free(mem_ctx);
- 		return NULL;
- 	}
-@@ -113,7 +113,7 @@ _PUBLIC_ bool emsmdbp_destructor(void *d
- 
- 	if (emsmdbp_ctx) {
- 		talloc_free(emsmdbp_ctx->mem_ctx);
--		DEBUG(0, ("[%s:%d]: emsmdbp_ctx found and released\n", __FUNCTION__, __LINE__));
-+		DEBUG(0, ("[%s:%d]: emsmdbp_ctx found and released\n", __func__, __LINE__));
- 		return true;
- 	}
- 
-diff -uprN libmapi-0.8-ROMULUS/mapiproxy/servers/default/nspi/dcesrv_exchange_nsp.c libmapi-0.8-ROMULUS-new/mapiproxy/servers/default/nspi/dcesrv_exchange_nsp.c
---- libmapi-0.8-ROMULUS/mapiproxy/servers/default/nspi/dcesrv_exchange_nsp.c	2009-01-12 06:51:37.000000000 +0800
-+++ libmapi-0.8-ROMULUS-new/mapiproxy/servers/default/nspi/dcesrv_exchange_nsp.c	2009-02-10 14:58:33.508429417 +0800
-@@ -164,7 +164,7 @@ static enum MAPISTATUS dcesrv_NspiUnbind
- 			if ((mpm_session_cmp(session->session, dce_call) == true)) {
- 				mpm_session_release(session->session);
- 				DLIST_REMOVE(nsp_session, session);
--				DEBUG(6, ("[%s:%d]: Session found and released\n", __FUNCTION__, __LINE__));
-+				DEBUG(6, ("[%s:%d]: Session found and released\n", __func__, __LINE__));
- 			}
- 		}
- 	}
-@@ -916,7 +916,7 @@ static NTSTATUS dcesrv_exchange_nsp_unbi
- 		if ((mpm_session_cmp_sub(session->session, server_id, context_id) == true)) {
- 			mpm_session_release(session->session);
- 			DLIST_REMOVE(nsp_session, session);
--			DEBUG(6, ("[%s:%d]: Session found and released\n", __FUNCTION__, __LINE__));
-+			DEBUG(6, ("[%s:%d]: Session found and released\n", __func__, __LINE__));
- 			return NT_STATUS_OK;
- 		}
- 	}
-diff -uprN libmapi-0.8-ROMULUS/mapiproxy/servers/default/nspi/emsabp.c libmapi-0.8-ROMULUS-new/mapiproxy/servers/default/nspi/emsabp.c
---- libmapi-0.8-ROMULUS/mapiproxy/servers/default/nspi/emsabp.c	2009-01-15 01:07:51.000000000 +0800
-+++ libmapi-0.8-ROMULUS-new/mapiproxy/servers/default/nspi/emsabp.c	2009-02-10 14:58:47.332730675 +0800
-@@ -86,7 +86,7 @@ _PUBLIC_ struct emsabp_context *emsabp_i
- 	ret = ldb_connect(emsabp_ctx->conf_ctx, configuration, LDB_FLG_RDONLY, NULL);
- 	talloc_free(configuration);
- 	if (ret != LDB_SUCCESS) {
--		DEBUG(0, ("[%s:%d]: Connection to \"configuration.ldb\" failed\n", __FUNCTION__, __LINE__));
-+		DEBUG(0, ("[%s:%d]: Connection to \"configuration.ldb\" failed\n", __func__, __LINE__));
- 		talloc_free(mem_ctx);
- 		return NULL;
- 	}
-@@ -103,7 +103,7 @@ _PUBLIC_ struct emsabp_context *emsabp_i
- 	ret = ldb_connect(emsabp_ctx->users_ctx, users, LDB_FLG_RDONLY, NULL);
- 	talloc_free(users);
- 	if (ret != LDB_SUCCESS) {
--		DEBUG(0, ("[%s:%d]: Connection to \"users.ldb\" failed\n", __FUNCTION__, __LINE__));
-+		DEBUG(0, ("[%s:%d]: Connection to \"users.ldb\" failed\n", __func__, __LINE__));
- 		talloc_free(mem_ctx);
- 		return NULL;
- 	}
-@@ -569,7 +569,7 @@ _PUBLIC_ void *emsabp_query(TALLOC_CTX *
- 		data = (void *) mvszA;
- 		break;
- 	default:
--		DEBUG(3, ("[%s:%d]: Unsupported property type: 0x%x\n", __FUNCTION__, __LINE__,
-+		DEBUG(3, ("[%s:%d]: Unsupported property type: 0x%x\n", __func__, __LINE__,
- 			  (ulPropTag & 0xFFFF)));
- 		break;
- 	}
-diff -uprN libmapi-0.8-ROMULUS/mapiproxy/servers/default/nspi/emsabp_tdb.c libmapi-0.8-ROMULUS-new/mapiproxy/servers/default/nspi/emsabp_tdb.c
---- libmapi-0.8-ROMULUS/mapiproxy/servers/default/nspi/emsabp_tdb.c	2009-01-12 06:51:37.000000000 +0800
-+++ libmapi-0.8-ROMULUS-new/mapiproxy/servers/default/nspi/emsabp_tdb.c	2009-02-10 14:59:00.428652633 +0800
-@@ -66,7 +66,7 @@ _PUBLIC_ TDB_CONTEXT *emsabp_tdb_init(TA
- 
- 		ret = tdb_store(tdb_ctx, key, dbuf, TDB_INSERT);
- 		if (ret == -1) {
--			DEBUG(3, ("[%s:%d]: Unable to create %s record: %s\n", __FUNCTION__, __LINE__,
-+			DEBUG(3, ("[%s:%d]: Unable to create %s record: %s\n", __func__, __LINE__,
- 				  EMSABP_TDB_DATA_REC, tdb_errorstr(tdb_ctx)));
- 			tdb_close(tdb_ctx);
- 			return NULL;
-@@ -103,7 +103,7 @@ _PUBLIC_ TDB_CONTEXT *emsabp_tdb_init_tm
- 	
- 	ret = tdb_store(tdb_ctx, key, dbuf, TDB_INSERT);
- 	if (ret == -1) {
--		DEBUG(3, ("[%s:%d]: Unable to create %s record: %s\n", __FUNCTION__, __LINE__,
-+		DEBUG(3, ("[%s:%d]: Unable to create %s record: %s\n", __func__, __LINE__,
- 			  EMSABP_TDB_DATA_REC, tdb_errorstr(tdb_ctx)));
- 		tdb_close(tdb_ctx);
- 		return NULL;
-diff -uprN libmapi-0.8-ROMULUS/ndr_mapi.c libmapi-0.8-ROMULUS-new/ndr_mapi.c
---- libmapi-0.8-ROMULUS/ndr_mapi.c	2008-12-21 19:10:06.000000000 +0800
-+++ libmapi-0.8-ROMULUS-new/ndr_mapi.c	2009-02-10 14:50:39.333136169 +0800
-@@ -505,7 +505,7 @@ enum ndr_err_code ndr_pull_mapi_SPropVal
- 
- void ndr_print_mapi_SPropValue_wrap(struct ndr_print *ndr, const char *name, const struct mapi_SPropValue_wrap *r)
- {
--	return ndr_print_mapi_SPropValue(ndr, name, (const struct mapi_SPropValue *)r);
-+	ndr_print_mapi_SPropValue(ndr, name, (const struct mapi_SPropValue *)r);
- }
- 
- 
-@@ -526,7 +526,7 @@ enum ndr_err_code ndr_pull_mapi_SPropVal
- 
- void ndr_print_mapi_SPropValue_array_wrap(struct ndr_print *ndr, const char *name, const struct mapi_SPropValue_array_wrap *r)
- {
--	return ndr_print_mapi_SPropValue_array(ndr, name, (const struct mapi_SPropValue_array *)r);
-+	ndr_print_mapi_SPropValue_array(ndr, name, (const struct mapi_SPropValue_array *)r);
- }
- 
- enum ndr_err_code ndr_push_RestrictionVariable(struct ndr_push *ndr, int ndr_flags, const union RestrictionVariable *r)
-diff -uprN libmapi-0.8-ROMULUS/utils/mapiprofile.c libmapi-0.8-ROMULUS-new/utils/mapiprofile.c
---- libmapi-0.8-ROMULUS/utils/mapiprofile.c	2009-01-17 10:10:15.000000000 +0800
-+++ libmapi-0.8-ROMULUS-new/utils/mapiprofile.c	2009-02-10 15:16:12.787909164 +0800
-@@ -112,6 +112,7 @@ static void mapiprofile_create(const cha
- 
+--- libmapi-0.8.2-ROMULUS/utils/mapiprofile.c.orig	2009-08-03 15:16:09.418864000 +0800
++++ libmapi-0.8.2-ROMULUS/utils/mapiprofile.c	2009-08-03 15:16:39.034405000 +0800
+@@ -114,6 +114,9 @@
  	/* catch CTRL-C */
  	g_profname = profname;
-+	typedef void (*sighandler_t)(int signum);
- 	(void) signal(SIGINT, (sighandler_t) signal_delete_profile);
  
- 	retval = MAPIInitialize(profdb);
-diff -uprN libmapi-0.8-ROMULUS/utils/openchangeclient.c libmapi-0.8-ROMULUS-new/utils/openchangeclient.c
---- libmapi-0.8-ROMULUS/utils/openchangeclient.c	2009-01-17 10:10:15.000000000 +0800
-+++ libmapi-0.8-ROMULUS-new/utils/openchangeclient.c	2009-02-10 15:12:40.537963646 +0800
-@@ -215,7 +215,7 @@ static bool oclient_read_file(TALLOC_CTX
++        typedef void (*sighandler_t)(int signum);
++
++
+ #if defined (__FreeBSD__)
+ 	(void) signal(SIGINT, (sig_t) signal_delete_profile);
+ #else
+--- libmapi-0.8.2-ROMULUS/utils/openchangeclient.c.orig	2009-08-03 15:16:57.532055000 +0800
++++ libmapi-0.8.2-ROMULUS/utils/openchangeclient.c	2009-08-03 15:17:43.359540000 +0800
+@@ -216,7 +216,7 @@
  		oclient->attach[oclient->attach_num].filename = talloc_strdup(mem_ctx, filename);
  		oclient->attach[oclient->attach_num].bin.lpb = talloc_size(mem_ctx, sb.st_size);
  		oclient->attach[oclient->attach_num].bin.cb = sb.st_size;
@@ -338,12 +54,23 @@ diff -uprN libmapi-0.8-ROMULUS/utils/openchangeclient.c libmapi-0.8-ROMULUS-new/
  			perror("mmap");
  			close(fd);
  			return false;
-@@ -339,7 +339,7 @@ static bool store_attachment(mapi_object
- 	mem_ctx = talloc_init("store_attachment");
- 	mapi_object_init(&obj_stream);
+--- libmapi-0.8.2-ROMULUS/mapiproxy/dcesrv_mapiproxy_unused.c.orig	2009-08-03 15:09:21.459081000 +0800
++++ libmapi-0.8.2-ROMULUS/mapiproxy/dcesrv_mapiproxy_unused.c	2009-08-03 15:09:28.306773000 +0800
+@@ -44,7 +44,6 @@
+ #include "mapiproxy/dcesrv_mapiproxy_proto.h"
  
--	if ((fd = open(oclient->store_folder, O_DIRECTORY)) == -1) {
-+	if ((fd = open(oclient->store_folder, O_RDONLY)) == -1) {
- 		if (mkdir(oclient->store_folder, 0700) == -1) return false;
- 	} else {
- 		close (fd);
+ #include <sys/types.h>
+-#include <sys/cdefs.h>
+ 
+ /*
+    endpoint server for the exchange_store_admin3 pipe
+--- libmapi-0.8.2-ROMULUS/configure.ac.orig	2009-08-03 15:03:33.068283000 +0800
++++ libmapi-0.8.2-ROMULUS/configure.ac	2009-08-03 15:03:48.108308000 +0800
+@@ -218,6 +218,7 @@
+ dnl Samba4 modules
+ dnl ---------------------------------------------------------------------------
+ PKG_CHECK_MODULES(TALLOC, talloc)
++PKG_CHECK_MODULES(TEVENT, tevent)
+ PKG_CHECK_MODULES(SAMBA, dcerpc ndr samba-hostconfig)
+ PKG_CHECK_MODULES(LDB, ldb)
+ 
