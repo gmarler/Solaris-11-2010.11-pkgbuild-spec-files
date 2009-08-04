@@ -1,3 +1,13 @@
+2009-08-04 Gilles Dauphin
+
+	* SFEcairo-dock need CBEgettext
+	* SFExvid , merge patch, compilatiom option -shared -mimpure-text
+	* SFExine-lib , bump to 1.1.16.1
+	* SFExine-ui , minor change when linking
+	* SFElibmng.spec , SUNWlcms include all -devel stuff
+	* SFEladspa-swh-plugins.spec, a try but no-succes
+	* SFEpostgis.spec , add configure option for b117
+
 2009-08-04  Wang Xin  <jedy.wang@sun.com>
 
 	* SFEemacs.spec: Bump to 23.1.
