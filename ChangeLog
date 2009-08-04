@@ -1,6 +1,7 @@
 2009-08-03 Brian Cameron  <brian.cameron@sun.com>
 
-	* patches/mutter-01-clutter.diff: Update to build with clutter 1.0.
+	* SFEmutter.spec, patches/mutter-01-clutter.diff: Update to build with
+	  clutter 1.0.
 	* patches/mutter-01-xopen.diff, patches/mutter-02-plugin.diff: 
 	  Found running autotools makes these patches unnecessary, so removed
 	  them.

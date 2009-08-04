@@ -11,19 +11,18 @@ Name:                    SFEmutter
 Summary:                 Clutter enabled metacity window manager
 Version:                 2.27.1
 Source:	                 http://ftp.gnome.org/pub/GNOME/sources/mutter/2.27/mutter-%{version}.tar.bz2
-Patch1:                  mutter-01-xopen.diff
-Patch2:                  mutter-02-plugin.diff
+Patch1:                  mutter-01-clutter.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 BuildRequires:           SUNWPython26-devel
 BuildRequires:           SUNWgnome-base-libs-devel
-BuildRequires:           SFEclutter09-devel
+BuildRequires:           SFEclutter-1-0-devel
 BuildRequires:           SFEgobject-introspection-devel
 BuildRequires:           SFEgir-repository
 BuildRequires:           SFEgjs-devel
 Requires:                SUNWPython26
 Requires:                SUNWgnome-base-libs
-Requires:                SFEclutter09
+Requires:                SFEclutter-1-0
 Requires:                SFEgobject-introspection
 Requires:                SFEgir-repository
 Requires:                SFEgjs
@@ -50,10 +49,9 @@ Requires:                %{name}
 %prep
 %setup -q -n mutter-%version
 %patch1 -p1
-%patch2 -p1
 
 %build
-export CFLAGS="%optflags -xc99 -I/usr/include/clutter-0.9"
+export CFLAGS="%optflags -xc99 -I/usr/include/clutter-1.0"
 export PYTHON=/usr/bin/python%{pythonver}
 
 libtoolize --force
