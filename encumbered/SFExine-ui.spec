@@ -47,20 +47,21 @@ fi
 glib-gettextize --force
 #( cd po; gpatch -p1 < %{P:2} )
 #cp po/Makefile.in.in src/xitk/xine-toolkit/po
-export CXX=/usr/gnu/bin/gcc
-export CC=/usr/gnu/bin/gcc
-export LD=/usr/gnu/bin/ld
+export CXX=/usr/sfw/bin/gcc
+export CC=/usr/sfw/bin/gcc
+#export LD=/usr/sfw/bin/ld
+export LD=/usr/bin/ld
 libtoolize --copy --force
 aclocal $ACLOCAL_FLAGS -I m4
 autoheader
 automake -a -c -f 
 autoconf
 export CFLAGS="-O4 -fPIC -DPIC -I/usr/X11/include -I/usr/openwin/include -D_LARGEFILE64_SOURCE -I/usr/gnu/include -mcpu=pentiumpro -mtune=pentiumpro -msse2 -mfpmath=sse "
-export LDFLAGS="-L/usr/X11/lib -R/usr/X11/lib -L/usr/gnu/lib -R/usr/gnu/lib -L/usr/lib"
+export LDFLAGS="-L/usr/X11/lib -R/usr/X11/lib -L/usr/sfw/lib -R/usr/sfw/lib -R/usr/lib -L/usr/lib -lXext"
 ./configure --prefix=%{_prefix} \
 	    --libdir=%{_libdir}
 
-echo '#define strsep xine_private_strsep'   >> config.h
+#echo '#define strsep xine_private_strsep'   >> config.h
 echo '#define getline xine_private_getline' >> config.h
 echo '#define strndup xine_private_strndup' >> config.h
 
@@ -122,6 +123,9 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Aug 2009 - Gilles Dauphin
+- add -lXext. 
+- strsep is in B117
 * Mon Nov 5 2007 - markwright@internode.on.net
 - Bump to 0.99.5. Change to use SFEgcc 4.2.2 as now used for SFExine-lib.
 - Commented patch1, patch2 and patch3.  Add patch4 for INADDR_NONE.
