@@ -22,7 +22,7 @@ Source:                  %{sf_download}/libmng/libmng-%{version}.tar.gz
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
-BuildRequires: SUNWlcms-devel
+BuildRequires: SUNWlcms
 BuildRequires: SUNWjpg-devel
 ##FIXME## SFElcms/SUNWlcms need to be a 64bit version for full 64-bit support, create test on lib/amd64/liblcms.so*
 ##FIXME## SUNWlcms from spec-files-extra is now 32/64bit
@@ -91,6 +91,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Aug 01 2009 - Gilles Dauphin
+- lcms-devel equiv to lcms.
 * Sat Mar 22 2008 - Thomas Wagner
 - change to (Build-)Requires: SUNWlcms(-devel) from spec-files-extra which is 32/64bit, 
   note1: spec-files-extra/SUNWlcms.spec should replace the already moved file spec-files-other/SUNWlcms.spec (32bit only!)
