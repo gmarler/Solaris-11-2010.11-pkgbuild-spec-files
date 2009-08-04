@@ -81,7 +81,8 @@ the following functionality:
     		--libexecdir=%{_libexecdir}         \
     		--mandir=%{_mandir}                 \
     		--datadir=%{_datadir}               \
-    		--infodir=%{_datadir}/info
+    		--infodir=%{_datadir}/info	    \
+		--with-pgsql=/usr/postgres/8.3/bin/pg_config
 
 #    		--with-system-zlib --with-system-bzlib --with-system-pcre 
 
@@ -105,20 +106,14 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, sys) %{_datadir}
 %dir %attr (0755, root, bin) %{_datadir}/pgsql
 %dir %attr (0755, root, bin) %{_datadir}/pgsql/contrib
-%dir %attr (0755, root, bin) %{_libdir}
-#%dir %attr (0755, root, bin) %{_libdir}/pgsql
-%{_libdir}/*
 %{_datadir}/pgsql/contrib/*
-#%{_libdir}/pgsql/*
-#%{_mandir}/man1/*
-#%dir %attr (0755, root, bin) %{_includedir}
-#%{_includedir}/*
-#%dir %attr (0755, root, other) %{_libdir}/pkgconfig
-#%{_libdir}/pkgconfig/libR.pc
-#%{_libdir}/pkgconfig/libRmath.pc
+%dir %attr (0755, root, bin) %{_libdir}
+%{_libdir}/*
 
 
 %changelog
+* Aug 2009 - Gilles Dauphin
+- add --with-pgsql=/usr/postgres/8.3/bin/pg_config (for b117)
 * Fri Jun 26 2009 - Gilles Dauphin
 - readline is in B117
 * Fri Jun 26 2009 - Gilles Dauphin
