@@ -1,5 +1,9 @@
 2009-08-03 Brian Cameron  <brian.cameron@sun.com>
 
+	* SFEgir-repository.spec: Now build with 0.6.3 tarball.
+
+2009-08-03 Brian Cameron  <brian.cameron@sun.com>
+
 	* SFEgnome-shell.spec, patches/gnome-shell-01-launch.diff,
 	  patches/gnome-shell-03-lookingglass.diff:  Update so it works with
 	  latest gnome-shell HEAD code.  Reworked patch 01, and added new

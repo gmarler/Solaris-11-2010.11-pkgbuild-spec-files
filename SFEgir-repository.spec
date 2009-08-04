@@ -9,6 +9,7 @@
 Name:                    SFEgir-repository
 Summary:                 GIR Repository
 Version:                 0.6.3
+Source:			 http://ftp.gnome.org/pub/GNOME/sources/gir-repository/0.6/gir-repository-%{version}.tar.bz2
 # This patch just hacks gir-repository to avoid building the GStreamer
 # files since they do not seem to build properly on Solaris.  Need to
 # actually fix this instead of avoiding building them.
@@ -50,27 +51,24 @@ Requires:                SFEgobject-introspection
 %include default-depend.inc
 
 %prep
-mkdir -p gir-repository-%version
-cd gir-repository-%version
-rm -fR gir-repository
-git-clone git://git.gnome.org/gir-repository
-cd gir-repository
+%setup -q -n gir-repository-%version
 %patch1 -p1
 
 %build
-cd gir-repository-%version
-cd gir-repository
 # The VTE bindings uses libncurses.  The VTE bindings do not build
 # if it can't find libncurses.
 export LD_LIBRARY_PATH="/usr/gnu/lib"
 export PYTHON=/usr/bin/python%{pythonver}
-./autogen.sh --prefix=%{_prefix}
+
+libtoolize --force
+aclocal $ACLOCAL_FLAGS
+autoheader
+automake -a -c -f
+autoconf
+./configure --prefix=%{_prefix}
 make
 
 %install
-rm -rf $RPM_BUILD_ROOT
-cd gir-repository-%version
-cd gir-repository
 make install DESTDIR=$RPM_BUILD_ROOT
 
 find $RPM_BUILD_ROOT/%{_libdir} -type f -name "*.a" -exec rm -f {} ';'
@@ -90,5 +88,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gir-1.0
 
 %changelog
+* Mon Aug 03 2009 - Brian Cameron  <brian.cameron@sun.com>
+- Now build with 0.6.3 tarball.
 * Sat Apr 04 2009 - Brian.Cameron  <brian.cameron@sun.com>
 - Created.
