@@ -15,10 +15,10 @@ Version:	%{src_ver}
 License:	GPL
 Source:		%{src_url}/%{src_name}-%{version}.tar.bz2
 Patch1:		xvid-01-solaris.diff
-Patch2:		xvid-02-nasm.diff
+#Patch2:		xvid-02-nasm.diff
 SUNW_BaseDir:	%{_basedir}
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
-BuildConflicts: SFEyasm
+#BuildConflicts: SFEyasm
 %ifarch i386 amd64
 BuildRequires: SFEnasm
 %endif
@@ -36,7 +36,7 @@ Requires: %name
 %prep
 %setup -q -n %{src_name}
 %patch1 -p1
-%patch2 -p1
+#%patch2 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -48,6 +48,7 @@ export CC=/usr/sfw/bin/gcc
 export CPPFLAGS="-D_LARGEFILE64_SOURCE -I%{xorg_inc} -I%{gnu_inc}"
 export CFLAGS="%gcc_optflags -O4"
 export LDFLAGS="%_ldflags %{gnu_lib_path}"
+export ac_cv_prog_ac_yasm=no
 
 cd build/generic
 bash ./bootstrap.sh
@@ -86,6 +87,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}
 
 %changelog
+* Aug 04 2009 - Gilles Dauphin
+- One patch for configure.in, add -mimpure-text and -shared because of nasm
+- don't use yasm. option in configure. enable build with yasm installed
 * Sat Jun 13 2009 - Milan Jurik
 - upgradde to 1.2.2
 * Sat Mar 14 2009 - Milan Jurik

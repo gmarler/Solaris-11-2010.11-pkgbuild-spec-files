@@ -1,6 +1,6 @@
---- xvidcore-1.1.3/build/generic/configure.in.orig	2007-07-31 14:21:53.877885306 +0700
-+++ xvidcore-1.1.3/build/generic/configure.in	2007-07-31 14:36:22.539055836 +0700
-@@ -265,13 +265,24 @@
+--- xvidcore.orig/build/generic/configure.in	2009-05-28 19:03:45.000000000 +0200
++++ xvidcore/build/generic/configure.in	2009-08-04 09:55:17.584879938 +0200
+@@ -266,13 +266,26 @@
  SPECIFIC_CFLAGS=""
  PRE_SHARED_LIB=""
  case "$target_os" in
@@ -16,7 +16,9 @@
 +	AC_MSG_RESULT([ok])
 +	STATIC_LIB="libxvidcore.\$(STATIC_EXTENSION)"
 +	SHARED_LIB="libxvidcore.\$(SHARED_EXTENSION).\$(API_MAJOR).\$(API_MINOR)"
-+	SPECIFIC_LDFLAGS="-Wl,-h,libxvidcore.\$(SHARED_EXTENSION).\$(API_MAJOR) -Wl,-G -Wl,-M,libxvidcore.ld -lc -lm"
++	# because nasm don't produce pic code. And symbol 'main' is added and undefined.
++	#SPECIFIC_LDFLAGS="-Wl,-h,libxvidcore.\$(SHARED_EXTENSION).\$(API_MAJOR) -Wl,-G -Wl,-M,libxvidcore.ld -lc -lm"
++	SPECIFIC_LDFLAGS="-Wl,-h,libxvidcore.\$(SHARED_EXTENSION).\$(API_MAJOR) -Wl,-G -Wl,-M,libxvidcore.ld -lc -lm -shared -mimpure-text"
 +	if test "`basename $CC`" = "gcc" ; then
 +	    SPECIFIC_CFLAGS="-fPIC"
 +	else
@@ -26,3 +28,14 @@
       *bsd*|irix*)
  	AC_MSG_RESULT([ok])
  	STATIC_LIB="libxvidcore.\$(STATIC_EXTENSION)"
+@@ -378,8 +391,8 @@
+            dnl Checking nasm version
+            dnl
+            AC_MSG_CHECKING([for nasm version])
+-           nasm_minor=`$nasm_prog -v | cut -d '.' -f 2 | cut -d ' ' -f 1`
+-           nasm_major=`$nasm_prog -v | cut -d '.' -f 1 | cut -d ' ' -f 3`
++           nasm_minor=`$nasm_prog -v 2>&1 | cut -d '.' -f 2 | cut -d ' ' -f 1`
++           nasm_major=`$nasm_prog -v 2>&1 | cut -d '.' -f 1 | cut -d ' ' -f 3`
+            if test -z $nasm_minor ; then
+               nasm_minor=-1
+            fi
