@@ -12,6 +12,7 @@ Source1:                 shell.desktop
 #owner:yippi date:2009-04-07 type:bug bugzilla:578196
 Patch1:                  gnome-shell-01-launch.diff
 Patch2:                  gnome-shell-02-gtk-find.diff
+#owner:halton date:2009-08-04 type:bug bugzilla:590725
 Patch3:                  gnome-shell-03-lookingglass.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -32,6 +33,11 @@ Requires:                SUNWgnome-base-libs
 Requires:                SUNWgnome-media
 Requires:                SUNWgnome-panel
 Requires:                SUNWlibrsvg
+# 2009-08-04
+# DO NOT use SUNWclutter
+# git-master mutter need /usr/share/gir-1.0/Clutter-1.0.gir,
+# SFE version ship this file because it is built on top of
+# SFEgobject-introspection and SFEgir-repository
 Requires:                SFEclutter-1-0
 Requires:                SFEgir-repository
 Requires:                SFEgjs

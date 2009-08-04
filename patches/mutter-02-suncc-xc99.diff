@@ -1,0 +1,14 @@
+diff --git a/configure.in b/configure.in
+index b843a68..660c7fc 100644
+--- a/configure.in
++++ b/configure.in
+@@ -486,6 +486,9 @@ fi
+ # Warnings are there for a reason
+ if test "x$GCC" = "xyes"; then
+   CFLAGS="$CFLAGS -Wall -Werror -ansi"
++else
++# For sun cc
++  CFLAGS="$CFLAGS -xc99"
+ fi
+ 
+ # Use gnome-doc-utils:

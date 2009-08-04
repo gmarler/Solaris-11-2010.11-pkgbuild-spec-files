@@ -12,6 +12,9 @@ Summary:                 Clutter enabled metacity window manager
 Version:                 2.27.1
 Source:	                 http://ftp.gnome.org/pub/GNOME/sources/mutter/2.27/mutter-%{version}.tar.bz2
 Patch1:                  mutter-01-clutter.diff
+Patch2:                  mutter-02-suncc-xc99.diff
+#owner:halton date:2009-08-04 type:bug bugzilla:590719
+Patch3:                  mutter-03-solaris-shell.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 BuildRequires:           SUNWPython26-devel
@@ -22,6 +25,11 @@ BuildRequires:           SFEgir-repository
 BuildRequires:           SFEgjs-devel
 Requires:                SUNWPython26
 Requires:                SUNWgnome-base-libs
+# 2009-08-04
+# DO NOT use SUNWclutter
+# git-master mutter need /usr/share/gir-1.0/Clutter-1.0.gir,
+# SFE version ship this file because it is built on top of
+# SFEgobject-introspection and SFEgir-repository
 Requires:                SFEclutter-1-0
 Requires:                SFEgobject-introspection
 Requires:                SFEgir-repository
@@ -49,9 +57,11 @@ Requires:                %{name}
 %prep
 %setup -q -n mutter-%version
 %patch1 -p1
+%patch2 -p1
+%patch3 -p1
 
 %build
-export CFLAGS="%optflags -xc99 -I/usr/include/clutter-1.0"
+export CFLAGS="%optflags"
 export PYTHON=/usr/bin/python%{pythonver}
 
 libtoolize --force
@@ -141,6 +151,9 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 %endif
 
 %changelog
+* Tue Aug 04 2009 - Halton Huo <halton.huo@sun.com>
+- Add patch suncc-xc99.diff to fix suncc build issue
+- Add patch solaris-shell.diff to fix bugzilla #590719
 * Mon Aug 03 2009 - Brian Cameron  <brian.cameron@sun.com>
 - Update to build against 2.27.1 tarball.
 * Tue Jul 07 2009 - Brian Cameron  <brian.cameron@sun.com>

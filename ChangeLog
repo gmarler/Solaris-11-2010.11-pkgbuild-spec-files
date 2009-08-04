@@ -1,3 +1,10 @@
+2009-08-04  Halton Huo  <halton.huo@sun.com>
+
+	* SFEgnome-shell.spec: Add comments
+	* SFEmutter.spec: Add patches
+	* patches/mutter-02-suncc-xc99.diff: Added to fix suncc build issue
+	* patches/mutter-03-solaris-shell.diff: Added to fix bugzilla #590719
+
 2009-08-04 Gilles Dauphin
 
 	* SFEcairo-dock need CBEgettext
