@@ -7,7 +7,7 @@
 
 Name:                    SFEmenu-cache
 Summary:                 LXDE menu cache
-Version:                 0.2.4
+Version:                 0.2.5
 Source:                  http://downloads.sourceforge.net/lxde/menu-cache-%{version}.tar.gz
 URL:                     http://sourceforge.net/projects/lxde/
 
@@ -30,6 +30,10 @@ fi
 
 export LDFLAGS="-lsocket"
 
+libtoolize --force
+aclocal $ACLOCAL_FLAGS
+autoheader
+automake -a -c -f
 autoconf
 ./configure --prefix=%{_prefix} --libdir=%{_libdir} --libexecdir=%{_libexecdir}
 make -j$CPUS 
@@ -45,20 +49,18 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr (-, root, bin)
-%dir %attr (0755, root, bin) %{_bindir}
-%{_bindir}/*
 %dir %attr (0755, root, bin) %{_libdir}
 %{_libdir}/*.so*
 %{_libdir}/menu-cached
+%{_libdir}/menu-cache-gen
 %dir %attr (0755, root, other) %{_libdir}/pkgconfig
 %{_libdir}/pkgconfig/*
 %dir %attr (0755, root, bin) %{_includedir}
 %{_includedir}/*
-%dir %attr (0755, root, sys) %{_datadir}
-%dir %attr (0755, root, bin) %{_datadir}/man
-%{_datadir}/man/*
 
 %changelog
+* Tue Aug 04 2009 - brian.cameron@sun.com
+- Bump to 0.2.5.
 * Tue Jul 28 2009 - alfred.peng@sun.com
 - Bump to 0.2.4
 * Mon Mar 16 2009 - alfred.peng@sun.com
