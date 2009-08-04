@@ -7,8 +7,8 @@
 
 Name:                    SFEemacs
 Summary:                 GNU Emacs - an operating system in a text editor
-Version:                 22.3
-%define emacs_version    22.3
+Version:                 23.1
+%define emacs_version    23.1
 Source:                  http://ftp.gnu.org/pub/gnu/emacs/emacs-%{emacs_version}.tar.gz
 URL:                     http://www.gnu.org/software/emacs/emacs.html
 SUNW_BaseDir:            %{_basedir}
@@ -24,11 +24,13 @@ Requires: SUNWlibms
 Requires: SUNWzlib
 Requires: SUNWperl584core
 Requires: SUNWtexi
-Requires: SUNWpostrun
+Requires: SUNWdbus                                                                                                                                                        
 Requires: %{name}-root
 %if %{?_with_gtk:1}%{?!_with_gtk}
 %define toolkit gtk
-Requires: SUNWgnome-base-libs
+Requires: SUNWgtk2                                                                                                                                                                 
+Requires: SUNWglib2
+Requires: SUNWcairo
 %else
 %define toolkit motif
 Requires: SUNWxwrtl
@@ -50,7 +52,7 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
     CPUS=1
 fi
 export CPP="cc -E -Xs"
-export CFLAGS="%optflags"
+export CFLAGS='-i -xO3 -xspace -xstrconst -xpentium -mr -xregs=no%frameptr '
 export PERL=/usr/perl5/bin/perl
 
 ./configure --prefix=%{_prefix} --mandir=%{_mandir} \
@@ -60,7 +62,12 @@ export PERL=/usr/perl5/bin/perl
             --sysconfdir=%{_sysconfdir}      \
             --without-sound                  \
             --localstatedir=%{_localstatedir}   \
-            --with-gcc=no --with-x-toolkit=%toolkit --enable-python
+            --with-gif=no \
+            --with-x-toolkit=%toolkit \
+            --enable-python \
+            --enable-font-backend \
+            --with-xft \
+            --with-freetype
 
 make -j$CPUS 
 
@@ -79,31 +86,6 @@ rm -f $RPM_BUILD_ROOT%{_infodir}/dir
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post
-( echo 'PATH=/usr/bin:/usr/sfw/bin; export PATH' ;
-  echo 'infos="';
-  echo 'ada-mode autotype ccmode cl dired-x ebrowse ediff efaq emacs' ;
-  echo 'emacs-mime eshell eudc forms gnus idlwave info message mh-e' ;
-  echo 'pcl-cvs reftex sc speedbar vip viper widget woman' ;
-  echo '"';
-  echo 'retval=0';
-  echo 'for info in $infos; do';
-  echo '  install-info --info-dir=%{_infodir} %{_infodir}/$info || retval=1';
-  echo 'done';
-  echo 'exit $retval' ) | $PKG_INSTALL_ROOT/usr/lib/postrun -b -c SFE
-
-%preun
-( echo 'PATH=/usr/bin:/usr/sfw/bin; export PATH' ;
-  echo 'infos="';
-  echo 'ada-mode autotype ccmode cl dired-x ebrowse ediff efaq emacs' ;
-  echo 'emacs-mime eshell eudc forms gnus idlwave info message mh-e' ;
-  echo 'pcl-cvs reftex sc speedbar vip viper widget woman' ;
-  echo '"';
-  echo 'for info in $infos; do';
-  echo '  install-info --info-dir=%{_infodir} --delete %{_infodir}/$info';
-  echo 'done';
-  echo 'exit 0' ) | $PKG_INSTALL_ROOT/usr/lib/postrun -b -c SFE
-
 %files
 %defattr (-, root, root)
 %dir %attr (0755, root, bin) %{_bindir}
@@ -112,6 +94,29 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/*
 %dir %attr (0755, root, sys) %{_datadir}
 %dir %attr (0755, root, root) %{_datadir}/emacs
+%dir %attr (0755, root, other) %{_datadir}/applications
+%{_datadir}/applications/emacs.desktop
+%dir %attr (0755, root, other) %{_datadir}/icons
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/scalable/
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/scalable/apps/
+%{_datadir}/icons/hicolor/scalable/apps/*
+%{_datadir}/icons/hicolor/scalable/mimetypes/*
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/16x16
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/16x16/apps/
+%{_datadir}/icons/hicolor/16x16/apps/*
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/32x32/
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/32x32/apps/
+%{_datadir}/icons/hicolor/32x32/apps/*
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/24x24/
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/24x24/apps/
+%{_datadir}/icons/hicolor/24x24/apps/*
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/48x48/
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/48x48/apps/
+%{_datadir}/icons/hicolor/48x48/apps/*
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/128x128/
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/128x128/apps/
+%{_datadir}/icons/hicolor/128x128/apps/*
 %{_datadir}/emacs/*
 %dir %attr(0755, root, bin) %{_mandir}
 %dir %attr(0755, root, bin) %{_mandir}/man1
@@ -126,6 +131,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_localstatedir}/games/emacs/*
 
 %changelog
+* Tue Aug 04 2009 - jedy.wang@sun.com
+- Bump to 23.1
 * Thu Oct 2 2008 - markwright@internode.on.net
 - Bump to 22.3
 * Wed Oct 17 2007 - laca@sun.com

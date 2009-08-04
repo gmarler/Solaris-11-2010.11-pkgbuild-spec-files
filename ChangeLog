@@ -1,5 +1,9 @@
 2009-08-04  Wang Xin  <jedy.wang@sun.com>
 
+	* SFEemacs.spec: Bump to 23.1.
+
+2009-08-04  Wang Xin  <jedy.wang@sun.com>
+
 	* SFEvim.spec: Bump to release 245.
 
 2009-08-04  Brian  <brian.lu@sun.com>
