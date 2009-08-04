@@ -35,6 +35,7 @@ BuildRequires: 	SUNWdbus-devel
 BuildRequires: 	SUNWgnome-base-libs-devel
 BuildRequires: 	SUNWgnome-wm-devel
 BuildRequires: 	SUNWcompiz
+BuildRequires: 	CBEgettext
 # TODO require at least a 3D desktop
 
 #%package root
@@ -168,5 +169,7 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Aug 04 2009 - Gilles Dauphin ( Gilles POINT Dauphin A enst POINT fr)
+- require CBEgettext , SUNWgnu-gettext is not enough.
 * April 22 2008 - Gilles Dauphin ( Gilles POINT Dauphin A enst POINT fr)
 - Initial spec
