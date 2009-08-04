@@ -1,5 +1,13 @@
 2009-08-03 Brian Cameron  <brian.cameron@sun.com>
 
+	* SFEgnome-shell.spec, patches/gnome-shell-01-launch.diff,
+	  patches/gnome-shell-03-lookingglass.diff:  Update so it works with
+	  latest gnome-shell HEAD code.  Reworked patch 01, and added new
+	  patch to add a missing javascript file that needs to be installed
+	  or gnome-shell crashes.
+
+2009-08-03 Brian Cameron  <brian.cameron@sun.com>
+
 	* SFEmutter.spec, patches/mutter-01-clutter.diff: Update to build with
 	  clutter 1.0.
 	* patches/mutter-01-xopen.diff, patches/mutter-02-plugin.diff: 

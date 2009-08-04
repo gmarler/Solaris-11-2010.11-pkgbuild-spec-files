@@ -1,12 +1,12 @@
---- gnome-shell/src/gnome-shell.in-orig	2009-04-06 18:20:13.886166000 -0500
-+++ gnome-shell/src/gnome-shell.in	2009-04-06 18:20:41.398354000 -0500
+--- gnome-shell/src/gnome-shell.in-orig	2009-08-03 18:27:43.428926000 -0500
++++ gnome-shell/src/gnome-shell.in	2009-08-03 18:27:46.371842000 -0500
 @@ -1,4 +1,4 @@
 -#!/usr/bin/python
 +#!/usr/bin/python2.6
  
  import atexit
  import optparse
-@@ -26,8 +26,7 @@ def find_cmd (cmd_list):
+@@ -27,8 +27,7 @@ def find_cmd (cmd_list):
      raise SystemExit("None of the commands %s exist" % cmd_list)
      
  def pidof(command):
@@ -16,12 +16,12 @@
      pids = pidof.communicate()[0].split()
      pidof.wait()
  
-@@ -120,7 +119,7 @@ def start_shell():
+@@ -121,7 +120,7 @@ def start_shell():
      if os.path.exists(os.path.join(bin_dir, 'gnome-shell.in')):
          running_from_source_tree = True
          top_dir = os.path.dirname(bin_dir)
 -        plugin = os.path.join(top_dir, 'src', 'libgnome-shell.la')
 +        plugin = os.path.join(top_dir, 'src', 'libgnome-shell.so')
          typelib_dir = os.path.join(top_dir, "src")
-         taskpanel_dir = os.path.join(top_dir, "src")
          js_dir = os.path.join(top_dir, "js")
+         data_dir = os.path.join(top_dir, "data")

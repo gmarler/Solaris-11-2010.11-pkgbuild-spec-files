@@ -12,6 +12,7 @@ Source1:                 shell.desktop
 #owner:yippi date:2009-04-07 type:bug bugzilla:578196
 Patch1:                  gnome-shell-01-launch.diff
 Patch2:                  gnome-shell-02-gtk-find.diff
+Patch3:                  gnome-shell-03-lookingglass.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 BuildRequires:           SUNWPython26-devel
@@ -20,7 +21,7 @@ BuildRequires:           SUNWgnome-base-libs-devel
 BuildRequires:           SUNWgnome-media-devel
 BuildRequires:           SUNWgnome-panel-devel
 BuildRequires:           SUNWlibrsvg-devel
-BuildRequires:           SFEclutter09-devel
+BuildRequires:           SFEclutter-1-0-devel
 BuildRequires:           SFEgir-repository
 BuildRequires:           SFEgjs-devel
 BuildRequires:           SFEgobject-introspection-devel
@@ -31,7 +32,7 @@ Requires:                SUNWgnome-base-libs
 Requires:                SUNWgnome-media
 Requires:                SUNWgnome-panel
 Requires:                SUNWlibrsvg
-Requires:                SFEclutter09
+Requires:                SFEclutter-1-0
 Requires:                SFEgir-repository
 Requires:                SFEgjs
 Requires:                SFEgobject-introspection
@@ -51,6 +52,7 @@ git-clone git://git.gnome.org/gnome-shell
 cd gnome-shell
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 %build
 cd gnome-shell-%version
@@ -99,7 +101,6 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 %{_bindir}/*
 %dir %attr (0755, root, bin) %{_libdir}
 %{_libdir}/gnome-shell
-%{_libdir}/gnomeshell-taskpanel
 %{_libdir}/mutter/plugins
 %dir %attr (0755, root, sys) %{_datadir}
 %{_datadir}/gnome-shell
@@ -111,6 +112,9 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 %{_sysconfdir}/gconf/schemas/gnome-shell.schemas
 
 %changelog
+* Mon Aug 03 2009 - Brian Cameron  <brian.cameron@sun.com>
+- Add gnome-shell-03-lookingglass.diff so this javascript file gets installed.
+  Otherwise gnome-shell won't start up.
 * Tue Jul 07 2009 - Brian Cameron  <brian.cameron@sun.com>
 - Remove patch gnome-shell-02-overlay.diff which no longer applies.
 * Tue Apr 28 2009 - Brian Cameron  <brian.cameron@sun.com>
