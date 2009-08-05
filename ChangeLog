@@ -1,3 +1,13 @@
+2009-08-05  Halton Huo  <halton.huo@sun.com>
+
+	* SFEgnome-shell.spec:
+	* SFEgobject-introspection.spec: Use 0.6.3 tarball release
+	* patches/gnome-shell-02-missing-dash.diff: Added for bugzilla #590813
+	* patches/gnome-shell-03-missing-svg.diff: Added for bugzilla #590814
+	* patches/gnome-shell-03-lookingglass.diff: remove upstreamed patch
+	* patches/gobject-introspection-04-crash-compiler.diff:
+	  Added for bugzilla #587823
+
 2009-08-04 Brian Cameron  <brian.cameron@sun.com>
 
 	* SFEopenbox.spec, patches/openbox-02-session.diff: Add patch so that

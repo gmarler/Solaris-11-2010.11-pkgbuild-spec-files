@@ -19,11 +19,14 @@
 Name:                    SFEgobject-introspection
 Summary:                 GObject introspection support
 Version:                 0.6.3
+Source:                  http://download.gnome.org/sources/gobject-introspection/0.6/gobject-introspection-%{version}.tar.bz2
 #owner:yippi date:2009-04-07 type:bug bugzilla:578200
 Patch1:                  gobject-introspection-01-scanner.diff
 #owner:yippi date:2009-04-07 type:bug bugzilla:578202
 Patch2:                  gobject-introspection-02-fixshave.diff
 Patch3:                  gobject-introspection-03-dumper.diff
+#owner:halton date:2009-04-07 type:bug bugzilla:587823 status:upstreamed
+Patch4:                  gobject-introspection-04-crash-compiler.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 BuildRequires:           SUNWPython26-devel
@@ -40,28 +43,34 @@ SUNW_BaseDir: %{_basedir}
 %include default-depend.inc
 
 %prep
-mkdir -p gobject-introspection-%version
-cd gobject-introspection-%version
-rm -fR gobject-introspection
-git-clone git://git.gnome.org/gobject-introspection
-cd gobject-introspection
+%setup -q -n gobject-introspection-%version
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
+
+#FIXME: When #590802 fixed in next release, remove following lines 
+rm -f m4/lt~obsolete.m4
+rm -f m4/ltoptions.m4
+rm -f m4/libtool.m4
+rm -f m4/ltsugar.m4
+rm -f m4/ltversion.m4
 
 %build
-cd gobject-introspection-%version
-cd gobject-introspection
 export PYTHON=/usr/bin/python%{pythonver}
-./autogen.sh \
+
+libtoolize --force
+aclocal $ACLOCAL_FLAGS -I m4
+autoheader
+automake -a -c -f
+autoconf
+./configure \
    --prefix=%{_prefix} \
    --mandir=%{_mandir}
 make
 
 %install
 rm -rf $RPM_BUILD_ROOT
-cd gobject-introspection-%version
-cd gobject-introspection
 make install DESTDIR=$RPM_BUILD_ROOT
 
 find $RPM_BUILD_ROOT/%{_libdir} -type f -name "*.a" -exec rm -f {} ';'
@@ -98,6 +107,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/aclocal/*
 
 %changelog
+* Wed Aug 05 2009 - Halton Huo  <halton.huo@sun.com>
+- Use 0.6.3 tarball release 
+- Add crash-compiler.diff to fix #587823
 * Fri Jul 03 2009 - Brian Cameron  <brian.cameron@sun.com
 - Remove upstream patch gobject-introspection-01-union.diff,
   renumber rest.

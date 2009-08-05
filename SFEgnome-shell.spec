@@ -11,9 +11,14 @@ Version:                 0.0.1
 Source1:                 shell.desktop
 #owner:yippi date:2009-04-07 type:bug bugzilla:578196
 Patch1:                  gnome-shell-01-launch.diff
-Patch2:                  gnome-shell-02-gtk-find.diff
-#owner:halton date:2009-08-04 type:bug bugzilla:590725
-Patch3:                  gnome-shell-03-lookingglass.diff
+#disable gtk-find.diff since it can not patched, let Brian decide whether
+# to remove it or not
+#Patch2:                 gnome-shell-02-gtk-find.diff
+#owner:halton date:2009-08-05 type:bug bugzilla:590813
+Patch2:                  gnome-shell-02-missing-dash.diff
+#owner:halton date:2009-08-05 type:bug bugzilla:590814
+Patch3:                  gnome-shell-03-missing-svg.diff
+
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 BuildRequires:           SUNWPython26-devel
@@ -118,6 +123,10 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 %{_sysconfdir}/gconf/schemas/gnome-shell.schemas
 
 %changelog
+* Wed Aug 05 2009 - Halton Huo  < halton.huo@sun.com>
+- Remove upstreamed patch lookingglass.diff
+- Add patch missing-dash.diff to fix bugzilla #590813
+- Add patch missing-svg.diff to fix bugzilla #590814
 * Mon Aug 03 2009 - Brian Cameron  <brian.cameron@sun.com>
 - Add gnome-shell-03-lookingglass.diff so this javascript file gets installed.
   Otherwise gnome-shell won't start up.

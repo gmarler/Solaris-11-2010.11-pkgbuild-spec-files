@@ -1,0 +1,12 @@
+diff --git a/js/ui/Makefile.am b/js/ui/Makefile.am
+index 0813d11..34fa61f 100644
+--- a/js/ui/Makefile.am
++++ b/js/ui/Makefile.am
+@@ -5,6 +5,7 @@ dist_jsui_DATA =		\
+ 	appDisplay.js		\
+ 	button.js		\
+ 	chrome.js		\
++	dash.js			\
+ 	dnd.js			\
+ 	docDisplay.js		\
+ 	genericDisplay.js	\
