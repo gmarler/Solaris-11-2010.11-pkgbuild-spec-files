@@ -24,7 +24,7 @@ Source:                  http://download.gnome.org/sources/gobject-introspection
 Patch1:                  gobject-introspection-01-scanner.diff
 #owner:yippi date:2009-04-07 type:bug bugzilla:578202
 Patch2:                  gobject-introspection-02-fixshave.diff
-Patch3:                  gobject-introspection-03-dumper.diff
+Patch3:                  gobject-introspection-03-sunstudio.diff
 #owner:halton date:2009-04-07 type:bug bugzilla:587823 status:upstreamed
 Patch4:                  gobject-introspection-04-crash-compiler.diff
 SUNW_BaseDir:            %{_basedir}

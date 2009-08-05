@@ -1,3 +1,15 @@
+2009-08-05 Brian Cameron  <brian.cameron@sun.com>
+
+	* SFEgobject-introspection.diff,
+	  patches/gobject-introspection-03-dumper.diff,
+	  patches/gobject-introspection-03-sunstudio.diff: Rename patch to
+	  "03-sunstudio" and add two hunks.  An additional change needed to
+	  dumper.py to get the GStreamer Gir file to build, and a change
+	  to sourcescanner.py so that it uses the Sun Studio compiler instead
+	  of gcc.
+	* patches/gir-repository-01-nogst.diff: Rework patch so that we build	
+	  the GStreamer Gir files instead of just disabling them.
+
 2009-08-05 - Milan Jurik <sfnet@xylab.cz>
 
 	* SFEunbound.spec: upgrade to 1.3.3

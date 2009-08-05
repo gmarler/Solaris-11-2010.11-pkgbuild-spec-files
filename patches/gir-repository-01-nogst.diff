@@ -1,18 +1,10 @@
---- gir-repository/configure.ac-orig	2009-04-03 22:30:13.659471000 -0500
-+++ gir-repository/configure.ac	2009-04-03 23:02:25.521533000 -0500
-@@ -139,13 +139,13 @@ AM_CONDITIONAL(BUILD_CLUTTERCAIRO, $have
- dnl gstreamer
- PKG_CHECK_MODULES(GSTREAMER, gstreamer-0.10 >= 0.10.0, 
-                   have_gstreamer=true, have_gstreamer=false)
--AM_CONDITIONAL(BUILD_GSTREAMER, $have_gstreamer)
-+AM_CONDITIONAL(BUILD_GSTREAMER, 0)
- 
- dnl gstreamer
- PKG_CHECK_MODULES(GSTREAMER_PLUGINS_BASE, gstreamer-plugins-base-0.10 >= 0.10.0, 
-                   have_gstreamer_plugins_base=true, 
-                   have_gstreamer_plugins_base=false)
--AM_CONDITIONAL(BUILD_GSTREAMER_PLUGINS_BASE, $have_gstreamer_plugins_base)
-+AM_CONDITIONAL(BUILD_GSTREAMER_PLUGINS_BASE, 0)
- 
- dnl gtksourceview
- PKG_CHECK_MODULES(GTKSOURCEVIEW, gtksourceview-2.0,
+--- gir-repository-0.6.3/gir/Makefile.am-orig	2009-08-05 14:39:07.353502000 -0500
++++ gir-repository-0.6.3/gir/Makefile.am	2009-08-05 14:39:30.145429000 -0500
+@@ -520,6 +520,7 @@ Gst-0.10.gir: $(INTROSPECTION_SCANNER)
+              --include=GModule-2.0 \
+              --include=libxml2-2.0 \
+ 	     --library=gstbase-0.10 \
++             `pkg-config --libs gstreamer-base-0.10` \
+ 	     --libtool="$(LIBTOOL)" \
+              --pkg gobject-2.0 \
+              --pkg gstreamer-0.10 \
