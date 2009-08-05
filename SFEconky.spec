@@ -5,19 +5,14 @@
 #
 %include Solaris.inc
 
-Name:                    SFEnetsurf
-Summary:                 Small gtk web browser  
-Version:                 2.0
-Source:                  http://www.netsurf-browser.org/downloads/releases/netsurf-2.0-src.tar.gz
-Patch1:                  netsurf-01.diff
-URL:                     http://www.netsurf-browser.org
+Name:                    SFEconky
+Summary:                 Light-weight system monitor for X  
+Version:                 1.5.1
+Source:                  http://prdownloads.sourceforge.net/conky/conky-1.5.1.tar.gz
+Patch1:                  conky-01.diff
+URL:                     http://conky.sourceforge.net/
 #SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
-%define svn_url1 	svn://svn.netsurf-browser.org/trunk/libnsbmp
-%define svn_url2 	svn://svn.netsurf-browser.org/trunk/libnsgif
-%define svn_url3 	svn://svn.netsurf-browser.org/trunk/libparserutils
-%define svn_url4 	svn://svn.netsurf-browser.org/trunk/hubbub
-%define svn_url5 	svn://svn.netsurf-browser.org/trunk/libharu
 
 %include default-depend.inc
 
