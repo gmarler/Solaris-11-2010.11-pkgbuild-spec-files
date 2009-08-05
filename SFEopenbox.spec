@@ -14,6 +14,7 @@ URL:                     http://icculus.org/openbox/index.php/Main_Page
 # Refer to Sun Studio compiler bugs 4614572 and 6525110
 # owner:alfred date:2009-06-02 type:bug
 Patch1:                  openbox-01-union.diff
+Patch2:                  openbox-02-session.diff
 
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -36,6 +37,7 @@ SUNW_BaseDir:            /
 %setup -q -n openbox-%version
 
 %patch1 -p1
+%patch2 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -103,6 +105,9 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Tue Aug 04 2009 - brian.cameron@sun.com
+- Add patch openbox-02-session.diff so that the script works
+  with Nevada bourne-shell.
 * Tue Jun 02 2009 - alfred.peng@sun.com
 - Add patch union.diff for anonymous union usage.
 * Sun Mar 16 2009 - alfred.peng@sun.com

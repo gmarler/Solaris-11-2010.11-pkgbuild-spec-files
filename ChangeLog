@@ -1,5 +1,10 @@
 2009-08-04 Brian Cameron  <brian.cameron@sun.com>
 
+	* SFEopenbox.spec, patches/openbox-02-session.diff: Add patch so that
+	  the openbox-session script works with Nevada bourne shell.
+
+2009-08-04 Brian Cameron  <brian.cameron@sun.com>
+
 	* SFEgpicview.spec: Bump to 0.2.1.
 	* SFEpcmanfm.spec, patches/pcmanfm-02-Werror.diff,
 	  patches/pcmanfm-04-crash.diff: Bump to 0.5.1, rework 02 patch and
