@@ -1,6 +1,6 @@
 diff -rupN conky-1.5.1/configure conky-1.5.1.new/configure
---- conky-1.5.1/configure	2008-04-01 08:13:26.000000000 +0400
-+++ conky-1.5.1.new/configure	2009-03-31 12:40:28.000000000 +0400
+--- conky-1.5.1/configure	2008-04-01 04:13:26.000000000 +0000
++++ conky-1.5.1.new/configure	2009-08-05 13:44:25.021936000 +0000
 @@ -20234,9 +20234,9 @@ case $uname in
      ;;
  
@@ -24,8 +24,8 @@ diff -rupN conky-1.5.1/configure conky-1.5.1.new/configure
  
  
 diff -rupN conky-1.5.1/data/conky.conf conky-1.5.1.new/data/conky.conf
---- conky-1.5.1/data/conky.conf	2008-01-06 04:13:47.000000000 +0300
-+++ conky-1.5.1.new/data/conky.conf	2009-03-31 13:32:31.000000000 +0400
+--- conky-1.5.1/data/conky.conf	2008-01-06 01:13:47.000000000 +0000
++++ conky-1.5.1.new/data/conky.conf	2009-08-05 13:44:25.024445000 +0000
 @@ -1,74 +1,110 @@
 -# Conky, a system monitor, based on torsmo
 -#
@@ -203,8 +203,8 @@ diff -rupN conky-1.5.1/data/conky.conf conky-1.5.1.new/data/conky.conf
 + ${color #0077ff}/         $color${fs_used /}/${fs_size /}${alignr}${color #0077ff}${fs_bar 5,120 /}
 +  
 diff -rupN conky-1.5.1/src/Makefile.am conky-1.5.1.new/src/Makefile.am
---- conky-1.5.1/src/Makefile.am	2008-03-20 05:00:13.000000000 +0300
-+++ conky-1.5.1.new/src/Makefile.am	2009-03-31 13:11:57.000000000 +0400
+--- conky-1.5.1/src/Makefile.am	2008-03-20 02:00:13.000000000 +0000
++++ conky-1.5.1.new/src/Makefile.am	2009-08-05 13:44:25.059804000 +0000
 @@ -89,54 +89,23 @@ smapi = smapi.c smapi.h
  endif
  
@@ -262,8 +262,8 @@ diff -rupN conky-1.5.1/src/Makefile.am conky-1.5.1.new/src/Makefile.am
  
  # vi:set ts=8 sw=8 noet ai nocindent syntax=automake:
 diff -rupN conky-1.5.1/src/Makefile.in conky-1.5.1.new/src/Makefile.in
---- conky-1.5.1/src/Makefile.in	2008-04-01 08:13:24.000000000 +0400
-+++ conky-1.5.1.new/src/Makefile.in	2009-04-09 16:19:00.000000000 +0400
+--- conky-1.5.1/src/Makefile.in	2008-04-01 04:13:24.000000000 +0000
++++ conky-1.5.1.new/src/Makefile.in	2009-08-05 13:44:25.062601000 +0000
 @@ -73,32 +73,13 @@ CONFIG_CLEAN_FILES = build.h
  am__installdirs = "$(DESTDIR)$(bindir)"
  binPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
@@ -401,8 +401,8 @@ diff -rupN conky-1.5.1/src/Makefile.in conky-1.5.1.new/src/Makefile.in
  .c.o:
  @am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
 diff -rupN conky-1.5.1/src/common.c conky-1.5.1.new/src/common.c
---- conky-1.5.1/src/common.c	2008-03-31 08:56:41.000000000 +0400
-+++ conky-1.5.1.new/src/common.c	2008-05-16 13:39:58.000000000 +0400
+--- conky-1.5.1/src/common.c	2008-03-31 04:56:41.000000000 +0000
++++ conky-1.5.1.new/src/common.c	2009-08-05 13:44:25.064435000 +0000
 @@ -256,15 +256,15 @@ void update_stuff(void)
  	prepare_update();
  
@@ -482,8 +482,8 @@ diff -rupN conky-1.5.1/src/common.c conky-1.5.1.new/src/common.c
  		update_dns_data();
  	}
 diff -rupN conky-1.5.1/src/conky.c conky-1.5.1.new/src/conky.c
---- conky-1.5.1/src/conky.c	2008-04-01 07:52:20.000000000 +0400
-+++ conky-1.5.1.new/src/conky.c	2008-05-16 19:02:02.000000000 +0400
+--- conky-1.5.1/src/conky.c	2008-04-01 03:52:20.000000000 +0000
++++ conky-1.5.1.new/src/conky.c	2009-08-05 13:54:20.979451000 +0000
 @@ -25,6 +25,9 @@
   *
   * $Id: conky.c 1091 2008-03-31 15:33:54Z n0-1 $ */
@@ -915,29 +915,16 @@ diff -rupN conky-1.5.1/src/conky.c conky-1.5.1.new/src/conky.c
  				if (obj->data.diskio) {
  					human_readable(
  						(obj->data.diskio->current / update_interval) * 1024LL,
-@@ -4584,17 +4602,18 @@ static void generate_text_internal(char 
+@@ -4584,6 +4602,8 @@ static void generate_text_internal(char 
  						diskio_write_value, obj->e, 1);
  				}
  			}
++			
 +*/
  			OBJ(downspeed) {
  				spaced_print(p, p_max_size, "%d", 6, "downspeed",
--					round_to_int(obj->data.net->recv_speed / 1024));
-+					(int) get_recv_speed() / 1024);
- 			}
- 			OBJ(downspeedf) {
- 				spaced_print(p, p_max_size, "%.1f", 8, "downspeedf",
--					obj->data.net->recv_speed / 1024.0);
-+					get_recv_speed() / 1024.0);
- 			}
- 			OBJ(downspeedgraph) {
- 				new_graph(p, obj->a, obj->b, obj->c, obj->d,
--					obj->data.net->recv_speed / 1024.0, obj->e, 1);
-+					get_recv_speed() / 1024.0, obj->e, 1);
- 			}
- 			OBJ(else) {
- 				if (!if_jumped) {
-@@ -5120,16 +5139,20 @@ static void generate_text_internal(char 
+ 					round_to_int(obj->data.net->recv_speed / 1024));
+@@ -5120,16 +5140,20 @@ static void generate_text_internal(char 
  					human_readable(obj->data.fs->size, p, 255, "fs_size");
  				}
  			}
@@ -967,7 +954,7 @@ diff -rupN conky-1.5.1/src/conky.c conky-1.5.1.new/src/conky.c
  			}
  			OBJ(fs_bar_free) {
  				if (obj->data.fs != NULL) {
-@@ -5154,7 +5177,9 @@ static void generate_text_internal(char 
+@@ -5154,7 +5178,9 @@ static void generate_text_internal(char 
  				}
  			}
  			OBJ(loadavg) {
@@ -978,7 +965,7 @@ diff -rupN conky-1.5.1/src/conky.c conky-1.5.1.new/src/conky.c
  
  				if (obj->data.loadavg[2]) {
  					snprintf(p, p_max_size, "%.2f %.2f %.2f",
-@@ -5169,7 +5194,7 @@ static void generate_text_internal(char 
+@@ -5169,7 +5195,7 @@ static void generate_text_internal(char 
  					snprintf(p, p_max_size, "%.2f",
  						v[obj->data.loadavg[0] - 1]);
  				}
@@ -987,7 +974,7 @@ diff -rupN conky-1.5.1/src/conky.c conky-1.5.1.new/src/conky.c
  			OBJ(goto) {
  				new_goto(p, obj->data.i);
  			}
-@@ -5276,7 +5301,7 @@ static void generate_text_internal(char 
+@@ -5276,7 +5302,7 @@ static void generate_text_internal(char 
  				new_voffset(p, obj->data.i);
  			}
  #ifndef __OpenBSD__
@@ -996,7 +983,7 @@ diff -rupN conky-1.5.1/src/conky.c conky-1.5.1.new/src/conky.c
  				double r;
  
  				r = get_sysfs_info(&obj->data.sysfs.fd, obj->data.sysfs.arg,
-@@ -5288,6 +5313,7 @@ static void generate_text_internal(char 
+@@ -5288,6 +5314,7 @@ static void generate_text_internal(char 
  					snprintf(p, p_max_size, "%.1f", r);
  				}
  			}
@@ -1004,7 +991,7 @@ diff -rupN conky-1.5.1/src/conky.c conky-1.5.1.new/src/conky.c
  			OBJ(platform) {
  				double r;
  
-@@ -5312,6 +5338,7 @@ static void generate_text_internal(char 
+@@ -5312,6 +5339,7 @@ static void generate_text_internal(char 
  					snprintf(p, p_max_size, "%.1f", r);
  				}
  			}
@@ -1012,7 +999,7 @@ diff -rupN conky-1.5.1/src/conky.c conky-1.5.1.new/src/conky.c
  #endif /* !__OpenBSD__ */
  			OBJ(alignr) {
  				new_alignr(p, obj->data.i);
-@@ -5358,7 +5385,7 @@ static void generate_text_internal(char 
+@@ -5358,7 +5386,7 @@ static void generate_text_internal(char 
  					}
  				}
  			}
@@ -1021,7 +1008,7 @@ diff -rupN conky-1.5.1/src/conky.c conky-1.5.1.new/src/conky.c
  				if ((obj->data.ifblock.s)
  						&& (!check_mount(obj->data.ifblock.s))) {
  					i = obj->data.ifblock.pos;
-@@ -5375,9 +5402,10 @@ static void generate_text_internal(char 
+@@ -5375,9 +5403,10 @@ static void generate_text_internal(char 
  					if_jumped = 0;
  				}
  			}
@@ -1035,7 +1022,7 @@ diff -rupN conky-1.5.1/src/conky.c conky-1.5.1.new/src/conky.c
  			OBJ(kernel) {
  				snprintf(p, p_max_size, "%s", cur->uname_s.release);
  			}
-@@ -5387,29 +5415,29 @@ static void generate_text_internal(char 
+@@ -5387,29 +5416,29 @@ static void generate_text_internal(char 
  
  			/* memory stuff */
  			OBJ(mem) {
@@ -1073,7 +1060,7 @@ diff -rupN conky-1.5.1/src/conky.c conky-1.5.1.new/src/conky.c
  				snprintf(p, p_max_size, "%d", mixer_get_avg(obj->data.l));
  			}
  			OBJ(mixerl) {
-@@ -5430,7 +5458,7 @@ static void generate_text_internal(char 
+@@ -5430,7 +5459,7 @@ static void generate_text_internal(char 
  				new_bar(p, obj->data.mixerbar.w, obj->data.mixerbar.h,
  					mixer_get_right(obj->data.mixerbar.l) * 255 / 100);
  			}
@@ -1082,7 +1069,7 @@ diff -rupN conky-1.5.1/src/conky.c conky-1.5.1.new/src/conky.c
  			/* mail stuff */
  			OBJ(mails) {
  				update_mail_count(&obj->data.local_mail);
-@@ -5453,10 +5481,10 @@ static void generate_text_internal(char 
+@@ -5453,10 +5482,10 @@ static void generate_text_internal(char 
  				new_outline(p, obj->data.l);
  			}
  			OBJ(processes) {
@@ -1095,7 +1082,7 @@ diff -rupN conky-1.5.1/src/conky.c conky-1.5.1.new/src/conky.c
  			}
  			OBJ(text) {
  				snprintf(p, p_max_size, "%s", obj->data.s);
-@@ -5468,22 +5496,22 @@ static void generate_text_internal(char 
+@@ -5468,22 +5497,22 @@ static void generate_text_internal(char 
  				new_stippled_hr(p, obj->data.pair.a, obj->data.pair.b);
  			}
  			OBJ(swap) {
@@ -1124,22 +1111,8 @@ diff -rupN conky-1.5.1/src/conky.c conky-1.5.1.new/src/conky.c
  			}
  			OBJ(sysname) {
  				snprintf(p, p_max_size, "%s", cur->uname_s.sysname);
-@@ -5535,21 +5563,21 @@ static void generate_text_internal(char 
- 			}
- 			OBJ(upspeed) {
- 				spaced_print(p, p_max_size, "%d", 6, "upspeed",
--					round_to_int(obj->data.net->trans_speed / 1024));
-+					(int) get_trans_speed() / 1024);
- 			}
- 			OBJ(upspeedf) {
- 				spaced_print(p, p_max_size, "%.1f", 8, "upspeedf",
--					obj->data.net->trans_speed / 1024.0);
-+					get_trans_speed() / 1024.0);
- 			}
- 			OBJ(upspeedgraph) {
- 				new_graph(p, obj->a, obj->b, obj->c, obj->d,
--					obj->data.net->trans_speed / 1024.0, obj->e, 1);
-+					get_trans_speed() / 1024.0, obj->e, 1);
+@@ -5546,10 +5575,10 @@ static void generate_text_internal(char 
+ 					obj->data.net->trans_speed / 1024.0, obj->e, 1);
  			}
  			OBJ(uptime_short) {
 -				format_seconds_short(p, p_max_size, (int) cur->uptime);
@@ -1151,7 +1124,7 @@ diff -rupN conky-1.5.1/src/conky.c conky-1.5.1.new/src/conky.c
  			}
  			OBJ(user_names) {
  				snprintf(p, p_max_size, "%s", cur->users.names);
-@@ -7627,7 +7655,7 @@ void clean_up(void)
+@@ -7627,7 +7656,7 @@ void clean_up(void)
  		specials = NULL;
  	}
  
@@ -1161,8 +1134,8 @@ diff -rupN conky-1.5.1/src/conky.c conky-1.5.1.new/src/conky.c
  
  static int string_to_bool(const char *s)
 diff -rupN conky-1.5.1/src/conky.h conky-1.5.1.new/src/conky.h
---- conky-1.5.1/src/conky.h	2008-03-31 08:56:42.000000000 +0400
-+++ conky-1.5.1.new/src/conky.h	2008-05-16 14:08:44.000000000 +0400
+--- conky-1.5.1/src/conky.h	2008-03-31 04:56:42.000000000 +0000
++++ conky-1.5.1.new/src/conky.h	2009-08-05 13:44:25.080568000 +0000
 @@ -83,6 +83,11 @@
  #include "mboxscan.h"
  #include "timed_thread.h"
@@ -1239,8 +1212,8 @@ diff -rupN conky-1.5.1/src/conky.h conky-1.5.1.new/src/conky.h
 +double get_load_average15();                   
 +double cpu_usage;
 diff -rupN conky-1.5.1/src/fs.c conky-1.5.1.new/src/fs.c
---- conky-1.5.1/src/fs.c	2008-03-31 08:56:42.000000000 +0400
-+++ conky-1.5.1.new/src/fs.c	2008-05-16 09:18:24.000000000 +0400
+--- conky-1.5.1/src/fs.c	2008-03-31 04:56:42.000000000 +0000
++++ conky-1.5.1.new/src/fs.c	2009-08-05 13:44:25.083815000 +0000
 @@ -1,185 +1,85 @@
 -/* Conky, a system monitor, based on torsmo
 - *
@@ -1491,9 +1464,9 @@ diff -rupN conky-1.5.1/src/fs.c conky-1.5.1.new/src/fs.c
 +  return 0;
  }
 diff -rupN conky-1.5.1/src/solaris.c conky-1.5.1.new/src/solaris.c
---- conky-1.5.1/src/solaris.c	2008-03-31 08:56:42.000000000 +0400
-+++ conky-1.5.1.new/src/solaris.c	2009-03-31 13:37:03.000000000 +0400
-@@ -1,82 +1,272 @@
+--- conky-1.5.1/src/solaris.c	2008-03-31 04:56:42.000000000 +0000
++++ conky-1.5.1.new/src/solaris.c	2009-08-05 13:39:16.000000000 +0000
+@@ -1,82 +1,314 @@
 -/* Conky, a system monitor, based on torsmo
 - *
 - * Any original torsmo code is licensed under the BSD license
@@ -1520,7 +1493,7 @@ diff -rupN conky-1.5.1/src/solaris.c conky-1.5.1.new/src/solaris.c
 - *
 - * $Id: solaris.c 1090 2008-03-31 04:56:39Z brenden1 $ */
 +//  Added initial Solaris support -  Alexander R. Eremin http://www.milax.org 16 May 2008 */
-+//  31.03.2009 Updated get_nics - Alexander R. Eremin http://www.milax.org 31 March 2009 */
++//  Updated update_net_stats - Alexander R. Eremin http://www.milax.org 05 August 2009 */
  
 -/* doesn't work, feel free to finish this */
  #include "conky.h"
@@ -1539,6 +1512,15 @@ diff -rupN conky-1.5.1/src/solaris.c conky-1.5.1.new/src/solaris.c
 +#include <sys/sysinfo.h>
 +#include <string.h>
 +#include <sys/loadavg.h>
++#include <sys/types.h>                                                                                        
++#include <sys/socket.h>                                                                                       
++#include <sys/ioctl.h>                                                                                        
++#include <sys/dlpi.h>                                                                                         
++#include <net/if.h>                                                                                           
++#include <sys/sockio.h>                                                                                       
++#include <strings.h>   
++#include <netinet/in.h>                                                                                       
++                                                                                                              
 +
 +#define ONE_KB (1024)     
 +
@@ -1581,7 +1563,10 @@ diff -rupN conky-1.5.1/src/solaris.c conky-1.5.1.new/src/solaris.c
 +  stat_updated = 0;                                                                                                                                     
 +  net_updated = 0;  
 +}
-+
+ 
+-	if (kstat_chain_update(kstat) == -1) {
+-		perror("kstat_chain_update");
+-		return;
 +double get_uptime() {
 +  double t = 0;
 +  update_kstat();
@@ -1648,10 +1633,7 @@ diff -rupN conky-1.5.1/src/solaris.c conky-1.5.1.new/src/solaris.c
 +
 +update_kstat();
 +if (kc != NULL) {
- 
--	if (kstat_chain_update(kstat) == -1) {
--		perror("kstat_chain_update");
--		return;
++
 +
 +    ksp = kstat_lookup(kc, "cpu_stat", 0, "cpu_stat0");
 +
@@ -1675,7 +1657,6 @@ diff -rupN conky-1.5.1/src/solaris.c conky-1.5.1.new/src/solaris.c
 -	kstat_updated = 0;
 +static double last_cpu_sum;                                                                                                                                  
 +static double last_cpu_calc_time;                                                                                                                            
-+static double last_net_calc_time;                                                                                                                            
 +                                                                                                                                                             
 +void update_cpu_usage() {                                                                                                                                    
 +    double t, delta;                                                                                                                                           
@@ -1726,35 +1707,14 @@ diff -rupN conky-1.5.1/src/solaris.c conky-1.5.1.new/src/solaris.c
 +						
 +
 +
-+static char *net_iface="";
-+static int lastrx;
-+static int lasttx;
-+
-+static int recv_speed;
-+static int trans_speed;
-+static void
-+get_nics(kstat_ctl_t *kc)
++void update_net_stats()
  {
 -	kstat_t *ksp;
-+    if (kc != NULL) {
-+	for (ksp = kc->kc_chain; ksp != NULL; ksp = ksp->ks_next) {
-+	    if ((strcmp(ksp->ks_class,"net") == 0) && (strcmp(ksp->ks_module, "link")==0)) {
-+		net_iface=ksp->ks_name;	
-+	    }
-+	}
-+     }
-+}
++	struct net_stat *ns;
  
-+void update_net_stats() {
-+	double t, delta;   	
-+	int rx = 0;
-+	int tx = 0;                                                                                                                                                   
-+	
-+	if (net_updated) return;                                                                                                                                   
-+	    net_updated = 1;        
-+                                                                                                                                                             
- 	update_kstat();
-+	if (kc != NULL) {
+-	update_kstat();
++	double delta;
++	long long r, t, last_recv, last_trans;
  
 -	ksp = kstat_lookup(kstat, "unix", -1, "system_misc");
 -	if (ksp != NULL) {
@@ -1766,50 +1726,106 @@ diff -rupN conky-1.5.1/src/solaris.c conky-1.5.1.new/src/solaris.c
 -				return get_time() - (double) knp->value.ui32;
 -			}
 -		}
-+	get_nics(kc);
-+	if (!strlen(net_iface)<2) {
-+	    ksp = kstat_lookup(kc, NULL, -1, net_iface);                                                                                                      
-+	    if (kstat_read(kc, ksp, 0) == -1)                                                                                                                      
-+		fprintf(stderr,"kstat read");                                                                                                                                
++	/* get delta */
++	delta = current_update_time - last_update_time;
++	if (delta <= 0.0001) {
++		return;
+ 	}
++
++
++	char          buf[1024];
++ 	struct ifconf ifc;
++ 	struct ifreq *ifr;
++	int           sock;
++ 	int           nInterfaces;
++ 	int           i;
++ 
++ 
++ 	sock = socket(AF_INET, SOCK_DGRAM, 0);
++ 	if(sock < 0)
++ 	{
++ 		fprintf(stderr,"socket");
++ 		return;
++ 	}
++
++ 	/* Query available interfaces. */
++	ifc.ifc_len = sizeof(buf);
++ 	ifc.ifc_buf = buf;
++ 	if(ioctl(sock, SIOCGIFCONF, &ifc) < 0)
++ 	{
++		fprintf(stderr,"ioctl(SIOCGIFCONF)");
++ 		close(sock);
++ 		return;
++ 	}
++
++	/* Iterate through the list of interfaces. */
++	ifr         = ifc.ifc_req;
++ 	nInterfaces = ifc.ifc_len / sizeof(struct ifreq);
++ 	for(i = 0; i < nInterfaces; i++) {
++	
++ 		struct ifreq *item = &ifr[i];
++ 		if (strcmp(item->ifr_name,"lo0") == 0)
++			continue;
++
++		ns = get_net_stat((const char *) item->ifr_name);
++  
++			                                                                                                                
++		ns->up = 1;                                                                           
++		last_recv = ns->recv;                                                                 
++		last_trans = ns->trans;                                                               
++ 		
++		if (item->ifr_flags & IFF_LOOPBACK)
++			continue;
++
++		memcpy(&(ns->addr), &item->ifr_addr, sizeof(item->ifr_addr));               
++	        
++
++		ksp = kstat_lookup(kc, NULL, -1, item->ifr_name);                                                                                                      
++		if (kstat_read(kc, ksp, 0) == -1)                                                                                                                      
++			fprintf(stderr,"kstat read");                                                                                                                                
 +		data_lookup = kstat_data_lookup(ksp, "rbytes");              
 +		if (data_lookup)
-+		rx = data_lookup->value.ui32;
++			r = (long long) data_lookup->value.ui32;
 +		data_lookup = kstat_data_lookup(ksp, "obytes");              
 +		if (data_lookup)
-+		tx = data_lookup->value.ui32;
-+		t = get_time();                                                                                                                                            
-+		delta = t - last_net_calc_time;                                                                                                                            
-+                if(delta <= 0.05) return;            
-+		last_net_calc_time = t;
-+		recv_speed = (rx -lastrx) / delta;                                                                                                         
-+		trans_speed = (tx - lasttx) / delta;         
-+		lastrx=rx;
-+		lasttx=tx;
-+	} else {
-+	recv_speed = 0;                                                                                                         
-+	trans_speed = 0;         
- 	}
-+    }
++			t =(long long) data_lookup->value.ui32;
++
++
++		if (r < ns->last_read_recv) {
++			ns->recv += ((long long) 4294967295U - ns->last_read_recv) + r;
++		} else {
++			ns->recv += (r - ns->last_read_recv);
++		}
++
++		ns->last_read_recv = r;
++		if (t < ns->last_read_trans) {
++			ns->trans += ((long long) 4294967295U - ns->last_read_trans) + t;
++		} else {
++			ns->trans += (t - ns->last_read_trans);
++		}
++
++		ns->last_read_trans = t;
++
++		ns->recv_speed = (ns->recv - last_recv) / delta;
++		ns->trans_speed = (ns->trans - last_trans) / delta;
++
++ 	}
++	
++	close(sock);
++																				    
  }
  
 -void update_meminfo()
--{
--	/* TODO */
-+int get_trans_speed() {
-+    return trans_speed;
-+}
-+int get_recv_speed() {
-+    return recv_speed;
- }
- 
--int check_mount(char *s)
 +double get_load_average1()
-+{
+ {
+-	/* TODO */
 +    double avenrun[LOADAVG_NSTATS], fload = 0;
 +    if (getloadavg(avenrun, LOADAVG_NSTATS) > 0)
 +        fload = avenrun[LOADAVG_1MIN];
 +    return fload;
-+}
+ }
+-
+-int check_mount(char *s)
 +double get_load_average5()
 +{
 +    double avenrun[LOADAVG_NSTATS], fload = 0;

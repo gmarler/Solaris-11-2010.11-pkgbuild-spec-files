@@ -1,3 +1,7 @@
+2009-08-05  Alexander Eremin  <eremin@milax.org>
+
+	* SFEconky: updated solaris.c
+
 2009-08-05  Halton Huo  <halton.huo@sun.com>
 
 	* SFEgnome-shell.spec:

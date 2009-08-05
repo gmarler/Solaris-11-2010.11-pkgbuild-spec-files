@@ -11,7 +11,7 @@
 
 Name:                SFEgeany
 Summary:             A small and lightweight integrated developer environment
-Version:             0.16
+Version:             0.17
 Source:              %{src_url}/%{src_name}-%{version}.tar.bz2
 URL:                 http://geany.uvena.de/Main/HomePage
 SUNW_BaseDir:        %{_basedir}
