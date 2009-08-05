@@ -7,7 +7,7 @@
 
 Summary:	Validating, recursive, and caching DNS resolver
 Name:		SFEunbound
-Version:	1.3.1
+Version:	1.3.3
 License:	BSD
 URL:		http://www.nlnetlabs.nl/unbound/
 Source:		http://www.unbound.net/downloads/unbound-%{version}.tar.gz
@@ -118,6 +118,8 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 %{_libdir}/libunbound*
 
 %changelog
+* Wed Aug 5 2009 - Milan Jurik
+- upgrade to 1.3.3
 * Sun Jul 12 2009 - Milan Jurik
 - Added SMF manifest, removed init.d script
 - Initial version.
