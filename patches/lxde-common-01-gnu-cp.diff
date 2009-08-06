@@ -1,0 +1,20 @@
+--- lxde-common-0.4.2/icon-theme/Makefile.am.orig	2009-08-06 14:41:04.733563235 +0800
++++ lxde-common-0.4.2/icon-theme/Makefile.am	2009-08-06 14:41:19.462591899 +0800
+@@ -1,7 +1,7 @@
+ EXTRA_DIST=AUTHORS COPYING
+ 
+ dist-hook:
+-	cp -raf nuoveXT2 $(distdir)/nuoveXT2
++	/usr/gnu/bin/cp -raf nuoveXT2 $(distdir)/nuoveXT2
+ 	rm -rf `find $(distdir)/nuoveXT2 -name '*.svn'`
+ 
+ uninstall-hook:
+@@ -9,7 +9,7 @@
+ 
+ install-data-hook:
+ 	$(mkdir_p) $(DESTDIR)$(datadir)/icons
+-	cp -raf --no-preserve=ownership nuoveXT2 $(DESTDIR)$(datadir)/icons
++	/usr/gnu/bin/cp -raf --no-preserve=ownership nuoveXT2 $(DESTDIR)$(datadir)/icons
+ 	$(LN_S) -f preferences-desktop.png $(DESTDIR)$(datadir)/icons/nuoveXT2/128x128/categories/xfce4-settings.png
+ 	$(LN_S) -f preferences-desktop.png $(DESTDIR)$(datadir)/icons/nuoveXT2/128x128/categories/gnome-settings.png
+ 	$(LN_S) -f preferences-desktop.png $(DESTDIR)$(datadir)/icons/nuoveXT2/128x128/categories/kcontrol.png

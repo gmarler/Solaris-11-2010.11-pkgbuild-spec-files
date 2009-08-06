@@ -11,6 +11,9 @@ Version:                 0.4.2
 Source:                  http://downloads.sourceforge.net/lxde/lxde-common-%{version}.tar.bz2
 URL:                     http://sourceforge.net/projects/lxde/
 
+# owner:alfred date:2009-08-06 type:bug
+Patch1:                  lxde-common-01-gnu-cp.diff
+
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -22,6 +25,7 @@ SUNW_BaseDir:            /
 
 %prep
 %setup -q -n lxde-common-%version
+%patch1 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -32,7 +36,10 @@ fi
 aclocal $ACLOCAL_FLAGS
 automake -a -c -f
 autoconf
-./configure --prefix=%{_prefix} --libdir=%{_libdir} --mandir=%{_mandir}
+./configure --prefix=%{_prefix} \
+            --libdir=%{_libdir} \
+            --mandir=%{_mandir} \
+            --sysconfdir=%{_sysconfdir}
 make -j$CPUS 
 
 %install
@@ -64,6 +71,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_sysconfdir}/xdg/*
 
 %changelog
+* Thu Aug 06 2009 - alfred.peng@sun.com
+- Add patch01 to use GNU cp.
 * Tue Aug 04 2009 - brian.cameron@sun.com
 - Bump to 0.4.2.
 * Sun Mar 16 2009 - alfred.peng@sun.com

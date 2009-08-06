@@ -9,7 +9,7 @@
 
 Name:                    SFElxpanel
 Summary:                 LXDE desktop panel
-Version:                 0.5.1
+Version:                 0.5.2
 Source:                  http://downloads.sourceforge.net/lxde/lxpanel-%{version}.tar.gz
 URL:                     http://sourceforge.net/projects/lxde/
 Requires: SFEmenu-cache
@@ -84,6 +84,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Thu Aug 06 2009 - alfred.peng@sun.com
+- Bump to 0.5.2.
 * Tue Aug 04 2009 - brian.cameron@sun.com
 - Bump to 0.5.1.
 * Wed Jun 03 2009 - alfred.peng@sun.com

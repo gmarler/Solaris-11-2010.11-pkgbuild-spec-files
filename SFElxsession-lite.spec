@@ -7,7 +7,7 @@
 
 Name:                    SFElxsession-lite
 Summary:                 LXDE Lite session manager
-Version:                 0.3.6
+Version:                 0.3.7
 Source:                  http://downloads.sourceforge.net/lxde/lxsession-lite-%{version}.tar.gz
 URL:                     http://sourceforge.net/projects/lxde/
 
@@ -69,5 +69,7 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Thu Aug 06 2009 - alfred.peng@sun.com
+- Bump to 0.3.7.
 * Mon Mar 16 2009 - alfred.peng@sun.com
 - Initial version
