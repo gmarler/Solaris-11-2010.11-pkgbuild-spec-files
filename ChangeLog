@@ -1,6 +1,11 @@
 2009-08-05 Brian Cameron  <brian.cameron@sun.com>
 
-	* SFEaudacity.spec:
+	* SFEaudacity.spec, patches/audacity-05-nyquist.diff: Rename xlisp
+	  patch to nyquist since that is a more clear name for this  patch.
+
+2009-08-05 Brian Cameron  <brian.cameron@sun.com>
+
+	* SFEaudacity.spec: Update for patch changes.
 	* patches/audacity-04-allegrord.diff, patches/audacity-01-solaris.diff:
 	  Remove upstream patches.
 	* patches/audacity-02-fixsed.diff: Rework.

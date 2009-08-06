@@ -22,7 +22,7 @@ Patch2:              audacity-02-fixsed.diff
 # bug 1910699
 Patch3:              audacity-03-addgtklibs.diff
 Patch4:              audacity-04-Tmacro.diff
-Patch5:              audacity-05-xlisp.diff
+Patch5:              audacity-05-nyquist.diff
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
