@@ -1,5 +1,10 @@
 2009-08-05 Brian Cameron  <brian.cameron@sun.com>
 
+	* base-specs/moovida.spec, patches/moovida-04-pidof.diff:  Add
+	  back reworked patch - it is still needed.
+
+2009-08-05 Brian Cameron  <brian.cameron@sun.com>
+
 	* SFEmoovida-plugins.spec, base-specs/moovida.spec,
 	  base-specs/moovida-plugins-good.spec,
 	  base/specs/moovida-plugins-bad.spec:  Bump to 1.0.6.

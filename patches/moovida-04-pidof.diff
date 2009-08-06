@@ -1,0 +1,55 @@
+--- elisa-1.0.6/elisa/core/utils/misc.py-orig	2009-08-06 11:25:58.307494000 -0500
++++ elisa-1.0.6/elisa/core/utils/misc.py	2009-08-06 11:26:55.181318000 -0500
+@@ -25,6 +25,7 @@ reasonnably small.
+ import platform
+ import os, re
+ import subprocess
++import threading
+ 
+ from twisted.trial.unittest import SkipTest
+ 
+@@ -209,17 +210,30 @@ def get_os_name():
+     else:
+         return platform.system().lower()
+ 
+-def linux_pidof(program_name):
++def unix_pidof(program_name):
+     """
+-    Get the Linux process id of the given program name. Because
++    Get the UNIX process id of the given program name. Because
+     multiple processes can exist, we return a list of the pids.
+ 
+     @rtype: C{list} of C{int}
+     @returns: the list of running pids of given program name
+     """
+-    output = subprocess.Popen(["pidof", program_name],
+-                              stderr=subprocess.STDOUT,
+-                              stdout=subprocess.PIPE).communicate()[0]
++    try:
++        lock = threading.Lock()
++        lock.acquire()
++        if platform.system() == 'SunOS':
++            output = subprocess.Popen(["/bin/sh", "-c", "/usr/bin/pgrep -u `whoami` %s" % program_name],
++                                      stderr=subprocess.STDOUT,
++                                      stdout=subprocess.PIPE,
++                                      close_fds=True).communicate()[0]
++        else:
++            output = subprocess.Popen(["pidof", program_name],
++                                      stderr=subprocess.STDOUT,
++                                      stdout=subprocess.PIPE,
++                                      close_fds=True).communicate()[0]
++    finally:
++        lock.release()
++
+     return [int(pid) for pid in output.split()]
+ 
+ def get_user_desktop_name():
+@@ -255,7 +269,7 @@ def get_user_desktop_name():
+                          'xfwm4': 'xfce',
+                          }
+                 for prog, name in progs.iteritems():
+-                    if linux_pidof(prog) != []:
++                    if unix_pidof(prog) != []:
+                         desktop_name = name
+                         break
+             if desktop_name is None:
