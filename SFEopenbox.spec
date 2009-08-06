@@ -3,6 +3,8 @@
 #
 # includes module(s): openbox
 #
+# bugdb: http://bugzilla.icculus.org
+#
 %include Solaris.inc
 
 Name:                    SFEopenbox
@@ -13,7 +15,9 @@ URL:                     http://icculus.org/openbox/index.php/Main_Page
 
 # Refer to Sun Studio compiler bugs 4614572 and 6525110
 # owner:alfred date:2009-06-02 type:bug
+# reported as bug 3869.
 Patch1:                  openbox-01-union.diff
+# reported as bug 4253.
 Patch2:                  openbox-02-session.diff
 
 SUNW_BaseDir:            %{_basedir}

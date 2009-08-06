@@ -16,7 +16,7 @@ Name:              moovida-plugins-bad
 License:           MIT
 Summary:           Bad plugins for Moovida
 URL:               http://www.moovida.com/
-Version:           1.0.5
+Version:           1.0.6
 Source:            http://www.moovida.com/media/public/%{name}-%{version}.tar.gz
 # Refer to spec file to see reasons why we disable some plugins.
 #date:2008-10-24 owner:yippi type:branding

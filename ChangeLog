@@ -1,5 +1,19 @@
 2009-08-05 Brian Cameron  <brian.cameron@sun.com>
 
+	* SFEmoovida-plugins.spec, base-specs/moovida.spec,
+	  base-specs/moovida-plugins-good.spec,
+	  base/specs/moovida-plugins-bad.spec:  Bump to 1.0.6.
+	* patches/moovida-01-g11n-localedir.diff,
+	  patches/moovida-03-manpage.diff,
+	  patches/moovida-plugins-bad-01-rm-plugins.diff: Rework
+	* patches/moovida-02-docs.diff, patches/moovida-05-pidof.diff,
+	  patches/moovida-plugins-good-02-solaris.diff: Remove upstream
+	  patches.
+	* patches/moovida-02-noautoupdate.diff: Renumber from 04.
+	* SFEopenbox.spec: Add patch comments.
+
+2009-08-05 Brian Cameron  <brian.cameron@sun.com>
+
 	* SFEaudacity.spec, patches/audacity-05-nyquist.diff: Rename xlisp
 	  patch to nyquist since that is a more clear name for this  patch.
 

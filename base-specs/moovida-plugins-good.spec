@@ -14,13 +14,11 @@ Name:              moovida-plugins-good
 License:           MIT
 Summary:           Good plugins for Moovida
 URL:               http://www.moovida.com/
-Version:           1.0.5
+Version:           1.0.6
 Source:            http://www.moovida.com/media/public/%{name}-%{version}.tar.gz
 #date:2008-10-24 owner:yippi type:branding
 # We remove winscreensaver plugin since it only works on the Windows platform.
 Patch1:		   moovida-plugins-good-01-rm-plugins.diff
-#date:2009-07-15 owner:yippi type:branding bugid:399977
-Patch2:            moovida-plugins-good-02-solaris.diff
 
 %description
 The Moovida good plugins set contains plugins known to be well tested, working
@@ -29,7 +27,6 @@ and being compatible with the Moovida licensing model.
 %prep
 %setup -q -n elisa-plugins-good-%{version}
 %patch1 -p1
-%patch2 -p1
 
 %build
 
@@ -47,5 +44,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/python%{pythonver}/vendor-packages/elisa_plugin_*.egg-info
 
 %changelog
+* Thu Aug 06 2009 Brian Cameron  <brian.cameron@sun.com>
+- Bump to version 1.0.6, and remove upstream patch.
 * Wed Jul 15 2009 Brian Cameron  <brian.cameron@sun.com>
 - Created with version 1.0.5.

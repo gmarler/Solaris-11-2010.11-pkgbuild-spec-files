@@ -122,6 +122,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/python%{pythonver}/vendor-packages/elisa
 %{_libdir}/python%{pythonver}/vendor-packages/elisa_plugin_*-py%{pythonver}.egg-info
 %{_libdir}/python%{pythonver}/vendor-packages/elisa_plugin_*-py%{pythonver}-nspkg.pth
+%dir %attr (0755, root, sys) %{_datadir}
 
 %if %build_l10n
 %files l10n

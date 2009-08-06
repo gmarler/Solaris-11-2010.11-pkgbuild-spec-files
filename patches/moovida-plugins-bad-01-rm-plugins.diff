@@ -1,6 +1,6 @@
---- elisa-plugins-bad-0.5.22/setup.py.orig	2008-12-15 20:11:26.000000000 +0800
-+++ elisa-plugins-bad-0.5.22/setup.py	2008-12-16 14:30:16.736608000 +0800
-@@ -4,29 +4,19 @@ from setup_bundle import setup
+--- elisa-plugins-bad-1.0.6/setup.py-orig	2009-08-06 11:06:36.126927000 -0500
++++ elisa-plugins-bad-1.0.6/setup.py	2009-08-06 11:07:42.287873000 -0500
+@@ -4,9 +4,7 @@ from setup_bundle import setup
  # List of plugins to be packaged in the 'bad' bundle
  bad_plugins = ['amazon',
                 'amp',
@@ -8,11 +8,10 @@
                 'coherence',
 -               'daap',
                 'database',
--               'discogs',
--               'dvd',
-                'elisa_updater',
-                'favorites',
--               'filtered_shares',
+                'discogs',
+                'dvd',
+@@ -14,18 +12,13 @@ bad_plugins = ['amazon',
+                'filtered_shares',
                 'gstreamer',
                 'http_client',
 -               'ipod',

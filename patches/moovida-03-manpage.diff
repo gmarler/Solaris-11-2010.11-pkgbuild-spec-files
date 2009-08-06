@@ -1,5 +1,5 @@
---- elisa-1.0.1/docs/moovida.1-orig	2009-05-28 11:54:28.036351000 -0500
-+++ elisa-1.0.1/docs/moovida.1	2009-05-28 11:57:03.453729000 -0500
+--- elisa-1.0.6/docs/moovida.1-orig	2009-08-06 10:52:29.138735000 -0500
++++ elisa-1.0.6/docs/moovida.1	2009-08-06 10:59:09.624353000 -0500
 @@ -1,3 +1,4 @@
 +'\" te
  .\" Copyright (C) 2007 Philippe Normand <philippe@fluendo.com>
@@ -8,31 +8,25 @@
 @@ -14,6 +15,7 @@
  .\" along with this; if not write to the Free Software Foundation, Inc.
  .\" 59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
- .TH elisa 1 "2008\-02\-06"
+ .TH moovida 1 "2009\-07\-14"
 +...\" LSARC 2008/713  elisa, elisa-plugins-good, elisa-plugins-bad
+ 
  .SH NAME
- elisa \- media center solution
- .SH SYNOPSIS
-@@ -24,13 +26,9 @@ elisa \- media center solution
- .RI [ option... ] " " -i " " import_file.py
- .SH DESCRIPTION
- .B elisa
--is a open source media center solution. Elisa runs on the top of the GStreamer
-+is an open source media center solution. Elisa runs on the top of the GStreamer
- multimedia framework and uses the pigment lib for graphical user interaction.
--It is meant to be the all-in-one multimedia solution for your managing and
--playing your videos, audios and watch slide shows of your photos. It also
--automatically detects samba-shares, UPnP-devices and DAAP shares sharing
--media and makes them accessible from inside elisa. You can use it with your
+ moovida \- open source cross-platform media center
+@@ -40,8 +42,7 @@ drives, Windows Mediaplayer, etc.
+ * Detects automatically iPods, cameras, USB hard drives, etc.
+ .PP
+ Moovida runs on the top of the GStreamer multimedia framework and uses the
+-Pigment library for graphical user interaction.  You can use it with your
 -mouse, lirc-input device or simply with the keyboard.
-+You can watch movies, listen to music and view pictures with Elisa.
++Pigment library for graphical user interaction.
+ 
  .SH OPTIONS
  .TP
- .B -v,--version
-@@ -148,3 +146,23 @@ The latest version of Elisa may be downl
- .UR http://elisa.fluendo.com/download
- <http://www.elisa.fluendo.com/>
- .UE
+@@ -177,3 +178,23 @@ Benjamin Kampmann and updated by Paul va
+ .SH DISTRIBUTION
+ The latest version of Moovida may be downloaded from
+ <http://www.moovida.com/>.
 +
 +.SH "ATTRIBUTES"
 +.PP
@@ -44,7 +38,7 @@
 +cw(2.750000i)| cw(2.750000i)
 +lw(2.750000i)| lw(2.750000i).
 +ATTRIBUTE TYPE^ATTRIBUTE VALUE
-+Availability^SUNWgnome-media-center
++Availability^SUNWmoovida
 +Interface stability^Volatile
 +.TE
 +.sp
