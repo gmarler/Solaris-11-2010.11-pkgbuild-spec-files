@@ -1,5 +1,27 @@
 2009-08-05 Brian Cameron  <brian.cameron@sun.com>
 
+	* SFEaudacity.spec:
+	* patches/audacity-04-allegrord.diff, patches/audacity-01-solaris.diff:
+	  Remove upstream patches.
+	* patches/audacity-02-fixsed.diff: Rework.
+	* patches/audacity-03-Tmacro.diff: Renumber from 06 and rework.
+	* patches/audacity-01-m4.diff: Renumber from 05.
+	* patches/audacity-05-xlisp.diff: Add new patch needed for building.
+	* SFEwxwidgets.spec:
+	* patches/wxwidgets-02-Tmacro.diff, patches/wxwidgets-03-Tmacro.diff:
+	  Based on discussions with the maintainer, these two smaller patches
+	  are more likely to go upstream, and also fix the compile problem
+	  with building wxwidgets with the latest patched Sun Studio compiler.
+
+2009-08-05 Brian Cameron  <brian.cameron@sun.com>
+
+	* SFEgnome-shell.spec, patches/gnome-shell-02-gtk-find.diff,
+	  patches/gnome-shell-02-missing-dash.diff,
+	  patches/gnome-shell-03-missing-svg.diff: Remove patches that are
+	  now all upstream.
+
+2009-08-05 Brian Cameron  <brian.cameron@sun.com>
+
 	* SFEgobject-introspection.diff,
 	  patches/gobject-introspection-03-dumper.diff,
 	  patches/gobject-introspection-03-sunstudio.diff: Rename patch to

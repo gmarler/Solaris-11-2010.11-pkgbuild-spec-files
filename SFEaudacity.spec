@@ -13,18 +13,16 @@
 
 Name:                SFEaudacity
 Summary:             Free, Cross-Platform Sound Editor
-Version:             1.3.7
+Version:             1.3.8
 Source:              %{sf_download}/audacity/%{src_name}-minsrc-%{version}.tar.bz2
 Source1:             soundcard.h
-# bug 1910678
-Patch1:		     audacity-01-solaris.diff
+Patch1:              audacity-01-m4.diff
 # bug 1910685/
 Patch2:              audacity-02-fixsed.diff
 # bug 1910699
 Patch3:              audacity-03-addgtklibs.diff
-Patch4:              audacity-04-allegrord.diff
-Patch5:              audacity-05-m4.diff
-Patch6:              audacity-06-Tmacro.diff
+Patch4:              audacity-04-Tmacro.diff
+Patch5:              audacity-05-xlisp.diff
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -46,8 +44,8 @@ BuildRequires: SFEgcc
 BuildRequires: SFEwxwidgets-gnu-devel
 Requires: SFEwxwidgets-gnu
 %else
-BuildRequires: SUNWwxwidgets-devel
-Requires: SUNWwxwidgets
+BuildRequires: SFEwxwidgets-devel
+Requires: SFEwxwidgets
 %endif
 
 # If building with libmad, then also require id3tag.  If
@@ -86,7 +84,6 @@ Requires:                %{name}
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
-%patch6 -p0
 mkdir -p lib-src/portaudio-v19/include/sys
 cp %{SOURCE1} lib-src/portaudio-v19/include/sys
 
@@ -220,6 +217,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Wed Aug 05 2009 - brian.cameron@sun.com
+- Bump to 1.3.8.
 * Sun Jun 21 2009 - brian.cameron@sun.com
 - Add patch audacity-06-Tmacro.diff to resolve compile issue when
   building with the latest Sun Studio patches.

@@ -1,12 +1,12 @@
 --- audacity-src-1.3.3-beta/configure.in-orig	2008-03-08 14:59:38.158834000 -0600
 +++ audacity-src-1.3.3-beta/configure.in	2008-03-08 14:59:49.906195000 -0600
-@@ -608,7 +608,8 @@ pa_libs=
- if [[ "$use_portaudio" = "v19" ]] ; then
-    pa_libs=`grep 'Libs:' lib-src/portaudio-v19/portaudio-2.0.pc | sed -e 's/Libs://;s/-L${libdir}//;s/-lportaudio//'`
- fi
+@@ -664,7 +664,8 @@ dnl Substitute any addition libraries th
+ dnl
+ pa_libs=
+ pa_libs=`grep 'Libs:' lib-src/portaudio-v19/portaudio-2.0.pc | sed -e 's/Libs://;s/-L${libdir}//;s/-lportaudio//'`
 -sed -i -e "s/@PA_LIBS@/$pa_libs/" src/Makefile
 +sed -e "s/@PA_LIBS@/$pa_libs/" src/Makefile >/tmp/m$$
-+mv -f /tmp/m$$ src/Makefile 
++mv -f /tmp/m$$ src/Makefile
  
  echo ""
  echo "Finished configure:"

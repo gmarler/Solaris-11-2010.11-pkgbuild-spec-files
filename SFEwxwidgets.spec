@@ -16,6 +16,7 @@ Version:                 2.8.10
 Source:			 %{sf_download}/wxwindows/wxWidgets-%{tarball_version}.tar.bz2
 Patch1:                  wxwidgets-01-msgfmt.diff
 Patch2:                  wxwidgets-02-Tmacro.diff
+Patch3:                  wxwidgets-03-Tmacro.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -57,6 +58,7 @@ Requires:                %{name}
 %setup -q -n wxWidgets-%{tarball_version}
 %patch1 -p1
 %patch2 -p0
+%patch3 -p0
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
