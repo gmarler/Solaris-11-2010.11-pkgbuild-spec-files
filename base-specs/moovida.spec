@@ -31,6 +31,8 @@ Patch2:            moovida-02-noautoupdate.diff
 Patch3:            moovida-03-manpage.diff
 #date:2009-08-06 owner:yippi type:bug bugid:400134
 Patch4:            moovida-04-pidof.diff
+#date:2009-08-07 owner:yippi type:branding
+Patch5:            moovida-05-desktop.diff
 
 %description
 Moovida is an open source cross-platform media center solution.
@@ -45,6 +47,7 @@ and view pictures with Moovida.
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
+%patch5 -p1
 
 %build
 

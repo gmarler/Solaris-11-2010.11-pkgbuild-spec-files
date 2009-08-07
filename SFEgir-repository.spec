@@ -17,12 +17,14 @@ Patch1:                  gir-repository-01-nogst.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 BuildRequires:           SUNWPython26-devel
+BuildRequires:           SUNWavahi-bridge-dsd-devel
 BuildRequires:           SUNWbabl-devel
 BuildRequires:           SUNWdbus-devel
 BuildRequires:           SUNWgegl-devel
+BuildRequires:           SUNWgtk2-devel
+BuildRequires:           SUNWlibatk-devel
 BuildRequires:           SUNWlibsoup-devel
 BuildRequires:           SUNWlibunique-devel
-BuildRequires:           SUNWgnome-base-libs-devel
 BuildRequires:           SUNWgnome-config-devel
 BuildRequires:           SUNWgnome-file-mgr-devel
 BuildRequires:           SUNWgnome-gtksourceview-devel
@@ -31,14 +33,17 @@ BuildRequires:           SUNWgnome-media-devel
 BuildRequires:           SUNWgnome-panel-devel
 BuildRequires:           SUNWgnome-pdf-viewer-devel
 BuildRequires:           SUNWgnome-terminal-devel
+BuildRequires:           SUNWpango-devel
 BuildRequires:           SFEgobject-introspection-devel
 Requires:                SUNWPython26
+BuildRequires:           SUNWavahi-bridge-dsd
 Requires:                SUNWbabl
 Requires:                SUNWdbus
 Requires:                SUNWgegl
+Requires:                SUNWgtk2
+Requires:                SUNWlibatk
 Requires:                SUNWlibsoup
 Requires:                SUNWlibunique
-Requires:                SUNWgnome-base-libs
 Requires:                SUNWgnome-config
 Requires:                SUNWgnome-file-mgr
 Requires:                SUNWgnome-gtksourceview
@@ -47,6 +52,7 @@ Requires:                SUNWgnome-media
 Requires:                SUNWgnome-panel
 Requires:                SUNWgnome-pdf-viewer
 Requires:                SUNWgnome-terminal
+Requires:                SUNWpango
 Requires:                SFEgobject-introspection
 %include default-depend.inc
 

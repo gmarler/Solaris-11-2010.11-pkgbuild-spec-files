@@ -64,7 +64,6 @@ full advantage of harware acceleration provided by modern graphic
 cards by using OpenGL APIs. You can watch movies, listen to music 
 and view pictures with Moovida.
 
-
 %if %build_l10n
 %package l10n
 Summary:                 %{summary} - l10n files
@@ -87,6 +86,7 @@ rm -rf $RPM_BUILD_ROOT
 %moovida.install -d %name-%version
 export PYTHONPATH=%{_builddir}/%name-%version/elisa-%{elisa.version}:$PYTHONPATH
 
+mv $RPM_BUILD_ROOT%{_bindir}/elisa $RPM_BUILD_ROOT%{_bindir}/moovida
 # move to verndor-packages
 mkdir -p $RPM_BUILD_ROOT%{_libdir}/python%{pythonver}/vendor-packages
 mv $RPM_BUILD_ROOT%{_libdir}/python%{pythonver}/site-packages/* \
@@ -108,7 +108,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,root,bin)
 %dir %attr (0755, root, bin) %{_bindir}
-%{_bindir}/elisa
+%{_bindir}/*
 %dir %attr (0755, root, bin) %{_libdir}
 %{_libdir}/python%{pythonver}/vendor-packages/elisa
 %{_libdir}/python%{pythonver}/vendor-packages/elisa-*-py%{pythonver}.egg-info

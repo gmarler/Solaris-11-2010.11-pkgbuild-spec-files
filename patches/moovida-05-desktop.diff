@@ -1,0 +1,22 @@
+--- elisa-1.0.6/data/moovida.desktop-orig	2009-08-07 13:36:45.921479000 -0500
++++ elisa-1.0.6/data/moovida.desktop	2009-08-07 13:37:01.725550000 -0500
+@@ -2,7 +2,7 @@
+ Version=1.0
+ Name=Moovida Media Center
+ Comment=Play movies and songs on TV with remote
+-Exec=elisa %U
++Exec=moovida %U
+ StartupNotify=true
+ StartupWMClass=moovida
+ Icon=moovida
+--- elisa-1.0.6/data/moovida-mobile.desktop-orig	2009-08-07 13:36:54.843540000 -0500
++++ elisa-1.0.6/data/moovida-mobile.desktop	2009-08-07 13:37:11.949875000 -0500
+@@ -2,7 +2,7 @@
+ Version=1.0
+ Name=Moovida Media Center
+ Comment=Play movies and songs on TV with remote
+-Exec=elisa %U
++Exec=moovida %U
+ Icon=moovida
+ Terminal=false
+ Type=Application

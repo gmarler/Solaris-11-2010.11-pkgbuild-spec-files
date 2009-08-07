@@ -1,5 +1,13 @@
 2009-08-07 Brian Cameron  <brian.cameron@sun.com>
 
+	* SFEmoovida.spec, base-specs/moovida.spec,
+	  patches/moovida-05-desktop.diff: Install binary as moovida instead
+	  of elisa.
+	* SFEgobject-introspection.spec, SFEgir-repository.spec: Clean up
+	  Requires/BuildRequires.
+
+2009-08-07 Brian Cameron  <brian.cameron@sun.com>
+
 	* SFEpigment.spec, SFEpython-twisted-web2.spec, SFElibcanberra.spec,
 	  SFEgst-python.spec, SFEpython-cssutils.spec, SFEpython-cssutils.spec,
 	  SFEpyyaml.spec, SFEcodeina.spec, SFEgst-python25.spec,

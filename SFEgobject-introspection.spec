@@ -30,9 +30,9 @@ Patch4:                  gobject-introspection-04-crash-compiler.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 BuildRequires:           SUNWPython26-devel
-BuildRequires:           SUNWgnome-base-libs-devel
+BuildRequires:           SUNWglib2-devel
 BuildRequires:           SUNWlibffi
-Requires:                SUNWgnome-base-libs
+Requires:                SUNWglib2
 Requires:                SUNWlibffi
 Requires:                SUNWPython26
 %include default-depend.inc
