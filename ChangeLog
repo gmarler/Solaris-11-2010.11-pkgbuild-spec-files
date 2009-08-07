@@ -1,3 +1,32 @@
+2009-08-07  Petr Sobotka  <sobotkap@gmail.com>
+	- Clean up of unused patches:
+	* patches/wesnoth-01-fixheaders.diff:
+	* patches/wesnoth-02-fixgccextension.diff:
+	* patches/wesnoth-03-fixgccism.diff:
+	* patches/wesnoth-04-fixlocale.diff:
+	* patches/wesnoth-05-fixconfigure.diff:
+	* patches/wesnoth-06-fixundefsymbol.diff:
+	* patches/wesnoth-07-fixundef2.diff:
+	* patches/wesnoth-08-fixconst.diff:
+	* patches/wesnoth-11-fixstrict.diff:
+	* patches/wesnoth-12-fixmisshpp.diff:
+	* patches/wesnoth-13-fixconfigtest.diff:
+	* patches/wesnoth-13-fixstd2.diff:
+	* patches/wesnoth-14-fixpointer.diff:
+	* patches/wesnoth-14-testboost.diff:
+	* patches/wesnoth-15-fixfunc.diff:
+
+2009-08-07  Petr Sobotka  <sobotkap@gmail.com>
+
+	* SFEwesnoth.spec: Bump to version 1.6.4
+	* copyright/wesnoth.copyright:
+	* patches/wesnoth-02-fixusleep.diff:
+	* patches/wesnoth-03-fixtolower.diff:
+	* patches/wesnoth-04-fixatoi.diff:
+	* patches/wesnoth-05-fixround.diff:
+	* patches/wesnoth-06-fixreturn.diff:
+	* patches/wesnoth-07-fixserver.diff:
+
 2009-08-07  Halton Huo  <halton.huo@sun.com>
 
 	* SFEgob.spec: (new) The GObject Build
