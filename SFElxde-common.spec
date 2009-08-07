@@ -13,6 +13,7 @@ URL:                     http://sourceforge.net/projects/lxde/
 
 # owner:alfred date:2009-08-06 type:bug
 Patch1:                  lxde-common-01-gnu-cp.diff
+Patch2:                  lxde-common-02-startlxde.diff
 
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -26,6 +27,7 @@ SUNW_BaseDir:            /
 %prep
 %setup -q -n lxde-common-%version
 %patch1 -p1
+%patch2 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -71,6 +73,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_sysconfdir}/xdg/*
 
 %changelog
+* Thu Aug 06 2009 - brian.cameron@sun.com
+- Add lxde-common-02-startlxde.diff patch so that the script works with 
+  Nevada bourne shell.
 * Thu Aug 06 2009 - alfred.peng@sun.com
 - Add patch01 to use GNU cp.
 * Tue Aug 04 2009 - brian.cameron@sun.com

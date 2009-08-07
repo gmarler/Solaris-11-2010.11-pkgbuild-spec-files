@@ -1,0 +1,22 @@
+--- lxde-common-0.4.2/startlxde.in-orig	2009-08-06 20:47:38.642288000 -0500
++++ lxde-common-0.4.2/startlxde.in	2009-08-06 20:47:57.090355000 -0500
+@@ -1,7 +1,8 @@
+ #!/bin/sh
+ 
+ if [ -z "$XDG_CONFIG_HOME" ]; then
+-    export XDG_CONFIG_HOME="$HOME/.config"
++    XDG_CONFIG_HOME="$HOME/.config"
++    export XDG_CONFIG_HOME
+ fi
+ 
+ # Ensure the existance of pcmanfm config file
+@@ -19,7 +20,8 @@ if [ ! -f "$OPENBOX_CONF_DIR/lxde-rc.xml
+ fi
+ 
+ # Enable GTK+2 integration for OpenOffice.org, if available.
+-export SAL_USE_VCLPLUGIN=gtk
++SAL_USE_VCLPLUGIN=gtk
++export SAL_USE_VCLPLUGIN
+ 
+ # Start the LXDE session
+ exec @prefix@/bin/lxsession -s LXDE

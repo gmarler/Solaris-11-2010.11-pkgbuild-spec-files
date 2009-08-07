@@ -1,6 +1,12 @@
+2009-08-06 Brian Cameron  <brian.cameron@sun.com>
+
+	* SFElxde-common.spec, patches/lxde-common-02-startlxde.diff:  Add
+	  patch so that the startlxde script works with Nevada bourne shell.
+
 2009-08-06  Thomas Wagner  <tom68@users.sourceforge.net>
 
-        * SFEre2c.spec: switch to gcc4 - now works for spamassassin sa-compile (filters in pure binary-speed)
+        * SFEre2c.spec: switch to gcc4 - now works for spamassassin sa-compile
+	  (filters in pure binary-speed)
 
 2009-08-05 Brian Cameron  <brian.cameron@sun.com>
 
