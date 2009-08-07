@@ -1,0 +1,59 @@
+--- wesnoth-1.6.1/src/time.hpp.fixserver	2009-04-18 15:21:09.370952165 +0200
++++ wesnoth-1.6.1/src/time.hpp	2009-04-18 15:21:16.632151405 +0200
+@@ -26,9 +26,9 @@
+ 			SMOOTH_TIME
+ 		};
+ 	private:
+-		size_t time_[frames_to_remember];
+-		size_t frame_time_;
+-		size_t current_time_;
++		std::size_t time_[frames_to_remember];
++		std::size_t frame_time_;
++		std::size_t current_time_;
+ 		int index_;
+ 		time_mode mode_;
+ 		static source time_source_;
+@@ -42,11 +42,11 @@
+ 		 * Called in begin of each frame
+ 		 * @return How many milliseconds this frame took?
+ 		 */
+-		size_t start_frame(const bool limit = true);
+-		void set_frame_rate(const size_t fps);
+-		void set_frame_time(const size_t ms);
++		std::size_t start_frame(const bool limit = true);
++		void set_frame_rate(const std::size_t fps);
++		void set_frame_time(const std::size_t ms);
+ 
+-		size_t get_time() const;
++		std::size_t get_time() const;
+ 
+ 		void set_time_mode(const time_mode& mode);
+ 		time_mode get_time_mode() const;
+--- wesnoth-1.6.1/src/server/simple_wml.cpp.fixserver	2009-04-18 15:03:41.626932097 +0200
++++ wesnoth-1.6.1/src/server/simple_wml.cpp	2009-04-18 15:48:20.373598543 +0200
+@@ -6,6 +6,11 @@
+ 
+ #include "simple_wml.hpp"
+ 
++#ifdef __SUNPRO_CC
++#include <stdlib.h>
++#include <stdio.h>
++#endif
++
+ namespace simple_wml {
+ 
+ namespace {
+--- wesnoth-1.6.1/src/server/server.cpp.fixserver	2009-04-18 15:41:34.470306587 +0200
++++ wesnoth-1.6.1/src/server/server.cpp	2009-04-18 15:41:42.832777879 +0200
+@@ -60,7 +60,11 @@
+ #include <vector>
+ #include <queue>
+ 
++#ifdef __SUNPRO_CC
++#include <signal.h>
++#else
+ #include <csignal>
++#endif
+ 
+ #ifndef _WIN32
+ #include <sys/times.h>

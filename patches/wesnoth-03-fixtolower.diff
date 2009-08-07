@@ -1,0 +1,10 @@
+--- wesnoth-1.6a/src/serialization/string_utils.cpp.fixtolower	2009-03-21 14:16:15.207295240 +0100
++++ wesnoth-1.6a/src/serialization/string_utils.cpp	2009-03-21 14:17:05.738069080 +0100
+@@ -24,6 +24,7 @@
+ #include "gettext.hpp"
+ #include "log.hpp"
+ #include "serialization/string_utils.hpp"
++#include <wctype.h>
+ 
+ #define ERR_GENERAL LOG_STREAM(err, general)
+ #define ERR_NG LOG_STREAM(err, engine)

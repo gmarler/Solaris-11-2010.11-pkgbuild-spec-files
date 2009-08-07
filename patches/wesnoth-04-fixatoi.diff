@@ -1,0 +1,10 @@
+--- wesnoth-1.6a/src/formula.cpp.fixatoi	2009-03-21 14:29:54.119892231 +0100
++++ wesnoth-1.6a/src/formula.cpp	2009-03-21 14:30:04.800267551 +0100
+@@ -20,6 +20,7 @@
+ #include "formula_callable.hpp"
+ #include "formula_function.hpp"
+ #include "map_utils.hpp"
++#include <stdlib.h>
+ 
+ namespace game_logic
+ {
