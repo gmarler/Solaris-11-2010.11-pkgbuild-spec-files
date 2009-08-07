@@ -1,4 +1,17 @@
+2009-08-07 Brian Cameron  <brian.cameron@sun.com>
+
+	* SFEpigment.spec, SFEpython-twisted-web2.spec, SFElibcanberra.spec,
+	  SFEgst-python.spec, SFEpython-cssutils.spec, SFEpython-cssutils.spec,
+	  SFEpyyaml.spec, SFEcodeina.spec, SFEgst-python25.spec,
+	  SFEpigment-python.spec, base-specs/gst-python.spec,
+	  patches/codeina-01-fixpython.diff, patches/codeina-02-usexul.diff,
+	  patches/codeina-03-fixnspr.diff, patches/libcanberra-01-solaris.diff,
+	  patches/libcanberra-02-gstreamer.diff,
+	  patches/libcanberra-03-fix-gst-play.diff: Remove unmaintained spec
+	  files which are now in spec-files or spec-files-other.
+
 2009-08-07  Petr Sobotka  <sobotkap@gmail.com>
+
 	- Clean up of unused patches:
 	* patches/wesnoth-01-fixheaders.diff:
 	* patches/wesnoth-02-fixgccextension.diff:

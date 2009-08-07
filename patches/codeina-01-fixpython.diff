@@ -1,8 +1,0 @@
---- codeina-0.10.2.1/bin/codeina.bin-orig	2008-04-24 18:53:31.231400000 -0500
-+++ codeina-0.10.2.1/bin/codeina.bin	2008-04-24 18:53:37.282456000 -0500
-@@ -1,4 +1,4 @@
--#!/usr/bin/env python2.5
-+#!/usr/bin/env python
- # -*- Mode: Python -*-
- # -*- coding: utf-8 -*-
- # vi:si:et:sw=4:sts=4:ts=4
