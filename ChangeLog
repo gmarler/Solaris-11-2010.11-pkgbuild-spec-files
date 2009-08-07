@@ -1,3 +1,8 @@
+2009-08-07  Halton Huo  <halton.huo@sun.com>
+
+	* SFEgob.spec: (new) The GObject Build
+	* base-specs/gob2.spec: (new) The GObject Build
+
 2009-08-06 Brian Cameron  <brian.cameron@sun.com>
 
 	* SFElxde-common.spec, patches/lxde-common-02-startlxde.diff:  Add
@@ -5,7 +10,7 @@
 
 2009-08-06  Thomas Wagner  <tom68@users.sourceforge.net>
 
-        * SFEre2c.spec: switch to gcc4 - now works for spamassassin sa-compile
+	* SFEre2c.spec: switch to gcc4 - now works for spamassassin sa-compile
 	  (filters in pure binary-speed)
 
 2009-08-05 Brian Cameron  <brian.cameron@sun.com>
