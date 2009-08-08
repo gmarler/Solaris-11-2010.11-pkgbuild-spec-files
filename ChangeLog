@@ -1,3 +1,9 @@
+2009-08-08  Thomas Wagner  <tom68@users.sourceforge.net>
+
+        * SFEliveMedia.spec: removed annoying version bump by: external 
+          wget-fetch to extract downloadversion and calculate package version 
+          number with leading zero(s) removed
+
 2009-08-07 Brian Cameron  <brian.cameron@sun.com>
 
 	* SFEmoovida.spec, base-specs/moovida.spec,
