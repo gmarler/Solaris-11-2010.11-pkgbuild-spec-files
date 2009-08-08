@@ -3,25 +3,31 @@
 #
 # includes module(s): liveMedia
 #
-# unchecked: snv104 / pkgbuild 1.3.91 / Sun Ceres C 5.10 SunOS_i386 2008/10/22
-# works:     snv104 / pkgbuild 1.2.0  / Sun C 5.9 SunOS_i386 Patch 124868-02 2007/11/27
-# unchecked: snv103 / pkgbuild 1.3.0  / Sun C 5.9 SunOS_i386 Patch 124868-02 2007/11/27
-# unchecked: snv96  / pkgbuild 1.3.1  / Sun Ceres C 5.10 SunOS_i386 2008/07/10
 
 
 %include Solaris.inc
 
-%define src_version 2009.07.09
+#%define src_version 2009.07.09
+#extract example: 2009.07.09
+%define src_version %( wget  -O - "http://www.live555.com/liveMedia/public" 2>/dev/null  | egrep -i "<a href.*live\.[0-9]{4}" | sed -e 's,^.*href=\"live\.,,' -e 's,\.tar\.gz\">.*,,' )
+
+#remove leading zero(s) from version-string for IPS compat
+#version example: 2009.7.9
+%define version %( /bin/echo %{src_version} | sed -e 's,\.0*,.,' )
+##TODO## eventually build fallback solution like this: if three wget retries fail, look at SOURCES/live*tar.gz and use these numbers, volunteers welcome. To refresh one would have to just enable internet connection. To eliminate version jumps, create switch --disable-livemedia-download.
+
 
 Name:                    SFEliveMedia
 Summary:                 liveMedia - live555 Streaming Media
-Version:                 2009.7.9
+Version:                 %{version}
 Source:                  http://www.live555.com/liveMedia/public/live.%{src_version}.tar.gz
 Patch1:                  liveMedia-01-SOLARIS-macro.diff
 Patch2:                  liveMedia-02-config.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{src_version}-build
 %include default-depend.inc
+
+BuildRequires: SUNWwgetu
 
 %prep
 %setup -q -n live
@@ -52,6 +58,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/*
 
 %changelog
+* Sat Aug 08 2009 - Thomas Wagner
+- external wget-fetch to extract downloadversion and calculate package version
+  number with leading zero(s) removed
 * Sat Jul 18 - Milan Jurik
 - to 2009.07.09
 * Sun Jul 05 - Milan Jurik
