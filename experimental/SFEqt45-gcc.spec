@@ -11,10 +11,10 @@ Name:                SFEqt45
 Summary:             Cross-platform development framework/toolkit
 URL:                 http://trolltech.com/products/qt
 License:             GPL v2
-Version:             4.5.0
+Version:             4.5.2
 Source:              ftp://ftp.trolltech.com/qt/source/qt-x11-opensource-src-%{version}.tar.bz2
 Patch1:              qt-01-use_bash.diff
-Patch2:              qt-02-temp-removal-of-getresuid.diff
+#Patch2:              qt-02-temp-removal-of-getresuid.diff
 
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
@@ -30,6 +30,10 @@ Requires: SUNWxwplt
 Requires: SUNWxwxft
 # The above also pulls in SUNWfreetype2
 
+#sun ld core dumps, so use gnu ld from SFEbinutils *or* SUNWbinutils
+BuildRequires: SUNWbinutils
+
+
 %package devel
 Summary:        %{summary} - development files
 SUNW_BaseDir:   %{_basedir}
@@ -39,7 +43,7 @@ Requires: %name
 %prep
 %setup -q -n qt-x11-opensource-src-%version
 #%patch1 -p10
-%patch2 -p1
+#%patch2 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -50,9 +54,12 @@ fi
 export CC=/usr/gnu/bin/gcc
 export CXX=/usr/gnu/bin/g++
 export CFLAGS="-O4 -fPIC -DPIC -Xlinker -i -fno-omit-frame-pointer"
-export LDFLAGS="%_ldflags"
+export LD="/usr/gnu/bin/ld"
+#export LDFLAGS="%_ldflags"
 
-echo yes | ./configure -prefix %{_prefix} \
+#echo yes | ./configure -prefix %{_prefix} \
+
+ ./configure -prefix %{_prefix} \
            -platform solaris-g++ \
            -docdir %{_docdir}/qt \
            -headerdir %{_includedir}/qt \
@@ -64,7 +71,12 @@ echo yes | ./configure -prefix %{_prefix} \
            -sysconfdir %{_sysconfdir} \
            -no-exceptions \
            -L /usr/gnu/lib \
-           -R /usr/gnu/lib 
+           -R /usr/gnu/lib   <<EOF
+o
+yes
+EOF
+#o = open source  c=commercial license
+#yes = accept this license
 
 make -j$CPUS
 
@@ -105,6 +117,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/doc/*
 
 %changelog
+* Sun Aug 09 2009 - Thomas Wagner
+- switch to gnu ld (sun ld core dumps)
+- bump to 4.5.2
+- adjust license to be o="opensource" 
 * Sat Mar 14 2009 - Thomas Wagner
 - add patch2 as temporary workaround for missing getresuid function (disables suid/sguid checks)
 * Sat Mar 07 2009 - Thomas Wagner
