@@ -1,13 +1,18 @@
+2009-08-10  Brian Cameron  <brian.cameron@sun.com>
+
+	* SFEgnome-python-extras.spec, SFEgnome-python25-libs.spec: Remove
+	  long unused spec-files.
+
 2009-08-09  Thomas Wagner  <tom68@users.sourceforge.net>
 
-        * experimental/SFEqt45-gc.spec: switch to gnu ld (sun ld core dumps),
-          bump to 4.5.2, adjust license to be o="opensource"
+	* experimental/SFEqt45-gc.spec: switch to gnu ld (sun ld core dumps),
+	  bump to 4.5.2, adjust license to be o="opensource"
 
 2009-08-08  Thomas Wagner  <tom68@users.sourceforge.net>
 
-        * SFEliveMedia.spec: removed annoying version bump by: external 
-          wget-fetch to extract downloadversion and calculate package version 
-          number with leading zero(s) removed
+	* SFEliveMedia.spec: removed annoying version bump by: external 
+	  wget-fetch to extract downloadversion and calculate package version 
+	  number with leading zero(s) removed
 
 2009-08-07 Brian Cameron  <brian.cameron@sun.com>
 
