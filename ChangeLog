@@ -1,5 +1,9 @@
 2009-08-10  Brian Cameron  <brian.cameron@sun.com>
 
+	* SFEpyglet.spec: Bump to 1.1.3.
+
+2009-08-10  Brian Cameron  <brian.cameron@sun.com>
+
 	* SFEgnome-python-extras.spec, SFEgnome-python25-libs.spec: Remove
 	  long unused spec-files.
 

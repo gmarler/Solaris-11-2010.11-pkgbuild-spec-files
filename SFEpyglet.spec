@@ -10,7 +10,7 @@
 Name:                    SFEpyglet
 Summary:                 Cross-platform windowing and multimedia library for Python. 
 URL:                     http://www.pyglet.org/
-Version:                 1.1.2
+Version:                 1.1.3
 Source:                  http://pyglet.googlecode.com/files/pyglet-%{version}.tar.gz
 Patch1:                  pyglet-01-lib.diff
 SUNW_BaseDir:            %{_basedir}
@@ -50,6 +50,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/python%{python_version}/vendor-packages/
 
 %changelog
+* Mon Aug 10 2009 - Brian Cameron  <brian.cameron@sun.com>
+- Bump to 1.1.3.
 * Wed Jan 21 2009 - Brian Cameron  <brian.cameron@sun.com>
 - Created with version 1.1.2.
 
