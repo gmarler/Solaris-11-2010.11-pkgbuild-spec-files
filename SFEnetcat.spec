@@ -55,9 +55,17 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, bin) %{_bindir}
 %{_bindir}/*
 %dir %attr (0755, root, sys) %{_datadir}
-%{_datadir}/*
+%{_datadir}/man/*
+%dir %attr (0755, root, other) %{_datadir}/locale
+%dir %attr (0755, root, other) %{_datadir}/locale/it
+%dir %attr (0755, root, other) %{_datadir}/locale/sk
+%dir %attr (0755, root, other) %{_datadir}/locale/it/LC_MESSAGES
+%dir %attr (0755, root, other) %{_datadir}/locale/sk/LC_MESSAGES
+%{_datadir}/locale/it/LC_MESSAGES/*
+%{_datadir}/locale/sk/LC_MESSAGES/*
 
 %changelog
-* 
+* Aug 2009 - Gilles Dauphin
+- change %files
 * Sat Sep 30 2006 - Eric Boutilier
 - Initial spec
