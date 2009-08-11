@@ -1,3 +1,34 @@
+2009-08-10 Matt Lewandowsky <matt@greenviolet.net>
+
+	* SFEgdata-python26.spec, SFEpython26-dateutil.spec,
+	SFEpython26-feedparser.spec, SFEpython26-sqlalchemy.spec,
+	SFEpython26-xlib.spec: New spec-files, based upon their Python 2.4
+	spec-files.
+	* SFEalpine.spec: Allow BuildRequires to accept SUNWgawk; Remove
+	autoconf, as source is unfriendly to newer versions and aclocal
+	doesn't help.
+	* SFEgdata-python.spec: Bump to 2.0.1, ensure proper python version is
+	called.
+	* SFEgxmessage.spec: Fixed permissions for %{_prefix}/share and its
+	children.
+	* SFEpython-sqlalchemy.spec: Bump to 0.5.5, explicitly invoke Python 2.4
+	* SFEsysstat.spec: Bump version to 20090805, change dependency from
+	ncurses to curses.
+	* SFEavant-extras.spec, copyright/SFEavant-extras.copyright,
+	patches/avant-extras-01-alsaaudio.diff,
+	patches/avant-extras-02-disable-volume-applet.diff,
+	patches/avant-extras-03-disable-mount-applet.diff,
+	patches/avant-extras-04-disable-file-browser-launcher.diff,
+	patches/avant-extras-05-disable-thinkhdaps.diff,
+	patches/avant-extras-06-disable-stacks.diff,
+	patches/avant-extras-07-disable-cairo-clock.diff,
+	patches/avant-extras-08-disable-cairo-main-menu.diff,
+	patches/avant-extras-09-disable-cpufreq-monitor.diff,
+	patches/avant-extras-10-disable-desktop-manager.diff,
+	patches/avant-extras-11-disable-digital-clock.diff,
+	patches/avant-extras-12-rss-sqlite.diff: New spec-file, copyright,
+	and patches.
+
 2009-08-10  Brian Cameron  <brian.cameron@sun.com>
 
 	* SFEpyglet.spec: Bump to 1.1.3.
