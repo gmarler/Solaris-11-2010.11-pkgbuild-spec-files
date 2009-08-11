@@ -54,7 +54,7 @@ mkdir -p %name-%version
 %build
 export ACLOCAL_FLAGS="-I %{_datadir}/aclocal"
 export CFLAGS="-I%{_includedir} -I%{_includedir}/idn %optflags"
-export CXXFLAGS="-I%{_includedir} -I%{_includedir}/idn -library=stlport4"
+export CXXFLAGS="-I%{_includedir} -I%{_includedir}/idn"
 export LDFLAGS="-L%{_libdir} -R%{_libdir}"
 export RPM_OPT_FLAGS="$CFLAGS"
 %filezilla.build -d %name-%version
@@ -101,6 +101,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Aug 2009 - Gilles Dauphin
+- back to libCstd, wx was compiled with it
 * Aug 2009 - Gilles Dauphin
 - use stlport4
 * Thu Nov 13 2008 - alfred.peng@sun.com

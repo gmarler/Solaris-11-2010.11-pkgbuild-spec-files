@@ -16,7 +16,7 @@ URL:		http://filezilla.sourceforge.net/
 Source:	    http://superb-east.dl.sourceforge.net/sourceforge/filezilla/FileZilla_%{version_str}.tar.bz2
 # date:2008-03-06 owner:halton type:bug bugid:3424
 Patch1:     %{name}-01-msgfmt.diff
-Patch2:     filezilla-02-pthread.diff
+#Patch2:     filezilla-02-pthread.diff
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -26,7 +26,7 @@ useful features and an intuitive interface.
 %prep
 %setup -q -n %{name}-%{version}
 %patch1 -p1
-%patch2 -p1
+#%patch2 -p1
 
 %build
 %ifos linux
@@ -70,6 +70,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Aug 2009 - gilles dauphin
+- back to libcstd, wx was compiled with it
 * Tue Jun 02 2009 - alfred.peng@sun.com
 - Bump to 3.2.4.1.
 * Thu Feb 05 2009 - alfred.peng@sun.com
