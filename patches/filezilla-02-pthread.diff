@@ -1,0 +1,10 @@
+--- filezilla-3.2.4.1/src/dbus/wxdbusconnection.h.orig	2009-04-27 23:16:36.000000000 +0200
++++ filezilla-3.2.4.1/src/dbus/wxdbusconnection.h	2009-08-11 16:18:48.086162000 +0200
+@@ -27,6 +27,7 @@
+ 
+ #include "wx/wx.h"
+ #include <dbus/dbus.h>
++#include <pthread.h>
+ 
+ class DBusThread;
+ 
