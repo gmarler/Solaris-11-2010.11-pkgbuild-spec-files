@@ -45,8 +45,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}
 %{_mandir}
 %dir %attr (0755, root, sys) %{_datadir}
+%defattr (-, root, other)
 %{_datadir}/fvwm
 
 %changelog
+* Aug 2009 - Gilles Dauphin
+- /usr/share/fvwm attribute is same as SFEfvwm.spec
 * Fri Apr 27 2006 - dougs@truemail.co.th
 - Initial version
