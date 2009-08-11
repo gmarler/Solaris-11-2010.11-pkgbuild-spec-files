@@ -96,8 +96,11 @@ cd octave-%{version}
 	--includedir=%{_includedir}	\
 	--docdir=%{_docdir}		\
 	--libexecdir=%{_libexecdir}
-make
 
+#because of bug in SunStudio12u1
+#http://defect.opensolaris.org/bz/show_bug.cgi?id=9720
+#make
+make SH_LDFLAGS="-G -xannotate=no"
 
 
 #libtoolize --copy --force
