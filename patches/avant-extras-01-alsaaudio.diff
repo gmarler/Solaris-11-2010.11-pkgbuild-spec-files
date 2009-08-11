@@ -1,0 +1,11 @@
+--- configure.ac.orig	2009-08-10 06:58:39.020595683 -0700
++++ configure.ac	2009-08-10 07:22:05.707426170 -0700
+@@ -178,8 +178,6 @@
+               enable_pymod_checks=yes)
+ 
+ if test x${enable_pymod_checks} = xyes; then
+-    # volume-control
+-    AM_CHECK_PYMOD(alsaaudio,,,AC_MSG_ERROR([python module alsaaudio required (python-alsaaudio)]))
+     # battery-applet
+     AM_CHECK_PYMOD(pynotify,,,AC_MSG_ERROR([python module pynotify required (python-notify)]))
+     # arss, mail

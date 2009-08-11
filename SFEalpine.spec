@@ -5,6 +5,7 @@
 
 #%define tcl_version 8.4
 #%define tcl_8_3 %(pkgchk -l SUNWTcl 2>/dev/null | grep /usr/sfw/bin/tclsh8.3 >/dev/null && echo 1 || echo 0)
+%define SUNWgawk      %(/usr/bin/pkginfo -q SUNWgawk && echo 1 || echo 0)
 
 Name:                SFEalpine
 License:             Apache
@@ -23,7 +24,11 @@ Requires: SUNWopenssl-libraries
 BuildRequires: SUNWhea
 Requires: SUNWcsl
 #BuildRequires: SUNWTcl
+%if %SUNWgawk
+BuildRequires: SUNWgawk
+%else
 BuildRequires: SFEgawk
+%endif
 
 %prep
 %setup -q -n alpine-%{version}
@@ -53,7 +58,7 @@ if [ ! -d "$SSL_INCLUDE_DIR/openssl" ]; then
 	SSL_INCLUDE_DIR=/usr/include
 fi
 
-autoconf
+# autoconf
 
 ./configure --prefix=%{_prefix} \
             --bindir=%{_bindir} \
@@ -95,6 +100,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/*
 
 %changelog
+* Mon Aug 10 2009 - matt@greenviolet.net
+- Allow BuildRequires to accept SUNWgawk
+- Remove autoconf, as source is unfriendly to newer versions and aclocal doesn't help.
 * Mon Mar 02 2009 - Albert Lee
 - Fix SSL support
 * Tue Oct 21 2008  - Pradhap Devarajan <pradhap (at) gmail.com>

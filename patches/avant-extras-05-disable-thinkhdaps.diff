@@ -1,0 +1,29 @@
+--- configure.ac.orig	2009-08-10 21:16:48.755729304 -0700
++++ configure.ac	2009-08-10 21:17:35.796524035 -0700
+@@ -364,7 +364,6 @@
+ src/shiny-switcher/shinyswitcher.desktop.in
+ src/showdesktop/Makefile
+ src/stacks/Makefile
+-src/thinkhdaps/Makefile
+ src/to-do/Makefile
+ src/tomboy-applet/Makefile
+ src/trash/Makefile
+--- src/Makefile.in.orig	2009-08-10 21:17:03.750353743 -0700
++++ src/Makefile.in	2009-08-10 21:17:42.828725652 -0700
+@@ -88,7 +88,7 @@
+ 	digitalClock lastfm mail media-icon-back \
+ 	media-icon-next media-icon-play media-player notification-area \
+ 	places pynot pynot-rgba python-test quit-applet separator \
+-	shiny-switcher showdesktop thinkhdaps to-do tomboy-applet \
++	shiny-switcher showdesktop to-do tomboy-applet \
+ 	weather wobblyzini awnsystemmonitor cairo-menu \
+ 	calendar filebrowser plugger stacks trasher \
+ 	notification-daemon media-control digg main-menu \
+@@ -375,7 +375,6 @@
+ 	separator		\
+ 	shiny-switcher		\
+ 	showdesktop		\
+-	thinkhdaps			\
+ 	to-do				\
+ 	tomboy-applet		\
+ 	weather			\

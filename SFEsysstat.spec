@@ -6,14 +6,14 @@
 
 Name:                SFEsysstat
 Summary:             Most important perf metrics at a single glance
-Version:             20070317
+Version:             20090805
 Source:              http://www.maier-komor.de/sysstat/sysstat-%{version}.tgz
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 
-BuildRequires: SFEncurses
-Requires: SFEncurses
+BuildRequires: SUNWcsl
+Requires: SUNWcsl
 
 %prep
 %setup -q -n sysstat-%{version}
@@ -27,7 +27,7 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
 fi
 
 # Make configure find ncurses in /usr/gnu...
-perl -i.orig -lpe 'print "DIRS=/usr/gnu\n" if $. == 4' configure
+# perl -i.orig -lpe 'print "DIRS=/usr/gnu\n" if $. == 4' configure
 
 ./configure --prefix=/usr
 make -j$CPUS
@@ -57,5 +57,8 @@ rm -rf $RPM_BUILD_ROOT
 
 %changelog
 
+* Mon Aug 10 2009 - matt@greenviolet.net
+- Bump version to 20090805
+- Change dependency from ncurses to curses.
 * Wed Apr 07 2007 - Eric Boutilier
 - Initial spec

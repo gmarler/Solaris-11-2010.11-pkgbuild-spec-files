@@ -1,0 +1,39 @@
+--- configure.ac.volume-control	2009-08-10 14:05:47.085859388 -0700
++++ configure.ac	2009-08-10 14:06:24.869895608 -0700
+@@ -375,7 +375,6 @@
+ src/trasher/trasher.desktop.in
+ src/vala-test/Makefile
+ src/vala-test/vala-test.desktop.in
+-src/volume-control/Makefile
+ src/weather/Makefile
+ src/weather/images/Makefile
+ src/weather/locale/Makefile
+--- src/Makefile.am.volume-control	2009-08-10 14:31:19.986203114 -0700
++++ src/Makefile.am	2009-08-10 14:31:32.670841777 -0700
+@@ -82,7 +82,6 @@
+ 	thinkhdaps			\
+ 	to-do				\
+ 	tomboy-applet		\
+-	volume-control		\
+ 	weather			\
+ 	$(WOBBLYZINI)		\
+ 	$(GCONF_APPLETS)	\
+--- src/Makefile.in.volume-control	2009-08-10 15:07:21.297562540 -0700
++++ src/Makefile.in	2009-08-10 15:07:31.897520605 -0700
+@@ -90,7 +90,7 @@
+ 	media-icon-next media-icon-play media-player notification-area \
+ 	places pynot pynot-rgba python-test quit-applet separator \
+ 	shiny-switcher showdesktop thinkhdaps to-do tomboy-applet \
+-	volume-control weather wobblyzini awnsystemmonitor cairo-menu \
++	weather wobblyzini awnsystemmonitor cairo-menu \
+ 	calendar filebrowser plugger stacks trasher \
+ 	notification-daemon media-control mount-applet digg main-menu \
+ 	MiMenu pandora rtm trash vala-test webapplet
+@@ -380,7 +380,6 @@
+ 	thinkhdaps			\
+ 	to-do				\
+ 	tomboy-applet		\
+-	volume-control		\
+ 	weather			\
+ 	$(WOBBLYZINI)		\
+ 	$(GCONF_APPLETS)	\

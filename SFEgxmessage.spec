@@ -52,10 +52,15 @@ rm -rf $RPM_BUILD_ROOT
 %defattr (-, root, bin)
 %dir %attr (0755, root, bin) %{_bindir}
 %{_bindir}/*
-%dir %attr(0755, root, bin) %{_basedir}/share
-%{_basedir}/share/*
+%dir %attr(0755, root, sys) %{_prefix}/share
+%dir %attr(0755, root, other) %{_prefix}/share/icons
+%dir %attr(0755, root, other) %{_prefix}/share/info
+%dir %attr(0755, root, other) %{_prefix}/share/locale
+%{_prefix}/share/*
 
 
 %changelog
+* Mon Aug 10 2009 - matt@greenviolet.net
+- Fixed permissions for %{_prefix}/share and its children.
 * Mon Jun 01 2009 - matt@greenviolet.net
 - Initial version

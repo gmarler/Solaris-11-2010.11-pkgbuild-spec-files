@@ -1,0 +1,38 @@
+--- configure.ac.orig	2009-08-10 21:26:32.112768928 -0700
++++ configure.ac	2009-08-10 21:26:44.526718401 -0700
+@@ -180,7 +180,7 @@
+ if test x${enable_pymod_checks} = xyes; then
+     # battery-applet
+     AM_CHECK_PYMOD(pynotify,,,AC_MSG_ERROR([python module pynotify required (python-notify)]))
+-    # arss, mail
++    # mail
+     AM_CHECK_PYMOD(feedparser,,,AC_MSG_ERROR([python module feedparser required (python-feedparser)]))
+     if test "$with_gnome" != "no"; then
+     # MiMenu
+@@ -282,7 +282,6 @@
+ po/Makefile.in
+ src/Makefile
+ src/animal-farm/Makefile
+-src/arss/Makefile
+ src/awn-meebo/Makefile
+ src/awnsystemmonitor/Makefile
+ src/awnsystemmonitor/awnsystemmonitor.desktop.in
+--- src/Makefile.in.orig	2009-08-10 21:26:34.544819826 -0700
++++ src/Makefile.in	2009-08-10 21:26:50.055307432 -0700
+@@ -81,7 +81,7 @@
+   distclean-recursive maintainer-clean-recursive
+ ETAGS = etags
+ CTAGS = ctags
+-DIST_SUBDIRS = libawn-extras animal-farm arss awn-meebo awnterm \
++DIST_SUBDIRS = libawn-extras animal-farm awn-meebo awnterm \
+ 	battery-applet comic comics \
+ 	lastfm mail media-icon-back \
+ 	media-icon-next media-icon-play media-player notification-area \
+@@ -348,7 +348,6 @@
+ SUBDIRS = \
+ 	libawn-extras		\
+ 	animal-farm		\
+-	arss			\
+ 	awn-meebo		\
+ 	awnterm			\
+ 	battery-applet		\

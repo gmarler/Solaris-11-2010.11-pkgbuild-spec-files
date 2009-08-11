@@ -1,0 +1,107 @@
+--- configure.ac.orig	2009-08-10 21:18:21.329019988 -0700
++++ configure.ac	2009-08-10 21:18:52.462876055 -0700
+@@ -189,17 +189,13 @@
+     AM_CHECK_PYMOD(gmenu,,,AC_MSG_ERROR([python module gmenu required]))
+     fi
+     if test "$with_gconf" != "no" -o "$with_gnome" != "no"; then
+-    # stacks
+-    AM_CHECK_PYMOD(gnomedesktop,,,AC_MSG_ERROR([python module gnomedesktop required]))
+-    # calendar, stacks
++    # calendar
+     AM_CHECK_PYMOD(gnomevfs,,,AC_MSG_ERROR([python module gnomevfs required]))
+-    # stacks
+-    AM_CHECK_PYMOD(gnome.ui,,,AC_MSG_ERROR([python module gnome.ui required]))
+     # awn-meebo, digg, pandora
+     AM_CHECK_PYMOD(gtkmozembed,,,AC_MSG_ERROR([python module gtkmozembed required (python-gnome2-extras)]))
+     fi
+     if test "$with_gconf" != "no"; then
+-    # calendar, media-control, media-player, stacks
++    # calendar, media-control, media-player
+     AM_CHECK_PYMOD(gconf,,,AC_MSG_ERROR([python module gconf required]))
+     # lastfm, media-player
+     AM_CHECK_PYMOD(gst,,,AC_MSG_ERROR([python module gstreamer required (python-gst0.10)]))
+@@ -363,7 +359,6 @@
+ src/shiny-switcher/Makefile
+ src/shiny-switcher/shinyswitcher.desktop.in
+ src/showdesktop/Makefile
+-src/stacks/Makefile
+ src/to-do/Makefile
+ src/tomboy-applet/Makefile
+ src/trash/Makefile
+--- src/Makefile.in.orig	2009-08-10 21:18:27.936918843 -0700
++++ src/Makefile.in	2009-08-10 21:19:02.623483668 -0700
+@@ -39,7 +39,6 @@
+ @WITH_GCONF_TRUE@@WITH_GNOME_TRUE@	calendar		\
+ @WITH_GCONF_TRUE@@WITH_GNOME_TRUE@	filebrowser		\
+ @WITH_GCONF_TRUE@@WITH_GNOME_TRUE@	plugger			\
+-@WITH_GCONF_TRUE@@WITH_GNOME_TRUE@	stacks			\
+ @WITH_GCONF_TRUE@@WITH_GNOME_TRUE@	trasher			\
+ @WITH_GCONF_TRUE@@WITH_GNOME_TRUE@	$(NULL)
+ 
+@@ -90,7 +89,7 @@
+ 	places pynot pynot-rgba python-test quit-applet separator \
+ 	shiny-switcher showdesktop to-do tomboy-applet \
+ 	weather wobblyzini awnsystemmonitor cairo-menu \
+-	calendar filebrowser plugger stacks trasher \
++	calendar filebrowser plugger trasher \
+ 	notification-daemon media-control digg main-menu \
+ 	MiMenu pandora rtm trash vala-test webapplet
+ DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
+--- configure.ac.orig	2009-08-10 22:02:45.943035884 -0700
++++ configure.ac	2009-08-10 22:03:23.118141332 -0700
+@@ -89,7 +89,7 @@
+ # awn-terminal
+ PKG_CHECK_MODULES(VTE, [vte])
+ 
+-# awn-system-monitor, cairo-menu, filebrowser, notification-daemon, plugger, trasher
++# awn-system-monitor, cairo-menu, filebrowser, notification-daemon
+ if test "$with_gconf" != "no" -a "$config_backend" != "GConf"; then
+   PKG_CHECK_MODULES(GCONF, [gconf-2.0])
+   gconf=gconf-2.0
+@@ -100,7 +100,7 @@
+ PKG_CHECK_MODULES(GNOMEUI, [libgnomeui-2.0])
+ # filebrowser
+ PKG_CHECK_MODULES(GNOME_DESKTOP, [gnome-desktop-2.0])
+-# filebrowser, cairo-menu, plugger, trash, trasher
++# filebrowser, cairo-menu, trash
+ PKG_CHECK_MODULES(GNOME_VFS, [gnome-vfs-2.0])
+ # awn-system-monitor
+ PKG_CHECK_MODULES(GTOP, [libgtop-2.0])
+@@ -347,8 +347,6 @@
+ src/pandora/Makefile
+ src/places/Makefile
+ src/places/places.desktop.in
+-src/plugger/Makefile
+-src/plugger/plugger.desktop.in
+ src/pynot/Makefile
+ src/pynot-rgba/Makefile
+ src/python-test/Makefile
+@@ -363,8 +361,6 @@
+ src/tomboy-applet/Makefile
+ src/trash/Makefile
+ src/trash/trash.desktop.in
+-src/trasher/Makefile
+-src/trasher/trasher.desktop.in
+ src/vala-test/Makefile
+ src/vala-test/vala-test.desktop.in
+ src/weather/Makefile
+--- src/Makefile.in.orig	2009-08-10 22:02:49.231753699 -0700
++++ src/Makefile.in	2009-08-10 22:03:33.214720812 -0700
+@@ -38,8 +38,6 @@
+ @WITH_GCONF_TRUE@@WITH_GNOME_TRUE@	cairo-menu		\
+ @WITH_GCONF_TRUE@@WITH_GNOME_TRUE@	calendar		\
+ @WITH_GCONF_TRUE@@WITH_GNOME_TRUE@	filebrowser		\
+-@WITH_GCONF_TRUE@@WITH_GNOME_TRUE@	plugger			\
+-@WITH_GCONF_TRUE@@WITH_GNOME_TRUE@	trasher			\
+ @WITH_GCONF_TRUE@@WITH_GNOME_TRUE@	$(NULL)
+ 
+ # --with-gconf
+@@ -89,7 +87,7 @@
+ 	places pynot pynot-rgba python-test quit-applet separator \
+ 	shiny-switcher showdesktop to-do tomboy-applet \
+ 	weather wobblyzini awnsystemmonitor cairo-menu \
+-	calendar filebrowser plugger trasher \
++	calendar filebrowser \
+ 	notification-daemon media-control digg main-menu \
+ 	MiMenu pandora rtm trash vala-test webapplet
+ DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)

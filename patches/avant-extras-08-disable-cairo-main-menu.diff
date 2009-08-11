@@ -1,0 +1,65 @@
+--- configure.ac.orig	2009-08-10 22:08:25.875016944 -0700
++++ configure.ac	2009-08-10 22:09:12.553657753 -0700
+@@ -81,7 +81,7 @@
+ PKG_CHECK_MODULES(LIBX11, [x11])
+ PKG_CHECK_MODULES(COMPOSITE, [xcomposite])
+ PKG_CHECK_MODULES(XRENDER, [xrender])
+-# cairo-menu, notification-daemon
++# notification-daemon
+ PKG_CHECK_MODULES(LIBSEXY, [libsexy])
+ PKG_CHECK_MODULES(LIBNOTIFY, [libnotify])
+ # standalone-launcher, taskmand, taskmand-applet
+@@ -89,7 +89,7 @@
+ # awn-terminal
+ PKG_CHECK_MODULES(VTE, [vte])
+ 
+-# awn-system-monitor, cairo-menu, filebrowser, notification-daemon
++# awn-system-monitor, filebrowser, notification-daemon
+ if test "$with_gconf" != "no" -a "$config_backend" != "GConf"; then
+   PKG_CHECK_MODULES(GCONF, [gconf-2.0])
+   gconf=gconf-2.0
+@@ -100,14 +100,14 @@
+ PKG_CHECK_MODULES(GNOMEUI, [libgnomeui-2.0])
+ # filebrowser
+ PKG_CHECK_MODULES(GNOME_DESKTOP, [gnome-desktop-2.0])
+-# filebrowser, cairo-menu, trash
++# filebrowser, trash
+ PKG_CHECK_MODULES(GNOME_VFS, [gnome-vfs-2.0])
+ # awn-system-monitor
+ PKG_CHECK_MODULES(GTOP, [libgtop-2.0])
+ fi
+ 
+ if test "$with_gnome" != "no"; then
+-# main-menu, cairo-menu
++# main-menu
+ PKG_CHECK_MODULES(GNOME_MENU, [libgnome-menu])
+ fi
+ 
+@@ -289,8 +289,6 @@
+ src/awnterm/Makefile
+ src/awnterm/awnterm.desktop.in
+ src/battery-applet/Makefile
+-src/cairo-menu/Makefile
+-src/cairo-menu/cairo_main_menu.desktop.in
+ src/calendar/Makefile
+ src/calendar/google/Makefile
+ src/calendar/google/atom/Makefile
+--- src/Makefile.in.orig	2009-08-10 22:08:31.451299741 -0700
++++ src/Makefile.in	2009-08-10 22:09:24.074017178 -0700
+@@ -35,7 +35,6 @@
+ # --with-gnome --with-gconf
+ @WITH_GCONF_TRUE@@WITH_GNOME_TRUE@am__append_1 = \
+ @WITH_GCONF_TRUE@@WITH_GNOME_TRUE@	awnsystemmonitor	\
+-@WITH_GCONF_TRUE@@WITH_GNOME_TRUE@	cairo-menu		\
+ @WITH_GCONF_TRUE@@WITH_GNOME_TRUE@	calendar		\
+ @WITH_GCONF_TRUE@@WITH_GNOME_TRUE@	filebrowser		\
+ @WITH_GCONF_TRUE@@WITH_GNOME_TRUE@	$(NULL)
+@@ -86,7 +85,7 @@
+ 	media-icon-next media-icon-play media-player notification-area \
+ 	places pynot pynot-rgba python-test quit-applet separator \
+ 	shiny-switcher showdesktop to-do tomboy-applet \
+-	weather wobblyzini awnsystemmonitor cairo-menu \
++	weather wobblyzini awnsystemmonitor \
+ 	calendar filebrowser \
+ 	notification-daemon media-control digg main-menu \
+ 	MiMenu pandora rtm trash vala-test webapplet

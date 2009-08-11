@@ -1,0 +1,38 @@
+--- configure.ac.orig	2009-08-10 19:00:17.840556901 -0700
++++ configure.ac	2009-08-10 19:00:40.631798877 -0700
+@@ -199,7 +199,7 @@
+     AM_CHECK_PYMOD(gtkmozembed,,,AC_MSG_ERROR([python module gtkmozembed required (python-gnome2-extras)]))
+     fi
+     if test "$with_gconf" != "no"; then
+-    # calendar, media-control, media-player, mount-applet, stacks
++    # calendar, media-control, media-player, stacks
+     AM_CHECK_PYMOD(gconf,,,AC_MSG_ERROR([python module gconf required]))
+     # lastfm, media-player
+     AM_CHECK_PYMOD(gst,,,AC_MSG_ERROR([python module gstreamer required (python-gst0.10)]))
+@@ -340,7 +340,6 @@
+ src/media-icon-next/Makefile
+ src/media-icon-play/Makefile
+ src/media-player/Makefile
+-src/mount-applet/Makefile
+ src/MiMenu/Makefile
+ src/notification-area/Makefile
+ src/notification-area/notification-area.desktop.in
+--- src/Makefile.in.orig	2009-08-10 19:01:56.629239381 -0700
++++ src/Makefile.in	2009-08-10 19:02:15.923274236 -0700
+@@ -47,7 +47,6 @@
+ @WITH_GCONF_TRUE@am__append_2 = \
+ @WITH_GCONF_TRUE@	notification-daemon	\
+ @WITH_GCONF_TRUE@	media-control		\
+-@WITH_GCONF_TRUE@	mount-applet		\
+ @WITH_GCONF_TRUE@	$(NULL)
+ 
+ # --with-gnome
+@@ -92,7 +91,7 @@
+ 	shiny-switcher showdesktop thinkhdaps to-do tomboy-applet \
+ 	weather wobblyzini awnsystemmonitor cairo-menu \
+ 	calendar filebrowser plugger stacks trasher \
+-	notification-daemon media-control mount-applet digg main-menu \
++	notification-daemon media-control digg main-menu \
+ 	MiMenu pandora rtm trash vala-test webapplet
+ DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
+ ACLOCAL = @ACLOCAL@

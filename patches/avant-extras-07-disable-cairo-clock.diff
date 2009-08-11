@@ -1,0 +1,38 @@
+--- configure.ac.orig	2009-08-10 21:19:39.875584590 -0700
++++ configure.ac	2009-08-10 21:20:17.801878254 -0700
+@@ -182,8 +182,6 @@
+     AM_CHECK_PYMOD(pynotify,,,AC_MSG_ERROR([python module pynotify required (python-notify)]))
+     # arss, mail
+     AM_CHECK_PYMOD(feedparser,,,AC_MSG_ERROR([python module feedparser required (python-feedparser)]))
+-    # cairo-clock
+-    AM_CHECK_PYMOD(rsvg,,,AC_MSG_ERROR([python module rsvg required (gnome-python-desktop)]))
+     if test "$with_gnome" != "no"; then
+     # MiMenu
+     AM_CHECK_PYMOD(gmenu,,,AC_MSG_ERROR([python module gmenu required]))
+@@ -291,7 +289,6 @@
+ src/awnterm/Makefile
+ src/awnterm/awnterm.desktop.in
+ src/battery-applet/Makefile
+-src/cairo-clock/Makefile
+ src/cairo-menu/Makefile
+ src/cairo-menu/cairo_main_menu.desktop.in
+ src/calendar/Makefile
+--- src/Makefile.in.orig	2009-08-10 21:19:34.139709761 -0700
++++ src/Makefile.in	2009-08-10 21:20:35.186426854 -0700
+@@ -83,7 +83,7 @@
+ ETAGS = etags
+ CTAGS = ctags
+ DIST_SUBDIRS = libawn-extras animal-farm arss awn-meebo awnterm \
+-	battery-applet cairo-clock comic comics cpufreq DesktopManager \
++	battery-applet comic comics cpufreq DesktopManager \
+ 	digitalClock lastfm mail media-icon-back \
+ 	media-icon-next media-icon-play media-player notification-area \
+ 	places pynot pynot-rgba python-test quit-applet separator \
+@@ -353,7 +353,6 @@
+ 	awn-meebo		\
+ 	awnterm			\
+ 	battery-applet		\
+-	cairo-clock		\
+ 	comic			\
+ 	comics			\
+ 	cpufreq			\

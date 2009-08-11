@@ -1,0 +1,29 @@
+--- configure.ac.orig	2009-08-10 19:41:48.624601281 -0700
++++ configure.ac	2009-08-10 19:46:19.657643757 -0700
+@@ -320,7 +320,6 @@
+ src/DesktopManager/Makefile
+ src/digg/Makefile
+ src/digitalClock/Makefile
+-src/file-browser-launcher/Makefile
+ src/filebrowser/Makefile
+ src/filebrowser/filebrowser.desktop.in
+ src/lastfm/Makefile
+--- src/Makefile.in.orig	2009-08-10 19:41:53.091231366 -0700
++++ src/Makefile.in	2009-08-10 19:46:48.027330354 -0700
+@@ -85,7 +85,7 @@
+ CTAGS = ctags
+ DIST_SUBDIRS = libawn-extras animal-farm arss awn-meebo awnterm \
+ 	battery-applet cairo-clock comic comics cpufreq DesktopManager \
+-	digitalClock file-browser-launcher lastfm mail media-icon-back \
++	digitalClock lastfm mail media-icon-back \
+ 	media-icon-next media-icon-play media-player notification-area \
+ 	places pynot pynot-rgba python-test quit-applet separator \
+ 	shiny-switcher showdesktop thinkhdaps to-do tomboy-applet \
+@@ -360,7 +360,6 @@
+ 	cpufreq			\
+ 	DesktopManager		\
+ 	digitalClock		\
+-	file-browser-launcher	\
+ 	lastfm			\
+ 	mail			\
+ 	media-icon-back		\
