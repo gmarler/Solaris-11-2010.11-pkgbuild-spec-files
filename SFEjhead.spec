@@ -44,7 +44,7 @@ rm -rf ${RPM_BUILD_ROOT}
 
 
 %files
-%defattr (-, root, bin)
+%defattr (-, root, other)
 %doc changes.txt readme.txt usage.html
 %dir %attr (0755, root, bin) %{_bindir}
 %{_bindir}/jhead
@@ -54,5 +54,7 @@ rm -rf ${RPM_BUILD_ROOT}
 %{_mandir}/man1/jhead.1.gz
 
 %changelog
+* Wed Sep 10 2008 - pradhap (at) gmail.com
+- doc file attribute set to root,other
 * Wed Sep 10 2008 - pradhap (at) gmail.com
 - Initial SFEjhead spec file.
