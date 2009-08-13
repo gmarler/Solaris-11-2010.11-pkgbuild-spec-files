@@ -1,3 +1,7 @@
+2009-08-13  Alfred Peng  <alfred.peng@sun.com>
+
+	* SFEwebkit.spec: trivial fix for source setup.
+
 2009-08-10 Matt Lewandowsky <matt@greenviolet.net>
 
 	* SFEgdata-python26.spec, SFEpython26-dateutil.spec,
@@ -103,6 +107,14 @@
 
 	* SFEgob.spec: (new) The GObject Build
 	* base-specs/gob2.spec: (new) The GObject Build
+
+2009-08-06  Alfred Peng  <alfred.peng@sun.com>
+
+	* SFElxde-common.spec: Add patch to use GNU cp.
+	* SFElxpanel.spec: Bump to 0.5.2.
+	* SFElxsession-lite.spec: Bump to 0.3.7.
+	* patches/lxde-common-01-gnu-cp.diff: Added.
+	* patches/lxsession-01-docbook2man.diff: Removed.
 
 2009-08-06 Brian Cameron  <brian.cameron@sun.com>
 

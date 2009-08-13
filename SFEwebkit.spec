@@ -54,7 +54,7 @@ Requires: SUNWzlib
 BuildRequires: SUNWgcc
 
 %prep
-%setup -q -n %name-%version -c -a1
+%setup -q -n %name-%version -c -a0
 cd webkit-%version
 %patch1 -p1
 %patch2 -p1
@@ -120,6 +120,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Aug 13 2009 - alfred.peng@sun.com
+- trivial fix for source setup (a1 -> a0).
 * Fri Jun 19 2009 - alfred.peng@sun.com
 - Bump to webkitgtk 1.1.10 release, rework the patches.
 * Web Jun 03 2009 - chris.wang@sun.com
