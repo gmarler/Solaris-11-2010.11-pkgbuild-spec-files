@@ -1,3 +1,7 @@
+2009-08-13  Thomas Wagner  <tom68@users.sourceforge.net>
+
+	* experimental/SFEperdition.spec: (new) perdition imap and pop3 transparent proxy/loadbalancer
+
 2009-08-13  Tim Miao <tim.miao@sun.com>
 
 	* Bump ldtp from 1.6.0 to 1.7.0
