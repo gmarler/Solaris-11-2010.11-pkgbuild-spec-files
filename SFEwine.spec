@@ -7,35 +7,26 @@
 %include Solaris.inc
 
 %define src_url		%{sf_download}/%{sname}
+# example version number: 1.1.27
+# TODO: Maybe parse http://www.ibiblio.org/pub/linux/system/emulators/wine/wine.lsm instead
+%define version %( version=`wget -O - "http://sourceforge.net/projects/wine/files/" 2>/dev/null | grep "wine-.*.tar.bz2" | head -1 | sed -e 's,^.*wine-,,' -e 's,\.tar\.bz2.*,,'`; if [ "$version" = "" ]; then version=`ls %{_sourcedir}/wine-*.tar.bz2 | sed -e 's,^.*wine-,,' -e 's,\.tar\.bz2,,' | tail -1`; fi; echo $version )
+# TODO: To eliminate version jumps, create switch --disable-download.
+#       Until then, change "sourceforge.net" to something unresolvable to use
+#       the highest-versioned wine tarball found in your SOURCES directory.
 
 Name:                   SFEwine
-Summary:                Windows compatibility
-Version:                1.1.22
+Summary:                Windows API compatibility and ABI runtime
+Version:                %{version}
 URL:                    http://www.winehq.org/
 Source:                 %{src_url}/%{sname}-%{version}.tar.bz2
-Source1:		soundcard.h
-Source101:		http://winezeug.googlecode.com/svn/trunk/winetricks
-#we need this because pkg can't handle 2 source_url
-Nosource:		1
-Nosource:               101
-Patch1:			wine-01-shell.diff
-# From http://bugs.winehq.org/attachment.cgi?id=20300
-# http://bugs.winehq.org/show_bug.cgi?id=9787
-Patch2:			wine-02-acceptex.diff
-# Implement network statistics in iphlpapi via libkstat and STREAMS TPI
-#Patch3:			wine-03-iphlpapi.diff
-# Wrap mmap to allow allocations inside a wine reserved area
-# http://bugs2.winehq.org/attachment.cgi?id=21492
-# http://bugs.winehq.org/show_bug.cgi?id=13335
-Patch4:			wine-04-mmap-wrapper.diff
-# Wine assumes libraries are mapped to contiguous memory regions.
-# Use less restrictive alignment for data section to avoid "holes" between
-# sections that the OS is allowed to use for an anonymous mmap:
-# http://opensolaris.org/jive/message.jspa?messageID=229817#229799
-#Patch7:			wine-07-sun-ld.diff
-# Call __wine_spec_init and __wine_spec_fini from .init and .fini sections 
-#Patch8:			wine-08-init-fini.diff
-#Patch101:		winetricks-01-sh.diff
+# See: http://lists.freedesktop.org/archives/tango-artists/2009-July/001973.html
+# Also: http://www.airwebreathe.org.uk/wine-icon/
+Source1:                http://www.airwebreathe.org.uk/wine-icon/oic_winlogo-svg.zip
+Group:			System/Virtualization
+License:		LGPL
+SUNW_HotLine:		http://www.winehq.org/help/
+SUNW_Copyright:		%{name}.copyright
+ExclusiveArch:		i386 amd64
 SUNW_BaseDir:           %{_basedir}
 BuildRoot:              %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -62,14 +53,14 @@ BuildRequires:	SUNWncurses-devel
 Requires:	SUNWncurses
 BuildRequires:	SUNWopenssl-include
 Requires:	SUNWopenssl-libraries
-#BuildRequires:	SUNWgnutls-devel
-#Requires:	SUNWgnutls
-#BuildRequires:	SFEfreetype-devel
-#Requires:	SFEfreetype
+BuildRequires:	SUNWgnutls-devel
+Requires:	SUNWgnutls
 Requires:	SUNWfreetype2
 BuildRequires:	SFElibaudioio-devel
 Requires:	SFElibaudioio
+# Following are for winetricks, not wine directly.
 Requires:       SFEcabextract
+Requires:       SFEgxmessage
 
 %package devel
 Summary:                 wine - developer files, /usr
@@ -78,19 +69,11 @@ Requires: %name
 %include default-depend.inc
 
 %prep
+echo %{version}
+echo %{_sourcedir}
 %setup -q -n %{sname}-%{version}
-%patch1 -p1
-%patch2 -p1
-#%patch3 -p1
-#%patch4 -p1
-#%patch8 -p1
-mkdir -p include/sys
-cp %{SOURCE1} include/sys
-cp %{SOURCE101} winetricks
-#%patch101 -p1
-
-# patch5 changes the server request spec, so update related files
-perl tools/make_requests
+wget http://winezeug.googlecode.com/svn/trunk/winetricks
+unzip %{SOURCE1}
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -100,8 +83,6 @@ fi
 export ACLOCAL_FLAGS="-I %{_datadir}/aclocal"
 export CC=/usr/sfw/bin/gcc
 export CPPFLAGS="-I%{xorg_inc} -I%{gnu_inc} -I%{sfw_inc} -D__C99FEATURES__"
-# to find sys/soundcard.h
-export CPPFLAGS="$CPPFLAGS -I%{_builddir}/%{sname}-%{version}/include"
 export CFLAGS="-O2 -march=i686 -Xlinker -i -fno-omit-frame-pointer" 
 export LDFLAGS="%{xorg_lib_path} %{gnu_lib_path} %{sfw_lib_path}"
 export LD=/usr/ccs/bin/ld
@@ -115,13 +96,12 @@ autoheader
             --datadir=%{_datadir}	\
             --libexecdir=%{_libexecdir} \
             --sysconfdir=%{_sysconfdir} \
-            --enable-shared		\
-	    --disable-static		\
 	    --without-alsa		\
 	    --without-capi		\
-	    --without-gnutls		\
-	    --without-nas		\
-	    --without-jack
+	    --without-coreaudio		\
+	    --without-esd		\
+	    --without-jack		\
+	    --without-nas		
 
 make -j$CPUS || make
 
@@ -129,6 +109,15 @@ make -j$CPUS || make
 rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
 install -m 0755 winetricks $RPM_BUILD_ROOT%{_bindir}/winetricks
+mkdir -p $RPM_BUILD_ROOT%{_datadir}/pixmaps
+# The default wine icon is... ugly.
+# When it gets updated, this should be about the right thing to do, instead.
+# install -m 0644 programs/winemenubuilder/wine.xpm $RPM_BUILD_ROOT%{_datadir}/pixmaps/wine.xpm
+install -m 0644 oic_winlogo-svg/oic_winlogo-48.svg $RPM_BUILD_ROOT%{_datadir}/pixmaps/wine.svg
+for size in 16 22 32 48; do
+mkdir -p $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/${size}x${size}/apps
+install -m 0644 oic_winlogo-svg/oic_winlogo-${size}.svg $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/${size}x${size}/apps/wine.svg
+done
 
 %post
 ( echo 'test -x /usr/bin/update-desktop-database || exit 0';
@@ -164,6 +153,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/wine
 %defattr (-, root, other)
 %{_datadir}/applications
+%dir %attr (0755, root, other) %{_datadir}/pixmaps
+%{_datadir}/pixmaps/*
+%dir %attr (0755, root, other) %{_datadir}/icons
+%{_datadir}/icons/*
 
 %files devel
 %defattr (-, root, bin)
@@ -173,6 +166,18 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/aclocal/*
 
 %changelog
+* Wed Aug 12 2009 - matt@greenviolet.net
+- Remove obsolete patches
+- Clean up configure options
+- Remove old freetype deps
+- Add dependency SFEgxmessage currently needed for winetricks fallback messages
+- Force winetricks to be redownloaded each build, as filename doesn't change
+- Remove soundcard.h, as Boomer's is serviceable and it's unneeded pre-Boomer
+- Auto-version based on newest (topmost) version number reference on sf.net
+- Install icons for wine
+- Changed summary to be more descriptive
+- Added a bit of metainformation "sugar" for completeness
+- Enable gnutls, as disabling it causes loss of functionality
 * Mon Jun 01 2009 - trisk@forkgnu.org
 - Add patch4
 * Sun May 31 2009 - andras.barna@gmail.com
