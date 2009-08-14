@@ -1,0 +1,11 @@
+--- vlc-1.0.1/configure.orig	Fr. Aug 14 03:39:24 2009
++++ vlc-1.0.1/configure	Fr. Aug 14 11:57:47 2009
+@@ -14321,7 +14321,7 @@
+ _LT_EOF
+       elif $LD --help 2>&1 | $GREP ': supported targets:.* elf' > /dev/null; then
+ 	archive_cmds='$CC -shared $libobjs $deplibs $compiler_flags ${wl}-soname $wl$soname -o $lib'
+-	archive_expsym_cmds='$CC -shared $libobjs $deplibs $compiler_flags ${wl}-soname $wl$soname ${wl}-retain-symbols-file $wl$export_symbols -o $lib'
++	archive_expsym_cmds='$CC -shared $libobjs $deplibs $compiler_flags ${wl}-soname $wl$soname -o $lib'
+       else
+ 	ld_shlibs=no
+       fi

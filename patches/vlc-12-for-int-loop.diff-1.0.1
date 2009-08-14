@@ -1,0 +1,26 @@
+--- vlc-1.0.1.orig/include/vlc_input.h	2009-05-09 02:10:47.000000000 +0200
++++ vlc-1.0.1/include/vlc_input.h	2009-08-13 19:01:02.617284655 +0200
+@@ -569,8 +569,9 @@
+ 
+      if( input_Control( p_input, INPUT_GET_VOUTS, &pp_vout, &i_vout ) )
+          return NULL;
+-
+-     for( unsigned i = 1; i < i_vout; i++ )
++     
++     unsigned i;
++     for( i = 1; i < i_vout; i++ )
+          vlc_object_release( (vlc_object_t *)(pp_vout[i]) );
+ 
+      p_vout = (i_vout >= 1) ? pp_vout[0] : NULL;
+--- vlc-1.0.1.orig/include/vlc_arrays.h	2009-05-09 02:10:47.000000000 +0200
++++ vlc-1.0.1/include/vlc_arrays.h	2009-08-13 19:02:11.485834994 +0200
+@@ -439,7 +439,8 @@
+ {
+     if( p_dict->p_entries )
+     {
+-        for( int i = 0; i < p_dict->i_size; i++ )
++        int i;
++        for( i = 0; i < p_dict->i_size; i++ )
+         {
+             vlc_dictionary_entry_t * p_current, * p_next;
+             p_current = p_dict->p_entries[i];

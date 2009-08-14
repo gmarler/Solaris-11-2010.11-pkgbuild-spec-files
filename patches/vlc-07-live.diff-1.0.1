@@ -1,0 +1,17 @@
+--- vlc-0.9.8a/modules/demux/live555.cpp.orig	2008-11-26 18:42:40.000000000 +0100
++++ vlc-0.9.8a/modules/demux/live555.cpp	2009-03-21 21:03:45.027723567 +0100
+@@ -54,10 +54,10 @@
+ #   include <winsock2.h>
+ #endif
+ 
+-#include "UsageEnvironment.hh"
+-#include "BasicUsageEnvironment.hh"
+-#include "GroupsockHelper.hh"
+-#include "liveMedia.hh"
++#include <liveMedia/UsageEnvironment.hh>
++#include <liveMedia/BasicUsageEnvironment.hh>
++#include <liveMedia/GroupsockHelper.hh>
++#include <liveMedia/liveMedia.hh>
+ 
+ extern "C" {
+ #include "../access/mms/asf.h"  /* Who said ugly ? */

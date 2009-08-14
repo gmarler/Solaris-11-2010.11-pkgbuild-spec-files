@@ -1,0 +1,12 @@
+--- vlc-0.9.8a/modules/audio_output/oss.c.orig	2008-10-15 21:31:20.000000000 +0200
++++ vlc-0.9.8a/modules/audio_output/oss.c	2009-03-21 20:24:53.157663866 +0100
+@@ -33,6 +33,9 @@
+ 
+ #include <errno.h>                                                 /* ENOMEM */
+ #include <fcntl.h>                                       /* open(), O_WRONLY */
++#ifdef sun
++#include <sys/file.h>
++#endif
+ #include <sys/ioctl.h>                                            /* ioctl() */
+ #include <unistd.h>                                      /* write(), close() */
+ 

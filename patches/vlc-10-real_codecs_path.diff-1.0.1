@@ -1,0 +1,15 @@
+--- vlc-0.9.8a/modules/codec/realaudio.c.orig	2008-10-15 21:19:37.000000000 +0200
++++ vlc-0.9.8a/modules/codec/realaudio.c	2009-03-22 02:22:36.136868701 +0100
+@@ -273,9 +273,9 @@
+     {
+       ".",
+ #ifndef WIN32
+-      "/usr/local/RealPlayer8/Codecs",
+-      "/usr/RealPlayer8/Codecs",
+-      "/usr/lib/RealPlayer8/Codecs",
++      "/usr/lib/RealPlay/codecs",
++      "/usr/lib64/realplay/codecs",
++      "/usr/lib/codecs",
+       "/opt/RealPlayer8/Codecs",
+       "/usr/lib/RealPlayer9/users/Real/Codecs",
+       "/usr/lib/RealPlayer10/codecs",

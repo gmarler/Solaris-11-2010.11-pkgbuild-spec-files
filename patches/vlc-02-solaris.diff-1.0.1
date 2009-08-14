@@ -1,0 +1,11 @@
+--- vlc-0.9.8a/src/extras/libc.c.orig	2008-10-15 21:31:21.000000000 +0200
++++ vlc-0.9.8a/src/extras/libc.c	2009-03-21 20:19:17.016847699 +0100
+@@ -508,7 +508,7 @@
+ # define BUFSIZE 1024
+     int fds[2], i_status;
+ 
+-    if (socketpair (AF_LOCAL, SOCK_STREAM, 0, fds))
++    if (socketpair (AF_UNIX, SOCK_STREAM, 0, fds))
+         return -1;
+ 
+     pid_t pid = -1;

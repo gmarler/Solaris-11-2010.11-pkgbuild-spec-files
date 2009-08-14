@@ -1,0 +1,13 @@
+--- vlc-0.9.8a/m4/gettext.m4.orig	2008-10-15 21:19:37.000000000 +0200
++++ vlc-0.9.8a/m4/gettext.m4	2009-03-21 20:58:47.805555331 +0100
+@@ -243,8 +243,8 @@
+         dnl Mark actions used to generate GNU NLS library.
+         BUILD_INCLUDED_LIBINTL=yes
+         USE_INCLUDED_LIBINTL=yes
+-        LIBINTL="ifelse([$3],[],\${top_builddir}/intl,[$3])/libintl.[]gt_libtool_suffix_prefix[]a $LIBICONV $LIBTHREAD"
+-        LTLIBINTL="ifelse([$3],[],\${top_builddir}/intl,[$3])/libintl.[]gt_libtool_suffix_prefix[]a $LTLIBICONV $LTLIBTHREAD"
++        LIBINTL="-lintl $LIBICONV"
++        LTLIBINTL="-lintl $LTLIBICONV"
+         LIBS=`echo " $LIBS " | sed -e 's/ -lintl / /' -e 's/^ //' -e 's/ $//'`
+       fi
+ 
