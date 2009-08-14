@@ -1,3 +1,7 @@
+2009-08-14  Gilles Dauphin
+
+	* init TeX and misc utils: SFEtexlive
+
 2009-08-14  Thomas Wagner  <tom68@users.sourceforge.net>
 
         * experimental/SFEvlc-1.0.1-encumbered.spec: neu, copied and patches vlc*diff.1.0.1 - attempt to get VLC 1.0.1
