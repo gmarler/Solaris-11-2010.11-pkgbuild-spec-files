@@ -184,7 +184,7 @@ X11LIB="-L/usr/X11/lib -R/usr/X11/lib"
 GNULIB="-L/usr/gnu/lib -R/usr/gnu/lib"
 
 ##evil!!! export PATH=/usr/gnu/bin:$PATH
-export ACLOCAL_FLAGS="-I %{_datadir}/aclocal"
+export ACLOCAL_FLAGS="-I %{_datadir}/aclocal -I ./m4"
 export CC=/usr/gnu/bin/gcc
 export CXX=/usr/gnu/bin/g++
 #export CXXFLAGS="%cxx_optflags"
@@ -237,10 +237,12 @@ perl -w -pi.bak3 -e "s,#\!\s*/bin/sh,#\!/usr/bin/bash," configure
 	    --enable-debug=yes			\
 %endif
 	    --disable-static			\
+--disable-mmx \
 	    $nlsopt
 
 #           --with-gnu-ld                       \
 
+# Disable mmx temporarily (video_*) does not compile 
 # Disable libmpeg2 to get past configure.
 
 %if %build_l10n
@@ -261,6 +263,7 @@ make -j$CPUS
 rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
 #rm -f $RPM_BUILD_ROOT%{_libdir}/lib*a
+find $RPM_BUILD_ROOT%{_libdir}/ -name '*.la' -exec rm {} \;
 rm -f $RPM_BUILD_ROOT%{_libdir}/charset.alias
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/48x48/apps
 cp $RPM_BUILD_ROOT%{_datadir}/vlc/vlc48x48.png $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/48x48/apps/vlc.png
@@ -315,8 +318,12 @@ test -x $BASEDIR/lib/postrun || exit 0
 %{_datadir}/applications/*
 %dir %attr (0755, root, other) %{_datadir}/doc
 %{_datadir}/doc/*
+%dir %attr (0755, root, bin) %{_mandir}
+%dir %attr (0755, root, bin) %{_mandir}/man1
+%{_mandir}/man1/*
 %dir %attr (0755, root, bin) %{_libdir}
-%{_libdir}/vlc
+%{_libdir}/vlc*
+%{_libdir}/libvlc*
 %dir %attr (-, root, other) %{_datadir}/icons
 %dir %attr (-, root, other) %{_datadir}/icons/hicolor
 %dir %attr (-, root, other) %{_datadir}/icons/hicolor/16x16
@@ -339,8 +346,10 @@ test -x $BASEDIR/lib/postrun || exit 0
 %files devel
 %defattr (-, root, bin)
 %{_includedir}
-%dir %attr (0755, root, bin) %{_libdir}
-%{_libdir}/lib*.a
+#%dir %attr (0755, root, bin) %{_libdir}
+#%{_libdir}/lib*.a
+%dir %attr (0755, root, other) %{_libdir}/pkgconfig
+%{_libdir}/pkgconfig/*
 
 %changelog
 * Fri Aug 14 2009 - Thomas Wagner
