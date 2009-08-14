@@ -1,3 +1,8 @@
+2009-08-14  Thomas Wagner  <tom68@users.sourceforge.net>
+
+        * experimental/SFEvlc-1.0.1-encumbered.spec: neu, copied and patches vlc*diff.1.0.1 - attempt to get VLC 1.0.1
+          but Sun linker and gnu linker failed linking. Volunteers welcome but please collaborate and get in contact early!
+
 2009-08-13  Thomas Wagner  <tom68@users.sourceforge.net>
 
 	* experimental/SFEperdition.spec: (new) perdition imap and pop3 transparent proxy/loadbalancer
