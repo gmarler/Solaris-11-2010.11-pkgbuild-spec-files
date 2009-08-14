@@ -218,7 +218,6 @@ ln -s /usr/include/libavcodec include/ffmpeg
 #rm ./configure
 #./bootstrap
 perl -w -pi.bak3 -e "s,#\!\s*/bin/sh,#\!/usr/bin/bash," configure
-patch -p1 < /localhomes/tom/Spec-files-extra/patches/vlc-15-retain.diff-neu
 ./configure --prefix=%{_prefix}			\
 	    --bindir=%{_bindir}			\
 	    --mandir=%{_mandir}			\
