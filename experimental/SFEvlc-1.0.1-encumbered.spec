@@ -4,6 +4,7 @@
 # includes module(s): vlc
 #
 
+# NOTE EXPERIMENTAL - does contain a few null pointer uses, so you might want to  " LD_PRELOAD=/usr/lib/0@0.so.1 vlc  "
 # NOTE EXPERIMENTAL - does not link correctly - volunteers please let's get into contact and collaborate
 # NOTE EXPERIMENTAL - uses SFEqt45 which is build by: pkgtool build experimental/SFEqt45-gcc.spec (no autodeps for experimental!)
 #                     make SFEqt45 *before* vlc, manually
@@ -132,7 +133,7 @@ Requires:       SFElibx264
 BuildRequires:  SFElibtar-devel
 Requires:       SFElibtar
 
-##TODO#äö# using gcc compiled qt 4.5.x from experimental/SFEqt45-gcc.s- must "pkgtool build" manually before, no autodeps available for specs in experimental/*
+##TODO## using gcc compiled qt 4.5.x from experimental/SFEqt45-gcc.s- must "pkgtool build" manually before, no autodeps available for specs in experimental/*
 BuildRequires:	SFEqt45-devel
 Requires:	SFEqt45
 
