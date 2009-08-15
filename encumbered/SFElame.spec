@@ -31,7 +31,11 @@ Version:                 3.98.2
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
+
+BuildRequires: SUNWlibms
 Requires: SUNWlibms
+BuildRequires: SFEgcc
+Requires: SFEgccruntime
 
 %if %SFElibsndfile
 BuildRequires:	SFElibsndfile-devel
@@ -161,6 +165,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/doc/*
 
 %changelog
+* Sun Aug 09 2009 - Thomas Wagner
+- (Build)Requires: SUNWlibms SFEgcc/SFEgccruntime
 * Sun Aug 02 2009 - Adam Retter
 - add required dependency on SUNWgnome-common-devel
 * Sat Mar 14 2009 - Milan Jurik
