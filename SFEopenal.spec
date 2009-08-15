@@ -25,6 +25,9 @@ SUNW_BaseDir:           %{_basedir}
 BuildRoot:              %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 
+BuildRequires: SUNWlibms
+Requires: SUNWlibms
+
 %if %SUNWcmake
 BuildRequires: SUNWcmake
 %else
@@ -64,9 +67,9 @@ rm -rf $RPM_BUILD_ROOT
 cd %{src_name}-%{version}
 cd build
 mkdir $RPM_BUILD_ROOT
-make install DESTDIR=$RPM_BUILD_ROOT
-#make install
-#mv ./sfw_stage $RPM_BUILD_ROOT/%{_prefix}
+#make install DESTDIR=$RPM_BUILD_ROOT
+make install
+mv ./sfw_stage $RPM_BUILD_ROOT/%{_prefix}
 #rm $RPM_BUILD_ROOT/%{_libdir}/lib*.*a
 
 %clean
@@ -86,6 +89,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*
 
 %changelog
+* Sun Aug 09 2009 - Thomas Wagner
+- (Build)Requires: SUNWlibms
+- install with DESTDIR is broken, revert back to version wich works with standard make (CBE)
 * Jul 20 2009 - dauphin@enst.fr
 - install with DESTDIR as usual
 * Sun Feb 15 2009 - Thomas Wagner
