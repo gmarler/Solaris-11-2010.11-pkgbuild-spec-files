@@ -1,0 +1,14 @@
+--- vlc-1.0.1/src/modules/modules.c.orig	Sa. Aug 15 17:45:58 2009
++++ vlc-1.0.1/src/modules/modules.c	Sa. Aug 15 17:44:15 2009
+@@ -34,9 +34,11 @@
+ 
+ /* Some faulty libcs have a broken struct dirent when _FILE_OFFSET_BITS
+  * is set to 64. Don't try to be cleverer. */
++/* Ticket #3031 (closed defect: fixed) Solaris fails to load modules on undef _FILE_OFFSET_BITS https://trac.videolan.org/vlc/ticket/3031#comment:3 
+ #ifdef _FILE_OFFSET_BITS
+ #undef _FILE_OFFSET_BITS
+ #endif
++*/
+ 
+ #include <stdlib.h>                                      /* free(), strtol() */
+ #include <stdio.h>                                              /* sprintf() */

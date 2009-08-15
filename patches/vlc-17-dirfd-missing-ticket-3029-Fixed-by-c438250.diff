@@ -1,0 +1,15 @@
+--- vlc-1.0.1/modules/access/directory.c	2009-06-26 23:18:30.000000000 +0200
++++ vlc-1.0.1/modules/access/directory.c	2009-08-15 14:10:07.396293066 +0200
+@@ -50,6 +50,12 @@
+ #ifdef HAVE_DIRENT_H
+ #   include <dirent.h>
+ #endif
++#ifdef __sun__ && !defined( dirfd )
++static inline int dirfd (DIR *dir)
++{
++    return dir->dd_fd;
++}
++#endif
+ 
+ #include <vlc_charset.h>
+ #include <vlc_url.h>

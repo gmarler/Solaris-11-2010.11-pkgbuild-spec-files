@@ -54,7 +54,8 @@ Summary:                vlc - the cross-platform media player and streaming serv
 Version:                1.0.1
 Source:                 %{src_url}/%{version}/%{src_name}-%{version}.tar.bz2
 #Patch1:                 vlc-01-configure-no-pipe.diff
-Patch2:                 vlc-02-solaris.diff-1.0.1
+#obsoleted by ticket #3027 Solaris does not have AF_LOCAL - define AF_LOCAL as AF_UNIX
+#Patch2:                 vlc-02-solaris.diff-1.0.1
 Patch3:                 vlc-03-oss.diff-1.0.1
 Patch4:                 vlc-04-solaris_specific.diff
 Patch5:                 vlc-05-solaris-cmds.diff-1.0.1
@@ -68,6 +69,12 @@ Patch12:               vlc-12-for-int-loop.diff-1.0.1
 #https://trac.videolan.org/vlc/ticket/3028
 #Fixed by [23414d6]
 Patch14:               vlc-14-modules-access-file.c-disable_have_fstatfs.diff
+Patch16:               vlc-16-modules.c-file_offset_bits_ticket_3031.diff
+#seems only relevant to older SunOS releases (5.10, eventuall older builds of 5.11)
+##TODO## need rework to test for already existing dirfd else define 
+#Patch17:               vlc-17-dirfd-missing-ticket-3029-Fixed-by-c438250.diff
+
+
 
 
 
@@ -146,7 +153,7 @@ Requires:                %{name}
 %prep
 %setup -q -n vlc-%version
 #%patch1 -p1
-%patch2 -p1
+#obsolete ticket 3027 - %patch2 -p1
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
@@ -157,6 +164,10 @@ Requires:                %{name}
 %patch10 -p1
 %patch12 -p1
 %patch14 -p1
+%patch16 -p1
+#seems only relevant to older SunOS releases (5.10, eventuall older builds of 5.11)
+##TODO## need rework to test for already existing dirfd else define 
+#%patch17 -p1
 
 perl -w -pi.bak -e "s,#\!\s*/bin/sh,#\!/usr/bin/bash," `find . -type f -exec grep -q "#\!.*/bin/sh" {} \; -print | egrep -v "/libtool"`
 
@@ -256,6 +267,7 @@ perl -w -pi.bakspatializer -e "s, spatializer , ," vlc-config
 ##TODO## experime
 #perl -w -pi.bak420 -e "s, (i420_rgb_mmx|i420_ymga|i420_ymga_mmx|i420_yuy2|i420_yuy2_mmx|i422_i420|i422_yuy2|i422_yuy2_mmx|yuy2_i420|yuy2_i422) ,," vlc-config
 
+#/bin/false
 
 make -j$CPUS 
 
