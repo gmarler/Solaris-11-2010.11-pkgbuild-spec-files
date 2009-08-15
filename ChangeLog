@@ -1,6 +1,7 @@
 2009-08-15  Thomas Wagner  <tom68@users.sourceforge.net>
        
-        * experimental/SFEvlc-1.0.1-encumbered.spec: removed mmx (configure), linking success but module cannot be loaded
+        * experimental/SFEvlc-1.0.1-encumbered.spec: removed mmx (configure), linking success but module cannot be loaded,
+          second submission today: more fixes, add patches vlc-16* (linking solved), vlc-17* (possibly only needed for old SunOS with dirfd missing)
 
 2009-08-14  Gilles Dauphin
 
