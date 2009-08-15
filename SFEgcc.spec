@@ -42,6 +42,7 @@ BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 
 BuildRequires: SFElibiconv-devel
 Requires:      SFElibiconv
+BuildRequires: SUNWbash
 
 %if %SFEgmp
 BuildRequires: SFEgmp-devel
@@ -293,6 +294,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Sun Aug 09 2009 - Thomas Wagner
+- BuildRequires: SUNWbash
 * Sat Mar 14 2009 - Thomas Wagner
 - change logic to require SFEgmp/SFEmpfr only if *no* SUNWgnu-mp/SUNWgnu-mpfr is present (this is on old OS builds)
 - make SFEgcc use of new SUNWgnu-mp/SUNWgnu-mpfr (replacement for SFEgmp/SFEmpfr, SFE-versions still work with SFEgcc)
