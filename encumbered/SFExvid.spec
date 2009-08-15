@@ -18,10 +18,15 @@ Patch1:		xvid-01-solaris.diff
 #Patch2:		xvid-02-nasm.diff
 SUNW_BaseDir:	%{_basedir}
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
+
 #BuildConflicts: SFEyasm
 %ifarch i386 amd64
 BuildRequires: SFEnasm
 %endif
+
+BuildRequires: SFEgcc
+Requires: SFEgccruntime
+
 
 %description
 ISO MPEG-4 compliant video codec. You can play OpenDivX and DivX4 videos
@@ -44,7 +49,9 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
      CPUS=1
 fi
 
-export CC=/usr/sfw/bin/gcc
+#export CC=/usr/sfw/bin/gcc
+export CC=/usr/gnu/bin/gcc
+export CXX=/usr/gnu/bin/g++
 export CPPFLAGS="-D_LARGEFILE64_SOURCE -I%{xorg_inc} -I%{gnu_inc}"
 export CFLAGS="%gcc_optflags -O4"
 export LDFLAGS="%_ldflags %{gnu_lib_path}"
@@ -87,6 +94,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}
 
 %changelog
+* Sun Aug 09 2009 - Thomas Wagner
+- switch to gcc4
+- (Build)Requires: SFEgcc/SFEgccruntime
 * Aug 04 2009 - Gilles Dauphin
 - One patch for configure.in, add -mimpure-text and -shared because of nasm
 - don't use yasm. option in configure. enable build with yasm installed
