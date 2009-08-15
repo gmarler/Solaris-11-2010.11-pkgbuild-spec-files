@@ -5,6 +5,12 @@
 #
 %include Solaris.inc
 
+%define cc_is_gcc 1
+%define _gpp /usr/gnu/bin/g++
+%include base.inc
+
+
+
 %define with_dvdnav %(pkginfo -q SFElibdvdnav && echo 1 || echo 0)
 %define with_faad %(pkginfo -q SFEfaad && echo 1 || echo 0)
 %define with_fribidi %(pkginfo -q SFElibfribidi && echo 1 || echo 0)
@@ -63,6 +69,18 @@ Requires: SUNWlibtheora
 Requires: SUNWgccruntime
 Requires: SUNWgnome-base-libs
 Requires: SUNWsmbau
+BuildRequires: SFEgcc
+Requires: SFEgccruntime
+BuildRequires: SUNWxwrtl
+Requires: SUNWxwrtl
+BuildRequires: SUNWxorg-mesa
+Requires: SUNWxorg-mesa
+BuildRequires: SUNWaalib
+Requires: SUNWaalib
+BuildRequires: SUNWlibsdl-devel
+Requires: SUNWlibsdl
+BuildRequires: SUNWlibm
+Requires: SUNWlibm
 Requires: SFEliveMedia
 Requires: SFElibcdio
 BuildRequires: SFElibcdio-devel
@@ -154,7 +172,8 @@ export CFLAGS="-O2 -D__hidden=\"\""
 %endif
 
 export LDFLAGS="-L%{x11}/lib -L/usr/gnu/lib -R/usr/gnu/lib -L/usr/sfw/lib -R/usr/sfw/lib -liconv" 
-export CC=gcc
+export CC=/usr/gnu/bin/gcc
+export CXX=/usr/gnu/bin/g++
 rm -rf ./grep
 ln -s /usr/sfw/bin/ggrep ./grep
 PATH="`pwd`:$PATH"
@@ -224,6 +243,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/pixmaps/*
 
 %changelog
+* Sun Aug 09 2009 - Thomas Wagner
+- switch to gcc4
+- add (Build)Requires: SFEgcc/SFEgccruntime SUNWxwrtl SUNWxorg-mesa SUNWaalib SUNWlibsdl-devel/SUNWlibsdl SUNWlibm
 * Sun Jul 05 2009 - Milan Jurik
 - disable x264 support for now, incompatible with the latest x264
 * Sat Mar 14 2009 - Milan Jurik
