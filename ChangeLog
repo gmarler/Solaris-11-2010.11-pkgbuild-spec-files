@@ -1,7 +1,13 @@
+2009-08-15  Brian Cameron  <brian.cameron@sun.com>
+
+	* SFEgnonlin.spec: Bump to 0.10.12.
+
 2009-08-15  Thomas Wagner  <tom68@users.sourceforge.net>
        
-        * experimental/SFEvlc-1.0.1-encumbered.spec: removed mmx (configure), linking success but module cannot be loaded,
-          second submission today: more fixes, add patches vlc-16* (linking solved), vlc-17* (possibly only needed for old SunOS with dirfd missing)
+        * experimental/SFEvlc-1.0.1-encumbered.spec: removed mmx (configure),
+	  linking success but module cannot be loaded, second submission today:
+	  more fixes, add patches vlc-16* (linking solved), vlc-17* (possibly
+	  only needed for old SunOS with dirfd missing)
 
 2009-08-14  Gilles Dauphin
 
@@ -9,13 +15,15 @@
 
 2009-08-14  Thomas Wagner  <tom68@users.sourceforge.net>
 
-        * experimental/SFEvlc-1.0.1-encumbered.spec: (new) copied from old SFEvlc.spec, same with patches vlc*diff.1.0.1,
-          attempt to get VLC 1.0.1 but Sun linker and gnu linker failed linking. Volunteers welcome but please 
-          collaborate and get in contact early!
+        * experimental/SFEvlc-1.0.1-encumbered.spec: (new) copied from old
+	  SFEvlc.spec, same with patches vlc*diff.1.0.1, attempt to get VLC
+	  1.0.1 but Sun linker and gnu linker failed linking. Volunteers
+	  welcome but please collaborate and get in contact early!
 
 2009-08-13  Thomas Wagner  <tom68@users.sourceforge.net>
 
-	* experimental/SFEperdition.spec: (new) perdition imap and pop3 transparent proxy/loadbalancer
+	* experimental/SFEperdition.spec: (new) perdition imap and pop3
+	  transparent proxy/loadbalancer
 
 2009-08-13  Tim Miao <tim.miao@sun.com>
 
@@ -25,15 +33,15 @@
 
 	* SFEgxmessage.spec: Cleaned up packaging
 	* SFEwine.spec, copyright/SFEwine.copyright: Remove obsolete patches.
-	Clean up configure options. Remove old freetype deps. Add dependency
-	SFEgxmessage currently needed for winetricks fallback messages. Force
-	winetricks to be redownloaded each build, as filename doesn't change.
-	Remove soundcard.h, as Boomer's is serviceable and it's unneeded
-	pre-Boomer. Auto-version based on newest (topmost) version number
-	reference on sf.net. Install icons for wine. Changed summary to be
-	more descriptive. Added a bit of metainformation "sugar" for
-	completeness. Enable gnutls, as disabling it causes loss of
-	functionality.
+	  Clean up configure options. Remove old freetype deps. Add dependency
+	  SFEgxmessage currently needed for winetricks fallback messages. Force
+	  winetricks to be redownloaded each build, as filename doesn't change.
+	  Remove soundcard.h, as Boomer's is serviceable and it's unneeded
+	  pre-Boomer. Auto-version based on newest (topmost) version number
+	  reference on sf.net. Install icons for wine. Changed summary to be
+	  more descriptive. Added a bit of metainformation "sugar" for
+	  completeness. Enable gnutls, as disabling it causes loss of
+	  functionality.
 
 2009-08-13  Alfred Peng  <alfred.peng@sun.com>
 
@@ -42,33 +50,33 @@
 2009-08-10 Matt Lewandowsky <matt@greenviolet.net>
 
 	* SFEgdata-python26.spec, SFEpython26-dateutil.spec,
-	SFEpython26-feedparser.spec, SFEpython26-sqlalchemy.spec,
-	SFEpython26-xlib.spec: New spec-files, based upon their Python 2.4
-	spec-files.
+	  SFEpython26-feedparser.spec, SFEpython26-sqlalchemy.spec,
+	  SFEpython26-xlib.spec: New spec-files, based upon their Python 2.4
+	  spec-files.
 	* SFEalpine.spec: Allow BuildRequires to accept SUNWgawk; Remove
-	autoconf, as source is unfriendly to newer versions and aclocal
-	doesn't help.
+	  autoconf, as source is unfriendly to newer versions and aclocal
+	  doesn't help.
 	* SFEgdata-python.spec: Bump to 2.0.1, ensure proper python version is
-	called.
+	  called.
 	* SFEgxmessage.spec: Fixed permissions for %{_prefix}/share and its
-	children.
+	  children.
 	* SFEpython-sqlalchemy.spec: Bump to 0.5.5, explicitly invoke Python 2.4
 	* SFEsysstat.spec: Bump version to 20090805, change dependency from
-	ncurses to curses.
+	  ncurses to curses.
 	* SFEavant-extras.spec, copyright/SFEavant-extras.copyright,
-	patches/avant-extras-01-alsaaudio.diff,
-	patches/avant-extras-02-disable-volume-applet.diff,
-	patches/avant-extras-03-disable-mount-applet.diff,
-	patches/avant-extras-04-disable-file-browser-launcher.diff,
-	patches/avant-extras-05-disable-thinkhdaps.diff,
-	patches/avant-extras-06-disable-stacks.diff,
-	patches/avant-extras-07-disable-cairo-clock.diff,
-	patches/avant-extras-08-disable-cairo-main-menu.diff,
-	patches/avant-extras-09-disable-cpufreq-monitor.diff,
-	patches/avant-extras-10-disable-desktop-manager.diff,
-	patches/avant-extras-11-disable-digital-clock.diff,
-	patches/avant-extras-12-rss-sqlite.diff: New spec-file, copyright,
-	and patches.
+	  patches/avant-extras-01-alsaaudio.diff,
+	  patches/avant-extras-02-disable-volume-applet.diff,
+	  patches/avant-extras-03-disable-mount-applet.diff,
+	  patches/avant-extras-04-disable-file-browser-launcher.diff,
+	  patches/avant-extras-05-disable-thinkhdaps.diff,
+	  patches/avant-extras-06-disable-stacks.diff,
+	  patches/avant-extras-07-disable-cairo-clock.diff,
+	  patches/avant-extras-08-disable-cairo-main-menu.diff,
+	  patches/avant-extras-09-disable-cpufreq-monitor.diff,
+	  patches/avant-extras-10-disable-desktop-manager.diff,
+	  patches/avant-extras-11-disable-digital-clock.diff,
+	  patches/avant-extras-12-rss-sqlite.diff: New spec-file, copyright,
+	  and patches.
 
 2009-08-10  Brian Cameron  <brian.cameron@sun.com>
 
