@@ -20,6 +20,13 @@ SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 
+BuildConflicts: SFEqt-devel
+Conflicts: SFEqt
+BuildConflicts: SFEqt3-devel
+Conflicts: SFEqt3
+BuildConflicts: SFEqt4-devel
+Conflicts: SFEqt4
+
 Requires: SFEgccruntime
 BuildRequires: SFEgcc
 #FIXME: Requires: SUNWxorg-mesa
@@ -117,6 +124,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/doc/*
 
 %changelog
+* Sat Aug 15 2009 - Thomas Wagner
+- add (Build)Conflicts: SFEqt-devel/SFEqt, SFEqt3-devel/SFEqt3, SFEqt4-devel/SFEq4
 * Sun Aug 09 2009 - Thomas Wagner
 - switch to gnu ld (sun ld core dumps)
 - bump to 4.5.2
