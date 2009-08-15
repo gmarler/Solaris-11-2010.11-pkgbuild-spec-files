@@ -17,6 +17,11 @@ SUNW_BaseDir:           %{_basedir}
 BuildRoot:              %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 
+BuildRequires: SUNWlibms
+Requires: SUNWlibms
+BuildRequires: SUNWlibC
+Requires: SUNWlibC
+
 %package devel
 Summary:                 %{summary} - development files
 SUNW_BaseDir:            %{_prefix}
@@ -64,6 +69,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}
 
 %changelog
+* Sun Aug 09 2009 - Thomas Wagner
+- (Build)Requires: SUNWlibms SUNWlibC
 * Sun Mar  9 2008 - brian.cameron@sun.com
 - Bump to 1.13.
 * Tue Jun  5 2007 - dougs@truemail.co.th
