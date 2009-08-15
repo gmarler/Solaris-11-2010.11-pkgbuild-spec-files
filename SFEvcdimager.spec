@@ -36,6 +36,7 @@ export CXX=g++
 export CFLAGS="-O4 -fno-omit-frame-pointer"
 export CXXFLAGS="$CFLAGS"
 export LDFLAGS="%arch_ldadd %ldadd ${EXTRA_LDFLAGS}"
+export LD=`which ld-wrapper`
 
 #libtoolize --copy --force
 #aclocal -I .
@@ -48,6 +49,7 @@ export LDFLAGS="%arch_ldadd %ldadd ${EXTRA_LDFLAGS}"
             --includedir=%{_includedir} \
             --mandir=%{_mandir}		\
 	    --infodir=%{_infodir}	\
+            --without-versioned-libs    \
 	    --disable-static		\
 	    --enable-shared
 
@@ -100,6 +102,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*
 
 %changelog
+* Tue Mar 17 2009 - Thomas Wagner
+- builds around  > snv104 (snv104 works, 107/110 don't) start trapping over 
+  detection for versioned libs, linker complains syntax, add --without-versioned-libs
 * Fri May 23 2008 - michal.bielicki <at> voceworks.pl
 - dependency fix, thanks to Giles Dauphin for the fix
 * Thu Nov 22 2007 - daymobrew@users.sourceforge.net
