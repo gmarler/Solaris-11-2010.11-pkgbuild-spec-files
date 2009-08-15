@@ -13,10 +13,6 @@
 # has been provided as an workaround (please note that this
 # is not a final solution). To make libcdio work on Solaris SPARC
 # we suggest you applying the patch above.
-# works: snv104 / pkgbuild 1.3.91 / Sun Ceres C 5.10 SunOS_i386 2008/10/22
-# unchecked: snv104 / pkgbuild 1.2.0  / Sun C 5.9 SunOS_i386 Patch 124868-02 2007/11/27
-# unchecked: snv103 / pkgbuild 1.3.0  / Sun C 5.9 SunOS_i386 Patch 124868-02 2007/11/27
-# unchecked: snv96  / pkgbuild 1.3.1  / Sun Ceres C 5.10 SunOS_i386 2008/07/10
 
 %include Solaris.inc
 
@@ -34,9 +30,10 @@ BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 Requires: SUNWlexpt
 Requires: SUNWlibC
-Requires: SUNWlibmsr
-Requires: SUNWgccruntime
+BuildRequires: SUNWlibms
 Requires: SUNWlibms
+BuildRequires: SUNWgcc
+Requires: SUNWgccruntime
 Requires: SUNWdbus
 Requires: SFElibcddb
 Requires: SFElibiconv
@@ -122,6 +119,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/cdio
 
 %changelog
+* Sat Aug 15 2009 - Thomas Wagner
+- add (Build)Requires: SUNWgcc/SUNWgccruntime SUNWlibms/SUNWlibms
 * Wed Mar 18 2009 - Thomas Wagner
 - add os build conditional SUNWncurses/SFEncurses to re-enable build on old OS < snv_100
 * Sat Nov 29 2008 - dauphin@enst.fr
