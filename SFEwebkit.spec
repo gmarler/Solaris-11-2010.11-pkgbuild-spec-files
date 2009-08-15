@@ -5,9 +5,12 @@
 #
 %include Solaris.inc
 
+#we are on OpenSolaris (or on SXCE or Solaris 10)
+%define OS2nnn %( egrep "OpenSolaris 20[0-9][0-9]" /etc/release > /dev/null  && echo 1 || echo 0) 
+
 Name:                    SFEwebkit
 Summary:                 WetKit, an open source web browser engine that's used by Safari, Dashboard, Mail, and many other OS X applications.
-Version:                 1.1.10
+Version:                 1.1.12
 Source:                  http://www.webkitgtk.org/webkit-%{version}.tar.gz
 URL:                     http://www.webkitgtk.org/
 
@@ -28,7 +31,14 @@ Requires: SUNWgnu-idn
 Requires: SUNWgnome-base-libs
 Requires: SUNWicu
 Requires: SUNWlxml
+
+%if %OS2nnn
 Requires: SUNWopenssl
+%else
+BuildRequires: SUNWopenssl-include
+Requires: SUNWopenssl-libraries
+%endif
+
 #Requires: SUNWpr
 Requires: SUNWsqlite3
 #Requires: SUNWtls
@@ -46,7 +56,6 @@ Requires: SUNWgnu-idn
 Requires: SUNWgnome-base-libs
 Requires: SUNWicu
 Requires: SUNWlxml
-Requires: SUNWopenssl
 #Requires: SUNWpr
 Requires: SUNWsqlite3
 #Requires: SUNWtls
@@ -120,6 +129,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sat Aug 15 2009 - Thomas Wagner
+- bump version to 1.1.12
+- fix dependencies for SXCE and OS200[89].xx (Build)Requires: SUNWopenssl-include/SUNWopenssl-libraries
 * Thu Aug 13 2009 - alfred.peng@sun.com
 - trivial fix for source setup (a1 -> a0).
 * Fri Jun 19 2009 - alfred.peng@sun.com
