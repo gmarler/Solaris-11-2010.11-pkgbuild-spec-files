@@ -1,0 +1,14 @@
+--- sock.c	Thu Mar  5 15:31:48 1998
++++ sock.c	Sun Aug 16 17:16:44 2009
+@@ -33,7 +33,10 @@
+ #if defined(__sparc)
+ #include <sys/fcntl.h>
+ #endif
+-#if defined(__sun__)
++#if defined(__sun)
++#include <sys/types.h>
++#include <unistd.h>
++#include <fcntl.h>
+ #include <arpa/nameser.h>
+ #include <resolv.h>
+ #endif

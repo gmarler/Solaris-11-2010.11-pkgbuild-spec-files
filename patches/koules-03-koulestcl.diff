@@ -1,0 +1,15 @@
+--- koules.tcl	1998-03-04 19:59:19.000000000 +0100
++++ koules.tcl	2009-08-16 17:31:13.546044712 +0200
+@@ -3,9 +3,9 @@
+ # This is simple user (anti)friendly dialog for starting koules
+ # Only reason why I did it is that I wanted to try tcl/tk
+ #files - configure here if paths are differ
+-set xkoules "/usr/bin/X11/xkoules"
+-set koulessvga "/usr/local/bin/koules.svga"
+-set koulessound "/usr/local/lib/koules/creator1.raw"
++set xkoules "/usr/bin/xkoules"
++set koulessvga "/usr/bin/koules.svga"
++set koulessound "/usr/share/koules/creator1.raw"
+ set config "~/.xkoules.opt"
+ set revision 1.1
+ # Set default

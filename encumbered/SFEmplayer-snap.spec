@@ -128,10 +128,6 @@ export CFLAGS="-O2 -D__hidden=\"\""
 
 export LDFLAGS="-L%{x11}/lib -L/usr/gnu/lib -R/usr/gnu/lib -L/usr/sfw/lib -R/usr/sfw/lib -liconv" 
 export CC=gcc
-rm -rf ./grep
-ln -s /usr/sfw/bin/ggrep ./grep
-PATH="`pwd`:$PATH"
-echo "`type grep`"
 
 bash ./configure				\
 	    --prefix=%{_prefix}			\
@@ -196,6 +192,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/pixmaps/*
 
 %changelog
+* Sun Aug 16 2009 - Milan Jurik
+- GNU grep not needed
 * Sat Jul 18 2009 - Milan Jurik
 - improved handling of tarball
 * Sat Jul 11 2009 - Milan Jurik

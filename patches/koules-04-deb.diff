@@ -1,0 +1,401 @@
+--- font.c	Wed Mar  4 19:59:19 1998
++++ font.c	Sun Aug 16 17:54:43 2009
+@@ -58,7 +58,6 @@
+ 	    "idivl %3\n\t"
+ :	    "=a" (result)	/* out */
+ :	    "a" (m1), "d" (m2), "g" (d)		/* in */
+-:	    "ax", "dx"		/* mod */
+     );
+   return result;
+ }
+--- xlib/inlstring.h	Wed Mar  4 19:59:19 1998
++++ xlib/inlstring.h	Sun Aug 16 17:54:43 2009
+@@ -238,13 +238,12 @@
+ static INLINE void *
+ __memcpy_aligndest (void *dest, const void *src, int n)
+ {
+-  __asm__         __volatile__ ("
+-				cmpl $3, %%ecx
+-				ja 1f
+-				call * __memcpy_jumptable (, %%ecx, 4)
+-				jmp 2f
+-				1:call __memcpyasm_regargs
+-				"
++  __asm__         __volatile__ (
++				"cmpl $3, %%ecx\n\t"
++				"ja 1f\n\t"
++				"call * __memcpy_jumptable (, %%ecx, 4)\n\t"
++				"jmp 2f\n\t"
++				"1:call __memcpyasm_regargs\n\t"
+ 				:
+ 				:"b"            (dest), "d" (src), "c" (n)
+ 				:"ax", "0", "1", "2");
+@@ -255,14 +254,13 @@
+ static INLINE void *
+ __memcpy_destaligned (void *dest, const void *src, int n)
+ {
+-  __asm__         __volatile__ ("
+-				cmpl $32, %%ecx
+-				ja 1f
+-				call * __memcpy_jumptable (, %%ecx, 4)
+-				jmp 2f
+-				1:call __memcpyasm_regargs_aligned
+-				2:
+-				"
++  __asm__         __volatile__ (
++				"cmpl $32, %%ecx\n\t"
++				"ja 1f\n\t"
++				"call * __memcpy_jumptable (, %%ecx, 4)\n\t"
++				"jmp 2f\n\t"
++				"1:call __memcpyasm_regargs_aligned\n\t"
++				"2:\n\t"
+ 				:
+ 				:"b"            (dest), "d" (src), "c" (n)
+ 				:"ax", "0", "1", "2");
+@@ -273,14 +271,13 @@
+ static INLINE void *
+ __memcpy_balanced (void *dest, const void *src, int n)
+ {
+-  __asm__         __volatile__ ("
+-				cmpl $19, %%ecx
+-				ja 1f
+-				call * __memcpy_jumptable (, %%ecx, 4)
+-				jmp 2f
+-				1:call __memcpyasm_regargs
+-				2:
+-				"
++  __asm__         __volatile__ (
++				"cmpl $19, %%ecx\n\t"
++				"ja 1f\n\t"
++				"call * __memcpy_jumptable (, %%ecx, 4)\n\t"
++				"jmp 2f\n\t"
++				"1:call __memcpyasm_regargs\n\t"
++				"2:\n\t"
+ 				:
+ 	     :"b"            ((long) dest), "d" ((long) src), "c" ((long) n)
+ 				:"ax", "bx", "cx", "dx");
+--- xlib/shmbitmap.c	Wed Mar  4 19:59:19 1998
++++ xlib/shmbitmap.c	Sun Aug 16 17:54:43 2009
+@@ -248,7 +248,6 @@
+ 	    "idivl %3\n\t"
+ :	    "=a" (result)	/* out */
+ :	    "a" (m1), "d" (m2), "g" (d)		/* in */
+-:	    "ax", "dx"		/* mod */
+     );
+   return result;
+ }
+--- xlib/init.c	Thu Mar  5 18:03:01 1998
++++ xlib/init.c	Sun Aug 16 17:54:02 2009
+@@ -90,9 +90,10 @@
+ 
+ #ifdef MITSHM
+ extern int      XShmQueryExtension (Display * dpy);
++extern Bool     XShmQueryVersion (Display* dpy, int * major, int * minor,
++                                  Bool * sharedpixmaps);
+ static int      haderror;
+ static int      (*origerrorhandler) (Display *, XErrorEvent *);
+-static int      bpp;
+ 
+ 
+ static int
+@@ -106,6 +107,15 @@
+   return (0);
+ }
+ 
++static int
++badmatcherrorhandler (Display * d, XErrorEvent * e)
++{
++  haderror++;
++  if (e->error_code != BadMatch)
++    (*origerrorhandler) (d, e);
++  return (0);
++}
++
+ #define Width MAPWIDTH
+ #define Height (MAPHEIGHT+20)
+ XShmSegmentInfo shminfo;
+@@ -167,7 +177,7 @@
+   VfTime = 1000000 / 25 * 12;
+   pixmap->ximage = XCreateImage (dp, DefaultVisual (dp, screen),
+ 				 depth, ZPixmap, 0,
+-				 NULL, Width, Height, bpp * 8, 0);
++				 NULL, Width, Height, depth, 0);
+   if (!pixmap->ximage)
+     {
+       fprintf (stderr, "Can't get image\n");
+@@ -174,7 +184,7 @@
+       return 0;
+     }
+   /*Calculate size of shared memory */
+-  memsize = ((Width + 1) * (Height + 1) * bpp);
++  memsize = ((Width + 1) * (Height + 1) * depth / 8);
+   if ((data = malloc (memsize)) == NULL)
+     {
+       printf ("Can't malloc memory for image\n");
+@@ -185,9 +195,13 @@
+   fflush (stdout);
+   testpixmap = XCreatePixmap (dp, wi, MAPWIDTH, MAPHEIGHT + 20, DefaultDepth (dp, screen));
+   XSync (dp, 0);
++  haderror = False;
++  origerrorhandler = XSetErrorHandler (badmatcherrorhandler);
+   for (i = 0; i < 10 && wait > 0; i++)
+     {
+-      XPutImage (dp, testpixmap, gc, pixmap->ximage, 0, 0, 0, 0, MAPWIDTH, MAPHEIGHT + 20);
++      if (!XPutImage (dp, testpixmap, gc, pixmap->ximage, 0, 0, 0, 0,
++                      MAPWIDTH, MAPHEIGHT + 20))
++        break;
+       XSync (dp, 0);
+       gettimeofday (&VnewClk, NULL);
+       if (VnewClk.tv_usec < VendSleep)
+@@ -194,7 +208,14 @@
+ 	VendSleep -= 1000000;
+       wait = (VfTime - VnewClk.tv_usec + VendSleep);
+     }
++  XSync (dp, False);
++  XSetErrorHandler (origerrorhandler);
+   XFreePixmap (dp, testpixmap);
++  if (haderror)
++    {
++      printf (" XPutImage failed (remote server?)\n");
++      return 0;
++    }
+   if (i == 10)
+     {
+       printf ("OK\n");
+@@ -257,6 +278,7 @@
+   pixmap->ximage->data = (char *) shared_mem;
+ 
+   /* Now try to attach it to the X Server */
++  XSync (dp, False);
+   haderror = False;
+   origerrorhandler = XSetErrorHandler (shmerrorhandler);
+   if (!XShmAttach (dp, &shminfo))
+@@ -316,7 +338,6 @@
+   char           *title1 = "Koules";
+ 
+   Font            f;
+-  XVisualInfo     vinfo_return;
+   XGCValues       values;
+ #ifndef NAS_SOUND
+ #ifndef RSOUND
+@@ -362,75 +383,72 @@
+       printf ("could not open display\n");
+       exit (0);
+     }
++  if (Sync)
++    XSynchronize (dp, 1);
+   XSetCloseDownMode (dp, DestroyAll);
+   screen = DefaultScreen (dp);
+-  fadeenable = 1;
+-  if (XMatchVisualInfo (dp, DefaultScreen (dp),
+-			8, PseudoColor, &vinfo_return) == False)
+-    {
+-      fadeenable = 0;
+-      printf ("X: Screen doesn't support PseudoColor!\n");
+-      if (XMatchVisualInfo (dp, DefaultScreen (dp),
+-			    32, TrueColor, &vinfo_return) == True)
+-	{
+-	  useprivate = 0;
+-	  bpp = 4;
+-	}
+-      else if (XMatchVisualInfo (dp, DefaultScreen (dp),
+-				 24, TrueColor, &vinfo_return) == True)
+-	{
+-	  useprivate = 0;
+-	  bpp = 4;
+-	}
+-      else if (XMatchVisualInfo (dp, DefaultScreen (dp),
+-				 16, TrueColor, &vinfo_return) == True)
+-	{
+-	  useprivate = 0;
+-	  bpp = 2;
+-	}
+-      else if (XMatchVisualInfo (dp, DefaultScreen (dp),
+-				 15, TrueColor, &vinfo_return) == True)
+-	{
+-	  useprivate = 0;
+-	  bpp = 2;
+-	}
+-      else if (XMatchVisualInfo (dp, DefaultScreen (dp),
+-				 8, GrayScale, &vinfo_return) == True)
+-	{
+-	  useprivate = 0;
+-	  monochrome = 1;
+-	  bpp = 2;
+-	}
+-      else
+-	{
+-	  printf ("Unsupported visual! Using slow and reliable mode\n");
++  {
++    XVisualInfo template;
++    XVisualInfo * vinfo;
++    int nitems_return;
++    template.visualid = XVisualIDFromVisual (DefaultVisual (dp, DefaultScreen (dp)));
++    vinfo = XGetVisualInfo (dp, VisualIDMask, &template, &nitems_return);
++    if (nitems_return == 0)
++      {
++        printf ("X server does not know about the default visual...");
++        exit (0);
++      }
++
++    if (vinfo->class == PseudoColor && vinfo->depth == 8)
++      {
++        fadeenable = 1;
++      }
++    else
++      {
++        fadeenable = 0;
++        printf ("X: Screen doesn't support PseudoColor!\n");
++        if (vinfo->class == TrueColor)
++          {
++            useprivate = 0;
++          }
++        else if (vinfo->class == GrayScale)
++          {
++            useprivate = 0;
++            monochrome = 1;
++          }
++        else
++          {
++            printf ("Unsupported visual! Using slow and reliable mode\n");
+ #ifdef MITSHM
+-	  shm = 0;
++            shm = 0;
+ #endif
+-	}
+-    }
+-  else
+-    bpp = 1;
+-  depth = vinfo_return.depth;
++          }
++      }
++    depth = vinfo->depth;
++    XFree(vinfo);
++  }
+ #ifdef MITSHM
+   /* Make sure all is destroyed if killed off */
+ 
+-  /* Make sure we can do PsuedoColor colormap stuff */
++  /* Make sure we can do PseudoColor colormap stuff */
+   if (!shm)
+     {
+       printf ("Shm support disabled\n");
+     }
+   else
+-    /* Check to see if the extensions are supported */
+-  if (!XShmQueryExtension (dp))
+     {
+-      fprintf (stderr, "X server doesn't support MITSHM extension.\n");
+-      shm = 0;
++      /* Check to see if the extensions are supported */
++      int major, minor;
++      Bool pixmaps;
++      if (XShmQueryVersion (dp, &major, &minor, &pixmaps) != 0
++           && (major > 1 || (major == 1 && minor >= 1)))
++          printf ("Shm mode seems to be possible\n");
++      else
++        {
++          fprintf (stderr, "X server doesn't support MITSHM extension.\n");
++          shm = 0;
++        }
+     }
+-  if (shm)
+-    printf ("Shm mode seems to be possible\n");
+-
+-
+ #endif
+   wi = physicalscreen.pixmap = XCreateSimpleWindow (dp, RootWindow (dp, screen), 50, 50, MAPWIDTH, MAPHEIGHT + 20,
+ 						    0, 0, 0);
+@@ -551,8 +569,6 @@
+     }
+ #endif
+ 
+-  if (Sync)
+-    XSynchronize (dp, 1);
+ #if defined(NAS_SOUND)||defined(RSOUND)
+   printf ("Initializing sound server...\n");
+   if (sndinit)
+@@ -639,7 +655,7 @@
+ 	  "\n\n\n\n"
+ 	  "                     Copyright(c) Jan Hubicka 1995, 1996\n\n\n");
+   useprivate = 0;
+-  while ((c = mygetopt (argc, argv, "KWD:P:L:C:SxslEMmpdhfb")) != -1)
++  while ((c = mygetopt (argc, argv, "KWD:P:L:C:SxyslEMmpdhfb")) != -1)
+     {
+       switch (c)
+ 	{
+@@ -769,6 +785,32 @@
+ #endif
+ 	  break;
+ 	default:
++#ifdef NETSUPPORT
++#define USAGE_NETSUPPORT " -S run koules as network server\n \
++-C<host> run koules as network client\n \
++-P<port> select port. Default is:%i\n \
++-W run server in width mode-support for 320x200 svgalib and OS/2 clients\n \
++-L<level> select level for server\n \
++-D<number> select dificulty for server:\n \
++    0: nightmare\n \
++    1: hard\n \
++    2: medium(default and recomended)\n \
++    3: easy\n \
++    4: very easy\n \
++-K run server in deathmatch mode\n "
++#else
++#define USAGE_NETSUPPORT ""
++#endif
++#ifdef SOUND
++#define USAGE_SOUND " -d Disable sound support\n"
++#else
++#define USAGE_SOUND ""
++#endif
++#ifdef MITSHM
++#define USAGE_MITSHM " -M DISABLE shared memory support\n"
++#else
++#define USAGE_MITSHM ""
++#endif
+ 	  printf ("USAGE:"
+ 		  " -h for help\n"
+ 		  " -b for blackandwhite displays\n"
+@@ -778,27 +820,10 @@
+ 		  " -p use private colormap\n"
+ 		  " -y Synchronize with X(for debugging)\n"
+ 		  " -f nofade(for debugging)\n"
+-#ifdef SOUND
+-		  " -d Disable sound support\n"
+-#endif
++		  USAGE_SOUND
+ 		  " -x Disable X11 pointer\n"
+-#ifdef MITSHM
+-		  " -M DISABLE shared memory support\n"
+-#endif
+-#ifdef NETSUPPORT
+-		  " -S run koules as network server\n"
+-		  " -C<host> run koules as network client\n"
+-		  " -P<port> select port. Default is:%i\n"
+-		  " -W run server in width mode-support for 320x200 svgalib and OS/2 clients\n"
+-		  " -L<level> select level for server\n"
+-		  " -D<number> select dificulty for server:\n"
+-		  "     0: nightmare\n"
+-		  "     1: hard\n"
+-		  "     2: medium(default and recomended)\n"
+-		  "     3: easy\n"
+-		  "     4: very easy\n"
+-		  " -K run server in deathmatch mode\n", DEFAULTINITPORT
+-#endif
++		  USAGE_MITSHM
++		  USAGE_NETSUPPORT, DEFAULTINITPORT
+ 	    );
+ 	  exit (2);
+ 	}
+--- xlib/interface.c	Thu Mar  5 18:19:44 1998
++++ xlib/interface.c	Sun Aug 16 17:51:13 2009
+@@ -154,7 +154,7 @@
+ 	  {
+ 	    register unsigned char *data = (unsigned char *) source.vbuff,
+ 	                   *end = (unsigned char *) source.vbuff + MAPWIDTH * (MAPHEIGHT + 20);
+-	    register unsigned long *out = (unsigned long *) source.ximage->data;
++	    register uint32_t *out = (uint32_t *) source.ximage->data;
+ 	    while (data < end)
+ 	      {
+ 		*out = rpixels[*data];

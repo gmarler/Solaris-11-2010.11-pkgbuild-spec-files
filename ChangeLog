@@ -1,6 +1,8 @@
 2009-08-16 - Milan Jurik <sfnet@xylab.cz>
 
 	* SFEe2fsprogs.spec: version 1.41.8
+	* SFEkoules.spec, patches/koules*: initial version of old game
+	* SFEmplayer-snap.spec: GNU grep not needed
 
 2009-08-15  Brian Cameron  <brian.cameron@sun.com>
 
