@@ -40,7 +40,7 @@ LDFLAGS="-lsocket -lnsl" \
 ./configure \
 	--prefix=%{_prefix} \
 	--mandir=%{_mandir} \
-	-libdir=%{_libdir} \
+	--libdir=%{_libdir} \
 	--enable-static=no \
 	--enable-sha2 \
 	--with-conf-file=%{_sysconfdir}/unbound/unbound.conf \
@@ -118,6 +118,8 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 %{_libdir}/libunbound*
 
 %changelog
+* Sun Aug 16 2009 - Milan Jurik
+- fix libdir
 * Wed Aug 5 2009 - Milan Jurik
 - upgrade to 1.3.3
 * Sun Jul 12 2009 - Milan Jurik

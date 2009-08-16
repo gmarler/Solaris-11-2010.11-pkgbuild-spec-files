@@ -4,6 +4,7 @@
 	* SFEkoules.spec, patches/koules*: initial version of old game
 	* SFEmplayer-snap.spec: GNU grep not needed
 	* SFEopenttd.spec: update to 0.7.2, fix for post-scripts
+	* SFEunbound.spec: fix libdir
 
 2009-08-15  Brian Cameron  <brian.cameron@sun.com>
 
