@@ -5,6 +5,7 @@
 	* SFEmplayer-snap.spec: GNU grep not needed
 	* SFEopenttd.spec: update to 0.7.2, fix for post-scripts
 	* SFEunbound.spec: fix libdir
+	* base-specs/sdl-image.spec: update to 1.2.7
 
 2009-08-15  Brian Cameron  <brian.cameron@sun.com>
 
