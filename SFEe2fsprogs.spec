@@ -10,7 +10,7 @@
 Name:                SFEe2fsprogs
 License:             GPL
 Summary:             Ext2 Filesystems Utilities
-Version:             1.41.4
+Version:             1.41.8
 URL:                 http://e2fsprogs.sourceforge.net/
 Source:              %{sf_download}/e2fsprogs/e2fsprogs-%{version}.tar.gz
 Source1:             ext2fs.pc
@@ -58,13 +58,11 @@ CFLAGS=-std=gnu99 ./configure --prefix=%{_prefix}	\
             --infodir=%{_infodir} \
             --libdir=%{_libdir}/ext2fs \
             --sysconfdir=%{_sysconfdir} \
-            --enable-shared=yes \
-            --enable-static=no  \
-            --with-pic \
             --enable-elf-shlibs \
+            --enable-htree \
             --with-ldopts="${LDFLAGS}"
 
-make
+gmake
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -195,6 +193,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*
 
 %changelog
+* Sun Aug 16 2009 - Milan Jurik
+- update for 1.41.8
 * Sun Apr 11 2009 - Milan Jurik
 - update for 1.41.4
 - manpage relocation to section 1m
