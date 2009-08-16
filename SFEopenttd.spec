@@ -6,7 +6,7 @@
 %define src_name openttd
 
 Name:           SFEopenttd
-Version:        0.7.1
+Version:        0.7.2
 Summary:        Transport system simulation game
 Source:         http://binaries.openttd.org/releases/%{version}/%{src_name}-%{version}-source.tar.bz2
 URL:            http://www.openttd.org/
@@ -88,21 +88,23 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %post
-touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
+test -x $BASEDIR/var/lib/postrun/postrun || exit 0
+( touch %{_datadir}/icons/hicolor || :
+  if [ -x %{_bindir}/gtk-update-icon-cache ]; then
+        %{_bindir}/gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
+  fi
+) | $BASEDIR/var/lib/postrun/postrun -i -a
 
 %postun
-if [ $1 -eq 0 ] ; then
-    touch --no-create %{_datadir}/icons/hicolor &>/dev/null
-    gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
-fi
-
-%posttrans
-gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
-
+test -x $BASEDIR/var/lib/postrun/postrun || exit 0
+( touch %{_datadir}/icons/hicolor || :
+  if [ -x %{_bindir}/gtk-update-icon-cache ]; then
+        %{_bindir}/gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
+  fi
+) | $BASEDIR/var/lib/postrun/postrun -i -a
 
 %files
 %defattr (-, root, bin)
-%dir %attr (0755, root, sys) /usr
 %dir %attr (0755, root, bin) %{_bindir}
 %{_bindir}/*
 %dir %attr (0755, root, sys) %{_datadir}
@@ -120,5 +122,8 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/openttd/*
 
 %changelog
+* Sun Aug 16 2009 - Milan Jurik
+- update to 0.7.2
+- fix for post-scripts
 * Sun Jul 05 2009 - Milan Jurik
 - Initial version based on Fedora spec file
