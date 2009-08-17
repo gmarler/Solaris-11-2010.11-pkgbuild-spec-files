@@ -159,5 +159,7 @@ rm -rf ${RPM_BUILD_ROOT}
 %{_texmf_dir}/*
 
 %changelog
+* 17 Aug 2009 - Gilles Dauphin
+- check with texmf files.
 * Aug 2009 - Gilles Dauphin
 - Initial setup, I look at Fedora and Pkgsrc
