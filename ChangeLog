@@ -1,3 +1,7 @@
+2009-08-17  Tim Miao <tim.miao@sun.com>
+
+	*Update ldtp to 1.7.1, which fixed bug #590755
+
 2009-08-16 - Milan Jurik <sfnet@xylab.cz>
 
 	* SFEe2fsprogs.spec: version 1.41.8
