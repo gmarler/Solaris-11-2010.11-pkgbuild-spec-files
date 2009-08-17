@@ -25,15 +25,8 @@ Source:	http://rlworkman.net/pkgs/sources/12.2/texlive/texlive-%{texlive_ver}-te
 
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 
-BuildRequires:	SUNWflexlex
-BuildRequires:	SUNWbison
-BuildRequires:	SUNWncurses
 BuildRequires:	SUNWzlib
 BuildRequires:	SUNWpng
-BuildRequires:	SUNWgd2
-#BuildRequires:	SUNWlibSM SUNWlibICE
-#Requires:	SFEteckit
-#Requires:	SFEtexlive-texmf
 
 %description
 TeXLive is an implementation of TeX for Linux or UNIX systems. TeX takes
@@ -45,8 +38,6 @@ itself is not very user-friendly.
 Install texlive if you want to use the TeX text formatting system. Consider
 to install texlive-latex (a higher level formatting package which provides
 an easier-to-use interface for TeX).
-
-The TeX documentation is located in the texlive-doc package.
 
 
 %prep
