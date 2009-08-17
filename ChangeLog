@@ -1,3 +1,8 @@
+2009-08-17  Gilles Dauphin
+
+	* SFEtexlive.spec: Adjust bin and file for Texmf
+	* SFEtexlivetexmf.spec: (new) init TeX and misc utils
+
 2009-08-17  Brian Cameron  <brian.cameron@sun.com>
 
 	* SFEgnonlin.spec, SFEjokosher.spec,

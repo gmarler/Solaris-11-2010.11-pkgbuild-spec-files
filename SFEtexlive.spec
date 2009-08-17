@@ -31,11 +31,7 @@ BuildRequires:	SUNWncurses
 BuildRequires:	SUNWzlib
 BuildRequires:	SUNWpng
 BuildRequires:	SUNWgd2
-#BuildRequires:	SUNWlibSM SUNWlibICE
-#Requires:	SFEteckit
-#Requires:	SFEtexlive-texmf
-#Requires:	SFEtexlive-texmf-fonts
-#Requires:	SFEtexlive-texmf-errata
+Requires:	SFEtexlive-texmf
 
 %description
 TeXLive is an implementation of TeX for Linux or UNIX systems. TeX takes
@@ -49,53 +45,6 @@ to install texlive-latex (a higher level formatting package which provides
 an easier-to-use interface for TeX).
 
 The TeX documentation is located in the texlive-doc package.
-
-#%package xetex
-#Summary: TeX typesetting engine using Unicode with OpenType or AAT support
-#Group: Applications/Publishing
-#Requires: texlive = %{version}-%{release}
-#Requires: texlive-texmf-xetex = %{version}
-#Requires: dvipdfmx xdvipdfmx
-#Provides: tex(xetex)
-#
-#%description xetex
-#XeTeX is a TeX typesetting engine using Unicode and supporting modern
-#font technologies such as OpenType or AAT. Initially developed for Mac
-#OS X only, it is now available for all major platforms. It natively
-#supports Unicode and the input file is assumed to be in UTF-8 encoding
-#by default.
-
-
-#%package latex
-#Summary: The LaTeX front end for the TeX text formatting system
-#Group: Applications/Publishing
-#Requires: texlive = %{version}-%{release}, texlive-dvips = %{version}-%{release}
-#Requires: netpbm-progs
-## make sure main and fonts package installed before running post
-#Requires(post): %{_bindir}/fmtutil %{_bindir}/fmtutil-sys
-#Requires(post): %{_bindir}/texconfig-sys /sbin/install-info
-#BuildRequires: ghostscript netpbm-progs
-#Provides:  tetex-latex = 3.0-99
-#Requires: texlive-texmf-latex = %{version}
-#Requires: texlive-texmf-errata = %{version}
-#Requires: texlive-utils = %{version}-%{release}
-#Provides: tex(latex)
-
-#%description latex
-#LaTeX is a front end for the TeX text formatting system. Easier to
-#use than TeX. LaTeX is essentially a set of TeX macros which provide
-#convenient, predefined document formats for users. It also allows to
-#compile LaTeX files directly to PDF format.
-#
-#The TeX documentation is located in the texlive-doc package.
-
-#%package -n kpathsea
-#Summary: Shared library needed by kpathsea and info files
-#Group:   Development/Libraries
-#Requires: texlive = %{version}-%{release}
-
-#%description -n kpathsea
-#Shared library needed by kpathsea and info files.
 
 %prep
 %setup -q -c -n %{name}-%{version}
@@ -136,25 +85,27 @@ export TL_TARGET
 rm -rf ${RPM_BUILD_ROOT}
 cd texlive-%{version}-source/Work
 
-mkdir -p ${RPM_BUILD_ROOT}/usr/texlive
 #export LD_LIBRARY_PATH=`pwd`/texk/kpathsea/.libs
+mkdir -p ${RPM_BUILD_ROOT}/usr/texlive/bin
+mkdir -p ${RPM_BUILD_ROOT}/usr/texlive/lib
 # don't install kpathsea
 # ruse
 # mv texk/kpathsea/Makefile texk/kpathsea/Makefile.save
 #make install  DESTDIR=$RPM_BUILD_ROOT
 make install
+mv ../inst/bin/*/* ${RPM_BUILD_ROOT}/usr/texlive/bin
+rmdir ../inst/bin/*
+rmdir ../inst/bin
+mv ../inst/lib/*/* ${RPM_BUILD_ROOT}/usr/texlive/lib
+rmdir ../inst/lib/*
+rmdir ../inst/lib
 mv ../inst/* ${RPM_BUILD_ROOT}/usr/texlive
+rm texmf/scripts/texlive/tlmgr.pl
+rm texmf/web2c/fmtutil.cnf
 
 # a temporary placeholder for texmf.cnf
 #mkdir -p ${RPM_BUILD_ROOT}%{_datadir}/texmf-local/web2c
 #cp -a texk/kpathsea/texmf.cnf ${RPM_BUILD_ROOT}%{_datadir}/texmf-local/web2c
-
-#%makeinstall \
-#        texmf=${RPM_BUILD_ROOT}%{_texmf_main} \
-#        texmfmain=${RPM_BUILD_ROOT}%{_texmf_main}
-#
-#rm -rf ${RPM_BUILD_ROOT}%{_datadir}/texmf-local/
-
 
 %clean
 rm -rf ${RPM_BUILD_ROOT}
