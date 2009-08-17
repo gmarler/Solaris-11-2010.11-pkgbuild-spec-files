@@ -1,3 +1,10 @@
+2009-08-17  Brian Cameron  <brian.cameron@sun.com>
+
+	* SFEgnonlin.spec, SFEjokosher.spec,
+	  patches/jokosher-01-byteorder.diff,
+	  ext-sources/FreesoundSearch-0.3-py2.6.egg:  Remove, now gnonlin is
+	  ported to spec-files and jokosher to spec-files-other.
+
 2009-08-17  Tim Miao <tim.miao@sun.com>
 
 	*Update ldtp to 1.7.1, which fixed bug #590755
