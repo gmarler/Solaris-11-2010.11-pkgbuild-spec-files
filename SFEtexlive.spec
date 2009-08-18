@@ -71,10 +71,10 @@ export TL_TARGET
 	--with-system-gd \
 	--with-system-freetype2 \
 	--with-freetype2-include=%{_includedir}/freetype2 \
-	--with-system-t1lib \
-	--without-omega \
-	--without-aleph 
+	--with-system-t1lib
 
+#	--without-omega \
+#	--without-aleph 
 #	--with_dialog=no \
 #	--without-ps2eps \
 #	--with_psutils=no \
@@ -86,70 +86,35 @@ rm -rf ${RPM_BUILD_ROOT}
 cd texlive-%{version}-source/Work
 
 #export LD_LIBRARY_PATH=`pwd`/texk/kpathsea/.libs
-mkdir -p ${RPM_BUILD_ROOT}/usr/texlive/bin
-mkdir -p ${RPM_BUILD_ROOT}/usr/texlive/lib
+mkdir -p ${RPM_BUILD_ROOT}/usr/texlive
 # don't install kpathsea
 # ruse
 # mv texk/kpathsea/Makefile texk/kpathsea/Makefile.save
 #make install  DESTDIR=$RPM_BUILD_ROOT
 make install
-mv ../inst/bin/*/* ${RPM_BUILD_ROOT}/usr/texlive/bin
-rmdir ../inst/bin/*
-rmdir ../inst/bin
-mv ../inst/lib/*/* ${RPM_BUILD_ROOT}/usr/texlive/lib
-rmdir ../inst/lib/*
-rmdir ../inst/lib
+tex_arch=`../config/config.guess`
+ln -s /usr/texlive/bin/$tex_arch ../inst/share/bin
+# Note: binary MUST BE in /usr/texlive/bin/$ARCH/ , because some link would break
 mv ../inst/* ${RPM_BUILD_ROOT}/usr/texlive
-rm texmf/scripts/texlive/tlmgr.pl
-rm texmf/web2c/fmtutil.cnf
-
-# a temporary placeholder for texmf.cnf
-#mkdir -p ${RPM_BUILD_ROOT}%{_datadir}/texmf-local/web2c
-#cp -a texk/kpathsea/texmf.cnf ${RPM_BUILD_ROOT}%{_datadir}/texmf-local/web2c
+rm ${RPM_BUILD_ROOT}/usr/texlive/texmf/scripts/texlive/tlmgr.pl
+rm ${RPM_BUILD_ROOT}/usr/texlive/texmf/web2c/fmtutil.cnf
 
 %clean
 rm -rf ${RPM_BUILD_ROOT}
 
-#%post
-#%{_bindir}/texconfig-sys rehash 2> /dev/null
-#[ -x /sbin/install-info ] && /sbin/install-info %{_infodir}/web2c.info.gz %{_infodir}/dir
-#%{_bindir}/fmtutil-sys --all &> /dev/null
-#%{_bindir}/updmap-sys --syncwithtrees &> /dev/null
-#if [ -x /usr/sbin/selinuxenabled ] && /usr/sbin/selinuxenabled; then
-#  [ -x /sbin/restorecon ] && /sbin/restorecon -R %{_texmf_var}/
-#fi
-#:
-#############
-## slack post doinst.sh
-## This one shouldn't be needed, but just in case...
-#chroot . /usr/share/texmf/bin/mktexlsr 1>/dev/null 2>&1
-## This one is definitely needed
-## What I don't know is what happens if the texlive-texmf package is
-## not installed yet - maybe we need to run this from it too?
-#chroot . /usr/share/texmf/bin/fmtutil-sys --all 1>/dev/null 2>&1
-## This one also shouldn't be needed, but again, just in case...
-#chroot . /usr/share/texmf/bin/updmap-sys --syncwithtrees 1>/dev/null 2>&1
+%post
+set -x
+PATH=$PATH:/usr/texlive/share/bin
+export PATH
+/usr/texlive/share/bin/mktexlsr /usr/texlive/texmf /usr/texlive/texmf-dist /usr/texlive/texmf-doc /usr/texlive 
+/usr/texlive/share/bin/texconfig-sys init 
+/usr/texlive/share/bin/texconfig-sys rehash 
+/usr/texlive/share/bin/fmtutil-sys --all 
+/usr/texlive/share/bin/updmap-sys --syncwithtrees 
+exit 0		# johny be good
 
-
-
-#%post latex
-#[ -x /sbin/install-info ] && /sbin/install-info %{_infodir}/latex.info.gz %{_infodir}/dir
-#%{_bindir}/texconfig-sys init &> /dev/null
-#%{_bindir}/texconfig-sys rehash 2> /dev/null
-#%{_bindir}/fmtutil-sys --all &> /dev/null
-#if [ -x /usr/sbin/selinuxenabled ] && /usr/sbin/selinuxenabled; then
-#  [ -x /sbin/restorecon ] && /sbin/restorecon -R %{_texmf_var}/
-#fi
-#:
-
-
-#%postun latex
-#%{_bindir}/texconfig-sys rehash 2> /dev/null
-#if [ -x /usr/sbin/selinuxenabled ] && /usr/sbin/selinuxenabled; then
-#  [ -x /sbin/restorecon ] && /sbin/restorecon -R %{_texmf_var}/
-#fi
-#:
-
+#TODO
+# postun: post-uninstall
 
 %files
 %defattr (-,root,bin)

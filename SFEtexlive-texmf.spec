@@ -51,15 +51,10 @@ rm -rf texmf-doc/doc/bulgarian
 rm -rf texmf-doc/doc/czechslovak
 rm -rf texmf-doc/doc/dutch
 rm -rf texmf-doc/doc/finnish
-rm -rf texmf-doc/doc/german
-rm -rf texmf-doc/doc/greek
 rm -rf texmf-doc/doc/italian
-rm -rf texmf-doc/doc/japanese
-rm -rf texmf-doc/doc/korean
 rm -rf texmf-doc/doc/mongolian
 rm -rf texmf-doc/doc/polish
 rm -rf texmf-doc/doc/portuguese
-rm -rf texmf-doc/doc/russian
 rm -rf texmf-doc/doc/slovak
 rm -rf texmf-doc/doc/slovenian
 rm -rf texmf-doc/doc/spanish
