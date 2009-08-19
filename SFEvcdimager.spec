@@ -20,7 +20,18 @@ Summary:                 %{summary} - development files
 SUNW_BaseDir:            %{_prefix}
 %include default-depend.inc
 Requires: %name
+
+BuildRequires: SFElibcdio-devel
 Requires: SFElibcdio
+
+
+BuildRequires: SUNWlibpopt-devel
+Requires:      SUNWlibpopt
+BuildRequires: SUNWlxml-devel
+Requires:      SUNWlxml
+BuildRequires: SUNWzlib
+Requires:      SUNWzlib
+
 
 %prep
 %setup -q -n vcdimager-%version
@@ -102,6 +113,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*
 
 %changelog
+* Wed Auf 19 2009 - Thomas Wagner
+- add BuildRequires: SFElibcdio-devel
+- add (Build)Requires: SUNWlibpopt-devel,SUNWlibpopt SUNWlxml-devel,SUNWlxml, SUNWzlib
 * Tue Mar 17 2009 - Thomas Wagner
 - builds around  > snv104 (snv104 works, 107/110 don't) start trapping over 
   detection for versioned libs, linker complains syntax, add --without-versioned-libs
