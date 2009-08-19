@@ -5,14 +5,14 @@
 #
 %include Solaris.inc
 
-%define	src_ver 0.1.1
+%define	src_ver 0.2.2
 %define	src_name libdiscid
 %define	src_url	http://users.musicbrainz.org/~matt
 
 Name:		SFElibdiscid
 Summary:	Library for creating MusicBrainz DiscIDs
 Version:	%{src_ver}
-License:	GPL v2.1+
+License:	LGPL v2.1
 Source:		%{src_url}/%{src_name}-%{version}.tar.gz
 Patch1:		libdiscid-01-solaris.diff
 SUNW_BaseDir:	%{_basedir}

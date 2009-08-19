@@ -5,19 +5,18 @@
 #
 %include Solaris.inc
 
-%define	src_ver 3.0.1
+%define	src_ver 3.0.2
 %define	src_name libmusicbrainz
 %define	src_url	ftp://ftp.musicbrainz.org/pub/musicbrainz
 
 Name:		SFElibmusicbrainz3
 Summary:	library for accesing MusicBrainz servers
 Version:	%{src_ver}
-License:	LGPL
+License:	LGPL 2.1
 Source:		%{src_url}/%{src_name}-%{version}.tar.gz
-Patch1:		libmusicbrainz3-01-cppunit.diff
 SUNW_BaseDir:	%{_basedir}
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
-BuildRequires: SFEcmake
+BuildRequires: SUNWcmake
 %if %(pkginfo -q SUNWneon && echo 1 || echo 0)
 Requires: SUNWneon
 %else
@@ -25,8 +24,6 @@ Requires: SFEneon
 %endif
 BuildRequires: SFElibdiscid-devel
 Requires: SFElibdiscid
-BuildRequires: SFEcppunit-devel
-Requires: SFEcppunit
 
 %description
 The MusicBrainz client library allows applications to make metadata
@@ -41,7 +38,6 @@ Requires: %name
 
 %prep
 %setup -q -n %{src_name}-%version
-%patch1 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -82,6 +78,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*
 
 %changelog
+* Wed Aug 19 2009 - brian.cameron@sun.com
+- Bump to 3.0.2.
 * Sun Jun 29 2008 - river@wikimedia.org
 - when using the default SFE environment, -lstdc++ causes the build to fail...
 * Fri Jan 18 2008 - moinak.ghosh@sun.com
