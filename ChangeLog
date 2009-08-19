@@ -1,3 +1,7 @@
+2009-08-19 Erwann Chenede - <erwann.chenede@sun.com>
+
+	* SFEddd.spec : changed tarball source location
+
 2009-08-19  Gilles Dauphin
 
 	* SFElzma.spec (maybe needed by SFEtexlive)

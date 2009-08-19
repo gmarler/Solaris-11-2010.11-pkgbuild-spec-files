@@ -8,11 +8,12 @@
 Name:                SFEddd
 Summary:             graphical front-end for CLI debuggers
 Version:             3.3.12-test6
-Source:              http://www.mirrorservice.org/sites/download.sourceforge.net/pub/sourceforge/b/ba/bashdb/ddd-%{version}.tar.gz
+Source:               http://www.mirrorservice.org/sites/download.sourceforge.net/pub/sourceforge/b/project/ba/bashdb/ddd/3.3.12-test6/ddd-%{version}.tar.gz
 #Source:              http://ftp.gnu.org/gnu/ddd/ddd-%{version}.tar.gz
 
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
+SUNW_Copyright:      SUNWgftp.copyright
 %include default-depend.inc
 
 # Guarantee X environment, concisely (hopefully)
