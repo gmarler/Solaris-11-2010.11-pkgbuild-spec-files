@@ -10,13 +10,13 @@
 
 %include Solaris.inc
 
-%define uri_version 1.38
+%define uri_version 1.40
 %define perl_version 5.8.4
 
 Name:                    SFEperl-uri
 Summary:                 URI-%{uri_version} PERL module
 Version:                 %{perl_version}.%{uri_version}
-Source:                  http://www.cpan.org/modules/by-module/URI/URI-%{uri_version}.tar.gz
+Source:                  http://search.cpan.org/CPAN/authors/id/G/GA/GAAS/URI-%{uri_version}.tar.gz
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 Requires:                SUNWperl584core
@@ -73,6 +73,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man3/*
 
 %changelog
+* Wed Aug 19 2009 - hcoomes@insightbb.com
+- Updated source url and version to 1.40
 * Sun Jul 19 2009 - matt@greenviolet.net
 - Bumped to version 1.38
 * Sun Jan 28 2007 - mike kiedrowski (lakeside-AT-cybrzn-DOT-com)
