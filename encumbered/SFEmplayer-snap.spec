@@ -123,7 +123,7 @@ dbgflag=--enable-debug
 export CFLAGS="-g -D__hidden=\"\""
 %else
 dbgflag=--disable-debug
-export CFLAGS="-O2 -D__hidden=\"\""
+export CFLAGS="-O2 -fomit-frame-pointer -D__hidden=\"\""
 %endif
 
 export LDFLAGS="-L%{x11}/lib -L/usr/gnu/lib -R/usr/gnu/lib -L/usr/sfw/lib -R/usr/sfw/lib -liconv" 
@@ -192,6 +192,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/pixmaps/*
 
 %changelog
+* Thu Aug 20 2009 - Milan Jurik
+- -fomit-frame-pointer to workaround Solaris GCC bug on Nehalem
 * Sun Aug 16 2009 - Milan Jurik
 - GNU grep not needed
 * Sat Jul 18 2009 - Milan Jurik
