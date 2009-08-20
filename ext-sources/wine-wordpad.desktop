@@ -5,5 +5,5 @@ Exec=wine wordpad
 Icon=wine-wordpad
 Terminal=false
 Type=Application
-Categories=Utility;Emulator;
+Categories=Office;Emulator;
 # vi: encoding=utf-8
