@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Wine Add/Remove Programs
+Comment=Wine Add/Remove Programs Control Panel
+Icon=wine-appwiz
+Exec=wine control appwiz.cpl
+Terminal=false
+Categories=Utility;System;Emulator;
+# vi: encoding=utf-8

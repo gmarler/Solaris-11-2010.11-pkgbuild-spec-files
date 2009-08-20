@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Wine Command Prompt
+Comment=Wine Command Prompt
+Exec=wineconsole --backend=curses cmd
+Icon=wine-cmd
+Terminal=true
+Type=Application
+Categories=Utility;Emulator;ConsoleOnly;
+# vi: encoding=utf-8

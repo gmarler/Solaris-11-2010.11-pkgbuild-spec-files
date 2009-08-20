@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Winetricks
+Comment=Downloads and installs various redistributable runtime libraries sometimes needed to run programs in Wine. 
+Exec=winetricks
+Icon=wine
+Terminal=false
+Categories=Utility;System;Emulator;
+# vi: encoding=utf-8

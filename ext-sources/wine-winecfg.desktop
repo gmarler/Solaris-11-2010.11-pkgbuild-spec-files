@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Wine Configuration
+Comment=Wine Configuration
+Exec=winecfg
+Icon=wine
+Terminal=false
+Type=Application
+Categories=System;Emulator;
+# vi: encoding=utf-8

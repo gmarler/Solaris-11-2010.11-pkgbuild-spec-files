@@ -1,3 +1,21 @@
+2009-08-13  Matt Lewandowsky <matt@greenviolet.net>
+
+	* SFEwine.spec: Allow overriding automatic versioning. Add Winetricks
+	and Wine applications to the menus. Fix configure flags; force CUPS
+	and OpenSSL. Jump to SFEgcc for gcc4 (back to /usr/gnu/bin). Disable
+	Xshm due to X server bugs in current Xorg. Clean up %post tasks. A
+	bit of compile/link flags updating. Remove dependency on SFEgxmessage
+	as it is no longer required by winetricks. Clean up winetricks
+	prep/install. Move winetricks to Source1 (working around pkgbuild
+	bug, still). Change maintainership to myself.
+
+	* ext-sources/wine-appwiz.desktop, ext-sources/wine-cmd.desktop,
+	ext-sources/wine-notepad.desktop, ext-sources/wine-regedit.desktop,
+	ext-sources/wine-taskmgr.desktop, ext-sources/wine-winecfg.desktop,
+	ext-sources/wine-winefile.desktop, ext-sources/wine-winemine.desktop,
+	ext-sources/wine-wordpad.desktop, ext-sources/winetricks.desktop:
+	New menu files for Wine applications and winetricks.
+	
 2009-08-20  Milan Jurik <sfnet@xylab.cz>
 
 	* encumbered/SFEmplayer-snap.spec: -fomit-frame-pointer to workaround Solaris GCC bug on Nehalem

@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Wine Registry Editor
+Comment=Wine Registry Editor
+Exec=regedit
+Icon=wine-regedit
+Terminal=false
+Type=Application
+Categories=System;Emulator;
+# vi: encoding=utf-8

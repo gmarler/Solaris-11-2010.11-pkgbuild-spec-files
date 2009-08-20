@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Wine Notepad
+Comment=Wine Notepad
+Exec=notepad
+Icon=wine-notepad
+Terminal=false
+Type=Application
+Categories=Utility;Emulator;
+# vi: encoding=utf-8
