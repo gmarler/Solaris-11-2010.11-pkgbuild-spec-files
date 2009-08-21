@@ -24,8 +24,8 @@
 %define SUNWlibsdl	%(/usr/bin/pkginfo -q SUNWlibsdl && echo 1 || echo 0)
 
 Name:			SFEsdl-gfx
-Summary: 		Graphics library for SDL
-Version:		2.0.16
+Summary: 		%{sdl.summary}
+Version:		%{sdl.version}
 SUNW_BaseDir:		%{_basedir}
 BuildRoot:		%{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -91,13 +91,19 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,bin)
 %dir %attr (0755, root, bin) %{_libdir}
 %{_libdir}/lib*.so*
+%dir %attr (0755, root, other) %{_libdir}/pkgconfig
+%{_libdir}/pkgconfig/SDL_gfx.pc
 %ifarch amd64 sparcv9
 %dir %attr (0755, root, bin) %{_libdir}/%{_arch64}
 %{_libdir}/%{_arch64}/lib*.so*
+%dir %attr (0755, root, other) %{_libdir}/%{_arch64}/pkgconfig
+%{_libdir}/%{_arch64}/pkgconfig/SDL_gfx.pc
 %endif
 %if %arch_sse2
 %dir %attr (0755, root, bin) %{_libdir}/%{sse2_arch}
 %{_libdir}/%{sse2_arch}/lib*.so*
+%dir %attr (0755, root, other) %{_libdir}/%{sse2_arch}/pkgconfig
+%{_libdir}/%{sse2_arch}/pkgconfig/SDL_gfx.pc
 %endif
 
 %files devel
@@ -107,6 +113,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Aug 21 2009 - Milan Jurik
+- update to 2.0.19, pkgconfig added
 * Tue Jun  5 2007 - Doug Scott
 - Change to isabuild
 * Tue May  8 2007 - Doug Scott
