@@ -4,18 +4,19 @@
 # includes module(s): faad2
 #
 %include Solaris.inc
+%ifarch amd64 sparcv9
+%include arch64.inc
+%use faad2_64 = faad2.spec
+%endif
+
+%include base.inc
+%use faad2 = faad2.spec
 
 Name:                    SFEfaad2
-Summary:                 faad2 - a high-quality MPEG audio decoder
+Summary:                 %{faad2.summary}
 Group:                   libraries/multimedia
-Version:                 2.6.1
-Source:                  %{sf_download}/faac/faad2-%{version}.tar.gz
+Version:                 %{faad2.version}
 URL:                     http://www.audiocoding.com/
-#Patch1:                  faad-01-makefile.diff
-Patch2:                  faad-02-inline.diff
-#Patch3:                  faad-03-largefiles.diff
-Patch4:                  faad-04-wall.diff
-#Patch5:                  faad-05-strchr.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -29,47 +30,31 @@ SUNW_BaseDir:            %{_basedir}
 Requires: %name
 
 %prep
-%setup -q -n faad2
-#%patch1 -p1
-%patch2 -p1
-#%patch3 -p1
-%patch4 -p1
-#%patch5 -p1
+rm -rf %name-%version
+mkdir %name-%version
+%ifarch amd64 sparcv9
+mkdir %name-%version/%_arch64
+%faad2_64.prep -d %name-%version/%_arch64
+%endif
+
+mkdir %name-%version/%{base_arch}
+%faad2.prep -d %name-%version/%{base_arch}
+
 
 %build
-CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
-if test "x$CPUS" = "x" -o $CPUS = 0; then
-    CPUS=1
-fi
-# Compiler bug forces us back to -xO2 for the moment
-#export CFLAGS="`echo "%optflags" | sed 's/-xO4/-xO2/'`"
-export CFLAGS="%optflags"
-export ACLOCAL_FLAGS="-I %{_datadir}/aclocal"
-export MSGFMT="/usr/bin/msgfmt"
-%if %cc_is_gcc
-%else
-export CXX="${CXX} -norunpath"
-%endif
-%ifarch sparc
-export CXXFLAGS="-norunpath -xO5 -xlibmil -xlibmopt -features=tmplife"
-%else
-export CXXFLAGS="-norunpath -xO3 -xlibmil -xlibmopt -features=tmplife"
+%ifarch amd64 sparcv9
+%faad2_64.build -d %name-%version/%_arch64
 %endif
 
-autoreconf --install
-./configure --prefix=%{_prefix} --mandir=%{_mandir} \
-            --libdir=%{_libdir}              \
-            --libexecdir=%{_libexecdir}      \
-            --sysconfdir=%{_sysconfdir}      \
-            --with-mp4v2                     \
-            --enable-shared		     \
-	    --disable-static
-
-make -j$CPUS 
+%faad2.build -d %name-%version/%{base_arch}
 
 %install
-make install DESTDIR=$RPM_BUILD_ROOT
-rm -f $RPM_BUILD_ROOT%{_libdir}/lib*a
+rm -rf $RPM_BUILD_ROOT
+%ifarch amd64 sparcv9
+%faad2_64.install -d %name-%version/%_arch64
+%endif
+
+%faad2.install -d %name-%version/%{base_arch}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -80,6 +65,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/*
 %dir %attr (0755, root, bin) %{_libdir}
 %{_libdir}/*
+%dir %attr (0755, root, sys) %{_datadir}
+%dir %attr (0755, root, bin) %{_mandir}
+%dir %attr (0755, root, bin) %{_mandir}/manm
+%{_mandir}/manm/faad.man
 
 %files devel
 %defattr (-, root, bin)
@@ -87,6 +76,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/*
 
 %changelog
+* Fri Aug 21 2009 - Milan Jurik
+- multiarch support
 * Fri May 23 2008 - michal.bielicki <at> voiceworks.pl
 - id3 is now part of nevada so dependencies should point to SUNWid3 and SUNWid3-devel, thanks to Giles Dauphin for the fix
 * Mon Nov 5 2007 - markwright@internode.on.net

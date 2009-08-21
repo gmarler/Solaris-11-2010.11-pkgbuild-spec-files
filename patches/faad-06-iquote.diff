@@ -1,0 +1,10 @@
+--- faad2-2.7/libfaad/Makefile.am	Thu Feb  5 01:51:03 2009
++++ faad2-2.7-patch/libfaad/Makefile.am	Fri Aug 21 19:46:25 2009
+@@ -1,6 +1,6 @@
+ lib_LTLIBRARIES = libfaad.la
+ 
+-AM_CFLAGS	= -iquote $(top_srcdir)/include
++AM_CFLAGS	= -I $(top_srcdir)/include
+ include_HEADERS = $(top_srcdir)/include/faad.h \
+ 		  $(top_srcdir)/include/neaacdec.h
+ 
