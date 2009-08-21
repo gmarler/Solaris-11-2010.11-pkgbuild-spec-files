@@ -4,12 +4,17 @@
 # includes module(s): libmad
 #
 %include Solaris.inc
+%ifarch amd64 sparcv9
+%include arch64.inc
+%use libmad_64 = libmad.spec
+%endif
+
+%include base.inc
+%use libmad = libmad.spec
 
 Name:                    SFElibmad
-Summary:                 libmad  - a high-quality MPEG audio decoder
-Version:                 0.15.1.2
-%define tarball_version  0.15.1b
-Source:                  %{sf_download}/mad/libmad-%{tarball_version}.tar.gz
+Summary:                 %{libmad.summary}
+Version:                 %{libmad.version}
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -21,67 +26,32 @@ SUNW_BaseDir:            %{_basedir}
 Requires: %name
 
 %prep
-%setup -q -n libmad-%tarball_version
+rm -rf %name-%version
+mkdir %name-%version
+%ifarch amd64 sparcv9
+mkdir %name-%version/%_arch64
+%libmad_64.prep -d %name-%version/%_arch64
+%endif
+
+mkdir %name-%version/%{base_arch}
+%libmad.prep -d %name-%version/%{base_arch}
 
 %build
-CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
-if test "x$CPUS" = "x" -o $CPUS = 0; then
-    CPUS=1
-fi
-export CFLAGS="%optflags"
-export ACLOCAL_FLAGS="-I %{_datadir}/aclocal"
-export MSGFMT="/usr/bin/msgfmt"
-
-%define fp_arch	 default
-%ifarch sparc
-%define fp_arch	sparc
+%ifarch amd64 sparcv9
+%libmad_64.build -d %name-%version/%_arch64
 %endif
 
-%ifarch i386
-%define fp_arch intel
-%endif
+%libmad.build -d %name-%version/%{base_arch}
 
-%ifarch amd64
-%define fp_arch	64bit
-%endif
-
-%if %cc_is_gcc
-%define fpm_option --enable-fpm
-%else
-# asm stuff breaks with sun studio :(
-%define fpm_option --disable-fpm
-%endif
-
-./configure --prefix=%{_prefix} --mandir=%{_mandir} \
-            --libdir=%{_libdir}              \
-            --libexecdir=%{_libexecdir}      \
-            --sysconfdir=%{_sysconfdir}      \
-            --enable-fpm=%{fp_arch}          \
-            --enable-shared		     \
-            --enable-accuracy                \
-            %fpm_option                      \
-	    --disable-static
-
-make -j$CPUS 
 
 %install
 rm -rf $RPM_BUILD_ROOT
-make install DESTDIR=$RPM_BUILD_ROOT
-rm -f $RPM_BUILD_ROOT%{_libdir}/lib*a
-# Generate pkgconfig mad.pc file
-mkdir $RPM_BUILD_ROOT%{_libdir}/pkgconfig
-cat > $RPM_BUILD_ROOT%{_libdir}/pkgconfig/mad.pc << EOF
-prefix=%{_prefix}
-exec_prefix=\${prefix}
-libdir=\${exec_prefix}/lib
-includedir=\${prefix}/include/
+%ifarch amd64 sparcv9
+%libmad_64.install -d %name-%version/%_arch64
+%endif
 
-Name: libMAD
-Description: A high-quality MPEG audio decoder
-Version: 0.15.1b
-Libs: -L\${libdir} -lmad
-Cflags: -I\${includedir}
-EOF
+%libmad.install -d %name-%version/%{base_arch}
+
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -90,8 +60,16 @@ rm -rf $RPM_BUILD_ROOT
 %defattr (-, root, bin)
 %dir %attr (0755, root, bin) %{_libdir}
 %{_libdir}/lib*.so*
+%ifarch amd64 sparcv9
+%dir %attr (0755, root, bin) %{_libdir}/%{_arch64}
+%{_libdir}/%{_arch64}/lib*.so*
+%endif
 %dir %attr (0755, root, other) %{_libdir}/pkgconfig
-%{_libdir}/pkgconfig/*
+%{_libdir}/pkgconfig/mad.pc
+%ifarch amd64 sparcv9
+%dir %attr (0755, root, other) %{_libdir}/%{_arch64}/pkgconfig
+%{_libdir}/%{_arch64}/pkgconfig/mad.pc
+%endif
 
 %files devel
 %defattr (-, root, bin)
@@ -99,6 +77,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/*
 
 %changelog
+* Fri Aug 21 2009 - Milan Jurik
+- multiarch support
 * Thu Jul 30 2009 - oliver.mauras@gmail.com
 - Add mad.pc to have a better detection for apps that needs libMAD
 * Thu Jul 27 2006 - halton.huo@sun.com

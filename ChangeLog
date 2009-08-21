@@ -3,6 +3,7 @@
 	* encumbered/SFEsox.spec: update to 14.3.0
 	* encumbered/SFEdvdauthor.spec: update to 0.6.14
 	* SFEsdl-gfx.spec: update to 2.0.19
+	* encumbered/SFElibmad.spec: multiarch support
 
 2009-08-13  Matt Lewandowsky <matt@greenviolet.net>
 
