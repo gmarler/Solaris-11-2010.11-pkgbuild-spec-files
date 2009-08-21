@@ -7,11 +7,10 @@
 
 Name:                    SFEdvdauthor
 Summary:                 dvdauthor a program that will generate a DVD movie
-Version:                 0.6.11
+Version:                 0.6.14
 Source:                  %{sf_download}/dvdauthor/dvdauthor-%{version}.tar.gz
-Patch1:			 dvdauthor-01-types.diff
 Patch2:			 dvdauthor-02-wall.diff
-Patch3:			 dvdauthor-03-typo.diff
+Patch4:                  dvdauthor-04-decl.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -21,9 +20,8 @@ BuildRequires: SFElibdvdnav-devel
 
 %prep
 %setup -q -n dvdauthor-%version
-%patch1 -p1
 %patch2 -p1
-%patch3 -p1
+%patch4 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -60,6 +58,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/*
 
 %changelog
+* Fri Aug 21 2009 - Milan Jurik
+- update to 0.6.14
 * Thu Aug 07 2008 - trisk@acm.jhu.edu
 - Rename SFElibdvdread dependency to SFElibdvdnav
 * Thu Nov 22 2006 - dougs@truemail.co.th
