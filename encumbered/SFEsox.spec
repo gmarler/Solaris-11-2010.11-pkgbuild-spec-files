@@ -11,7 +11,7 @@
 %include Solaris.inc
 
 %define src_name sox
-%define src_ver 14.0.1
+%define src_ver 14.3.0
 %define src_url http://%{sf_mirror}/sox
 
 
@@ -22,7 +22,6 @@ Name:                    SFEsox
 Summary:                 The swiss army knife of sound processing programs
 Version:                 %{src_ver}
 Source:                  %{src_url}/%{src_name}-%{src_ver}.tar.gz
-Patch1:                  sox-01-gsmhfix.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -49,7 +48,6 @@ Requires: %name
 %prep
 rm -rf sox-%version
 %setup -q -n sox-%version
-%patch1 -p1 -b .patch01
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -61,15 +59,16 @@ export CFLAGS="%optflags"
 export LDFLAGS="%_ldflags"
 
 ./configure --prefix=%{_prefix}  \
-            --libexecdir=%{_libexecdir}
+            --libexecdir=%{_libexecdir} \
+            --enable-shared	\
+            --disable-static
 
 make -j$CPUS
 
 %install
 rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
-rm -rf $RPM_BUILD_ROOT%{_libdir}/sox/*.a
-rm -rf $RPM_BUILD_ROOT%{_libdir}/sox/*.la
+rm -rf $RPM_BUILD_ROOT%{_libdir}/sox
 
 
 %clean
@@ -82,7 +81,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/*
 
 %dir %attr (0755, root, bin) %{_libdir}
-%{_libdir}/*
+%{_libdir}/libsox*
 %dir %attr (0755, root, sys) %{_datadir}
 %dir %attr(0755, root, bin) %{_mandir}
 %dir %attr(0755, root, bin) %{_mandir}/*
@@ -91,9 +90,13 @@ rm -rf $RPM_BUILD_ROOT
 %files devel
 %defattr (-, root, bin)
 %{_includedir}
-
+%dir %attr (0755, root, bin) %{_libdir}
+%dir %attr (0755, root, other) %{_libdir}/pkgconfig
+%{_libdir}/pkgconfig/sox.pc
 
 %changelog
+* Fri Aug 21 2009 - Milan Jurik
+- update to 14.3.0
 * Tue Feb 17 2009 - Thomas Wagner
 - make (Build-)Requires conditional SUNWlibsndfile|SFElibsndfile(-devel)
 * Mon Jun 30 2008 - Andras Barna (andras.barna@gmail.com)
