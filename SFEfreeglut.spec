@@ -4,17 +4,17 @@
 # includes module(s): freeglut
 #
 %include Solaris.inc
+%ifarch amd64 sparcv9
+%include arch64.inc
+%use freeglut_64 = freeglut.spec
+%endif
 
-%define src_name	freeglut
-# TODO: change me when 2.6.0 is out.
-#%define src_url		%{sf_download}/freeglut
-%define src_url		http://public.enst.fr/SFE/SOURCES
+%include base.inc
+%use freeglut = freeglut.spec
 
 Name:                   SFEfreeglut
-Summary:                Free OpenGL Library
-#Version:                2.6.0-rc1
-Version:                2.6.0.1
-Source:                 %{src_url}/%{src_name}-2.6.0-rc1.tar.gz
+Summary:                %{freeglut.summary}
+Version:                %{freeglut.version}
 Patch1:			freeglut260-01.diff
 SUNW_BaseDir:           %{_basedir}
 BuildRoot:              %{_tmppath}/%{name}-%{version}-build
@@ -27,51 +27,32 @@ SUNW_BaseDir:            %{_prefix}
 %include default-depend.inc
 
 %prep
-%setup -q -c -n %{src_name}-%{version}
-cd freeglut
-%patch1 -p0
+rm -rf %name-%version
+mkdir %name-%version
+%ifarch amd64 sparcv9
+mkdir %name-%version/%_arch64
+%freeglut_64.prep -d %name-%version/%_arch64
+%endif
+
+mkdir %name-%version/%{base_arch}
+%freeglut.prep -d %name-%version/%{base_arch}
+
 
 %build
-CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
-if test "x$CPUS" = "x" -o $CPUS = 0; then
-    CPUS=1
-fi
+%ifarch amd64 sparcv9
+%freeglut_64.build -d %name-%version/%_arch64
+%endif
 
-cd freeglut/freeglut
-bash ./autogen.sh
-chmod 755 ./configure
-#export CC=/usr/sfw/bin/gcc
-#export CXX=/usr/sfw/bin/g++
-#export CFLAGS="-O3 -fno-omit-frame-pointer -I/usr/X11/include"
-#export CXXFLAGS="-O3 -fno-omit-frame-pointer"
-#export CFLAGS="%optflags -I/usr/X11/include"
-#export LDFLAGS="%_ldflags -lX11 -L/usr/X11/lib -R/usr/X11/lib"
-#export LD_OPTIONS="-i"
-#./configure --prefix=%{_prefix}			\
-#	    --bindir=%{_bindir}			\
-#	    --mandir=%{_mandir}			\
-#            --libdir=%{_libdir}			\
-#            --includedir=%{_prefix}/X11/include	\
-#            --datadir=%{_datadir}		\
-#            --libexecdir=%{_libexecdir} 	\
-#            --sysconfdir=%{_sysconfdir} 	\
-#	    --disable-warnings			\
-#            --enable-shared			\
-#	    --disable-static
+%freeglut.build -d %name-%version/%{base_arch}
 
-export CC=cc
-export CXX=CC
-export CFLAGS="-DTARGET_HOST_POSIX_X11=1"
-
-CC=cc CXX=CC CFLAGS="-DTARGET_HOST_POSIX_X11=1" ./configure --prefix=/usr --enable-shared --disable-static --includedir=%{_prefix}/X11/include
-
-jam
 
 %install
 rm -rf $RPM_BUILD_ROOT
-cd freeglut/freeglut
-make install DESTDIR=$RPM_BUILD_ROOT
-rm $RPM_BUILD_ROOT%{_libdir}/lib*.*a
+%ifarch amd64 sparcv9
+%freeglut_64.install -d %name-%version/%_arch64
+%endif
+
+%freeglut.install -d %name-%version/%{base_arch}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -85,6 +66,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_prefix}/X11/include
 
 %changelog
+* Fri Aug 21 2009 - Milan Jurik
+- multiarch support, the official tarball URL
 * Thu Nov 20 2008 - dauphin@enst.fr
 - freeglut-2.6.0-rc1, but i comment old line in case of...
 - TODO, there is no 2.6.0 tar file, I make it from the cvs repo. and 

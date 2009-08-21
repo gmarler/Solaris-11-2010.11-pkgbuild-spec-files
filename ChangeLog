@@ -6,6 +6,7 @@
 	* encumbered/SFElibmad.spec: multiarch support
 	* SFElibmp4v2.spec: initial version
 	* encumbered/SFEfaad2.spec: multiarch support
+	* SFEfreeglut.spec: multiarch support, the official tarball URL
 
 2009-08-13  Matt Lewandowsky <matt@greenviolet.net>
 
