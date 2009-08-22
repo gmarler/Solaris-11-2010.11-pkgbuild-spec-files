@@ -1,0 +1,20 @@
+--- perdition-1.17.1/perdition/Makefile.in.orig	2009-07-19 00:25:21.407328986 +0200
++++ perdition-1.17.1/perdition/Makefile.in	2009-07-19 00:19:49.410526246 +0200
+@@ -312,7 +312,7 @@
+ @ssl_lib@ \
+ @dmalloc_lib@
+ 
+-perdition_LDFLAGS = -rdynamic
++perdition_LDFLAGS =
+ all: all-recursive
+ 
+ .SUFFIXES:
+--- perdition-1.17.1/perdition/Makefile.am.orig	2009-07-19 00:25:14.602594020 +0200
++++ perdition-1.17.1/perdition/Makefile.am	2005-06-22 07:50:05.000000000 +0200
+@@ -106,5 +106,5 @@
+ @ssl_lib@ \
+ @dmalloc_lib@
+ 
+-perdition_LDFLAGS = -rdynamic
++perdition_LDFLAGS =
+ 
