@@ -1,3 +1,8 @@
+2009-08-15  Thomas Wagner  <tom68@users.sourceforge.net>
+
+        * SFElibvanessa-adt.spec, SFElibvanessa-logger.spec, SFElibvanessa-socket.spec: (new) Supporting 
+          libs for (experimental/)SFEperdition imap & pop3 transpartent loadbalancer/proxy/migrationsassistant
+
 2009-08-22  Milan Jurik <sfnet@xylab.cz>
 
 	* SFEnasm.spec: update to 2.07
