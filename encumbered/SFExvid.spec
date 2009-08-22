@@ -4,18 +4,20 @@
 # includes module(s): xvid
 #
 %include Solaris.inc
+%define cc_is_gcc 1
 
-%define	src_ver 1.2.2
-%define	src_name xvidcore
-%define	src_url	http://downloads.xvid.org/downloads
+%ifarch amd64 sparcv9
+%include arch64.inc
+%use xvid_64 = xvid.spec
+%endif
+
+%include base.inc
+%use xvid = xvid.spec
 
 Name:		SFExvid
-Summary:	ISO MPEG-4 compliant video codec
-Version:	%{src_ver}
+Summary:	%{xvid.summary}
+Version:	%{xvid.version}
 License:	GPL
-Source:		%{src_url}/%{src_name}-%{version}.tar.bz2
-Patch1:		xvid-01-solaris.diff
-#Patch2:		xvid-02-nasm.diff
 SUNW_BaseDir:	%{_basedir}
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 
@@ -39,48 +41,33 @@ SUNW_BaseDir:            %{_basedir}
 Requires: %name
 
 %prep
-%setup -q -n %{src_name}
-%patch1 -p1
-#%patch2 -p1
+rm -rf %name-%version
+mkdir %name-%version
+%ifarch amd64 sparcv9
+mkdir %name-%version/%_arch64
+%xvid_64.prep -d %name-%version/%_arch64
+%endif
+
+mkdir %name-%version/%{base_arch}
+%xvid.prep -d %name-%version/%{base_arch}
+
 
 %build
-CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
-if test "x$CPUS" = "x" -o $CPUS = 0; then
-     CPUS=1
-fi
+%ifarch amd64 sparcv9
+%xvid_64.build -d %name-%version/%_arch64
+%endif
 
-#export CC=/usr/sfw/bin/gcc
-export CC=/usr/gnu/bin/gcc
-export CXX=/usr/gnu/bin/g++
-export CPPFLAGS="-D_LARGEFILE64_SOURCE -I%{xorg_inc} -I%{gnu_inc}"
-export CFLAGS="%gcc_optflags -O4"
-export LDFLAGS="%_ldflags %{gnu_lib_path}"
-export ac_cv_prog_ac_yasm=no
+%xvid.build -d %name-%version/%{base_arch}
 
-cd build/generic
-bash ./bootstrap.sh
-# autotools changes -Wl,--version-script to -Wl,-M since
-# it thinks we are using the Sun linker.  I do not know
-# how to persuade autotools that we are actually using the
-# gnu linker /usr/gnu/ld.  Hence the following sed hack.
-#mv configure configure.genned
-#sed -e 's/-Wl,-M,libxvidcore.ld/-Wl,--version-script,libxvidcore.ld/' configure.genned >configure
-#chmod ug+x configure
-./configure --prefix=%{_prefix}			\
-            --libdir=%{_libdir}			\
-            --includedir=%{_includedir}
-make
 
 %install
 rm -rf $RPM_BUILD_ROOT
-cd build/generic
-make install DESTDIR=$RPM_BUILD_ROOT
-rm -f $RPM_BUILD_ROOT%{_libdir}/lib*.*a
-(
-   cd $RPM_BUILD_ROOT%{_libdir}
-   ln -s libxvidcore.so.4.2 libxvidcore.so.4
-   ln -s libxvidcore.so.4.2 libxvidcore.so
-)
+%ifarch amd64 sparcv9
+%xvid_64.install -d %name-%version/%_arch64
+%endif
+
+%xvid.install -d %name-%version/%{base_arch}
+
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -94,6 +81,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}
 
 %changelog
+* Sat Aug 22 2009 - Milan Jurik
+- multiarch support
 * Sun Aug 09 2009 - Thomas Wagner
 - switch to gcc4
 - (Build)Requires: SFEgcc/SFEgccruntime
