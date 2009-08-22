@@ -1,3 +1,7 @@
+2009-08-22  Milan Jurik <sfnet@xylab.cz>
+
+	* SFEnasm.spec: update to 2.07
+
 2009-08-22  Matt Lewandowsky <matt@greenviolet.net>
 
 	* SFEwine.spec: Fix the version detection logic to hopefully bypass

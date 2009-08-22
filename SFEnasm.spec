@@ -5,13 +5,13 @@
 
 %include Solaris.inc
 
-%define src_version 2.06rc12
+%define src_version 2.07
 
 Name:                SFEnasm
 Summary:             Portable, modular 80x86 assembler
-Version:             2.6.0.12
+Version:             2.7.0
 Source:              http://www.nasm.us/pub/nasm/releasebuilds/%{src_version}/nasm-%{src_version}.tar.bz2
-
+License:             2-BSD
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -43,7 +43,7 @@ mkdir -p "$DOC"/rdoff
 make INSTALLROOT="$RPM_BUILD_ROOT" \
         docdir=%{docdir}/nasm \
         install_everything
-cp AUTHORS CHANGES COPYING README TODO doc/*.doc "$DOC"
+cp AUTHORS CHANGES LICENSE README TODO doc/*.doc "$DOC"
 cp rdoff/README "$DOC"/rdoff
 cp rdoff/doc/* "$DOC"/rdoff
 
@@ -65,6 +65,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/doc/nasm/*
 
 %changelog
+* Sat Aug 22 2009 - Milan Jurik
+- update to 2.07
 * Sat Jun 13 2009 - Milan Jurik
 - upgrade to 2.06rc12
 * Sat Mar 14 2009 - Milan Jurik
