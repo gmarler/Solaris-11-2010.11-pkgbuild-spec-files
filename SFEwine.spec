@@ -20,7 +20,7 @@
 # %endif
 
 %if %{!?version:1}
-	%define version %{!?version:%( version=`wget -O - "http://www.ibiblio.org/pub/linux/system/emulators/wine/wine.lsm" 2>/dev/null | grep "Version: " | head -1 | sed -e 's,^Version: ,,'`; if [ "$version" = "" ]; then version=`ls %{_sourcedir}/wine-*.tar.bz2 | sed -e 's,^.*wine-,,' -e 's,\.tar\.bz2,,' | tail -1`; fi; echo $version )}
+	%define version %{!?version:%( version=`wget -O - "ftp://ibiblio.org/pub/linux/system/emulators/wine/wine.lsm" 2>/dev/null | grep "Version: " | head -1 | sed -e 's,^Version: ,,'`; if [ "$version" = "" ]; then version=`ls %{_sourcedir}/wine-*.tar.bz2 | sed -e 's,^.*wine-,,' -e 's,\.tar\.bz2,,' | tail -1`; fi; echo $version )}
 %endif
 
 Name:                   SFEwine
@@ -232,9 +232,12 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}
 %dir %attr (0755, root, sys) %{_datadir}
 %dir %attr (0755, root, other) %{_datadir}/aclocal
-%{_datadir}/aclocal/*
 
 %changelog
+* Fri Aug 22 2009 - matt@greenviolet.net
+- Fix the version detection logic to hopefully bypass the mirror system
+- Allow packaging with an empty aclocal
+
 * Thu Aug 20 2009 - matt@greenviolet.net
 - Allow overriding automatic versioning
 - Add Winetricks and Wine applications to the menus
