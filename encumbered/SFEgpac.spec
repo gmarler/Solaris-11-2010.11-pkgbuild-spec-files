@@ -5,14 +5,26 @@
 #
 %include Solaris.inc
 
-%define	src_name gpac
+%define with_wxw_gcc %(pkginfo -q SFEwxwidgets-gnu && echo 1 || echo 0)
+
+%if %with_wxw_gcc
+%define cc_is_gcc 1
+export CC=gcc
+export CXX=g++
+%endif
+
+%ifarch amd64 sparcv9
+%include arch64.inc
+%use gpac_64 = gpac.spec
+%endif
+
+%include base.inc
+%use gpac = gpac.spec
 
 Name:                SFEgpac
-Summary:             Open Source multimedia framework
-Version:             0.4.4
+Summary:             %{gpac.summary}
+Version:             %{gpac.version}
 URL:                 http://gpac.sourceforge.net/
-Source:              http://%{sf_mirror}/%{src_name}/%{src_name}-%{version}.tar.gz
-Patch1:		     gpac-new-01.diff
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -23,10 +35,18 @@ Requires: SFElibmad
 BuildRequires: SFEfaad2-devel
 Requires: SFEfaad2
 Requires: SUNWfreetype2
-#BuildRequires: SFEwxwidgets-gnu-devel
-#Requires: SFEwxwidgets-gnu
+# Check whether the user has installed the Sun Studio or GCC
+# version of wxWidgets, and build with GCC if using the GCC
+# version
+%if %with_wxw_gcc
+BuildRequires: SFEwxwidgets-gnu-devel
+Requires: SFEwxwidgets-gnu
+%else
 BuildRequires: SUNWwxwidgets-devel
 Requires: SUNWwxwidgets
+%endif
+BuildRequires: SFExvid-devel
+Requires: SFExvid
 
 %package devel
 Summary:                 %{summary} - development files
@@ -35,41 +55,33 @@ SUNW_BaseDir:            %{_prefix}
 Requires: %name
 
 %prep
-unset P4PORT
-%setup -q -n gpac
-%patch1 -p1
+rm -rf %name-%version
+mkdir %name-%version
+%ifarch amd64 sparcv9
+mkdir %name-%version/%_arch64
+%gpac_64.prep -d %name-%version/%_arch64
+%endif
+
+mkdir %name-%version/%{base_arch}
+%gpac.prep -d %name-%version/%{base_arch}
+
 
 %build
-CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
-if test "x$CPUS" = "x" -o $CPUS = 0; then
-     CPUS=1
-fi
+%ifarch amd64 sparcv9
+%gpac_64.build -d %name-%version/%_arch64
+%endif
 
-#export PATH=/usr/gnu/bin:$PATH
-export LDFLAGS="%_ldflags"
-#export LD_OPTIONS="-i -L/usr/gnu/lib -L/usr/X11/lib -R/usr/gnu/lib:/usr/X11/lib:/usr/sfw/lib"
-#export CXX=g++
-export CXX=CC
-#RPM_OPT_FLAGS="-O4 -fPIC -DPIC -fno-omit-frame-pointer"
-RPM_OPT_FLAGS="-KPIC -DPIC "
+%gpac.build -d %name-%version/%{base_arch}
 
-chmod 755 ./configure
-./configure --prefix=%{_prefix}		\
-            --mandir=%{_mandir}		\
-	    --cc=cc			\
-	    --extra-ldflags="-KPIC"	\
-	    --extra-libs="-lrt -lm"	\
-	    --disable-opt		\
-	    --mozdir=/usr/lib/firefox	\
-	    --extra-cflags="$RPM_OPT_FLAGS"
-echo "CXX=CC" >> config.mak
-make
 
 %install
 rm -rf $RPM_BUILD_ROOT
-make install DESTDIR=$RPM_BUILD_ROOT
-make install-lib DESTDIR=$RPM_BUILD_ROOT
-rm -f $RPM_BUILD_ROOT%{_libdir}/lib*.*a
+%ifarch amd64 sparcv9
+%gpac_64.install -d %name-%version/%_arch64
+%endif
+
+%gpac.install -d %name-%version/%{base_arch}
+
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -80,6 +92,11 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, bin) %{_libdir}
 %{_libdir}/lib*.so*
 %{_libdir}/gpac
+%ifarch amd64 sparcv9
+%dir %attr (0755, root, bin) %{_libdir}/%{_arch64}
+%{_libdir}/%{_arch64}/lib*.so*
+%{_libdir}/%{_arch64}/gpac
+%endif
 %dir %attr (0755, root, sys) %{_datadir}
 %dir %attr (0755, root, bin) %{_mandir}
 %{_datadir}/gpac
@@ -90,6 +107,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}
 
 %changelog
+* Sun Aug 24 2009 - Milan Jurik
+- multiarch support, update to 0.4.5
 * Sun Nov 30 2008 - dauphin@enst.fr
 - SUNWwxwigets is on b101
 * Fri Nov 21 2008 - dauphin@enst.fr

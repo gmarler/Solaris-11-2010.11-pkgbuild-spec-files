@@ -1,0 +1,19 @@
+--- gpac/configure	Tue Dec  2 19:04:42 2008
++++ gpac-patch/configure	Sat Aug 22 11:17:14 2009
+@@ -102,7 +102,6 @@
+ bigendian="no"
+ SHFLAGS=-shared
+ need_inet_aton="no"
+-LDFLAGS="$LDFLAGS -Wl --warn-common"
+ CFLAGS=""
+ CPPFLAGS=""
+ GPAC_SH_FLAGS=-lpthread
+@@ -309,7 +308,7 @@
+ 
+ SunOS)
+ make="gmake"
+-LDFLAGS=""
++LDFLAGS="$LDFLAGS"
+ need_inet_aton="yes"
+ extralibs="$extralibs -lsocket -lnsl"
+ ;;

@@ -1,0 +1,11 @@
+--- gpac/applications/osmo4_wx/wxOsmo4.cpp	Sat Aug 22 11:31:29 2009
++++ gpac-patch/applications/osmo4_wx/wxOsmo4.cpp	Sat Aug 22 11:31:34 2009
+@@ -1555,7 +1555,7 @@
+ END_EVENT_TABLE()
+ 
+ AboutDlg::AboutDlg(wxWindow *parent)
+-             : wxDialog(parent, -1, wxString(wxT("GPAC/Osmo4 V ")wxT(GPAC_FULL_VERSION)))
++             : wxDialog(parent, -1, wxString(wxT("GPAC/Osmo4 V 0.4.5 (build 33)")))
+ {
+ 	SetSize(220, 320);
+ 	Centre();

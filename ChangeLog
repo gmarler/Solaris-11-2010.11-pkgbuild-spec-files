@@ -1,3 +1,7 @@
+2009-08-24  Milan Jurik <sfnet@xylab.cz>
+
+        * encumbered/SFEgpac.spec: multiarch support, update to 0.4.5
+
 2009-08-15  Thomas Wagner  <tom68@users.sourceforge.net>
 
         * SFElibvanessa-adt.spec, SFElibvanessa-logger.spec, SFElibvanessa-socket.spec: (new) Supporting 
