@@ -6,16 +6,16 @@
 %include Solaris.inc
 
 %define src_name	gargoyle
-%define src_version     2008-12-25
+%define src_version     2009-08-25
 
 Name:                   SFEgargoyle
 URL:                    http://ccxvii.net/gargoyle/
 Summary:                Interactive Fiction Player
-Version:                2008.12.25
+Version:                2009.08.25
 Source:                 http://garglk.googlecode.com/files/gargoyle-%{src_version}-sources.zip
 Patch1:                 gargoyle-01-solaris.diff
-Patch2:                 gargoyle-02-fixcompile.diff
-Patch3:                 gargoyle-03-libexec.diff
+Patch2:                 gargoyle-02-libexec.diff
+Patch3:                 gargoyle-03-tads.diff
 SUNW_BaseDir:           %{_basedir}
 BuildRoot:              %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -70,5 +70,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libexecdir}/gargoyle/*
 
 %changelog
+%define src_version     2009-08-25
+* Tue Aug 25 2009 - brian.cameron@sun.com
+- Bump to 2009-08-25
 * Tue Dec 30 2008 - brian.cameron@sun.com
-- Initial version
+- Initial version with 2008-12-25.

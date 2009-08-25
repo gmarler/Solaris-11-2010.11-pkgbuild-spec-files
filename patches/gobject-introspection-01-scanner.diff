@@ -1,8 +1,0 @@
---- gobject-introspection/tools/g-ir-scanner.in-orig	2009-04-03 17:22:48.504300000 -0500
-+++ gobject-introspection/tools/g-ir-scanner.in	2009-04-03 17:22:54.263013000 -0500
-@@ -1,4 +1,4 @@
--#!/usr/bin/env python
-+#!/usr/bin/python2.6
- # -*- Mode: Python -*-
- # GObject-Introspection - a framework for introspecting GObject libraries
- # Copyright (C) 2008  Johan Dahlin

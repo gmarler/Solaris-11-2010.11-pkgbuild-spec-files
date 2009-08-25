@@ -1,0 +1,13 @@
+--- a/tads/tads2/os.h-orig	2009-08-25 13:33:22.238759000 -0500
++++ a/tads/tads2/os.h	2009-08-25 13:33:38.221450000 -0500
+@@ -58,6 +58,10 @@ Modified
+ 
+ #ifndef OS_INCLUDED
+ #define OS_INCLUDED
++typedef unsigned short	ushort;
++typedef unsigned int	uint;
++typedef unsigned long	ulong;
++
+ 
+ /*
+  *   For C++ files, define externals with C linkage 

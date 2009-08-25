@@ -1,7 +1,20 @@
+2009-08-25  Brian Cameron  <brian.cameron@sun.com>
+
+	* SFEgobject-introspection.spec, SFEgir-repository.spec,
+	  patches/gobject-introspection-01-scanner.diff,
+	  patches/gobject-introspection-02-fixshave.diff,
+	  patches/gobject-introspection-03-sunstudio.diff,
+	  patches/gobject-introspection-04-crash-compiler.diff,
+	  patches/gir-repository-01-nogst.diff: Remove, moved to spec-files.
+	* SFEgargoyle.spec, patches/gargoyle-02-fixcompile.diff: Bump to
+	  2009-08-25 and remove upstream patch.
+	* patches/gargoyle-02-libexec.diff: Renumber from 03.
+	* patches/gargoyle-03-tads.diff: Add new patch needed to build.
+	
 2009-08-25  Willie Walker <william.walker@sun.com>
 
-        * SFEliblouis.spec: get this working again on b121. Also use the
-        liblouis version number instead of the default version number.
+	* SFEliblouis.spec: get this working again on b121. Also use the
+	  liblouis version number instead of the default version number.
 
 2009-08-25  Matt Lewandowsky <matt@greenviolet.net>
 
@@ -16,12 +29,14 @@
 
 2009-08-24  Milan Jurik <sfnet@xylab.cz>
 
-        * encumbered/SFEgpac.spec: multiarch support, update to 0.4.5
+	* encumbered/SFEgpac.spec: multiarch support, update to 0.4.5
 
 2009-08-15  Thomas Wagner  <tom68@users.sourceforge.net>
 
-        * SFElibvanessa-adt.spec, SFElibvanessa-logger.spec, SFElibvanessa-socket.spec: (new) Supporting 
-          libs for (experimental/)SFEperdition imap & pop3 transpartent loadbalancer/proxy/migrationsassistant
+	* SFElibvanessa-adt.spec, SFElibvanessa-logger.spec,
+	  SFElibvanessa-socket.spec: (new) Supporting libs for
+	  (experimental/)SFEperdition imap & pop3 transpartent
+	  loadbalancer/proxy/migrationsassistant
 
 2009-08-22  Milan Jurik <sfnet@xylab.cz>
 
@@ -31,7 +46,7 @@
 2009-08-22  Matt Lewandowsky <matt@greenviolet.net>
 
 	* SFEwine.spec: Fix the version detection logic to hopefully bypass
-	the mirror system. Allow packaging with an empty aclocal.
+	  the mirror system. Allow packaging with an empty aclocal.
 	
 2009-08-21  Milan Jurik <sfnet@xylab.cz>
 
@@ -46,24 +61,25 @@
 2009-08-20  Matt Lewandowsky <matt@greenviolet.net>
 
 	* SFEwine.spec: Allow overriding automatic versioning. Add Winetricks
-	and Wine applications to the menus. Fix configure flags; force CUPS
-	and OpenSSL. Jump to SFEgcc for gcc4 (back to /usr/gnu/bin). Disable
-	Xshm due to X server bugs in current Xorg. Clean up %post tasks. A
-	bit of compile/link flags updating. Remove dependency on SFEgxmessage
-	as it is no longer required by winetricks. Clean up winetricks
-	prep/install. Move winetricks to Source1 (working around pkgbuild
-	bug, still). Change maintainership to myself.
+	  and Wine applications to the menus. Fix configure flags; force CUPS
+	  and OpenSSL. Jump to SFEgcc for gcc4 (back to /usr/gnu/bin). Disable
+	  Xshm due to X server bugs in current Xorg. Clean up %post tasks. A
+	  bit of compile/link flags updating. Remove dependency on SFEgxmessage
+	  as it is no longer required by winetricks. Clean up winetricks
+	  prep/install. Move winetricks to Source1 (working around pkgbuild
+	  bug, still). Change maintainership to myself.
 
 	* ext-sources/wine-appwiz.desktop, ext-sources/wine-cmd.desktop,
-	ext-sources/wine-notepad.desktop, ext-sources/wine-regedit.desktop,
-	ext-sources/wine-taskmgr.desktop, ext-sources/wine-winecfg.desktop,
-	ext-sources/wine-winefile.desktop, ext-sources/wine-winemine.desktop,
-	ext-sources/wine-wordpad.desktop, ext-sources/winetricks.desktop:
-	New menu files for Wine applications and winetricks.
+	  ext-sources/wine-notepad.desktop, ext-sources/wine-regedit.desktop,
+	  ext-sources/wine-taskmgr.desktop, ext-sources/wine-winecfg.desktop,
+	  ext-sources/wine-winefile.desktop, ext-sources/wine-winemine.desktop,
+	  ext-sources/wine-wordpad.desktop, ext-sources/winetricks.desktop:
+	  New menu files for Wine applications and winetricks.
 	
 2009-08-20  Milan Jurik <sfnet@xylab.cz>
 
-	* encumbered/SFEmplayer-snap.spec: -fomit-frame-pointer to workaround Solaris GCC bug on Nehalem
+	* encumbered/SFEmplayer-snap.spec: -fomit-frame-pointer to workaround
+	  Solaris GCC bug on Nehalem
 	* SFEextremetuxracer.spec: update to 0.4
 
 2009-08-19  Brian Cameron  <brian.cameron@sun.com>
@@ -112,8 +128,8 @@
 	* SFEgnonlin.spec: Bump to 0.10.12.
 
 2009-08-15  Thomas Wagner  <tom68@users.sourceforge.net>
-       
-        * experimental/SFEvlc-1.0.1-encumbered.spec: removed mmx (configure),
+
+	* experimental/SFEvlc-1.0.1-encumbered.spec: removed mmx (configure),
 	  linking success but module cannot be loaded, second submission today:
 	  more fixes, add patches vlc-16* (linking solved), vlc-17* (possibly
 	  only needed for old SunOS with dirfd missing)
@@ -124,7 +140,7 @@
 
 2009-08-14  Thomas Wagner  <tom68@users.sourceforge.net>
 
-        * experimental/SFEvlc-1.0.1-encumbered.spec: (new) copied from old
+	* experimental/SFEvlc-1.0.1-encumbered.spec: (new) copied from old
 	  SFEvlc.spec, same with patches vlc*diff.1.0.1, attempt to get VLC
 	  1.0.1 but Sun linker and gnu linker failed linking. Volunteers
 	  welcome but please collaborate and get in contact early!
