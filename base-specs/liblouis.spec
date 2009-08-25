@@ -3,7 +3,7 @@
 # package are under the same license as the package itself.
 Summary:	Support for contracted braille
 Name:		liblouis
-Version:	1.6.2
+Version:	1.7.0
 License:	GPL V3
 Group:		Libraries
 Source: 	http://liblouis.googlecode.com/files/%{name}-%{version}.tar.gz
@@ -48,6 +48,8 @@ cd ..
 %{_libdir}/python?.?/vendor-packages/louis/*
 
 %changelog
+* Tue Aug 25 2009 - Willie Walker
+- Upgrade to liblouis 1.7.0
 * Tue Jun 16 2009 - Willie Walker
 - Upgrade to liblouis 1.6.2 to get us the 'louis' python module
 * Fri Feb 13 2009 - Willie Walker

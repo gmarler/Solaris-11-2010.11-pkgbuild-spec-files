@@ -1,3 +1,8 @@
+2009-08-25  Willie Walker <william.walker@sun.com>
+
+        * SFEliblouis.spec: get this working again on b121. Also use the
+        liblouis version number instead of the default version number.
+
 2009-08-25  Matt Lewandowsky <matt@greenviolet.net>
 
 	* SFEwine.spec: Add dependency on SFEmpg123, as it will no longer

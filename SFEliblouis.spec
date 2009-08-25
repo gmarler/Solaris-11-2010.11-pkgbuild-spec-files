@@ -7,10 +7,11 @@
 
 Summary:	   %liblouis.summary
 Name:              SFEliblouis
-Version:           %{default_pkg_version}
+Version:           %{liblouis.version}
 SUNW_BaseDir:      %{_basedir}
 SUNW_Copyright:    %{name}.copyright
-BuildRoot:         %{_tmppath}/%{name}-%{version}-build
+BuildRoot:         %{_tmppath}/%{name}-%{liblouis.version}-build
+BuildRequires:     SUNWpython24-ctypes
 Requires:          SUNWpython24-ctypes
 
 %include default-depend.inc
@@ -22,20 +23,21 @@ SUNW_BaseDir:      %{_basedir}
 Requires:          %{name}
 
 %prep
-rm -rf %name-%version
-mkdir %name-%version
-%liblouis.prep -d %name-%version
-cd %{_builddir}/%name-%version
-gzcat %SOURCE | tar xf -
+rm -rf %name-%liblouis.version
+mkdir %name-%liblouis.version
+%liblouis.prep -d %name-%liblouis.version
+cd %{_builddir}/%name-%liblouis.version
+ls ../../SOURCES
+gzcat ../../SOURCES/%{liblouis.name}-%{liblouis.version}.tar.gz | tar xf -
 
 %build
-%liblouis.build -d %name-%version
+%liblouis.build -d %name-%liblouis.version
 
 %install
-%liblouis.install -d %name-%version
+%liblouis.install -d %name-%liblouis.version
 rm $RPM_BUILD_ROOT/%{_infodir}/dir
 
-%{?pkgbuild_postprocess: %pkgbuild_postprocess -v -c "%{version}:%{jds_version}:%{name}:$RPM_ARCH:%(date +%%Y-%%m-%%d):%{support_level}" $RPM_BUILD_ROOT}
+%{?pkgbuild_postprocess: %pkgbuild_postprocess -v -c "%{liblouis.version}:%{jds_version}:%{name}:$RPM_ARCH:%(date +%%Y-%%m-%%d):%{support_level}" $RPM_BUILD_ROOT}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -90,6 +92,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/liblouis/*
 
 %changelog
+* Tue Aug 25 2009 - Willie Walker
+- Get this working again on b121. Also use the liblouis version number
+  instead of the default version number.  Bump to 1.7.0.
 * Tue Jun 16 2009 - Willie Walker
 - Upgrade to liblouis 1.6.2 to get us the 'louis' python module
 * Fri Feb 13 2009 - Willie Walker
