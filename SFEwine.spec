@@ -90,6 +90,7 @@ BuildRequires:  SFEgcc
 Requires:       SFEgccruntime
 BuildRequires:	SFElibaudioio-devel
 Requires:	SFElibaudioio
+Requires:       SFEmpg123
 # Make sure all the package components get installed.
 Requires:       %{name}-devel
 # Following are for winetricks, not wine directly.
@@ -234,6 +235,12 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, other) %{_datadir}/aclocal
 
 %changelog
+* Tue Aug 25 2009 - matt@greenviolet.net
+- Add dependency on SFEmpg123, as it will no longer
+  be included with wine as of 1.1.29, and is required for
+  winemp3.acm (to allow DirectShow playback of MP3 files). See
+  http://source.winehq.org/git/wine.git/?a=commit;h=db71d7c083dccd0e3f1cf43aa1034c9a46a70715
+
 * Fri Aug 22 2009 - matt@greenviolet.net
 - Fix the version detection logic to hopefully bypass the mirror system
 - Allow packaging with an empty aclocal
