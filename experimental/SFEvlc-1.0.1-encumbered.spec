@@ -74,6 +74,7 @@ Patch16:               vlc-16-modules.c-file_offset_bits_ticket_3031.diff
 #seems only relevant to older SunOS releases (5.10, eventuall older builds of 5.11)
 ##TODO## need rework to test for already existing dirfd else define 
 #Patch17:               vlc-17-dirfd-missing-ticket-3029-Fixed-by-c438250.diff
+Patch18:               vlc-18-empty-struct.diff-1.0.1
 
 
 
@@ -166,6 +167,7 @@ Requires:                %{name}
 %patch12 -p1
 %patch14 -p1
 %patch16 -p1
+%patch18 -p1
 #seems only relevant to older SunOS releases (5.10, eventuall older builds of 5.11)
 ##TODO## need rework to test for already existing dirfd else define 
 #%patch17 -p1
@@ -365,6 +367,8 @@ test -x $BASEDIR/lib/postrun || exit 0
 %{_libdir}/pkgconfig/*
 
 %changelog
+* Aug 26 2009 - Gilles dauphin
+- add patch , avoid empty struct for SS12
 * Fri Aug 14 2009 - Thomas Wagner
 - copy to encumbered/SFEvlc-1.0.1-experimental.spec
 - remove patch11 libprostproc detection is upstream

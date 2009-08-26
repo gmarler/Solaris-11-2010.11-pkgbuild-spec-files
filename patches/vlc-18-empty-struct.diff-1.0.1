@@ -1,0 +1,11 @@
+--- vlc-1.0.1/src/stream_output/announce.c.orig	2009-08-26 12:39:06.646555000 +0200
++++ vlc-1.0.1/src/stream_output/announce.c	2009-08-26 12:40:03.233706000 +0200
+@@ -37,6 +37,8 @@
+ 
+ struct announce_method_t
+ {
++/* SS12 does not support empty struct GD 20090826 */
++	int dummy;
+ } sap_method;
+ 
+ /****************************************************************************

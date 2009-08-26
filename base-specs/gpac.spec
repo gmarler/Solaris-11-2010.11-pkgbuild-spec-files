@@ -56,7 +56,9 @@ else
 	mv config.mak config.orig && sed 's/WX_LFLAGS=/WX_LFLAGS=-lCrun -lgtk-x11-2.0 -lgdk-x11-2.0 -lX11 /' config.orig > config.mak
 fi
 
-make -j$CPUS
+# dn't build with paralell make. (need libgpac before MP4Box)
+#make -j$CPUS
+make 
 
 %install
 make install DESTDIR=$RPM_BUILD_ROOT
@@ -67,5 +69,7 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/lib*.*a
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Sun Aug 29 2009 - gilles Dauphin
+- don't parallel make
 * Sun Aug 24 2009 - Milan Jurik
 - Initial base spec file
