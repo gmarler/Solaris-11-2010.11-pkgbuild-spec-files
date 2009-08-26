@@ -1,3 +1,8 @@
+2009-08-26  Gilles Dauphin
+
+	* SFEgpac.spec , no parallel make
+	* experimental/vlc, add patch
+
 2009-08-06  Simon Jin    <yuntong.jin@sun.com>
        
         * SFEgeeqie.spec
