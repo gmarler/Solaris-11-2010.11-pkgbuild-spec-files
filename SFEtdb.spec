@@ -27,7 +27,7 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
 fi
 
 #export CFLAGS="%optflags"
-export CFLAGS="-g"
+export CFLAGS="-g -mt"
 export LDFLAGS="%_ldflags"
 
 ./autogen.sh

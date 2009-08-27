@@ -27,7 +27,7 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
 fi
 
 #export CFLAGS="%optflags"
-export CFLAGS="-g"
+export CFLAGS="-g -mt"
 export LDFLAGS="%_ldflags"
 
 ./autogen.sh
@@ -66,6 +66,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/*/*
 
 %changelog
+* Thu Aug 27 2009 - brian.lu@sun.com
+- add "-mt" to CFLAGS to set errno correctly in MT environment
 * Wed Jun 03 2009 - brian.lu@sun.com
 - Add dependency SUNWswig
 * Wed Feb 18 2009 - jedy.wang@sun.com

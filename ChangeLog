@@ -1,3 +1,11 @@
+2009-08-27  Brian  <brian.lu@sun.com>
+
+	* SFEsamba4.spec:
+	* SFEtalloc.spec:
+	* SFEtdb.spec:
+	* SFEtevent.spec:
+	  add '-mt' to CFLAGS to set errno correctly in MT environment
+
 2009-08-27  Albert Lee  <trisk@forkgnu.org>
 
 	* SFElibdvdplay.spec, SFElibdvdread.spec: Move out of encumbered since

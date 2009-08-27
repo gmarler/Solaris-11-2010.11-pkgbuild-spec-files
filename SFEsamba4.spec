@@ -35,7 +35,7 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
 fi
 
 #export CFLAGS="%optflags"
-export CFLAGS="-g"
+export CFLAGS="-g -mt"
 export LDFLAGS="%_ldflags"
 
 cd source4/
@@ -118,6 +118,8 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0775, root, sys) /var/log/samba
 
 %changelog
+* Thu Aug 27 2009 - brian.lu@sun.com
+- add "-mt" to CFLAGS to set errno correctly in MT environment
 * Thu Jun 04 2009 - brian.lu@sun.com
 - Remove patch samba4-03-FUNCTION-macro.diff
 * Wed Feb 18 2009 - jedy.wang@sun.com
