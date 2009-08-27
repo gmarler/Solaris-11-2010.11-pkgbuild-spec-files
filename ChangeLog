@@ -1,3 +1,10 @@
+2009-08-27  Albert Lee  <trisk@forkgnu.org>
+
+	* SFElibdvdplay.spec, SFElibdvdread.spec: Move out of encumbered since
+	  only libdvdcss is known to have legal issues.
+	* encumbered/SFElibdvdplay.spec, encumbered/SFElibdvdread.spec:
+	  Deleted.
+
 2009-08-27  Thomas Wagner  <tom68@users.sourceforge.net>
 
         * experimental/osdistro.inc: (new) highly experimental detection of used OS distribution. don't use, please discuss!
