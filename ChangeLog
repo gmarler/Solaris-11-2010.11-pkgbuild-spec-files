@@ -1,3 +1,15 @@
+2009-08-29  Brian Cameron  <brian.cameron@sun.com>
+
+	Updated all of the following to now use the SUNW spec-files in
+	vermillion.
+	* SFEgjs.spec: Bump to 0.4.
+	* SFEmutter.spec, patches/mutter-01-clutter.diff,
+	  patches/mutter-03-solaris.shell.diff:  Bump to 2.27.3.  Remove
+	  upstream patches.
+	* patches/mutter-01-suncc-xc99.diff: Renumber from 0.2
+	* SFEgnome-shell.spec: Now build from 2.27.1 tarball.
+	* patches/gnome-shell-01-launch.diff: Remove upstream hunks.
+
 2009-08-27  Brian  <brian.lu@sun.com>
 
 	* SFEsamba4.spec:
@@ -15,13 +27,17 @@
 
 2009-08-27  Thomas Wagner  <tom68@users.sourceforge.net>
 
-        * experimental/osdistro.inc: (new) highly experimental detection of used OS distribution. don't use, please discuss!
-        * experimental/packagenamemakros.inc: (new) highly experimental macro to e.g. include openssl by BuildRequires: %buildrequiresopenssl. don't use, please discuss!
+        * experimental/osdistro.inc: (new) highly experimental detection of
+	  used OS distribution. don't use, please discuss!
+        * experimental/packagenamemakros.inc: (new) highly experimental macro
+	  to e.g. include openssl by BuildRequires: %buildrequiresopenssl.
+	  don't use, please discuss!
 
 2009-08-26  Gilles Dauphin
 
 	* SFEgpac.spec: no parallel make
-	* experimental/SFEvlc-1.0.1-encumbered.spec: add patch vlc-18-empty-struct.diff-1.0.1 (SS12)
+	* experimental/SFEvlc-1.0.1-encumbered.spec: add patch
+	  vlc-18-empty-struct.diff-1.0.1 (SS12)
 
 2009-08-06  Simon Jin    <yuntong.jin@sun.com>
        

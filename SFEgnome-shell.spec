@@ -7,7 +7,8 @@
 %include Solaris.inc
 Name:                    SFEgnome-shell
 Summary:                 GNOME Shell
-Version:                 0.0.1
+Version:                 2.27.1
+Source:                  http://ftp.gnome.org/pub/GNOME/sources/gnome-shell/2.27/gnome-shell-%{version}.tar.bz2
 Source1:                 shell.desktop
 #owner:yippi date:2009-04-07 type:bug bugzilla:578196
 Patch1:                  gnome-shell-01-launch.diff
@@ -20,10 +21,10 @@ BuildRequires:           SUNWgnome-base-libs-devel
 BuildRequires:           SUNWgnome-media-devel
 BuildRequires:           SUNWgnome-panel-devel
 BuildRequires:           SUNWlibrsvg-devel
-BuildRequires:           SFEclutter-1-0-devel
-BuildRequires:           SFEgir-repository
+BuildRequires:           SUNWclutter-devel
+BuildRequires:           SUNWgir-repository
+BuildRequires:           SUNWgobject-introspection-devel
 BuildRequires:           SFEgjs-devel
-BuildRequires:           SFEgobject-introspection-devel
 BuildRequires:           SFEmutter-devel
 Requires:                SUNWPython26
 Requires:                SUNWdbus-glib
@@ -31,15 +32,10 @@ Requires:                SUNWgnome-base-libs
 Requires:                SUNWgnome-media
 Requires:                SUNWgnome-panel
 Requires:                SUNWlibrsvg
-# 2009-08-04
-# DO NOT use SUNWclutter
-# git-master mutter need /usr/share/gir-1.0/Clutter-1.0.gir,
-# SFE version ship this file because it is built on top of
-# SFEgobject-introspection and SFEgir-repository
-Requires:                SFEclutter-1-0
-Requires:                SFEgir-repository
+Requires:                SUNWclutter
+Requires:                SUNWgir-repository
+Requires:                SUNWgobject-introspection
 Requires:                SFEgjs
-Requires:                SFEgobject-introspection
 Requires:                SFEmutter
 %include default-depend.inc
 
@@ -48,33 +44,45 @@ Summary:		 %{summary} - / filesystem
 SUNW_BaseDir:		 /
 %include default-depend.inc
 
+%if %build_l10n
+%package l10n
+Summary:                 %{summary} - l10n files
+SUNW_BaseDir:            %{_basedir}
+%include default-depend.inc
+Requires:                %{name}
+%endif
+
 %prep
-mkdir -p gnome-shell-%version
-cd gnome-shell-%version
-rm -fR gnome-shell
-git-clone git://git.gnome.org/gnome-shell
-cd gnome-shell
+%setup -q -n gnome-shell-%version
 %patch1 -p1
 
 %build
-cd gnome-shell-%version
-cd gnome-shell
-./autogen.sh \
+libtoolize --force
+aclocal $ACLOCAL_FLAGS
+autoheader
+automake -a -c -f
+autoconf
+./configure \
    --prefix=%{_prefix} \
    --libexecdir=%{_libexecdir} \
-   --sysconfdir=%{_sysconfdir}
+   --mandir=%{_mandir} \
+   --sysconfdir=%{_sysconfdir} \
+   --with-clutter
 make
 
 %install
-rm -rf $RPM_BUILD_ROOT
-cd gnome-shell-%version
-cd gnome-shell
 make install DESTDIR=$RPM_BUILD_ROOT
 
 # Install a desktop file so you can log into GNOME Shell.
 #
 install -d $RPM_BUILD_ROOT%{_datadir}/xsessions
 install --mode=0444 %SOURCE1 $RPM_BUILD_ROOT%{_datadir}/xsessions
+
+%if %build_l10n
+%else
+# REMOVE l10n FILES
+rm -rf $RPM_BUILD_ROOT%{_datadir}/locale
+%endif
 
 %{?pkgbuild_postprocess: %pkgbuild_postprocess -v -c "%{version}:%{jds_version}:%{name}:$RPM_ARCH:%(date +%%Y-%%m-%%d):%{support_level}" $RPM_BUILD_ROOT}
 
@@ -105,6 +113,8 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 %{_libdir}/gnome-shell
 %{_libdir}/mutter/plugins
 %dir %attr (0755, root, sys) %{_datadir}
+%dir %attr (0755, root, other) %{_datadir}/applications
+%{_datadir}/applications/*
 %{_datadir}/gnome-shell
 %{_datadir}/xsessions
 
@@ -112,6 +122,13 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 %defattr(-, root, sys)
 %attr(0755, root, sys) %dir %{_sysconfdir}
 %{_sysconfdir}/gconf/schemas/gnome-shell.schemas
+
+%if %build_l10n
+%files l10n
+%defattr (-, root, bin)
+%dir %attr (0755, root, sys) %{_datadir}
+%attr (-, root, other) %{_datadir}/locale
+%endif
 
 %changelog
 * Wed Aug 05 2009 - Brian Cameron  <brian.cameron@sun.com>

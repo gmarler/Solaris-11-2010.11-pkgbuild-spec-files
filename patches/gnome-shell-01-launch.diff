@@ -6,22 +6,3 @@
  
  import atexit
  import optparse
-@@ -27,8 +27,7 @@ def find_cmd (cmd_list):
-     raise SystemExit("None of the commands %s exist" % cmd_list)
-     
- def pidof(command):
--    pidof_cmd = find_cmd(["/sbin/pidof", "/bin/pidof", "/usr/bin/pidof"])
--    pidof = subprocess.Popen([pidof_cmd, command], stdout=subprocess.PIPE)
-+    pidof = subprocess.Popen(["/bin/sh", "-c", "/usr/bin/pgrep -u `whoami` %s" % command], stdout=subprocess. PIPE)
-     pids = pidof.communicate()[0].split()
-     pidof.wait()
- 
-@@ -121,7 +120,7 @@ def start_shell():
-     if os.path.exists(os.path.join(bin_dir, 'gnome-shell.in')):
-         running_from_source_tree = True
-         top_dir = os.path.dirname(bin_dir)
--        plugin = os.path.join(top_dir, 'src', 'libgnome-shell.la')
-+        plugin = os.path.join(top_dir, 'src', 'libgnome-shell.so')
-         typelib_dir = os.path.join(top_dir, "src")
-         js_dir = os.path.join(top_dir, "js")
-         data_dir = os.path.join(top_dir, "data")

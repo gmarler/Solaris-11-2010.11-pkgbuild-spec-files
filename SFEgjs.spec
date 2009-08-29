@@ -17,15 +17,15 @@
 %include Solaris.inc
 Name:                    SFEgjs
 Summary:                 GNOME JavaScript bindings
-Version:                 0.3
-Source:                  http://ftp.gnome.org/pub/GNOME/sources/gjs/0.3/gjs-%{version}.tar.bz2
+Version:                 0.4
+Source:                  http://ftp.gnome.org/pub/GNOME/sources/gjs/0.4/gjs-%{version}.tar.bz2
 Patch1:                  gjs-01-solaris.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 BuildRequires:           SUNWfirefox-devel
-BuildRequires:           SFEgobject-introspection-devel
+BuildRequires:           SUNWgobject-introspection-devel
 Requires:                SUNWfirefox
-Requires:                SFEgobject-introspection
+Requires:                SUNWgobject-introspection
 %include default-depend.inc
 
 %package devel
@@ -73,6 +73,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/*
 
 %changelog
+* Sat Aug 29 2009 - Brian Cameron  <brian.cameron@sun.com>
+- Bump to 0.4.
 * Mon Aug 03 2009 - Brian.Cameron  <brian.cameron@sun.com>
 - Update to build with 0.3 tarball release.
 * Tue Jul 07 2009 - Brian.Cameron  <brian.cameron@sun.com>
