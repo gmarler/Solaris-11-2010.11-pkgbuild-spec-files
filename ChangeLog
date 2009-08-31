@@ -12,7 +12,7 @@
 	* SFEmutter.spec, patches/mutter-01-clutter.diff,
 	  patches/mutter-03-solaris.shell.diff:  Bump to 2.27.3.  Remove
 	  upstream patches.
-	* patches/mutter-01-suncc-xc99.diff: Renumber from 0.2
+	* patches/mutter-01-suncc-xc99.diff: Renumber from 02
 	* SFEgnome-shell.spec: Now build from 2.27.1 tarball.
 	* patches/gnome-shell-01-launch.diff: Remove upstream hunks.
 
