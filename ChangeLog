@@ -49,7 +49,7 @@
 
 	** SFEgeeqie.spec
 	* base/geeqie.spec
-	* copyright/SFEgeeqie.copyright
+	* copyright/SFEgeeqie.copyright
 	  init spec file for geeqie 
 
 2009-08-25  Brian Cameron  <brian.cameron@sun.com>
