@@ -4,6 +4,8 @@
 # includes module(s): gnome-shell
 #
 
+%define pythonver 2.6
+
 %include Solaris.inc
 Name:                    SFEgnome-shell
 Summary:                 GNOME Shell
@@ -57,6 +59,7 @@ Requires:                %{name}
 %patch1 -p1
 
 %build
+export PYTHON=/usr/bin/python%{pythonver}
 libtoolize --force
 aclocal $ACLOCAL_FLAGS
 autoheader
