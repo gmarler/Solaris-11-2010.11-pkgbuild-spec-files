@@ -7,7 +7,7 @@
 Name:                    SFEpidgin-facebookchat
 Summary:                 Facebook chat plugin for pidgin
 Group:                   System/GUI/GNOME
-Version:                 1.47
+Version:                 1.52
 Source:                  http://pidgin-facebookchat.googlecode.com/files/pidgin-facebookchat-source-%{version}.tar.bz2
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}_%{version}-build
@@ -15,8 +15,10 @@ BuildRoot:               %{_tmppath}/%{name}_%{version}-build
 
 Requires:    SUNWgnome-libs
 Requires:    SUNWgnome-im-client
+Requires:    SFEjson-glib
 BuildRequires:    SUNWgnome-common-devel
 BuildRequires:    SUNWgnome-im-client
+BuildRequires:    SFEjson-glib-devel
 
 %prep
 rm -rf %name_%version
@@ -35,8 +37,10 @@ GLIB_CFLAGS=$(pkg-config --cflags glib-2.0)
 GLIB_LIBS=$(pkg-config --libs glib-2.0)
 LIBPURPLE_CFLAGS=$(pkg-config --cflags purple)
 LIBPURPLE_LIBS=$(pkg-config --libs purple)
+JSON_GLIB_CFLAGS=$(pkg-config --cflags json-glib-1.0)
+JSON_GLIB_LIBS=$(pkg-config --libs json-glib-1.0)
 
-$CC $CFLAGS $GLIB_CFLAGS $LIBPURPLE_CFLAGS *.c -o libfacebook.so $LDFLAGS $GLIB_LIBS $LIBPURPLE_LIBS
+$CC $CFLAGS $GLIB_CFLAGS $LIBPURPLE_CFLAGS $JSON_GLIB_CFLAGS *.c -o libfacebook.so $LDFLAGS $GLIB_LIBS $LIBPURPLE_LIBS $JSON_GLIB_LIBS
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -59,5 +63,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/pixmaps/*
 
 %changelog
+* Thu Jun 25 2009 - Albert Lee <trisk@forkgnu.org>
+- Bump to 0.52
+- Add SFEjson-glib dependency
 * Fri Jan 30 2009 - Albert Lee <trisk@acm.jhu.edu>
 - Initial spec

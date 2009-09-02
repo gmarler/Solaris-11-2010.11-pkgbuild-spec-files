@@ -10,12 +10,14 @@ Version:                 2.7
 Source:                  %{sf_download}/faac/faad2-%{version}.tar.gz
 Patch4:                  faad-04-wall.diff
 Patch6:                  faad-06-iquote.diff
+Patch7:                  faad-07-sunpro.diff
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 
 %prep
 %setup -q -n %{name}-%{version}
 %patch4 -p1
 %patch6 -p1
+%patch7 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`

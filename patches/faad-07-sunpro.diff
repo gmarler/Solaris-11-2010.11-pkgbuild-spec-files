@@ -1,0 +1,11 @@
+--- faad2-2.7.orig/libfaad/common.h	2009-02-04 19:51:03.000000000 -0500
++++ faad2-2.7/libfaad/common.h	2009-09-02 15:21:17.780184831 -0400
+@@ -41,7 +41,7 @@
+ 
+ #include "neaacdec.h"
+ 
+-#if 1
++#ifdef __GNUC__
+ #define INLINE __inline
+ #else
+ #define INLINE inline
