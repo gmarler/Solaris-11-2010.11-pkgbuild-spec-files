@@ -14,13 +14,13 @@ Vendor:         Sun Microsystems, Inc.
 Group:          Libraries/Multimedia
 Summary:        GStreamer Streaming-media framework plug-ins - unstable.
 URL:            http://gstreamer.freedesktop.org/
-Source0:        http://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-%{version}.tar.bz2
-Source1:        soundcard.h
+Source:         http://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-%{version}.tar.bz2
 Patch1:         gst-plugins-bad-01-gettext.diff
 Patch2:         gst-plugins-bad-02-gstapexraop.diff
 Patch3:         gst-plugins-bad-03-xvidmain.diff
 Patch4:         gst-plugins-bad-04-equal.diff
 Patch5:         gst-plugins-bad-05-xsi_shell.diff
+Patch6:         gst-plugins-bad-06-apexsink.diff
 BuildRoot:      %{_tmppath}/%{name}-%{version}-root
 Docdir:         %{_defaultdocdir}/doc
 Autoreqprov:    on
@@ -42,12 +42,9 @@ plug-ins.
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
-mkdir -p include/sys
-cp %{SOURCE1} include/sys
+%patch6 -p1
 
 %build
-# for sys/soundcard.h
-CPPFLAGS="-I${PWD}/include"; export CPPFLAGS ; \
 CFLAGS="${CFLAGS:-%optflags}" ; export CFLAGS ; \
 CXXFLAGS="${CXXFLAGS:-%optflags}" ; export CXXFLAGS ; \
 FFLAGS="${FFLAGS:-%optflags}" ; export FFLAGS ; \
@@ -62,17 +59,22 @@ bash ./configure \
   --prefix=%{_prefix}	\
   --sysconfdir=%{_sysconfdir} \
   --mandir=%{_mandir}   \
+%if %with_amrwb
+%else
+  --disable-amrwb \
+%endif
   --disable-bayer \
   --disable-dccp \
   --disable-festival \
   --disable-freeze \
-  --disable-interleave \
   --disable-librfb \
   --disable-mve \
   --disable-nsf \
   --disable-nuvdemux \
+  --disable-oss4 \
   --disable-pcapparse \
   --disable-rawparse \
+  --disable-selector \
   --disable-subenc \
   --disable-scaletempo \
   --disable-speed \
@@ -83,7 +85,7 @@ bash ./configure \
   --disable-quicktime \
   --disable-vcd \
   --disable-alsa \
-  --disable-apexsink \
+  --disable-assrender \
   --disable-cdaudio \
   --disable-celt \
   --disable-dc1394 \
@@ -97,18 +99,26 @@ bash ./configure \
   --disable-ivorbis \
   --disable-jack \
   --disable-jp2k \
+  --disable-kate \
   --disable-ladspa \
+  --disable-lv2 \
   --disable-libmms \
+  --disable-mimic \
+  --disable-mjpegtools \
   --disable-mpeg2enc \
   --disable-mplex \
   --disable-musepack \
   --disable-mythtv \
   --disable-nas \
   --disable-neon \
+  --disable-rsvg \
   --disable-timidity \
+  --disable-sdl \
   --disable-soundtouch \
   --disable-spc \
+  --disable-gme \
   --disable-swfdec \
+  --disable-theora \
   --disable-dvb \
   --disable-oss4 \
   --disable-selector \
@@ -169,6 +179,11 @@ GStreamer support libraries header files.
 %{_datadir}/gtk-doc
 
 %changelog
+* Wed Sep 02 2009 - Albert Lee <trisk@forkgnu.org>
+- Disable assrender, kate, lv2, mimic, mjpegtools, rsvg, sdl, gme, theora
+- Enable apexsink
+- Remove soundcard.h
+- Add patch6
 * Sun Jun 28 2009 - Milan Jurik
 - upgrade to 0.10.13
 - build cleanup, libtool shave disable (problematic shell script)

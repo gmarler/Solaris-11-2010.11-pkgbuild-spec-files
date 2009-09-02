@@ -54,7 +54,17 @@ bash ./configure \
   --prefix=%{_prefix}	\
   --sysconfdir=%{_sysconfdir} \
   --mandir=%{_mandir}   \
+  %{gtk_doc_option}     \
+%if %with_amrnb
+%else
+  --disable-amrnb \
+%endif
+%if %with_amrwb
+%else
+  --disable-amrwb \
+%endif
   --disable-sidplay     \
+  --disable-twolame     \
   --enable-dvdnav       \
   --enable-external     \
   --disable-shave
@@ -112,6 +122,9 @@ GStreamer support libraries header files.
 %{_datadir}/gtk-doc
 
 %changelog
+* Wed Sep 02 2009 - Albert Lee <trisk@forkgnu.org>
+- Add %gtk_doc_option
+- Disable twolame
 * Sun Jun 28 2009 - Milan Jurik
 - upgrade to 0.10.12
 - build cleanup, libtool shave disable (problematic shell script)

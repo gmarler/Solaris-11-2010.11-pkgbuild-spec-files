@@ -34,6 +34,8 @@ BuildRequires: SFElibmad-devel
 Requires: SFElibmad
 BuildRequires: SFEfaad2-devel
 Requires: SFEfaad2
+BuildRequires: SFEliba52-devel
+Requires: SFEliba52
 Requires: SUNWfreetype2
 # Check whether the user has installed the Sun Studio or GCC
 # version of wxWidgets, and build with GCC if using the GCC
@@ -107,6 +109,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}
 
 %changelog
+* Wed Sep 02 2009 - trisk@forkgnu.org
+- Add dependency on SFEliba52
 * Sun Aug 24 2009 - Milan Jurik
 - multiarch support, update to 0.4.5
 * Sun Nov 30 2008 - dauphin@enst.fr

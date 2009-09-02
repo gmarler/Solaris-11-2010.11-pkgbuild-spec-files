@@ -1,5 +1,18 @@
 2009-09-02  Albert Lee  <trisk@forkgnu.org>
 
+	* encumbered/SFEgnome-media-extras.spec: Remove SUNWtheora dependency.
+	  Add SUNWopensslr and SUNWopenssl-include dependencies for apexsink.
+	  Sync with SFEgst-plugins-bad.
+	* base-specs/gst-plugins-bad.spec: Disable assrender, kate, lv2, mimic,
+	  mjpegtools, rsvg, sdl, gme, theora. Enable apexsink. Remove
+	  soundcard.h. Add patch6.
+	* base-specs/gst-plugins-ugly.spec: Add %gtk_doc_option. Disable
+	  twolame.
+	* encumbered/SFEgpac.spec: Add dependency on SFEliba52
+	* patches/gst-plugins-bad-06-apexsink.diff: Fix check for apexsink
+
+2009-09-02  Albert Lee  <trisk@forkgnu.org>
+
 	* SFEpidgin-facebookchat.spec: Bump to 0.52
 	* base-specs/faad2.spec: Add patch7
 	* patches/faad-07-sunpro.diff: Support compilation with Studio

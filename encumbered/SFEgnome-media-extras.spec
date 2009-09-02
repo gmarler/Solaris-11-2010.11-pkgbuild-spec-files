@@ -86,11 +86,13 @@ BuildRequires: SFElame-devel
 #BuildRequires: SUNWlibexif-devel
 Requires: SUNWmusicbrainz
 BuildRequires: SUNWmusicbrainz-devel
-Requires: SUNWlibsdl
-BuildRequires:  SUNWlibsdl-devel
-Requires: SUNWlibtheora
-BuildRequires: SUNWlibtheora-devel
+#Requires: SUNWlibsdl
+#BuildRequires:  SUNWlibsdl-devel
+#Requires: SUNWlibtheora
+#BuildRequires: SUNWlibtheora-devel
 #BuildRequires: SFEdirac-devel
+Requires: SUNWopensslr
+BuildRequires: SUNWopenssl-include
 Requires: SFEfaad2
 BuildRequires: SFEfaad2-devel
 # Note: musepack plugin doesn't compile with Studio
@@ -153,6 +155,12 @@ mkdir %name-%version
 cd %{_builddir}/%name-%version
 
 %build
+# There seems to be an issue with the version of libtool that GStreamer is
+# now using.  The libtool script uses the echo and RM variables but does not
+# define them, so setting them here addresses this.
+export echo="/usr/bin/echo"
+export RM="/usr/bin/rm -f"
+
 # Note that including  __STDC_VERSION n CFLAGS for gnome-media breaks the S9
 # build for gstreamer,  gst-plugins, and gnome-media, so not including for them.
 #
@@ -161,11 +169,19 @@ export CFLAGS="%optflags -I%{xorg_inc} -I%{sfw_inc} -DANSICPP"
 # gstmodplug needs C99 __func__
 export CXXFLAGS="%cxx_optflags -features=extensions -I%{sfw_inc}"
 export LDFLAGS="%_ldflags %{xorg_lib_path} %{sfw_lib_path}"
+export ACLOCAL_FLAGS="-I %{_datadir}/aclocal"
+export PERL5LIB=%{_prefix}/perl5/site_perl/5.6.1/sun4-solaris-64int
 %gst_ffmpeg.build -d %name-%version
 %gst_plugins_ugly.build -d %name-%version
 %gst_plugins_bad.build -d %name-%version
 
 %install
+# There seems to be an issue with the version of libtool that GStreamer is
+# now using.  The libtool script uses the echo and RM variables but does not
+# define them, so setting them here addresses this.
+export echo="/usr/bin/echo"
+export RM="/usr/bin/rm -f"
+
 rm -rf $RPM_BUILD_ROOT
 
 %gst_ffmpeg.install -d %name-%version
@@ -222,6 +238,10 @@ rm -rf $RPM_BUILD_ROOT
 %attr (-, root, other) %{_datadir}/locale
 %endif
 %changelog
+* Wed Sep 02 2009 Albert Lee <trisk@forkgnu.org>
+- Remove SUNWtheora dependency
+- Add SUNWopensslr and SUNWopenssl-include dependencies for apexsink.
+- Sync with SFEgst-plugins-bad.
 * Sun Jun 28 2009 - Milan Jurik
 - amrwb and amrwb as optional
 - x264 and cdio and lame enabled
