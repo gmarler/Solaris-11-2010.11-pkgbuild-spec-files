@@ -9,11 +9,9 @@
 %include Solaris.inc
 Name:                    SFEgnome-shell
 Summary:                 GNOME Shell
-Version:                 2.27.1
+Version:                 2.27.2
 Source:                  http://ftp.gnome.org/pub/GNOME/sources/gnome-shell/2.27/gnome-shell-%{version}.tar.bz2
 Source1:                 shell.desktop
-#owner:yippi date:2009-04-07 type:bug bugzilla:578196
-Patch1:                  gnome-shell-01-launch.diff
 
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -56,7 +54,6 @@ Requires:                %{name}
 
 %prep
 %setup -q -n gnome-shell-%version
-%patch1 -p1
 
 %build
 export PYTHON=/usr/bin/python%{pythonver}
@@ -134,6 +131,8 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 %endif
 
 %changelog
+* Sat Sep 05 2009 - Brian Cameron  <brian.cameron@sun.com>
+- Bump to 2.27.2.
 * Wed Aug 05 2009 - Brian Cameron  <brian.cameron@sun.com>
 - Remove missing-dash.diff and missing-svg.diff patches since they are now
   upstream.
