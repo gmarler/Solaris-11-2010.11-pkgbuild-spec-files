@@ -18,6 +18,8 @@
 	* SFEjack.spec: remove oss package dependency
 	* base-specs/ffmpeg.spec, encumbered/SFEffmpeg.spec: better multiarch
 	  support, SFEamrXXX as optional
+	* base-specs/libquicktime.spec, encumbered/SFElibquicktime.spec:
+	  update to 1.1.3
 
 2009-09-05  Brian Cameron  <brian.cameron@sun.com>
 

@@ -4,7 +4,7 @@
 # includes module(s): libquicktime
 #
 
-%define src_ver 1.0.2
+%define src_ver 1.1.3
 %define src_name libquicktime
 %define src_url http://downloads.sourceforge.net/%{src_name}
 
@@ -12,12 +12,12 @@ Name:		libquicktime
 Summary:	Quicktime library
 Version:	%{src_ver}
 Source:		%{src_url}/%{src_name}-%{version}.tar.gz
-Patch3:		libquicktime-03-rtjpeg.diff
+Patch1:		libquicktime-01-gccflags.diff
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 
 %prep
 %setup -q -n %{src_name}-%{version}
-%patch3 -p1
+%patch1 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -46,8 +46,12 @@ bash autogen.sh
             --libdir=%{_libdir}		\
             --libexecdir=%{_libexecdir}	\
             --sysconfdir=%{_sysconfdir}	\
+            --without-visibility	\
             --enable-shared		\
 	    --disable-static
+
+cp /usr/bin/libtool libtool
+
 make
 
 %install
@@ -59,6 +63,8 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/libquicktime/lib*.*a
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Tue Sep 08 2009 - Milan Jurik
+- update to 1.1.3
 * Fri Feb 22 2008 - trisk@acm.jhu.edu
 - Bump to 1.0.2, drop patch1, patch2
 * Tue Feb 12 2008 <pradhap (at) gmail.com>

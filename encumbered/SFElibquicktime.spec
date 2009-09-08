@@ -81,6 +81,10 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, bin) %{_libdir}/libquicktime
 %{_libdir}/libquicktime/*.so*
 %dir %attr (0755, root, sys) %{_datadir}
+%dir %attr (0755, root, other) %{_datadir}/locale/
+%dir %attr (0755, root, other) %{_datadir}/locale/de
+%dir %attr (0755, root, other) %{_datadir}/locale/de/LC_MESSAGES
+%{_datadir}/locale/de/LC_MESSAGES/*
 %{_mandir}
 %ifarch amd64 sparcv9
 %dir %attr (0755, root, bin) %{_bindir}/%{_arch64}
@@ -119,6 +123,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Tue Sep 08 2009 - Milan Jurik
+- update to 1.1.3
 * Fri Feb 22 2007 - trisk@acm.jhu.edu
 - Use SUNWogg-vorbis dependency (disabled for 64-bit)
 * Tue Sep  4 2007 - dougs@truemail.co.th
