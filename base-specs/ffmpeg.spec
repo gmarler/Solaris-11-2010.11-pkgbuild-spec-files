@@ -43,14 +43,17 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
 fi
 # for pod2man
 export PATH=/usr/perl5/bin:$PATH
-export CC=/usr/sfw/bin/gcc
+export CC=gcc
 # All this is necessary to free up enough registers on x86
 %ifarch i386
-export CFLAGS="%gcc_optflags -fno-rename-registers -fomit-frame-pointer -fno-PIC -UPIC -mpreferred-stack-boundary=4 -I%{xorg_inc}"
+export CFLAGS="%optflags -fno-rename-registers -fomit-frame-pointer -fno-PIC -UPIC -mpreferred-stack-boundary=4 -I%{xorg_inc}"
 %else
-export CFLAGS="%gcc_optflags -I%{xorg_inc}"
+export CFLAGS="%optflags -I%{xorg_inc}"
 %endif
-export LDFLAGS="%_ldflags %{xorg_lib_path}"
+export LDFLAGS="%_ldflags %{xorg_lib_path} -L/usr/sfw/lib -R/usr/sfw/lib"
+if $( echo "%{_libdir}" | /usr/xpg4/bin/grep -q %{_arch64} ) ; then
+        export LDFLAGS="$LDFLAGS -m64"
+fi
 bash ./configure	\
     --prefix=%{_prefix} \
     --libdir=%{_libdir}	\
@@ -109,7 +112,9 @@ EOM
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
-* San Jun 28 2009 - Milan Jurik
+* Tue Sep 08 2009 - Milan Jurik
+- support for newer gcc if installed
+* Sun Jun 28 2009 - Milan Jurik
 - switch to GNU make
 * Mon Mar 16 2009 - Milan Jurik
 - version 0.5

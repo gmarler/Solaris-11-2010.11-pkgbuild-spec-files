@@ -6,7 +6,9 @@
 
 %include Solaris.inc
 
-%define SUNWlibsdl      %(/usr/bin/pkginfo -q SUNWlibsdl && echo 1 || echo 0)
+%define SUNWlibsdl %(/usr/bin/pkginfo -q SUNWlibsdl && echo 1 || echo 0)
+%define with_amrnb %(/usr/bin/pkginfo -q SFEamrnb && echo 1 || echo 0)
+%define with_amrwb %(/usr/bin/pkginfo -q SFEamrwb && echo 1 || echo 0)
 
 %define cc_is_gcc 1
 
@@ -20,7 +22,7 @@
 %define arch_opt --enable-mlib
 %endif
 
-%ifarch i386 amd64
+%ifarch i386
 %define arch_opt --disable-mmx --disable-mmx2
 %endif
 
@@ -59,11 +61,14 @@ Requires: SFExvid
 BuildRequires: SFElibx264-devel
 Requires: SFElibx264
 BuildRequires: SFEfaad2-devel
-# libamr-* ihave 3GPP code with unclear licencing
-#BuildRequires: SFEamrnb-devel
-#Requires: SFEamrnb
-#BuildRequires: SFEamrwb-devel
-#Requires: SFEamrwb
+%if %with_amrnb
+Requires: SFEamrnb
+BuildRequires: SFEamrnb-devel
+%endif
+%if %with_amrwb
+Requires: SFEamrwb
+BuildRequires: SFEamrwb-devel
+%endif
 BuildRequires: SFElame-devel
 Requires: SFElame
 BuildRequires: SUNWogg-vorbis-devel
@@ -91,12 +96,14 @@ mkdir %name-%version/%sse2_arch
 mkdir %name-%version/%base_arch
 %ffmpeg.prep -d %name-%version/%base_arch
 
+
 %build
 %if %arch_sse2
 %ffmpeg_sse2.build -d %name-%version/%sse2_arch
 %endif
 
 %ffmpeg.build -d %name-%version/%base_arch
+
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -106,6 +113,13 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %ffmpeg.install -d %name-%version/%base_arch
+mkdir $RPM_BUILD_ROOT%{_bindir}/%{base_isa}
+mv $RPM_BUILD_ROOT%{_bindir}/ffserver $RPM_BUILD_ROOT%{_bindir}/%{base_isa}/
+cd $RPM_BUILD_ROOT%{_bindir} && ln -s ../lib/isaexec ffserver
+mv $RPM_BUILD_ROOT%{_bindir}/ffplay $RPM_BUILD_ROOT%{_bindir}/%{base_isa}/
+cd $RPM_BUILD_ROOT%{_bindir} && ln -s ../lib/isaexec ffplay
+mv $RPM_BUILD_ROOT%{_bindir}/ffmpeg $RPM_BUILD_ROOT%{_bindir}/%{base_isa}/
+cd $RPM_BUILD_ROOT%{_bindir} && ln -s ../lib/isaexec ffmpeg
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -113,7 +127,17 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr (-, root, bin)
 %dir %attr (0755, root, bin) %{_bindir}
+%if %can_isaexec
+%{_bindir}/%{base_isa}/*
+%if %arch_sse2
+%{_bindir}/%{sse2_arch}/*
+%endif
+%hard %{_bindir}/ffserver
+%hard %{_bindir}/ffplay
+%hard %{_bindir}/ffmpeg
+%else
 %{_bindir}/*
+%endif
 %dir %attr (0755, root, bin) %{_libdir}
 %{_libdir}/lib*.so*
 %if %arch_sse2
@@ -149,6 +173,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/libswscale
 
 %changelog
+* Tue Sep 8 2009 - Milan Jurik
+- amrXX optional
+- improved multiarch support (64-bit not done because of missing SUNW libraries)
 * Mon Mar 16 2009 - Milan Jurik
 - version 0.5
 * Fri Jun 13 2008 - trisk@acm.jhu.edu

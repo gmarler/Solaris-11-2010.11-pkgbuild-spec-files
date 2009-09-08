@@ -16,6 +16,8 @@
 	* base-specs/libgsm.spec, SFElibgsm.spec: multiarch support, update
 	  to 1.0.13
 	* SFEjack.spec: remove oss package dependency
+	* base-specs/ffmpeg.spec, encumbered/SFEffmpeg.spec: better multiarch
+	  support, SFEamrXXX as optional
 
 2009-09-05  Brian Cameron  <brian.cameron@sun.com>
 
