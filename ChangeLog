@@ -1,3 +1,8 @@
+2009-09-08  Milan Jurik <sfnet@xylab.cz>
+
+	* base-specs/libx264.spec, encumbered/SFElibx264.spec: multiarch
+	  support, update to newer snapshot
+
 2009-09-05  Brian Cameron  <brian.cameron@sun.com>
 
 	* SFEmutter.spec: Bump to 2.27.4.

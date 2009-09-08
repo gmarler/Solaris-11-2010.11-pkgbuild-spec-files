@@ -1,28 +1,30 @@
-
-# spec file for package SFEx264
 #
-# includes module(s): x264
+# spec file for package SFElibx264
+#
+# includes module(s): libx264
 #
 
 %include Solaris.inc
 
-%define         snap    20090704
-%define         snaph   2245
-%define src_name x264-snapshot
-%define src_url	 http://download.videolan.org/pub/videolan/x264/snapshots/
+%define cc_is_gcc 1 
+%ifarch amd64 sparcv9
+%include arch64.inc
+%use libx264_64 = libx264.spec
+%endif
+
+%if %arch_sse2
+%define arch_opt --cpu=i686 --enable-mmx --enable-mmx2
+%include x86_sse2.inc
+%define arch_ldadd
+%use libx264_sse2 = libx264.spec
+%endif
+
+%include base.inc
+%use libx264 = libx264.spec
 
 Name:                    SFElibx264
-Summary:                 H264 encoder library
-Version:                 20090704
-Source:                  %{src_url}/%{src_name}-%{snap}-%{snaph}.tar.bz2
-URL:                     http://www.videolan.org/developers/x264.html
-#Patch1:			 libx264-01-gccisms.diff
-Patch2:                  libx264-02-version.diff
-Patch3:                  libx264-03-ld.diff
-Patch4:                  libx264-04-ginstall.diff
-Patch5:                  libx264-05-ssse3.diff
-Patch6:                  libx264-06-gpac.diff
-Patch7:                  libx264-07-soname.diff
+Summary:                 %{libx264.summary}
+Version:                 %{libx264.version}
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -37,37 +39,50 @@ SUNW_BaseDir:            %{_basedir}
 Requires: %name
 
 %prep
-%setup -q -n %{src_name}-%{snap}-%{snaph}
-#%patch1 -p1
-%patch2 -p1
-%patch3 -p1
-%patch4 -p1
-%patch5 -p1
-%patch6 -p1
-%patch7 -p1
+rm -rf %name-%version
+mkdir %name-%version
+%ifarch amd64 sparcv9
+mkdir %name-%version/%_arch64
+%libx264_64.prep -d %name-%version/%_arch64
+%endif
+
+%if %arch_sse2
+mkdir %name-%version/%sse2_arch
+%libx264_sse2.prep -d %name-%version/%sse2_arch
+%endif
+
+mkdir %name-%version/%{base_arch}
+%libx264.prep -d %name-%version/%{base_arch}
+
 
 %build
-CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
-if test "x$CPUS" = "x" -o $CPUS = 0; then
-    CPUS=1
-fi
+%ifarch amd64 sparcv9
+%libx264_64.build -d %name-%version/%_arch64
+%endif
 
-export CC=/usr/sfw/bin/gcc
-export CFLAGS="-D__C99FEATURES__"
-export LDFLAGS="%_ldflags -lm"
-bash ./configure	\
-    --prefix=%{_prefix} \
-    --enable-mp4-output	\
-    --enable-pthread	\
-    --enable-pic	\
-    --enable-shared
+%if %arch_sse2
+%libx264_sse2.build -d %name-%version/%sse2_arch
+%endif
 
-make
+%libx264.build -d %name-%version/%{base_arch}
+
 
 %install
 rm -rf $RPM_BUILD_ROOT
-make install DESTDIR=$RPM_BUILD_ROOT
-rm -f $RPM_BUILD_ROOT%{_libdir}/lib*.*a
+%ifarch amd64 sparcv9
+%libx264_64.install -d %name-%version/%_arch64
+%endif
+
+%if %arch_sse2
+%libx264_sse2.install -d %name-%version/%sse2_arch
+%endif
+
+%libx264.install -d %name-%version/%{base_arch}
+find $RPM_BUILD_ROOT%{_libdir} -name \*.la -exec rm {} \;
+mkdir $RPM_BUILD_ROOT%{_bindir}/%{base_isa}
+mv $RPM_BUILD_ROOT%{_bindir}/x264  $RPM_BUILD_ROOT%{_bindir}/%{base_isa}/
+cd $RPM_BUILD_ROOT%{_bindir} && ln -s ../lib/isaexec x264
+
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -75,9 +90,27 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr (-, root, bin)
 %dir %attr (0755, root, bin) %{_bindir}
+%if %can_isaexec
+%{_bindir}/%{_arch64}/*
+%{_bindir}/%{base_isa}/*
+%if %arch_sse2
+%{_bindir}/%{sse2_arch}/*
+%endif
+%hard %{_bindir}/x264
+%else
 %{_bindir}/*
+%endif
 %dir %attr (0755, root, bin) %{_libdir}
 %{_libdir}/lib*.so*
+%ifarch amd64 sparcv9
+%dir %attr (0755, root, bin) %{_libdir}/%{_arch64}
+%{_libdir}/%{_arch64}/lib*.so*
+%endif
+%if %arch_sse2
+%dir %attr (0755, root, bin) %{_libdir}/%{sse2_arch}
+%{_libdir}/%{sse2_arch}/lib*.so*
+%endif
+
 
 %files devel
 %defattr (-, root, bin)
@@ -85,8 +118,19 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, bin) %{_libdir}
 %dir %attr (0755, root, other) %{_libdir}/pkgconfig
 %{_libdir}/pkgconfig/*
+%ifarch amd64 sparcv9
+%dir %attr (0755, root, other) %{_libdir}/%{_arch64}/pkgconfig
+%{_libdir}/%{_arch64}/pkgconfig/*
+%endif
+%if %arch_sse2
+%dir %attr (0755, root, other) %{_libdir}/%{sse2_arch}/pkgconfig
+%{_libdir}/%{sse2_arch}/pkgconfig/*
+%endif
+
 
 %changelog
+* Tue Sep 8 2009 - Milan Jurik
+- multiarch support
 * Mon Mar 16 2009 - andras.barna@gmail.com
 - Add patch7
 * Sun Mar 15 2009 - Milan Jurik
