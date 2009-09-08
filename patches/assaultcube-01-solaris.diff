@@ -1,23 +1,27 @@
---- AssaultCube/source/src/Makefile.orig	2007-06-05 19:39:45.783649384 +0700
-+++ AssaultCube/source/src/Makefile	2007-06-05 19:42:10.178423870 +0700
-@@ -1,9 +1,8 @@
--CXXOPTFLAGS=-O3 -fomit-frame-pointer
- INCLUDES=-I/usr/X11R6/include -I../enet/include `sdl-config --cflags`
--CXXFLAGS=$(CXXOPTFLAGS) $(INCLUDES) -fsigned-char -Wall -Wno-deprecated
-+CXXFLAGS=$(CXXOPTFLAGS) $(INCLUDES)
+--- AssaultCube_v1.0.2/source/src/Makefile.orig	2009-09-06 07:26:31.025725668 +0100
++++ AssaultCube_v1.0.2/source/src/Makefile	2009-09-06 07:30:17.043380164 +0100
+@@ -1,12 +1,12 @@
+ CXXOPTFLAGS=-O3 -fomit-frame-pointer
+-INCLUDES1=-I/usr/X11R6/include -I../enet/include -I../src
++INCLUDES1=-I/usr/X11/include -I../enet/include -I../src
+ INCLUDES2=`sdl-config --cflags`
+-CXXCUSTOMFLAGS=-fsigned-char -Wall -Wextra -Wno-missing-field-initializers -Wno-unused -Wpointer-arith -Wwrite-strings -Wconversion -rdynamic
++CXXCUSTOMFLAGS=-fsigned-char
+ CXXFLAGS=$(CXXOPTFLAGS) $(INCLUDES1) $(INCLUDES2) $(CUSTOMFLAGS)
+ CXXFLAGSSERVER=$(CXXOPTFLAGS) $(INCLUDES1) $(CUSTOMFLAGS)
  
  PLATFORM_PREFIX=native
--CLIENT_LIBS=-L/usr/X11R6/lib -L../enet -lenet `sdl-config --libs` -lSDL_image -lSDL_mixer -lz -lGL -lGLU 
-+CLIENT_LIBS=-L/usr/X11R6/lib -L../enet -lenet `sdl-config --libs` -lSDL_image -lSDL_mixer -lz -lGL -lGLU -lX11 -lsocket -lnsl
- CLIENT_OBJS= \
+-CLIENT_LIBS=-L/usr/X11R6/lib -L../enet -lenet `sdl-config --libs` -lSDL_image -lz -lGL -lopenal -lvorbisfile
++CLIENT_LIBS=-L/usr/X11/lib -L../enet -lenet `sdl-config --libs` -lSDL_image -lz -lGL -lopenal -lvorbisfile -lX11 -lsocket -lnsl
+ CLIENT_OBJS1= \
  	client.o \
  	clientgame.o \
-@@ -48,7 +47,7 @@
+@@ -55,7 +55,7 @@
  	bot/ac_bot_ai.o 
  
  
--SERVER_LIBS=-L../enet -lenet
-+SERVER_LIBS=-L../enet -lenet -lsocket -lnsl
+-SERVER_LIBS=-L../enet -lenet -lz
++SERVER_LIBS=-L../enet -lenet -lz -lsocket -lnsl
  SERVER_FILES= \
+ 	log.cpp \
  	serverms.cpp \
- 	server.cpp \

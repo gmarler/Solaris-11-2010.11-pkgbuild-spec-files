@@ -1,35 +1,83 @@
---- sauerbraten/src/shared/geom.h.orig	2007-06-05 12:52:46.389346169 +0700
-+++ sauerbraten/src/shared/geom.h	2007-06-05 12:51:51.742104139 +0700
-@@ -74,7 +74,7 @@
+--- sauerbraten/src/engine/main.cpp.orig	2009-09-06 11:52:50.986911992 +0100
++++ sauerbraten/src/engine/main.cpp	2009-09-06 11:53:17.014690075 +0100
+@@ -479,9 +479,9 @@
+ 
+ COMMAND(screenres, "ii");
+ 
+-VARFP(gamma, 30, 100, 300,
++VARFP(screen_gamma, 30, 100, 300,
  {
-     vec X, Y, Z;
- 
--    matrix(const vec &_X, const vec &_Y, const vec &_Z) : X(_X), Y(_Y), Z(_Z) {}
-+    matrix(const vec &X, const vec &Y, const vec &Z) : X(X), Y(Y), Z(Z) {}
-     matrix(vec v, float angle) //matrix for rotating a point around a vector
+-	float f = gamma/100.0f;
++	float f = screen_gamma/100.0f;
+     if(SDL_SetGamma(f,f,f)==-1)
      {
-         v.normalize();
---- sauerbraten/src/Makefile.orig	2007-06-05 12:42:37.043956150 +0700
-+++ sauerbraten/src/Makefile	2007-06-05 12:50:36.024983116 +0700
-@@ -1,9 +1,7 @@
--CXX=g++
--CXXOPTFLAGS=-O3 -fomit-frame-pointer
--CXXFLAGS=$(CXXOPTFLAGS)	-Wall -fsigned-char -Ienet/include -I. -Ishared -Iengine -Ifpsgame `sdl-config --cflags`
-+CXXFLAGS=$(CXXOPTFLAGS)	-Ienet/include -I. -Ishared -Iengine -Ifpsgame `sdl-config --cflags`
+         conoutf(CON_ERROR, "Could not set gamma (card/driver doesn't support it?)");
+@@ -491,7 +491,7 @@
  
--PLATFORM_PREFIX=native
--CLIENT_LIBS=-Lenet -lenet `sdl-config --libs` -lSDL_image -lSDL_mixer -lz -lGL -lGLU 
-+PLATFORM_PREFIX=native
-+CLIENT_LIBS=-Lenet -lenet `sdl-config --libs` -lSDL_image -lSDL_mixer -lz -lGL -lGLU -lX11 -lsocket -lnsl
- CLIENT_OBJS= \
- 	shared/tools.o \
- 	shared/geom.o \
-@@ -41,7 +39,7 @@
- 	fpsgame/fps.o \
- 	rpggame/rpg.o
+ void resetgamma()
+ {
+-	float f = gamma/100.0f;
++	float f = screen_gamma/100.0f;
+ 	if(f==1) return;
+ 	SDL_SetGamma(1, 1, 1);
+ 	SDL_SetGamma(f, f, f);
+--- sauerbraten/src/engine/lensflare.h.orig	2009-09-06 11:52:32.353836453 +0100
++++ sauerbraten/src/engine/lensflare.h	2009-09-06 11:53:17.013533617 +0100
+@@ -1,3 +1,6 @@
++#ifdef sun
++#undef sun
++#endif
+ static struct flaretype
+ {
+     int type;             /* flaretex index, 0..5, -1 for 6+random shine */
+--- sauerbraten/src/engine/movie.cpp.orig	2009-09-06 11:52:43.153800377 +0100
++++ sauerbraten/src/engine/movie.cpp	2009-09-06 11:53:17.014149763 +0100
+@@ -632,7 +632,7 @@
+         
+         void cleanup() { DELETEA(sound); maxsize = 0; }
+     };
+-    static queue<soundbuffer, MAXSOUNDBUFFERS> soundbuffers;
++    static aqueue<soundbuffer, MAXSOUNDBUFFERS> soundbuffers;
+     static SDL_mutex *soundlock = NULL;
+     
+     enum { MAXVIDEOBUFFERS = 2 }; // double buffer
+@@ -657,7 +657,7 @@
+          
+         void cleanup() { DELETEA(video); }
+     };
+-    static queue<videobuffer, MAXVIDEOBUFFERS> videobuffers;
++    static aqueue<videobuffer, MAXVIDEOBUFFERS> videobuffers;
+     static uint lastframe = ~0U;
  
--SERVER_LIBS=-Lenet -lenet
-+SERVER_LIBS=-Lenet -lenet -lsocket -lnsl
- SERVER_OBJS= \
- 	shared/tools.o \
- 	engine/server-standalone.o \
+     static GLuint scalefb = 0, scaletex[2] = { 0, 0 };
+--- sauerbraten/src/shared/tools.h.orig	2009-09-06 11:52:15.257870469 +0100
++++ sauerbraten/src/shared/tools.h	2009-09-06 11:54:22.540493303 +0100
+@@ -679,12 +679,12 @@
+     }
+ };
+ 
+-template <class T, int SIZE> struct queue
++template <class T, int SIZE> struct aqueue
+ {
+     int head, tail, len;
+     T data[SIZE];
+     
+-    queue() { clear(); }
++    aqueue() { clear(); }
+     
+     void clear() { head = tail = len = 0; }
+ 
+@@ -764,6 +764,13 @@
+ template<class T> inline void bigswap(T *buf, int len) { if(*(const uchar *)&islittleendian) endianswap(buf, len); }
+ #endif
+ 
++#ifdef getchar
++#undef getchar
++#endif
++#ifdef putchar
++#undef putchar
++#endif
++
+ struct stream
+ {
+     virtual ~stream() {}

@@ -1,22 +1,19 @@
---- sauerbraten/sauerbraten_unix.orig	2007-06-05 13:10:35.094014892 +0700
-+++ sauerbraten/sauerbraten_unix	2007-06-05 13:11:59.842289451 +0700
-@@ -2,7 +2,8 @@
- # SAUER_DIR should refer to the directory in which Sauerbraten is placed.
- #SAUER_DIR=~/sauerbraten
- #SAUER_DIR=/usr/local/sauerbraten
--SAUER_DIR=.
-+SAUER_DIR=/usr/share/sauerbraten
-+#SAUER_DIR=.
+--- sauerbraten/sauerbraten_unix.orig	2009-09-08 12:25:58.955974815 +0100
++++ sauerbraten/sauerbraten_unix	2009-09-08 12:27:21.642128911 +0100
+@@ -2,7 +2,7 @@
+ # SAUER_DATA should refer to the directory in which Sauerbraten data files are placed.
+ #SAUER_DATA=~/sauerbraten
+ #SAUER_DATA=/usr/local/sauerbraten
+-SAUER_DATA=.
++SAUER_DATA=/usr/share/sauerbraten
  
- # SYSTEM_NAME should be set to the name of your operating system.
- #SYSTEM_NAME=Linux
-@@ -13,6 +14,9 @@
- MACHINE_NAME=`uname -m`
+ # SAUER_BIN should refer to the directory in which Sauerbraten executable files are placed.
+ SAUER_BIN=${SAUER_DATA}/bin_unix
+@@ -52,6 +52,7 @@
  
- case ${SYSTEM_NAME} in
-+SunOS)
-+  SYSTEM_NAME=native
-+  ;;
- Linux)
-   SYSTEM_NAME=linux_
-   ;;
+ if [ -x ${SAUER_BIN}/${SYSTEM_NAME}${MACHINE_NAME}client ]
+ then
++  unset LANG # Solaris Bug
+   cd ${SAUER_DATA}
+   exec ${SAUER_BIN}/${SYSTEM_NAME}${MACHINE_NAME}client ${SAUER_OPTIONS} "$@"
+ else

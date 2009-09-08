@@ -1,6 +1,48 @@
---- AssaultCube/source/src/renderhud.cpp.orig	2007-06-05 19:58:47.757027557 +0700
-+++ AssaultCube/source/src/renderhud.cpp	2007-06-05 19:59:21.560872172 +0700
-@@ -4,7 +4,7 @@
+--- AssaultCube_v1.0.2/source/src/protos.h.orig	2009-06-16 20:51:25.000000000 +0100
++++ AssaultCube_v1.0.2/source/src/protos.h	2009-09-06 07:37:23.298887947 +0100
+@@ -244,8 +244,8 @@
+ extern void dot(int x, int y, float z);
+ extern void linestyle(float width, int r, int g, int b);
+ extern void blendbox(int x1, int y1, int x2, int y2, bool border, int tex = -1, color *c = NULL);
+-extern void quad(GLuint tex, float x, float y, float s, float tx, float ty, float tsx, float tsy = 0);
+-extern void quad(GLuint tex, vec &c1, vec &c2, float tx, float ty, float tsx, float tsy);
++extern void a_quad(GLuint tex, float x, float y, float s, float tx, float ty, float tsx, float tsy = 0);
++extern void a_quad(GLuint tex, vec &c1, vec &c2, float tx, float ty, float tsx, float tsy);
+ extern void circle(GLuint tex, float x, float y, float r, float tx, float ty, float tr, int subdiv = 32);
+ extern void setperspective(float fovy, float aspect, float nearplane, float farplane);
+ extern void sethudgunperspective(bool on);
+--- AssaultCube_v1.0.2/source/src/rendergl.cpp.orig	2009-03-25 15:18:57.000000000 +0000
++++ AssaultCube_v1.0.2/source/src/rendergl.cpp	2009-09-06 07:38:21.974212616 +0100
+@@ -215,7 +215,7 @@
+     xtraverts += 4;
+ }
+ 
+-void quad(GLuint tex, float x, float y, float s, float tx, float ty, float tsx, float tsy)
++void a_quad(GLuint tex, float x, float y, float s, float tx, float ty, float tsx, float tsy)
+ {
+     if(!tsy) tsy = tsx;
+     glBindTexture(GL_TEXTURE_2D, tex);
+@@ -228,7 +228,7 @@
+     xtraverts += 4;
+ }
+ 
+-void quad(GLuint tex, const vec &c1, const vec &c2, float tx, float ty, float tsx, float tsy)
++void a_quad(GLuint tex, const vec &c1, const vec &c2, float tx, float ty, float tsx, float tsy)
+ {
+     if(!tsy) tsy = tsx;
+     glBindTexture(GL_TEXTURE_2D, tex);
+@@ -383,7 +383,7 @@
+     static Texture *tex = NULL;
+     if(!tex) tex = textureload("packages/misc/com.png");
+     float s = aboveheadiconsize/100.0f;
+-    quad(tex->id, vec(s/2.0f, 0.0f, s), vec(s/-2.0f, 0.0f, 0.0f), 0.0f, 0.0f, 1.0f, 1.0f);
++    a_quad(tex->id, vec(s/2.0f, 0.0f, s), vec(s/-2.0f, 0.0f, 0.0f), 0.0f, 0.0f, 1.0f, 1.0f);
+     glDisable(GL_BLEND);
+     glPopMatrix();
+ }
+--- AssaultCube_v1.0.2/source/src/renderhud.cpp.orig	2009-04-26 19:39:33.000000000 +0100
++++ AssaultCube_v1.0.2/source/src/renderhud.cpp	2009-09-06 07:36:29.896088206 +0100
+@@ -5,7 +5,7 @@
  
  void drawicon(Texture *tex, float x, float y, float s, int col, int row, float ts)
  {
@@ -9,8 +51,8 @@
  }
  
  void drawequipicon(float x, float y, int col, int row, float blend)
-@@ -177,7 +177,7 @@
-     if(showmap) 
+@@ -391,7 +391,7 @@
+     if(showmap)
      {
          glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_COLOR);
 -        quad(minimaptex, 0, 0, radarviewsize, (centerpos.x-res/2)/worldsize, (centerpos.y-res/2)/worldsize, res/worldsize);
@@ -18,25 +60,34 @@
          glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
          glDisable(GL_BLEND);
      }
-@@ -225,7 +225,7 @@
+@@ -456,7 +456,7 @@
          glColor3f(1, 1, 1);
-         static Texture *overlaytex = NULL;
-         if(!overlaytex) overlaytex = textureload("packages/misc/radaroverlays.png", 3);
--        quad(overlaytex->id, VIRTW-overlaysize-10, 10, overlaysize, m_teammode ? 0.5f*team_int(player1->team) : 0, m_teammode ? 0 : 0.5f, 0.5f, 0.5f); 
-+        a_quad(overlaytex->id, VIRTW-overlaysize-10, 10, overlaysize, m_teammode ? 0.5f*team_int(player1->team) : 0, m_teammode ? 0 : 0.5f, 0.5f, 0.5f); 
-         glEnable(GL_CULL_FACE);
+         static Texture *bordertex = NULL;
+         if(!bordertex) bordertex = textureload("packages/misc/compass-base.png", 3);
+-        quad(bordertex->id, VIRTW-10-VIRTH/28-overlaysize, 10+VIRTH/52, overlaysize, 0, 0, 1, 1);
++        a_quad(bordertex->id, VIRTW-10-VIRTH/28-overlaysize, 10+VIRTH/52, overlaysize, 0, 0, 1, 1);
+         if(!hidecompass)
+         {
+             static Texture *compasstex = NULL;
+@@ -464,7 +464,7 @@
+             glPushMatrix();
+             glTranslatef(VIRTW-10-VIRTH/28-overlaysize/2, 10+VIRTH/52+overlaysize/2, 0);
+             glRotatef(-camera1->yaw, 0, 0, 1);
+-            quad(compasstex->id, -overlaysize/2, -overlaysize/2, overlaysize, 0, 0, 1, 1);
++            a_quad(compasstex->id, -overlaysize/2, -overlaysize/2, overlaysize, 0, 0, 1, 1);
+             glPopMatrix();
+         }
      }
- }
-@@ -237,7 +237,7 @@
+@@ -476,7 +476,7 @@
      glColor3f(1, 1, 1);
      static Texture *icons = NULL;
-     if(!icons) icons = textureload("packages/misc/teamicons.png");
--    quad(icons->id, VIRTW-VIRTH/12-10, 10, VIRTH/12, team_int(player1->team) ? 0.5f : 0, 0, 0.5f, 0.5f);
-+    a_quad(icons->id, VIRTW-VIRTH/12-10, 10, VIRTH/12, team_int(player1->team) ? 0.5f : 0, 0, 0.5f, 0.5f);
-     glEnable(GL_CULL_FACE);
+     if(!icons) icons = textureload("packages/misc/teamicons.png", 3);
+-    quad(icons->id, VIRTW-VIRTH/12-10, 10, VIRTH/12, team_int(player1->team) ? 0.5f : 0, 0, 0.49f, 1.0f);
++    a_quad(icons->id, VIRTW-VIRTH/12-10, 10, VIRTH/12, team_int(player1->team) ? 0.5f : 0, 0, 0.49f, 1.0f);
  }
  
-@@ -410,7 +410,7 @@
+ int damageblendmillis = 0;
+@@ -717,7 +717,7 @@
      loopi(fmt ? 1 : 2)
      {
          glClear(GL_COLOR_BUFFER_BIT);
@@ -45,25 +96,3 @@
          if(fmt)
          {
              glEnable(GL_BLEND);
---- AssaultCube/source/src/protos.h.orig	2007-06-05 19:58:15.342674093 +0700
-+++ AssaultCube/source/src/protos.h	2007-06-05 19:58:17.823304475 +0700
-@@ -61,7 +61,7 @@
- extern void dot(int x, int y, float z);
- extern void linestyle(float width, int r, int g, int b);
- extern void blendbox(int x1, int y1, int x2, int y2, bool border, int tex = -1);
--extern void quad(GLuint tex, float x, float y, float s, float tx, float ty, float tsx, float tsy = 0);
-+extern void a_quad(GLuint tex, float x, float y, float s, float tx, float ty, float tsx, float tsy = 0);
- extern void circle(GLuint tex, float x, float y, float r, float tx, float ty, float tr, int subdiv = 32);
- extern void gl_drawframe(int w, int h, float changelod, float curfps);
- extern void clearminimap();
---- AssaultCube/source/src/rendergl.cpp.orig	2007-06-05 19:58:03.463233585 +0700
-+++ AssaultCube/source/src/rendergl.cpp	2007-06-05 19:58:17.822921121 +0700
-@@ -108,7 +108,7 @@
-     xtraverts += 4;
- }   
- 
--void quad(GLuint tex, float x, float y, float s, float tx, float ty, float tsx, float tsy)
-+void a_quad(GLuint tex, float x, float y, float s, float tx, float ty, float tsx, float tsy)
- {
-     if(!tsy) tsy = tsx;
-     glBindTexture(GL_TEXTURE_2D, tex);

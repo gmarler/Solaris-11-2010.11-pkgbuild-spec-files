@@ -1,3 +1,14 @@
+2009-09-08  Doug Scott <drdoug007@gmail.com>
+
+	* SFEsauerbraten.spec: Bumped to Trooper Edition (2009_05_04)
+	*   patches/sauerbraten-01-solaris.diff
+	*   patches/sauerbraten-02-startup.diff
+	*   copyright/sauerbaten.copyright
+	* SFEassaultcube.spec: Bumped to 1.0.4
+	*   patches/assaultcube-01-solaris.diff
+	*   patches/assaultcube-02-conflict.diff
+	*   patches/assaultcube-03-cmds.diff
+
 2009-09-08  Milan Jurik <sfnet@xylab.cz>
 
 	* base-specs/libx264.spec, encumbered/SFElibx264.spec: multiarch
