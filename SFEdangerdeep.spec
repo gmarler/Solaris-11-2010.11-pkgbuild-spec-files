@@ -54,7 +54,7 @@ CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
 if test "x$CPUS" = "x" -o $CPUS = 0; then
     CPUS=1
 fi
-export CFLAGS="%optflags"
+export CFLAGS=" -O4 "
 %if %option_with_fox
 export CFLAGS="$CFLAGS -I/usr/X11/include"
 %endif
@@ -62,7 +62,7 @@ export LDFLAGS="%arch_ldadd %ldadd ${EXTRA_LDFLAGS}"
 export ACLOCAL_FLAGS="-I %{_datadir}/aclocal"
 export MSGFMT="/usr/bin/msgfmt"
 export CXX=/usr/gnu/bin/g++
-export CXXFLAGS="%gcc_cxx_optflags"
+export CXXFLAGS=" -O4 "
 %if %option_with_fox
 export CXXFLAGS="$CXXFLAGS -I/usr/X11/include"
 %endif

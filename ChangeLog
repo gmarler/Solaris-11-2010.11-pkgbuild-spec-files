@@ -1,4 +1,7 @@
 2009-09-08  Doug Scott <drdoug007@gmail.com>
+	* SFEasio-gpp.spec: cross-platform C++ library for network programming
+
+2009-09-08  Doug Scott <drdoug007@gmail.com>
 
 	* SFEsauerbraten.spec: Bumped to Trooper Edition (2009_05_04)
 	*   patches/sauerbraten-01-solaris.diff
