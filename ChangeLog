@@ -13,6 +13,8 @@
 
 	* base-specs/libx264.spec, encumbered/SFElibx264.spec: multiarch
 	  support, update to newer snapshot
+	* base-specs/libgsm.spec, SFElibgsm.spec: multiarch support, update
+	  to 1.0.13
 
 2009-09-05  Brian Cameron  <brian.cameron@sun.com>
 

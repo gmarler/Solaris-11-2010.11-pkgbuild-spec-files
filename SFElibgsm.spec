@@ -5,16 +5,18 @@
 #
 %include Solaris.inc
 
-%define	src_ver 1.0.12
-%define	src_name libgsm
-%define	src_url	http://kbs.cs.tu-berlin.de/~jutta/gsm/gsm-%{version}.tar.gz
+%ifarch amd64 sparcv9
+%include arch64.inc
+%use libgsm_64 = libgsm.spec
+%endif
+
+%include base.inc
+%use libgsm = libgsm.spec
 
 Name:		SFElibgsm
-Summary:	GSM audio encoding/decoding library
-Version:	%{src_ver}
-License:	Free (Copyright (C) Technische Universitaet Berlin)
-Source:		%{src_url}/%{src_name}-%{version}.tar.gz
-Patch1:		libgsm-01-makefile.diff
+Summary:	%{libgsm.summary}
+Version:	%{libgsm.version}
+License:	%{libgsm.license}
 SUNW_BaseDir:	%{_basedir}
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 
@@ -32,26 +34,32 @@ SUNW_BaseDir:            %{_basedir}
 Requires: %name
 
 %prep
-%setup -q -n gsm-1.0-pl12
-%patch1 -p1
+rm -rf %name-%version
+mkdir %name-%version
+%ifarch amd64 sparcv9
+mkdir %name-%version/%_arch64
+%libgsm_64.prep -d %name-%version/%_arch64
+%endif
+
+mkdir %name-%version/%{base_arch}
+%libgsm.prep -d %name-%version/%{base_arch}
+
 
 %build
-CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
-if test "x$CPUS" = "x" -o $CPUS = 0; then
-     CPUS=1
-fi
+%ifarch amd64 sparcv9
+%libgsm_64.build -d %name-%version/%_arch64
+%endif
 
-rm -f bin/* lib/* shared/* src/*.o test/*.o
+%libgsm.build -d %name-%version/%{base_arch}
 
-export PICFLAG="-KPIC"
-export OPTFLAGS="%optflags"
-export LDFLAGS="%_ldflags"
-make 
 
 %install
 rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT{%{_bindir},%{_mandir}/man{1,3},%{_includedir},%{_libdir}}
-make install DESTDIR=$RPM_BUILD_ROOT INSTALL_ROOT=%{_prefix}
+%ifarch amd64 sparcv9
+%libgsm_64.install -d %name-%version/%_arch64
+%endif
+
+%libgsm.install -d %name-%version/%{base_arch}
 
 
 %clean
@@ -62,6 +70,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}
 %dir %attr (0755, root, bin) %{_libdir}
 %{_libdir}/lib*.so*
+%ifarch amd64 sparcv9
+%dir %attr (0755, root, bin) %{_libdir}/%{_arch64}
+%{_libdir}/%{_arch64}/lib*.so*
+%endif
 %dir %attr (0755, root, sys) %{_datadir}
 %dir %attr (0755, root, bin) %{_mandir}
 %{_mandir}/man1
@@ -74,6 +86,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man3
 
 %changelog
+* Tue Sep 08 2009 - Milan Jurik
+- update to 1.0.13
+- multiarch support
+* Tue Dec 02 2008 - Giles Dauphin
 - Fix to mandir ownership by Giles Dauphin (again sorry)
 * Fri May 23 2008 - michal.bielicki@voiceworks.pl
 - Fix to mandir ownership by Giles Dauphin
