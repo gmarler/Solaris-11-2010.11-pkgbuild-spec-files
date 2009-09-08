@@ -29,8 +29,6 @@ BuildRequires:	SUNWlibsndfile
 Requires:	SUNWlibsndfile
 %endif
 
-Requires:	oss
-
 %package devel
 Summary:         %{summary} - development files
 SUNW_BaseDir:    %{_basedir}
@@ -119,6 +117,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Tue Sep 08 2009 - Milan Jurik
+- remove oss package dependency
 * Tue Feb 17 2009 - Thomas Wagner
 - make (Build-)Requires conditional SUNWlibsndfile|SFElibsndfile(-devel)
 * Tue Aug 28 2007 - dougs@truemail.co.th
