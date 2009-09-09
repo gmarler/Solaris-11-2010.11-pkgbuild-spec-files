@@ -1,6 +1,6 @@
 2009-09-09  Milan Jurik <sfnet@xylab.cz>
 
-	* SFEethereal.spec: remove, it's old, unmaintained and new fork
+	* SFEethereal.spec: move to archive, it's old, unmaintained and new fork
 	  (wireshark) is already integrated
 
 2009-09-09  Doug Scott <drdoug007@gmail.com>
