@@ -3,6 +3,8 @@
 #
 # includes module(s): wxWidgets
 #
+# bugdb: trac.wxwidgets.org
+#
 
 %include Solaris.inc
 
@@ -15,8 +17,11 @@ Version:                 2.8.10
 %define tarball_version  2.8.10
 Source:			 %{sf_download}/wxwindows/wxWidgets-%{tarball_version}.tar.bz2
 Patch1:                  wxwidgets-01-msgfmt.diff
+# See bug #10660
 Patch2:                  wxwidgets-02-Tmacro.diff
 Patch3:                  wxwidgets-03-Tmacro.diff
+# See bug #10883
+Patch4:                  wxwidgets-04-gsocket.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -59,6 +64,7 @@ Requires:                %{name}
 %patch1 -p1
 %patch2 -p0
 %patch3 -p0
+%patch4 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -151,6 +157,9 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Sat Sep 05 2009 - brian.cameron@sun.com
+- Add patch wxwidgtes-04-gsockets.diff to fix compile issue when building
+  with the latest gio code.
 * Thu Jun 21 2009 - brian.cameron@sun.com
 - Bump to 2.8.10.  Remove upstream ptach wxwidgets-02-fixcompile.diff.
   Add patch wxwidgets-02-Tmacro.diff to resolve compile issue when building

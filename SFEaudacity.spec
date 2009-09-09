@@ -3,6 +3,13 @@
 #
 # includes module(s): audacity
 #
+# Note that audacity 1.3.9 and later requires that FLAC be built with C++
+# libraries, which are not currently available.  So until the FLAC package is
+# fixed to ship the C++ interfaces, you need to uninstall SUNWflac from the
+# spec-files repository and rebuild it after editing the SUNWflac.spec file and
+# changing the "build_cpp" define from 0 to 1.  You could also try adding
+# --disable-flac to the audacity configure.
+#
 %include Solaris.inc
 
 %define with_libmad %(pkginfo -q SFElibmad && echo 1 || echo 0)
@@ -13,7 +20,7 @@
 
 Name:                SFEaudacity
 Summary:             Free, Cross-Platform Sound Editor
-Version:             1.3.8
+Version:             1.3.9
 Source:              %{sf_download}/audacity/%{src_name}-minsrc-%{version}.tar.bz2
 Source1:             soundcard.h
 Patch1:              audacity-01-m4.diff
@@ -23,12 +30,15 @@ Patch2:              audacity-02-fixsed.diff
 Patch3:              audacity-03-addgtklibs.diff
 Patch4:              audacity-04-Tmacro.diff
 Patch5:              audacity-05-nyquist.diff
+# Refer to wxWidgets bug #10883.
+Patch6:              audacity-06-gsocket.diff
+Patch7:              audacity-07-soundtouch.diff
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 
-BuildRequires: SFElibsamplerate-devel
-Requires: SFElibsamplerate
+BuildRequires: SFEtaglib-devel
+Requires: SFEtaglib
 BuildRequires: SFEportaudio-devel
 Requires: SFEportaudio
 BuildRequires: SFEladspa-devel
@@ -84,6 +94,8 @@ Requires:                %{name}
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
+%patch6 -p1
+%patch7 -p1
 mkdir -p lib-src/portaudio-v19/include/sys
 cp %{SOURCE1} lib-src/portaudio-v19/include/sys
 
@@ -154,10 +166,12 @@ cd ../..
             --libdir=%{_libdir}         \
             --mandir=%{_mandir}         \
             --with-ladspa               \
+            --with-soundtouch           \
             $AU_DEBUG_CONFIG		\
             $AU_LIBMAD_CONFIG		\
             $AU_LIBTWOMAD_CONFIG	\
-            --without-quicktime
+            --without-quicktime		\
+	    --without-ffmpeg
 
 %if %with_wxw_gcc
 # /usr/gnu/bin/gcc is using gnu ld....
@@ -217,6 +231,9 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Sat Sep 05 2009 - brian.cameron@sun.com
+- Bump to 1.3.9 and add patches audacity-06-gsocket.diff and
+  audacity-07-soundtouch.diff.
 * Wed Aug 05 2009 - brian.cameron@sun.com
 - Bump to 1.3.8.
 * Sun Jun 21 2009 - brian.cameron@sun.com
