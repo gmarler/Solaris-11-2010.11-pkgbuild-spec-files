@@ -1,3 +1,6 @@
+2009-09-09  Doug Scott <drdoug007@gmail.com>
+	* SFEvdrift.spec: update required packages
+
 2009-09-08  Doug Scott <drdoug007@gmail.com>
 	* SFEvdrift.spec: open source driving simulation
 	*   patches/vdrift-02-opt.diff

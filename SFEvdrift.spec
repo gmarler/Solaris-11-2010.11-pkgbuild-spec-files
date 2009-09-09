@@ -19,8 +19,7 @@
 # Download manually
 %define src_url http://downloads.sourceforge.net/vdrift
 
-# If SFEasio is not install. Make sure all files are installed
-%define SFEasio	%(/usr/bin/pkginfo -q SFEasio && echo 1 || echo 0)
+%define SUNWlibsdl      %(/usr/bin/pkginfo -q SUNWlibsdl && echo 1 || echo 0)
 
 Name:                SFEvdrift
 Summary:             VDrift is a cross-platform, open source driving simulation made with drift racing in mind
@@ -36,7 +35,14 @@ BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 Requires: SFEboost-gpp
 Requires: SFEasio-gpp
-Requires: SFEopenal
+Requires: SUNWogg-vorbis
+%if %SUNWlibsdl
+Requires: SUNWlibsdl
+%else 
+Requires: SFEsdl
+%endif
+Requires: SFEsdl-gfx
+Requires: SFEsdl-image
 # Currently in pending repository
 Requires: glew
 
@@ -80,5 +86,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/games
 
 %changelog
+* Web Sep 09 2009 - drdoug007@gmail.com
+- Updated required packages
 * Tue Sep 08 2009 - drdoug007@gmail.com
 - Initial version
