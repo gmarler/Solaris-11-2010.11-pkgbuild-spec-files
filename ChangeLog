@@ -1,5 +1,10 @@
 2009-09-08  Brian Cameron  <brian.cameron@sun.com>
 
+	* patches/audacity-07-soundtouch.diff:  Add patch so that audacity
+	  finds the latest 1.4 version of SoundTouch.
+
+2009-09-08  Brian Cameron  <brian.cameron@sun.com>
+
 	* SFEtaglib.spec: Bump to 1.5.
 	* SFEwxwidgets.spec, patches/wxwidgets-04-gsocket.diff: Add gsocket
 	  patch to address building issue when building with recent GLib
