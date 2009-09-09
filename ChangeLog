@@ -1,3 +1,10 @@
+2009-09-09  Brian Cameron  <brian.cameron@sun.com>
+
+	* SFEwxwidgets.spec, patches/wxwidgets*diff: Updated the patches so
+	  they are like the patches provided by the maintainer which will
+	  likely go upstream.  The 2 large patches were broken into 5 smaller
+	  patches for easier review.
+
 2009-09-09  Milan Jurik <sfnet@xylab.cz>
 
 	* SFEethereal.spec: move to archive, it's old, unmaintained and new fork

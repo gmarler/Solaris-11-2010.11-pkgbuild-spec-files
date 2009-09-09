@@ -20,8 +20,11 @@ Patch1:                  wxwidgets-01-msgfmt.diff
 # See bug #10660
 Patch2:                  wxwidgets-02-Tmacro.diff
 Patch3:                  wxwidgets-03-Tmacro.diff
+Patch4:                  wxwidgets-04-Tmacro.diff
+Patch5:                  wxwidgets-05-Tmacro.diff
+Patch6:                  wxwidgets-06-Tmacro.diff
 # See bug #10883
-Patch4:                  wxwidgets-04-gsocket.diff
+Patch7:                  wxwidgets-07-gsocket.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -62,9 +65,12 @@ Requires:                %{name}
 %prep
 %setup -q -n wxWidgets-%{tarball_version}
 %patch1 -p1
-%patch2 -p0
-%patch3 -p0
+%patch2 -p1
+%patch3 -p1
 %patch4 -p1
+%patch5 -p1
+%patch6 -p1
+%patch7 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
