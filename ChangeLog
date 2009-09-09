@@ -1,3 +1,8 @@
+2009-09-08  Doug Scott <drdoug007@gmail.com>
+	* SFEvdrift.spec: open source driving simulation
+	*   patches/vdrift-02-opt.diff
+	*   patches/vdrift-01-ncpu.diff
+
 2009-09-08  Brian Cameron  <brian.cameron@sun.com>
 
 	* patches/audacity-07-soundtouch.diff:  Add patch so that audacity

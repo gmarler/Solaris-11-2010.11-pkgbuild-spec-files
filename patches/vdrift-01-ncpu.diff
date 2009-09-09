@@ -1,0 +1,42 @@
+--- vdrift-2009-06-15/include/numprocessors.h.orig	2009-09-09 06:21:30.013730450 +0100
++++ vdrift-2009-06-15/include/numprocessors.h	2009-09-09 06:21:47.974533868 +0100
+@@ -13,6 +13,9 @@
+ 
+ 	// Required to get number of processors on OS X using sysctlbyname.
+ 	#include <sys/sysctl.h>
++#elif defined(sun)
++	#include <pthread.h>
++	#include <unistd.h>
+ #elif defined(unix) || defined(__unix) || defined(__unix__)
+ 	#include <pthread.h>
+ 
+@@ -43,6 +46,8 @@
+ 		{
+ 			return (unsigned int)numProcessors;
+ 		}
++#elif defined(sun)
++		return((unsigned int)sysconf(_SC_NPROCESSORS_ONLN));
+ #else
+ 		// Methods for getting the number of processors:
+ 
+--- vdrift-2009-06-15/include/quickmp.h.orig	2009-09-09 06:22:34.793451302 +0100
++++ vdrift-2009-06-15/include/quickmp.h	2009-09-09 06:23:02.211205810 +0100
+@@ -325,6 +325,9 @@
+ 
+ 	// Required to get number of processors on OS X using sysctlbyname.
+ 	#include <sys/sysctl.h>
++#elif defined(sun)
++	#include <pthread.h>
++	#include <unistd.h>
+ #elif defined(unix) || defined(__unix) || defined(__unix__)
+ 	#include <pthread.h>
+ 
+@@ -626,6 +629,8 @@
+ 		{
+ 			return (unsigned int)numProcessors;
+ 		}
++#elif defined(sun)
++		return (unsigned int)sysconf(_SC_NPROCESSORS_ONLN);
+ #else
+ 		// Methods for getting the number of processors:
+ 
