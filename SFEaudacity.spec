@@ -8,7 +8,7 @@
 # fixed to ship the C++ interfaces, you need to uninstall SUNWflac from the
 # spec-files repository and rebuild it after editing the SUNWflac.spec file and
 # changing the "build_cpp" define from 0 to 1.  You could also try adding
-# --disable-flac to the audacity configure.
+# --without-flac to the audacity configure.
 #
 %include Solaris.inc
 
