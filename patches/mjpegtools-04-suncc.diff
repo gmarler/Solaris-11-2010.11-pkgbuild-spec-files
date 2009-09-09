@@ -1,0 +1,95 @@
+--- mjpegtools-1.9.0/mpeg2enc/elemstrmwriter.cc	2009-09-09 14:55:48.227859416 +0200
++++ mjpegtools-1.9.0-patch/mpeg2enc/elemstrmwriter.cc	2009-09-09 14:58:10.536534281 +0200
+@@ -77,7 +77,7 @@
+ void ElemStrmFragBuf::AdjustBuffer()
+ {
+ 	buffer_size *= 2;
+-	buffer = static_cast<uint8_t *>(realloc( buffer, sizeof(uint8_t[buffer_size])));
++	buffer = static_cast<uint8_t *>(realloc( buffer, sizeof(uint8_t) * buffer_size));
+ 	if( !buffer )
+ 		mjpeg_error_exit1( "output buffer memory allocation: out of memory" );
+ }
+--- mjpegtools-1.9.0/mplex/lpcmstrm_in.cpp	Wed Sep  9 15:04:35 2009
++++ mjpegtools-1.9.0-patch/mplex/lpcmstrm_in.cpp	Wed Sep  9 15:04:59 2009
+@@ -53,7 +53,7 @@
+ 
+ bool LPCMStream::Probe(IBitStream &bs )
+ {
+-    char *last_dot = strrchr( bs.StreamName(), '.' );
++    const char *last_dot = strrchr( bs.StreamName(), '.' );
+     return 
+         last_dot != NULL 
+         && strcmp( last_dot+1, "lpcm") == 0;
+--- mjpegtools-1.9.0/yuvdeinterlace/yuvdeinterlace.cc	Wed Sep  9 16:28:34 2009
++++ mjpegtools-1.9.0-patch/yuvdeinterlace/yuvdeinterlace.cc	Wed Sep  9 16:33:18 2009
+@@ -169,2 +169,2 @@
+-    memcpy (in0 - w, in + w, w);
+-    memcpy (in0 + (w * h), in + (w * h) - 2 * w, w);
++    std::memcpy (in0 - w, in + w, w);
++    std::memcpy (in0 + (w * h), in + (w * h) - 2 * w, w);
+@@ -282,1 +282,1 @@
+-      memcpy (scratch + w * (h - 1), in0 + w * (h - 1), w);
++      std::memcpy (scratch + w * (h - 1), in0 + w * (h - 1), w);
+@@ -294,3 +294,3 @@
+-    memcpy (out - w, out, w);
+-    memcpy (out - w * 2, out, w);
+-    memcpy (out - w * 3, out, w);
++    std::memcpy (out - w, out, w);
++    std::memcpy (out - w * 2, out, w);
++    std::memcpy (out - w * 3, out, w);
+@@ -298,4 +298,4 @@
+-    memcpy (out + (w * h), out + (w * h) - w, w);
+-    memcpy (out + (w * h) + w, out + (w * h) - w, w);
+-    memcpy (out + (w * h) + w * 2, out + (w * h) - w, w);
+-    memcpy (out + (w * h) + w * 3, out + (w * h) - w, w);
++    std::memcpy (out + (w * h), out + (w * h) - w, w);
++    std::memcpy (out + (w * h) + w, out + (w * h) - w, w);
++    std::memcpy (out + (w * h) + w * 2, out + (w * h) - w, w);
++    std::memcpy (out + (w * h) + w * 3, out + (w * h) - w, w);
+@@ -303,5 +303,5 @@
+-    memcpy (scratch - w, scratch, w);
+-    memcpy (scratch - w * 2, scratch, w);
+-    memcpy (scratch - w * 3, scratch, w);
+-    memcpy (scratch - w * 4, scratch, w);
+-    memset (scratch - w * 4 - 4, scratch[0], 4);
++    std::memcpy (scratch - w, scratch, w);
++    std::memcpy (scratch - w * 2, scratch, w);
++    std::memcpy (scratch - w * 3, scratch, w);
++    std::memcpy (scratch - w * 4, scratch, w);
++    std::memset (scratch - w * 4 - 4, scratch[0], 4);
+@@ -309,5 +309,5 @@
+-    memcpy (scratch + (w * h), scratch + (w * h) - w, w);
+-    memcpy (scratch + (w * h) + w, scratch + (w * h) - w, w);
+-    memcpy (scratch + (w * h) + w * 2, scratch + (w * h) - w, w);
+-    memcpy (scratch + (w * h) + w * 3, scratch + (w * h) - w, w);
+-    memset (scratch + (w * h) + w * 4, scratch[w * h - 1], 11);
++    std::memcpy (scratch + (w * h), scratch + (w * h) - w, w);
++    std::memcpy (scratch + (w * h) + w, scratch + (w * h) - w, w);
++    std::memcpy (scratch + (w * h) + w * 2, scratch + (w * h) - w, w);
++    std::memcpy (scratch + (w * h) + w * 3, scratch + (w * h) - w, w);
++    std::memset (scratch + (w * h) + w * 4, scratch[w * h - 1], 11);
+@@ -677,1 +677,1 @@
+-    memcpy (out, scratch, w * h);
++    std::memcpy (out, scratch, w * h);
+--- mjpegtools-1.9.0/y4mdenoise/Allocator.hh	2009-09-09 17:07:52.073523962 +0200
++++ mjpegtools-1.9.0-patch/y4mdenoise/Allocator.hh	2009-09-09 17:08:44.516680971 +0200
+@@ -40,7 +40,7 @@
+ 	public:
+ 		Chunk *m_pNext;
+ 			// The next allocated chunk.
+-		char m_aSpace[];
++		char *m_aSpace;
+ 			// The memory to divide up.
+ 	};
+ 
+--- mjpegtools-1.9.0/y4mdenoise/SetRegion2D.hh	2009-09-09 17:15:28.800215909 +0200
++++ mjpegtools-1.9.0-patch/y4mdenoise/SetRegion2D.hh	2009-09-09 17:14:32.849631594 +0200
+@@ -212,7 +212,7 @@
+ template <class INDEX, class SIZE>
+ class SetRegion2D<INDEX,SIZE>::FloodFillControl
+ {
+-private:
++public:
+ 	typedef SetRegion2D<INDEX,SIZE> Region_t;
+ 		// Keep track of our region class.
+ public:

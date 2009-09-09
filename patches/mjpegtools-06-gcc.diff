@@ -1,0 +1,11 @@
+--- mjpegtools-1.9.0/yuvdenoise/Makefile.in	Tue Jan  6 07:49:30 2009
++++ mjpegtools-1.9.0-patch/yuvdenoise/Makefile.in	Wed Sep  9 15:46:05 2009
+@@ -225,1 +225,0 @@
+-AM_CFLAGS = -O3 -funroll-all-loops -ffast-math
+--- mjpegtools-1.9.0/y4mdenoise/Makefile.in	2009-01-06 07:49:30.000000000 +0100
++++ mjpegtools-1.9.0-patch/y4mdenoise/Makefile.in	2009-09-09 17:20:28.234287560 +0200
+@@ -240,2 +240,2 @@
+-AM_CFLAGS = -DNDEBUG -finline-functions @PROGRAM_NOPIC@
+-AM_CXXFLAGS = -DNDEBUG -finline-functions @PROGRAM_NOPIC@
++AM_CFLAGS = -DNDEBUG @PROGRAM_NOPIC@
++AM_CXXFLAGS = -DNDEBUG @PROGRAM_NOPIC@

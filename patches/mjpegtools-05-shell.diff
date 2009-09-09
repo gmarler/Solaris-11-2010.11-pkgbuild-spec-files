@@ -1,0 +1,6 @@
+--- mjpegtools-1.9.0/cpuinfo.sh	Wed Sep  9 15:43:46 2009
++++ mjpegtools-1.9.0-patch/cpuinfo.sh	Wed Sep  9 15:41:47 2009
+@@ -1,1 +1,2 @@
+-#!/bin/sh
++#!/bin/ksh
++exit 0

@@ -2,6 +2,12 @@
 
 	* SFEethereal.spec: move to archive, it's old, unmaintained and new fork
 	  (wireshark) is already integrated
+	* encumbered/SFEmjpegtools.spec: update to 1.9.0, switch to Sun CC,
+	  SUNWwxwidgets used
+	  patches/mjpegtools-01-progname.diff
+	  patches/mjpegtools-04-suncc.diff
+	  patches/mjpegtools-05-shell.diff
+	  patches/mjpegtools-06-gcc.diff
 
 2009-09-09  Doug Scott <drdoug007@gmail.com>
 	* SFEvdrift.spec: update required packages
