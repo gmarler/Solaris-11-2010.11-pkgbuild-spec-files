@@ -1,3 +1,12 @@
+2009-09-09  Albert Lee  <trisk@forkgnu.org>
+
+	* SFEaudacity.spec: Fix configure on SXCE. Allow compilation when FLAC++
+	  is missing, fix typos for twolame. Remove soundcard.h. Add patch8.
+	  Add patch9. Remove dependency on SFEportaudio.
+	* patches/audacity-08-portaudio.diff: Fix issue with internal portaudio
+	  and GCC
+	* patches/audacity-09-flac.diff: Allow building without FLAC
+
 2009-09-09  Brian Cameron  <brian.cameron@sun.com>
 
 	* SFEwxwidgets.spec, patches/wxwidgets*diff: Updated the patches so

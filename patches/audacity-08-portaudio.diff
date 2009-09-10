@@ -1,0 +1,18 @@
+--- audacity-src-1.3.9.orig/lib-src/portaudio-v19/configure.in	Mon Aug 31 06:46:04 2009
++++ audacity-src-1.3.9/lib-src/portaudio-v19/configure.in	Wed Sep  9 19:25:41 2009
+@@ -338,11 +338,11 @@
+               SHARED_FLAGS="-G"
+               THREAD_CFLAGS="-mt"
+               ;;
+-           *)
+-              SHARED_FLAGS="-shared -fPIC"
+-              THREAD_CFLAGS="-pthread"
+-              ;;
+         esac
++        if test "$GCC" = "yes"; then
++           SHARED_FLAGS="-shared -fPIC"
++           THREAD_CFLAGS="-pthread"
++        fi
+ 
+         OTHER_OBJS="$OTHER_OBJS src/os/unix/pa_unix_hostapis.o src/os/unix/pa_unix_util.o"
+ esac

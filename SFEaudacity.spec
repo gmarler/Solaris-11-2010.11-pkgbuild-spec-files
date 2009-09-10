@@ -7,11 +7,11 @@
 # libraries, which are not currently available.  So until the FLAC package is
 # fixed to ship the C++ interfaces, you need to uninstall SUNWflac from the
 # spec-files repository and rebuild it after editing the SUNWflac.spec file and
-# changing the "build_cpp" define from 0 to 1.  You could also try adding
-# --without-flac to the audacity configure.
+# changing the "build_cpp" define from 0 to 1.
 #
 %include Solaris.inc
 
+%define with_flac %(pkgchk -l SUNWflac-devel 2>/dev/null | grep 'FLAC++' >/dev/null && echo 1 || echo 0)
 %define with_libmad %(pkginfo -q SFElibmad && echo 1 || echo 0)
 %define with_libtwolame %(pkginfo -q SFElibtwolame && echo 1 || echo 0)
 %define with_wxw_gcc %(pkginfo -q SFEwxwidgets-gnu && echo 1 || echo 0)
@@ -22,7 +22,6 @@ Name:                SFEaudacity
 Summary:             Free, Cross-Platform Sound Editor
 Version:             1.3.9
 Source:              %{sf_download}/audacity/%{src_name}-minsrc-%{version}.tar.bz2
-Source1:             soundcard.h
 Patch1:              audacity-01-m4.diff
 # bug 1910685/
 Patch2:              audacity-02-fixsed.diff
@@ -33,14 +32,14 @@ Patch5:              audacity-05-nyquist.diff
 # Refer to wxWidgets bug #10883.
 Patch6:              audacity-06-gsocket.diff
 Patch7:              audacity-07-soundtouch.diff
+Patch8:              audacity-08-portaudio.diff
+Patch9:              audacity-09-flac.diff
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 
 BuildRequires: SFEtaglib-devel
 Requires: SFEtaglib
-BuildRequires: SFEportaudio-devel
-Requires: SFEportaudio
 BuildRequires: SFEladspa-devel
 Requires: SFEladspa
 BuildRequires: SFEsoundtouch-devel
@@ -56,6 +55,16 @@ Requires: SFEwxwidgets-gnu
 %else
 BuildRequires: SFEwxwidgets-devel
 Requires: SFEwxwidgets
+%endif
+
+# If building with GCC, cannot use SUNWflac which has Studio C++ libraries
+#
+%if %with_flac
+%if %with_wxw_gcc
+%else
+BuildRequires: SUNWflac-devel
+Requires: SUNWflac
+%endif
 %endif
 
 # If building with libmad, then also require id3tag.  If
@@ -96,8 +105,7 @@ Requires:                %{name}
 %patch5 -p1
 %patch6 -p1
 %patch7 -p1
-mkdir -p lib-src/portaudio-v19/include/sys
-cp %{SOURCE1} lib-src/portaudio-v19/include/sys
+%patch8 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -127,6 +135,18 @@ CFLAGS="$CFLAGS -fPIC -DPIC -fno-omit-frame-pointer"
 CXXFLAGS="$CFLAGS -fPIC -DPIC -fno-omit-frame-pointer"
 %endif
 
+%if %with_flac
+
+%if %cc_is_gcc
+AU_LIBFLAC_CONFIG="--without-libflac"
+%else
+AU_LIBFLAC_CONFIG="--with-libflac"
+%endif
+
+%else
+AU_LIBFLAC_CONFIG="--without-libflac"
+%endif
+
 %if %with_libmad
 AU_LIBMAD_CONFIG="--with-libmad"
 %else
@@ -136,7 +156,7 @@ AU_LIBMAD_CONFIG="--without-libmad"
 %if %with_libtwolame
 AU_LIBTWOLAME_CONFIG="--with-libtwolame"
 %else
-AU_TWOLAME_CONFIG="--without-libtwolame"
+AU_LIBTWOLAME_CONFIG="--without-libtwolame"
 %endif
 
 # Must run autoconf in portaudio-v19 code since we patch
@@ -160,7 +180,7 @@ aclocal $ACLOCAL_FLAGS
 autoconf -f
 cd ../..
 
-./configure --prefix=%{_prefix}         \
+bash ./configure --prefix=%{_prefix}         \
             --bindir=%{_bindir}         \
             --datadir=%{_datadir}       \
             --libdir=%{_libdir}         \
@@ -168,8 +188,9 @@ cd ../..
             --with-ladspa               \
             --with-soundtouch           \
             $AU_DEBUG_CONFIG		\
+            $AU_LIBFLAC_CONFIG		\
             $AU_LIBMAD_CONFIG		\
-            $AU_LIBTWOMAD_CONFIG	\
+            $AU_LIBTWOLAME_CONFIG	\
             --without-quicktime		\
 	    --without-ffmpeg
 
@@ -231,6 +252,13 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Wed Sep 09 2009 - trisk@forkgnu.org
+- Fix configure on SXCE
+- Fix compilation when FLAC++ is missing, fix typos for twolame
+- Remove soundcard.h
+- Add patch8 for issue with internal portaudio and GCC
+- Add patch9 to allow building without FLAC
+- Remove dependency on SFEportaudio
 * Sat Sep 05 2009 - brian.cameron@sun.com
 - Bump to 1.3.9 and add patches audacity-06-gsocket.diff and
   audacity-07-soundtouch.diff.
