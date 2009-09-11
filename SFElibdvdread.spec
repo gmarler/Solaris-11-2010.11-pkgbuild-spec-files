@@ -9,6 +9,8 @@ Name:                    SFElibdvdread
 Summary:                 libdvdread  - libdvdread provides a simple foundation for reading DVD video disks
 Version:                 4.1.3
 Source:                  http://www1.mplayerhq.hu/MPlayer/releases/dvdnav/libdvdread-%{version}.tar.bz2
+Patch1:			 libdvdread-01-dvdfilestat.diff
+Patch2:			 libdvdread-02-wall.diff
 SUNW_BaseDir:            %{_basedir}
 buildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -23,6 +25,8 @@ BuildRequires: SFElibdvdcss-devel
 
 %prep
 %setup -q -n libdvdread-%version
+%patch1 -p1
+%patch2 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -30,10 +34,15 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
     CPUS=1
 fi
 export CFLAGS="%optflags"
+export LDFLAGS="%_ldflags"
 export ACLOCAL_FLAGS="-I %{_datadir}/aclocal"
 export MSGFMT="/usr/bin/msgfmt"
-
-./configure2 --prefix=%{_prefix} --mandir=%{_mandir} \
+libtoolize
+aclocal -I m4
+autoheader
+automake -a -f -c
+autoconf -f
+./configure --prefix=%{_prefix} --mandir=%{_mandir} \
             --libdir=%{_libdir}              \
             --libexecdir=%{_libexecdir}      \
             --sysconfdir=%{_sysconfdir}
@@ -61,9 +70,13 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/*
 %dir %attr (0755, root, other) %{_libdir}/pkgconfig
 %{_libdir}/pkgconfig/*
+%dir %attr (0755, root, other) %{_datadir}/aclocal
+%{_datadir}/aclocal/*
 
 
 %changelog
+* Fri Sep 11 2009 - drdoug007@gmail.com
+- Added dvdfilestat patch and encouraged allowed a gcc build
 * Sat Jun 13 2009 - Milan Jurik
 - new upstream, version 4.1.3
 * Sat Jun 14 2008 - trisk@acm.jhu.edu
