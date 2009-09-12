@@ -12,13 +12,13 @@
 %define pythonlibdir lib/python2.4/site-packages/wesnoth
 %define abs_pythonlibdir %{_basedir}/%{pythonlibdir}
 
-%define src_version 1.6.4
+%define src_version 1.6.5
 
 %define SUNWlibsdl      %(/usr/bin/pkginfo -q SUNWlibsdl && echo 1 || echo 0)
 
 Name:                    	SFEwesnoth
 Summary:                 	Battle for Wesnoth is a fantasy turn-based strategy game
-Version:                 	1.6.4
+Version:                 	1.6.5
 License:			GPLv2
 URL:				http://www.wesnoth.org
 Meta(info.upstream):            David White
@@ -32,7 +32,6 @@ Patch3:			        wesnoth-03-fixtolower.diff
 Patch4:			        wesnoth-04-fixatoi.diff
 Patch5:			        wesnoth-05-fixround.diff
 Patch6: 		        wesnoth-06-fixreturn.diff
-Patch7:			        wesnoth-07-fixserver.diff
 Patch8:			        wesnoth-08-fixscons.diff
 Patch9:			        wesnoth-09-fixrand.diff
 Patch10:		        wesnoth-10-fixstd.diff
@@ -72,7 +71,6 @@ SUNW_BaseDir:     /
 %patch4 -p1
 %patch5 -p1
 %patch6 -p1
-%patch7 -p1
 %patch8 -p1
 %patch9 -p1
 %patch10 -p1
@@ -129,6 +127,8 @@ rm -Rf $RPM_BUILD_ROOT
 #%dir %attr (0750, root, other) /var/run/wesnothd
 
 %changelog
+* Sat Sep 12 2009 - Petr Sobotka sobotkap@gmail.com
+- Bump to version 1.6.5
 * Fri Aug 07 2009 - Petr Sobotka sobotkap@gmail.com
 - Bump to version 1.6.4
 * Sat Apr 18 2009 - Petr Sobotka sobotkap@gmail.com

@@ -1,3 +1,7 @@
+2009-09-12  Petr Sobotka  <sobotkap@gmail.com>
+
+	* SFEwesnoth.spec: Bump to version 1.6.5
+
 2009-09-11  Doug Scott <drdoug007@gmail.com>
 	* SFElibdvdread.spec: Added the following patches and allowed non gcc builds
 	*   patches/libdvdread-01-dvdfilestat.diff: Patch to allow building dvdbackup
