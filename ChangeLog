@@ -1,3 +1,7 @@
+2009-09-13  Milan Jurik <sfnet@xylab.cz>
+
+	* SFElibnids.spec: Initial version
+
 2009-09-12  Petr Sobotka  <sobotkap@gmail.com>
 
 	* SFEwesnoth.spec: Bump to version 1.6.5
