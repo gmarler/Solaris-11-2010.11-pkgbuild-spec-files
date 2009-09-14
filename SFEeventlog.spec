@@ -2,18 +2,14 @@
 # Copyright (c) 2006 Sun Microsystems, Inc.
 # This file and all modifications and additions to the pristine
 # package are under the same license as the package itself.
-#
-# The default build/install (and this spec files) doesn't install
-# the required /etc/syslog-ng/syslog-ng.conf.solaris file; instead
-# a sample one for solaris comes with the source in the doc directory.
-# It's called syslog-ng.conf.solaris.
 
 %include Solaris.inc
+%define main_version 3.0.4
 
 Name:                SFEeventlog
 Summary:             Library needed by Syslog-ng
-Version:             0.2.7
-Source:              http://www.balabit.com/downloads/files/syslog-ng/sources/stable/src/eventlog-%{version}.tar.gz
+Version:             0.2.10
+Source:              http://www.balabit.com/downloads/files/syslog-ng/open-source-edition/%{main_version}/source/eventlog_%{version}.tar.gz
 
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
@@ -30,7 +26,7 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
 fi
 
 # This source is gcc-centric, therefore...
-export CC=/usr/sfw/bin/gcc
+export CC=gcc
 # export CFLAGS="%optflags"
 export CFLAGS="-O4 -fPIC -DPIC -Xlinker -i -fno-omit-frame-pointer"
 
@@ -63,6 +59,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/*
 
 %changelog
+* Sun Sep 13 2009 - oliver.mauras@gmail.com
+- Version bump to 2.0.10
 * Sun Feb 24 2008 - Moinak Ghosh
 - Initial spec
 - Initial spec. This is needed by SFEsyslog-ng.

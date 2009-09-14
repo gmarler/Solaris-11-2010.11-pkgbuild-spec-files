@@ -1,0 +1,82 @@
+#!/sbin/sh
+#
+# CDDL HEADER START
+#
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License (the "License").
+# You may not use this file except in compliance with the License.
+#
+# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+# or http://www.opensolaris.org/os/licensing.
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each
+# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
+# Copyright 2006 Sun Microsystems, Inc.  All rights reserved.
+# Use is subject to license terms.
+#
+# ident	"%Z%%M%	%I%	%E% SMI"
+
+ACTION=$1
+CONF=/etc/syslog-ng.conf
+BIN=/usr/sbin/syslog-ng
+PID=/var/run/syslog-ng.pid
+
+. /lib/svc/share/smf_include.sh
+
+if [ ! -f ${CONF} ]; then
+	echo "${CONF} is missing. Exiting."
+	exit $SMF_EXIT_ERR_CONFIG
+fi
+
+if [ ! -x ${BIN} ]; then
+	echo "Executable ${BIN} not found. Exiting"
+	exit $SMF_EXIT_ERR_CONFIG
+fi
+
+if smf_is_globalzone; then
+	#
+	# Before syslogd starts, save any messages from
+	# previous crash dumps so that messages appear
+	# in chronological order.
+	#
+	/usr/bin/savecore -m
+	if [ -r /etc/dumpadm.conf ]; then
+		. /etc/dumpadm.conf
+		[ -n "$DUMPADM_DEVICE" -a \
+	    	"x$DUMPADM_DEVICE" != xswap ] && \
+	    	/usr/bin/savecore -m -f $DUMPADM_DEVICE
+	fi
+fi
+
+if [ ! -f /var/adm/messages ]; then
+	/usr/bin/cp /dev/null /var/adm/messages
+	/usr/bin/chmod 0644 /var/adm/messages
+fi
+
+case ${ACTION} in
+start)
+    exec ${BIN} > /dev/null 2>&1
+    ;;
+
+stop)
+    kill `cat ${PID}`
+    ;;
+ 
+refresh)
+    kill -HUP `cat ${PID}`
+    ;;
+
+*)
+    echo "Usage: $0 { start | stop | refresh }"
+    exit 1
+    ;;
+esac
+

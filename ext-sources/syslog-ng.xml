@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+<!DOCTYPE service_bundle SYSTEM "/usr/share/lib/xml/dtd/service_bundle.dtd.1">
+
+<service_bundle type='manifest' name='SFEsyslog-ng:syslog-ng'>
+<service
+	name='system/syslog-ng'
+	type='service'
+	version='1'>
+	<create_default_instance enabled='false' />
+	<single_instance/>
+
+	<dependency
+		name='milestone'
+		grouping='require_all'
+		restart_on='none'
+		type='service'>
+		<service_fmri value='svc:/milestone/sysconfig' />
+	</dependency>
+
+	<!--
+	  syslogd(1M) can log to non-root local directories.
+	-->
+	<dependency
+		name='filesystem'
+		grouping='require_all'
+		restart_on='none'
+		type='service'>
+		<service_fmri value='svc:/system/filesystem/local' />
+	</dependency>
+
+	<!--
+	  syslogd(1M) can log to automounted files.
+	-->
+	<dependency
+		name='autofs'
+		grouping='optional_all'
+		restart_on='none'
+		type='service'>
+		<service_fmri value='svc:/system/filesystem/autofs' />
+	</dependency>
+
+	<!--
+	  syslogd(1M) needs nameservice resolution to log to remote hosts.
+	-->
+	<dependency
+		name='name-services'
+		grouping='require_all'
+		restart_on='none'
+		type='service'>
+		<service_fmri value='svc:/milestone/name-services' />
+	</dependency>
+
+	<dependent
+		name='system-log_single-user'
+		grouping='optional_all'
+		restart_on='none'>
+		<service_fmri value='svc:/milestone/multi-user' />
+	</dependent>
+
+	<!--
+		The system-log start method includes a "savecore -m".
+		Use an appropriately long timeout value.
+	-->
+	<exec_method
+		type='method'
+		name='start'
+		exec='/lib/svc/method/syslog-ng start'
+		timeout_seconds='600' />
+
+	<exec_method
+		type='method'
+		name='stop'
+		exec='/lib/svc/method/syslog-ng stop'
+		timeout_seconds='60' />
+
+	<exec_method
+		type='method'
+		name='refresh'
+		exec='/lib/svc/method/syslog-ng refresh'
+		timeout_seconds='60' />
+
+    <property_group name='startd' type='framework'>
+      <propval name='duration' type='astring' value='contract' />
+    </property_group>
+
+    <template>
+      <common_name>
+        <loctext xml:lang='C'>
+          Syslog-NG Logging Daemon
+        </loctext>
+      </common_name>
+      <documentation>
+          <manpage title='syslog-ng'
+            section='8M'
+            manpath='/usr/share/man'/>
+          <manpage title='syslog-ng.conf'
+            section='5M'
+            manpath='/usr/share/man'/>
+      </documentation>
+
+
+    </template>
+  </service>
+</service_bundle>
+
