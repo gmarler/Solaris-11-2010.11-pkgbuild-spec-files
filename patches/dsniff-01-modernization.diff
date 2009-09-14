@@ -1,0 +1,3115 @@
+diff -Naur dsniff-2.4/.pkgbuild.build.sh dsniff-2.4-patch/.pkgbuild.build.sh
+--- dsniff-2.4/.pkgbuild.build.sh	1970-01-01 01:00:00.000000000 +0100
++++ dsniff-2.4-patch/.pkgbuild.build.sh	2009-09-14 19:23:26.154487161 +0200
+@@ -0,0 +1,38 @@
++#!/bin/bash
++
++set -e
++
++RPM_SOURCE_DIR="/home/mj162486/packages/SOURCES"
++RPM_BUILD_DIR="/home/mj162486/packages/BUILD"
++RPM_OPT_FLAGS="-O3 -march=i586 -Xlinker -i -fno-omit-frame-pointer -fPIC -DPIC"
++RPM_ARCH="i386"
++RPM_OS="solaris"
++RPM_OS_REL="5.11"
++export RPM_SOURCE_DIR RPM_BUILD_DIR RPM_OPT_FLAGS RPM_ARCH RPM_OS
++RPM_DOC_DIR="/usr/share/doc/packages/SFEdsniff"
++export RPM_DOC_DIR
++RPM_PACKAGE_NAME="SFEdsniff"
++RPM_PACKAGE_VERSION="2.4.0.1"
++RPM_PACKAGE_RELEASE="0"
++export RPM_PACKAGE_NAME RPM_PACKAGE_VERSION RPM_PACKAGE_RELEASE
++RPM_BUILD_ROOT="/var/tmp/pkgbuild-mj162486/SFEdsniff-2.4.0.1-0-root"
++export RPM_BUILD_ROOT
++
++set -x
++umask 022
++uname -a
++
++cd /home/mj162486/packages/BUILD
++
++cd dsniff-2.4
++
++CC=gcc
++./configure 			\
++    --prefix=/usr		\
++    --bindir=/usr/bin		\
++    --sbindir=/usr/sbin	\
++    --without-db
++
++make
++
++exit 0
+diff -Naur dsniff-2.4/Makefile.in dsniff-2.4-patch/Makefile.in
+--- dsniff-2.4/Makefile.in	2001-03-15 09:34:42.000000000 +0100
++++ dsniff-2.4-patch/Makefile.in	2009-09-14 20:15:17.056356544 +0200
+@@ -149,10 +149,10 @@
+ 	for file in $(CONFIGS); do \
+ 	   $(INSTALL_DATA) $$file $(install_prefix)$(libdir); \
+ 	done
+-	test -d $(install_prefix)$(mandir)/man8 || \
+-	   $(INSTALL) -d $(install_prefix)$(mandir)/man8
+-	for file in *.8; do \
+-	   $(INSTALL_DATA) $$file $(install_prefix)$(mandir)/man8; \
++	test -d $(install_prefix)$(mandir)/man1m || \
++	   $(INSTALL) -d $(install_prefix)$(mandir)/man1m
++	for file in *.1m; do \
++	   $(INSTALL_DATA) $$file $(install_prefix)$(mandir)/man1m; \
+ 	done
+ 
+ clean:
+diff -Naur dsniff-2.4/arp.c dsniff-2.4-patch/arp.c
+--- dsniff-2.4/arp.c	2001-03-15 09:32:58.000000000 +0100
++++ dsniff-2.4-patch/arp.c	2009-09-14 19:30:33.244376031 +0200
+@@ -34,6 +34,7 @@
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <unistd.h>
++#include <string.h>
+ 
+ #include "arp.h"
+ 
+diff -Naur dsniff-2.4/arpspoof.1m dsniff-2.4-patch/arpspoof.1m
+--- dsniff-2.4/arpspoof.1m	1970-01-01 01:00:00.000000000 +0100
++++ dsniff-2.4-patch/arpspoof.1m	2009-09-14 20:16:58.974237441 +0200
+@@ -0,0 +1,37 @@
++.TH ARPSPOOF 1M
++.ad
++.fi
++.SH NAME
++arpspoof
++\-
++intercept packets on a switched LAN
++.SH SYNOPSIS
++.na
++.nf
++.fi
++\fBarpspoof\fR [\fB-i \fIinterface\fR] [\fB-t \fItarget\fR] \fIhost\fR
++.SH DESCRIPTION
++.ad
++.fi
++\fBarpspoof\fR redirects packets from a target host (or all hosts)
++on the LAN intended for another host on the LAN by forging ARP
++replies.  This is an extremely effective way of sniffing traffic on a
++switch.
++.LP
++Kernel IP forwarding (or a userland program which accomplishes the
++same, e.g. fragrouter(1M)) must be turned on ahead of time.
++.SH OPTIONS
++.IP "\fB-i \fIinterface\fR"
++Specify the interface to use.
++.IP "\fB-t \fItarget\fR"
++Specify a particular host to ARP poison (if not specified, all hosts
++on the LAN).
++.IP \fIhost\fR
++Specify the host you wish to intercept packets for (usually the local
++gateway).
++.SH "SEE ALSO"
++dsniff(1M), fragrouter(1M)
++.SH AUTHOR
++.na
++.nf
++Dug Song <dugsong@monkey.org>
+diff -Naur dsniff-2.4/arpspoof.8 dsniff-2.4-patch/arpspoof.8
+--- dsniff-2.4/arpspoof.8	2000-11-28 08:43:43.000000000 +0100
++++ dsniff-2.4-patch/arpspoof.8	1970-01-01 01:00:00.000000000 +0100
+@@ -1,37 +0,0 @@
+-.TH ARPSPOOF 8
+-.ad
+-.fi
+-.SH NAME
+-arpspoof
+-\-
+-intercept packets on a switched LAN
+-.SH SYNOPSIS
+-.na
+-.nf
+-.fi
+-\fBarpspoof\fR [\fB-i \fIinterface\fR] [\fB-t \fItarget\fR] \fIhost\fR
+-.SH DESCRIPTION
+-.ad
+-.fi
+-\fBarpspoof\fR redirects packets from a target host (or all hosts)
+-on the LAN intended for another host on the LAN by forging ARP
+-replies.  This is an extremely effective way of sniffing traffic on a
+-switch.
+-.LP
+-Kernel IP forwarding (or a userland program which accomplishes the
+-same, e.g. fragrouter(8)) must be turned on ahead of time.
+-.SH OPTIONS
+-.IP "\fB-i \fIinterface\fR"
+-Specify the interface to use.
+-.IP "\fB-t \fItarget\fR"
+-Specify a particular host to ARP poison (if not specified, all hosts
+-on the LAN).
+-.IP \fIhost\fR
+-Specify the host you wish to intercept packets for (usually the local
+-gateway).
+-.SH "SEE ALSO"
+-dsniff(8), fragrouter(8)
+-.SH AUTHOR
+-.na
+-.nf
+-Dug Song <dugsong@monkey.org>
+diff -Naur dsniff-2.4/arpspoof.c dsniff-2.4-patch/arpspoof.c
+--- dsniff-2.4/arpspoof.c	2001-03-15 09:32:58.000000000 +0100
++++ dsniff-2.4-patch/arpspoof.c	2009-09-14 19:28:28.412084510 +0200
+@@ -13,6 +13,7 @@
+ 
+ #include <sys/types.h>
+ #include <sys/param.h>
++#include <sys/ethernet.h>
+ #include <netinet/in.h>
+ 
+ #include <stdio.h>
+@@ -25,9 +26,7 @@
+ #include "arp.h"
+ #include "version.h"
+ 
+-extern char *ether_ntoa(struct ether_addr *);
+-
+-static struct libnet_link_int *llif;
++static libnet_t *l;
+ static struct ether_addr spoof_mac, target_mac;
+ static in_addr_t spoof_ip, target_ip;
+ static char *intf;
+@@ -41,47 +40,49 @@
+ }
+ 
+ static int
+-arp_send(struct libnet_link_int *llif, char *dev,
+-	 int op, u_char *sha, in_addr_t spa, u_char *tha, in_addr_t tpa)
++arp_send(libnet_t *l, int op, u_int8_t *sha,
++	 in_addr_t spa, u_int8_t *tha, in_addr_t tpa)
+ {
+-	char ebuf[128];
+-	u_char pkt[60];
+-	
++	int retval;
++
+ 	if (sha == NULL &&
+-	    (sha = (u_char *)libnet_get_hwaddr(llif, dev, ebuf)) == NULL) {
++	    (sha = (u_int8_t *)libnet_get_hwaddr(l)) == NULL) {
+ 		return (-1);
+ 	}
+ 	if (spa == 0) {
+-		if ((spa = libnet_get_ipaddr(llif, dev, ebuf)) == 0)
++		if ((spa = libnet_get_ipaddr4(l)) == -1)
+ 			return (-1);
+-		spa = htonl(spa); /* XXX */
+ 	}
+ 	if (tha == NULL)
+ 		tha = "\xff\xff\xff\xff\xff\xff";
+ 	
+-	libnet_build_ethernet(tha, sha, ETHERTYPE_ARP, NULL, 0, pkt);
++	libnet_autobuild_arp(op, sha, (u_int8_t *)&spa,
++			     tha, (u_int8_t *)&tpa, l);
++	libnet_build_ethernet(tha, sha, ETHERTYPE_ARP, NULL, 0, l, 0);
+ 	
+-	libnet_build_arp(ARPHRD_ETHER, ETHERTYPE_IP, ETHER_ADDR_LEN, 4,
+-			 op, sha, (u_char *)&spa, tha, (u_char *)&tpa,
+-			 NULL, 0, pkt + ETH_H);
+-
+ 	fprintf(stderr, "%s ",
+ 		ether_ntoa((struct ether_addr *)sha));
+ 
+ 	if (op == ARPOP_REQUEST) {
+ 		fprintf(stderr, "%s 0806 42: arp who-has %s tell %s\n",
+ 			ether_ntoa((struct ether_addr *)tha),
+-			libnet_host_lookup(tpa, 0),
+-			libnet_host_lookup(spa, 0));
++			libnet_addr2name4(tpa, LIBNET_DONT_RESOLVE),
++			libnet_addr2name4(spa, LIBNET_DONT_RESOLVE));
+ 	}
+ 	else {
+ 		fprintf(stderr, "%s 0806 42: arp reply %s is-at ",
+ 			ether_ntoa((struct ether_addr *)tha),
+-			libnet_host_lookup(spa, 0));
++			libnet_addr2name4(spa, LIBNET_DONT_RESOLVE));
+ 		fprintf(stderr, "%s\n",
+ 			ether_ntoa((struct ether_addr *)sha));
+ 	}
+-	return (libnet_write_link_layer(llif, dev, pkt, sizeof(pkt)) == sizeof(pkt));
++	retval = libnet_write(l);
++	if (retval)
++		fprintf(stderr, "%s", libnet_geterror(l));
++
++	libnet_clear_packet(l);
++
++	return retval;
+ }
+ 
+ #ifdef __linux__
+@@ -119,7 +120,7 @@
+ 		/* XXX - force the kernel to arp. feh. */
+ 		arp_force(ip);
+ #else
+-		arp_send(llif, intf, ARPOP_REQUEST, NULL, 0, NULL, ip);
++		arp_send(l, ARPOP_REQUEST, NULL, 0, NULL, ip);
+ #endif
+ 		sleep(1);
+ 	}
+@@ -136,9 +137,9 @@
+ 	if (arp_find(spoof_ip, &spoof_mac)) {
+ 		for (i = 0; i < 3; i++) {
+ 			/* XXX - on BSD, requires ETHERSPOOF kernel. */
+-			arp_send(llif, intf, ARPOP_REPLY,
+-				 (u_char *)&spoof_mac, spoof_ip,
+-				 (target_ip ? (u_char *)&target_mac : NULL),
++			arp_send(l, ARPOP_REPLY,
++				 (u_int8_t *)&spoof_mac, spoof_ip,
++				 (target_ip ? (u_int8_t *)&target_mac : NULL),
+ 				 target_ip);
+ 			sleep(1);
+ 		}
+@@ -151,7 +152,8 @@
+ {
+ 	extern char *optarg;
+ 	extern int optind;
+-	char ebuf[PCAP_ERRBUF_SIZE];
++	char pcap_ebuf[PCAP_ERRBUF_SIZE];
++	char libnet_ebuf[LIBNET_ERRBUF_SIZE];
+ 	int c;
+ 	
+ 	intf = NULL;
+@@ -163,7 +165,7 @@
+ 			intf = optarg;
+ 			break;
+ 		case 't':
+-			if ((target_ip = libnet_name_resolve(optarg, 1)) == -1)
++			if ((target_ip = libnet_name2addr4(l, optarg, LIBNET_RESOLVE)) == -1)
+ 				usage();
+ 			break;
+ 		default:
+@@ -176,26 +178,26 @@
+ 	if (argc != 1)
+ 		usage();
+ 	
+-	if ((spoof_ip = libnet_name_resolve(argv[0], 1)) == -1)
++	if ((spoof_ip = libnet_name2addr4(l, argv[0], LIBNET_RESOLVE)) == -1)
+ 		usage();
+ 	
+-	if (intf == NULL && (intf = pcap_lookupdev(ebuf)) == NULL)
+-		errx(1, "%s", ebuf);
++	if (intf == NULL && (intf = pcap_lookupdev(pcap_ebuf)) == NULL)
++		errx(1, "%s", pcap_ebuf);
+ 	
+-	if ((llif = libnet_open_link_interface(intf, ebuf)) == 0)
+-		errx(1, "%s", ebuf);
++	if ((l = libnet_init(LIBNET_LINK, intf, libnet_ebuf)) == NULL)
++		errx(1, "%s", libnet_ebuf);
+ 	
+ 	if (target_ip != 0 && !arp_find(target_ip, &target_mac))
+ 		errx(1, "couldn't arp for host %s",
+-		     libnet_host_lookup(target_ip, 0));
++		     libnet_addr2name4(target_ip, LIBNET_DONT_RESOLVE));
+ 	
+ 	signal(SIGHUP, cleanup);
+ 	signal(SIGINT, cleanup);
+ 	signal(SIGTERM, cleanup);
+ 	
+ 	for (;;) {
+-		arp_send(llif, intf, ARPOP_REPLY, NULL, spoof_ip,
+-			 (target_ip ? (u_char *)&target_mac : NULL),
++		arp_send(l, ARPOP_REPLY, NULL, spoof_ip,
++			 (target_ip ? (u_int8_t *)&target_mac : NULL),
+ 			 target_ip);
+ 		sleep(2);
+ 	}
+diff -Naur dsniff-2.4/buf.c dsniff-2.4-patch/buf.c
+--- dsniff-2.4/buf.c	2001-03-15 09:32:59.000000000 +0100
++++ dsniff-2.4-patch/buf.c	2009-09-14 19:30:33.245032025 +0200
+@@ -17,6 +17,7 @@
+ #include <unistd.h>
+ #include <ctype.h>
+ #include <err.h>
++#include <string.h>
+ 
+ #include "buf.h"
+ 
+diff -Naur dsniff-2.4/configure dsniff-2.4-patch/configure
+--- dsniff-2.4/configure	2001-03-19 07:52:37.000000000 +0100
++++ dsniff-2.4-patch/configure	2009-09-14 19:54:01.897055898 +0200
+@@ -2922,8 +2922,7 @@
+      ;;
+   *)
+      echo "$ac_t""$withval" 1>&6
+-     if test -f $withval/build_unix/db_185.h -a \
+-	     -f $withval/build_unix/libdb.a; then
++     if test -f $withval/build_unix/db_185.h; then
+         owd=`pwd`
+         if cd $withval; then withval=`pwd`; cd $owd; fi
+ 	cat >> confdefs.h <<\EOF
+@@ -2932,8 +2931,7 @@
+ 
+ 	DBINC="-I$withval/build_unix"
+ 	DBLIB="-L$withval/build_unix -ldb"
+-     elif test -f $withval/dist/db_185.h -a \
+-	       -f $withval/dist/libdb.a; then
++     elif test -f $withval/dist/db_185.h; then
+         owd=`pwd`
+         if cd $withval; then withval=`pwd`; cd $owd; fi
+ 	cat >> confdefs.h <<\EOF
+@@ -2942,8 +2940,7 @@
+ 
+ 	DBINC="-I$withval/dist"
+ 	DBLIB="-L$withval/dist -ldb"
+-     elif test -f $withval/include/db_185.h -a \
+-	       -f $withval/lib/libdb.a; then
++     elif test -f $withval/include/db_185.h; then
+ 	owd=`pwd`
+ 	if cd $withval; then withval=`pwd`; cd $owd; fi
+ 	cat >> confdefs.h <<\EOF
+@@ -2953,7 +2950,7 @@
+ 	DBINC="-I$withval/include"
+ 	DBLIB="-L$withval/lib -ldb"
+      else
+-        { echo "configure: error: db_185.h or libdb.a not found in $withval or not configured with --enable-compat185" 1>&2; exit 1; }
++        { echo "configure: error: db_185.h not found in $withval or not configured with --enable-compat185" 1>&2; exit 1; }
+      fi
+      ;;
+   esac 
+diff -Naur dsniff-2.4/decode.c dsniff-2.4-patch/decode.c
+--- dsniff-2.4/decode.c	2001-03-15 09:32:59.000000000 +0100
++++ dsniff-2.4-patch/decode.c	2009-09-14 19:36:21.874626226 +0200
+@@ -63,7 +63,8 @@
+ 	{ "http",	decode_http },
+ 	{ "ospf",	decode_ospf },
+ 	{ "poppass",	decode_poppass },
+-	{ "pop",	decode_pop },
++	{ "pop2",	decode_pop },
++	{ "pop3",	decode_pop },
+ 	{ "nntp",	decode_nntp },
+ 	{ "smb",	decode_smb },
+ 	{ "imap",	decode_imap },
+diff -Naur dsniff-2.4/decode_aim.c dsniff-2.4-patch/decode_aim.c
+--- dsniff-2.4/decode_aim.c	2001-03-15 09:32:59.000000000 +0100
++++ dsniff-2.4-patch/decode_aim.c	2009-09-14 19:32:52.340533391 +0200
+@@ -14,6 +14,7 @@
+ 
+ #include <stdio.h>
+ #include <string.h>
++#include <arpa/inet.h>
+ 
+ #include "hex.h"
+ #include "buf.h"
+diff -Naur dsniff-2.4/decode_mmxp.c dsniff-2.4-patch/decode_mmxp.c
+--- dsniff-2.4/decode_mmxp.c	2001-03-15 09:33:01.000000000 +0100
++++ dsniff-2.4-patch/decode_mmxp.c	2009-09-14 19:32:52.341129443 +0200
+@@ -21,6 +21,7 @@
+ 
+ #include <stdio.h>
+ #include <string.h>
++#include <arpa/inet.h>
+ 
+ #include "buf.h"
+ #include "decode.h"
+diff -Naur dsniff-2.4/decode_nntp.c dsniff-2.4-patch/decode_nntp.c
+--- dsniff-2.4/decode_nntp.c	2001-03-15 09:33:01.000000000 +0100
++++ dsniff-2.4-patch/decode_nntp.c	2009-09-14 19:30:33.245613784 +0200
+@@ -15,6 +15,7 @@
+ 
+ #include <stdio.h>
+ #include <string.h>
++#include <strlcat.h>
+ 
+ #include "base64.h"
+ #include "decode.h"
+diff -Naur dsniff-2.4/decode_pop.c dsniff-2.4-patch/decode_pop.c
+--- dsniff-2.4/decode_pop.c	2001-03-15 09:33:02.000000000 +0100
++++ dsniff-2.4-patch/decode_pop.c	2009-09-14 19:30:33.246191706 +0200
+@@ -14,6 +14,7 @@
+ 
+ #include <stdio.h>
+ #include <string.h>
++#include <strlcat.h>
+ 
+ #include "base64.h"
+ #include "options.h"
+diff -Naur dsniff-2.4/decode_pptp.c dsniff-2.4-patch/decode_pptp.c
+--- dsniff-2.4/decode_pptp.c	2001-03-15 09:33:02.000000000 +0100
++++ dsniff-2.4-patch/decode_pptp.c	2009-09-14 19:32:52.341793599 +0200
+@@ -16,6 +16,7 @@
+ 
+ #include <stdio.h>
+ #include <string.h>
++#include <arpa/inet.h>
+ 
+ #include "buf.h"
+ #include "decode.h"
+diff -Naur dsniff-2.4/decode_rlogin.c dsniff-2.4-patch/decode_rlogin.c
+--- dsniff-2.4/decode_rlogin.c	2001-03-15 09:33:02.000000000 +0100
++++ dsniff-2.4-patch/decode_rlogin.c	2009-09-14 19:30:33.246781526 +0200
+@@ -14,6 +14,8 @@
+ 
+ #include <stdio.h>
+ #include <string.h>
++#include <strlcpy.h>
++#include <strlcat.h>
+ 
+ #include "options.h"
+ #include "decode.h"
+diff -Naur dsniff-2.4/decode_smb.c dsniff-2.4-patch/decode_smb.c
+--- dsniff-2.4/decode_smb.c	2001-03-15 09:33:02.000000000 +0100
++++ dsniff-2.4-patch/decode_smb.c	2009-09-14 19:30:33.247355051 +0200
+@@ -15,6 +15,7 @@
+ 
+ #include <stdio.h>
+ #include <string.h>
++#include <strlcat.h>
+ 
+ #include "decode.h"
+ 
+diff -Naur dsniff-2.4/decode_smtp.c dsniff-2.4-patch/decode_smtp.c
+--- dsniff-2.4/decode_smtp.c	2001-03-15 09:33:02.000000000 +0100
++++ dsniff-2.4-patch/decode_smtp.c	2009-09-14 19:30:33.247917712 +0200
+@@ -14,6 +14,7 @@
+ 
+ #include <stdio.h>
+ #include <string.h>
++#include <strlcat.h>
+ 
+ #include "base64.h"
+ #include "options.h"
+diff -Naur dsniff-2.4/decode_sniffer.c dsniff-2.4-patch/decode_sniffer.c
+--- dsniff-2.4/decode_sniffer.c	2001-03-15 09:33:02.000000000 +0100
++++ dsniff-2.4-patch/decode_sniffer.c	2009-09-14 19:30:33.248491887 +0200
+@@ -15,6 +15,8 @@
+ 
+ #include <stdio.h>
+ #include <string.h>
++#include <strlcat.h>
++#include <strlcpy.h>
+ 
+ #include "base64.h"
+ #include "decode.h"
+diff -Naur dsniff-2.4/decode_socks.c dsniff-2.4-patch/decode_socks.c
+--- dsniff-2.4/decode_socks.c	2001-03-15 09:33:02.000000000 +0100
++++ dsniff-2.4-patch/decode_socks.c	2009-09-14 19:30:33.249049790 +0200
+@@ -14,6 +14,7 @@
+ 
+ #include <stdio.h>
+ #include <string.h>
++#include <strlcat.h>
+ 
+ #include "decode.h"
+ 
+diff -Naur dsniff-2.4/decode_tds.c dsniff-2.4-patch/decode_tds.c
+--- dsniff-2.4/decode_tds.c	2001-03-15 09:33:02.000000000 +0100
++++ dsniff-2.4-patch/decode_tds.c	2009-09-14 19:32:52.342397638 +0200
+@@ -18,6 +18,8 @@
+ 
+ #include <stdio.h>
+ #include <string.h>
++#include <strlcat.h>
++#include <arpa/inet.h>
+ 
+ #include "decode.h"
+ 
+diff -Naur dsniff-2.4/decode_telnet.c dsniff-2.4-patch/decode_telnet.c
+--- dsniff-2.4/decode_telnet.c	2001-03-15 09:33:03.000000000 +0100
++++ dsniff-2.4-patch/decode_telnet.c	2009-09-14 19:30:33.250252336 +0200
+@@ -14,6 +14,7 @@
+ 
+ #include <stdio.h>
+ #include <string.h>
++#include <strlcpy.h>
+ 
+ #include "options.h"
+ #include "decode.h"
+diff -Naur dsniff-2.4/decode_vrrp.c dsniff-2.4-patch/decode_vrrp.c
+--- dsniff-2.4/decode_vrrp.c	2001-03-15 09:33:03.000000000 +0100
++++ dsniff-2.4-patch/decode_vrrp.c	2009-09-14 19:32:52.342994496 +0200
+@@ -15,6 +15,7 @@
+ 
+ #include <stdio.h>
+ #include <string.h>
++#include <arpa/inet.h>
+ 
+ #include "buf.h"
+ #include "decode.h"
+diff -Naur dsniff-2.4/decode_x11.c dsniff-2.4-patch/decode_x11.c
+--- dsniff-2.4/decode_x11.c	2001-03-15 09:33:03.000000000 +0100
++++ dsniff-2.4-patch/decode_x11.c	2009-09-14 19:30:33.250812380 +0200
+@@ -14,6 +14,8 @@
+ 
+ #include <stdio.h>
+ #include <string.h>
++#include <strlcat.h>
++#include <strlcpy.h>
+ 
+ #include "decode.h"
+ 
+diff -Naur dsniff-2.4/dnsspoof.1m dsniff-2.4-patch/dnsspoof.1m
+--- dsniff-2.4/dnsspoof.1m	1970-01-01 01:00:00.000000000 +0100
++++ dsniff-2.4-patch/dnsspoof.1m	2009-09-14 20:17:33.697598529 +0200
+@@ -0,0 +1,41 @@
++.TH DNSSPOOF 1M
++.ad
++.fi
++.SH NAME
++dnsspoof
++\-
++forge replies to DNS address / pointer queries
++.SH SYNOPSIS
++.na
++.nf
++.fi
++\fBdnsspoof\fR [\fB-i \fIinterface\fR] [\fB-f \fIhostsfile\fR] 
++[\fIexpression\fR]
++.SH DESCRIPTION
++.ad
++.fi
++\fBdnsspoof\fR forges replies to arbitrary DNS address / pointer queries
++on the LAN. This is useful in bypassing hostname-based access controls,
++or in implementing a variety of man-in-the-middle attacks.
++.SH OPTIONS
++.IP "\fB-i \fIinterface\fR"
++Specify the interface to use.
++.IP "\fB-f \fIhostsfile\fR"
++Specify the pathname of a file in hosts(5) format. Only one hostname
++allowed per line (no aliases), although hostnames may contain
++wildcards (such as \fI*.doubleclick.net\fR).
++.IP "\fIexpression\fR"
++Specify a tcpdump(1M) filter expression to select traffic to sniff.
++.LP
++If no \fIhostsfile\fR is specified, replies will be forged for all
++address queries on the LAN with an answer of the local machine's IP
++address.
++.SH FILES
++.IP \fI/usr/local/lib/dnsspoof.hosts\fR
++Sample hosts file.
++.SH "SEE ALSO"
++dsniff(1M), hosts(5)
++.SH AUTHOR
++.na
++.nf
++Dug Song <dugsong@monkey.org>
+diff -Naur dsniff-2.4/dnsspoof.8 dsniff-2.4-patch/dnsspoof.8
+--- dsniff-2.4/dnsspoof.8	2000-11-14 16:51:07.000000000 +0100
++++ dsniff-2.4-patch/dnsspoof.8	1970-01-01 01:00:00.000000000 +0100
+@@ -1,41 +0,0 @@
+-.TH DNSSPOOF 8
+-.ad
+-.fi
+-.SH NAME
+-dnsspoof
+-\-
+-forge replies to DNS address / pointer queries
+-.SH SYNOPSIS
+-.na
+-.nf
+-.fi
+-\fBdnsspoof\fR [\fB-i \fIinterface\fR] [\fB-f \fIhostsfile\fR] 
+-[\fIexpression\fR]
+-.SH DESCRIPTION
+-.ad
+-.fi
+-\fBdnsspoof\fR forges replies to arbitrary DNS address / pointer queries
+-on the LAN. This is useful in bypassing hostname-based access controls,
+-or in implementing a variety of man-in-the-middle attacks.
+-.SH OPTIONS
+-.IP "\fB-i \fIinterface\fR"
+-Specify the interface to use.
+-.IP "\fB-f \fIhostsfile\fR"
+-Specify the pathname of a file in hosts(5) format. Only one hostname
+-allowed per line (no aliases), although hostnames may contain
+-wildcards (such as \fI*.doubleclick.net\fR).
+-.IP "\fIexpression\fR"
+-Specify a tcpdump(8) filter expression to select traffic to sniff.
+-.LP
+-If no \fIhostsfile\fR is specified, replies will be forged for all
+-address queries on the LAN with an answer of the local machine's IP
+-address.
+-.SH FILES
+-.IP \fI/usr/local/lib/dnsspoof.hosts\fR
+-Sample hosts file.
+-.SH "SEE ALSO"
+-dsniff(8), hosts(5)
+-.SH AUTHOR
+-.na
+-.nf
+-Dug Song <dugsong@monkey.org>
+diff -Naur dsniff-2.4/dnsspoof.c dsniff-2.4-patch/dnsspoof.c
+--- dsniff-2.4/dnsspoof.c	2001-03-15 09:33:03.000000000 +0100
++++ dsniff-2.4-patch/dnsspoof.c	2009-09-14 19:30:33.251576352 +0200
+@@ -20,6 +20,7 @@
+ #include <stdlib.h>
+ #include <signal.h>
+ #include <string.h>
++#include <strlcpy.h>
+ #include <resolv.h>
+ #include <err.h>
+ #include <libnet.h>
+@@ -38,7 +39,7 @@
+ 
+ pcap_t		*pcap_pd = NULL;
+ int		 pcap_off = -1;
+-int		 lnet_sock = -1;
++libnet_t	*l;
+ u_long		 lnet_ip = -1;
+ 
+ static void
+@@ -90,19 +91,18 @@
+ dns_init(char *dev, char *filename)
+ {
+ 	FILE *f;
+-	struct libnet_link_int *llif;
++	libnet_t *l;
++	char libnet_ebuf[LIBNET_ERRBUF_SIZE];
+ 	struct dnsent *de;
+ 	char *ip, *name, buf[1024];
+ 
+-	if ((llif = libnet_open_link_interface(dev, buf)) == NULL)
+-		errx(1, "%s", buf);
++	if ((l = libnet_init(LIBNET_LINK, dev, libnet_ebuf)) == NULL)
++		errx(1, "%s", libnet_ebuf);
+ 	
+-	if ((lnet_ip = libnet_get_ipaddr(llif, dev, buf)) == -1)
+-		errx(1, "%s", buf);
++	if ((lnet_ip = libnet_get_ipaddr4(l)) == -1)
++		errx(1, "%s", libnet_geterror(l));
+ 
+-	lnet_ip = htonl(lnet_ip);
+-	
+-	libnet_close_link_interface(llif);
++	libnet_destroy(l);
+ 
+ 	SLIST_INIT(&dns_entries);
+ 	
+@@ -180,7 +180,7 @@
+ static void
+ dns_spoof(u_char *u, const struct pcap_pkthdr *pkthdr, const u_char *pkt)
+ {
+-	struct libnet_ip_hdr *ip;
++	struct libnet_ipv4_hdr *ip;
+ 	struct libnet_udp_hdr *udp;
+ 	HEADER *dns;
+ 	char name[MAXHOSTNAMELEN];
+@@ -189,7 +189,7 @@
+ 	in_addr_t dst;
+ 	u_short type, class;
+ 
+-	ip = (struct libnet_ip_hdr *)(pkt + pcap_off);
++	ip = (struct libnet_ipv4_hdr *)(pkt + pcap_off);
+ 	udp = (struct libnet_udp_hdr *)(pkt + pcap_off + (ip->ip_hl * 4));
+ 	dns = (HEADER *)(udp + 1);
+ 	p = (u_char *)(dns + 1);
+@@ -212,7 +212,7 @@
+ 	if (class != C_IN)
+ 		return;
+ 
+-	p = buf + IP_H + UDP_H + dnslen;
++	p = buf + dnslen;
+ 	
+ 	if (type == T_A) {
+ 		if ((dst = dns_lookup_a(name)) == -1)
+@@ -234,38 +234,38 @@
+ 		anslen += 12;
+ 	}
+ 	else return;
+-	
+-	libnet_build_ip(UDP_H + dnslen + anslen, 0, libnet_get_prand(PRu16),
+-			0, 64, IPPROTO_UDP, ip->ip_dst.s_addr,
+-			ip->ip_src.s_addr, NULL, 0, buf);
+-	
+-	libnet_build_udp(ntohs(udp->uh_dport), ntohs(udp->uh_sport),
+-			 NULL, dnslen + anslen, buf + IP_H);
+ 
+-	memcpy(buf + IP_H + UDP_H, (u_char *)dns, dnslen);
++	memcpy(buf, (u_char *)dns, dnslen);
+ 
+-	dns = (HEADER *)(buf + IP_H + UDP_H);
++	dns = (HEADER *)buf;
+ 	dns->qr = dns->ra = 1;
+ 	if (type == T_PTR) dns->aa = 1;
+ 	dns->ancount = htons(1);
+ 
+ 	dnslen += anslen;
++
++	libnet_clear_packet(l);
++	libnet_build_udp(ntohs(udp->uh_dport), ntohs(udp->uh_sport),
++			 LIBNET_UDP_H + dnslen, 0,
++			 (u_int8_t *)buf, dnslen, l, 0);
++
++	libnet_build_ipv4(LIBNET_IPV4_H + LIBNET_UDP_H + dnslen, 0,
++			  libnet_get_prand(LIBNET_PRu16), 0, 64, IPPROTO_UDP, 0,
++			  ip->ip_dst.s_addr, ip->ip_src.s_addr, NULL, 0, l, 0);
+ 	
+-	libnet_do_checksum(buf, IPPROTO_UDP, UDP_H + dnslen);
+-	
+-	if (libnet_write_ip(lnet_sock, buf, IP_H + UDP_H + dnslen) < 0)
++	if (libnet_write(l) < 0)
+ 		warn("write");
+ 
+ 	fprintf(stderr, "%s.%d > %s.%d:  %d+ %s? %s\n",
+-	      libnet_host_lookup(ip->ip_src.s_addr, 0), ntohs(udp->uh_sport),
+-	      libnet_host_lookup(ip->ip_dst.s_addr, 0), ntohs(udp->uh_dport),
++	      libnet_addr2name4(ip->ip_src.s_addr, 0), ntohs(udp->uh_sport),
++	      libnet_addr2name4(ip->ip_dst.s_addr, 0), ntohs(udp->uh_dport),
+ 	      ntohs(dns->id), type == T_A ? "A" : "PTR", name);
+ }
+ 
+ static void
+ cleanup(int sig)
+ {
+-	libnet_close_raw_sock(lnet_sock);
++	libnet_destroy(l);
+ 	pcap_close(pcap_pd);
+ 	exit(0);
+ }
+@@ -276,6 +276,7 @@
+ 	extern char *optarg;
+ 	extern int optind;
+ 	char *p, *dev, *hosts, buf[1024];
++	char ebuf[LIBNET_ERRBUF_SIZE];
+ 	int i;
+ 
+ 	dev = hosts = NULL;
+@@ -306,7 +307,7 @@
+ 		strlcpy(buf, p, sizeof(buf));
+ 	}
+ 	else snprintf(buf, sizeof(buf), "udp dst port 53 and not src %s",
+-		      libnet_host_lookup(lnet_ip, 0));
++		      libnet_addr2name4(lnet_ip, LIBNET_DONT_RESOLVE));
+ 	
+ 	if ((pcap_pd = pcap_init(dev, buf, 128)) == NULL)
+ 		errx(1, "couldn't initialize sniffing");
+@@ -314,10 +315,10 @@
+ 	if ((pcap_off = pcap_dloff(pcap_pd)) < 0)
+ 		errx(1, "couldn't determine link layer offset");
+ 	
+-	if ((lnet_sock = libnet_open_raw_sock(IPPROTO_RAW)) == -1)
++	if ((l = libnet_init(LIBNET_RAW4, dev, ebuf)) == NULL)
+ 		errx(1, "couldn't initialize sending");
+ 	
+-	libnet_seed_prand();
++	libnet_seed_prand(l);
+ 	
+ 	signal(SIGHUP, cleanup);
+ 	signal(SIGINT, cleanup);
+diff -Naur dsniff-2.4/dsniff.1m dsniff-2.4-patch/dsniff.1m
+--- dsniff-2.4/dsniff.1m	1970-01-01 01:00:00.000000000 +0100
++++ dsniff-2.4-patch/dsniff.1m	2009-09-14 20:18:14.774766417 +0200
+@@ -0,0 +1,84 @@
++.TH DSNIFF 1M
++.ad
++.fi
++.SH NAME
++dsniff
++\-
++password sniffer
++.SH SYNOPSIS
++.na
++.nf
++.fi
++\fBdsniff\fR [\fB-c\fR] [\fB-d\fR] [\fB-m\fR] [\fB-n\fR] [\fB-i
++\fIinterface\fR | \fB-p \fIpcapfile\fR] [\fB-s \fIsnaplen\fR] [\fB-f \fIservices\fR]
++[\fB-t \fItrigger[,...]\fR]]
++[\fB-r\fR|\fB-w\fR \fIsavefile\fR] [\fIexpression\fR]
++.SH DESCRIPTION
++.ad
++.fi
++\fBdsniff\fR is a password sniffer which handles FTP, Telnet, SMTP,
++HTTP, POP, poppass, NNTP, IMAP, SNMP, LDAP, Rlogin, RIP, OSPF, PPTP
++MS-CHAP, NFS, VRRP, YP/NIS, SOCKS, X11, CVS, IRC, AIM, ICQ, Napster,
++PostgreSQL, Meeting Maker, Citrix ICA, Symantec pcAnywhere, NAI
++Sniffer, Microsoft SMB, Oracle SQL*Net, Sybase and Microsoft SQL
++protocols.
++.LP
++\fBdsniff\fR automatically detects and minimally parses each
++application protocol, only saving the interesting bits, and uses
++Berkeley DB as its output file format, only logging unique
++authentication attempts. Full TCP/IP reassembly is provided by
++libnids(3).
++.LP
++I wrote \fBdsniff\fR with honest intentions - to audit my own network,
++and to demonstrate the insecurity of cleartext network protocols.
++Please do not abuse this software.
++.SH OPTIONS
++.IP \fB-c\fR
++Perform half-duplex TCP stream reassembly, to handle asymmetrically
++routed traffic (such as when using arpspoof(1M) to intercept client
++traffic bound for the local gateway).
++.IP \fB-d\fR
++Enable debugging mode.
++.IP \fB-m\fR
++Enable automatic protocol detection.
++.IP \fB-n\fR
++Do not resolve IP addresses to hostnames.
++.IP "\fB-i \fIinterface\fR"
++Specify the interface to listen on.
++.IP "\fB-p \fIpcapfile\fR"
++Rather than processing the contents of packets observed upon the network 
++process the given PCAP capture file.
++.IP "\fB-s \fIsnaplen\fR"
++Analyze at most the first \fIsnaplen\fR bytes of each TCP connection,
++rather than the default of 1024.
++.IP "\fB-f \fIservices\fR"
++Load triggers from a \fIservices\fR file.
++.IP "\fB -t \fItrigger\fR[,...]"
++Load triggers from a comma-separated list, specified as
++\fIport\fR/\fIproto\fR=\fIservice\fR (e.g. 80/tcp=http).
++.IP "\fB-r \fIsavefile\fR"
++Read sniffed sessions from a \fIsavefile\fR created with the \fB-w\fR
++option.
++.IP "\fB-w \fIfile\fR"
++Write sniffed sessions to \fIsavefile\fR rather than parsing and
++printing them out.
++.IP "\fIexpression\fR"
++Specify a tcpdump(1M) filter expression to select traffic to sniff.
++.LP
++On a hangup signal \fBdsniff\fR will dump its current trigger table to
++\fIdsniff.services\fR.
++.SH FILES
++.IP \fI/usr/local/lib/dsniff.services\fR
++Default trigger table
++.IP \fI/usr/local/lib/dsniff.magic\fR
++Network protocol magic
++.SH "SEE ALSO"
++arpspoof(1M), libnids(3), services(5), magic(5)
++.SH AUTHOR
++.na
++.nf
++Dug Song <dugsong@monkey.org>
++.SH BUGS
++\fBdsniff\fR's automatic protocol detection feature is based on the
++classic file(1) command by Ian Darwin, and shares its historical
++limitations and bugs.
+diff -Naur dsniff-2.4/dsniff.8 dsniff-2.4-patch/dsniff.8
+--- dsniff-2.4/dsniff.8	2000-12-15 17:05:36.000000000 +0100
++++ dsniff-2.4-patch/dsniff.8	1970-01-01 01:00:00.000000000 +0100
+@@ -1,81 +0,0 @@
+-.TH DSNIFF 8
+-.ad
+-.fi
+-.SH NAME
+-dsniff
+-\-
+-password sniffer
+-.SH SYNOPSIS
+-.na
+-.nf
+-.fi
+-\fBdsniff\fR [\fB-c\fR] [\fB-d\fR] [\fB-m\fR] [\fB-n\fR] [\fB-i
+-\fIinterface\fR] [\fB-s \fIsnaplen\fR] [\fB-f \fIservices\fR]
+-[\fB-t \fItrigger[,...]\fR]]
+-[\fB-r\fR|\fB-w\fR \fIsavefile\fR] [\fIexpression\fR]
+-.SH DESCRIPTION
+-.ad
+-.fi
+-\fBdsniff\fR is a password sniffer which handles FTP, Telnet, SMTP,
+-HTTP, POP, poppass, NNTP, IMAP, SNMP, LDAP, Rlogin, RIP, OSPF, PPTP
+-MS-CHAP, NFS, VRRP, YP/NIS, SOCKS, X11, CVS, IRC, AIM, ICQ, Napster,
+-PostgreSQL, Meeting Maker, Citrix ICA, Symantec pcAnywhere, NAI
+-Sniffer, Microsoft SMB, Oracle SQL*Net, Sybase and Microsoft SQL
+-protocols.
+-.LP
+-\fBdsniff\fR automatically detects and minimally parses each
+-application protocol, only saving the interesting bits, and uses
+-Berkeley DB as its output file format, only logging unique
+-authentication attempts. Full TCP/IP reassembly is provided by
+-libnids(3).
+-.LP
+-I wrote \fBdsniff\fR with honest intentions - to audit my own network,
+-and to demonstrate the insecurity of cleartext network protocols.
+-Please do not abuse this software.
+-.SH OPTIONS
+-.IP \fB-c\fR
+-Perform half-duplex TCP stream reassembly, to handle asymmetrically
+-routed traffic (such as when using arpspoof(8) to intercept client
+-traffic bound for the local gateway).
+-.IP \fB-d\fR
+-Enable debugging mode.
+-.IP \fB-m\fR
+-Enable automatic protocol detection.
+-.IP \fB-n\fR
+-Do not resolve IP addresses to hostnames.
+-.IP "\fB-i \fIinterface\fR"
+-Specify the interface to listen on.
+-.IP "\fB-s \fIsnaplen\fR"
+-Analyze at most the first \fIsnaplen\fR bytes of each TCP connection,
+-rather than the default of 1024.
+-.IP "\fB-f \fIservices\fR"
+-Load triggers from a \fIservices\fR file.
+-.IP "\fB -t \fItrigger\fR[,...]"
+-Load triggers from a comma-separated list, specified as
+-\fIport\fR/\fIproto\fR=\fIservice\fR (e.g. 80/tcp=http).
+-.IP "\fB-r \fIsavefile\fR"
+-Read sniffed sessions from a \fIsavefile\fR created with the \fB-w\fR
+-option.
+-.IP "\fB-w \fIfile\fR"
+-Write sniffed sessions to \fIsavefile\fR rather than parsing and
+-printing them out.
+-.IP "\fIexpression\fR"
+-Specify a tcpdump(8) filter expression to select traffic to sniff.
+-.LP
+-On a hangup signal \fBdsniff\fR will dump its current trigger table to
+-\fIdsniff.services\fR.
+-.SH FILES
+-.IP \fI/usr/local/lib/dsniff.services\fR
+-Default trigger table
+-.IP \fI/usr/local/lib/dsniff.magic\fR
+-Network protocol magic
+-.SH "SEE ALSO"
+-arpspoof(8), libnids(3), services(5), magic(5)
+-.SH AUTHOR
+-.na
+-.nf
+-Dug Song <dugsong@monkey.org>
+-.SH BUGS
+-\fBdsniff\fR's automatic protocol detection feature is based on the
+-classic file(1) command by Ian Darwin, and shares its historical
+-limitations and bugs.
+diff -Naur dsniff-2.4/dsniff.c dsniff-2.4-patch/dsniff.c
+--- dsniff-2.4/dsniff.c	2001-03-15 09:33:03.000000000 +0100
++++ dsniff-2.4-patch/dsniff.c	2009-09-14 19:55:53.305494079 +0200
+@@ -13,6 +13,7 @@
+ #include "config.h"
+ 
+ #include <sys/types.h>
++#include <sys/sockio.h>
+ 
+ #include <stdio.h>
+ #include <stdlib.h>
+@@ -46,8 +47,9 @@
+ usage(void)
+ {
+ 	fprintf(stderr, "Version: " VERSION "\n"
+-		"Usage: dsniff [-cdmn] [-i interface] [-s snaplen] [-f services]\n"
+-		"              [-t trigger[,...]] [-r|-w savefile] [expression]\n");
++		"Usage: dsniff [-cdmn] [-i interface | -p pcapfile] [-s snaplen]\n"
++		"              [-f services] [-t trigger[,...]] [-r|-w savefile]\n"
++		"              [expression]\n");
+ 	exit(1);
+ }
+ 
+@@ -69,6 +71,80 @@
+ {
+ }
+ 
++
++static int get_all_ifaces(struct ifreq **, int *);
++static unsigned int get_addr_from_ifreq(struct ifreq *);
++
++int all_local_ipaddrs_chksum_disable()
++{
++	struct ifreq *ifaces;
++	int ifaces_count;
++	int i, ind = 0;
++	struct nids_chksum_ctl *ctlp;
++	unsigned int tmp;
++
++	if (!get_all_ifaces(&ifaces, &ifaces_count))
++		return -1;
++	ctlp =
++	    (struct nids_chksum_ctl *) malloc(ifaces_count *
++					      sizeof(struct
++						     nids_chksum_ctl));
++	if (!ctlp)
++		return -1;
++	for (i = 0; i < ifaces_count; i++) {
++		tmp = get_addr_from_ifreq(ifaces + i);
++		if (tmp) {
++			ctlp[ind].netaddr = tmp;
++			ctlp[ind].mask = inet_addr("255.255.255.255");
++			ctlp[ind].action = NIDS_DONT_CHKSUM;
++			ind++;
++		}
++	}
++	free(ifaces);
++	nids_register_chksum_ctl(ctlp, ind);
++}
++
++/* helper functions for Example 2 */
++unsigned int get_addr_from_ifreq(struct ifreq *iface)
++{
++	if (iface->ifr_addr.sa_family == AF_INET)
++		return ((struct sockaddr_in *) &(iface->ifr_addr))->
++		    sin_addr.s_addr;
++	return 0;
++}
++
++static int get_all_ifaces(struct ifreq **ifaces, int *count)
++{
++	int ifaces_size = 8 * sizeof(struct ifreq);
++	struct ifconf param;
++	int sock;
++	unsigned int i;
++
++	*ifaces = malloc(ifaces_size);
++	sock = socket(PF_INET, SOCK_DGRAM, IPPROTO_IP);
++	if (sock <= 0)
++		return 0;
++	for (;;) {
++		param.ifc_len = ifaces_size;
++		param.ifc_req = *ifaces;
++		if (ioctl(sock, SIOCGIFCONF, &param))
++			goto err;
++		if (param.ifc_len < ifaces_size)
++			break;
++		free(*ifaces);
++		ifaces_size *= 2;
++		ifaces = malloc(ifaces_size);
++	}
++	*count = param.ifc_len / sizeof(struct ifreq);
++	close(sock);
++	return 1;
++      err:
++	close(sock);
++	return 0;
++}
++
++
++
+ int
+ main(int argc, char *argv[])
+ {
+@@ -79,7 +155,7 @@
+ 
+ 	services = savefile = triggers = NULL;
+ 	
+-	while ((c = getopt(argc, argv, "cdf:i:mnr:s:t:w:h?V")) != -1) {
++	while ((c = getopt(argc, argv, "cdf:i:mnp:r:s:t:w:h?V")) != -1) {
+ 		switch (c) {
+ 		case 'c':
+ 			Opt_client = 1;
+@@ -99,6 +175,9 @@
+ 		case 'n':
+ 			Opt_dns = 0;
+ 			break;
++		case 'p':
++			nids_params.filename = optarg;
++			break;
+ 		case 'r':
+ 			Opt_read = 1;
+ 			savefile = optarg;
+@@ -168,10 +247,25 @@
+ 	else nids_register_tcp(trigger_tcp);
+ 	
+ 	if (nids_params.pcap_filter != NULL) {
+-		warnx("listening on %s [%s]", nids_params.device,
+-		      nids_params.pcap_filter);
++		if (nids_params.filename == NULL) {
++			warnx("listening on %s [%s]", nids_params.device,
++		        nids_params.pcap_filter);
++		}
++		else {
++			warnx("using %s [%s]", nids_params.filename,
++		        nids_params.pcap_filter);
++		}
++	}
++	else {
++		if (nids_params.filename == NULL) {
++			warnx("listening on %s", nids_params.device);
++		}
++		else {
++			warnx("using %s", nids_params.filename);
++		}
+ 	}
+-	else warnx("listening on %s", nids_params.device);
++
++	all_local_ipaddrs_chksum_disable();
+ 	
+ 	nids_run();
+ 	
+diff -Naur dsniff-2.4/dsniff.services dsniff-2.4-patch/dsniff.services
+--- dsniff-2.4/dsniff.services	2000-12-15 21:10:58.000000000 +0100
++++ dsniff-2.4-patch/dsniff.services	2009-09-14 19:36:21.875189020 +0200
+@@ -10,8 +10,8 @@
+ ospf		89/ip
+ http		98/tcp
+ poppass		106/tcp
+-pop		109/tcp
+-pop		110/tcp
++pop2		109/tcp
++pop3		110/tcp
+ portmap		111/tcp
+ portmap		-111/tcp
+ portmap		111/udp
+diff -Naur dsniff-2.4/filesnarf.1m dsniff-2.4-patch/filesnarf.1m
+--- dsniff-2.4/filesnarf.1m	1970-01-01 01:00:00.000000000 +0100
++++ dsniff-2.4-patch/filesnarf.1m	2009-09-14 20:18:45.415332170 +0200
+@@ -0,0 +1,35 @@
++.TH FILESNARF 1M
++.ad
++.fi
++.SH NAME
++filesnarf
++\-
++sniff files from NFS traffic
++.SH SYNOPSIS
++.na
++.nf
++.fi
++\fBfilesnarf\fR [\fB-i \fIinterface\fR | \fB-p \fIpcapfile\fR] [[\fB-v\fR] \fIpattern [\fIexpression\fR]]
++.SH DESCRIPTION
++.ad
++.fi
++\fBfilesnarf\fR saves files sniffed from NFS traffic in the current
++working directory.
++.SH OPTIONS
++.IP "\fB-i \fIinterface\fR"
++Specify the interface to listen on.
++.IP "\fB-p \fIpcapfile\fR"
++Process packets from the specified PCAP capture file instead of the network.
++.IP \fB-v\fR
++"Versus" mode. Invert the sense of matching, to select non-matching
++files.
++.IP \fIpattern\fR
++Specify regular expression for filename matching.
++.IP "\fIexpression\fR"
++Specify a tcpdump(1M) filter expression to select traffic to sniff.
++.SH "SEE ALSO"
++dsniff(1M), nfsd(1M)
++.SH AUTHOR
++.na
++.nf
++Dug Song <dugsong@monkey.org>
+diff -Naur dsniff-2.4/filesnarf.8 dsniff-2.4-patch/filesnarf.8
+--- dsniff-2.4/filesnarf.8	2000-11-19 07:23:33.000000000 +0100
++++ dsniff-2.4-patch/filesnarf.8	1970-01-01 01:00:00.000000000 +0100
+@@ -1,33 +0,0 @@
+-.TH FILESNARF 8
+-.ad
+-.fi
+-.SH NAME
+-filesnarf
+-\-
+-sniff files from NFS traffic
+-.SH SYNOPSIS
+-.na
+-.nf
+-.fi
+-\fBfilesnarf\fR [\fB-i \fIinterface\fR] [[\fB-v\fR] \fIpattern [\fIexpression\fR]]
+-.SH DESCRIPTION
+-.ad
+-.fi
+-\fBfilesnarf\fR saves files sniffed from NFS traffic in the current
+-working directory.
+-.SH OPTIONS
+-.IP "\fB-i \fIinterface\fR"
+-Specify the interface to listen on.
+-.IP \fB-v\fR
+-"Versus" mode. Invert the sense of matching, to select non-matching
+-files.
+-.IP \fIpattern\fR
+-Specify regular expression for filename matching.
+-.IP "\fIexpression\fR"
+-Specify a tcpdump(8) filter expression to select traffic to sniff.
+-.SH "SEE ALSO"
+-dsniff(8), nfsd(8)
+-.SH AUTHOR
+-.na
+-.nf
+-Dug Song <dugsong@monkey.org>
+diff -Naur dsniff-2.4/filesnarf.c dsniff-2.4-patch/filesnarf.c
+--- dsniff-2.4/filesnarf.c	2001-03-15 09:33:03.000000000 +0100
++++ dsniff-2.4-patch/filesnarf.c	2009-09-14 19:37:52.108543872 +0200
+@@ -51,7 +51,7 @@
+ usage(void)
+ {
+ 	fprintf(stderr, "Version: " VERSION "\n"
+-		"Usage: filesnarf [-i interface] [[-v] pattern [expression]]\n");
++		"Usage: filesnarf [-i interface | -p pcapfile] [[-v] pattern [expression]]\n");
+ 	exit(1);
+ }
+ 
+@@ -134,8 +134,8 @@
+ 	int fd;
+ 
+ 	warnx("%s.%d > %s.%d: %s (%d@%d)",
+-	      libnet_host_lookup(addr->daddr, 0), addr->dest,
+-	      libnet_host_lookup(addr->saddr, 0), addr->source,
++	      libnet_addr2name4(addr->daddr, LIBNET_DONT_RESOLVE), addr->dest,
++	      libnet_addr2name4(addr->saddr, LIBNET_DONT_RESOLVE), addr->source,
+ 	      ma->filename, len, ma->offset);
+ 	
+ 	if ((fd = open(ma->filename, O_WRONLY|O_CREAT, 0644)) >= 0) {
+@@ -353,7 +353,7 @@
+ }
+ 
+ static void
+-decode_udp_nfs(struct libnet_ip_hdr *ip)
++decode_udp_nfs(struct libnet_ipv4_hdr *ip)
+ {
+ 	static struct tuple4 addr;
+ 	struct libnet_udp_hdr *udp;
+@@ -464,11 +464,14 @@
+ 	extern int optind;
+ 	int c;
+ 
+-	while ((c = getopt(argc, argv, "i:vh?V")) != -1) {
++	while ((c = getopt(argc, argv, "i:p:vh?V")) != -1) {
+ 		switch (c) {
+ 		case 'i':
+ 			nids_params.device = optarg;
+ 			break;
++		case 'p':
++			nids_params.filename = optarg;
++			break;
+ 		case 'v':
+ 			Opt_invert = 1;
+ 			break;
+@@ -498,11 +501,24 @@
+ 	nids_register_ip(decode_udp_nfs);
+ 	nids_register_tcp(decode_tcp_nfs);
+ 
+-	if (nids_params.pcap_filter != NULL) {
+-		warnx("listening on %s [%s]", nids_params.device,
+-		      nids_params.pcap_filter);
+-	}
+-	else warnx("listening on %s", nids_params.device);
++        if (nids_params.pcap_filter != NULL) {
++                if (nids_params.filename == NULL) {
++                        warnx("listening on %s [%s]", nids_params.device,
++                              nids_params.pcap_filter);
++                }
++                else {
++                        warnx("using %s [%s]", nids_params.filename,
++                              nids_params.pcap_filter);
++                }
++        }
++        else {
++                if (nids_params.filename == NULL) {
++                        warnx("listening on %s", nids_params.device);
++                }
++                else {
++                        warnx("using %s", nids_params.filename);
++                }
++        }
+ 
+ 	nids_run();
+ 
+diff -Naur dsniff-2.4/macof.1m dsniff-2.4-patch/macof.1m
+--- dsniff-2.4/macof.1m	1970-01-01 01:00:00.000000000 +0100
++++ dsniff-2.4-patch/macof.1m	2009-09-14 20:18:59.950156094 +0200
+@@ -0,0 +1,44 @@
++.TH MACOF 1M
++.ad
++.fi
++.SH NAME
++macof
++\-
++flood a switched LAN with random MAC addresses
++.SH SYNOPSIS
++.na
++.nf
++.fi
++\fBmacof\fR [\fB-i \fIinterface\fR] [\fB-s \fIsrc\fR]
++[\fB-d \fIdst\fR] [\fB-e \fItha\fR] [\fB-x \fIsport\fR] [\fB-y \fIdport\fR]
++[\fB-n \fItimes\fR]
++.SH DESCRIPTION
++.ad
++.fi
++\fBmacof\fR floods the local network with random MAC addresses
++(causing some switches to fail open in repeating mode, facilitating
++sniffing). A straight C port of the original Perl Net::RawIP macof
++program by Ian Vitek <ian.vitek@infosec.se>.
++.SH OPTIONS
++.IP "\fB-i \fIinterface\fR"
++Specify the interface to send on.
++.IP "\fB-s \fIsrc\fR"
++Specify source IP address.
++.IP "\fB-d \fIdst\fR"
++Specify destination IP address.
++.IP "\fB-e \fItha\fR"
++Specify target hardware address.
++.IP "\fB-x \fIsport\fR"
++Specify TCP source port.
++.IP "\fB-y \fIdport\fR"
++Specify TCP destination port.
++.IP "\fB-n \fItimes\fR"
++Specify the number of packets to send.
++.LP
++Values for any options left unspecified will be generated randomly.
++.SH "SEE ALSO"
++dsniff(1M)
++.SH AUTHOR
++.na
++.nf
++Dug Song <dugsong@monkey.org>
+diff -Naur dsniff-2.4/macof.8 dsniff-2.4-patch/macof.8
+--- dsniff-2.4/macof.8	2000-11-14 16:50:58.000000000 +0100
++++ dsniff-2.4-patch/macof.8	1970-01-01 01:00:00.000000000 +0100
+@@ -1,44 +0,0 @@
+-.TH MACOF 8
+-.ad
+-.fi
+-.SH NAME
+-macof
+-\-
+-flood a switched LAN with random MAC addresses
+-.SH SYNOPSIS
+-.na
+-.nf
+-.fi
+-\fBmacof\fR [\fB-i \fIinterface\fR] [\fB-s \fIsrc\fR]
+-[\fB-d \fIdst\fR] [\fB-e \fItha\fR] [\fB-x \fIsport\fR] [\fB-y \fIdport\fR]
+-[\fB-n \fItimes\fR]
+-.SH DESCRIPTION
+-.ad
+-.fi
+-\fBmacof\fR floods the local network with random MAC addresses
+-(causing some switches to fail open in repeating mode, facilitating
+-sniffing). A straight C port of the original Perl Net::RawIP macof
+-program by Ian Vitek <ian.vitek@infosec.se>.
+-.SH OPTIONS
+-.IP "\fB-i \fIinterface\fR"
+-Specify the interface to send on.
+-.IP "\fB-s \fIsrc\fR"
+-Specify source IP address.
+-.IP "\fB-d \fIdst\fR"
+-Specify destination IP address.
+-.IP "\fB-e \fItha\fR"
+-Specify target hardware address.
+-.IP "\fB-x \fIsport\fR"
+-Specify TCP source port.
+-.IP "\fB-y \fIdport\fR"
+-Specify TCP destination port.
+-.IP "\fB-n \fItimes\fR"
+-Specify the number of packets to send.
+-.LP
+-Values for any options left unspecified will be generated randomly.
+-.SH "SEE ALSO"
+-dsniff(8)
+-.SH AUTHOR
+-.na
+-.nf
+-Dug Song <dugsong@monkey.org>
+diff -Naur dsniff-2.4/macof.c dsniff-2.4-patch/macof.c
+--- dsniff-2.4/macof.c	2001-03-15 09:33:04.000000000 +0100
++++ dsniff-2.4-patch/macof.c	2009-09-14 19:28:28.415617228 +0200
+@@ -48,8 +48,8 @@
+ static void
+ gen_mac(u_char *mac)
+ {
+-	*((in_addr_t *)mac) = libnet_get_prand(PRu32);
+-	*((u_short *)(mac + 4)) = libnet_get_prand(PRu16);
++	*((in_addr_t *)mac) = libnet_get_prand(LIBNET_PRu32);
++	*((u_short *)(mac + 4)) = libnet_get_prand(LIBNET_PRu16);
+ }
+ 
+ int
+@@ -59,22 +59,23 @@
+ 	extern int optind;
+ 	int c, i;
+ 	struct libnet_link_int *llif;
+-	char ebuf[PCAP_ERRBUF_SIZE];
++	char pcap_ebuf[PCAP_ERRBUF_SIZE];
++	char libnet_ebuf[LIBNET_ERRBUF_SIZE];
+ 	u_char sha[ETHER_ADDR_LEN], tha[ETHER_ADDR_LEN];
+ 	in_addr_t src, dst;
+ 	u_short sport, dport;
+ 	u_int32_t seq;
+-	u_char pkt[ETH_H + IP_H + TCP_H];
++	libnet_t *l;
+ 	
+ 	while ((c = getopt(argc, argv, "vs:d:e:x:y:i:n:h?V")) != -1) {
+ 		switch (c) {
+ 		case 'v':
+ 			break;
+ 		case 's':
+-			Src = libnet_name_resolve(optarg, 0);
++			Src = libnet_name2addr4(l, optarg, 0);
+ 			break;
+ 		case 'd':
+-			Dst = libnet_name_resolve(optarg, 0);
++			Dst = libnet_name2addr4(l, optarg, 0);
+ 			break;
+ 		case 'e':
+ 			Tha = (u_char *)ether_aton(optarg);
+@@ -101,13 +102,13 @@
+ 	if (argc != 0)
+ 		usage();
+ 	
+-	if (!Intf && (Intf = pcap_lookupdev(ebuf)) == NULL)
+-		errx(1, "%s", ebuf);
++	if (!Intf && (Intf = pcap_lookupdev(pcap_ebuf)) == NULL)
++		errx(1, "%s", pcap_ebuf);
+ 	
+-	if ((llif = libnet_open_link_interface(Intf, ebuf)) == 0)
+-		errx(1, "%s", ebuf);
++	if ((l = libnet_init(LIBNET_LINK, Intf, libnet_ebuf)) == NULL)
++		errx(1, "%s", libnet_ebuf);
+ 	
+-	libnet_seed_prand();
++	libnet_seed_prand(l);
+ 	
+ 	for (i = 0; i != Repeat; i++) {
+ 		
+@@ -117,39 +118,39 @@
+ 		else memcpy(tha, Tha, sizeof(tha));
+ 		
+ 		if (Src != 0) src = Src;
+-		else src = libnet_get_prand(PRu32);
++		else src = libnet_get_prand(LIBNET_PRu32);
+ 		
+ 		if (Dst != 0) dst = Dst;
+-		else dst = libnet_get_prand(PRu32);
++		else dst = libnet_get_prand(LIBNET_PRu32);
+ 		
+ 		if (Sport != 0) sport = Sport;
+-		else sport = libnet_get_prand(PRu16);
++		else sport = libnet_get_prand(LIBNET_PRu16);
+ 		
+ 		if (Dport != 0) dport = Dport;
+-		else dport = libnet_get_prand(PRu16);
++		else dport = libnet_get_prand(LIBNET_PRu16);
+ 
+-		seq = libnet_get_prand(PRu32);
+-		
+-		libnet_build_ethernet(tha, sha, ETHERTYPE_IP, NULL, 0, pkt);
+-		
+-		libnet_build_ip(TCP_H, 0, libnet_get_prand(PRu16), 0, 64,
+-				IPPROTO_TCP, src, dst, NULL, 0, pkt + ETH_H);
++		seq = libnet_get_prand(LIBNET_PRu32);
+ 		
+ 		libnet_build_tcp(sport, dport, seq, 0, TH_SYN, 512,
+-				 0, NULL, 0, pkt + ETH_H + IP_H);
++				 0, 0, LIBNET_TCP_H, NULL, 0, l, 0);
+ 		
+-		libnet_do_checksum(pkt + ETH_H, IPPROTO_IP, IP_H);
+-		libnet_do_checksum(pkt + ETH_H, IPPROTO_TCP, TCP_H);
++		libnet_build_ipv4(LIBNET_TCP_H, 0,
++				  libnet_get_prand(LIBNET_PRu16), 0, 64,
++				  IPPROTO_TCP, 0, src, dst, NULL, 0, l, 0);
+ 		
+-		if (libnet_write_link_layer(llif, Intf, pkt, sizeof(pkt)) < 0)
++		libnet_build_ethernet(tha, sha, ETHERTYPE_IP, NULL, 0, l, 0);
++		
++		if (libnet_write(l) < 0)
+ 			errx(1, "write");
+ 
++		libnet_clear_packet(l);
++
+ 		fprintf(stderr, "%s ",
+ 			ether_ntoa((struct ether_addr *)sha));
+ 		fprintf(stderr, "%s %s.%d > %s.%d: S %u:%u(0) win 512\n",
+ 			ether_ntoa((struct ether_addr *)tha),
+-			libnet_host_lookup(Src, 0), sport,
+-			libnet_host_lookup(Dst, 0), dport, seq, seq);
++			libnet_addr2name4(Src, 0), sport,
++			libnet_addr2name4(Dst, 0), dport, seq, seq);
+ 	}
+ 	exit(0);
+ }
+diff -Naur dsniff-2.4/magic.c dsniff-2.4-patch/magic.c
+--- dsniff-2.4/magic.c	2001-03-15 09:33:04.000000000 +0100
++++ dsniff-2.4-patch/magic.c	2009-09-14 19:30:33.252711486 +0200
+@@ -36,6 +36,7 @@
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
++#include <strlcpy.h>
+ #include <ctype.h>
+ #include <time.h>
+ #include <err.h>
+diff -Naur dsniff-2.4/mailsnarf.1m dsniff-2.4-patch/mailsnarf.1m
+--- dsniff-2.4/mailsnarf.1m	1970-01-01 01:00:00.000000000 +0100
++++ dsniff-2.4-patch/mailsnarf.1m	2009-09-14 20:19:16.372095835 +0200
+@@ -0,0 +1,36 @@
++.TH MAILSNARF 1M
++.ad
++.fi
++.SH NAME
++mailsnarf
++\-
++sniff mail messages in Berkeley mbox format
++.SH SYNOPSIS
++.na
++.nf
++.fi
++\fBmailsnarf\fR [\fB-i \fIinterface\fR | \fB-p \fIpcapfile\fR] [[\fB-v\fR] \fIpattern [\fIexpression\fR]]
++.SH DESCRIPTION
++.ad
++.fi
++\fBmailsnarf\fR outputs e-mail messages sniffed from SMTP and POP
++traffic in Berkeley mbox format, suitable for offline browsing with
++your favorite mail reader (mail(1), pine(1), etc.).
++.SH OPTIONS
++.IP "\fB-i \fIinterface\fR"
++Specify the interface to listen on.
++.IP "\fB-p \fIpcapfile\fR"
++Process packets from the specified PCAP capture file instead of the network.
++.IP \fB-v\fR
++"Versus" mode. Invert the sense of matching, to select non-matching
++messages.
++.IP \fIpattern\fR
++Specify regular expression for message header/body matching.
++.IP "\fIexpression\fR"
++Specify a tcpdump(1M) filter expression to select traffic to sniff.
++.SH "SEE ALSO"
++dsniff(1M), mail(1), pine(1)
++.SH AUTHOR
++.na
++.nf
++Dug Song <dugsong@monkey.org>
+diff -Naur dsniff-2.4/mailsnarf.8 dsniff-2.4-patch/mailsnarf.8
+--- dsniff-2.4/mailsnarf.8	2000-11-19 07:09:28.000000000 +0100
++++ dsniff-2.4-patch/mailsnarf.8	1970-01-01 01:00:00.000000000 +0100
+@@ -1,34 +0,0 @@
+-.TH MAILSNARF 8
+-.ad
+-.fi
+-.SH NAME
+-mailsnarf
+-\-
+-sniff mail messages in Berkeley mbox format
+-.SH SYNOPSIS
+-.na
+-.nf
+-.fi
+-\fBmailsnarf\fR [\fB-i \fIinterface\fR] [[\fB-v\fR] \fIpattern [\fIexpression\fR]]
+-.SH DESCRIPTION
+-.ad
+-.fi
+-\fBmailsnarf\fR outputs e-mail messages sniffed from SMTP and POP
+-traffic in Berkeley mbox format, suitable for offline browsing with
+-your favorite mail reader (mail(1), pine(1), etc.).
+-.SH OPTIONS
+-.IP "\fB-i \fIinterface\fR"
+-Specify the interface to listen on.
+-.IP \fB-v\fR
+-"Versus" mode. Invert the sense of matching, to select non-matching
+-messages.
+-.IP \fIpattern\fR
+-Specify regular expression for message header/body matching.
+-.IP "\fIexpression\fR"
+-Specify a tcpdump(8) filter expression to select traffic to sniff.
+-.SH "SEE ALSO"
+-dsniff(8), mail(1), pine(1)
+-.SH AUTHOR
+-.na
+-.nf
+-Dug Song <dugsong@monkey.org>
+diff -Naur dsniff-2.4/mailsnarf.c dsniff-2.4-patch/mailsnarf.c
+--- dsniff-2.4/mailsnarf.c	2001-03-15 09:33:04.000000000 +0100
++++ dsniff-2.4-patch/mailsnarf.c	2009-09-14 19:39:50.506894398 +0200
+@@ -59,7 +59,7 @@
+ usage(void)
+ {
+ 	fprintf(stderr, "Version: " VERSION "\n"
+-		"Usage: mailsnarf [-i interface] [[-v] pattern [expression]]\n");
++		"Usage: mailsnarf [-i interface | -p pcapfile] [[-v] pattern [expression]]\n");
+ 	exit(1);
+ }
+ 
+@@ -178,7 +178,7 @@
+ 	if (smtp->state != SMTP_DATA) {
+ 		while ((i = buf_index(&buf, "\r\n", 2)) >= 0) {
+ 			line = buf_tok(&buf, NULL, i + 2);
+-			line->base[line->end] = '\0';
++			line->base[line->end-1] = '\0';
+ 			p = buf_ptr(line);
+ 			
+ 			if (strncasecmp(p, "RSET", 4) == 0) {
+@@ -344,11 +344,14 @@
+ 	extern int optind;
+ 	int c;
+ 	
+-	while ((c = getopt(argc, argv, "i:vh?V")) != -1) {
++	while ((c = getopt(argc, argv, "i:p:vh?V")) != -1) {
+ 		switch (c) {
+ 		case 'i':
+ 			nids_params.device = optarg;
+ 			break;
++                case 'p':
++                        nids_params.filename = optarg;
++                        break;
+ 		case 'v':
+ 			Opt_invert = 1;
+ 			break;
+@@ -378,10 +381,23 @@
+ 	nids_register_tcp(sniff_pop_session);
+ 
+ 	if (nids_params.pcap_filter != NULL) {
+-		warnx("listening on %s [%s]", nids_params.device,
+-		      nids_params.pcap_filter);
+-	}
+-	else warnx("listening on %s", nids_params.device);
++                if (nids_params.filename == NULL) {
++		        warnx("listening on %s [%s]", nids_params.device,
++		              nids_params.pcap_filter);
++                }
++                else {
++		        warnx("using %s [%s]", nids_params.filename,
++		              nids_params.pcap_filter);
++                }
++	}
++	else {
++                if (nids_params.filename == NULL) {
++                    warnx("listening on %s", nids_params.device);
++                }
++                else {
++                    warnx("using %s", nids_params.filename);
++                }
++        }
+ 	
+ 	nids_run();
+ 	
+diff -Naur dsniff-2.4/missing/strlcat.h dsniff-2.4-patch/missing/strlcat.h
+--- dsniff-2.4/missing/strlcat.h	1970-01-01 01:00:00.000000000 +0100
++++ dsniff-2.4-patch/missing/strlcat.h	2009-09-14 19:30:33.253345036 +0200
+@@ -0,0 +1 @@
++size_t strlcat(char *dst, const char *src, size_t siz);
+diff -Naur dsniff-2.4/missing/strlcpy.h dsniff-2.4-patch/missing/strlcpy.h
+--- dsniff-2.4/missing/strlcpy.h	1970-01-01 01:00:00.000000000 +0100
++++ dsniff-2.4-patch/missing/strlcpy.h	2009-09-14 19:30:33.253864328 +0200
+@@ -0,0 +1 @@
++size_t strlcpy(char *dst, const char *src, size_t siz);
+diff -Naur dsniff-2.4/msgsnarf.1m dsniff-2.4-patch/msgsnarf.1m
+--- dsniff-2.4/msgsnarf.1m	1970-01-01 01:00:00.000000000 +0100
++++ dsniff-2.4-patch/msgsnarf.1m	2009-09-14 20:19:30.146307807 +0200
+@@ -0,0 +1,36 @@
++.TH MSGSNARF 1M
++.ad
++.fi
++.SH NAME
++msgsnarf
++\-
++sniff chat messages
++.SH SYNOPSIS
++.na
++.nf
++.fi
++\fBmsgsnarf\fR [\fB-i \fIinterface\fR | \fB-p \fIpcapfile\fR] [[\fB-v\fR] \fIpattern [\fIexpression\fR]]
++.SH DESCRIPTION
++.ad
++.fi
++\fBmsgsnarf\fR records selected messages from AOL Instant
++Messenger, ICQ 2000, IRC, MSN Messenger, or Yahoo Messenger chat
++sessions.
++.SH OPTIONS
++.IP "\fB-i \fIinterface\fR"
++Specify the interface to listen on.
++.IP "\fB-p \fIpcapfile\fR"
++Process packets from the specified PCAP capture file instead of the network.
++.IP \fB-v\fR
++"Versus" mode. Invert the sense of matching, to select non-matching
++messages.
++.IP \fIpattern\fR
++Specify regular expression for message matching.
++.IP "\fIexpression\fR"
++Specify a tcpdump(1M) filter expression to select traffic to sniff.
++.SH "SEE ALSO"
++dsniff(1M)
++.SH AUTHOR
++.na
++.nf
++Dug Song <dugsong@monkey.org>
+diff -Naur dsniff-2.4/msgsnarf.8 dsniff-2.4-patch/msgsnarf.8
+--- dsniff-2.4/msgsnarf.8	2000-11-19 07:10:50.000000000 +0100
++++ dsniff-2.4-patch/msgsnarf.8	1970-01-01 01:00:00.000000000 +0100
+@@ -1,34 +0,0 @@
+-.TH MSGSNARF 8
+-.ad
+-.fi
+-.SH NAME
+-msgsnarf
+-\-
+-sniff chat messages
+-.SH SYNOPSIS
+-.na
+-.nf
+-.fi
+-\fBmsgsnarf\fR [\fB-i \fIinterface\fR] [[\fB-v\fR] \fIpattern [\fIexpression\fR]]
+-.SH DESCRIPTION
+-.ad
+-.fi
+-\fBmsgsnarf\fR records selected messages from AOL Instant
+-Messenger, ICQ 2000, IRC, MSN Messenger, or Yahoo Messenger chat
+-sessions.
+-.SH OPTIONS
+-.IP "\fB-i \fIinterface\fR"
+-Specify the interface to listen on.
+-.IP \fB-v\fR
+-"Versus" mode. Invert the sense of matching, to select non-matching
+-messages.
+-.IP \fIpattern\fR
+-Specify regular expression for message matching.
+-.IP "\fIexpression\fR"
+-Specify a tcpdump(8) filter expression to select traffic to sniff.
+-.SH "SEE ALSO"
+-dsniff(8)
+-.SH AUTHOR
+-.na
+-.nf
+-Dug Song <dugsong@monkey.org>
+diff -Naur dsniff-2.4/msgsnarf.c dsniff-2.4-patch/msgsnarf.c
+--- dsniff-2.4/msgsnarf.c	2001-03-15 09:33:04.000000000 +0100
++++ dsniff-2.4-patch/msgsnarf.c	2009-09-14 19:38:24.997924107 +0200
+@@ -23,6 +23,7 @@
+ #include <nids.h>
+ #include <pcap.h>
+ #include <pcaputil.h>
++#include <time.h>
+ 
+ #include "buf.h"
+ #include "decode.h"
+@@ -44,7 +45,7 @@
+ usage(void)
+ {
+ 	fprintf(stderr, "Version: " VERSION "\n"
+-		"Usage: msgsnarf [-i interface] [[-v] pattern [expression]]\n");
++		"Usage: msgsnarf [-i interface | -p pcapfile] [[-v] pattern [expression]]\n");
+ 	exit(1);
+ }
+ 
+@@ -632,11 +633,14 @@
+ 	extern int optind;
+ 	int c;
+ 	
+-	while ((c = getopt(argc, argv, "i:hv?V")) != -1) {
++	while ((c = getopt(argc, argv, "i:p:hv?V")) != -1) {
+ 		switch (c) {
+ 		case 'i':
+ 			nids_params.device = optarg;
+ 			break;
++		case 'p':
++			nids_params.filename = optarg;
++			break;
+ 		case 'v':
+ 			Opt_invert = 1;
+ 			break;
+@@ -665,11 +669,24 @@
+ 	
+ 	nids_register_tcp(sniff_msgs);
+ 
+-	if (nids_params.pcap_filter != NULL) {
+-		warnx("listening on %s [%s]", nids_params.device,
+-		      nids_params.pcap_filter);
+-	}
+-	else warnx("listening on %s", nids_params.device);
++        if (nids_params.pcap_filter != NULL) {
++                if (nids_params.filename == NULL) {
++                        warnx("listening on %s [%s]", nids_params.device,
++                              nids_params.pcap_filter);
++                }
++                else {
++                        warnx("using %s [%s]", nids_params.filename,
++                              nids_params.pcap_filter);
++                }
++        }
++        else {
++                if (nids_params.filename == NULL) {
++                    warnx("listening on %s", nids_params.device);
++                }
++                else {
++                    warnx("using %s", nids_params.filename);
++                }
++        }
+ 
+ 	nids_run();
+ 	
+diff -Naur dsniff-2.4/record.c dsniff-2.4-patch/record.c
+--- dsniff-2.4/record.c	2001-03-15 09:33:04.000000000 +0100
++++ dsniff-2.4-patch/record.c	2009-09-14 19:28:28.416267345 +0200
+@@ -65,8 +65,8 @@
+ 	tm = localtime(&rec->time);
+ 	strftime(tstr, sizeof(tstr), "%x %X", tm);
+ 	
+-	srcp = libnet_host_lookup(rec->src, Opt_dns);
+-	dstp = libnet_host_lookup(rec->dst, Opt_dns);
++	srcp = libnet_addr2name4(rec->src, Opt_dns);
++	dstp = libnet_addr2name4(rec->dst, Opt_dns);
+ 
+ 	if ((pr = getprotobynumber(rec->proto)) == NULL)
+ 		protop = "unknown";
+diff -Naur dsniff-2.4/ssh.c dsniff-2.4-patch/ssh.c
+--- dsniff-2.4/ssh.c	2001-03-15 09:33:04.000000000 +0100
++++ dsniff-2.4-patch/ssh.c	2009-09-14 19:33:24.750481405 +0200
+@@ -16,12 +16,14 @@
+ #include <openssl/ssl.h>
+ #include <openssl/err.h>
+ #include <openssl/rand.h>
++#include <openssl/md5.h>
+ 
+ #include <err.h>
+ #include <errno.h>
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
++#include <arpa/inet.h>
+ #include <unistd.h>
+ 
+ #include "hex.h"
+diff -Naur dsniff-2.4/sshcrypto.c dsniff-2.4-patch/sshcrypto.c
+--- dsniff-2.4/sshcrypto.c	2001-03-15 09:33:04.000000000 +0100
++++ dsniff-2.4-patch/sshcrypto.c	2009-09-14 19:38:44.962733315 +0200
+@@ -14,6 +14,8 @@
+ 
+ #include <sys/types.h>
+ #include <openssl/ssl.h>
++#include <openssl/blowfish.h>
++#include <openssl/des.h>
+ 
+ #include <err.h>
+ #include <stdio.h>
+diff -Naur dsniff-2.4/sshmitm.1m dsniff-2.4-patch/sshmitm.1m
+--- dsniff-2.4/sshmitm.1m	1970-01-01 01:00:00.000000000 +0100
++++ dsniff-2.4-patch/sshmitm.1m	2009-09-14 20:19:50.805689145 +0200
+@@ -0,0 +1,36 @@
++.TH SSHMITM 1M
++.ad
++.fi
++.SH NAME
++sshmitm
++\-
++SSH monkey-in-the-middle
++.SH SYNOPSIS
++.na
++.nf
++.fi
++\fBsshmitm\fR [\fB-d\fR] [\fB-I\fR] [\fB-p \fIport\fR] host [\fIport\fR]
++.SH DESCRIPTION
++.ad
++.fi
++\fBsshmitm\fR proxies and sniffs SSH traffic redirected by
++dnsspoof(1M), capturing SSH password logins, and optionally hijacking
++interactive sessions. Only SSH protocol version 1 is (or ever will be)
++supported - this program is far too evil already.
++.SH OPTIONS
++.IP \fB-d\fR
++Enable verbose debugging output.
++.IP \fB-I\fR
++Monitor / hijack an interactive session.
++.IP "\fB-p \fIport\fR"
++Specify the local port to listen on.
++.IP \fIhost\fR
++Specify the remote host to relay connections to.
++.IP \fIport\fR
++Specify the remote port to relay connections to.
++.SH "SEE ALSO"
++dsniff(1M), dnsspoof(1M)
++.SH AUTHOR
++.na
++.nf
++Dug Song <dugsong@monkey.org>
+diff -Naur dsniff-2.4/sshmitm.8 dsniff-2.4-patch/sshmitm.8
+--- dsniff-2.4/sshmitm.8	2000-12-15 05:46:34.000000000 +0100
++++ dsniff-2.4-patch/sshmitm.8	1970-01-01 01:00:00.000000000 +0100
+@@ -1,36 +0,0 @@
+-.TH SSHMITM 8
+-.ad
+-.fi
+-.SH NAME
+-sshmitm
+-\-
+-SSH monkey-in-the-middle
+-.SH SYNOPSIS
+-.na
+-.nf
+-.fi
+-\fBsshmitm\fR [\fB-d\fR] [\fB-I\fR] [\fB-p \fIport\fR] host [\fIport\fR]
+-.SH DESCRIPTION
+-.ad
+-.fi
+-\fBsshmitm\fR proxies and sniffs SSH traffic redirected by
+-dnsspoof(8), capturing SSH password logins, and optionally hijacking
+-interactive sessions. Only SSH protocol version 1 is (or ever will be)
+-supported - this program is far too evil already.
+-.SH OPTIONS
+-.IP \fB-d\fR
+-Enable verbose debugging output.
+-.IP \fB-I\fR
+-Monitor / hijack an interactive session.
+-.IP "\fB-p \fIport\fR"
+-Specify the local port to listen on.
+-.IP \fIhost\fR
+-Specify the remote host to relay connections to.
+-.IP \fIport\fR
+-Specify the remote port to relay connections to.
+-.SH "SEE ALSO"
+-dsniff(8), dnsspoof(8)
+-.SH AUTHOR
+-.na
+-.nf
+-Dug Song <dugsong@monkey.org>
+diff -Naur dsniff-2.4/sshmitm.c dsniff-2.4-patch/sshmitm.c
+--- dsniff-2.4/sshmitm.c	2001-03-15 09:33:04.000000000 +0100
++++ dsniff-2.4-patch/sshmitm.c	2009-09-14 19:30:33.254538385 +0200
+@@ -24,6 +24,7 @@
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <unistd.h>
++#include <strlcat.h>
+ 
+ #include "buf.h"
+ #include "record.h"
+@@ -389,7 +390,7 @@
+ 	if (argc < 1)
+ 		usage();
+ 	
+-	if ((ip = libnet_name_resolve(argv[0], 1)) == -1)
++	if ((ip = libnet_name2addr4(NULL, argv[0], LIBNET_RESOLVE)) == -1)
+ 		usage();
+ 
+ 	if (argc == 2 && (rport = atoi(argv[1])) == 0)
+diff -Naur dsniff-2.4/sshow.1m dsniff-2.4-patch/sshow.1m
+--- dsniff-2.4/sshow.1m	1970-01-01 01:00:00.000000000 +0100
++++ dsniff-2.4-patch/sshow.1m	2009-09-14 20:20:08.013523629 +0200
+@@ -0,0 +1,41 @@
++.TH SSHOW 1M
++.ad
++.fi
++.SH NAME
++sshow
++\-
++SSH traffic analysis tool
++.SH SYNOPSIS
++.na
++.nf
++.fi
++\fBsshow\fR [\fB-d\fR] [\fB-i \fIinterface\fR | \fB-p \fIpcapfile\fR] [\fIexpression\fR]
++.SH DESCRIPTION
++.ad
++.fi
++\fBsshow\fR analyzes encrypted SSH-1 and SSH-2 traffic, identifying
++authentication attempts, the lengths of passwords entered in
++interactive sessions, and command line lengths.
++.LP
++The following advisory describes the attacks implemented by
++\fBsshow\fR in detail:
++.LP
++.RS
++.I http://www.openwall.com/advisories/OW-003-ssh-traffic-analysis.txt
++.RE
++.SH OPTIONS
++.IP \fB-d\fR
++Enable verbose debugging output.
++.IP "\fB-i \fIinterface\fR"
++Specify the interface to listen on.
++.IP "\fB-p \fIpcapfile\fR"
++Process packets from the specified PCAP capture file instead of the network.
++.IP "\fIexpression\fR"
++Specify a tcpdump(1M) filter expression to select traffic to sniff.
++.SH "SEE ALSO"
++dsniff(1M), sshmitm(1M)
++.SH AUTHORS
++.na
++.nf
++Solar Designer <solar@openwall.com>
++Dug Song <dugsong@monkey.org>
+diff -Naur dsniff-2.4/sshow.8 dsniff-2.4-patch/sshow.8
+--- dsniff-2.4/sshow.8	2001-03-17 06:37:47.000000000 +0100
++++ dsniff-2.4-patch/sshow.8	1970-01-01 01:00:00.000000000 +0100
+@@ -1,39 +0,0 @@
+-.TH SSHOW 8
+-.ad
+-.fi
+-.SH NAME
+-sshow
+-\-
+-SSH traffic analysis tool
+-.SH SYNOPSIS
+-.na
+-.nf
+-.fi
+-\fBsshow\fR [\fB-d\fR] [\fB-i \fIinterface\fR] [\fIexpression\fR]
+-.SH DESCRIPTION
+-.ad
+-.fi
+-\fBsshow\fR analyzes encrypted SSH-1 and SSH-2 traffic, identifying
+-authentication attempts, the lengths of passwords entered in
+-interactive sessions, and command line lengths.
+-.LP
+-The following advisory describes the attacks implemented by
+-\fBsshow\fR in detail:
+-.LP
+-.RS
+-.I http://www.openwall.com/advisories/OW-003-ssh-traffic-analysis.txt
+-.RE
+-.SH OPTIONS
+-.IP \fB-d\fR
+-Enable verbose debugging output.
+-.IP "\fB-i \fIinterface\fR"
+-Specify the interface to listen on.
+-.IP "\fIexpression\fR"
+-Specify a tcpdump(8) filter expression to select traffic to sniff.
+-.SH "SEE ALSO"
+-dsniff(8), sshmitm(8)
+-.SH AUTHORS
+-.na
+-.nf
+-Solar Designer <solar@openwall.com>
+-Dug Song <dugsong@monkey.org>
+diff -Naur dsniff-2.4/sshow.c dsniff-2.4-patch/sshow.c
+--- dsniff-2.4/sshow.c	2001-03-19 07:52:15.000000000 +0100
++++ dsniff-2.4-patch/sshow.c	2009-09-14 19:38:24.998960290 +0200
+@@ -15,6 +15,7 @@
+ 
+ #include <sys/types.h>
+ #include <sys/times.h>
++#include <time.h>
+ 
+ #include <netinet/in_systm.h>
+ #include <netinet/in.h>
+@@ -81,7 +82,7 @@
+ static void
+ usage(void)
+ {
+-	fprintf(stderr, "Usage: sshow [-d] [-i interface]\n");
++	fprintf(stderr, "Usage: sshow [-d] [-i interface | -p pcapfile]\n");
+ 	exit(1);
+ }
+ 
+@@ -615,7 +616,7 @@
+ 	extern int optind;
+ 	int c;
+ 	
+-	while ((c = getopt(argc, argv, "di:h?")) != -1) {
++	while ((c = getopt(argc, argv, "di:p:h?")) != -1) {
+ 		switch (c) {
+ 		case 'd':
+ 			debug++;
+@@ -623,6 +624,9 @@
+ 		case 'i':
+ 			nids_params.device = optarg;
+ 			break;
++		case 'p':
++			nids_params.filename = optarg;
++			break;
+ 		default:
+ 			usage();
+ 			break;
+@@ -651,11 +655,24 @@
+ 	
+ 	nids_register_tcp(process_event);
+ 
+-	if (nids_params.pcap_filter != NULL) {
+-		warnx("listening on %s [%s]", nids_params.device,
+-		      nids_params.pcap_filter);
+-	}
+-	else warnx("listening on %s", nids_params.device);
++        if (nids_params.pcap_filter != NULL) {
++                if (nids_params.filename == NULL) {
++                        warnx("listening on %s [%s]", nids_params.device,
++                              nids_params.pcap_filter);
++                }
++                else {
++                        warnx("using %s [%s]", nids_params.filename,
++                              nids_params.pcap_filter);
++                }
++        }
++        else {
++                if (nids_params.filename == NULL) {
++                    warnx("listening on %s", nids_params.device);
++                }
++                else {
++                    warnx("using %s", nids_params.filename);
++                }
++        }
+ 
+ 	nids_run();
+ 	
+diff -Naur dsniff-2.4/tcp_raw.c dsniff-2.4-patch/tcp_raw.c
+--- dsniff-2.4/tcp_raw.c	2001-03-15 09:33:04.000000000 +0100
++++ dsniff-2.4-patch/tcp_raw.c	2009-09-14 19:28:28.419923897 +0200
+@@ -119,7 +119,7 @@
+ }
+ 
+ struct iovec *
+-tcp_raw_input(struct libnet_ip_hdr *ip, struct libnet_tcp_hdr *tcp, int len)
++tcp_raw_input(struct libnet_ipv4_hdr *ip, struct libnet_tcp_hdr *tcp, int len)
+ {
+ 	struct tha tha;
+ 	struct tcp_conn *conn;
+@@ -131,7 +131,7 @@
+ 
+ 	/* Verify TCP checksum. */
+ 	cksum = tcp->th_sum;
+-	libnet_do_checksum((u_char *) ip, IPPROTO_TCP, len);
++	libnet_do_checksum(NULL, (u_char *) ip, IPPROTO_TCP, len);
+ 
+ 	if (cksum != tcp->th_sum)
+ 		return (NULL);
+diff -Naur dsniff-2.4/tcp_raw.h dsniff-2.4-patch/tcp_raw.h
+--- dsniff-2.4/tcp_raw.h	2001-03-15 09:33:06.000000000 +0100
++++ dsniff-2.4-patch/tcp_raw.h	2009-09-14 19:28:28.420509260 +0200
+@@ -15,7 +15,7 @@
+ 				   u_short sport, u_short dport,
+ 				   u_char *buf, int len);
+ 
+-struct iovec   *tcp_raw_input(struct libnet_ip_hdr *ip,
++struct iovec   *tcp_raw_input(struct libnet_ipv4_hdr *ip,
+ 			      struct libnet_tcp_hdr *tcp, int len);
+ 
+ void		tcp_raw_timeout(int timeout, tcp_raw_callback_t callback);
+diff -Naur dsniff-2.4/tcpkill.1m dsniff-2.4-patch/tcpkill.1m
+--- dsniff-2.4/tcpkill.1m	1970-01-01 01:00:00.000000000 +0100
++++ dsniff-2.4-patch/tcpkill.1m	2009-09-14 20:20:30.504962006 +0200
+@@ -0,0 +1,34 @@
++.TH TCPKILL 1M
++.ad
++.fi
++.SH NAME
++tcpkill
++\-
++kill TCP connections on a LAN
++.SH SYNOPSIS
++.na
++.nf
++.fi
++\fBtcpkill\fR [\fB-i \fIinterface\fR] [\fB-1\fR...\fB9\fR] \fIexpression\fR
++.SH DESCRIPTION
++.ad
++.fi
++\fBtcpkill\fR kills specified in-progress TCP connections (useful for
++libnids-based applications which require a full TCP 3-whs for TCB
++creation).
++.SH OPTIONS
++.IP "\fB-i \fIinterface\fR"
++Specify the interface to listen on.
++.IP \fB-1\fR...\fB9\fR
++Specify the degree of brute force to use in killing a connection. Fast
++connections may require a higher number in order to land a RST in the
++moving receive window. Default is 3.
++.IP \fIexpression\fR
++Specify a tcpdump(1M) filter expression to select the connections to
++kill.
++.SH "SEE ALSO"
++dsniff(1M), tcpnice(1M)
++.SH AUTHOR
++.na
++.nf
++Dug Song <dugsong@monkey.org>
+diff -Naur dsniff-2.4/tcpkill.8 dsniff-2.4-patch/tcpkill.8
+--- dsniff-2.4/tcpkill.8	2001-03-17 06:57:32.000000000 +0100
++++ dsniff-2.4-patch/tcpkill.8	1970-01-01 01:00:00.000000000 +0100
+@@ -1,34 +0,0 @@
+-.TH TCPKILL 8
+-.ad
+-.fi
+-.SH NAME
+-tcpkill
+-\-
+-kill TCP connections on a LAN
+-.SH SYNOPSIS
+-.na
+-.nf
+-.fi
+-\fBtcpkill\fR [\fB-i \fIinterface\fR] [\fB-1\fR...\fB9\fR] \fIexpression\fR
+-.SH DESCRIPTION
+-.ad
+-.fi
+-\fBtcpkill\fR kills specified in-progress TCP connections (useful for
+-libnids-based applications which require a full TCP 3-whs for TCB
+-creation).
+-.SH OPTIONS
+-.IP "\fB-i \fIinterface\fR"
+-Specify the interface to listen on.
+-.IP \fB-1\fR...\fB9\fR
+-Specify the degree of brute force to use in killing a connection. Fast
+-connections may require a higher number in order to land a RST in the
+-moving receive window. Default is 3.
+-.IP \fIexpression\fR
+-Specify a tcpdump(8) filter expression to select the connections to
+-kill.
+-.SH "SEE ALSO"
+-dsniff(8), tcpnice(8)
+-.SH AUTHOR
+-.na
+-.nf
+-Dug Song <dugsong@monkey.org>
+diff -Naur dsniff-2.4/tcpkill.c dsniff-2.4-patch/tcpkill.c
+--- dsniff-2.4/tcpkill.c	2001-03-17 09:10:43.000000000 +0100
++++ dsniff-2.4-patch/tcpkill.c	2009-09-14 19:28:28.418026591 +0200
+@@ -39,17 +39,18 @@
+ static void
+ tcp_kill_cb(u_char *user, const struct pcap_pkthdr *pcap, const u_char *pkt)
+ {
+-	struct libnet_ip_hdr *ip;
++	struct libnet_ipv4_hdr *ip;
+ 	struct libnet_tcp_hdr *tcp;
+-	u_char ctext[64], buf[IP_H + TCP_H];
++	u_char ctext[64];
+ 	u_int32_t seq, win;
+-	int i, *sock, len;
++	int i, len;
++	libnet_t *l;
+ 
+-	sock = (int *)user;
++	l = (libnet_t *)user;
+ 	pkt += pcap_off;
+ 	len = pcap->caplen - pcap_off;
+ 
+-	ip = (struct libnet_ip_hdr *)pkt;
++	ip = (struct libnet_ipv4_hdr *)pkt;
+ 	if (ip->ip_p != IPPROTO_TCP)
+ 		return;
+ 	
+@@ -57,34 +58,31 @@
+ 	if (tcp->th_flags & (TH_SYN|TH_FIN|TH_RST))
+ 		return;
+ 
+-	libnet_build_ip(TCP_H, 0, 0, 0, 64, IPPROTO_TCP,
+-			ip->ip_dst.s_addr, ip->ip_src.s_addr,
+-			NULL, 0, buf);
+-
+-	libnet_build_tcp(ntohs(tcp->th_dport), ntohs(tcp->th_sport),
+-			 0, 0, TH_RST, 0, 0, NULL, 0, buf + IP_H);
+-	
+ 	seq = ntohl(tcp->th_ack);
+ 	win = ntohs(tcp->th_win);
+ 	
+ 	snprintf(ctext, sizeof(ctext), "%s:%d > %s:%d:",
+-		 libnet_host_lookup(ip->ip_src.s_addr, 0),
++		 libnet_addr2name4(ip->ip_src.s_addr, LIBNET_DONT_RESOLVE),
+ 		 ntohs(tcp->th_sport),
+-		 libnet_host_lookup(ip->ip_dst.s_addr, 0),
++		 libnet_addr2name4(ip->ip_dst.s_addr, LIBNET_DONT_RESOLVE),
+ 		 ntohs(tcp->th_dport));
+ 	
+-	ip = (struct libnet_ip_hdr *)buf;
+-	tcp = (struct libnet_tcp_hdr *)(ip + 1);
+-	
+ 	for (i = 0; i < Opt_severity; i++) {
+-		ip->ip_id = libnet_get_prand(PRu16);
+ 		seq += (i * win);
+-		tcp->th_seq = htonl(seq);
+ 		
+-		libnet_do_checksum(buf, IPPROTO_TCP, TCP_H);
++		libnet_clear_packet(l);
++		
++		libnet_build_tcp(ntohs(tcp->th_dport), ntohs(tcp->th_sport),
++				 seq, 0, TH_RST, 0, 0, 0, LIBNET_TCP_H, 
++				 NULL, 0, l, 0);
++		
++		libnet_build_ipv4(LIBNET_IPV4_H + LIBNET_TCP_H, 0,
++				  libnet_get_prand(LIBNET_PRu16), 0, 64,
++				  IPPROTO_TCP, 0, ip->ip_dst.s_addr,
++				  ip->ip_src.s_addr, NULL, 0, l, 0);
+ 		
+-		if (libnet_write_ip(*sock, buf, sizeof(buf)) < 0)
+-			warn("write_ip");
++		if (libnet_write(l) < 0)
++			warn("write");
+ 		
+ 		fprintf(stderr, "%s R %lu:%lu(0) win 0\n", ctext, seq, seq);
+ 	}
+@@ -95,8 +93,10 @@
+ {
+ 	extern char *optarg;
+ 	extern int optind;
+-	int c, sock;
++	int c;
+ 	char *p, *intf, *filter, ebuf[PCAP_ERRBUF_SIZE];
++	char libnet_ebuf[LIBNET_ERRBUF_SIZE];
++	libnet_t *l;
+ 	pcap_t *pd;
+ 	
+ 	intf = NULL;
+@@ -136,14 +136,14 @@
+ 	if ((pcap_off = pcap_dloff(pd)) < 0)
+ 		errx(1, "couldn't determine link layer offset");
+ 	
+-	if ((sock = libnet_open_raw_sock(IPPROTO_RAW)) == -1)
++	if ((l = libnet_init(LIBNET_RAW4, intf, libnet_ebuf)) == NULL)
+ 		errx(1, "couldn't initialize sending");
+ 	
+-	libnet_seed_prand();
++	libnet_seed_prand(l);
+ 	
+ 	warnx("listening on %s [%s]", intf, filter);
+ 	
+-	pcap_loop(pd, -1, tcp_kill_cb, (u_char *)&sock);
++	pcap_loop(pd, -1, tcp_kill_cb, (u_char *)l);
+   
+ 	/* NOTREACHED */
+ 	
+diff -Naur dsniff-2.4/tcpnice.1m dsniff-2.4-patch/tcpnice.1m
+--- dsniff-2.4/tcpnice.1m	1970-01-01 01:00:00.000000000 +0100
++++ dsniff-2.4-patch/tcpnice.1m	2009-09-14 20:20:47.206843837 +0200
+@@ -0,0 +1,38 @@
++.TH TCPNICE 1M
++.ad
++.fi
++.SH NAME
++tcpnice
++\-
++slow down TCP connections on a LAN
++.SH SYNOPSIS
++.na
++.nf
++.fi
++\fBtcpnice\fR [\fB-A\fR] [\fB-I\fR] [\fB-M\fR] [\fB-i \fIinterface\fR]
++\fIexpression\fR
++.SH DESCRIPTION
++.ad
++.fi
++\fBtcpnice\fR slows down specified TCP connections on a LAN via
++"active" traffic shaping.
++.SH OPTIONS
++.IP \fB-A\fR
++Inject TCP tiny window advertisements.
++.IP \fB-I\fR
++Inject ICMP source quench replies.
++.IP \fB-M\fR
++Inject ICMP fragmentation-needed replies with tiny next-hop MTUs.
++.IP "\fB-i \fIinterface\fR"
++Specify the interface to listen on.
++.IP \fIexpression\fR
++Specify a tcpdump(1M) filter expression to select the connections to
++slow down.
++.LP
++If no attack type is given, all attacks will be enabled.
++.SH "SEE ALSO"
++dsniff(1M), tcpkill(1M)
++.SH AUTHOR
++.na
++.nf
++Dug Song <dugsong@monkey.org>
+diff -Naur dsniff-2.4/tcpnice.8 dsniff-2.4-patch/tcpnice.8
+--- dsniff-2.4/tcpnice.8	2001-03-17 08:40:24.000000000 +0100
++++ dsniff-2.4-patch/tcpnice.8	1970-01-01 01:00:00.000000000 +0100
+@@ -1,38 +0,0 @@
+-.TH TCPNICE 8
+-.ad
+-.fi
+-.SH NAME
+-tcpnice
+-\-
+-slow down TCP connections on a LAN
+-.SH SYNOPSIS
+-.na
+-.nf
+-.fi
+-\fBtcpnice\fR [\fB-A\fR] [\fB-I\fR] [\fB-M\fR] [\fB-i \fIinterface\fR]
+-\fIexpression\fR
+-.SH DESCRIPTION
+-.ad
+-.fi
+-\fBtcpnice\fR slows down specified TCP connections on a LAN via
+-"active" traffic shaping.
+-.SH OPTIONS
+-.IP \fB-A\fR
+-Inject TCP tiny window advertisements.
+-.IP \fB-I\fR
+-Inject ICMP source quench replies.
+-.IP \fB-M\fR
+-Inject ICMP fragmentation-needed replies with tiny next-hop MTUs.
+-.IP "\fB-i \fIinterface\fR"
+-Specify the interface to listen on.
+-.IP \fIexpression\fR
+-Specify a tcpdump(8) filter expression to select the connections to
+-slow down.
+-.LP
+-If no attack type is given, all attacks will be enabled.
+-.SH "SEE ALSO"
+-dsniff(8), tcpkill(8)
+-.SH AUTHOR
+-.na
+-.nf
+-Dug Song <dugsong@monkey.org>
+diff -Naur dsniff-2.4/tcpnice.c dsniff-2.4-patch/tcpnice.c
+--- dsniff-2.4/tcpnice.c	2001-03-17 08:41:51.000000000 +0100
++++ dsniff-2.4-patch/tcpnice.c	2009-09-14 19:28:28.419179854 +0200
+@@ -41,107 +41,106 @@
+ }
+ 
+ static void
+-send_tcp_window_advertisement(int sock, struct libnet_ip_hdr *ip,
++send_tcp_window_advertisement(libnet_t *l, struct libnet_ipv4_hdr *ip,
+ 			     struct libnet_tcp_hdr *tcp)
+ {
+ 	int len;
+ 	
+ 	ip->ip_hl = 5;
+-	ip->ip_len = htons(IP_H + TCP_H);
+-	ip->ip_id = libnet_get_prand(PRu16);
+-	memcpy(buf, (u_char *)ip, IP_H);
++	ip->ip_len = htons(LIBNET_IPV4_H + LIBNET_TCP_H);
++	ip->ip_id = libnet_get_prand(LIBNET_PRu16);
++	memcpy(buf, (u_char *)ip, LIBNET_IPV4_H);
+ 	
+ 	tcp->th_off = 5;
+ 	tcp->th_win = htons(MIN_WIN);
+-	memcpy(buf + IP_H, (u_char *)tcp, TCP_H);
++	memcpy(buf + LIBNET_IPV4_H, (u_char *)tcp, LIBNET_TCP_H);
+ 	
+-	libnet_do_checksum(buf, IPPROTO_TCP, TCP_H);
++	libnet_do_checksum(l, buf, IPPROTO_TCP, LIBNET_TCP_H);
+ 	
+-	len = IP_H + TCP_H;
++	len = LIBNET_IPV4_H + LIBNET_TCP_H;
+ 	
+-	if (libnet_write_ip(sock, buf, len) != len)
++	if (libnet_write_raw_ipv4(l, buf, len) != len)
+ 		warn("write");
+ 	
+ 	fprintf(stderr, "%s:%d > %s:%d: . ack %lu win %d\n",
+-		libnet_host_lookup(ip->ip_src.s_addr, 0), ntohs(tcp->th_sport),
+-		libnet_host_lookup(ip->ip_dst.s_addr, 0), ntohs(tcp->th_dport),
++		libnet_addr2name4(ip->ip_src.s_addr, 0), ntohs(tcp->th_sport),
++		libnet_addr2name4(ip->ip_dst.s_addr, 0), ntohs(tcp->th_dport),
+ 		ntohl(tcp->th_ack), 1);
+ }
+ 
+ static void
+-send_icmp_source_quench(int sock, struct libnet_ip_hdr *ip)
++send_icmp_source_quench(libnet_t *l, struct libnet_ipv4_hdr *ip)
+ {
+-	struct libnet_icmp_hdr *icmp;
++	struct libnet_icmpv4_hdr *icmp;
+ 	int len;
+ 	
+ 	len = (ip->ip_hl * 4) + 8;
+ 
+-	libnet_build_ip(ICMP_ECHO_H + len, 0, libnet_get_prand(PRu16),
+-			0, 64, IPPROTO_ICMP, ip->ip_dst.s_addr,
+-			ip->ip_src.s_addr, NULL, 0, buf);
+-	
+-	icmp = (struct libnet_icmp_hdr *)(buf + IP_H);
++	icmp = (struct libnet_icmpv4_hdr *)(buf + LIBNET_IPV4_H);
+ 	icmp->icmp_type = ICMP_SOURCEQUENCH;
+ 	icmp->icmp_code = 0;
+-	memcpy((u_char *)icmp + ICMP_ECHO_H, (u_char *)ip, len);
++	memcpy((u_char *)icmp + LIBNET_ICMPV4_ECHO_H, (u_char *)ip, len);
+ 	
+-	libnet_do_checksum(buf, IPPROTO_ICMP, ICMP_ECHO_H + len);
++	len += LIBNET_ICMPV4_ECHO_H;
+ 	
+-	len += (IP_H + ICMP_ECHO_H);
++	libnet_build_ipv4(LIBNET_IPV4_H + len, 0,
++			  libnet_get_prand(LIBNET_PRu16), 0, 64, IPPROTO_ICMP,
++			  0, ip->ip_dst.s_addr, ip->ip_src.s_addr,
++			  (u_int8_t *) icmp, len, l, 0);
+ 	
+-	if (libnet_write_ip(sock, buf, len) != len)
++	if (libnet_write(l) != len)
+ 		warn("write");
+ 	
+ 	fprintf(stderr, "%s > %s: icmp: source quench\n",
+-		libnet_host_lookup(ip->ip_dst.s_addr, 0),
+-		libnet_host_lookup(ip->ip_src.s_addr, 0));
++		libnet_addr2name4(ip->ip_dst.s_addr, 0),
++		libnet_addr2name4(ip->ip_src.s_addr, 0));
+ }
+ 
+ static void
+-send_icmp_frag_needed(int sock, struct libnet_ip_hdr *ip)
++send_icmp_frag_needed(libnet_t *l, struct libnet_ipv4_hdr *ip)
+ {
+-	struct libnet_icmp_hdr *icmp;
++	struct libnet_icmpv4_hdr *icmp;
+ 	int len;
+ 
+ 	len = (ip->ip_hl * 4) + 8;
+ 	
+-	libnet_build_ip(ICMP_MASK_H + len, 4, libnet_get_prand(PRu16),
+-			0, 64, IPPROTO_ICMP, ip->ip_dst.s_addr,
+-			ip->ip_src.s_addr, NULL, 0, buf);
+-
+-	icmp = (struct libnet_icmp_hdr *)(buf + IP_H);
++	icmp = (struct libnet_icmpv4_hdr *)(buf + LIBNET_IPV4_H);
+ 	icmp->icmp_type = ICMP_UNREACH;
+ 	icmp->icmp_code = ICMP_UNREACH_NEEDFRAG;
+ 	icmp->hun.frag.pad = 0;
+ 	icmp->hun.frag.mtu = htons(MIN_MTU);
+-	memcpy((u_char *)icmp + ICMP_MASK_H, (u_char *)ip, len);
++	memcpy((u_char *)icmp + LIBNET_ICMPV4_MASK_H, (u_char *)ip, len);
+ 
+-	libnet_do_checksum(buf, IPPROTO_ICMP, ICMP_MASK_H + len);
+-	
+-	len += (IP_H + ICMP_MASK_H);
++	len += LIBNET_ICMPV4_MASK_H;
++
++	libnet_build_ipv4(LIBNET_IPV4_H + len, 4,
++			  libnet_get_prand(LIBNET_PRu16), 0, 64, IPPROTO_ICMP,
++			  0, ip->ip_dst.s_addr, ip->ip_src.s_addr,
++			  (u_int8_t *) icmp, len, l, 0);
+ 	
+-	if (libnet_write_ip(sock, buf, len) != len)
++	if (libnet_write(l) != len)
+ 		warn("write");
+ 	
+ 	fprintf(stderr, "%s > %s: icmp: ",
+-		libnet_host_lookup(ip->ip_dst.s_addr, 0),
+-		libnet_host_lookup(ip->ip_src.s_addr, 0));
++		libnet_addr2name4(ip->ip_dst.s_addr, 0),
++		libnet_addr2name4(ip->ip_src.s_addr, 0));
+ 	fprintf(stderr, "%s unreachable - need to frag (mtu %d)\n",
+-		libnet_host_lookup(ip->ip_src.s_addr, 0), MIN_MTU);
++		libnet_addr2name4(ip->ip_src.s_addr, 0), MIN_MTU);
+ }
+ 
+ static void
+ tcp_nice_cb(u_char *user, const struct pcap_pkthdr *pcap, const u_char *pkt)
+ {
+-	struct libnet_ip_hdr *ip;
++	struct libnet_ipv4_hdr *ip;
+ 	struct libnet_tcp_hdr *tcp;
+-	int *sock, len;
++	int len;
++	libnet_t *l;
+ 
+-	sock = (int *)user;
++	l = (libnet_t *)user;
+ 	pkt += pcap_off;
+ 	len = pcap->caplen - pcap_off;
+ 
+-	ip = (struct libnet_ip_hdr *)pkt;
++	ip = (struct libnet_ipv4_hdr *)pkt;
+ 	if (ip->ip_p != IPPROTO_TCP)
+ 		return;
+ 	
+@@ -151,11 +150,11 @@
+ 	
+ 	if (ntohs(ip->ip_len) > (ip->ip_hl << 2) + (tcp->th_off << 2)) {
+ 		if (Opt_icmp)
+-			send_icmp_source_quench(*sock, ip);
++			send_icmp_source_quench(l, ip);
+ 		if (Opt_win)
+-			send_tcp_window_advertisement(*sock, ip, tcp);
++			send_tcp_window_advertisement(l, ip, tcp);
+ 		if (Opt_pmtu)
+-			send_icmp_frag_needed(*sock, ip);
++			send_icmp_frag_needed(l, ip);
+ 	}
+ }
+ 
+@@ -164,8 +163,10 @@
+ {
+ 	extern char *optarg;
+ 	extern int optind;
+-	int c, sock;
++	int c;
+ 	char *intf, *filter, ebuf[PCAP_ERRBUF_SIZE];
++	char libnet_ebuf[LIBNET_ERRBUF_SIZE];
++	libnet_t *l;
+ 	pcap_t *pd;
+ 	
+ 	intf = NULL;
+@@ -209,14 +210,14 @@
+ 	if ((pcap_off = pcap_dloff(pd)) < 0)
+ 		errx(1, "couldn't determine link layer offset");
+ 	
+-	if ((sock = libnet_open_raw_sock(IPPROTO_RAW)) == -1)
++	if ((l = libnet_init(LIBNET_RAW4, intf, libnet_ebuf)) == NULL)
+ 		errx(1, "couldn't initialize sending");
+ 	
+-	libnet_seed_prand();
++	libnet_seed_prand(l);
+ 	
+ 	warnx("listening on %s [%s]", intf, filter);
+ 	
+-	pcap_loop(pd, -1, tcp_nice_cb, (u_char *)&sock);
++	pcap_loop(pd, -1, tcp_nice_cb, (u_char *)l);
+ 	
+ 	/* NOTREACHED */
+ 	
+diff -Naur dsniff-2.4/trigger.c dsniff-2.4-patch/trigger.c
+--- dsniff-2.4/trigger.c	2001-03-15 09:33:05.000000000 +0100
++++ dsniff-2.4-patch/trigger.c	2009-09-14 19:28:28.421581944 +0200
+@@ -276,7 +276,7 @@
+ }
+ 	
+ void
+-trigger_ip(struct libnet_ip_hdr *ip)
++trigger_ip(struct libnet_ipv4_hdr *ip)
+ {
+ 	struct trigger *t, tr;
+ 	u_char *buf;
+@@ -305,7 +305,7 @@
+ 
+ /* libnids needs a nids_register_udp()... */
+ void
+-trigger_udp(struct libnet_ip_hdr *ip)
++trigger_udp(struct libnet_ipv4_hdr *ip)
+ {
+ 	struct trigger *t, tr;
+ 	struct libnet_udp_hdr *udp;
+@@ -437,7 +437,7 @@
+ }
+ 
+ void
+-trigger_tcp_raw(struct libnet_ip_hdr *ip)
++trigger_tcp_raw(struct libnet_ipv4_hdr *ip)
+ {
+ 	struct trigger *t, tr;
+ 	struct libnet_tcp_hdr *tcp;
+diff -Naur dsniff-2.4/trigger.h dsniff-2.4-patch/trigger.h
+--- dsniff-2.4/trigger.h	2001-03-15 09:33:06.000000000 +0100
++++ dsniff-2.4-patch/trigger.h	2009-09-14 19:28:28.422165129 +0200
+@@ -24,10 +24,10 @@
+ int	trigger_set_tcp(int port, char *name);
+ int	trigger_set_rpc(int program, char *name);
+ 
+-void	trigger_ip(struct libnet_ip_hdr *ip);
+-void	trigger_udp(struct libnet_ip_hdr *ip);
++void	trigger_ip(struct libnet_ipv4_hdr *ip);
++void	trigger_udp(struct libnet_ipv4_hdr *ip);
+ void	trigger_tcp(struct tcp_stream *ts, void **conn_save);
+-void	trigger_tcp_raw(struct libnet_ip_hdr *ip);
++void	trigger_tcp_raw(struct libnet_ipv4_hdr *ip);
+ void	trigger_tcp_raw_timeout(int signal);
+ void	trigger_rpc(int program, int proto, int port);
+ 
+diff -Naur dsniff-2.4/urlsnarf.1m dsniff-2.4-patch/urlsnarf.1m
+--- dsniff-2.4/urlsnarf.1m	1970-01-01 01:00:00.000000000 +0100
++++ dsniff-2.4-patch/urlsnarf.1m	2009-09-14 20:21:18.631784610 +0200
+@@ -0,0 +1,40 @@
++.TH URLSNARF 1M
++.ad
++.fi
++.SH NAME
++urlsnarf
++\-
++sniff HTTP requests in Common Log Format
++.SH SYNOPSIS
++.na
++.nf
++.fi
++\fBurlsnarf\fR [\fB-n\fR] [\fB-i \fIinterface\fR | \fB-p \fIpcapfile\fR]  [[\fB-v\fR] \fIpattern [\fIexpression\fR]]
++.SH DESCRIPTION
++.ad
++.fi
++\fBurlsnarf\fR outputs all requested URLs sniffed from HTTP traffic in
++CLF (Common Log Format, used by almost all web servers), suitable for
++offline post-processing with your favorite web log analysis tool
++(analog, wwwstat, etc.).
++.SH OPTIONS
++.IP \fB-n\fR
++Do not resolve IP addresses to hostnames.
++.IP "\fB-i \fIinterface\fR"
++Specify the interface to listen on.
++.IP "\fB-p \fIpcapfile\fR"
++Process packets from the specified PCAP capture file instead of the network.
++.IP \fB-v\fR
++"Versus" mode. Invert the sense of matching, to select non-matching
++URLs.
++Specify the interface to listen on.
++.IP \fIpattern\fR
++Specify regular expression for URL matching.
++.IP "\fIexpression\fR"
++Specify a tcpdump(1M) filter expression to select traffic to sniff.
++.SH "SEE ALSO"
++dsniff(1M)
++.SH AUTHOR
++.na
++.nf
++Dug Song <dugsong@monkey.org>
+diff -Naur dsniff-2.4/urlsnarf.8 dsniff-2.4-patch/urlsnarf.8
+--- dsniff-2.4/urlsnarf.8	2000-11-19 07:24:51.000000000 +0100
++++ dsniff-2.4-patch/urlsnarf.8	1970-01-01 01:00:00.000000000 +0100
+@@ -1,37 +0,0 @@
+-.TH URLSNARF 8
+-.ad
+-.fi
+-.SH NAME
+-urlsnarf
+-\-
+-sniff HTTP requests in Common Log Format
+-.SH SYNOPSIS
+-.na
+-.nf
+-.fi
+-\fBurlsnarf\fR [\fB-n\fR] [\fB-i \fIinterface\fR]  [[\fB-v\fR] \fIpattern [\fIexpression\fR]]
+-.SH DESCRIPTION
+-.ad
+-.fi
+-\fBurlsnarf\fR outputs all requested URLs sniffed from HTTP traffic in
+-CLF (Common Log Format, used by almost all web servers), suitable for
+-offline post-processing with your favorite web log analysis tool
+-(analog, wwwstat, etc.).
+-.SH OPTIONS
+-.IP \fB-n\fR
+-Do not resolve IP addresses to hostnames.
+-.IP "\fB-i \fIinterface\fR"
+-.IP \fB-v\fR
+-"Versus" mode. Invert the sense of matching, to select non-matching
+-URLs.
+-Specify the interface to listen on.
+-.IP \fIpattern\fR
+-Specify regular expression for URL matching.
+-.IP "\fIexpression\fR"
+-Specify a tcpdump(8) filter expression to select traffic to sniff.
+-.SH "SEE ALSO"
+-dsniff(8)
+-.SH AUTHOR
+-.na
+-.nf
+-Dug Song <dugsong@monkey.org>
+diff -Naur dsniff-2.4/urlsnarf.c dsniff-2.4-patch/urlsnarf.c
+--- dsniff-2.4/urlsnarf.c	2001-03-15 10:26:13.000000000 +0100
++++ dsniff-2.4-patch/urlsnarf.c	2009-09-14 19:37:52.116562969 +0200
+@@ -41,7 +41,7 @@
+ usage(void)
+ {
+ 	fprintf(stderr, "Version: " VERSION "\n"
+-		"Usage: urlsnarf [-n] [-i interface] [[-v] pattern [expression]]\n");
++		"Usage: urlsnarf [-n] [-i interface | -p pcapfile] [[-v] pattern [expression]]\n");
+ 	exit(1);
+ }
+ 
+@@ -68,7 +68,7 @@
+ 		 t->tm_hour - gmt.tm_hour);
+ 	tz = hours * 60 + t->tm_min - gmt.tm_min;
+ 	
+-	len = strftime(tstr, sizeof(tstr), "%e/%b/%Y:%X", t);
++	len = strftime(tstr, sizeof(tstr), "%d/%b/%Y:%X", t);
+ 	if (len < 0 || len > sizeof(tstr) - 5)
+ 		return (NULL);
+ 	
+@@ -84,6 +84,43 @@
+ 	return (tstr);
+ }
+ 
++static char *
++escape_log_entry(char *string)
++{
++	char *out;
++	unsigned char *c, *o;
++	size_t len;
++
++	if (!string)
++		return NULL;
++
++	/* Determine needed length */
++	for (c = string, len = 0; *c; c++) {
++		if ((*c < 32) || (*c >= 128))
++			len += 4;
++		else if ((*c == '"') || (*c =='\\'))
++			len += 2;
++		else
++			len++;
++	}
++	out = malloc(len+1);
++	if (!out)
++		return NULL;
++	for (c = string, o = out; *c; c++, o++) {
++		if ((*c < 32) || (*c >= 128)) {
++			snprintf(o, 5, "\\x%02x", *c);
++			o += 3;
++		} else if ((*c == '"') || ((*c =='\\'))) {
++			*(o++) = '\\';
++			*o = *c;
++		} else {
++			*o = *c;
++		}
++	}
++	out[len]='\0';
++	return out;
++}
++
+ static int
+ process_http_request(struct tuple4 *addr, u_char *data, int len)
+ {
+@@ -142,18 +179,26 @@
+ 				buf_tok(NULL, NULL, i);
+ 			}
+ 		}
+-		if (user == NULL)
+-			user = "-";
+-		if (vhost == NULL)
+-			vhost = libnet_host_lookup(addr->daddr, Opt_dns);
+-		if (referer == NULL)
+-			referer = "-";
+-		if (agent == NULL)
+-			agent = "-";
+-		
++		user = escape_log_entry(user);
++		vhost = escape_log_entry(vhost);
++		uri = escape_log_entry(uri);
++		referer = escape_log_entry(referer);
++		agent = escape_log_entry(agent);
++
+ 		printf("%s - %s [%s] \"%s http://%s%s\" - - \"%s\" \"%s\"\n",
+-		       libnet_host_lookup(addr->saddr, Opt_dns),
+-		       user, timestamp(), req, vhost, uri, referer, agent);
++		       libnet_addr2name4(addr->saddr, Opt_dns),
++		       (user?user:"-"),
++		       timestamp(), req, 
++		       (vhost?vhost:libnet_addr2name4(addr->daddr, Opt_dns)), 
++		       uri,
++		       (referer?referer:"-"),
++		       (agent?agent:"-"));
++
++		free(user);
++		free(vhost);
++		free(uri);
++		free(referer);
++		free(agent);
+ 	}
+ 	fflush(stdout);
+ 	
+@@ -200,12 +245,16 @@
+ 	extern char *optarg;
+ 	extern int optind;
+ 	int c;
++	struct nids_chksum_ctl chksum_ctl;
+ 	
+-	while ((c = getopt(argc, argv, "i:nvh?V")) != -1) {
++	while ((c = getopt(argc, argv, "i:p:nvh?V")) != -1) {
+ 		switch (c) {
+ 		case 'i':
+ 			nids_params.device = optarg;
+ 			break;
++		case 'p':
++			nids_params.filename = optarg;
++			break;
+ 		case 'n':
+ 			Opt_dns = 0;
+ 			break;
+@@ -238,8 +287,30 @@
+ 	
+ 	nids_register_tcp(sniff_http_client);
+ 
+-	warnx("listening on %s [%s]", nids_params.device,
+-	      nids_params.pcap_filter);
++        if (nids_params.pcap_filter != NULL) {
++                if (nids_params.filename == NULL) {
++                        warnx("listening on %s [%s]", nids_params.device,
++                              nids_params.pcap_filter);
++                }
++                else {
++                        warnx("using %s [%s]", nids_params.filename,
++                              nids_params.pcap_filter);
++                }
++        }
++        else {
++                if (nids_params.filename == NULL) {
++                    warnx("listening on %s", nids_params.device);
++                }
++                else {
++                    warnx("using %s", nids_params.filename);
++                }
++        }
++
++        chksum_ctl.netaddr = 0;
++        chksum_ctl.mask = 0;
++        chksum_ctl.action = NIDS_DONT_CHKSUM;
++
++        nids_register_chksum_ctl(&chksum_ctl, 1);
+ 
+ 	nids_run();
+ 	
+diff -Naur dsniff-2.4/webmitm.1m dsniff-2.4-patch/webmitm.1m
+--- dsniff-2.4/webmitm.1m	1970-01-01 01:00:00.000000000 +0100
++++ dsniff-2.4-patch/webmitm.1m	2009-09-14 20:21:37.340702167 +0200
+@@ -0,0 +1,34 @@
++.TH WEBMITM 1M
++.ad
++.fi
++.SH NAME
++webmitm
++\-
++HTTP / HTTPS monkey-in-the-middle
++.SH SYNOPSIS
++.na
++.nf
++.fi
++\fBwebmitm\fR [\fB-d\fR] [\fBhost\fR]
++.SH DESCRIPTION
++.ad
++.fi
++\fBwebmitm\fR transparently proxies and sniffs HTTP / HTTPS traffic
++redirected by dnsspoof(1M), capturing most "secure" SSL-encrypted
++webmail logins and form submissions.
++.SH OPTIONS
++.IP \fB-d\fR
++Enable debugging mode. May be specified multiple times to greater
++effect.
++.IP \fBhost\fR
++Specify a host to proxy to. If none given, only requests containing an
++HTTP/1.1 Host: header or absolute URI will be relayed transparently.
++.SH FILES
++.IP \fIwebmitm.crt\fR
++SSL certificate
++.SH "SEE ALSO"
++dsniff(1M), dnsspoof(1M)
++.SH AUTHOR
++.na
++.nf
++Dug Song <dugsong@monkey.org>
+diff -Naur dsniff-2.4/webmitm.8 dsniff-2.4-patch/webmitm.8
+--- dsniff-2.4/webmitm.8	2001-03-17 09:33:22.000000000 +0100
++++ dsniff-2.4-patch/webmitm.8	1970-01-01 01:00:00.000000000 +0100
+@@ -1,34 +0,0 @@
+-.TH WEBMITM 8
+-.ad
+-.fi
+-.SH NAME
+-webmitm
+-\-
+-HTTP / HTTPS monkey-in-the-middle
+-.SH SYNOPSIS
+-.na
+-.nf
+-.fi
+-\fBwebmitm\fR [\fB-d\fR] [\fBhost\fR]
+-.SH DESCRIPTION
+-.ad
+-.fi
+-\fBwebmitm\fR transparently proxies and sniffs HTTP / HTTPS traffic
+-redirected by dnsspoof(8), capturing most "secure" SSL-encrypted
+-webmail logins and form submissions.
+-.SH OPTIONS
+-.IP \fB-d\fR
+-Enable debugging mode. May be specified multiple times to greater
+-effect.
+-.IP \fBhost\fR
+-Specify a host to proxy to. If none given, only requests containing an
+-HTTP/1.1 Host: header or absolute URI will be relayed transparently.
+-.SH FILES
+-.IP \fIwebmitm.crt\fR
+-SSL certificate
+-.SH "SEE ALSO"
+-dsniff(8), dnsspoof(8)
+-.SH AUTHOR
+-.na
+-.nf
+-Dug Song <dugsong@monkey.org>
+diff -Naur dsniff-2.4/webmitm.c dsniff-2.4-patch/webmitm.c
+--- dsniff-2.4/webmitm.c	2001-03-17 09:35:05.000000000 +0100
++++ dsniff-2.4-patch/webmitm.c	2009-09-14 19:28:28.423667917 +0200
+@@ -242,7 +242,7 @@
+ 			word = buf_tok(&msg, "/", 1);
+ 			vhost = buf_strdup(word);
+ 		}
+-		ssin.sin_addr.s_addr = libnet_name_resolve(vhost, 1);
++		ssin.sin_addr.s_addr = libnet_name2addr4(NULL, vhost, 1);
+ 		free(vhost);
+ 		
+ 		if (ssin.sin_addr.s_addr == ntohl(INADDR_LOOPBACK) ||
+@@ -510,7 +510,7 @@
+ 	argv += optind;
+ 
+ 	if (argc == 1) {
+-		if ((static_host = libnet_name_resolve(argv[0], 1)) == -1)
++		if ((static_host = libnet_name2addr4(NULL, argv[0], 1)) == -1)
+ 			usage();
+ 	}
+ 	else if (argc != 0) usage();
+diff -Naur dsniff-2.4/webspy.1m dsniff-2.4-patch/webspy.1m
+--- dsniff-2.4/webspy.1m	1970-01-01 01:00:00.000000000 +0100
++++ dsniff-2.4-patch/webspy.1m	2009-09-14 20:21:49.952065692 +0200
+@@ -0,0 +1,32 @@
++.TH WEBSPY 1M
++.ad
++.fi
++.SH NAME
++webspy
++\-
++display sniffed URLs in Netscape in real-time
++.SH SYNOPSIS
++.na
++.nf
++.fi
++\fBwebspy\fR [\fB-i \fIinterface\fR | \fB-p \fIpcapfile\fR] \fIhost\fR
++.SH DESCRIPTION
++.ad
++.fi
++\fBwebspy\fR sends URLs sniffed from a client to your local Netscape
++browser for display, updated in real-time (as the target surfs, your
++browser surfs along with them, automagically). Netscape must be
++running on your local X display ahead of time.
++.SH OPTIONS
++.IP "\fB-i \fIinterface\fR"
++Specify the interface to listen on.
++.IP "\fB-p \fIpcapfile\fR"
++Process packets from the specified PCAP capture file instead of the network.
++.IP \fIhost\fR
++Specify the web client to spy on.
++.SH "SEE ALSO"
++dsniff(1M)
++.SH AUTHOR
++.na
++.nf
++Dug Song <dugsong@monkey.org>
+diff -Naur dsniff-2.4/webspy.8 dsniff-2.4-patch/webspy.8
+--- dsniff-2.4/webspy.8	2000-11-14 16:51:05.000000000 +0100
++++ dsniff-2.4-patch/webspy.8	1970-01-01 01:00:00.000000000 +0100
+@@ -1,30 +0,0 @@
+-.TH WEBSPY 8
+-.ad
+-.fi
+-.SH NAME
+-webspy
+-\-
+-display sniffed URLs in Netscape in real-time
+-.SH SYNOPSIS
+-.na
+-.nf
+-.fi
+-\fBwebspy\fR [\fB-i \fIinterface\fR] \fIhost\fR
+-.SH DESCRIPTION
+-.ad
+-.fi
+-\fBwebspy\fR sends URLs sniffed from a client to your local Netscape
+-browser for display, updated in real-time (as the target surfs, your
+-browser surfs along with them, automagically). Netscape must be
+-running on your local X display ahead of time.
+-.SH OPTIONS
+-.IP "\fB-i \fIinterface\fR"
+-Specify the interface to listen on.
+-.IP \fIhost\fR
+-Specify the web client to spy on.
+-.SH "SEE ALSO"
+-dsniff(8)
+-.SH AUTHOR
+-.na
+-.nf
+-Dug Song <dugsong@monkey.org>
+diff -Naur dsniff-2.4/webspy.c dsniff-2.4-patch/webspy.c
+--- dsniff-2.4/webspy.c	2001-03-15 09:33:05.000000000 +0100
++++ dsniff-2.4-patch/webspy.c	2009-09-14 19:37:52.117943558 +0200
+@@ -42,7 +42,7 @@
+ usage(void)
+ {
+ 	fprintf(stderr, "Version: " VERSION "\n"
+-		"Usage: %s [-i interface] host\n", progname);
++		"Usage: %s [-i interface | -p pcapfile] host\n", progname);
+ 	exit(1);
+ }
+ 
+@@ -126,7 +126,7 @@
+ 		if (auth == NULL)
+ 			auth = "";
+ 		if (vhost == NULL)
+-			vhost = libnet_host_lookup(addr->daddr, 0);
++			vhost = libnet_addr2name4(addr->daddr, 0);
+ 		
+ 		snprintf(cmd, sizeof(cmd), "openURL(http://%s%s%s%s)",
+ 			 auth, *auth ? "@" : "", vhost, uri);
+@@ -184,11 +184,14 @@
+ 	extern int optind;
+ 	int c;
+ 	
+-	while ((c = getopt(argc, argv, "i:h?V")) != -1) {
++	while ((c = getopt(argc, argv, "i:p:h?V")) != -1) {
+ 		switch (c) {
+ 		case 'i':
+ 			nids_params.device = optarg;
+ 			break;
++		case 'p':
++			nids_params.filename = optarg;
++			break;
+ 		default:
+ 			usage();
+ 		}
+@@ -202,7 +205,7 @@
+ 	cmdtab[0] = cmd;
+ 	cmdtab[1] = NULL;
+ 	
+-	if ((host = libnet_name_resolve(argv[0], 1)) == -1)
++	if ((host = libnet_name2addr4(NULL, argv[0], 1)) == -1)
+ 		errx(1, "unknown host");
+ 	
+ 	if ((dpy = XOpenDisplay(NULL)) == NULL)
+@@ -216,7 +219,13 @@
+ 	
+ 	nids_register_tcp(sniff_http_client);
+ 
+-	warnx("listening on %s", nids_params.device);
++        if (nids_params.filename == NULL) {
++                warnx("listening on %s", nids_params.device);
++        }
++        else {
++                warnx("using %s", nids_params.filename);
++        }
++
+ 
+ 	nids_run();
+ 	
