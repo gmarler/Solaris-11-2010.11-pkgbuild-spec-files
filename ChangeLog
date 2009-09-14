@@ -1,3 +1,11 @@
+2009-09-14  Olivier Mauras <oliver.mauras@gmail.com>
+    * SFEevenlog.spec: Bump to 0.2.10
+    * SFEsyslog-ng: Bump to 3.0.4, add SMF integration and default config
+    * ext-sources/syslog-ng.conf: Default syslog-ng config file
+    * ext-sources/syslog-ng.method: SMF method to start/stop syslog-ng
+    * ext-sources/syslog-ng.xml: SMF manifest for syslog-ng
+    Please read SFEsyslog-ng.spec for details on global syslogd replacement
+
 2009-09-13  Milan Jurik <sfnet@xylab.cz>
 
 	* SFElibnids.spec: Initial version
