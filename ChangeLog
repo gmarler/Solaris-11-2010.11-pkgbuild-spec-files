@@ -1,3 +1,7 @@
+2009-09-15 Olivier Mauras <oliver.mauras@gmail.com>
+    * SFElsof.spec: Version bump to 4.83K
+    Add automated default configuration
+
 2009-09-14  Milan Jurik <sfnet@xylab.cz>
 
 	* experimental/SFEdsniff.spec: Initial revision, need to cleanup GCC
