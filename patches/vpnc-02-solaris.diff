@@ -1,0 +1,520 @@
+--- vpnc-0.5.1.orig/sysdep.c	2007-02-19 16:39:08.000000000 -0500
++++ vpnc-0.5.1/sysdep.c	2008-07-18 10:04:43.040773604 -0400
+@@ -29,7 +29,7 @@
+ #include <sys/socket.h>
+ #include <net/if.h>
+ 
+-#ifdef __sun__
++#if defined(__sun) && defined(__SVR4)
+ #include <ctype.h>
+ #include <sys/time.h>
+ #include <sys/wait.h>
+@@ -74,8 +74,10 @@
+ #include <stdarg.h>
+ #endif
+ 
+-#if defined(__sun__)
++#if defined(__sun) && defined(__SVR4)
++#if !defined(HAVE_UNSETENV) || !defined(HAVE_SETENV)
+ extern char **environ;
++#endif
+ static int ip_fd = -1, muxid;
+ #endif
+ 
+@@ -95,7 +97,7 @@
+  * Allocate TUN/TAP device, returns opened fd. 
+  * Stores dev name in the first arg(must be large enough).
+  */
+-#if defined(__sun__)
++#if defined(__sun) && defined(__SVR4)
+ int tun_open(char *dev, enum if_mode_enum mode)
+ {
+ 	int tun_fd, if_fd, ppa = -1;
+@@ -477,7 +479,7 @@
+ /* 
+  * Close TUN device. 
+  */
+-#if defined(__sun__)
++#if defined(__sun) && defined(__SVR4)
+ int tun_close(int fd, char *dev)
+ {
+ 	struct ifreq ifr;
+@@ -513,7 +515,7 @@
+ #endif
+ 
+ 
+-#if defined(__sun__)
++#if defined(__sun) && defined(__SVR4)
+ int tun_write(int fd, unsigned char *buf, int len)
+ {
+ 	struct strbuf sbuf;
+--- vpnc-0.5.1.orig/sysdep.h	2007-08-30 06:51:30.000000000 -0400
++++ vpnc-0.5.1/sysdep.h	2008-07-18 10:12:43.742210906 -0400
+@@ -11,8 +11,8 @@
+  * __OpenBSD__
+  * __FreeBSD__
+  * __DragonFly__
+- * __APPLE__      Darwin / MacOS X
+- * __sun__        SunOS / Solaris
++ * __APPLE__        Darwin / MacOS X
++ * __sun && __SVR4  SunOS / Solaris
+  * __CYGWIN__
+  * __SKYOS__
+  *
+@@ -112,7 +112,10 @@
+ #endif
+ 
+ /***************************************************************************/
+-#if defined(__sun__)
++#if defined(__sun) && defined(__SVR4)
++#define HAVE_UNSETENV  1
++#define HAVE_SETENV    1
++
+ #define NEED_IPLEN_FIX 1
+ 
+ #ifndef IPPROTO_ESP
+@@ -121,9 +124,10 @@
+ 
+ #define getpass(prompt) getpassphrase(prompt)
+ 
+-/* where is this defined? */
++#include <sys/types.h>
+ #include <sys/socket.h>
+-const char *inet_ntop(int af, const void *src, char *dst, size_t cnt);
++#include <netinet/in.h>
++#include <arpa/inet.h>
+ #endif
+ /***************************************************************************/
+ #if defined (__SKYOS__)
+--- vpnc-0.5.1.orig/config.c	2007-09-10 16:39:48.000000000 -0400
++++ vpnc-0.5.1/config.c	2008-07-18 10:09:06.585324220 -0400
+@@ -538,7 +538,7 @@
+ {
+ 	char *realname;
+ 	
+-	asprintf(&realname, "%s%s%s", index(name, '/') ? "" : "/etc/vpnc/", name, add_dot_conf ? ".conf" : "");
++	asprintf(&realname, "%s%s%s", strchr(name, '/') ? "" : "/etc/vpnc/", name, add_dot_conf ? ".conf" : "");
+ 	return realname;
+ }
+ 
+--- vpnc-0.5.1.orig/vpnc.c	2007-09-10 16:39:48.000000000 -0400
++++ vpnc-0.5.1/vpnc.c	2008-07-18 10:10:23.355533706 -0400
+@@ -24,7 +24,8 @@
+ #define _GNU_SOURCE
+ #include <assert.h>
+ #include <unistd.h>
+-#include <sys/fcntl.h>
++#include <sys/types.h>
++#include <fcntl.h>
+ #include <stdio.h>
+ #include <errno.h>
+ #include <string.h>
+--- vpnc-0.5.3.orig/tunip.c	2008-11-19 15:55:51.000000000 -0500
++++ vpnc-0.5.3/tunip.c	2009-09-15 19:24:12.170310305 -0400
+@@ -74,15 +74,12 @@
+ #include <time.h>
+ #include <sys/select.h>
+ #include <signal.h>
++#include <varargs.h>
+ 
+ #ifdef __CYGWIN__
+ #include <pthread.h>
+ #endif
+ 
+-#if !defined(__sun__) && !defined(__SKYOS__)
+-#include <err.h>
+-#endif
+-
+ #include <gcrypt.h>
+ #include "sysdep.h"
+ #include "config.h"
+@@ -124,6 +121,27 @@
+ static uint8_t global_buffer_tx[MAX_HEADER + MAX_PACKET + ETH_HLEN];
+ 
+ /*
++ * Log messages to syslog and print errors on stderr
++ */
++static void vpnc_log(int pri, const char *msg, ...)
++{
++	va_list ap;
++
++#ifdef __STDC__
++	va_start(ap, msg);
++#else
++	va_start(ap)
++#endif
++	if (!(LOG_MASK(pri) & LOG_UPTO(LOG_NOTICE))) {
++		vfprintf(stderr, msg, ap);
++		fprintf(stderr, "\n");	
++	}
++	vsyslog(pri, msg, ap);
++
++	va_end(ap);
++}
++
++/*
+  * in_cksum --
+  *	Checksum routine for Internet Protocol family headers (C Version)
+  */
+@@ -169,15 +187,15 @@
+ 	
+ 	r = recvfrom(s->esp_fd, buf, bufsize, 0, (struct sockaddr *)&from, &fromlen);
+ 	if (r == -1) {
+-		syslog(LOG_ERR, "recvfrom: %m");
++		vpnc_log(LOG_ERR, "recvfrom: %m");
+ 		return -1;
+ 	}
+ 	if (from.sin_addr.s_addr != s->dst.s_addr) {
+-		syslog(LOG_ALERT, "packet from unknown host %s", inet_ntoa(from.sin_addr));
++		vpnc_log(LOG_ALERT, "packet from unknown host %s", inet_ntoa(from.sin_addr));
+ 		return -1;
+ 	}
+ 	if (r < (p->ip_hl << 2) + s->ipsec.em->fixed_header_size) {
+-		syslog(LOG_ALERT, "packet too short. got %d, expected %d", r, (p->ip_hl << 2) + s->ipsec.em->fixed_header_size);
++		vpnc_log(LOG_ALERT, "packet too short. got %d, expected %d", r, (p->ip_hl << 2) + s->ipsec.em->fixed_header_size);
+ 		return -1;
+ 	}
+ 
+@@ -203,7 +221,7 @@
+ 
+ 	r = recv(s->esp_fd, buf, bufsize, 0);
+ 	if (r == -1) {
+-		syslog(LOG_ERR, "recvfrom: %m");
++		vpnc_log(LOG_ERR, "recvfrom: %m");
+ 		return -1;
+ 	}
+ 	if (s->ipsec.natt_active_mode == NATT_ACTIVE_DRAFT_OLD && r > 8) {
+@@ -216,7 +234,7 @@
+ 		return -1;
+ 	}
+ 	if (r < s->ipsec.em->fixed_header_size) {
+-		syslog(LOG_ALERT, "packet too short from %s. got %d, expected %d",
++		vpnc_log(LOG_ALERT, "packet too short from %s. got %d, expected %d",
+ 			inet_ntoa(s->dst), r, s->ipsec.em->fixed_header_size);
+ 		return -1;
+ 	}
+@@ -252,28 +270,35 @@
+ 	len   = s->ipsec.rx.buflen;
+ 	
+ 	if (opt_if_mode == IF_MODE_TAP) {
+-#ifndef __sun__
+ 		/*
+ 		 * Add ethernet header before s->ipsec.rx.buf where
+ 		 * at least ETH_HLEN bytes should be available.
+ 		 */
+ 		struct ether_header *eth_hdr = (struct ether_header *) (s->ipsec.rx.buf - ETH_HLEN);
+ 		
++#if defined(__sun) && defined(__SVR4)
++		memcpy(eth_hdr->ether_dhost.ether_addr_octet, s->tun_hwaddr, ETH_ALEN);
++		memcpy(eth_hdr->ether_shost.ether_addr_octet, s->tun_hwaddr, ETH_ALEN);
++#else
+ 		memcpy(eth_hdr->ether_dhost, s->tun_hwaddr, ETH_ALEN);
+ 		memcpy(eth_hdr->ether_shost, s->tun_hwaddr, ETH_ALEN);
++#endif
+ 		
+ 		/* Use a different MAC as source */
++#if defined(__sun) && defined(__SVR4)
++		eth_hdr->ether_shost.ether_addr_octet[0] ^= 0x80; /* toggle some visible bit */
++#else
+ 		eth_hdr->ether_shost[0] ^= 0x80; /* toggle some visible bit */
++#endif
+ 		eth_hdr->ether_type = htons(ETHERTYPE_IP);
+ 		
+ 		start = (uint8_t *) eth_hdr;
+ 		len += ETH_HLEN;
+-#endif
+ 	}
+ 	
+ 	sent = tun_write(s->tun_fd, start, len);
+ 	if (sent != len)
+-		syslog(LOG_ERR, "truncated in: %d -> %d\n", len, sent);
++		vpnc_log(LOG_ERR, "truncated in: %d -> %d\n", len, sent);
+ 	hex_dump("Tx pkt", start, len, NULL);
+ 	return 1;
+ }
+@@ -436,11 +461,11 @@
+ 	dstaddr.sin_port = 0;
+ 	sent = sendto(s->esp_fd, s->ipsec.tx.buf, s->ipsec.tx.buflen, 0, (struct sockaddr *)&dstaddr, sizeof(struct sockaddr_in));
+ 	if (sent == -1) {
+-		syslog(LOG_ERR, "esp sendto: %m");
++		vpnc_log(LOG_ERR, "esp sendto: %m");
+ 		return;
+ 	}
+ 	if (sent != s->ipsec.tx.buflen)
+-		syslog(LOG_ALERT, "esp truncated out (%lld out of %d)", (long long)sent, s->ipsec.tx.buflen);
++		vpnc_log(LOG_ALERT, "esp truncated out (%lld out of %d)", (long long)sent, s->ipsec.tx.buflen);
+ }
+ 
+ /*
+@@ -475,11 +500,11 @@
+ 	
+ 	sent = send(s->esp_fd, s->ipsec.tx.buf, s->ipsec.tx.buflen, 0);
+ 	if (sent == -1) {
+-		syslog(LOG_ERR, "udp sendto: %m");
++		vpnc_log(LOG_ERR, "udp sendto: %m");
+ 		return;
+ 	}
+ 	if (sent != s->ipsec.tx.buflen)
+-		syslog(LOG_ALERT, "udp truncated out (%lld out of %d)",
++		vpnc_log(LOG_ALERT, "udp truncated out (%lld out of %d)",
+ 			(long long)sent, s->ipsec.tx.buflen);
+ }
+ 
+@@ -499,7 +524,7 @@
+ 	len = s->ipsec.rx.buflen - s->ipsec.rx.bufpayload - s->ipsec.em->fixed_header_size - s->ipsec.rx.var_header_size;
+ 
+ 	if (len < 0) {
+-		syslog(LOG_ALERT, "Packet too short");
++		vpnc_log(LOG_ALERT, "Packet too short");
+ 		return -1;
+ 	}
+ 
+@@ -515,14 +540,14 @@
+ 				0,
+ 				s->ipsec.rx.key_md,
+ 				s->ipsec.md_len) != 0) {
+-			syslog(LOG_ALERT, "HMAC mismatch in ESP mode");
++			vpnc_log(LOG_ALERT, "HMAC mismatch in ESP mode");
+ 			return -1;
+ 		}
+ 	}
+ 
+ 	blksz = s->ipsec.blk_len;
+ 	if ((len % blksz) != 0) {
+-		syslog(LOG_ALERT,
++		vpnc_log(LOG_ALERT,
+ 			"payload len %d not a multiple of algorithm block size %lu", len,
+ 			(unsigned long)blksz);
+ 		return -1;
+@@ -551,11 +576,11 @@
+ 		+ s->ipsec.em->fixed_header_size + s->ipsec.rx.var_header_size + len - 1];
+ 
+ 	if (padlen + 2 > len) {
+-		syslog(LOG_ALERT, "Inconsistent padlen");
++		vpnc_log(LOG_ALERT, "Inconsistent padlen");
+ 		return -1;
+ 	}
+ 	if (next_header != IPPROTO_IPIP) {
+-		syslog(LOG_ALERT, "Inconsistent next_header %d", next_header);
++		vpnc_log(LOG_ALERT, "Inconsistent next_header %d", next_header);
+ 		return -1;
+ 	}
+ 	DEBUG(3, printf("pad len: %d, next_header: %d\n", padlen, next_header));
+@@ -568,7 +593,7 @@
+ 		+ s->ipsec.em->fixed_header_size + s->ipsec.rx.var_header_size + len;
+ 	for (i = 1; i <= padlen; i++) {
+ 		if (*pad != i) {
+-			syslog(LOG_ALERT, "Bad padding");
++			vpnc_log(LOG_ALERT, "Bad padding");
+ 			return -1;
+ 		}
+ 		pad++;
+@@ -599,7 +624,6 @@
+  */
+ static int process_arp(struct sa_block *s, uint8_t *frame)
+ {
+-#ifndef __sun__
+ 	int frame_size;
+ 	uint8_t tmp[4];
+ 	struct ether_header *eth = (struct ether_header *) frame;
+@@ -615,7 +639,11 @@
+ 		arp->arp_pln != 4 ||
+ 		ntohs(arp->arp_op) != ARPOP_REQUEST ||
+ 		!memcmp(arp->arp_spa, arp->arp_tpa, 4) ||
++#if defined(__sun) && defined(__SVR4)
++		memcmp(eth->ether_shost.ether_addr_octet, s->tun_hwaddr, ETH_ALEN) ||
++#else
+ 		memcmp(eth->ether_shost, s->tun_hwaddr, ETH_ALEN) ||
++#endif
+ 		!memcmp(arp->arp_tpa, s->our_address, 4)) {
+ 		/* whatever .. just drop it */
+ 		return 1;
+@@ -623,8 +651,13 @@
+ 	
+ 	/* send arp reply */
+ 	
++#if defined(__sun) && defined(__SVR4)
++	memcpy(eth->ether_dhost.ether_addr_octet, s->tun_hwaddr, ETH_ALEN);
++	eth->ether_shost.ether_addr_octet[0] ^= 0x80; /* Use a different MAC as source */
++#else
+ 	memcpy(eth->ether_dhost, s->tun_hwaddr, ETH_ALEN);
+ 	eth->ether_shost[0] ^= 0x80; /* Use a different MAC as source */
++#endif
+ 	
+ 	memcpy(tmp, arp->arp_spa, 4);
+ 	memcpy(arp->arp_spa, arp->arp_tpa, 4);
+@@ -640,11 +673,6 @@
+ 	hex_dump("ARP reply", frame, frame_size, NULL);
+ 	
+ 	return 1;
+-#else
+-	s = 0;
+-	frame = 0;
+-	return 0;
+-#endif
+ }
+ 
+ /*
+@@ -693,7 +721,7 @@
+ 	}
+ 	
+ 	if (pack == -1) {
+-		syslog(LOG_ERR, "read: %m");
++		vpnc_log(LOG_ERR, "read: %m");
+ 		return;
+ 	}
+ 	
+@@ -701,7 +729,7 @@
+ 	 * 12: Offset of ip source address in ip header,
+ 	 *  4: Length of IP address */
+ 	if (!memcmp(global_buffer_rx + MAX_HEADER + 12, &s->dst.s_addr, 4)) {
+-		syslog(LOG_ALERT, "routing loop to %s",
++		vpnc_log(LOG_ALERT, "routing loop to %s",
+ 			inet_ntoa(s->dst));
+ 		return;
+ 	}
+@@ -732,7 +760,7 @@
+ 			s->ipsec.rx.buflen - s->ipsec.rx.bufpayload - 4);
+ 		return;
+ 	} else if (eh->spi != s->ipsec.rx.spi) {
+-		syslog(LOG_NOTICE, "unknown spi %#08x from peer", ntohl(eh->spi));
++		vpnc_log(LOG_NOTICE, "unknown spi %#08x from peer", ntohl(eh->spi));
+ 		return;
+ 	}
+ 	
+@@ -741,7 +769,7 @@
+ 		return;
+ 	
+ 	if (encap_any_decap(s) == 0) {
+-		syslog(LOG_DEBUG, "received update probe from peer");
++		vpnc_log(LOG_DEBUG, "received update probe from peer");
+ 	} else {
+ 		/* Send the decapsulated packet to the tunnel interface */
+ 		s->ipsec.life.rx += s->ipsec.rx.buflen;
+@@ -813,7 +841,7 @@
+ 	
+ #if defined(__CYGWIN__)
+ 	if (pthread_create(&tid, NULL, tun_thread, s)) {
+-	        syslog(LOG_ERR, "Cannot create tun thread!\n");
++	        vpnc_log(LOG_ERR, "Cannot create tun thread!\n");
+ 		return;
+ 	}
+ #endif
+@@ -862,7 +890,7 @@
+ 					}
+ 					/* send nat keepalive packet */
+ 					if (send(s->esp_fd, keepalive, keepalive_size, 0) == -1) {
+-						syslog(LOG_ERR, "keepalive sendto: %m");
++						vpnc_log(LOG_ERR, "keepalive sendto: %m");
+ 					}
+ 				}
+ 				if (s->ike.do_dpd) {
+@@ -888,7 +916,7 @@
+ 				s->ipsec.life.kbytes));
+ 		} while ((presult == 0 || (presult == -1 && errno == EINTR)) && !do_kill);
+ 		if (presult == -1) {
+-			syslog(LOG_ERR, "select: %m");
++			vpnc_log(LOG_ERR, "select: %m");
+ 			continue;
+ 		}
+ 		
+@@ -948,13 +976,13 @@
+ 	
+ 	switch (do_kill) {
+ 		case -2:
+-			syslog(LOG_NOTICE, "connection terminated by dead peer detection");
++			vpnc_log(LOG_NOTICE, "connection terminated by dead peer detection");
+ 			break;
+ 		case -1:
+-			syslog(LOG_NOTICE, "connection terminated by peer");
++			vpnc_log(LOG_NOTICE, "connection terminated by peer");
+ 			break;
+ 		default:
+-			syslog(LOG_NOTICE, "terminated by signal: %d", do_kill);
++			vpnc_log(LOG_NOTICE, "terminated by signal: %d", do_kill);
+ 			break;
+ 	}
+ }
+@@ -973,7 +1001,7 @@
+ 	
+ 	pf = fopen(pidfile, "w");
+ 	if (pf == NULL) {
+-		syslog(LOG_WARNING, "can't open pidfile %s for writing", pidfile);
++		vpnc_log(LOG_WARNING, "can't open pidfile %s for writing", pidfile);
+ 		return;
+ 	}
+ 	
+@@ -1058,7 +1086,7 @@
+ 	} else {
+ 		printf("VPNC started in foreground...\n");
+ 	}
+-	openlog("vpnc", LOG_PID | LOG_PERROR, LOG_DAEMON);
++	openlog("vpnc", LOG_PID, LOG_DAEMON);
+ 	write_pidfile(pidfile);
+ 	
+ 	vpnc_main_loop(s);
+--- vpnc-0.5.1.orig/vpnc-disconnect	2005-05-01 16:00:41.000000000 -0400
++++ vpnc-0.5.1/vpnc-disconnect	2008-07-18 11:18:37.932919531 -0400
+@@ -7,14 +7,16 @@
+ 	exit 1
+ fi
+ 
+-PID="$(cat "$pid" 2> /dev/null)"
++PID="`cat "$pid" 2> /dev/null`"
+ 
+ if [ -z "$PID" ]; then
+ 	echo "no vpnc found running"
+ 	exit 1
+ fi
+ 
+-if ! kill -0 "$PID" > /dev/null 2>&1; then
++if kill -0 "$PID" > /dev/null 2>&1; then
++	:
++else
+ 	echo "no vpnc found running"
+ 	exit 1
+ fi
+--- vpnc-0.5.3.orig/vpnc-script.in	Wed Nov 19 15:55:51 2008
++++ vpnc-0.5.3/vpnc-script.in	Tue Sep 15 16:19:15 2009
+@@ -171,13 +171,13 @@
+ 	}
+ 
+ 	del_vpngateway_route() {
+-		route $route_syntax_del -host "$VPNGATEWAY"
++		route $route_syntax_del -host "$VPNGATEWAY" $route_syntax_gw "`get_default_gw`"
+ 	}
+ 	
+ 	set_default_route() {
+ 		DEFAULTGW="`get_default_gw`"
+ 		echo "$DEFAULTGW" > "$DEFAULT_ROUTE_FILE"
+-		route $route_syntax_del default
++		route $route_syntax_del default $route_syntax_gw "$DEFAULTGW"
+ 		route add default $route_syntax_gw "$INTERNAL_IP4_ADDRESS"
+ 	}
+ 	
+@@ -321,7 +321,7 @@
+ }
+ 
+ restore_resolvconf_generic() {
+-	if [ ! -e "$RESOLV_CONF_BACKUP" ]; then
++	if [ ! -f "$RESOLV_CONF_BACKUP" ]; then
+ 		return
+ 	fi
+ 	grep '^#@VPNC_GENERATED@' /etc/resolv.conf > /dev/null 2>&1 && cat "$RESOLV_CONF_BACKUP" > /etc/resolv.conf
+@@ -432,7 +432,15 @@
+ 	elif [ "$OS" = "OpenBSD" ]; then
+ 		:
+ 	elif [ "$OS" = "SunOS" ]; then
+-		:
++		if [ ! -h /dev/tun ]; then
++			for drv in /kernel/drv/tun /usr/kernel/drv/tun; do
++				if [ -f "$drv" ]; then
++					/usr/sbin/modload "$drv"
++					/usr/sbin/devfsadm -i tun
++					break
++				fi
++			done
++		fi
+ 	elif [ "$OS" = "Darwin" ]; then
+ 		:
+ 	fi

@@ -7,9 +7,8 @@
 
 Name:                SFEiodine
 Summary:             iodine - IP over DNS is now easy
-Version:             0.4.1
+Version:             0.5.2
 Source:              http://code.kryo.se/iodine/iodine-%{version}.tar.gz
-Patch1:              iodine-01-solaris.diff
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -19,7 +18,6 @@ Requires: SFEtun
 
 %prep
 %setup -q -n iodine-%version
-%patch1 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -54,6 +52,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man8/*
 
 %changelog
+* Tue Sep 15 2009 - trisk@acm.jhu.edu
+- Bump to 0.5.2
 * Fri May 23 2008 - trisk@acm.jhu.edu
 - Bump to 0.4.1
 * Wed Nov 28 2007 - trisk@acm.jhu.edu

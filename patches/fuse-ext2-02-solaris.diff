@@ -1,0 +1,14 @@
+--- fuse-ext2-0.0.5.orig/fuse-ext2/fuse-ext2.h	2009-06-03 12:15:05.000000000 -0400
++++ fuse-ext2-0.0.5/fuse-ext2/fuse-ext2.h	2009-06-26 02:39:15.081075870 -0400
+@@ -28,9 +28,10 @@
+ #include <stdarg.h>
+ #include <getopt.h>
+ #include <assert.h>
++#include <unistd.h>
+ #include <errno.h>
+ 
+-#include <fuse.h>
++#include <fuse/fuse.h>
+ #include <ext2fs/ext2fs.h>
+ 
+ #if !defined(FUSE_VERSION) || (FUSE_VERSION < 26)

@@ -1,0 +1,12 @@
+--- vpnc-0.5.1.orig/Makefile	2007-09-06 16:05:15.000000000 -0400
++++ vpnc-0.5.1/Makefile	2008-07-18 09:08:26.156073134 -0400
+@@ -51,7 +51,9 @@
+ 
+ CC=gcc
+ CFLAGS ?= -O3 -g
++ifneq (,$(findstring gcc version,$(shell $(CC) -v)))
+ CFLAGS += -W -Wall -Wmissing-declarations -Wwrite-strings
++endif
+ CFLAGS +=  $(shell libgcrypt-config --cflags)
+ CPPFLAGS += -DVERSION=\"$(VERSION)\" $(OPENSSL_GPL_VIOLATION)
+ LDFLAGS ?= -g

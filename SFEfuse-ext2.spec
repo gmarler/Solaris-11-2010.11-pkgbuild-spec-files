@@ -7,11 +7,13 @@
 %include Solaris.inc
 %include base.inc
 
-Name:                    SFEntfs-3g
-Summary:                 NTFS-3G Stable Read/Write Driver
-Version:                 2009.4.4
-Source:			 http://ntfs-3g.org/ntfs-3g-%{version}.tgz
-Url:                     http://ntfs-3g.org
+Name:                    SFEfuse-ext2
+Summary:                 fuse-ext2 ext2 filesystem (ext2fs/ext3fs) driver
+Version:                 0.0.5
+Source:			 %{sf_download}/fuse-ext2/fuse-ext2-%{version}.tar.gz
+Patch1:			 fuse-ext2-01-sunpro.diff
+Patch2:			 fuse-ext2-02-solaris.diff
+Url:                     http://alperakcan.org/?open=projects&project=fuse-ext2
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 
@@ -30,7 +32,9 @@ Requires: %name
 Requires: SUNWlibfuse
 
 %prep
-%setup -q -n ntfs-3g-%version
+%setup -q -n fuse-ext2-%version
+%patch1 -p1
+%patch2 -p1
 
 %build
 
@@ -39,10 +43,12 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
   CPUS=1
 fi
 
-export CC="/usr/sfw/bin/gcc"
-export CFLAGS="%gcc_optflags"
+#export CC="/usr/sfw/bin/gcc"
+#export CFLAGS="%gcc_optflags"
+export CFLAGS="%optflags -xc99"
 export LDFLAGS="%{_ldflags}"
 
+./autogen.sh
 ./configure --prefix=%{_prefix}			\
 	    --libdir=%{_libdir}                 \
 	    --mandir=%{_mandir}                 \
@@ -52,43 +58,25 @@ export LDFLAGS="%{_ldflags}"
             --includedir=%{_includedir}         \
             --exec-prefix=%{_execprefix}
 
-make -j $CPUS
+# avoid building unused parts of e2fsprogs that need porting
+make -j $CPUS -C e2fsprogs*/et
+make -j $CPUS -C e2fsprogs*/ext2fs
+make -j $CPUS -C fuse-ext2
 
 %install
 rm -rf $RPM_BUILD_ROOT
-make install DESTDIR=$RPM_BUILD_ROOT
-rm -f $RPM_BUILD_ROOT%{_libdir}/lib*.*a
-rm -r $RPM_BUILD_ROOT/usr/sbin
+make -C fuse-ext2 install DESTDIR=$RPM_BUILD_ROOT
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr (-, root, bin)
+%doc README ChangeLog COPYING AUTHORS
 %dir %attr (0755, root, bin) %{_bindir}
 %{_bindir}/*
-%dir %attr (0755, root, bin) %{_libdir}
-%{_libdir}/libntfs-3g.so*
-%dir %attr (0755, root, bin) %{_mandir}
-%dir %attr (0755, root, bin) %{_mandir}/man8
-%{_mandir}/man8/*
 %dir %attr (0755, root, sys) %{_datadir}
-%dir %attr (0755, root, other) %{_datadir}/doc
-%{_datadir}/doc/*
-
-%files devel
-%defattr (-, root, bin)
-%{_includedir}
-%dir %attr (0755, root, other) %{_libdir}/pkgconfig
-%{_libdir}/pkgconfig/*
-
-
+%dir %attr (0755, root, other) %{_docdir}
 
 %changelog
 * Sun Jun 21 2009 - trisk@forkgnu.org
-- Bump to 2009.4.4
-* Tue Mar 24 2009 - andras.barna@gmail.com
-- bump version
-* Fri Aug 15 2008 - andras.barna@gmail.com
-- new version: 1.2812 
-* Wed Aug 06 2008 - andras.barna@gmail.com
-- initial spec
+- Initial spec

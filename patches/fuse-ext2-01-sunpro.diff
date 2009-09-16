@@ -1,0 +1,18 @@
+--- fuse-ext2-0.0.5.orig/fuse-ext2/Makefile.am	2009-06-26 02:37:59.888566620 -0400
++++ fuse-ext2-0.0.5/fuse-ext2/Makefile.am	2009-06-03 12:15:05.000000000 -0400
+@@ -9,7 +9,6 @@
+ 	do_probe.c
+ 
+ fuse_ext2_probe_CFLAGS =			\
+-	-Wall					\
+ 	-DHAVE_CONFIG_H				\
+ 	-D_FILE_OFFSET_BITS=64			\
+ 	-I$(top_srcdir)/e2fsprogs-1.41.5 \
+@@ -56,7 +55,6 @@
+ 	op_link.c
+ 
+ fuse_ext2_CFLAGS =				\
+-	-Wall					\
+ 	-DHAVE_CONFIG_H				\
+ 	-D_FILE_OFFSET_BITS=64			\
+ 	-I$(top_srcdir)/e2fsprogs-1.41.5 \

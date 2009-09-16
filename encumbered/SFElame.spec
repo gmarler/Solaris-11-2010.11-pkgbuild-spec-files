@@ -35,7 +35,6 @@ BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 BuildRequires: SUNWlibms
 Requires: SUNWlibms
 BuildRequires: SFEgcc
-Requires: SFEgccruntime
 
 %if %SFElibsndfile
 BuildRequires:	SFElibsndfile-devel
@@ -48,8 +47,8 @@ Requires:	SUNWlibsndfile
 BuildRequires: SUNWncurses-devel
 Requires: SUNWncurses
 
+# we don't build the GTK frontend but autotools needs the macros
 BuildRequires: SUNWgnome-common-devel
-Requires: SUNWgnome-common-devel
 
 %package devel
 Summary:                 %{summary} - development files
@@ -165,6 +164,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/doc/*
 
 %changelog
+* Tue Sep 15 2009 - Albert Lee
+- Drop SUNWgnome-common and SFEgccruntime dependencies
 * Sun Aug 09 2009 - Thomas Wagner
 - (Build)Requires: SUNWlibms SFEgcc/SFEgccruntime
 * Sun Aug 02 2009 - Adam Retter

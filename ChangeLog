@@ -1,3 +1,19 @@
+2009-09-15  Albert Lee  <trisk@forkgnu.org>
+
+	* SFEfuse-ext2.spec: *NEW* fuse-ext2 ext2 filesystem (ext2fs/ext3fs)
+	  driver
+	* SFEjson-glib.spec: *NEW* JSON parser library for GLib
+	* SFEiodine.spec: Bump to 0.5.2
+	* SFEntfs-3g.spec: Bump to 2009.4.4
+	* SFEvpnc: *NEW* vpnc - client for Cisco VPN concentrator
+	* encumbered/SFElame.spec: Drop SUNWgnome-common and SFEgccruntime
+	  dependencies
+	* patches/fuse-ext2-01-sunpro.diff: Allow building with Studio
+	* patches/fuse-ext2-02-solaris.diff: Correct headers for Solaris
+	* patches/json-glib-01-sunpro.diff: Allow building with Studio
+	* patches/vpnc-01-nogcc.diff: Allow building with Studio
+	* patches/vpnc-02-solaris.diff: Solaris support changes
+
 2009-09-15 Olivier Mauras <oliver.mauras@gmail.com>
     * SFElsof.spec: Version bump to 4.83K
     Add automated default configuration
