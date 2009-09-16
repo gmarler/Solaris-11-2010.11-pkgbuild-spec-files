@@ -1,3 +1,9 @@
+2009-09-16  Albert Lee  <trisk@forkgnu.org>
+	
+	* SFEgpac.spec: Add (disabled) support for jack and pulseaudio
+	* base-specs/gpac.spec: Add patch3. Support jack and pulseaudio.
+	* patches/gpac-03-ldflags.spec: Fix module linking
+
 2009-09-15  Albert Lee  <trisk@forkgnu.org>
 
 	* SFEfuse-ext2.spec: *NEW* fuse-ext2 ext2 filesystem (ext2fs/ext3fs)

@@ -6,6 +6,9 @@
 %include Solaris.inc
 
 %define with_wxw_gcc %(pkginfo -q SFEwxwidgets-gnu && echo 1 || echo 0)
+# disable jack and pulseaudio support for now
+%define with_jack 0
+%define with_pulseaudio 0
 
 %if %with_wxw_gcc
 %define cc_is_gcc 1
@@ -40,6 +43,14 @@ Requires: SUNWfreetype2
 # Check whether the user has installed the Sun Studio or GCC
 # version of wxWidgets, and build with GCC if using the GCC
 # version
+%if %with_jack
+BuildRequires: SFEjack-devel
+Requires: SFEjack
+%endif
+%if %with_pulseaudio
+BuildRequires: SFEpulseaudio-devel
+Requires: SFEpulseaudio
+%endif
 %if %with_wxw_gcc
 BuildRequires: SFEwxwidgets-gnu-devel
 Requires: SFEwxwidgets-gnu
@@ -109,6 +120,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}
 
 %changelog
+* Wed Sep 16 2009 - trisk@forkgnu.org
+- Add (disabled) support for jack and pulseaudio
 * Wed Sep 02 2009 - trisk@forkgnu.org
 - Add dependency on SFEliba52
 * Sun Aug 24 2009 - Milan Jurik

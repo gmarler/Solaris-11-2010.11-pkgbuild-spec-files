@@ -1,0 +1,33 @@
+--- gpac.orig/modules/alsa/Makefile	Mon Nov 24 04:14:18 2008
++++ gpac/modules/alsa/Makefile	Wed Sep 16 16:53:34 2009
+@@ -31,7 +31,7 @@
+ all: $(LIB)
+ 
+ $(LIB): $(OBJSPIC)
+-	$(CC) $(SHFLAGS) -o ../../bin/gcc/$@ $(OBJSPIC) $(EXTRALIBS) -L../../bin/gcc -lgpac -lasound
++	$(CC) $(SHFLAGS) $(LDFLAGS) -o ../../bin/gcc/$@ $(OBJSPIC) $(EXTRALIBS) -L../../bin/gcc -lgpac -lasound
+ 
+ 
+ %.o: %.c
+--- gpac.orig/modules/pulseaudio/Makefile	Mon Nov 24 04:14:19 2008
++++ gpac/modules/pulseaudio/Makefile	Wed Sep 16 16:52:29 2009
+@@ -31,7 +31,7 @@
+ all: $(LIB)
+ 
+ $(LIB): $(OBJSPIC)
+-	$(CC) $(SHFLAGS) -o ../../bin/gcc/$@ $(OBJSPIC) $(EXTRALIBS) -L../../bin/gcc -lgpac -L/usr/lib -lpulse-simple
++	$(CC) $(SHFLAGS) $(LDFLAGS) -o ../../bin/gcc/$@ $(OBJSPIC) $(EXTRALIBS) -L../../bin/gcc -lgpac -lpulse-simple
+ 
+ 
+ %.o: %.c
+--- gpac.orig/modules/jack/Makefile	Mon Nov 24 04:14:19 2008
++++ gpac/modules/jack/Makefile	Wed Sep 16 16:51:11 2009
+@@ -32,7 +32,7 @@
+ all: $(LIB)
+ 
+ $(LIB): $(OBJSPIC)
+-	$(CC) $(SHFLAGS) -o ../../bin/gcc/$@ $(OBJSPIC) $(EXTRALIBS) -L../../bin/gcc -lgpac -L/usr/lib  -ljack
++	$(CC) $(SHFLAGS) $(LDFLAGS) -o ../../bin/gcc/$@ $(OBJSPIC) $(EXTRALIBS) -L../../bin/gcc -lgpac -ljack
+ 
+ 
+ %.o: %.c
