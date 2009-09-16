@@ -1,3 +1,9 @@
+2009-09-15  Brian Cameron  <brian.cameron@sun.com>
+
+	* SFEaudacity.spec, patches/audacity-09-flac.diff:  Update the spec
+	  file so that patch 9 actually is applied.  Update the patch based
+	  on upstream maintainer's comments.
+
 2009-09-16  Albert Lee  <trisk@forkgnu.org>
 	
 	* SFEgpac.spec: Add (disabled) support for jack and pulseaudio
@@ -21,8 +27,9 @@
 	* patches/vpnc-02-solaris.diff: Solaris support changes
 
 2009-09-15 Olivier Mauras <oliver.mauras@gmail.com>
-    * SFElsof.spec: Version bump to 4.83K
-    Add automated default configuration
+
+	* SFElsof.spec: Version bump to 4.83K
+	  Add automated default configuration
 
 2009-09-14  Milan Jurik <sfnet@xylab.cz>
 
@@ -31,12 +38,14 @@
 	* patches/dsniff-01-modernization.diff: based on Debian package
 
 2009-09-14  Olivier Mauras <oliver.mauras@gmail.com>
-    * SFEevenlog.spec: Bump to 0.2.10
-    * SFEsyslog-ng: Bump to 3.0.4, add SMF integration and default config
-    * ext-sources/syslog-ng.conf: Default syslog-ng config file
-    * ext-sources/syslog-ng.method: SMF method to start/stop syslog-ng
-    * ext-sources/syslog-ng.xml: SMF manifest for syslog-ng
-    Please read SFEsyslog-ng.spec for details on global syslogd replacement
+
+	* SFEevenlog.spec: Bump to 0.2.10
+	* SFEsyslog-ng: Bump to 3.0.4, add SMF integration and default config
+	* ext-sources/syslog-ng.conf: Default syslog-ng config file
+	* ext-sources/syslog-ng.method: SMF method to start/stop syslog-ng
+	* ext-sources/syslog-ng.xml: SMF manifest for syslog-ng
+	  Please read SFEsyslog-ng.spec for details on global syslogd
+	  replacement
 
 2009-09-13  Milan Jurik <sfnet@xylab.cz>
 
@@ -47,10 +56,14 @@
 	* SFEwesnoth.spec: Bump to version 1.6.5
 
 2009-09-11  Doug Scott <drdoug007@gmail.com>
-	* SFElibdvdread.spec: Added the following patches and allowed non gcc builds
-	*   patches/libdvdread-01-dvdfilestat.diff: Patch to allow building dvdbackup
+
+	* SFElibdvdread.spec: Added the following patches and allowed non gcc
+	  builds
+	*   patches/libdvdread-01-dvdfilestat.diff: Patch to allow building
+	    dvdbackup
 	*   patches/libdvdread-02-wall.diff: SunPro CC friendly
-	* SFEdvdbackup.spec: dvdbackup is a tool to rip DVDs from the command line
+	* SFEdvdbackup.spec: dvdbackup is a tool to rip DVDs from the command
+	  line
 
 2009-09-09  Albert Lee  <trisk@forkgnu.org>
 
@@ -80,9 +93,11 @@
 	  patches/mjpegtools-06-gcc.diff
 
 2009-09-09  Doug Scott <drdoug007@gmail.com>
+
 	* SFEvdrift.spec: update required packages
 
 2009-09-08  Doug Scott <drdoug007@gmail.com>
+
 	* SFEvdrift.spec: open source driving simulation
 	*   patches/vdrift-02-opt.diff
 	*   patches/vdrift-01-ncpu.diff

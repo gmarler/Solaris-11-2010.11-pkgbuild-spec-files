@@ -106,6 +106,7 @@ Requires:                %{name}
 %patch6 -p1
 %patch7 -p1
 %patch8 -p1
+%patch9 -p0
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -136,13 +137,11 @@ CXXFLAGS="$CFLAGS -fPIC -DPIC -fno-omit-frame-pointer"
 %endif
 
 %if %with_flac
-
 %if %cc_is_gcc
 AU_LIBFLAC_CONFIG="--without-libflac"
 %else
 AU_LIBFLAC_CONFIG="--with-libflac"
 %endif
-
 %else
 AU_LIBFLAC_CONFIG="--without-libflac"
 %endif
