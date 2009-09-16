@@ -46,7 +46,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %changelog
 * Tue Sep 15 2009 - Thomas Wagner
-- add switch %use_gcc4 and CC/CXX compiler setting to be default gcc3 or explicitly gcc4
+- add switch --with-gcc4 and CC/CXX compiler setting to be default gcc3 or explicitly gcc4
 * Sat Aug 30 2008 - harry.lu@sun.com
 - Use %sf_download instead of a specific server.
 * Tue Mar 20 2007 - dougs@truemail.co.th

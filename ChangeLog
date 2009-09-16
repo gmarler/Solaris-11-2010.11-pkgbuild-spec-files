@@ -1,3 +1,9 @@
+2009-09-16  Thomas Wagner  <tom68@users.sourceforge.net>
+
+        * twoolame.spec, lame.spec, SFElame.spec, SFEmplayer.spec: force gcc3 as default (again) and add switch --with-gcc4 as optional compiler
+          use like this: pkgtool --with-gcc4 build SFElame.spec
+        * SFElibdvdread.spec: adjust %files permisison for /usr/share
+
 2009-09-15  Brian Cameron  <brian.cameron@sun.com>
 
 	* SFEaudacity.spec, patches/audacity-09-flac.diff:  Update the spec

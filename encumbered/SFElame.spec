@@ -15,7 +15,6 @@
 %else
 %define _gpp /usr/sfw/bin/g++
 %endif
-%include base.inc
 
 %ifarch amd64 sparcv9
 %include arch64.inc
@@ -184,8 +183,9 @@ rm -rf $RPM_BUILD_ROOT
 
 %changelog
 * Tue Sep 15 2009 - Thomas Wagner
-- make (Build)Requires a build-time --with_gcc4 switch defaulting to off (which is then: use SUNWgcc, gcc3)
+- make (Build)Requires a build-time --with-gcc4 switch defaulting to off (which is then: use SUNWgcc, gcc3)
 - %define cc_is_gcc 1  to use gcc include settings to avoid -Kpic unknown switch error of gcc3 and gcc4 compiler 
+- remove one too much #include base.inc
 * Tue Sep 15 2009 - Albert Lee
 - Drop SUNWgnome-common and SFEgccruntime dependencies
 * Sun Aug 09 2009 - Thomas Wagner

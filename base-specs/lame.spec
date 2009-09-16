@@ -36,7 +36,7 @@ export CXX=/usr/sfw/bin/g++
 export CFLAGS="%optflags -I%gnu_inc"
 export ACLOCAL_FLAGS="-I %{_datadir}/aclocal"
 export MSGFMT="/usr/bin/msgfmt"
-export LDFLAGS="%_ldflags %gnu_lib_path"
+#export LDFLAGS="%_ldflags %gnu_lib_path"
 export LD_OPTIONS="%gnu_lib_path"
 
 libtoolize --force
@@ -66,6 +66,7 @@ rm -rf $RPM_BUILD_ROOT
 %changelog
 * Tue Sep 15 2009 - Thomas Wagner
 - add switch %use_gcc4 and CC/CXX compiler setting to be default gcc3 or explicitly gcc4
+- comment out LDFLAGS since I see compile/link error arch=sse2 unkown switch
 * Sat Mar 14 2009 - Milan Jurik
 - upgrade to 3.98.2
 * Thu Oct 23 2008 - dick@nagual.nl
