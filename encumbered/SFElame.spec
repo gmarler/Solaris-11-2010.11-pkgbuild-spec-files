@@ -3,7 +3,19 @@
 #
 # includes module(s): lame, toolame
 #
+
+# want this? compile with: pkgtool --with-gcc4 build <specfile>
+%define use_gcc4 %{?_with_gcc4:1}%{?!_with_gcc4:0}
+
+
 %include Solaris.inc
+%define cc_is_gcc 1
+%if %use_gcc4
+%define _gpp /usr/gnu/bin/g++
+%else
+%define _gpp /usr/sfw/bin/g++
+%endif
+%include base.inc
 
 %ifarch amd64 sparcv9
 %include arch64.inc
@@ -34,7 +46,14 @@ BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 
 BuildRequires: SUNWlibms
 Requires: SUNWlibms
+
+%if %use_gcc4
 BuildRequires: SFEgcc
+Requires: SFEgccruntime
+%else
+BuildRequires: SUNWgcc
+Requires: SUNWgccruntime
+%endif
 
 %if %SFElibsndfile
 BuildRequires:	SFElibsndfile-devel
@@ -164,6 +183,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/doc/*
 
 %changelog
+* Tue Sep 15 2009 - Thomas Wagner
+- make (Build)Requires a build-time --with_gcc4 switch defaulting to off (which is then: use SUNWgcc, gcc3)
+- %define cc_is_gcc 1  to use gcc include settings to avoid -Kpic unknown switch error of gcc3 and gcc4 compiler 
 * Tue Sep 15 2009 - Albert Lee
 - Drop SUNWgnome-common and SFEgccruntime dependencies
 * Sun Aug 09 2009 - Thomas Wagner

@@ -22,6 +22,14 @@ CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
 if test "x$CPUS" = "x" -o $CPUS = 0; then
     CPUS=1
 fi
+%if %use_gcc4
+export CC=/usr/gnu/bin/gcc
+export CXX=/usr/gnu/bin/g++
+%else
+export CC=/usr/sfw/bin/gcc
+export CXX=/usr/sfw/bin/g++
+%endif
+
 export CFLAGS="%optflags"
 export ACLOCAL_FLAGS="-I %{_datadir}/aclocal"
 export MSGFMT="/usr/bin/msgfmt"
@@ -37,6 +45,8 @@ install -m 755 toolame $RPM_BUILD_ROOT%{_bindir}/toolame
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Tue Sep 15 2009 - Thomas Wagner
+- add switch %use_gcc4 and CC/CXX compiler setting to be default gcc3 or explicitly gcc4
 * Sat Aug 30 2008 - harry.lu@sun.com
 - Use %sf_download instead of a specific server.
 * Tue Mar 20 2007 - dougs@truemail.co.th

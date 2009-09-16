@@ -3,6 +3,7 @@
 #
 # bugdb: http://sourceforge.net/tracker/index.php?func=detail&group_id=290&atid=100290&aid=
 #
+
 Name:                    SFElame
 Summary:                 lame  - Ain't an MP3 Encoder
 Version:                 398-2
@@ -23,6 +24,15 @@ CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
 if test "x$CPUS" = "x" -o $CPUS = 0; then
     CPUS=1
 fi
+
+%if %use_gcc4
+export CC=/usr/gnu/bin/gcc
+export CXX=/usr/gnu/bin/g++
+%else
+export CC=/usr/sfw/bin/gcc
+export CXX=/usr/sfw/bin/g++
+%endif
+
 export CFLAGS="%optflags -I%gnu_inc"
 export ACLOCAL_FLAGS="-I %{_datadir}/aclocal"
 export MSGFMT="/usr/bin/msgfmt"
@@ -54,6 +64,8 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/lib*a
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Tue Sep 15 2009 - Thomas Wagner
+- add switch %use_gcc4 and CC/CXX compiler setting to be default gcc3 or explicitly gcc4
 * Sat Mar 14 2009 - Milan Jurik
 - upgrade to 3.98.2
 * Thu Oct 23 2008 - dick@nagual.nl

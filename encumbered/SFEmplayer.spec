@@ -3,10 +3,18 @@
 #
 # includes module(s): mplayer
 #
+
+# want this? compile with: pkgtool --with-gcc4 build <specfile>
+%define use_gcc4 %{?_with_gcc4:1}%{?!_with_gcc4:0}
+
 %include Solaris.inc
 
 %define cc_is_gcc 1
+%if %use_gcc4
 %define _gpp /usr/gnu/bin/g++
+%else
+%define _gpp /usr/sfw/bin/g++
+%endif
 %include base.inc
 
 
@@ -66,11 +74,17 @@ Requires: SUNWjpg
 Requires: SUNWpng
 Requires: SUNWogg-vorbis
 Requires: SUNWlibtheora
-Requires: SUNWgccruntime
-Requires: SUNWgnome-base-libs
-Requires: SUNWsmbau
+%if %use_gcc4
 BuildRequires: SFEgcc
 Requires: SFEgccruntime
+#also required for libs still compiled with gcc3?
+Requires: SUNWgccruntime
+%else
+BuildRequires: SUNWgcc
+Requires: SUNWgccruntime
+%endif
+Requires: SUNWgnome-base-libs
+Requires: SUNWsmbau
 BuildRequires: SUNWxwrtl
 Requires: SUNWxwrtl
 BuildRequires: SUNWxorg-mesa
@@ -172,8 +186,13 @@ export CFLAGS="-O2 -D__hidden=\"\""
 %endif
 
 export LDFLAGS="-L%{x11}/lib -L/usr/gnu/lib -R/usr/gnu/lib -L/usr/sfw/lib -R/usr/sfw/lib -liconv" 
+%if %use_gcc4
 export CC=/usr/gnu/bin/gcc
 export CXX=/usr/gnu/bin/g++
+%else
+export CC=/usr/sfw/bin/gcc
+export CXX=/usr/sfw/bin/g++
+%endif
 rm -rf ./grep
 ln -s /usr/sfw/bin/ggrep ./grep
 PATH="`pwd`:$PATH"
@@ -243,6 +262,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/pixmaps/*
 
 %changelog
+* Tue Sep 14 2009 - Thomas Wagner
+- make (Build)Requires a build-time --with_gcc4 switch defaulting to off (which is then: use SUNWgcc, gcc3)
 * Sun Aug 09 2009 - Thomas Wagner
 - switch to gcc4
 - add (Build)Requires: SFEgcc/SFEgccruntime SUNWxwrtl SUNWxorg-mesa SUNWaalib SUNWlibsdl-devel/SUNWlibsdl SUNWlibm
