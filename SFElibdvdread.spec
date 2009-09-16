@@ -70,11 +70,14 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/*
 %dir %attr (0755, root, other) %{_libdir}/pkgconfig
 %{_libdir}/pkgconfig/*
+%dir %attr (0755, root, sys) %{_datadir}
 %dir %attr (0755, root, other) %{_datadir}/aclocal
 %{_datadir}/aclocal/*
 
 
 %changelog
+* Tue Sep 15 2009 - Thomas Wagner
+- fix permissions for /usr/share aka %dir %attr (0755, root, sys) %{_datadir}
 * Fri Sep 11 2009 - drdoug007@gmail.com
 - Added dvdfilestat patch and encouraged allowed a gcc build
 * Sat Jun 13 2009 - Milan Jurik
