@@ -1,3 +1,8 @@
+2009-09-17  Albert Lee  <trisk@opensolaris.org>
+
+	* patches/wildmidi-01-solaris.diff: Remove old Studio fix
+	* patches/wildmidi-02-sunstudio.diff: Fix additional build system issues
+	
 2009-09-17  Milan Jurik <sfnet@xylab.cz>
 
 	* SFElibnids.spec, SFEdsniff.spec: Cleanup of linker problems
