@@ -42,7 +42,7 @@ building applications which use libnids, as well as documentation on libnids.
 %setup -q -n %{src_name}-%{version}
 
 %build
-CC=gcc
+CC=/usr/sfw/bin/gcc
 ./configure		\
     --prefix=%{_prefix}	\
     --bindir=%{_bindir}	\
@@ -76,5 +76,7 @@ rm -rf $RPM_BUILD_ROOT
 %_mandir/man3/*
 
 %changelog
+* Thu Sep 17 2009 - Milan Jurik
+- cleanup of linker problems
 * Sun Sep 13 2009 - Milan Jurik
 - Initial version
