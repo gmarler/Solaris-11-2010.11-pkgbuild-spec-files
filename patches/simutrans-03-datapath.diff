@@ -1,0 +1,39 @@
+--- SFEsimutrans-102.0-build/simmain.cc	Fri Sep 18 21:54:20 2009
++++ SFEsimutrans-102.0-build-patch/simmain.cc	Fri Sep 18 21:51:48 2009
+@@ -339,12 +339,8 @@
+ #endif
+ 	}
+ 	else {
+-		strcpy( umgebung_t::program_dir, argv[0] );
+-#ifdef _WIN32
+-		*(strrchr( umgebung_t::program_dir, '\\' )+1) = 0;
+-#else
+-		*(strrchr( umgebung_t::program_dir, '/' )+1) = 0;
+-#endif
++		// data files are in /usr/share/simutrans
++		strcpy( umgebung_t::program_dir, "/usr/share/simutrans/" );
+ 		chdir( umgebung_t::program_dir );
+ 	}
+ 
+--- SFEsimutrans-102.0-build/simsys_d.cc	Fri Sep 12 23:23:37 2008
++++ SFEsimutrans-102.0-build-patch/simsys_d.cc	Fri Sep 18 21:58:50 2009
+@@ -309,7 +309,7 @@
+ 	return NULL;
+ #else
+ #ifndef __MACOS__
+-	sprintf( buffer, "%s/simutrans", getenv("HOME") );
++	sprintf( buffer, "%s/.simutrans", getenv("HOME") );
+ #else
+ 	sprintf( buffer, "%s/Documents/simutrans", getenv("HOME") );
+ #endif
+--- SFEsimutrans-102.0-build/simsys_s.cc	Fri Sep 12 23:23:04 2008
++++ SFEsimutrans-102.0-build-patch/simsys_s.cc	Fri Sep 18 22:00:12 2009
+@@ -278,7 +278,7 @@
+ 	return NULL;
+ #else
+ #ifndef __MACOS__
+-	sprintf( buffer, "%s/simutrans", getenv("HOME") );
++	sprintf( buffer, "%s/.simutrans", getenv("HOME") );
+ #else
+ 	sprintf( buffer, "%s/Documents/simutrans", getenv("HOME") );
+ #endif

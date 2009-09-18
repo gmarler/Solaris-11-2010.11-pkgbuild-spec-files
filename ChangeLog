@@ -7,6 +7,10 @@
 	* patches/lives-04-inline.diff: inline functions not in object files
 	* encumbered/SFEgnome-media-extras.spec: SUNWgtk-doc and SUNWgnome-xml
 	  as build dependencies
+	* SFEsimutrans.spec: Initial version
+	* patches/simutrans-01-config.diff: Config for Solaris/SDL
+	* patches/simutrans-02-label_t.diff: label_t collision
+	* patches/simutrans-03-datapath.diff: datapath
 
 2009-09-18  Halton Huo  <halton.huo@sun.com>
 

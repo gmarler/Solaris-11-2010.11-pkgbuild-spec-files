@@ -1,0 +1,255 @@
+--- SFEsimutrans-102.0-build/dings/label.h	Wed Jan 21 23:00:24 2009
++++ SFEsimutrans-102.0-build-patch/dings/label.h	Mon Aug 17 00:44:11 2009
+@@ -4,12 +4,12 @@
+ #include "../simdings.h"
+ #include "../simimg.h"
+ 
+-class label_t : public ding_t
++class local_label_t : public ding_t
+ {
+ public:
+-	label_t(karte_t *welt, loadsave_t *file);
+-	label_t(karte_t *welt, koord3d pos, spieler_t *sp, const char *text);
+-	~label_t();
++	local_label_t(karte_t *welt, loadsave_t *file);
++	local_label_t(karte_t *welt, koord3d pos, spieler_t *sp, const char *text);
++	~local_label_t();
+ 
+ 	void laden_abschliessen();
+ 
+--- SFEsimutrans-102.0-build/dings/label.cc	Tue Feb 10 22:21:23 2009
++++ SFEsimutrans-102.0-build-patch/dings/label.cc	Mon Aug 17 00:43:35 2009
+@@ -23,7 +23,7 @@
+ 
+ #include "label.h"
+ 
+-label_t::label_t(karte_t *welt, loadsave_t *file) :
++local_label_t::local_label_t(karte_t *welt, loadsave_t *file) :
+ 	ding_t(welt)
+ {
+ 	rdwr(file);
+@@ -31,7 +31,7 @@
+ 
+ 
+ 
+-label_t::label_t(karte_t *welt, koord3d pos, spieler_t *sp, const char *text) :
++local_label_t::local_label_t(karte_t *welt, koord3d pos, spieler_t *sp, const char *text) :
+ 	ding_t(welt, pos)
+ {
+ 	set_besitzer( sp );
+@@ -55,7 +55,7 @@
+ 
+ 
+ 
+-label_t::~label_t()
++local_label_t::~local_label_t()
+ {
+ 	koord k = get_pos().get_2d();
+ 	welt->remove_label(k);
+@@ -67,7 +67,7 @@
+ 
+ 
+ 
+-void label_t::laden_abschliessen()
++void local_label_t::laden_abschliessen()
+ {
+ 	// only now coordinates are known
+ 	welt->add_label(get_pos().get_2d());
+@@ -75,7 +75,7 @@
+ 
+ 
+ 
+-image_id label_t::get_bild() const
++image_id local_label_t::get_bild() const
+ {
+ 	grund_t *gr=welt->lookup(get_pos());
+ 	return (gr  &&  gr->obj_bei(0)==(ding_t *)this) ? skinverwaltung_t::belegtzeiger->get_bild_nr(0) : IMG_LEER;
+@@ -83,8 +83,8 @@
+ 
+ 
+ 
+-void label_t::zeige_info()
++void local_label_t::zeige_info()
+ {
+-	label_t* l = this;
++	local_label_t* l = this;
+ 	create_win(new label_info_t(welt, l), w_info, (long)this );
+ }
+--- SFEsimutrans-102.0-build/dataobj/dingliste.cc	Fri Feb 27 20:53:17 2009
++++ SFEsimutrans-102.0-build-patch/dataobj/dingliste.cc	Mon Aug 17 00:42:14 2009
+@@ -740,7 +740,7 @@
+ 				case ding_t::senke:		    d = new senke_t (welt, file);	        break;
+ 				case ding_t::zeiger:	    d = new zeiger_t (welt, file);	        break;
+ 				case ding_t::signal:	    d = new signal_t (welt, file);   break;
+-				case ding_t::label:			d = new label_t(welt,file); break;
++				case ding_t::label:			d = new local_label_t(welt,file); break;
+ 				case ding_t::crossing:		d = new crossing_t(welt,file); break;
+ 
+ 				case ding_t::wayobj:
+--- SFEsimutrans-102.0-build/gui/labellist_stats_t.cc	Thu Feb 19 22:14:42 2009
++++ SFEsimutrans-102.0-build-patch/gui/labellist_stats_t.cc	Mon Aug 17 00:45:59 2009
+@@ -68,8 +68,8 @@
+ 				case labellist::by_player:
+ 				{
+ 					if(!filter) {
+-						label_t* a_l = welt->lookup(a)->get_kartenboden()->find<label_t>();
+-						label_t* b_l = welt->lookup(b)->get_kartenboden()->find<label_t>();
++						local_label_t* a_l = welt->lookup(a)->get_kartenboden()->find<local_label_t>();
++						local_label_t* b_l = welt->lookup(b)->get_kartenboden()->find<local_label_t>();
+ 						if(a_l && b_l) {
+ 							cmp = a_l->get_besitzer()->get_player_nr() - b_l->get_besitzer()->get_player_nr();
+ 						}
+@@ -101,7 +101,7 @@
+ 	slist_iterator_tpl <koord> iter (welt->get_label_list());
+ 	while(iter.next()) {
+ 		koord pos = iter.get_current();
+-		label_t* label = welt->lookup(pos)->get_kartenboden()->find<label_t>();
++		local_label_t* label = welt->lookup(pos)->get_kartenboden()->find<local_label_t>();
+ 		const char* name = welt->lookup(pos)->get_kartenboden()->get_text();
+ 		// some old version games don't have label nor name.
+ 		// Check them to avoid crashes.
+@@ -141,9 +141,9 @@
+ 		if(  ev->cx>0  &&  ev->cx<15  ) {
+ 			welt->change_world_position(pos);
+ 		}
+-		else if(welt->lookup(pos)->get_kartenboden()->find<label_t>()) {
++		else if(welt->lookup(pos)->get_kartenboden()->find<local_label_t>()) {
+ 			// avoid crash
+-				welt->lookup(pos)->get_kartenboden()->find<label_t>()->zeige_info();
++				welt->lookup(pos)->get_kartenboden()->find<local_label_t>()->zeige_info();
+ 		}
+ 	}
+ 	else if (IS_RIGHTRELEASE(ev)) {
+@@ -188,7 +188,7 @@
+ 		buf.clear();
+ 
+ 		// the other infos
+-		const label_t* label = welt->lookup_kartenboden(pos)->find<label_t>();
++		const local_label_t* label = welt->lookup_kartenboden(pos)->find<local_label_t>();
+ 		PLAYER_COLOR_VAL col = COL_WHITE;
+ 		buf.append(" (");
+ 		buf.append(pos.x);
+--- SFEsimutrans-102.0-build/gui/label_info.h	Tue Feb 10 22:21:23 2009
++++ SFEsimutrans-102.0-build-patch/gui/label_info.h	Mon Aug 17 00:47:03 2009
+@@ -32,7 +32,7 @@
+ private:
+ 	static karte_t *welt;
+ 	spieler_t *sp;
+-	label_t *label;
++	local_label_t *label;
+ 
+ 	gui_label_t player_name;
+ 	gui_textinput_t input;
+@@ -40,7 +40,7 @@
+ 	char edit_name[64];
+ 
+ public:
+-	label_info_t(karte_t *welt, label_t* l);
++	label_info_t(karte_t *welt, local_label_t* l);
+ 
+ 	/**
+ 	 * This method is called if an action is triggered
+--- SFEsimutrans-102.0-build/gui/label_info.cc	Mon Feb 23 22:38:09 2009
++++ SFEsimutrans-102.0-build-patch/gui/label_info.cc	Mon Aug 17 00:47:31 2009
+@@ -21,7 +21,7 @@
+ 
+ 
+ 
+-label_info_t::label_info_t(karte_t *welt, label_t* l) :
++label_info_t::label_info_t(karte_t *welt, local_label_t* l) :
+ 	gui_frame_t("Marker", l->get_besitzer()),
+ 	player_name(""),
+ 	view(welt, l->get_pos())
+--- SFEsimutrans-102.0-build/boden/grund.h	Tue Feb 10 22:21:23 2009
++++ SFEsimutrans-102.0-build-patch/boden/grund.h	Mon Aug 17 00:40:35 2009
+@@ -36,7 +36,7 @@
+ class fussgaenger_t;
+ class gebaeude_t;
+ class groundobj_t;
+-class label_t;
++class local_label_t;
+ class leitung_t;
+ class pillar_t;
+ class pumpe_t;
+@@ -58,7 +58,7 @@
+ template<> struct map_ding<fussgaenger_t> { static const ding_t::typ code = ding_t::fussgaenger; };
+ template<> struct map_ding<gebaeude_t>    { static const ding_t::typ code = ding_t::gebaeude;    };
+ template<> struct map_ding<groundobj_t>   { static const ding_t::typ code = ding_t::groundobj;   };
+-template<> struct map_ding<label_t>       { static const ding_t::typ code = ding_t::label;       };
++template<> struct map_ding<local_label_t>       { static const ding_t::typ code = ding_t::label;       };
+ template<> struct map_ding<leitung_t>     { static const ding_t::typ code = ding_t::leitung;     };
+ template<> struct map_ding<pillar_t>      { static const ding_t::typ code = ding_t::pillar;      };
+ template<> struct map_ding<pumpe_t>       { static const ding_t::typ code = ding_t::pumpe;       };
+--- SFEsimutrans-102.0-build/boden/grund.cc	Mon Feb 23 23:11:17 2009
++++ SFEsimutrans-102.0-build-patch/boden/grund.cc	Mon Aug 17 00:41:17 2009
+@@ -170,7 +170,7 @@
+ 		bool label;
+ 		file->rdwr_bool(label, "\n");
+ 		if(label) {
+-			dinge.add( new label_t(welt, pos, welt->get_spieler(0), get_text() ) );
++			dinge.add( new local_label_t(welt, pos, welt->get_spieler(0), get_text() ) );
+ 		}
+ 	}
+ 
+@@ -674,8 +674,8 @@
+ PLAYER_COLOR_VAL grund_t::text_farbe() const
+ {
+ 	// if this gund belongs to a halt, the color should reflect the halt owner, not the grund owner!
+-	// Now, we use the color of label_t owner
+-	if(is_halt()  &&  find<label_t>()==NULL) {
++	// Now, we use the color of local_label_t owner
++	if(is_halt()  &&  find<local_label_t>()==NULL) {
+ 		// only halt label
+ 		const halthandle_t halt = welt->lookup(pos.get_2d())->get_halt();
+ 		const spieler_t *sp=halt->get_besitzer();
+@@ -686,7 +686,7 @@
+ 	// else color according to current owner
+ 	else if(obj_bei(0)) {
+ 		const spieler_t *sp = obj_bei(0)->get_besitzer(); // for cityhall
+-		const label_t* l = find<label_t>();
++		const local_label_t* l = find<local_label_t>();
+ 		if(l) {
+ 			sp = l->get_besitzer();
+ 		}
+--- SFEsimutrans-102.0-build/simhalt.cc	Thu Mar  5 22:38:30 2009
++++ SFEsimutrans-102.0-build-patch/simhalt.cc	Mon Aug 17 00:48:26 2009
+@@ -442,7 +442,7 @@
+ 				DBG_MESSAGE("haltestelle_t::set_name()","name %s already used!",gr->get_text());
+ 			}
+ 		}
+-		if(!gr->find<label_t>()) {
++		if(!gr->find<local_label_t>()) {
+ 			gr->set_text( new_name );
+ 			if(new_name  &&  !all_names.put(gr->get_text(),self)) {
+ 				DBG_MESSAGE("haltestelle_t::set_name()","name %s already used!",new_name);
+@@ -2323,7 +2323,7 @@
+ 
+ 		// re-add name
+ 		if (station_name_to_transfer != NULL  &&  !tiles.empty()) {
+-			label_t *lb = tiles.front().grund->find<label_t>();
++			local_label_t *lb = tiles.front().grund->find<local_label_t>();
+ 			if(lb) {
+ 				delete lb;
+ 			}
+--- SFEsimutrans-102.0-build/simwerkz.cc	Thu Mar  5 22:47:09 2009
++++ SFEsimutrans-102.0-build-patch/simwerkz.cc	Mon Aug 17 00:49:11 2009
+@@ -380,7 +380,7 @@
+ 	}
+ 
+ 	// marker?
+-	label_t* l = gr->find<label_t>();
++	local_label_t* l = gr->find<local_label_t>();
+ 	if (l) {
+ 		msg = l->ist_entfernbar(sp);
+ 		if(msg) {
+@@ -976,8 +976,8 @@
+ 		if(  gr  &&  !gr->get_text()  ) {
+ 			const ding_t* thing = gr->obj_bei(0);
+ 			if(thing == NULL  ||  thing->get_besitzer() == sp  ||  (spieler_t::check_owner(thing->get_besitzer(), sp)  &&  (thing->get_typ() != ding_t::gebaeude))) {
+-				gr->obj_add(new label_t(welt, gr->get_pos(), sp, "\0"));
+-				gr->find<label_t>()->zeige_info();
++				gr->obj_add(new local_label_t(welt, gr->get_pos(), sp, "\0"));
++				gr->find<local_label_t>()->zeige_info();
+ 				return "";
+ 			}
+ 		}
