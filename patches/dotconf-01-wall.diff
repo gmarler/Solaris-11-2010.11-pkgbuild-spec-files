@@ -1,0 +1,22 @@
+--- configure.in.orig	2009-09-14 12:09:11.201543011 -0400
++++ configure.in	2009-09-14 12:10:02.256194028 -0400
+@@ -45,7 +45,7 @@
+ ACLOCAL="$ACLOCAL $ACLOCAL_FLAGS"
+ 
+ AC_ADD_INCLUDE(libpool)
+-CFLAGS="$CFLAGS $INCLUDES -Wall -g"
++CFLAGS="$CFLAGS $INCLUDES -g"
+ 
+ AC_OUTPUT([
+ Makefile
+--- configure.orig	2009-09-14 12:09:17.362752410 -0400
++++ configure	2009-09-14 12:10:07.719218067 -0400
+@@ -5338,7 +5338,7 @@
+   fi
+ 
+ 
+-CFLAGS="$CFLAGS $INCLUDES -Wall -g"
++CFLAGS="$CFLAGS $INCLUDES -g"
+ 
+ trap '' 1 2 15
+ cat > confcache <<\EOF
