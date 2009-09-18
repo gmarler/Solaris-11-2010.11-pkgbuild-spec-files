@@ -9,7 +9,7 @@
 
 #%define src_version 2009.07.09
 #extract example: 2009.07.09
-%define src_version %( wget  -O - "http://www.live555.com/liveMedia/public" 2>/dev/null  | egrep -i "<a href.*live\.[0-9]{4}" | sed -e 's,^.*href=\"live\.,,' -e 's,\.tar\.gz\">.*,,' )
+%define src_version %( wget  -O - "http://www.live555.com/liveMedia/public" 2>/dev/null  | /usr/xpg4/bin/egrep -i "<a href.*live\.[0-9]{4}" | sed -e 's,^.*href=\"live\.,,' -e 's,\.tar\.gz\">.*,,' )
 
 #remove leading zero(s) from version-string for IPS compat
 #version example: 2009.7.9
@@ -28,6 +28,7 @@ BuildRoot:               %{_tmppath}/%{name}-%{src_version}-build
 %include default-depend.inc
 
 BuildRequires: SUNWwgetu
+BuildRequires: SUNWxcu4
 
 %prep
 %setup -q -n live
@@ -58,6 +59,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/*
 
 %changelog
+* Thr Sep 17 2009 - Thomas Wagner
+- use /usr/xpg4/bin/egrep and set BuildRequire SUNWxcu4
 * Sat Aug 08 2009 - Thomas Wagner
 - external wget-fetch to extract downloadversion and calculate package version
   number with leading zero(s) removed
