@@ -1,0 +1,30 @@
+commit ba708f32a09f1d230cbb88c873ce85977de65e32
+Author: Halton Huo <halton.huo@sun.com>
+Date:   Fri Sep 18 11:37:16 2009 +0800
+
+    Add --libtool to allow build pass. Closes #595534.
+
+diff --git a/champlain-gtk/Makefile.am b/champlain-gtk/Makefile.am
+index 0a64f5c..9e2a5c3 100644
+--- a/champlain-gtk/Makefile.am
++++ b/champlain-gtk/Makefile.am
+@@ -49,6 +49,7 @@ GtkChamplain-0.4.gir: $(INTROSPECTION_SCANNER) libchamplain-gtk-0.4.la
+ 	--include=Clutter-1.0 \
+ 	--include=Gtk-2.0 \
+ 	--library=champlain-gtk-0.4 \
++	--libtool="$(LIBTOOL)" \
+ 	--output $@ \
+ 	--pkg gobject-2.0 \
+ 	--pkg gtk+-2.0 \
+diff --git a/champlain/Makefile.am b/champlain/Makefile.am
+index 26ae16e..4ac1cfe 100644
+--- a/champlain/Makefile.am
++++ b/champlain/Makefile.am
+@@ -170,6 +170,7 @@ Champlain-0.4.gir: $(INTROSPECTION_SCANNER) libchamplain-0.4.la
+ 	--include=Clutter-1.0 \
+ 	--include=Gtk-2.0 \
+ 	--library=champlain-0.4 \
++	--libtool="$(LIBTOOL)" \
+ 	--output $@ \
+ 	--pkg gobject-2.0 \
+ 	--pkg gtk+-2.0 \

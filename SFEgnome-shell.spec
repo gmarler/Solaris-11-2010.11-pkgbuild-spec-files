@@ -9,7 +9,7 @@
 %include Solaris.inc
 Name:                    SFEgnome-shell
 Summary:                 GNOME Shell
-Version:                 2.27.2
+Version:                 2.27.3
 Source:                  http://ftp.gnome.org/pub/GNOME/sources/gnome-shell/2.27/gnome-shell-%{version}.tar.bz2
 Source1:                 shell.desktop
 
@@ -131,6 +131,8 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 %endif
 
 %changelog
+* Wed Sep 16 2009 - Halton Huo <halton.huo@sun.com>
+- Bump to 2.27.3.
 * Sat Sep 05 2009 - Brian Cameron  <brian.cameron@sun.com>
 - Bump to 2.27.2.
 * Wed Aug 05 2009 - Brian Cameron  <brian.cameron@sun.com>

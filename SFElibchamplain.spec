@@ -20,10 +20,10 @@ Version:            %{libchamplain.version}
 SUNW_BaseDir:       %{_basedir}
 BuildRoot:          %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
-Requires:           SFEclutter-1-0-devel
-BuildRequires:      SFEclutter-1-0-devel
-Requires:           SFEclutter-gtk-0-10
-BuildRequires:      SFEclutter-gtk-0-10-devel
+Requires:           SUNWclutter
+BuildRequires:      SUNWclutter-devel
+Requires:           SUNWclutter-gtk
+BuildRequires:      SUNWclutter-gtk-devel
 
 %package devel
 Summary:       %{summary} - development files

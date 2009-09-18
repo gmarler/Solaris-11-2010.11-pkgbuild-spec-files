@@ -1,3 +1,18 @@
+2009-09-18  Halton Huo  <halton.huo@sun.com>
+
+	* SFEclutter-1-0.spec: remove since spec-files have this version
+	* SFEclutter-cairo.spec: remove since spec-files have this version
+	* SFEclutter-gst.spec: remove since spec-files have this version
+	* SFEclutter-gtk-0-10.spec: remove since spec-files have this version
+	* SFEclutter-gtk.spec: remove since spec-files have this version
+	* SFEclutter.spec: remove since spec-files have this version
+	* SFEgnome-shell.spec: Bump to 2.27.3
+	* SFElibchamplain.spec: Update dependencies to SUNWclutter
+	* SFEmutter.spec: Update dependencies to SUNWclutter
+	* base-specs/libchamplain.spec: Bump to 0.4.0
+	* patches/libchamplain-01-clutter-1-0.diff: remove upstreamed patch
+	* patches/libchamplain-01-libtool.diff: add to fix bugzilla #595534
+
 2009-09-17  Albert Lee  <trisk@opensolaris.org>
 
 	* patches/wildmidi-01-solaris.diff: Remove old Studio fix
@@ -9,9 +24,9 @@
 
 2009-09-16  Thomas Wagner  <tom68@users.sourceforge.net>
 
-        * twoolame.spec, lame.spec, SFElame.spec, SFEmplayer.spec: force gcc3 as default (again) and add switch --with-gcc4 as optional compiler
-          use like this: pkgtool --with-gcc4 build SFElame.spec
-        * SFElibdvdread.spec: adjust %files permisison for /usr/share
+	* twoolame.spec, lame.spec, SFElame.spec, SFEmplayer.spec: force gcc3 as default (again) and add switch --with-gcc4 as optional compiler
+	  use like this: pkgtool --with-gcc4 build SFElame.spec
+	* SFElibdvdread.spec: adjust %files permisison for /usr/share
 
 2009-09-15  Brian Cameron  <brian.cameron@sun.com>
 
