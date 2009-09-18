@@ -1,3 +1,11 @@
+2009-09-18  Milan Jurik <sfnet@xylab.cz>
+
+	* experimental/SFElives.spec: Intial version, only sox output works now
+	* patches/lives-01-fionread.diff: Missing sys/filio.h
+	* patches/lives-02-w_memcpy.diff: Compilation problem of ?:
+	* patches/lives-03-defines.diff: Missing defines around Linux specific
+	* patches/lives-04-inline.diff: inline functions not in object files
+
 2009-09-18  Halton Huo  <halton.huo@sun.com>
 
 	* SFEclutter-1-0.spec: remove since spec-files have this version

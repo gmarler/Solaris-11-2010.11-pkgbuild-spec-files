@@ -1,0 +1,25 @@
+--- lives-1.0.0/libOSC/OSC-receive.c	Wed Nov 10 00:20:09 2004
++++ lives-1.0.0-patch/libOSC/OSC-receive.c	Fri Aug 21 12:56:36 2009
+@@ -58,6 +58,9 @@
+ #include <stdio.h>
+ #endif
+ 
++#if defined(__sun)
++#include <sys/filio.h>
++#endif
+ 
+ 
+ struct {
+--- lives-1.0.0/src/htmsocket.c	Fri Jul 11 08:02:34 2008
++++ lives-1.0.0-patch/src/htmsocket.c	Fri Aug 21 13:08:28 2009
+@@ -12,6 +12,10 @@
+ #include <sys/socket.h>
+ #include <sys/ioctl.h>
+ 
++#if defined(__sun)
++#include <sys/filio.h>
++#endif
++
+ #include "main.h"
+ #include "support.h"
+ 
