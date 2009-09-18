@@ -49,7 +49,7 @@ BuildRequires: SUNWPython
 BuildRequires: SUNWPython-extra
 BuildRequires: SUNWbzip
 BuildRequires: SUNWgtk-doc
-BuildRequires: SUNWgnome-xml 
+BuildRequires: SUNWgnome-xml-share 
 Requires: SUNWgnome-libs
 BuildRequires: SUNWgnome-libs-devel
 Requires: SUNWgnome-base-libs
