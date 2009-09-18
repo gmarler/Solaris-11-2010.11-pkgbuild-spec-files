@@ -5,6 +5,8 @@
 	* patches/lives-02-w_memcpy.diff: Compilation problem of ?:
 	* patches/lives-03-defines.diff: Missing defines around Linux specific
 	* patches/lives-04-inline.diff: inline functions not in object files
+	* encumbered/SFEgnome-media-extras.spec: SUNWgtk-doc and SUNWgnome-xml
+	  as build dependencies
 
 2009-09-18  Halton Huo  <halton.huo@sun.com>
 

@@ -48,6 +48,8 @@ BuildRequires: SUNWbison
 BuildRequires: SUNWPython
 BuildRequires: SUNWPython-extra
 BuildRequires: SUNWbzip
+BuildRequires: SUNWgtk-doc
+BuildRequires: SUNWgnome-xml 
 Requires: SUNWgnome-libs
 BuildRequires: SUNWgnome-libs-devel
 Requires: SUNWgnome-base-libs
@@ -238,6 +240,8 @@ rm -rf $RPM_BUILD_ROOT
 %attr (-, root, other) %{_datadir}/locale
 %endif
 %changelog
+* Fri Sep 18 2009 Milan Jurik
+- SUNWgtk-doc and SUNWgnome-xml as build dependencies
 * Wed Sep 02 2009 Albert Lee <trisk@forkgnu.org>
 - Remove SUNWtheora dependency
 - Add SUNWopensslr and SUNWopenssl-include dependencies for apexsink.
