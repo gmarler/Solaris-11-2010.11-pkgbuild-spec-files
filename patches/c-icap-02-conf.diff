@@ -1,0 +1,22 @@
+--- c_icap-060708rc3/c-icap.conf.in	Mon Jun 29 22:43:25 2009
++++ c_icap-060708rc3-patch/c-icap.conf.in	Sat Sep 19 18:53:03 2009
+@@ -19,7 +19,7 @@
+ 
+ 
+ Port 1344 
+-User wwwrun
++User nobody
+ Group nobody
+ 
+ 
+@@ -29,8 +29,8 @@
+ TmpDir /var/tmp
+ MaxMemObject 131072
+ 
+-ServerLog @prefix@/var/log/server.log
+-AccessLog @prefix@/var/log/access.log
++ServerLog /var/log/server.log
++AccessLog /var/log/access.log
+ #DebugLevel 3
+ 
+ ModulesDir @prefix@/lib/c_icap

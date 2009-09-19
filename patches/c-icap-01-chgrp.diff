@@ -1,0 +1,12 @@
+--- c_icap-060708rc3/Makefile.in	Mon Jun 29 22:45:40 2009
++++ c_icap-060708rc3-patch/Makefile.in	Sat Sep 19 16:04:50 2009
+@@ -1306,9 +1306,7 @@
+ 	if test ! -f $(DESTDIR)$(CONFIGDIR)/c-icap.magic; then $(INSTALL) c-icap.magic $(DESTDIR)$(CONFIGDIR)/c-icap.magic; fi
+ 	$(mkinstalldirs)  $(DESTDIR)$(LOGDIR); 
+ 	$(mkinstalldirs)  $(DESTDIR)$(SOCKDIR);
+-	chgrp nobody $(DESTDIR)$(LOGDIR)
+ 	chmod 775 $(DESTDIR)$(LOGDIR)
+-	chgrp nobody $(DESTDIR)$(SOCKDIR)
+ 	chmod 775 $(DESTDIR)$(SOCKDIR)
+ # Tell versions [3.59,3.63) of GNU make to not export all variables.
+ # Otherwise a system limit (for SysV at least) may be exceeded.

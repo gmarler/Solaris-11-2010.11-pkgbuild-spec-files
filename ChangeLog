@@ -1,3 +1,11 @@
+2009-09-19  Milan Jurik <sfnet@xylab.cz>
+
+	* SFEclamav.spec: update to 0.95.2
+	* SFEc-icap.spec: Initial spec
+	* patches/c-icap-01-chgrp.diff: now chgrp during build
+	* patches/c-icap-02-conf.diff: minor changes to default config
+	* ext-sources/c-icap.xml: basic SMF manifest
+
 2009-09-18  Milan Jurik <sfnet@xylab.cz>
 
 	* experimental/SFElives.spec: Intial version, only sox output works now
