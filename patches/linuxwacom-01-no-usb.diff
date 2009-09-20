@@ -1,6 +1,18 @@
---- linuxwacom-0.8.2.orig/src/xdrv/xf86Wacom.c	2008-12-01 19:24:20.000000000 -0500
-+++ linuxwacom-0.8.2/src/xdrv/xf86Wacom.c	2008-12-15 23:56:32.183763644 -0500
-@@ -925,7 +925,9 @@
+--- linuxwacom-0.8.4-2.orig/src/xdrv/xf86Wacom.c	2009-09-16 15:54:04.000000000 -0400
++++ linuxwacom-0.8.4-2/src/xdrv/xf86Wacom.c	2009-09-20 15:24:01.299896648 -0400
+@@ -984,7 +984,11 @@
+ 	/* while there are whole packets present, check the packet length
+ 	 * for serial ISDv4 packet since it's different for pen and touch
+ 	 */
++#ifdef WCM_ENABLE_LINUXINPUT
+ 	if (common->wcmForceDevice == DEVICE_ISDV4 && common->wcmDevCls != &gWacomUSBDevice) 
++#else
++	if (common->wcmForceDevice == DEVICE_ISDV4)
++#endif
+ 	{
+ 		common->wcmPktLength = 9;
+ 		data = common->buffer;
+@@ -1008,7 +1012,9 @@
  		}
  		pos += cnt;
  
@@ -8,5 +20,5 @@
  		if (common->wcmDevCls != &gWacomUSBDevice) 
 +#endif
  		{
- 			common->wcmPktLength = 9;
  			data = common->buffer + pos;
+ 			if ( data[0] & 0x18 )

@@ -16,6 +16,7 @@
 Name:                   SFExorg-input-synaptics
 Summary:                %{synaptics.summary}
 Version:                %{synaptics.version}
+License:                MIT
 SUNW_BaseDir:           %{_basedir}
 BuildRoot:              %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -82,6 +83,12 @@ rm -rf $RPM_BUILD_ROOT
 %{_prefix}/X11/share/man/man1/*
 %dir %attr (0755, root, bin) %{_prefix}/X11/share/man/man7
 %{_prefix}/X11/share/man/man7/*
+%dir %attr (0755, root, other) %{_datadir}
+%dir %attr (0755, root, sys) %{_datadir}/hal
+%dir %attr (0755, root, sys) %{_datadir}/hal/fdi
+%dir %attr (0755, root, sys) %{_datadir}/hal/fdi/policy
+%dir %attr (0755, root, sys) %{_datadir}/hal/fdi/policy/20thirdparty
+%{_datadir}/hal/fdi/policy/20thirdparty/*
 
 %files devel
 %defattr (-, root, bin)
@@ -93,5 +100,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*
 
 %changelog
+* Sun Sep 20 2009 - Albert Lee <trisk@opensolaris.org>
+- Add fdi file
 * Mon Mar 02 2009 - Albert Lee
 - Initial spec

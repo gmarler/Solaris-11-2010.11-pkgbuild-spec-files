@@ -1,0 +1,13 @@
+--- xf86-input-synaptics-1.1.3.orig/src/ps2comm.c	Sun Aug  2 21:04:24 2009
++++ xf86-input-synaptics-1.1.3/src/ps2comm.c	Sun Sep 20 14:33:48 2009
+@@ -399,7 +399,10 @@
+ 	    break;
+     }
+ 
++    /* xf86WaitForInput() loops select() with EINTR on Solaris */
++    #if !(defined(__sun) && defined(__SVR4))
+     xf86WaitForInput(fd, 20000);
++    #endif
+     xf86FlushInput(fd);
+     if (ps2_synaptics_identify(fd, &synhw)) {
+ 	return TRUE;
