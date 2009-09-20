@@ -92,7 +92,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, bin) %{_prefix}/X11/share/man
 %dir %attr (0755, root, bin) %{_prefix}/X11/share/man/man4
 %{_prefix}/X11/share/man/man4/*
-%dir %attr (0755, root, other) %{_datadir}
+%dir %attr (0755, root, sys) %{_datadir}
 %dir %attr (0755, root, sys) %{_datadir}/hal
 %dir %attr (0755, root, sys) %{_datadir}/hal/fdi
 %dir %attr (0755, root, sys) %{_datadir}/hal/fdi/policy
@@ -106,6 +106,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_prefix}/X11/include/*
 
 %changelog
+* Sun Sep 20 2009 - Albert Lee <trisk@opensolaris.org>
+- Fix %{_datadir} ownership
 * Sun Sep 20 2009 - Albert Lee <trisk@opensolaris.org>
 - Add fdi file
 - Add hal-setup-wacom

@@ -1,5 +1,10 @@
 2009-09-20  Albert Lee  <trisk@opensolaris.org>
 
+	* SFExorg-input-synaptics.spec, SFExorg-input-wacom.spec: Fix
+	  %{_datadir} ownership
+
+2009-09-20  Albert Lee  <trisk@opensolaris.org>
+
 	* SFExorg-input-synaptics.spec: Add fdi file
 	* SFExorg-input-wacom.spec: Add fdi file. Add hal-setup-wacom.
 	* base-specs/linuxwacom.spec: Bump to 0.8.4-2. Update X prefix path
