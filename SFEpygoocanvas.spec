@@ -21,13 +21,9 @@ BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 
 BuildRequires: SUNWPython-devel
 BuildRequires: SUNWgnome-python-libs-devel
-BuildRequires: SUNWPython26-devel
-BuildRequires: SUNWgnome-python26-libs-devel
 BuildRequires: SFEgoocanvas-devel
 Requires: SUNWPython
 Requires: SUNWgnome-python-libs
-Requires: SUNWPython26
-Requires: SUNWgnome-python26-libs
 Requires: SFEgoocanvas
 
 %package devel
@@ -46,6 +42,7 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
      CPUS=1
 fi
 
+export PYTHON=/usr/bin/python%{python_version}
 export CFLAGS="%optflags"
 export LDFLAGS="%_ldflags"
 

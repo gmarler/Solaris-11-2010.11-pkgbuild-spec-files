@@ -11,7 +11,7 @@
 Name:           goocanvas
 License:        LGPL
 Group:          System/Libraries
-Version:        0.14
+Version:        0.15
 Release:        1
 Distribution:   Java Desktop System
 Vendor:         Sun Microsystems, Inc.
@@ -108,6 +108,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*.pc
 
 %changelog
+* Wed Sep 23 2009 - brian.cameron@sun.com
+- Bump to 0.15.
 * Fri Apr 24 2009 - brian.cameron@sun.com
 - Bump to 0.14.
 * Wed Sep 10 2008 - halton.huo@sun.com

@@ -11,20 +11,23 @@
 Name:                    SFEpitivi
 Summary:                 Non-Linear video editor
 URL:                     http://ftp.gnome.org/pub/GNOME/sources/pitivi
-Version:                 0.13.1
+Version:                 0.13.3
 Source:                  http://ftp.gnome.org/pub/GNOME/sources/pitivi/0.13/pitivi-%{version}.tar.bz2
 Patch1:                  pitivi-01-solaris.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
-BuildRequires:           SUNWgnome-python26-extras
-BuildRequires:           SUNWgst-python26
-BuildRequires:           SFEgnonlin
+Requires:                SUNWPython26-devel
+BuildRequires:           SUNWgnome-python26-extras-devel
+BuildRequires:           SUNWgst-python26-devel
+Requires:                SFEpy26goocanvas-devel
+BuildRequires:           SUNWgnonlin-devel
+Requires:                SUNWPython26
 Requires:                SUNWgnome-python26-extras
 Requires:                SUNWgst-python26
 Requires:                SUNWpython26-setuptools
 Requires:                SUNWpython26-zope-interface
 Requires:                SFEpy26goocanvas
-Requires:                SFEgnonlin
+Requires:                SUNWgnonlin
 
 %include default-depend.inc
 
@@ -87,11 +90,12 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, other) %{_datadir}/icons/hicolor/48x48/
 %dir %attr (0755, root, other) %{_datadir}/icons/hicolor/48x48/apps/
 %{_datadir}/icons/hicolor/48x48/apps/*
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/scalable/
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/scalable/apps/
+%{_datadir}/icons/hicolor/scalable/apps/*
 %dir %attr (-, root, root) %{_datadir}/mime
 %attr (-, root, root) %{_datadir}/mime/*
 %{_datadir}/pitivi
-%dir %attr (0755, root, other) %{_datadir}/pixmaps
-%{_datadir}/pixmaps/*
 
 %if %build_l10n
 %files l10n
@@ -101,6 +105,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Wed Sep 23 2009 - brian.cameron@sun.com
+- Bump to 0.13.3.
 * Mon Jun 08 2009 - brian.cameron@sun.com
 - Bump to 0.13.1.  Update packaging.
 * Thu Mar 19 2009 - brian.cameron@sun.com

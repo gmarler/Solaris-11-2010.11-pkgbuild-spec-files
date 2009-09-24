@@ -1,3 +1,10 @@
+2009-09-23  Brian Cameron  <brian.cameron@sun.com>
+
+	* SFEpy26goocanvas.spec: Bump to 0.14.1.
+	* SFEpygoocanvas.spec: Clean up.
+	* base-specs/goocanvas.spec: Bump to 0.15.
+	* SFEpitivi.spec: Bump to 0.13.3.
+
 2009-09-20  Albert Lee  <trisk@opensolaris.org>
 
 	* SFExorg-input-synaptics.spec, SFExorg-input-wacom.spec: Fix
@@ -63,7 +70,8 @@
 
 2009-09-16  Thomas Wagner  <tom68@users.sourceforge.net>
 
-	* twoolame.spec, lame.spec, SFElame.spec, SFEmplayer.spec: force gcc3 as default (again) and add switch --with-gcc4 as optional compiler
+	* twoolame.spec, lame.spec, SFElame.spec, SFEmplayer.spec: force gcc3
+	  as default (again) and add switch --with-gcc4 as optional compiler
 	  use like this: pkgtool --with-gcc4 build SFElame.spec
 	* SFElibdvdread.spec: adjust %files permisison for /usr/share
 

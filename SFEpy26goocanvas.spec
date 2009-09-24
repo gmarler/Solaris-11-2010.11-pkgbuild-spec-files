@@ -13,15 +13,17 @@
 Name:                SFEpy26goocanvas
 URL:                 http://developer.berlios.de/projects/pygoocanvas/
 Summary:             pygoocanvas - GooCanvas python 2.6 bindings
-Version:             0.10.0
-Source:              http://download.berlios.de/%{src_name}/%{src_name}-%{version}.tar.gz
+Version:             0.14.1
+Source:		     http://download.gnome.org/sources/%{src_name}/0.14/%{src_name}-%{version}.tar.bz2
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 
-BuildRequires: SUNWPython-devel
+BuildRequires: SUNWPython26-devel
+BuildRequires: SUNWgnome-python26-libs-devel
 BuildRequires: SFEgoocanvas-devel
-Requires: SUNWPython
+Requires: SUNWPython26
+Requires: SUNWgnome-python26-libs
 Requires: SFEgoocanvas
 
 %package devel
@@ -77,8 +79,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-doc
 %endif
 
-
 %changelog
+* Wed Sep 23 2009 - brian.cameron@sun.com
+- Bump to 0.14.1.
 * Tue May 13 2008 - nonsea@users.sourceforge.net
 - Bump to 0.10
 - Update %files
