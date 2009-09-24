@@ -10,8 +10,8 @@
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 # Software specific variable definitions
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
-%define src_name	e16-0
-%define src_version	16.8.15
+%define src_name	e16-1
+%define src_version	0.1
 %define pkg_release	1
 # %{_topdir} is by default set to RPM_BUILD_ROOT
 # Default path for RPM_BUILD_ROOT is /var/tmp/pkgbuild-{username}
@@ -33,7 +33,7 @@ License:      	GPLv2
 Group:          User Interface/Desktops
 Source:         %{sf_download}/enlightenment/%{src_name}.%{version}.tar.gz
 # Reported as bug #199
-Patch1:         enlightenment-01-bourneshell.diff
+Patch1:         enlightenment-01-audiofile.diff
 Vendor:       	Refer URL
 URL:            http://enlightenment.org
 Packager:     	SFE
@@ -70,8 +70,9 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
      CPUS=1
 fi
 
-./configure --prefix=%{_prefix}            
-
+aclocal $ACLOCAL_FLAGS -I ./m4
+automake -a -c -f
+./configure --prefix=%{_prefix} --mandir=%{_mandir}
 make -j$CPUS
 
 %install
@@ -94,6 +95,9 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, bin) %{_bindir}
 %{_bindir}/*
 
+%dir %attr (0755, root, bin) %{_libdir}
+%{_libdir}/e16/*
+
 %defattr(-,root,bin)
 %dir %attr (0755, root, bin) /usr/dt
 %dir %attr (0755, root, bin) /usr/dt/config
@@ -106,13 +110,18 @@ rm -rf $RPM_BUILD_ROOT
 
 %dir %attr (0755, root, sys) %{_datadir}
 %attr (-, root, other) %{_datadir}/locale
+%dir %attr (0755, root, other) %{_datadir}/applications
+%{_datadir}/applications/*
+%dir %attr (0755, root, other) %{_datadir}/doc
+%{_datadir}/doc/e16/*
 %{_datadir}/e16/*
 %{_datadir}/xsessions/*
-
-%dir %attr (0755, root, bin) %{_libdir}
-%{_libdir}/e16/*
+%dir %attr(0755, root, bin) %{_mandir}
+%dir %attr(0755, root, bin) %{_mandir}/*
 
 %changelog
+* Thu Sep 24 2009 - brian.cameron@sun.com
+- Bump to 1.0.1.
 * Thu Jan 15 2008 - brian.cameron@sun.com
 - Remove .la files from libdir.
 * Sat Jan 10 2008 - brian.cameron@sun.com

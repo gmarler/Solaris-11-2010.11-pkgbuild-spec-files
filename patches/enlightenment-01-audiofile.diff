@@ -1,0 +1,11 @@
+--- e16-1.0.1/src/Makefile.am-orig	2009-09-24 01:16:41.538779496 -0500
++++ e16-1.0.1/src/Makefile.am	2009-09-24 01:16:54.512623183 -0500
+@@ -140,7 +140,7 @@ LDADD = \
+ 	$(X_EXTRA_LIBS)		\
+ 	$(E_X_LIBS)		\
+ 	$(DBUS_LIBS)		\
+-	-lX11 -lm
++	-lX11 -lm -laudiofile
+ 
+ if BUILD_MODULES
+ 
