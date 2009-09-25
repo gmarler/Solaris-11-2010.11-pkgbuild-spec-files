@@ -1,3 +1,8 @@
+2009-09-25  Albert Lee  <trisk@opensolaris.org>
+
+	* SFEid3lib-gnu.spec: Add patch3. Update build system.
+	* patches/id3lib-03-gcc4.diff: Fix gcc4 compat.
+
 2009-09-23  Brian Cameron  <brian.cameron@sun.com>
 
 	* SFEenlightenment.spec: Bump to 1.0.1.
