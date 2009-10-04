@@ -85,8 +85,11 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, other) %{_cxx_libdir}/pkgconfig
 %{_cxx_libdir}/pkgconfig/*
 %{_cxx_libdir}/glibmm*
+%{_cxx_libdir}/giomm*
 
 %changelog
+* Fri Sep 25 2009 - jchoi42@pha.jhu.edu
+- specified giomm dir in %files section
 * Sun Jun 29 2008 - river@wikimedia.org
 - force to use gcc in /usr/sfw, not /usr/gnu
 * Wed Apr 23 2008 - laca@sun.com

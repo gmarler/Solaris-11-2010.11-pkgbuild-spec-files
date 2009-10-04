@@ -66,6 +66,7 @@ export PKG_CONFIG_PATH="%{_cxx_libdir}/pkgconfig"
 %gtkmm.build -d %name-%version
 
 %install
+rm -rf $RPM_BUILD_ROOT
 %gtkmm.install -d %name-%version
 
 # Move demo to demo directory
@@ -80,7 +81,7 @@ rm -r $RPM_BUILD_ROOT%{_datadir}
 rm -r $RPM_BUILD_ROOT%{_includedir}
 
 %clean
-#rm -rf $RPM_BUILD_ROOT
+rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr (-, root, bin)
@@ -101,5 +102,7 @@ rm -r $RPM_BUILD_ROOT%{_includedir}
 
 
 %changelog
+* Thu Oct 4 2009 - jchoi42@pha.jhu.edu
+- added SFEpango dependency 
 * Wed Apr 23 2008 - laca@sun.com
 - create, re-work from SUNWgtkmm.spec to build with g++

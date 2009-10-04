@@ -1,3 +1,12 @@
+2009-10-4  James Choi  <jchoi42@pha.jhu.edu>
+
+        * SFEpangomm-gpp: Initial spec
+        * base-specs/pangomm.spec: Initial spec
+	* SFEglibmm-gpp.spec: specified giomm dir in %files section
+	* base-specs/glibmm.spec: Bump to 2.21.3
+	* SFEgtkmm-gpp.spec: added SFEpango dependency
+	* base-specs/gtkmm-gpp.spec: Bump to 2.17.2, remove depreciated patches
+
 2009-09-25  Albert Lee  <trisk@opensolaris.org>
 
 	* SFEid3lib-gnu.spec: Add patch3. Update build system.

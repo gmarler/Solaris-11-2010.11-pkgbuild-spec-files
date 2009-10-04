@@ -9,13 +9,13 @@
 Name:                    glibmm
 License:        	 LGPL
 Group:                   System/Libraries
-Version:                 2.14.2
+Version:                 2.21.3
 Release:                 1
 Distribution:            Java Desktop System
 Vendor:                  Sun Microsystems, Inc.
 Summary:                 glibmm - C++ Wrapper for the Glib2 Library
 URL:                     http://www.gtkmm.org/
-Source:                  http://ftp.gnome.org/pub/GNOME/sources/glibmm/2.14/%{name}-%{version}.tar.bz2
+Source:                  http://ftp.gnome.org/pub/GNOME/sources/glibmm/2.21/%{name}-%{version}.tar.bz2
 Patch1:                  glibmm-01-m4-macro.diff
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 BuildRequires:           libsigc++-devel >= 2.0.0
@@ -70,6 +70,8 @@ cp examples/thread/.libs/threadpool $RPM_BUILD_ROOT%{_datadir}/doc/glibmm-2.4/ex
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Fri Sep 25 2009 - jchoi42@pha.jhu.edu
+- Bump to 2.21.3
 * Mon Mar 31 2008 - damien.carbery@sun.com
 - Bump to 2.16.1.
 * Tue Mar 11 2008 - damien.carbery@sun.com
