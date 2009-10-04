@@ -96,9 +96,10 @@ else
   mkdir -p ${DESTDIR}/${LIBDIR}
   cp -pr ${BUILDDIR}/nls ${DESTDIR}/${LIBDIR}
   cp -pr include ${DESTDIR}
+  cp -p ${BUILDDIR}/include/config.h ${DESTDIR}/include/
 fi
 
-cp ${BUILDDIR}/lib/libstd.so.*.*.* ${DESTDIR}/${LIBDIR}
+cp ${BUILDDIR}/lib/libstd.so.*.*.* ${DEiles.STDIR}/${LIBDIR}
 ( cd ${DESTDIR}/${LIBDIR} && ln -s libstd.so.*.*.*  libstd.so )
 
 # GNU C++
@@ -114,6 +115,7 @@ else
   mkdir -p ${DESTDIR}/${LIBDIR}
   cp -pr ${BUILDDIR}/nls/* ${DESTDIR}/${LIBDIR}
   cp -pr include ${DESTDIR}
+  cp -p ${BUILDDIR}/include/config.h ${DESTDIR}/include/
 fi
 
 cp ${BUILDDIR}/lib/libstd.so.*.*.* ${DESTDIR}/${LIBDIR}
@@ -123,6 +125,8 @@ cp ${BUILDDIR}/lib/libstd.so.*.*.* ${DESTDIR}/${LIBDIR}
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Sun Oct 04 2009 - sobotkap@gmail.com
+- Added generated config file to be delivered.
 * Tue Sep  4 2007 - dougs@truemail.co.th
 - Added quicktime and system ffmpeg
 * Tue Sep  4 2007 - dougs@truemail.co.th

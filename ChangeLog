@@ -1,3 +1,7 @@
+2009-10-04  Petr Sobotka  <sobotkap@gmail.com>
+
+	* base-specs/stdcxx.spec: - Added generated config file to be delivered.
+
 2009-10-4  James Choi  <jchoi42@pha.jhu.edu>
 
         * SFEpangomm-gpp: Initial spec
