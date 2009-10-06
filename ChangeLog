@@ -1,3 +1,9 @@
+2009-10-06  Milan Jurik <sfnet@xylab.cz>
+
+	* base-specs/lame.spec: LDFLAGS for gcc are not valid, removed
+	                        xmmintrin.h hack removed, configure script
+	                        detects it correctly now
+
 2009-10-04  Petr Sobotka  <sobotkap@gmail.com>
 
 	* base-specs/stdcxx.spec: - Added generated config file to be delivered.
