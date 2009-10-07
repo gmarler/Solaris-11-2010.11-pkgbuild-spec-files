@@ -79,3 +79,37 @@
  
  #ifndef G_MODULE_EXPORT
  #define G_MODULE_EXPORT
+--- ctrlproxy-3.0.8.orig/lib/connection.c	2008-12-06 12:36:33.000000000 -0500
++++ ctrlproxy-3.0.8/lib/connection.c	2009-10-07 13:09:32.806701689 -0400
+@@ -671,12 +671,19 @@
+ 	return TRUE;
+ }
+ 
++#ifndef AF_LOCAL
++  #define AF_LOCAL AF_UNIX
++#endif
++#ifndef PF_LOCAL
++  #define PF_LOCAL PF_UNIX
++#endif
++
+ static pid_t piped_child(struct irc_network *s, char* const command[], int *f_in)
+ {
+ 	pid_t pid;
+ 	int sock[2];
+ 
+-	if (socketpair(PF_UNIX, SOCK_STREAM, AF_LOCAL, sock) == -1) {
++	if (socketpair(PF_LOCAL, SOCK_STREAM, AF_LOCAL, sock) == -1) {
+ 		network_log(LOG_ERROR, s, "socketpair: %s", strerror(errno));
+ 		return -1;
+ 	}
+--- ctrlproxy-3.0.8.orig/lib/state.c	Sat Dec  6 12:36:33 2008
++++ ctrlproxy-3.0.8/lib/state.c	Wed Oct  7 14:46:54 2009
+@@ -74,7 +74,7 @@
+ 	n->nick = g_strdup(nick);
+ 	
+ 	g_free(n->hostmask);
+-	n->hostmask = g_strdup_printf("%s!%s@%s", nick, n->username, n->hostname);
++	n->hostmask = g_strdup_printf("%s!%s@%s", nick, n->username ? n->username : "*", n->hostname ? n->hostname : "*");
+ 
+ 	return TRUE;
+ }

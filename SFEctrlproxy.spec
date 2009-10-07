@@ -5,6 +5,8 @@
 
 %include Solaris.inc
 
+%define SUNWglib2      %(/usr/bin/pkginfo -q SUNWglib2 && echo 1 || echo 0)
+
 Name:                SFEctrlproxy
 Summary:             ctrlproxy - Detachable IRC proxy
 Version:             3.0.8
@@ -16,7 +18,22 @@ License:             GPLv3
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
+%if %SUNWglib2
+BuildRequires: SUNWglib2-devel
+Requires: SUNWglib2
+%else
+BuildRequires: SUNWgnome-base-libs-devel
+Requires: SUNWgnome-base-libs-devel
+%endif
+BuildRequires: SUNWgnome-common-devel
+Requires: SUNWgss
+BuildRequires: SUNWgnutls-devel
+Requires: SUNWgnutls
+BuildRequires: SUNWlibgcrypt-devel
+Requires: SUNWlibgcrypt
+BuildRequires: SUNWlxsl
 
+Requires: %name-root
 
 %package devel
 Summary:                 %{summary} - development files
@@ -95,5 +112,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_sysconfdir}/*
 
 %changelog
+* Wed Oct 07 2009 - trisk@opensolaris.org
+- Update dependencies.
+- Add patch3.
 * Mon Oct 05 2009 - trisk@opensolaris.org
 - Initial spec.

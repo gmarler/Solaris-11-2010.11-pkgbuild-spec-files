@@ -1,5 +1,11 @@
 2009-10-07  Albert Lee  <trisk@opensolaris.org>
 
+	* SFEctrlproxy.spec: Update dependencies
+	* patches/ctrlproxy-01-solaris.diff: Add fixes for AF_LOCAL and printf
+	* patches/ctrlproxy-02-sunpro.diff: Update Makefile variables
+
+2009-10-07  Albert Lee  <trisk@opensolaris.org>
+
 	* SFEctrlproxy.spec: *NEW* ctrlproxy - Detachable IRC proxy
 	* patches/ctrlproxy-01-solaris.diff: Build fixes for Solaris
 	* patches/ctrlproxy-02-sunpro.diff: Build fixes for Studio
