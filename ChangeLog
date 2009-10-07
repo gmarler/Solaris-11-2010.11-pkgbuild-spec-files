@@ -1,3 +1,9 @@
+2009-10-07  Albert Lee  <trisk@opensolaris.org>
+
+	* SFEctrlproxy.spec: *NEW* ctrlproxy - Detachable IRC proxy
+	* patches/ctrlproxy-01-solaris.diff: Build fixes for Solaris
+	* patches/ctrlproxy-02-sunpro.diff: Build fixes for Studio
+
 2009-10-06  Milan Jurik <sfnet@xylab.cz>
 
 	* base-specs/lame.spec: LDFLAGS for gcc are not valid, removed
