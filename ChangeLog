@@ -1,3 +1,7 @@
+2009-10-08  Milan Jurik <sfnet@xylab.cz>
+
+	* SFEunbound.spec: update to 1.3.4
+
 2009-10-07  Albert Lee  <trisk@opensolaris.org>
 
 	* SFEctrlproxy.spec: Update dependencies
