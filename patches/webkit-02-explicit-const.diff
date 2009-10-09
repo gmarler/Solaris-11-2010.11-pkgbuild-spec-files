@@ -390,18 +390,6 @@ diff -Nrup webkit-1.1.6/WebCore/svg/SVGSVGElement.h webkit-new/WebCore/svg/SVGSV
  
          virtual void documentWillBecomeInactive();
          virtual void documentDidBecomeActive();
-diff -Nrup webkit-1.1.6/WebCore/svg/SVGStopElement.h webkit-new/WebCore/svg/SVGStopElement.h
---- webkit-1.1.6/WebCore/svg/SVGStopElement.h	2009-05-14 14:43:15.795773000 +0800
-+++ webkit-new/WebCore/svg/SVGStopElement.h	2009-05-14 14:43:40.436685000 +0800
-@@ -40,7 +40,7 @@ namespace WebCore {
-         virtual RenderObject* createRenderer(RenderArena*, RenderStyle*);
- 
-     private:
--        ANIMATED_PROPERTY_DECLARATIONS(SVGStopElement, SVGNames::stopTagString, SVGNames::offsetAttrString, float, Offset, offset)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGStopElement, (const char *)SVGNames::stopTagString, (const char *)SVGNames::offsetAttrString, float, Offset, offset)
-     };
- 
- } // namespace WebCore
 diff -Nrup webkit-1.1.6/WebCore/svg/SVGStyledElement.h webkit-new/WebCore/svg/SVGStyledElement.h
 --- webkit-1.1.6/WebCore/svg/SVGStyledElement.h	2009-05-14 14:43:15.767583000 +0800
 +++ webkit-new/WebCore/svg/SVGStyledElement.h	2009-05-14 14:43:40.439916000 +0800

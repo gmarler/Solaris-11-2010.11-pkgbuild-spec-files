@@ -1,0 +1,115 @@
+--- webkit-1.1.14.orig/WebCore/css/CSSComputedStyleDeclaration.cpp	Sat Aug 22 05:08:22 2009
++++ WebKit-1.1.14/WebCore/css/CSSComputedStyleDeclaration.cpp	Fri Sep 11 19:57:50 2009
+@@ -275,8 +275,8 @@
+         RefPtr<CSSPrimitiveValue> x = CSSPrimitiveValue::create(s->x, CSSPrimitiveValue::CSS_PX);
+         RefPtr<CSSPrimitiveValue> y = CSSPrimitiveValue::create(s->y, CSSPrimitiveValue::CSS_PX);
+         RefPtr<CSSPrimitiveValue> blur = CSSPrimitiveValue::create(s->blur, CSSPrimitiveValue::CSS_PX);
+-        RefPtr<CSSPrimitiveValue> spread = propertyID == CSSPropertyTextShadow ? 0 : CSSPrimitiveValue::create(s->spread, CSSPrimitiveValue::CSS_PX);
+-        RefPtr<CSSPrimitiveValue> style = propertyID == CSSPropertyTextShadow || s->style == Normal ? 0 : CSSPrimitiveValue::createIdentifier(CSSValueInset);
++        RefPtr<CSSPrimitiveValue> spread = propertyID == CSSPropertyTextShadow ? (WTF::PassRefPtr<WebCore::CSSPrimitiveValue>) 0 : CSSPrimitiveValue::create(s->spread, CSSPrimitiveValue::CSS_PX);
++        RefPtr<CSSPrimitiveValue> style = propertyID == CSSPropertyTextShadow || s->style == Normal ?(WTF::PassRefPtr<WebCore::CSSPrimitiveValue>) 0 : CSSPrimitiveValue::createIdentifier(CSSValueInset);
+         RefPtr<CSSPrimitiveValue> color = CSSPrimitiveValue::createColor(s->color.rgb());
+         list->prepend(ShadowValue::create(x.release(), y.release(), blur.release(), spread.release(), style.release(), color.release()));
+     }
+--- webkit-1.1.14.orig/JavaScriptCore/parser/NodeConstructors.h Mon Aug 24 05:23:48 2009
++++ webkit-1.1.14/JavaScriptCore/parser/NodeConstructors.h	Mon Sep 14 17:35:01 2009
+@@ -25,6 +25,8 @@
+ #include "Lexer.h"
+ #include "Parser.h"
+
++#define inline
++
+ namespace JSC {
+
+     inline void* ParserArenaFreeable::operator new(size_t size, JSGlobalData* globalData)
+@@ -905,4 +907,6 @@
+
+ } // namespace JSC
+
++#undef inline
++
+ #endif // NodeConstructors_h
+
+--- webkit-1.1.14.orig/JavaScriptCore/wtf/Threading.h	Fri Sep  4 20:30:57 2009
++++ webkit-1.1.14/JavaScriptCore/wtf/Threading.h	Wed Sep 16 14:37:59 2009
+@@ -61,6 +61,8 @@
+ 
+ #include "Platform.h"
+ 
++#include "atomic.h"
++
+ #if PLATFORM(WINCE)
+ #include <windows.h>
+ #endif
+@@ -236,6 +238,9 @@
+ 
+ #endif
+ 
++inline int atomicIncrement(int volatile* addend) { return atomic_inc_32_nv(reinterpret_cast<unsigned int volatile*>(addend)); }
++inline int atomicDecrement(int volatile* addend) { return atomic_dec_32_nv(reinterpret_cast<unsigned int volatile*>(addend)); }
++
+ class ThreadSafeSharedBase : public Noncopyable {
+ public:
+     ThreadSafeSharedBase(int initialRefCount = 1)
+--- webkit-1.1.14/WebCore/loader/DocumentLoader.h.orig	Wed Sep 16 18:50:45 2009
++++ webkit-1.1.14/WebCore/loader/DocumentLoader.h	Wed Sep 16 18:51:50 2009
+@@ -163,7 +163,7 @@
+         String clientRedirectDestinationForHistory() const { return urlForHistory(); }
+         void setClientRedirectSourceForHistory(const String& clientedirectSourceForHistory) { m_clientRedirectSourceForHistory = clientedirectSourceForHistory; }
+         
+-        String serverRedirectSourceForHistory() const { return urlForHistory() == url() ? (KURL)String() : urlForHistory(); } // null if no server redirect occurred.
++        String serverRedirectSourceForHistory() const { return urlForHistory() == url() ? KURL() : urlForHistory(); } // null if no server redirect occurred.
+         String serverRedirectDestinationForHistory() const { return url(); }
+ 
+         bool didCreateGlobalHistoryEntry() const { return m_didCreateGlobalHistoryEntry; }
+--- webkit-1.1.14.orig/WebCore/loader/FrameLoader.cpp.orig	2009-09-17 14:02:29.082150000 +0800
++++ webkit-1.1.14/WebCore/loader/FrameLoader.cpp	2009-09-17 14:03:35.292144000 +0800
+@@ -2326,7 +2326,7 @@
+     m_loadType = FrameLoadTypeStandard;
+     RefPtr<DocumentLoader> loader = m_client->createDocumentLoader(request, substituteData);
+     if (lockHistory && m_documentLoader)
+-        loader->setClientRedirectSourceForHistory(m_documentLoader->didCreateGlobalHistoryEntry() ? m_documentLoader->urlForHistory() : (KURL)m_documentLoader->clientRedirectSourceForHistory());
++        loader->setClientRedirectSourceForHistory(m_documentLoader->didCreateGlobalHistoryEntry() ? (String)m_documentLoader->urlForHistory() : m_documentLoader->clientRedirectSourceForHistory());
+     load(loader.get());
+ }
+ 
+@@ -2350,7 +2350,7 @@
+ {
+     RefPtr<DocumentLoader> loader = m_client->createDocumentLoader(request, SubstituteData());
+     if (lockHistory && m_documentLoader)
+-        loader->setClientRedirectSourceForHistory(m_documentLoader->didCreateGlobalHistoryEntry() ? m_documentLoader->urlForHistory() : (KURL)m_documentLoader->clientRedirectSourceForHistory());
++        loader->setClientRedirectSourceForHistory(m_documentLoader->didCreateGlobalHistoryEntry() ? (String)m_documentLoader->urlForHistory() : m_documentLoader->clientRedirectSourceForHistory());
+ 
+     loader->setTriggeringAction(action);
+     if (m_documentLoader)
+--- webkit-1.1.14.orig/WebCore/platform/gtk/PopupMenuGtk.cpp	Mon Jun  8 19:57:09 2009
++++ webkit-1.1.14/WebCore/platform/gtk/PopupMenuGtk.cpp	Mon Sep 21 13:58:35 2009
+@@ -57,7 +57,7 @@
+         g_object_ref_sink(G_OBJECT(m_popup));
+         g_signal_connect(m_popup, "unmap", G_CALLBACK(menuUnmapped), this);
+     } else
+-        gtk_container_foreach(GTK_CONTAINER(m_popup), reinterpret_cast<GtkCallback>(menuRemoveItem), this);
++        gtk_container_foreach(GTK_CONTAINER(m_popup), (GtkCallback)(menuRemoveItem), this);
+ 
+     int x, y;
+     gdk_window_get_origin(GTK_WIDGET(view->hostWindow()->platformWindow())->window, &x, &y);
+@@ -108,7 +108,7 @@
+         // Center vertically the empty popup in the combo box area
+         m_menuPosition.setY(m_menuPosition.y() - rect.height() / 2);
+ 
+-    gtk_menu_popup(m_popup, NULL, NULL, reinterpret_cast<GtkMenuPositionFunc>(menuPositionFunction), this, 0, gtk_get_current_event_time());
++    gtk_menu_popup(m_popup, NULL, NULL, (GtkMenuPositionFunc)(menuPositionFunction), this, 0, gtk_get_current_event_time());
+ }
+ 
+ void PopupMenu::hide()
+--- webkit-1.1.14.orig/WebCore/platform/network/soup/ResourceHandleSoup.cpp	Mon Sep  7 21:35:46 2009
++++ webkit-1.1.14/WebCore/platform/network/soup/ResourceHandleSoup.cpp	Mon Sep 21 14:07:17 2009
+@@ -521,7 +521,7 @@
+                                                                         g_mapped_file_get_length(fileMapping),
+                                                                         fileMapping,
+ #if GLIB_CHECK_VERSION(2, 21, 3)
+-                                                                        reinterpret_cast<GDestroyNotify>(g_mapped_file_unref));
++                                                                        (GDestroyNotify)(g_mapped_file_unref));
+ #else
+                                                                         reinterpret_cast<GDestroyNotify>(g_mapped_file_free));
+ #endif

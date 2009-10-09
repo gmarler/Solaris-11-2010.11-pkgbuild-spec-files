@@ -1,0 +1,91 @@
+--- webkit-1.1.13.orig/JavaScriptCore/wtf/Platform.h	Fri Aug 21 07:39:04 2009
++++ webkit-1.1.13/JavaScriptCore/wtf/Platform.h	Fri Sep 11 15:35:49 2009
+@@ -316,6 +316,11 @@
+ #define WTF_COMPILER_RVCT 1
+ #endif
+ 
++#if defined(__SUNPRO_C) || defined(__SUNPRO_CC)
++#define WTF_COMPILER_SUNCC 1
++#endif
++
++
+ /* COMPILER(GCC) */
+ /* --gnu option of the RVCT compiler also defines __GNUC__ */
+ #if defined(__GNUC__) && !COMPILER(RVCT)
+--- webkit-1.1.13.orig/WebCore/bindings/scripts/IDLParser.pm	Fri Aug 21 07:46:19 2009
++++ webkit-1.1.13/WebCore/bindings/scripts/IDLParser.pm	Fri Sep 11 15:45:50 2009
+@@ -66,7 +66,7 @@
+     $parentsOnly = shift;
+ 
+     if (!$preprocessor) {
+-        $preprocessor = "/usr/bin/gcc -E -P -x c++";
++        $preprocessor = "/usr/sfw/bin/gcc -E -P -x c++";
+     }
+ 
+     if (!$defines) {
+--- webkit-1.1.13.orig/WebCore/dom/make_names.pl	Mon Aug 24 05:23:48 2009
++++ webkit-1.1.13/WebCore/dom/make_names.pl	Fri Sep 11 15:50:58 2009
+@@ -46,7 +46,7 @@
+ my %attrs = ();
+ my %parameters = ();
+ my $extraDefines = 0;
+-my $preprocessor = "/usr/bin/gcc -E -P -x c++";
++my $preprocessor = "/usr/sfw/bin/gcc -E -P -x c++";
+ 
+ GetOptions(
+     'tags=s' => \$tagsFile, 
+--- webkit-1.1.13.orig/WebCore/page/DOMWindow.cpp	Mon Aug 24 05:23:48 2009
++++ webkit-1.1.13/WebCore/page/DOMWindow.cpp	Fri Sep 11 16:02:13 2009
+@@ -591,7 +591,7 @@
+         return 0;
+ 
+     StorageNamespace* localStorage = page->group().localStorage();
+-    RefPtr<StorageArea> storageArea = localStorage ? localStorage->storageArea(document->securityOrigin()) : 0; 
++    RefPtr<StorageArea> storageArea = localStorage ? localStorage->storageArea(document->securityOrigin()) :(WTF::PassRefPtr<WebCore::StorageArea>) 0; 
+     if (storageArea) {
+         page->inspectorController()->didUseDOMStorage(storageArea.get(), true, m_frame);
+         m_localStorage = Storage::create(m_frame, storageArea.release());
+--- webkit-1.1.13.orig/WebCore/loader/appcache/ApplicationCacheGroup.cpp	Fri Aug 21 07:46:19 2009
++++ webkit-1.1.13/WebCore/loader/appcache/ApplicationCacheGroup.cpp	Fri Sep 11 16:25:44 2009
+@@ -774,7 +774,7 @@
+             ASSERT(cacheStorage().isMaximumSizeReached() && m_calledReachedMaxAppCacheSize);
+         }
+ 
+-        RefPtr<ApplicationCache> oldNewestCache = (m_newestCache == m_cacheBeingUpdated) ? 0 : m_newestCache;
++        RefPtr<ApplicationCache> oldNewestCache = (m_newestCache == m_cacheBeingUpdated) ?(WTF::RefPtr<WebCore::ApplicationCache>) 0 : m_newestCache;
+ 
+         setNewestCache(m_cacheBeingUpdated.release());
+         if (cacheStorage().storeNewestCache(this)) {
+--- webkit-1.1.13.orig/JavaScriptCore/interpreter/RegisterFile.h	Fri Aug 21 07:39:03 2009
++++ webkit-1.1.13/JavaScriptCore/interpreter/RegisterFile.h	Fri Sep 11 16:33:49 2009
+@@ -174,7 +174,7 @@
+ 
+         size_t bufferLength = (capacity + maxGlobals) * sizeof(Register);
+     #if HAVE(MMAP)
+-        m_buffer = static_cast<Register*>(mmap(0, bufferLength, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANON, VM_TAG_FOR_REGISTERFILE_MEMORY, 0));
++        m_buffer = reinterpret_cast<Register*>(mmap(0, bufferLength, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANON, VM_TAG_FOR_REGISTERFILE_MEMORY, 0));
+         if (m_buffer == MAP_FAILED) {
+ #if PLATFORM(WINCE)
+             fprintf(stderr, "Could not allocate register file: %d\n", GetLastError());
+--- webkit-1.1.13.orig/WebCore/svg/SVGStopElement.h	Mon Aug 24 05:23:48 2009
++++ webkit-1.1.13/WebCore/svg/SVGStopElement.h	Fri Sep 11 18:10:05 2009
+@@ -39,7 +39,8 @@
+ 
+         virtual RenderObject* createRenderer(RenderArena*, RenderStyle*);
+ 
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGStopElement, SVGNames::stopTagString, SVGNames::offsetAttrString, float, Offset, offset)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGStopElement, (const char
++				*)SVGNames::stopTagString, (const char *)SVGNames::offsetAttrString, float, Offset, offset)
+     };
+ 
+ } // namespace WebCore
+--- webkit-1.1.13.orig/JavaScriptCore/wtf/FastMalloc.cpp	Mon Aug 24 05:23:48 2009
++++ webkit-1.1.13/JavaScriptCore/wtf/FastMalloc.cpp	Fri Sep 11 19:16:16 2009
+@@ -1431,6 +1431,7 @@
+   // Without this, Visual Studio will complain that this method does not return a value.
+   return 0;
+ #endif
++  return 0; //SUN Compiler need a return 
+ }
+ 
+ void TCMalloc_PageHeap::scavenge() 

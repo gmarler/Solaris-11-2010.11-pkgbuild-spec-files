@@ -1,15 +1,3 @@
-diff -Nrup webkit-old/JavaScriptCore/bytecompiler/BytecodeGenerator.cpp webkit-1.1.7/JavaScriptCore/bytecompiler/BytecodeGenerator.cpp
---- webkit-old/JavaScriptCore/bytecompiler/BytecodeGenerator.cpp	2009-06-03 12:55:14.734466000 +0800
-+++ webkit-1.1.7/JavaScriptCore/bytecompiler/BytecodeGenerator.cpp	2009-06-03 12:55:17.826432000 +0800
-@@ -518,7 +518,7 @@ PassRefPtr<LabelScope> BytecodeGenerator
-         m_labelScopes.removeLast();
- 
-     // Allocate new label scope.
--    LabelScope scope(type, name, scopeDepth(), newLabel(), type == LabelScope::Loop ? newLabel() : 0); // Only loops have continue targets.
-+    LabelScope scope(type, name, scopeDepth(), newLabel(), type == LabelScope::Loop ? newLabel() : (WTF::PassRefPtr<JSC::Label>)0); // Only loops have continue targets.
-     m_labelScopes.append(scope);
-     return &m_labelScopes.last();
- }
 diff -Nrup webkit-old/JavaScriptCore/interpreter/RegisterFile.cpp webkit-1.1.7/JavaScriptCore/interpreter/RegisterFile.cpp
 --- webkit-old/JavaScriptCore/interpreter/RegisterFile.cpp	2009-06-03 12:55:14.633455000 +0800
 +++ webkit-1.1.7/JavaScriptCore/interpreter/RegisterFile.cpp	2009-06-03 12:55:17.386064000 +0800
@@ -47,21 +35,6 @@ diff -Nrup webkit-old/JavaScriptCore/pcre/pcre_exec.cpp webkit-1.1.7/JavaScriptC
          case 30: goto RRETURN_30;
          case 31: goto RRETURN_31;
          case 38: goto RRETURN_38;
-diff -Nrup webkit-old/JavaScriptCore/wtf/Platform.h webkit-1.1.7/JavaScriptCore/wtf/Platform.h
---- webkit-old/JavaScriptCore/wtf/Platform.h	2009-06-03 12:55:14.717506000 +0800
-+++ webkit-1.1.7/JavaScriptCore/wtf/Platform.h	2009-06-03 12:55:17.699616000 +0800
-@@ -270,6 +270,11 @@
- #define WTF_COMPILER_GCC 1
- #endif
- 
-+/* COMPILER(SUNCC) */
-+#if defined(__SUNPRO_C) || defined(__SUNPRO_CC)
-+#define WTF_COMPILER_SUNCC 1
-+#endif
-+
- /* COMPILER(MINGW) */
- #if defined(MINGW) || defined(__MINGW32__)
- #define WTF_COMPILER_MINGW 1
 diff -Nrup webkit-old/JavaScriptCore/wtf/TCSystemAlloc.cpp webkit-1.1.7/JavaScriptCore/wtf/TCSystemAlloc.cpp
 --- webkit-old/JavaScriptCore/wtf/TCSystemAlloc.cpp	2009-06-03 12:55:14.720538000 +0800
 +++ webkit-1.1.7/JavaScriptCore/wtf/TCSystemAlloc.cpp	2009-06-03 12:55:17.699896000 +0800
@@ -132,34 +105,7 @@ diff -Nrup webkit-old/WebCore/bindings/js/JSPluginElementFunctions.cpp webkit-1.
  }
  
  JSValue runtimeObjectPropertyGetter(ExecState* exec, const Identifier& propertyName, const PropertySlot& slot)
-diff -Nrup webkit-old/WebCore/bindings/scripts/IDLParser.pm webkit-1.1.7/WebCore/bindings/scripts/IDLParser.pm
---- webkit-old/WebCore/bindings/scripts/IDLParser.pm	2009-06-03 12:55:15.910736000 +0800
-+++ webkit-1.1.7/WebCore/bindings/scripts/IDLParser.pm	2009-06-03 12:55:19.247242000 +0800
-@@ -64,7 +64,7 @@ sub Parse
-     my $preprocessor = shift;
- 
-     if (!$preprocessor) {
--        $preprocessor = "/usr/bin/gcc -E -P -x c++";
-+        $preprocessor = "/usr/sfw/bin/gcc -E -P -x c++";
-     }
- 
-     if (!$defines) {
 Binary files webkit-old/WebCore/core and webkit-1.1.7/WebCore/core differ
-diff -Nrup webkit-old/WebCore/css/CSSGrammar.y webkit-1.1.7/WebCore/css/CSSGrammar.y
---- webkit-old/WebCore/css/CSSGrammar.y	2009-06-03 12:55:16.048570000 +0800
-+++ webkit-1.1.7/WebCore/css/CSSGrammar.y	2009-06-03 12:55:19.959318000 +0800
-@@ -735,9 +735,9 @@ key:
-     | IDENT {
-         $$.id = 0; $$.isInt = false; $$.unit = CSSPrimitiveValue::CSS_NUMBER;
-         CSSParserString& str = $1;
--        if (equalIgnoringCase(static_cast<const String&>(str), "from"))
-+        if (equalIgnoringCase(reinterpret_cast<const String&>(str), "from"))
-             $$.fValue = 0;
--        else if (equalIgnoringCase(static_cast<const String&>(str), "to"))
-+        else if (equalIgnoringCase(reinterpret_cast<const String&>(str), "to"))
-             $$.fValue = 100;
-         else
-             YYERROR;
 diff -Nrup webkit-old/WebCore/css/make-css-file-arrays.pl webkit-1.1.7/WebCore/css/make-css-file-arrays.pl
 --- webkit-old/WebCore/css/make-css-file-arrays.pl	2009-06-03 12:55:16.048841000 +0800
 +++ webkit-1.1.7/WebCore/css/make-css-file-arrays.pl	2009-06-03 12:55:19.959556000 +0800
@@ -196,18 +142,6 @@ diff -Nrup webkit-old/WebCore/dom/XMLTokenizerLibxml2.cpp webkit-1.1.7/WebCore/d
      char m[1024];
      vsnprintf(m, sizeof(m) - 1, message, args);
  #else
-diff -Nrup webkit-old/WebCore/dom/make_names.pl webkit-1.1.7/WebCore/dom/make_names.pl
---- webkit-old/WebCore/dom/make_names.pl	2009-06-03 12:55:15.936998000 +0800
-+++ webkit-1.1.7/WebCore/dom/make_names.pl	2009-06-03 12:55:19.346700000 +0800
-@@ -45,7 +45,7 @@ my %tags = ();
- my %attrs = ();
- my %parameters = ();
- my $extraDefines = 0;
--my $preprocessor = "/usr/bin/gcc -E -P -x c++";
-+my $preprocessor = "/usr/sfw/bin/gcc -E -P -x c++";
- 
- GetOptions('tags=s' => \$tagsFile, 
-     'attrs=s' => \$attrsFile,
 diff -Nrup webkit-old/WebCore/editing/CompositeEditCommand.cpp webkit-1.1.7/WebCore/editing/CompositeEditCommand.cpp
 --- webkit-old/WebCore/editing/CompositeEditCommand.cpp	2009-06-03 12:55:15.460104000 +0800
 +++ webkit-1.1.7/WebCore/editing/CompositeEditCommand.cpp	2009-06-03 12:55:18.777306000 +0800
@@ -325,18 +259,6 @@ diff -Nrup webkit-old/WebCore/loader/icon/IconDatabase.cpp webkit-1.1.7/WebCore/
      String iconURL = iconURLOriginal.copy();
      
      Vector<String> pageURLs;
-diff -Nrup webkit-old/WebCore/page/DOMWindow.cpp webkit-1.1.7/WebCore/page/DOMWindow.cpp
---- webkit-old/WebCore/page/DOMWindow.cpp	2009-06-03 12:55:15.355103000 +0800
-+++ webkit-1.1.7/WebCore/page/DOMWindow.cpp	2009-06-03 12:55:18.650049000 +0800
-@@ -565,7 +565,7 @@ Storage* DOMWindow::localStorage() const
-         return 0;
- 
-     LocalStorage* localStorage = page->group().localStorage();
--    RefPtr<StorageArea> storageArea = localStorage ? localStorage->storageArea(document->securityOrigin()) : 0; 
-+    RefPtr<StorageArea> storageArea = localStorage ? localStorage->storageArea(document->securityOrigin()) : (WTF::PassRefPtr<WebCore::StorageArea>)0; 
-     if (storageArea) {
-         page->inspectorController()->didUseDOMStorage(storageArea.get(), true, m_frame);
-         m_localStorage = Storage::create(m_frame, storageArea.release());
 diff -Nrup webkit-old/WebCore/page/animation/AnimationBase.cpp webkit-1.1.7/WebCore/page/animation/AnimationBase.cpp
 --- webkit-old/WebCore/page/animation/AnimationBase.cpp	2009-06-03 12:55:15.355723000 +0800
 +++ webkit-1.1.7/WebCore/page/animation/AnimationBase.cpp	2009-06-03 12:55:18.650657000 +0800
@@ -803,77 +725,6 @@ diff -Nrup webkit-old/autotools/webkit.m4 webkit-1.1.7/autotools/webkit.m4
  	$(dumprendertree_cppflags) \
  	$(global_cflags) \
  	$(GLOBALDEPS_CFLAGS) \
---- webkit-1.1.10/WebCore/loader/appcache/ApplicationCacheGroup.cpp.orig	2009-06-16 11:56:16.645144864 +0800
-+++ webkit-1.1.10/WebCore/loader/appcache/ApplicationCacheGroup.cpp	2009-06-16 11:58:07.474500818 +0800
-@@ -730,40 +730,40 @@
-         ASSERT(m_cacheBeingUpdated);
-         m_cacheBeingUpdated->setManifestResource(m_manifestResource.release());
- 
--        RefPtr<ApplicationCache> oldNewestCache = (m_newestCache == m_cacheBeingUpdated) ? 0 : m_newestCache;
-+        RefPtr<ApplicationCache> oldNewestCache = (m_newestCache == m_cacheBeingUpdated) ? (WTF::RefPtr<WebCore::ApplicationCache>)0 : m_newestCache;
- 
-         setNewestCache(m_cacheBeingUpdated.release());
--        if (cacheStorage().storeNewestCache(this)) {
--            // New cache stored, now remove the old cache.
--            if (oldNewestCache)
--                cacheStorage().remove(oldNewestCache.get());
--            // Fire the success events.
--            postListenerTask(isUpgradeAttempt ? &DOMApplicationCache::callUpdateReadyListener : &DOMApplicationCache::callCachedListener, m_associatedDocumentLoaders);
--        } else {
--            // Run the "cache failure steps"
--            // Fire the error events to all pending master entries, as well any other cache hosts
--            // currently associated with a cache in this group.
--            postListenerTask(&DOMApplicationCache::callErrorListener, m_associatedDocumentLoaders);
--            // Disassociate the pending master entries from the failed new cache. Note that
--            // all other loaders in the m_associatedDocumentLoaders are still associated with
--            // some other cache in this group. They are not associated with the failed new cache.
--
-+        if (cacheStorage().storeNewestCache(this)) {
-+            // New cache stored, now remove the old cache.
-+            if (oldNewestCache)
-+                cacheStorage().remove(oldNewestCache.get());
-+            // Fire the success events.
-+            postListenerTask(isUpgradeAttempt ? &DOMApplicationCache::callUpdateReadyListener : &DOMApplicationCache::callCachedListener, m_associatedDocumentLoaders);
-+        } else {
-+            // Run the "cache failure steps"
-+            // Fire the error events to all pending master entries, as well any other cache hosts
-+            // currently associated with a cache in this group.
-+            postListenerTask(&DOMApplicationCache::callErrorListener, m_associatedDocumentLoaders);
-+            // Disassociate the pending master entries from the failed new cache. Note that
-+            // all other loaders in the m_associatedDocumentLoaders are still associated with
-+            // some other cache in this group. They are not associated with the failed new cache.
-+
-             // Need to copy loaders, because the cache group may be destroyed at the end of iteration.
-             Vector<DocumentLoader*> loaders;
-             copyToVector(m_pendingMasterResourceLoaders, loaders);
-             size_t count = loaders.size();
--            for (size_t i = 0; i != count; ++i)
--                disassociateDocumentLoader(loaders[i]); // This can delete this group.
--
--            // Reinstate the oldNewestCache, if there was one.
--            if (oldNewestCache) {
--                // This will discard the failed new cache.
--                setNewestCache(oldNewestCache.release());
--            } else {
--                // We must have been deleted by the last call to disassociateDocumentLoader().
--                return;
--            }
--        }
-+            for (size_t i = 0; i != count; ++i)
-+                disassociateDocumentLoader(loaders[i]); // This can delete this group.
-+
-+            // Reinstate the oldNewestCache, if there was one.
-+            if (oldNewestCache) {
-+                // This will discard the failed new cache.
-+                setNewestCache(oldNewestCache.release());
-+            } else {
-+                // We must have been deleted by the last call to disassociateDocumentLoader().
-+                return;
-+            }
-+        }
-         break;
-     }
-     }
 --- webkit-1.1.10/GNUmakefile.am.orig	2009-06-16 11:59:52.884596390 +0800
 +++ webkit-1.1.10/GNUmakefile.am	2009-06-16 12:02:39.529050354 +0800
 @@ -81,7 +81,6 @@
@@ -957,35 +808,6 @@ diff -Nrup webkit-old/autotools/webkit.m4 webkit-1.1.7/autotools/webkit.m4
  	$(global_cxxflags) \
  	$(global_cflags) \
  	$(GLOBALDEPS_CFLAGS) \
---- webkit-1.1.10/JavaScriptCore/interpreter/RegisterFile.h.orig	2009-06-16 12:06:25.754895495 +0800
-+++ webkit-1.1.10/JavaScriptCore/interpreter/RegisterFile.h	2009-06-16 12:07:29.988031496 +0800
-@@ -174,13 +174,13 @@
- 
-         size_t bufferLength = (capacity + maxGlobals) * sizeof(Register);
-     #if HAVE(MMAP)
--        m_buffer = static_cast<Register*>(mmap(0, bufferLength, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANON, VM_TAG_FOR_REGISTERFILE_MEMORY, 0));
-+        m_buffer = reinterpret_cast<Register*>(mmap(0, bufferLength, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANON, VM_TAG_FOR_REGISTERFILE_MEMORY, 0));
-         if (m_buffer == MAP_FAILED) {
-             fprintf(stderr, "Could not allocate register file: %d\n", errno);
-             CRASH();
-         }
-     #elif HAVE(VIRTUALALLOC)
--        m_buffer = static_cast<Register*>(VirtualAlloc(0, roundUpAllocationSize(bufferLength, commitSize), MEM_RESERVE, PAGE_READWRITE));
-+        m_buffer = reinterpret_cast<Register*>(VirtualAlloc(0, roundUpAllocationSize(bufferLength, commitSize), MEM_RESERVE, PAGE_READWRITE));
-         if (!m_buffer) {
-             fprintf(stderr, "Could not allocate register file: %d\n", errno);
-             CRASH();
---- webkit-1.1.10/JavaScriptCore/runtime/JSONObject.cpp.orig	2009-06-16 14:34:36.186181621 +0800
-+++ webkit-1.1.10/JavaScriptCore/runtime/JSONObject.cpp	2009-06-16 14:34:52.121425118 +0800
-@@ -135,7 +135,7 @@
-         if (!stringify(builder, obj, key, value))
-             return jsUndefined();
- 
--        return (m_exec->hadException())? m_exec->exception() : jsString(m_exec, builder);
-+        return (m_exec->hadException())? m_exec->exception() : (JSC::JSValue)jsString(m_exec, builder);
-     }
- 
- private:
 --- webkit-1.1.10/configure.ac.orig	2009-06-16 11:46:24.300621155 +0800
 +++ webkit-1.1.10/configure.ac	2009-06-16 15:36:25.606141942 +0800
 @@ -52,6 +52,9 @@
