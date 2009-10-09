@@ -8,7 +8,7 @@
 
 Name:                SFElibiconv
 Summary:             GNU iconv -- Code set conversion
-Version:             1.12
+Version:             1.13
 Source:              http://ftp.gnu.org/pub/gnu/libiconv/libiconv-%{version}.tar.gz
 Patch1:              libiconv-01-fix-runpath.diff
 Patch2:              libiconv-02-646.diff
@@ -90,7 +90,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, bin) %{_includedir}
 %{_includedir}/*.h
 %dir %attr (0755, root, sys) %{_datadir}
-%dir %attr (0755, root, other) %{_datadir}/doc
+%dir %attr (0755, root, bin) %{_datadir}/doc
 %{_datadir}/doc/*
 
 %if %build_l10n
@@ -101,6 +101,9 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Fri Oct 09 2009 - Milan Jurik
+- update to 1.13
+- fix /usr/gnu/share/doc group
 * Sun Aug 17 2008 - nonsea@users.sourceforge.net
 - Bump to 1.12
 - Add patch intmax.diff to fix build issue.

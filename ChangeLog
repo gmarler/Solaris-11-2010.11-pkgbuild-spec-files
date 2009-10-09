@@ -2,6 +2,7 @@
 
 	* SFEsquid.spec: move to archive, unmaintained for years, integrated in
 	  OpenSolaris SFW
+	* SFElibiconv.spec: update to 1.13, fix /usr/gnu/share/doc group
 
 2009-10-08  James Choi <jchoi42@pha.jhu.edu>
 
