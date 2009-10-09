@@ -1,3 +1,8 @@
+2009-10-09  Milan Jurik <sfnet@xylab.cz>
+
+	* SFEsquid.spec: move to archive, unmaintained for years, integrated in
+	  OpenSolaris SFW
+
 2009-10-08  James Choi <jchoi42@pha.jhu.edu>
 
 	* SFEghc.spec: Initial spec (Glasgow Haskell Compiler)
