@@ -1,0 +1,12 @@
+--- emerillon/emerillon/Makefile.am-orig	2009-10-11 12:47:24.436818313 -0500
++++ emerillon/emerillon/Makefile.am	2009-10-11 12:47:32.239515068 -0500
+@@ -20,8 +20,7 @@ emerillon_LDADD = \
+ 	$(top_builddir)/cut-paste/libephyspinner.la
+ 
+ emerillon_LDFLAGS = \
+-	-export-dynamic		\
+-	-Wl
++	-export-dynamic
+ 
+ BUILT_SOURCES =
+ 

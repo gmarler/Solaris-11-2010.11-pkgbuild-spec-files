@@ -1,0 +1,8 @@
+--- ethos-0.2.0/examples/Makefile.am-orig	2009-10-11 11:50:09.141069670 -0500
++++ ethos-0.2.0/examples/Makefile.am	2009-10-11 11:50:16.448513059 -0500
+@@ -1,5 +1,2 @@
+ SUBDIRS = simple-ui
+ 
+-if ENABLE_VALA
+-SUBDIRS += vala
+-endif

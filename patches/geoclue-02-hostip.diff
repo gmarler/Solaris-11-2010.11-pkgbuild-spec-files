@@ -1,0 +1,54 @@
+From 031705068aeb82f5dad378c36757d5679d125432 Mon Sep 17 00:00:00 2001
+From: Danielle Madeley <danielle.madeley@collabora.co.uk>
+Date: Mon, 21 Sep 2009 13:52:06 +1000
+Subject: [PATCH] Fix HostIP provider to work with latest web API
+
+The web API from api.hostip.info has removed the 'hostip' namespace. All of
+the XPath queries required updating to remove the hostip namespace, otherwise
+they don't match anything.
+---
+ providers/hostip/geoclue-hostip.c |   13 ++++---------
+ 1 files changed, 4 insertions(+), 9 deletions(-)
+
+diff --git a/providers/hostip/geoclue-hostip.c b/providers/hostip/geoclue-hostip.c
+index f9eda08..7419c83 100644
+--- a/providers/hostip/geoclue-hostip.c
++++ b/providers/hostip/geoclue-hostip.c
+@@ -42,13 +42,11 @@
+ 
+ #define HOSTIP_NS_GML_NAME "gml"
+ #define HOSTIP_NS_GML_URI "http://www.opengis.net/gml"
+-#define HOSTIP_NS_HOSTIP_NAME "hostip"
+-#define HOSTIP_NS_HOSTIP_URI "http://www.hostip.info/api"
+ 
+-#define HOSTIP_COUNTRY_XPATH "//gml:featureMember/hostip:Hostip/hostip:countryName"
+-#define HOSTIP_COUNTRYCODE_XPATH "//gml:featureMember/hostip:Hostip/hostip:countryAbbrev"
+-#define HOSTIP_LOCALITY_XPATH "//gml:featureMember/hostip:Hostip/gml:name"
+-#define HOSTIP_LATLON_XPATH "//gml:featureMember/hostip:Hostip//gml:coordinates"
++#define HOSTIP_COUNTRY_XPATH "//gml:featureMember/Hostip/countryName"
++#define HOSTIP_COUNTRYCODE_XPATH "//gml:featureMember/Hostip/countryAbbrev"
++#define HOSTIP_LOCALITY_XPATH "//gml:featureMember/Hostip/gml:name"
++#define HOSTIP_LATLON_XPATH "//gml:featureMember/Hostip//gml:coordinates"
+ 
+ static void geoclue_hostip_init (GeoclueHostip *obj);
+ static void geoclue_hostip_position_init (GcIfacePositionClass  *iface);
+@@ -101,7 +99,6 @@ geoclue_hostip_get_position (GcIfacePosition        *iface,
+ 		return FALSE;
+ 	}
+ 	
+-	
+ 	if (gc_web_service_get_string (obj->web_service, 
+ 	                                &coord_str, HOSTIP_LATLON_XPATH)) {
+ 		if (sscanf (coord_str, "%lf,%lf", longitude , latitude) == 2) {
+@@ -240,8 +237,6 @@ geoclue_hostip_init (GeoclueHostip *obj)
+ 	gc_web_service_set_base_url (obj->web_service, HOSTIP_URL);
+ 	gc_web_service_add_namespace (obj->web_service,
+ 	                              HOSTIP_NS_GML_NAME, HOSTIP_NS_GML_URI);
+-	gc_web_service_add_namespace (obj->web_service,
+-	                              HOSTIP_NS_HOSTIP_NAME, HOSTIP_NS_HOSTIP_URI);
+ }
+ 
+ static void
+-- 
+1.6.0.4
+

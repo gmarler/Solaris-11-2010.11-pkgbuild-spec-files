@@ -1,0 +1,12 @@
+--- rest-0.6/examples/get-flickr-favorites.c-orig	2009-10-11 12:36:04.361299156 -0500
++++ rest-0.6/examples/get-flickr-favorites.c	2009-10-11 12:37:13.633889585 -0500
+@@ -46,7 +46,8 @@ print_user_name (RestProxy *proxy)
+   node = rest_xml_node_find (root, "user");
+   g_print ("Logged in as %s\n",
+            rest_xml_node_get_attr (node, "fullname")
+-           ?: rest_xml_node_get_attr (node, "username"));
++           ? rest_xml_node_get_attr (node, "fullname")
++           : rest_xml_node_get_attr (node, "username"));
+   rest_xml_node_unref (root);
+ }
+ 

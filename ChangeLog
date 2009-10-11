@@ -1,5 +1,19 @@
 2009-10-11  Brian Cameron  <brian.cameron@sun.com>
 
+	* SFEemerillon.spec, patches/emerillon-01-Wl.diff:  Add spec-file and
+	  patch to build.
+	* SFElibrest.spec, patches/librest-01-wall.diff:  Add spec-file and
+	  patch to build version 0.6.
+	* SFEethos.spec, patches/ethos-01-nomono.diff,
+	  patches/ethos-02-example.diff, patches/ethos-03-loader.diff:  Add
+	  spec-file and patches to build version 0.2.0.
+	* SFEgeoclue.spec, patches/geoclue-01-Wall.diff,
+	  patches/geoclue-02-hostip.diff: Add spec-file and patches to build
+	  version 0.11.1.
+	* SFEvala.spec: Now build with version 0.7.7.
+
+2009-10-11  Brian Cameron  <brian.cameron@sun.com>
+
 	* SFEgnome-shell.spec, SFEmutter.spec: Bump to 2.28.0
 	* patches/gnome-shell-01-function.diff: Fix compile issue.
 

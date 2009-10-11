@@ -6,11 +6,11 @@
 %include Solaris.inc
 
 %define	src_name vala
-%define	src_url	http://download.gnome.org/sources/vala/0.1
+%define	src_url	http://download.gnome.org/sources/vala/0.7
 
 Name:                SFEvala
 Summary:             Vala programming language
-Version:             0.1.2
+Version:             0.7.7
 Source:              %{src_url}/%{src_name}-%{version}.tar.bz2
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
@@ -64,6 +64,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, bin) %{_libdir}
 %{_libdir}/lib*.so*
 %dir %attr (0755, root, sys) %{_datadir}
+%{_datadir}/devhelp
 %{_datadir}/vala
 %{_mandir}
 
@@ -75,5 +76,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*
 
 %changelog
+* Sun Oct 11 2009 - brian.cameron@sun.com
+- Bump to 0.7.7.
 * Fri Jul 27 2007 - dougs@truemail.co.th
 - Initial spec

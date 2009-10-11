@@ -1,0 +1,10 @@
+--- ethos-0.2.0/configure.ac-orig	2009-10-11 11:44:35.067656601 -0500
++++ ethos-0.2.0/configure.ac	2009-10-11 11:44:45.629631631 -0500
+@@ -275,7 +275,6 @@ AC_CONFIG_FILES([
+ 	bindings/Makefile
+ 	bindings/vala/Makefile
+ 	bindings/python/Makefile
+-	bindings/mono/Makefile
+ 	examples/Makefile
+ 	examples/simple-ui/Makefile
+ 	examples/vala/Makefile
