@@ -80,6 +80,8 @@ make install DESTDIR=$RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_datadir}/xsessions
 install --mode=0444 %SOURCE1 $RPM_BUILD_ROOT%{_datadir}/xsessions
 
+find $RPM_BUILD_ROOT/%{_libdir} -type f -name "*.la" -exec rm -f {} ';'
+
 %if %build_l10n
 %else
 # REMOVE l10n FILES
