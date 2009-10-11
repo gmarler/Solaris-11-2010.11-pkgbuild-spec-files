@@ -1,5 +1,10 @@
 2009-10-11  Brian Cameron  <brian.cameron@sun.com>
 
+	* SFEfluxbox.spec, patches/fluxbox-01-generatemenu.diff:  Update
+	  to 1.1.1 and add patch needed to build.
+
+2009-10-11  Brian Cameron  <brian.cameron@sun.com>
+
 	* SFEemerillon.spec, patches/emerillon-01-Wl.diff:  Add spec-file and
 	  patch to build.
 	* SFElibrest.spec, patches/librest-01-wall.diff:  Add spec-file and

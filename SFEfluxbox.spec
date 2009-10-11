@@ -8,7 +8,7 @@
 # Software specific variable definitions
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 %define src_name	fluxbox
-%define src_version	1.0.0
+%define src_version	1.1.1
 %define pkg_release	1
 # %{_topdir} is by default set to RPM_BUILD_ROOT
 # Default path for RPM_BUILD_ROOT is /var/tmp/pkgbuild-{username}
@@ -29,6 +29,7 @@ Release:      	%{pkg_release}
 License:      	GPLv2
 Group:          User Interface/Desktops
 Source:         %{sf_download}/fluxbox/%{src_name}-%{version}.tar.bz2
+Patch1:         fluxbox-01-generatemenu.diff
 Vendor:       	Refer URL
 URL:            http://fluxbox.sourceforge.net
 Packager:     	SFE
@@ -61,6 +62,7 @@ Fluxbox is an X window manager based on Blackbox. Aiming to be lightweight and c
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 %prep 
 %setup -q -n %{src_name}-%{version}
+%patch1 -p1
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 # Build-Section 
@@ -83,6 +85,8 @@ export CXX=/usr/sfw/bin/g++
 #export CXXFLAGS="%cxx_optflags"
 #export LDFLAGS="%_ldflags"
 
+aclocal $ACLOCAL_FLAGS
+automake -a -c -f
 ./configure --prefix=%{_prefix}            
 
 make -j$CPUS
@@ -122,6 +126,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sun Oct 11 2009 - Brian Cameron  <brian.cameron@sun.com>
+- Bump to 1.1.1.
 * 2007.Nov.15 - <shivakumar dot gn at gmail dot com>
 - Initial spec.
 

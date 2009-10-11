@@ -1,0 +1,8 @@
+--- fluxbox-1.1.1/util/fluxbox-generate_menu.in-orig	2009-10-11 14:53:09.752386104 -0500
++++ fluxbox-1.1.1/util/fluxbox-generate_menu.in	2009-10-11 14:53:21.730548921 -0500
+@@ -1,4 +1,4 @@
+-#!/bin/sh
++#!/bin/bash
+ #
+ # generate_menu for Fluxbox
+ #
