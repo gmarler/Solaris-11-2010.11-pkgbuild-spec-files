@@ -44,6 +44,7 @@ BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 #BuildRequires: SUNWlcms-devel
 BuildRequires: SUNWlcms
 BuildRequires: SUNWgnome-libs-devel
+BuildRequires: SFEgtkimageview
 Requires: SUNWlcms
 Requires: SUNWgnome-libs
 Requires: SUNWgnome-base-libs
@@ -54,10 +55,8 @@ Requires: SUNWmlib
 Requires: SUNWzlib
 Requires: SUNWlibms
 Requires: SUNWlibexif
-#I'm sorry for that:
-Obsoletes: SUNWdcraw
-Provides:  SUNWdcraw
-Conflicts: SUNWdcraw
+Requires: SUNWdcraw
+Requires: SFEgtkimageview
 
 BuildRequires: SUNWgnome-libs-devel
 BuildRequires: SUNWgnome-base-libs-devel
@@ -120,6 +119,8 @@ make -j$CPUS
 rm -rf $RPM_BUILD_ROOT
 make BASENAME=${RPM_BUILD_ROOT}%{_prefix}	\
      MANDIR=${RPM_BUILD_ROOT}%{_mandir} DESTDIR=$RPM_BUILD_ROOT install
+# dcraw in SUNWdcraw
+rm ${RPM_BUILD_ROOT}%{_bindir}/dcraw
 
 %if %{build_l10n}
 %else
@@ -153,6 +154,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Sun Oct 11 2009 - Milan Jurik
+- add external dcraw dependency
 * Mon Feb 09 2009 - Thomas Wagner
 - add %dir %attr (0755, root, sys) %{_datadir} - otherwise share permission conflict
 - try flags Obsoletes Provides Conflicts SUNWdcraw

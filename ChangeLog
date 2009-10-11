@@ -1,6 +1,8 @@
 2009-10-11  Milan Jurik <sfnet@xylab.cz>
 
 	* SFEgtkimageview.spec: Initial spec
+	* SFEufraw.spec: gtkimageview added, dcraw dependency on SUNWdcraw (not
+	  bundled)
 
 2009-10-09  Milan Jurik <sfnet@xylab.cz>
 
