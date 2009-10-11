@@ -1,3 +1,8 @@
+2009-10-11  Brian Cameron  <brian.cameron@sun.com>
+
+	* SFEgnome-shell.spec, SFEmutter.spec: Bump to 2.28.0
+	* patches/gnome-shell-01-function.diff: Fix compile issue.
+
 2009-10-11  Milan Jurik <sfnet@xylab.cz>
 
 	* SFEgtkimageview.spec: Initial spec
@@ -46,8 +51,8 @@
 
 2009-10-4  James Choi  <jchoi42@pha.jhu.edu>
 
-        * SFEpangomm-gpp: Initial spec
-        * base-specs/pangomm.spec: Initial spec
+	* SFEpangomm-gpp: Initial spec
+	* base-specs/pangomm.spec: Initial spec
 	* SFEglibmm-gpp.spec: specified giomm dir in %files section
 	* base-specs/glibmm.spec: Bump to 2.21.3
 	* SFEgtkmm-gpp.spec: added SFEpango dependency

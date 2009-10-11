@@ -9,8 +9,8 @@
 
 Name:                    SFEmutter
 Summary:                 Clutter enabled metacity window manager
-Version:                 2.27.5
-Source:	                 http://ftp.gnome.org/pub/GNOME/sources/mutter/2.27/mutter-%{version}.tar.bz2
+Version:                 2.28.0
+Source:	                 http://ftp.gnome.org/pub/GNOME/sources/mutter/2.28/mutter-%{version}.tar.bz2
 Patch1:                  mutter-01-suncc-xc99.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -141,6 +141,8 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 %endif
 
 %changelog
+* Sun Oct 11 2009 - Brian Cameron  <brian.cameron@sun.com>
+- Bump to 2.28.0.
 * Wed Sep 16 2009 - Halton Huo <halton.huo@sun.com>
 - Bump to 2.27.5.
 * Sat Sep 05 2009 - Brian Cameron  <brian.cameron@sun.com>

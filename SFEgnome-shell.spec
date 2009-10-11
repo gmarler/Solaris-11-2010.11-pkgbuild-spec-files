@@ -9,8 +9,9 @@
 %include Solaris.inc
 Name:                    SFEgnome-shell
 Summary:                 GNOME Shell
-Version:                 2.27.3
-Source:                  http://ftp.gnome.org/pub/GNOME/sources/gnome-shell/2.27/gnome-shell-%{version}.tar.bz2
+Version:                 2.28.0
+Source:                  http://ftp.gnome.org/pub/GNOME/sources/gnome-shell/2.28/gnome-shell-%{version}.tar.bz2
+Patch1:                  gnome-shell-01-function.diff
 Source1:                 shell.desktop
 
 SUNW_BaseDir:            %{_basedir}
@@ -54,6 +55,7 @@ Requires:                %{name}
 
 %prep
 %setup -q -n gnome-shell-%version
+%patch1 -p1
 
 %build
 export PYTHON=/usr/bin/python%{pythonver}
@@ -131,6 +133,8 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 %endif
 
 %changelog
+* Sun Oct 11 2009 - Brian Cameron  <brian.cameron@sun.com>
+- Bump to 2.28.0.
 * Wed Sep 16 2009 - Halton Huo <halton.huo@sun.com>
 - Bump to 2.27.3.
 * Sat Sep 05 2009 - Brian Cameron  <brian.cameron@sun.com>
