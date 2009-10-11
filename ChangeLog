@@ -1,3 +1,7 @@
+2009-10-11  Milan Jurik <sfnet@xylab.cz>
+
+	* SFEgtkimageview.spec: Initial spec
+
 2009-10-09  Milan Jurik <sfnet@xylab.cz>
 
 	* SFEsquid.spec: move to archive, unmaintained for years, integrated in
