@@ -5,16 +5,16 @@
 #
 %include Solaris.inc
 
-%define python_version 2.4
-%define tarball_version 1.17
+%define python_version 2.6
+%define tarball_version 2.0.0
 
 Name:			SFEbzr
 Summary:		Bazaar Source Code Management System
 License:		GPL
 Group:			system/dscm
-Version:		1.17
+Version:		2.0.0
 Distribution:		spec-files-extra
-Source:                 http://launchpad.net/bzr/1.17/%{version}/+download/bzr-%{tarball_version}.tar.gz
+Source:                 http://launchpad.net/bzr/2.0/%{version}/+download/bzr-%{tarball_version}.tar.gz
 URL:			http://bazaar-vcs.org
 BuildRoot:		%{_tmppath}/%{name}-%{version}-build
 SUNW_BaseDir:		%{_prefix}
@@ -30,13 +30,13 @@ Bazaar source code management system.
 %setup -q -n bzr-%{tarball_version}
 
 %build
-export PYTHON="/usr/bin/python"
+export PYTHON="/usr/bin/python%{python_version}"
 CFLAGS="$RPM_OPT_FLAGS"
-python setup.py build
+/usr/bin/python%{python_version} setup.py build
 
 %install
 rm -rf $RPM_BUILD_ROOT
-python setup.py install --prefix=$RPM_BUILD_ROOT%{_prefix}
+/usr/bin/python%{python_version} setup.py install --prefix=$RPM_BUILD_ROOT%{_prefix}
 mv $RPM_BUILD_ROOT%{_libdir}/python%{python_version}/site-packages \
    $RPM_BUILD_ROOT%{_libdir}/python%{python_version}/vendor-packages
 
@@ -61,6 +61,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/bzr.1
 
 %changelog
+* Sun Oct 11 2009 - brian.cameron@sun.com
+- Bump to 2.0.0, and use Python 2.6.
 * Fri Jul 31 2009 - halton.huo@sun.com
 - Bump to 1.17
 * Mon May 11 2009 - brian.cameron@sun.com

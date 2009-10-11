@@ -1,5 +1,11 @@
 2009-10-11  Brian Cameron  <brian.cameron@sun.com>
 
+	* SFEbzr.spec: Update to 2.0.0 and now use Python 2.6.
+	* SFEzeitgeist.spec: Update packaging.
+	* patches/zeitgeist-01-python.diff: Update so it applies.
+
+2009-10-11  Brian Cameron  <brian.cameron@sun.com>
+
 	* SFEfluxbox.spec, patches/fluxbox-01-generatemenu.diff:  Update
 	  to 1.1.1 and add patch needed to build.
 
