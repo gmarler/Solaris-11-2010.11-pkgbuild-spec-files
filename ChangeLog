@@ -1,8 +1,9 @@
-2009-10-11  Brian Cameron  <brian.cameron@sun.com>
+2009-10-12  James Choi <jchoi42@pha.jhu.edu>
 
-	* SFEbzr.spec: Update to 2.0.0 and now use Python 2.6.
-	* SFEzeitgeist.spec: Update packaging.
-	* patches/zeitgeist-01-python.diff: Update so it applies.
+	* SFEboost-gpp.spec: fixed builddir, moved prep and build to base-spec 
+	* SFEboost.spec: fixed builddir, moved prep and build to base-spec
+	* patches/boost-01-studio.diff: updated for 1.40.0
+	* base-specs/boost.spec: Initial spec, bumped to 1.40.0
 
 2009-10-11  Brian Cameron  <brian.cameron@sun.com>
 

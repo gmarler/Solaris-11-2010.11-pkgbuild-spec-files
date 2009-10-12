@@ -1,39 +1,8 @@
---- boost_1_34_1.orig/tools/jam/src/build.jam	2006年  7月 23日 日 12:24:21
-+++ boost_1_34_1/tools/jam/src/build.jam	2007年  8月 13日 一 04:44:55
-@@ -237,7 +237,7 @@
-     -I$(--python-include)
-     : -L$(--python-lib[1]) -l$(--python-lib[2]) ;
- ## Sun Workshop 6 C++
--toolset sunpro cc : "-o " : -D
-+toolset sun cc : "-o " : -D
-     :
-     [ opt --release : -s -fast -xO4 ]
-     [ opt --debug : -g ]
---- boost_1_34_1.orig/tools/jam/src/build.sh	2006年  2月  3日 五 11:57:42
-+++ boost_1_34_1/tools/jam/src/build.sh	2007年  8月 13日 一 04:45:48
-@@ -93,7 +93,7 @@
-     elif test_path aCC ; then BOOST_JAM_TOOLSET=acc
-     elif test_uname HP-UX ; then BOOST_JAM_TOOLSET=acc
-     elif test -r /opt/SUNWspro/bin/cc ; then
--        BOOST_JAM_TOOLSET=sunpro
-+        BOOST_JAM_TOOLSET=sun
-         BOOST_JAM_TOOLSET_ROOT=/opt/SUNWspro/
-     # Test for "cc" as the default fallback.
-     elif test_path $CC ; then BOOST_JAM_TOOLSET=cc
-@@ -183,7 +183,7 @@
-     BOOST_JAM_CC=cc
-     ;;
-     
--    sunpro)
-+    sun)
-     if test -z "${BOOST_JAM_TOOLSET_ROOT}" -a -r /opt/SUNWspro/bin/cc ; then
-         BOOST_JAM_TOOLSET_ROOT=/opt/SUNWspro/
-     fi
---- boost_1_34_1.orig/tools/build/v2/tools/sun.jam	2006年  6月 19日 一 02:52:26
-+++ boost_1_34_1/tools/build/v2/tools/sun.jam	2007年  8月 13日 一 23:43:07
-@@ -54,19 +54,19 @@
- 
- flags sun.compile.c++ OPTIONS <inlining>off : +d ;
+--- boost_1_34_1.orig/tools/build/v2/tools/sun.jam	Sat Jul 11 07:04:31 2009
++++ boost_1_34_1/tools/build/v2/tools/sun.jam	Fri Oct  9 16:28:22 2009
+@@ -76,19 +76,19 @@
+ # for detailed explanation.
+ flags sun OPTIONS <link>shared : -KPIC ;
  
 -flags sun.compile OPTIONS <cflags> ;
 -flags sun.compile.c++ OPTIONS <cxxflags> ;
@@ -51,20 +20,19 @@
  actions compile.c++
  {
 -    "$(CONFIG_COMMAND)" $(OPTIONS) -D$(DEFINES) -I"$(INCLUDES)" -c -o "$(<)" "$(>)"
-+    "$(CONFIG_COMMAND)" $(OPTIONS) $(USER_OPTIONS) -D$(DEFINES) -I"$(INCLUDES)" -c -o "$(<)" "$(>)"
++    "$(CONFIG_COMMAND)" $(OPTIONS)  $(USER_OPTIONS) -D$(DEFINES) -I"$(INCLUDES)" -c -o "$(<)" "$(>)"
  }
  
  # Declare flags and actions for linking
-@@ -75,7 +75,7 @@
- flags sun.link OPTIONS <debug-symbols>off : -s ;
+@@ -98,6 +98,7 @@
  flags sun.link OPTIONS <profiling>on : -xprofile=tcov ;
  flags sun.link OPTIONS <threading>multi : -mt ;
--flags sun.link OPTIONS <linkflags> ;
+ flags sun.link OPTIONS <linkflags> ;
 +flags sun.link USER_OPTIONS <linkflags> ;
  flags sun.link LINKPATH <library-path> ;
  flags sun.link FINDLIBS-ST <find-static-library> ;
  flags sun.link FINDLIBS-SA <find-shared-library> ;
-@@ -98,7 +98,7 @@
+@@ -120,7 +121,7 @@
  
  actions link bind LIBRARIES
  {
@@ -73,7 +41,7 @@
  }
  
  # Slight mods for dlls
-@@ -109,7 +109,7 @@
+@@ -131,7 +132,7 @@
  
  actions link.dll bind LIBRARIES
  {
@@ -82,23 +50,3 @@
  }
  
  # Declare action for creating static libraries
-===
-Workaround for:
-
-"libs/python/src/object/class.cpp", line 458: Error: Overloading \ 
-ambiguity between "boost::python::api::getattr(const \ 
-boost::python::scope&, const char(&)[11], const \ 
-boost::python::str&)" and "boost::python::api::getattr(const \ 
-boost::python::api::object&, const char*, const \ 
-boost::python::api::object&)".
---- boost_1_34_1.orig/libs/python/src/object/class.cpp	2006年  9月 25日 一 20:48:44
-+++ boost_1_34_1/libs/python/src/object/class.cpp	2007年  8月 13日 一 20:16:57
-@@ -455,7 +455,7 @@
-       return object(
-           PyObject_IsInstance(scope().ptr(), upcast<PyObject>(&PyModule_Type))
-           ? object(scope().attr("__name__"))
--          : api::getattr(scope(), "__module__", str())
-+          : api::getattr(scope(), (const char *)"__module__", str())
-           );
-   }
- 
