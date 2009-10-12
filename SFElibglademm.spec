@@ -7,24 +7,24 @@
 
 Name:                    SFElibglademm
 Summary:                 libglademm - C++ Wrapper for the Gtk+ Library
-Version:                 2.6.4
+Version:                 2.6.7
 URL:                     http://www.gtkmm.org/
 Source:                  http://ftp.acc.umu.se/pub/GNOME/sources/libglademm/2.6/libglademm-%{version}.tar.bz2
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
-Requires: SFEglibmm
-Requires: SFEcairomm
+Requires: SUNWglibmm
+Requires: SUNWcairomm
 Requires: SUNWgnome-base-libs
 Requires: SUNWlibms
-Requires: SFEsigcpp
+Requires: SUNWsigcpp
 Requires: SUNWlibC
-Requires: SFEgtkmm
-BuildRequires: SFEsigcpp-devel
-BuildRequires: SFEglibmm-devel
-BuildRequires: SFEcairomm-devel
+Requires: SUNWgtkmm
+BuildRequires: SUNWsigcpp-devel
+BuildRequires: SUNWglibmm-devel
+BuildRequires: SUNWcairomm-devel
 BuildRequires: SUNWgnome-base-libs-devel
-BuildRequires: SFEgtkmm-devel
+BuildRequires: SUNWgtkmm-devel
 
 %package devel
 Summary:                 libglademm - C++ Wrapper for the Gtk+ Library - developer files
@@ -32,8 +32,8 @@ SUNW_BaseDir:            %{_basedir}
 %include default-depend.inc
 Requires: %name
 Requires: SUNWgnome-base-libs-devel
-Requires: SFEglibmm-devel
-Requires: SFEsigcpp-devel
+Requires: SUNWglibmm-devel
+Requires: SUNWsigcpp-devel
 
 
 %prep
@@ -53,6 +53,10 @@ export CXXFLAGS="%cxx_optflags"
             --libdir=%{_libdir}              \
             --libexecdir=%{_libexecdir}      \
             --sysconfdir=%{_sysconfdir} --disable-python
+
+# prevent useless extra_defs_gen from being built
+sed -i 's/tools//' Makefile
+
 make -j$CPUS 
 
 %install
@@ -84,6 +88,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/*
 
 %changelog
+* Thu Oct 08 2009 - jchoi42@pha.jhu.edu
+- Bump to 2.6.7, prevent useless extra_defs_gen from being built
+- Add patch to prevent building useless extra_defs_gen
 * Wed Sep 19 2007 - trisk@acm.jhu.edu
 - Bump to 2.6.4
 * Jun 05 2007 Thomas Wagner

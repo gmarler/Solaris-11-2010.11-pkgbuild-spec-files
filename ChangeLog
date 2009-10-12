@@ -1,5 +1,11 @@
 2009-10-12  James Choi <jchoi42@pha.jhu.edu>
 
+	* SFEgconfmm.spec: bump to 2.28
+	* SFElibglademm.spec: bump to 2.6.7
+	* SFEpadevchooser.spec: updated dependencies
+
+2009-10-12  James Choi <jchoi42@pha.jhu.edu>
+
 	* SFEboost-gpp.spec: fixed builddir, moved prep and build to base-spec 
 	* SFEboost.spec: fixed builddir, moved prep and build to base-spec
 	* patches/boost-01-studio.diff: updated for 1.40.0

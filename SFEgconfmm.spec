@@ -7,22 +7,22 @@
 
 Name:                    SFEgconfmm
 Summary:                 gconfmm - configuration dialogues for gtkmm
-Version:                 2.16.0
+Version:                 2.28.0
 URL:                     http://www.gtkmm.org/
-Source:                  http://ftp.acc.umu.se/pub/GNOME/sources/gconfmm/2.16/gconfmm-%{version}.tar.bz2
+Source:                  http://ftp.acc.umu.se/pub/GNOME/sources/gconfmm/2.28/gconfmm-%{version}.tar.bz2
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
-Requires: SFEglibmm
-Requires: SFEgtkmm
+Requires: SFEglibmm-gpp
+Requires: SFEgtkmm-gpp
 Requires: SUNWgnome-base-libs
 Requires: SUNWgnome-config
 Requires: SUNWlibms
-Requires: SFEsigcpp
+Requires: SFEsigcpp-gpp
 Requires: SUNWlibC
-BuildRequires: SFEsigcpp-devel
-BuildRequires: SFEglibmm-devel
-BuildRequires: SFEgtkmm-devel
+BuildRequires: SFEsigcpp-gpp-devel
+BuildRequires: SFEglibmm-gpp-devel
+BuildRequires: SFEgtkmm-gpp-devel
 BuildRequires: SUNWgnome-base-libs-devel
 BuildRequires: SUNWgnome-config-devel
 
@@ -32,8 +32,8 @@ SUNW_BaseDir:            %{_basedir}
 %include default-depend.inc
 Requires: %name
 Requires: SUNWgnome-base-libs-devel
-Requires: SFEglibmm-devel
-Requires: SFEsigcpp-devel
+Requires: SFEglibmm-gpp-devel
+Requires: SFEsigcpp-gpp-devel
 
 
 %prep
@@ -53,6 +53,10 @@ export CXXFLAGS="%cxx_optflags"
             --libdir=%{_libdir}              \
             --libexecdir=%{_libexecdir}      \
             --sysconfdir=%{_sysconfdir} --disable-python
+
+# prevent useless extra_defs_gen from being built
+sed -i 's/tools//' Makefile
+
 make -j$CPUS 
 
 %install
@@ -81,6 +85,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/*
 
 %changelog
+* Oct 08 2009 - jchoi42@pha.jhu.edu
+- Bump to 2.28.0, prevent useless extra_defs_gen from being built
 * Sep 19 2007 - trisk@acm.jhu.edu
 - Fix dependencies
 * Jun 06 2007 Thomas Wagner

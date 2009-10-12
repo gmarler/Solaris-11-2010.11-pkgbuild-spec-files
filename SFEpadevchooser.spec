@@ -4,7 +4,6 @@
 # package are under the same license as the package itself.
 #
 
-
 %include Solaris.inc
 
 Name:                SFEpadevchooser
@@ -19,18 +18,16 @@ BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 
 
 #TODO are dependencies complete? 
-BuildRequires: SFEgtkmm-devel
+BuildRequires: SUNWgtkmm-devel
 BuildRequires: SFEgconfmm-devel
 BuildRequires: SFElibglademm-devel
 BuildRequires: SFEpulseaudio-devel
-BuildRequires: SFElynx
-BuildRequires: SFElynx
-Requires: SFEgtkmm
+BuildRequires: SUNWlynx
+Requires: SUNWgtkmm
 Requires: SFEgconfmm
 Requires: SFElibglademm
 Requires: SFEpulseaudio
-Requires: SFElynx
-Requires: SFElynx
+Requires: SUNWlynx
 
 
 #%package 
@@ -39,7 +36,6 @@ Requires: SFElynx
 #SUNW_BaseDir:            %{_basedir}
 #%include default-depend.inc
 #Requires: %name
-
 
 
 %package devel
@@ -73,7 +69,6 @@ export LDFLAGS="%{_ldflags} -lX11 "
             --sysconfdir=%{_sysconfdir}
 
 
-
 make -j$CPUS
 
 %install
@@ -97,9 +92,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/padevchooser/*
 
 
-
-
-
 %changelog
+* Thu Oct 08 2009 - jchoi42@pha.jhu.edu
+- Updated dependencies
 * Tue May 23 2007 - Thomas Wagner
 - Initial spec
