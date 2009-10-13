@@ -48,6 +48,8 @@ cd zeitgeist-%version
 cd zeitgeist
 make install DESTDIR=$RPM_BUILD_ROOT
 
+find $RPM_BUILD_ROOT%{_libdir} -type f -name "*.pyo" -exec rm -f {} ';'
+
 # move to verndor-packages
 mkdir -p $RPM_BUILD_ROOT%{_libdir}/python%{pythonver}/vendor-packages
 mv $RPM_BUILD_ROOT%{_libdir}/python%{pythonver}/site-packages/* \
@@ -76,5 +78,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/*
 
 %changelog
+* Tue Oct 13 2009 - Brian Cameron  <brian.cameron@sun.com>
+- Do not install .pyo files.
 * Tue Jul 07 2009 - Brian Cameron  <brian.cameron@sun.com>
 - Created.

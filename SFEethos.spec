@@ -65,6 +65,7 @@ make install DESTDIR=$RPM_BUILD_ROOT
 
 find $RPM_BUILD_ROOT%{_libdir} -type f -name "*.la" -exec rm -f {} ';'
 find $RPM_BUILD_ROOT%{_libdir} -type f -name "*.a" -exec rm -f {} ';'
+find $RPM_BUILD_ROOT%{_libdir} -type f -name "*.pyo" -exec rm -f {} ';'
 
 # move to vendor-packages
 mkdir -p $RPM_BUILD_ROOT%{_libdir}/python%{pythonver}/vendor-packages
@@ -101,5 +102,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-doc
 
 %changelog
+* Tue Oct 13 2009 - Brian Cameron  <brian.cameron@sun.com>
+- Do not install .pyo files.
 * Sun Oct 11 2009 - Brian Cameron  <brian.cameron@sun.com>
 - Created with version 0.2.0.

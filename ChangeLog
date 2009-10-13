@@ -1,3 +1,8 @@
+2009-10-13  Brian Cameron  <brian.cameron@sun.com>
+
+	* SFEgnome-zeitgeist.spec, SFEzeitgeist.spec, SFEethos.spec:  No
+	  longer install .pyo files.
+
 2009-10-11  Milan Jurik <sfnet@xylab.cz>
 
 	* base-specs/freeglut.spec: autogen is not needed, all configure stuff
@@ -1463,7 +1468,7 @@
 	  add patch by John Fischer which adds support for SunAudit interfaces
 	  and adds better Solaris PAM support.
 
-2009-05-18	Pradhap Devarajan <pradhap (at) gmail.com>
+2009-05-18  Pradhap Devarajan <pradhap (at) gmail.com>
 
 	* SFEswt.spec: Bump up the version, fix URL and if condition 
 
@@ -1573,7 +1578,7 @@
 	* SFEdcc.spec: *new* dcc Distributed Checksum Clearinghouses
 	  anti-spam content filter
 
-2009-04-29	Gilles Dauphin
+2009-04-29  Gilles Dauphin
 
 	* update SFER.spec
 	* add SFER-car.spec
@@ -4082,7 +4087,7 @@
 
 2008-08-15   Andras Barna  andras.barna@gmail.com
 
-	* SFElame.spec:	new version, 
+	* SFElame.spec: new version, 
 	  add a hack to disable MMX things which causes compilation failure
 	  FIXME disable patch1, patch2 not needed
 
