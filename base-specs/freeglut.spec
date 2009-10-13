@@ -23,7 +23,6 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
 fi
 
 cd freeglut-2.6.0
-bash ./autogen.sh
 chmod 755 ./configure
 
 export CFLAGS="%optflags -DTARGET_HOST_POSIX_X11=1"
@@ -47,5 +46,7 @@ rm $RPM_BUILD_ROOT%{_libdir}/lib*a
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Tue Oct 13 2009 - Milan Jurik
+- autogen is not needed, all configure stuff is on place already
 * Fri Aug 21 2009 - Milan Jurik
 - Initial base spec file

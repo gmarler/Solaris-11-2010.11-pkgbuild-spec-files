@@ -1,3 +1,8 @@
+2009-10-11  Milan Jurik <sfnet@xylab.cz>
+
+	* base-specs/freeglut.spec: autogen is not needed, all configure stuff
+	  is on place already
+
 2009-10-12  James Choi <jchoi42@pha.jhu.edu>
 
 	* SFEgconfmm.spec: bump to 2.28
