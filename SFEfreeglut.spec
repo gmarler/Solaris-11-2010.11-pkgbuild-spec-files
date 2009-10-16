@@ -19,7 +19,7 @@ Patch1:			freeglut260-01.diff
 SUNW_BaseDir:           %{_basedir}
 BuildRoot:              %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
-BuildRequires: SFEjam
+#BuildRequires: SFEjam
 
 %package devel
 Summary:                 %{summary} - development files

@@ -6,12 +6,12 @@
 
 %include Solaris.inc
 
-%define src_url     %{sf_download}/geany
+%define src_url     http://download.geany.org
 %define src_name    geany
 
 Name:                SFEgeany
 Summary:             A small and lightweight integrated developer environment
-Version:             0.17
+Version:             0.18
 Source:              %{src_url}/%{src_name}-%{version}.tar.bz2
 URL:                 http://geany.uvena.de/Main/HomePage
 SUNW_BaseDir:        %{_basedir}

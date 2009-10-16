@@ -62,7 +62,7 @@ export PERL=/usr/perl5/bin/perl
             --sysconfdir=%{_sysconfdir}      \
             --without-sound                  \
             --localstatedir=%{_localstatedir}   \
-            --with-gif=no \
+            --with-gif=yes \
             --with-x-toolkit=%toolkit \
             --enable-python \
             --enable-font-backend \

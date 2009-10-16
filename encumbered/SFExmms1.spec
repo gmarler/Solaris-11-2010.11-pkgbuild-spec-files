@@ -23,7 +23,6 @@ Requires: SUNWgnome-audio
 BuildRequires: SUNWsfwhea
 BuildRequires: SUNWhea
 BuildRequires: SUNWgnome-audio-devel
-BuildRequires: oss
 BuildRequires: SUNWaudh
 
 %package devel
@@ -32,7 +31,6 @@ SUNW_BaseDir:            %{_basedir}
 %include default-depend.inc
 Requires: %name
 Requires: SUNWsfwhea
-Requires: oss
 
 %package encumbered
 Summary:                 %{summary} - development files
