@@ -1,3 +1,7 @@
+2009-10-16  Milan Jurik <sfnet@xylab.cz>
+
+	* base-specs/jack.spec: update to newer version
+
 2009-10-16 Dick Hoogendijk <dick@nagual.nl>
 
 	* SFEsylpheed.spec: -lightweight and user-friendly e-mail client-

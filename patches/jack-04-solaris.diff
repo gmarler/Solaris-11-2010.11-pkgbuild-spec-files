@@ -1,0 +1,1099 @@
+diff -Naur jack-audio-connection-kit-0.116.2/config/cpu/Makefile.am jack-audio-connection-kit-0.116.2-patch/config/cpu/Makefile.am
+--- jack-audio-connection-kit-0.116.2/config/cpu/Makefile.am	2007-04-12 21:08:32.000000000 +0200
++++ jack-audio-connection-kit-0.116.2-patch/config/cpu/Makefile.am	2009-09-20 19:20:09.718140719 +0200
+@@ -1,2 +1,2 @@
+ MAINTAINERCLEANFILES = Makefile.in
+-DIST_SUBDIRS = alpha cris generic i386 i486 ia64 m68k mips powerpc s390
++DIST_SUBDIRS = alpha cris generic i386 i486 ia64 m68k mips powerpc s390 sparc
+diff -Naur jack-audio-connection-kit-0.116.2/config/cpu/i386/atomicity.h jack-audio-connection-kit-0.116.2-patch/config/cpu/i386/atomicity.h
+--- jack-audio-connection-kit-0.116.2/config/cpu/i386/atomicity.h	2007-04-12 21:08:32.000000000 +0200
++++ jack-audio-connection-kit-0.116.2-patch/config/cpu/i386/atomicity.h	2009-09-20 19:20:09.719047630 +0200
+@@ -30,6 +30,10 @@
+ 
+ typedef int _Atomic_word;
+ 
++#if defined(__SUNPRO_C)
++#pragma error_messages (off,E_ASM_UNUSED_PARAM)
++#endif
++
+ static inline _Atomic_word 
+ __attribute__ ((__unused__))
+ __exchange_and_add(volatile _Atomic_word* __mem, int __val)
+@@ -49,4 +53,8 @@
+ 			: "=m" (*__mem) : "ir" (__val), "m" (*__mem));
+ }
+ 
++#if defined(__SUNPRO_C)
++#pragma error_messages (default,E_ASM_UNUSED_PARAM)
++#endif
++
+ #endif /* atomicity.h */
+diff -Naur jack-audio-connection-kit-0.116.2/config/cpu/sparc/atomicity.h jack-audio-connection-kit-0.116.2-patch/config/cpu/sparc/atomicity.h
+--- jack-audio-connection-kit-0.116.2/config/cpu/sparc/atomicity.h	1970-01-01 01:00:00.000000000 +0100
++++ jack-audio-connection-kit-0.116.2-patch/config/cpu/sparc/atomicity.h	2009-09-20 19:20:09.720666259 +0200
+@@ -0,0 +1,41 @@
++/* Low-level functions for atomic operations.  Stub version.
++   Copyright (C) 1997,2001 Free Software Foundation, Inc.
++   This file is part of the GNU C Library.
++
++   The GNU C Library is free software; you can redistribute it and/or
++   modify it under the terms of the GNU Lesser General Public
++   License as published by the Free Software Foundation; either
++   version 2.1 of the License, or (at your option) any later version.
++
++   The GNU C Library is distributed in the hope that it will be useful,
++   but WITHOUT ANY WARRANTY; without even the implied warranty of
++   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++   Lesser General Public License for more details.
++
++   You should have received a copy of the GNU Lesser General Public
++   License along with the GNU C Library; if not, write to the Free
++   Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
++   02111-1307 USA.  */
++
++#ifndef _ATOMICITY_H
++#define _ATOMICITY_H	1
++
++#warning "stub atomicity functions are not atomic on this platform"
++
++typedef int _Atomic_word;
++
++static inline _Atomic_word 
++__exchange_and_add(volatile _Atomic_word* mem, int val)
++{
++  int result = *mem;
++  *mem += val;
++  return result;
++}
++
++static inline void
++__atomic_add(volatile _Atomic_word* mem, int val)
++{
++  *mem += val;
++}
++
++#endif /* atomicity.h */
+diff -Naur jack-audio-connection-kit-0.116.2/config/cpu/sparc/cycles.h jack-audio-connection-kit-0.116.2-patch/config/cpu/sparc/cycles.h
+--- jack-audio-connection-kit-0.116.2/config/cpu/sparc/cycles.h	1970-01-01 01:00:00.000000000 +0100
++++ jack-audio-connection-kit-0.116.2-patch/config/cpu/sparc/cycles.h	2009-09-20 19:20:09.721456565 +0200
+@@ -0,0 +1,48 @@
++/*
++    Copyright (C) 2001 Paul Davis
++    
++    This program is free software; you can redistribute it and/or modify
++    it under the terms of the GNU General Public License as published by
++    the Free Software Foundation; either version 2 of the License, or
++    (at your option) any later version.
++
++    This program is distributed in the hope that it will be useful,
++    but WITHOUT ANY WARRANTY; without even the implied warranty of
++    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++    GNU General Public License for more details.
++
++    You should have received a copy of the GNU General Public License
++    along with this program; if not, write to the Free Software
++    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
++
++*/
++
++#ifndef __jack_cycles_h__
++#define __jack_cycles_h__
++
++/* generic solution that is not really a solution at all */
++
++#if !defined(sun)
++#warning You are compiling JACK on a platform for which jack/config/sysdep/cycles.h needs work
++#endif
++#include <sys/time.h>
++
++typedef long cycles_t;
++
++static inline cycles_t get_cycles(void)
++{
++#if defined(sun)
++	/*
++	 * gethrtime() returns nanoseconds. We need usec.
++	 * Thus divide by 1000....
++	 */
++	return((cycles_t)(gethrtime()/1000));
++#else
++       struct timeval tv;
++       gettimeofday (&tv, NULL);
++
++       return ((cycles_t) tv.tv_sec * 1000000) + tv.tv_usec;
++#endif
++}
++
++#endif /* __jack_cycles_h__ */
+diff -Naur jack-audio-connection-kit-0.116.2/config/os/Makefile.am jack-audio-connection-kit-0.116.2-patch/config/os/Makefile.am
+--- jack-audio-connection-kit-0.116.2/config/os/Makefile.am	2007-04-12 21:08:32.000000000 +0200
++++ jack-audio-connection-kit-0.116.2-patch/config/os/Makefile.am	2009-09-20 19:20:09.722127482 +0200
+@@ -1,3 +1,3 @@
+ MAINTAINERCLEANFILES = Makefile.in
+-DIST_SUBDIRS = generic gnu-linux macosx
++DIST_SUBDIRS = generic gnu-linux macosx solaris
+ 
+diff -Naur jack-audio-connection-kit-0.116.2/config/os/solaris/Makefile.am jack-audio-connection-kit-0.116.2-patch/config/os/solaris/Makefile.am
+--- jack-audio-connection-kit-0.116.2/config/os/solaris/Makefile.am	1970-01-01 01:00:00.000000000 +0100
++++ jack-audio-connection-kit-0.116.2-patch/config/os/solaris/Makefile.am	2009-09-20 19:20:09.722968581 +0200
+@@ -0,0 +1,2 @@
++MAINTAINERCLEANFILES = Makefile.in
++noinst_HEADERS = ipc.h poll.h time.c time.h
+diff -Naur jack-audio-connection-kit-0.116.2/config/os/solaris/ipc.h jack-audio-connection-kit-0.116.2-patch/config/os/solaris/ipc.h
+--- jack-audio-connection-kit-0.116.2/config/os/solaris/ipc.h	1970-01-01 01:00:00.000000000 +0100
++++ jack-audio-connection-kit-0.116.2-patch/config/os/solaris/ipc.h	2009-09-20 19:20:09.723790365 +0200
+@@ -0,0 +1,27 @@
++/*
++    Copyright (C) 2004 Jack O'Quin
++
++    Generic version, overridden by OS-specific defines when needed.
++    
++    This program is free software; you can redistribute it and/or modify
++    it under the terms of the GNU Lesser General Public License as published by
++    the Free Software Foundation; either version 2.1 of the License, or
++    (at your option) any later version.
++    
++    This program is distributed in the hope that it will be useful,
++    but WITHOUT ANY WARRANTY; without even the implied warranty of
++    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++    GNU Lesser General Public License for more details.
++    
++    You should have received a copy of the GNU Lesser General Public License
++    along with this program; if not, write to the Free Software 
++    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
++
++*/
++
++#ifndef _jack_sys_ipc
++#define _jack_sys_ipc 1
++
++#include <sys/ipc.h>
++
++#endif /* _jack_sys_ipc */
+diff -Naur jack-audio-connection-kit-0.116.2/config/os/solaris/poll.h jack-audio-connection-kit-0.116.2-patch/config/os/solaris/poll.h
+--- jack-audio-connection-kit-0.116.2/config/os/solaris/poll.h	1970-01-01 01:00:00.000000000 +0100
++++ jack-audio-connection-kit-0.116.2-patch/config/os/solaris/poll.h	2009-09-20 19:20:09.724608083 +0200
+@@ -0,0 +1,27 @@
++/*
++    Copyright (C) 2004 Jack O'Quin
++
++    Generic version, overridden by OS-specific defines when needed.
++    
++    This program is free software; you can redistribute it and/or modify
++    it under the terms of the GNU Lesser General Public License as published by
++    the Free Software Foundation; either version 2.1 of the License, or
++    (at your option) any later version.
++    
++    This program is distributed in the hope that it will be useful,
++    but WITHOUT ANY WARRANTY; without even the implied warranty of
++    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++    GNU Lesser General Public License for more details.
++    
++    You should have received a copy of the GNU Lesser General Public License
++    along with this program; if not, write to the Free Software 
++    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
++
++*/
++
++#ifndef _jack_sys_poll
++#define _jack_sys_poll 1
++
++#include <sys/poll.h>
++
++#endif /* _jack_sys_poll */
+diff -Naur jack-audio-connection-kit-0.116.2/config/os/solaris/time.c jack-audio-connection-kit-0.116.2-patch/config/os/solaris/time.c
+--- jack-audio-connection-kit-0.116.2/config/os/solaris/time.c	1970-01-01 01:00:00.000000000 +0100
++++ jack-audio-connection-kit-0.116.2-patch/config/os/solaris/time.c	2009-09-20 19:20:09.725405547 +0200
+@@ -0,0 +1,30 @@
++/*
++    Copyright (C) 2001-2004 Paul Davis, Tilman Linneweh
++
++    Generic version, overridden by OS-specific definition when needed.
++    
++    This program is free software; you can redistribute it and/or modify
++    it under the terms of the GNU Lesser General Public License as published by
++    the Free Software Foundation; either version 2.1 of the License, or
++    (at your option) any later version.
++    
++    This program is distributed in the hope that it will be useful,
++    but WITHOUT ANY WARRANTY; without even the implied warranty of
++    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++    GNU Lesser General Public License for more details.
++    
++    You should have received a copy of the GNU Lesser General Public License
++    along with this program; if not, write to the Free Software 
++    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
++
++*/
++
++void jack_init_time ()
++{
++	/* nothing to do on a generic system - we use the system clock */
++}
++void jack_set_clock_source (jack_timer_type_t clocksrc) 
++{
++	/* only one clock source on a generic system */
++}
++
+diff -Naur jack-audio-connection-kit-0.116.2/config/os/solaris/time.h jack-audio-connection-kit-0.116.2-patch/config/os/solaris/time.h
+--- jack-audio-connection-kit-0.116.2/config/os/solaris/time.h	1970-01-01 01:00:00.000000000 +0100
++++ jack-audio-connection-kit-0.116.2-patch/config/os/solaris/time.h	2009-09-20 19:20:09.726165687 +0200
+@@ -0,0 +1,33 @@
++/*
++    Copyright (C) 2001-2004 Paul Davis, Tilman Linneweh
++
++    Generic version, overridden by OS-specific definition when needed.
++    
++    This program is free software; you can redistribute it and/or modify
++    it under the terms of the GNU Lesser General Public License as published by
++    the Free Software Foundation; either version 2.1 of the License, or
++    (at your option) any later version.
++    
++    This program is distributed in the hope that it will be useful,
++    but WITHOUT ANY WARRANTY; without even the implied warranty of
++    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++    GNU Lesser General Public License for more details.
++    
++    You should have received a copy of the GNU Lesser General Public License
++    along with this program; if not, write to the Free Software 
++    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
++
++*/
++#ifndef __jack_time_h__
++#define __jack_time_h__
++
++#include <jack/types.h>
++
++extern jack_time_t jack_get_microseconds_from_system (void);
++
++static inline jack_time_t
++jack_get_microseconds (void) {
++	return jack_get_microseconds_from_system ();
++}
++
++#endif /* __jack_time_h__ */
+diff -Naur jack-audio-connection-kit-0.116.2/config/sysdeps/atomicity.h jack-audio-connection-kit-0.116.2-patch/config/sysdeps/atomicity.h
+--- jack-audio-connection-kit-0.116.2/config/sysdeps/atomicity.h	2007-04-12 21:08:32.000000000 +0200
++++ jack-audio-connection-kit-0.116.2-patch/config/sysdeps/atomicity.h	2009-09-20 19:20:09.726850024 +0200
+@@ -1,11 +1,11 @@
+ #ifndef _jack_sysdep_atomicity_h_
+ #define _jack_sysdep_atomicity_h_
+ 
+-#if defined(__i386__)
++#if defined(__i386__) || (defined(__i386) && __SUNPRO_C >= 0x590)
+ 
+ #include <config/cpu/i386/atomicity.h>
+ 
+-#elif defined(__x86_64)
++#elif defined(__x86_64) || (defined(__amd64) && __SUNPRO_C >= 0x590)
+ 
+ /* x86_64 can use rdtsc just like i[456]86 */
+ 
+diff -Naur jack-audio-connection-kit-0.116.2/config/sysdeps/cycles.h jack-audio-connection-kit-0.116.2-patch/config/sysdeps/cycles.h
+--- jack-audio-connection-kit-0.116.2/config/sysdeps/cycles.h	2007-04-12 21:08:32.000000000 +0200
++++ jack-audio-connection-kit-0.116.2-patch/config/sysdeps/cycles.h	2009-09-20 19:20:09.727737823 +0200
+@@ -1,7 +1,7 @@
+ #ifndef _jack_sysdep_cycles_h_
+ #define _jack_sysdep_cycles_h_
+ 
+-#if defined(__i386__)
++#if defined(__i386__) || (defined(__i386) && __SUNPRO_C >= 0x590)
+     
+ /* technically, i386 doesn't have a cycle counter, but
+    running JACK on a real i386 seems like a ridiculuous
+@@ -11,7 +11,7 @@
+ 
+ #include <config/cpu/i386/cycles.h>
+ 
+-#elif defined(__x86_64)
++#elif defined(__x86_64) || (defined(__amd64) && __SUNPRO_C >= 0x590)
+ 
+ #include <config/cpu/i486/cycles.h>
+ 
+@@ -19,6 +19,10 @@
+ 
+ #include <config/cpu/powerpc/cycles.h>
+ 
++#elif defined(__sparc)
++
++#include <config/cpu/sparc/cycles.h>
++
+ #else
+ 
+ #include <config/cpu/generic/cycles.h>
+diff -Naur jack-audio-connection-kit-0.116.2/config/sysdeps/time.c jack-audio-connection-kit-0.116.2-patch/config/sysdeps/time.c
+--- jack-audio-connection-kit-0.116.2/config/sysdeps/time.c	2007-04-12 21:08:32.000000000 +0200
++++ jack-audio-connection-kit-0.116.2-patch/config/sysdeps/time.c	2009-09-20 19:20:09.728388378 +0200
+@@ -5,6 +5,8 @@
+ #include <config/os/gnu-linux/time.c>
+ #elif defined(__MACH__) && defined(__APPLE__)
+ #include <config/os/macosx/time.c>
++#elif defined(sun)
++#include <config/os/solaris/time.c>
+ #else
+ #include <config/os/generic/time.c>
+ #endif
+diff -Naur jack-audio-connection-kit-0.116.2/config/sysdeps/time.h jack-audio-connection-kit-0.116.2-patch/config/sysdeps/time.h
+--- jack-audio-connection-kit-0.116.2/config/sysdeps/time.h	2007-04-12 21:08:32.000000000 +0200
++++ jack-audio-connection-kit-0.116.2-patch/config/sysdeps/time.h	2009-09-20 19:20:09.729033592 +0200
+@@ -5,6 +5,8 @@
+ #include <config/os/gnu-linux/time.h>
+ #elif defined(__MACH__) && defined(__APPLE__)
+ #include <config/os/macosx/time.h>
++#elif defined(sun)
++#include <config/os/solaris/time.h>
+ #else
+ #include <config/os/generic/time.h>
+ #endif
+diff -Naur jack-audio-connection-kit-0.116.2/configure.ac jack-audio-connection-kit-0.116.2-patch/configure.ac
+--- jack-audio-connection-kit-0.116.2/configure.ac	2009-02-06 11:40:56.000000000 +0100
++++ jack-audio-connection-kit-0.116.2-patch/configure.ac	2009-09-20 19:23:52.924391619 +0200
+@@ -97,6 +97,23 @@
+ 
+ CFLAGS="$ORIGINAL_CFLAGS"
+ 
++AC_MSG_CHECKING([Sun C compiler])
++AC_COMPILE_IFELSE(
++  [AC_LANG_PROGRAM(
++    [[
++#ifndef __SUNPRO_C
++#error We r not him
++#endif
++#include <stdio.h>
++    ]],[[
++  (void)printf("JAVA CC");;
++    ]]
++  )],
++  [SUNCC=true
++   AC_MSG_RESULT(yes)],
++  [SUNCC=false
++   AC_MSG_RESULT(no)])
++
+ AC_MSG_CHECKING([platform dependencies])
+ 
+ HOST_DEFAULT_TMP_DIR=/dev/shm
+@@ -121,6 +138,14 @@
+     TRY_POSIX_SHM=yes			# POSIX shm works better
+     HOST_DEFAULT_TMP_DIR=/tmp
+     ;;
++  solaris*)
++    JACK_CPP_VARARGS_BROKEN=1;
++    OS_LDFLAGS="-Wl,-z,muldefs"
++    if $SUNCC ; then
++	CPPFLAGS="-D__FUNCTION__=__func__"
++        CFLAGS="-xc99 -erroff=E_ARGUEMENT_MISMATCH $CFLAGS"
++    fi
++    ;;
+ esac
+ 
+ AC_SUBST(OS_LDFLAGS)
+@@ -249,7 +274,7 @@
+ AM_CONDITIONAL(USE_POSIX_SHM, $USE_POSIX_SHM)
+ 
+ JACK_CORE_CFLAGS="-I\$(top_srcdir)/config -I\$(top_srcdir) \
+--I\$(top_srcdir) -D_REENTRANT -D_POSIX_PTHREAD_SEMANTICS -Wall"
++-I\$(top_srcdir) -D_REENTRANT -D_POSIX_PTHREAD_SEMANTICS"
+ 
+ JACK_LIBC_HELPER_FLAGS=
+ AC_ARG_ENABLE(ancient_libc,
+@@ -705,6 +730,27 @@
+ fi
+ AM_CONDITIONAL(HAVE_PA, $HAVE_PA)
+ 
++#
++# Solaris does not have endian.h, so we check for the alsa hack version
++#
++AC_CHECK_HEADERS(endian.h alsa/endian-compat.h)
++#
++# Headers needed for Solaris
++#
++AC_CHECK_HEADERS(sys/rtpriocntl.h sys/priocntl.h limits.h stropts.h priv.h)
++
++#
++# If we find exec_attr.h, we assume we can use RBAC
++#
++USE_RBAC=false
++AC_CHECK_HEADER(exec_attr.h,[
++    AC_MSG_RESULT([*** Using Solaris RBAC ***])
++    USE_RBAC=true
++    AC_DEFINE(USE_RBAC,1,"Adding Solaris RBAC mods")
++])
++
++AM_CONDITIONAL(USE_RBAC,$USE_RBAC)
++
+ AC_ARG_ENABLE(coreaudio, AC_HELP_STRING([--disable-coreaudio], [ignore CoreAudio driver]),
+ 			TRY_COREAUDIO=$enableval , TRY_COREAUDIO=yes )
+ HAVE_COREAUDIO="false"
+@@ -795,6 +841,14 @@
+ HAVE_ALSA_MIDI=$HAVE_ALSA
+ AM_CONDITIONAL(HAVE_ALSA_MIDI, $HAVE_ALSA_MIDI)
+ 
++case "${host_os}" in
++  solaris*)
++        if test "x$HAVE_OSS" != "x" ; then
++                JACK_DEFAULT_DRIVER=\"oss\"
++        fi
++  ;;
++esac
++
+ if test "$JACK_DEFAULT_DRIVER" = \"dummy\"; then
+   AC_MSG_WARN([Only the dummy driver can be built])
+ fi
+diff -Naur jack-audio-connection-kit-0.116.2/drivers/alsa/memops.c jack-audio-connection-kit-0.116.2-patch/drivers/alsa/memops.c
+--- jack-audio-connection-kit-0.116.2/drivers/alsa/memops.c	2008-11-22 12:54:59.000000000 +0100
++++ jack-audio-connection-kit-0.116.2-patch/drivers/alsa/memops.c	2009-09-20 19:27:17.137024449 +0200
+@@ -30,7 +30,11 @@
+ #include <stdlib.h>
+ #include <stdint.h>
+ #include <limits.h>
++#if defined(HAVE_ENDIAN_H)
+ #include <endian.h>
++#elif defined(HAVE_ALSA_ENDIAN_COMPAT_H)
++#include <alsa/endian_compat.h>
++#endif
+ 
+ #include <jack/memops.h>
+ 
+@@ -162,8 +166,15 @@
+ /* Linear Congruential noise generator. From the music-dsp list
+  * less random than rand(), but good enough and 10x faster 
+  */
+-
+-inline unsigned int fast_rand() {
++#ifndef __SUNPRO_C
++inline
++#endif
++unsigned int fast_rand();
++  
++#ifndef __SUNPRO_C
++inline
++#endif
++unsigned int fast_rand() {
+ 	static unsigned int seed = 22222;
+ 	seed = (seed * 96314165) + 907633515;
+ 
+diff -Naur jack-audio-connection-kit-0.116.2/drivers/netjack/net_driver.c jack-audio-connection-kit-0.116.2-patch/drivers/netjack/net_driver.c
+--- jack-audio-connection-kit-0.116.2/drivers/netjack/net_driver.c	2009-02-06 11:34:50.000000000 +0100
++++ jack-audio-connection-kit-0.116.2-patch/drivers/netjack/net_driver.c	2009-09-20 21:53:27.939374212 +0200
+@@ -41,6 +41,10 @@
+ #include <sys/socket.h>
+ #include <netinet/in.h>
+ 
++#if defined(__sun)
++#include <alloca.h>
++#endif
++
+ #include "config.h"
+ 
+ #if HAVE_SAMPLERATE
+@@ -497,7 +501,7 @@
+     {
+ 	int r;
+ 
+-#ifdef __APPLE__
++#if defined (__APPLE__) || defined (__sun)
+ 	static const int flag = 0;
+ #else
+ 	static const int flag = MSG_CONFIRM;
+diff -Naur jack-audio-connection-kit-0.116.2/drivers/oss/oss_driver.c jack-audio-connection-kit-0.116.2-patch/drivers/oss/oss_driver.c
+--- jack-audio-connection-kit-0.116.2/drivers/oss/oss_driver.c	2008-07-03 08:47:34.000000000 +0200
++++ jack-audio-connection-kit-0.116.2-patch/drivers/oss/oss_driver.c	2009-09-20 19:20:09.738289833 +0200
+@@ -51,6 +51,9 @@
+ #include <stdarg.h>
+ #include <getopt.h>
+ #include <semaphore.h>
++#ifdef HAVE_STROPTS_H
++#include <stropts.h>
++#endif
+ 
+ #include <sys/types.h>
+ #include <sys/stat.h>
+@@ -167,7 +170,7 @@
+ 	driver->period_size = new_period_size;
+ 
+ 	driver->period_usecs = 
+-		((double) driver->period_size /
++		((double) driver->period_size * 1.2 /
+ 		(double) driver->sample_rate) * 1e6;
+ 	driver->last_wait_ust = 0;
+ 	driver->last_periodtime = jack_get_microseconds();
+@@ -610,7 +613,7 @@
+ 				period_size);
+ 			driver->period_size = period_size;
+ 			driver->period_usecs = 
+-				((double) driver->period_size / 
++				((double) driver->period_size * 1.2 / 
+ 				 (double) driver->sample_rate) * 1e6;
+ 			driver->engine->set_buffer_size(driver->engine, 
+ 				driver->period_size);
+@@ -646,7 +649,7 @@
+ 				period_size);
+ 			driver->period_size = period_size;
+ 			driver->period_usecs = 
+-				((double) driver->period_size / 
++				((double) driver->period_size * 1.2 / 
+ 				 (double) driver->sample_rate) * 1e6;
+ 			driver->engine->set_buffer_size(driver->engine, 
+ 				driver->period_size);
+diff -Naur jack-audio-connection-kit-0.116.2/jack/internal.h jack-audio-connection-kit-0.116.2-patch/jack/internal.h
+--- jack-audio-connection-kit-0.116.2/jack/internal.h	2008-11-30 10:56:08.000000000 +0100
++++ jack-audio-connection-kit-0.116.2-patch/jack/internal.h	2009-09-20 19:51:18.139099446 +0200
+@@ -44,6 +44,9 @@
+    compiler.
+ */
+ #define POST_PACKED_STRUCTURE __attribute__((__packed__))
++#elif defined(__SUNPRO_C) && (__SUNPRO_C >= 0x5100)
++/* Available from Sun Studio 12 u1 */
++#define POST_PACKED_STRUCTURE __attribute__((__packed__))
+ #else
+ /* Add other things here for non-gcc platforms */
+ #endif
+diff -Naur jack-audio-connection-kit-0.116.2/jack/transport.h jack-audio-connection-kit-0.116.2-patch/jack/transport.h
+--- jack-audio-connection-kit-0.116.2/jack/transport.h	2008-11-24 10:32:58.000000000 +0100
++++ jack-audio-connection-kit-0.116.2-patch/jack/transport.h	2009-09-20 19:52:01.590508514 +0200
+@@ -37,6 +37,9 @@
+    compiler.
+ */
+ #define POST_PACKED_STRUCTURE __attribute__((__packed__))
++#elif defined(__SUNPRO_C) && (__SUNPRO_C >= 0x5100)
++/* Available from Sun Studio 12 u1 */
++#define POST_PACKED_STRUCTURE __attribute__((__packed__))
+ #else
+ /* Add other things here for non-gcc platforms */
+ #endif
+diff -Naur jack-audio-connection-kit-0.116.2/jackd/Makefile.am jack-audio-connection-kit-0.116.2-patch/jackd/Makefile.am
+--- jack-audio-connection-kit-0.116.2/jackd/Makefile.am	2008-12-02 12:13:14.000000000 +0100
++++ jack-audio-connection-kit-0.116.2-patch/jackd/Makefile.am	2009-09-20 19:30:06.741357835 +0200
+@@ -1,5 +1,10 @@
+ MAINTAINERCLEANFILES = Makefile.in jackd.1 jack_md5.h 
+ 
++if USE_RBAC
++RBAC_PROGS = jackstart
++RBAC_LIBS = -lsecdb
++endif
++
+ if USE_CAPABILITIES
+ CAP_PROGS = jackstart
+ CAP_LIBS = -lcap
+@@ -19,12 +24,13 @@
+ 	@echo "Nothing to make for $@."
+ endif
+ 
+-bin_PROGRAMS = jackd $(CAP_PROGS)
++bin_PROGRAMS = jackd $(CAP_PROGS) $(RBAC_PROGS)
++
+ 
+ AM_CFLAGS = $(JACK_CFLAGS) -DJACK_LOCATION=\"$(bindir)\"
+ 
+ jackd_SOURCES = jackd.c
+-jackd_LDADD = libjackserver.la $(CAP_LIBS) @OS_LDFLAGS@
++jackd_LDADD = libjackserver.la $(CAP_LIBS) $(RBAC_LIBS) @OS_LDFLAGS@
+ 
+ noinst_HEADERS = jack_md5.h md5.h md5_loc.h \
+ 		 clientengine.h transengine.h
+@@ -38,7 +44,7 @@
+ 	echo "#define JACKD_MD5_SUM \"`md5sum .libs/jackd | awk '{print $$1}'`\"" > jack_md5.h
+ 
+ jackstart_SOURCES = jackstart.c md5.c
+-jackstart_LDFLAGS = -lcap
++jackstart_LDFLAGS = $(CAP_LIBS) $(RBAC_LIBS)
+ 
+ lib_LTLIBRARIES	= libjackserver.la
+ 
+diff -Naur jack-audio-connection-kit-0.116.2/jackd/engine.c jack-audio-connection-kit-0.116.2-patch/jackd/engine.c
+--- jack-audio-connection-kit-0.116.2/jackd/engine.c	2008-12-02 17:29:23.000000000 +0100
++++ jack-audio-connection-kit-0.116.2-patch/jackd/engine.c	2009-09-20 19:55:10.686511825 +0200
+@@ -52,10 +52,13 @@
+ #include <sys/mman.h>
+ #endif /* USE_MLOCK */
+ 
+-#ifdef USE_CAPABILITIES
++#if defined(USE_CAPABILITIES)
+ /* capgetp and capsetp are linux only extensions, not posix */
+ #undef _POSIX_SOURCE
+ #include <sys/capability.h>
++#elif defined(USE_RBAC)
++#undef _POSIX_SOURCE
++#include <priv.h>
+ #endif
+ 
+ #include "clientengine.h"
+@@ -1202,6 +1205,76 @@
+ 
+ #endif /* USE_CAPABILITIES */
+ 
++#ifdef USE_RBAC
++static int check_privs (jack_engine_t *engine){
++	int have_all_privs = 1;
++	priv_set_t	*effective;
++	priv_ptype_t	*p;
++
++	priv_ptype_t priv_list[] = {
++	    PRIV_PROC_PRIOCNTL,
++	    PRIV_PROC_LOCK_MEMORY,
++	    PRIV_SYS_RESOURCE,
++	    (priv_ptype_t)NULL };
++
++	effective=priv_allocset();
++	if (effective == NULL) {
++		VERBOSE (engine, "check: could not allocate privileges working storage\n");
++		return 0;
++	}
++	getppriv(PRIV_EFFECTIVE,effective);
++
++	p = priv_list;
++	while (*p!=(priv_ptype_t)NULL) {
++		if (!priv_ismember(effective,*p)){
++			have_all_privs = 0;
++			break;
++		}
++		p++;
++	}
++
++	priv_freeset(effective);
++	return(have_all_privs);
++}
++
++/*
++ * Fix Me. I want code.....
++ *
++ */
++static int give_privs (jack_engine_t *engine, pid_t pid){
++	char buf[1024];
++	static char client_privs[] =
++		"A+proc_priocntl,proc_lock_memory,sys_resource";
++	snprintf(buf,1024,"/usr/bin/ppriv -s %s %d",client_privs,pid);
++	system(buf);
++	return(0);
++}
++
++static int
++jack_set_client_privs (jack_engine_t *engine, pid_t priv_pid){
++	int ret = -1;
++
++	/* before sending this request the client has
++	   already checked that the engine has
++	   realtime privileges, that it is running
++	   realtime and that the pid is defined
++	*/
++
++	if ((ret = give_privs (engine, priv_pid)) != 0) {
++		jack_error ("could not give privileges to "
++			    "process %d\n",
++			    priv_pid);
++	} else {
++		VERBOSE (engine, "gave privileges to"
++			 " process %d\n",
++			 priv_pid);
++	}
++
++	return ret;
++}
++
++#endif
++
+ /* perform internal or external client request
+  *
+  * reply_fd is NULL for internal requests
+@@ -1284,6 +1357,11 @@
+ 							    req->x.cap_pid);
+ 		break;
+ #endif /* USE_CAPABILITIES */
++#ifdef USE_RBAC
++	case SetClientCapabilities:
++		req->status = jack_set_client_privs (engine, req->x.cap_pid);
++		break;
++#endif
+ 		
+ 	case GetPortConnections:
+ 	case GetPortNConnections:
+@@ -1399,6 +1477,12 @@
+ #endif /* JACK_USE_MACH_THREADS */
+ 			return 1;
+ 		} else {
++#ifdef sun
++		if (errno==EAGAIN){
++//			jack_client_disconnect(engine, client->request_fd);
++			return(0);
++		}
++#endif
+ 			jack_error ("cannot read request from client (%d/%d/%s)",
+ 				    r, sizeof(req), strerror (errno));
+ 			// XXX: shouldnt we mark this client as error now ?
+@@ -1919,6 +2003,23 @@
+ 	}
+ #endif /* USE_CAPABILITIES */
+ 
++#ifdef USE_RBAC
++	/* only try to use privileges if not running as root */
++	engine->control->has_capabilities = check_privs(engine);
++	if (engine->control->has_capabilities == 0) {
++		VERBOSE (engine, "required capabilities privileges are not "
++				 "available\n");
++	}
++	if (engine->verbose) {
++		priv_set_t *effective;
++		effective=priv_allocset();
++		getppriv(PRIV_EFFECTIVE,effective);
++		VERBOSE (engine, "privileges: %s\n",
++			 priv_set_to_str(effective,',',PRIV_STR_PORT));
++		priv_freeset(effective);
++	}
++#endif /* USE_RBAC */
++
+ 	engine->control->engine_ok = 1;
+ 
+ 	snprintf (engine->fifo_prefix, sizeof (engine->fifo_prefix),
+diff -Naur jack-audio-connection-kit-0.116.2/jackd/jackd.c jack-audio-connection-kit-0.116.2-patch/jackd/jackd.c
+--- jack-audio-connection-kit-0.116.2/jackd/jackd.c	2008-07-03 08:47:33.000000000 +0200
++++ jack-audio-connection-kit-0.116.2-patch/jackd/jackd.c	2009-09-20 19:20:09.747343995 +0200
+@@ -40,7 +40,7 @@
+ #include <jack/driver_parse.h>
+ #include <jack/messagebuffer.h>
+ 
+-#ifdef USE_CAPABILITIES
++#if defined(USE_CAPABILITIES)
+ 
+ #include <sys/stat.h>
+ /* capgetp and capsetp are linux only extensions, not posix */
+@@ -49,7 +49,14 @@
+ #include <jack/start.h>
+ 
+ static struct stat pipe_stat;
++#elif defined(USE_RBAC)
++#include <sys/stat.h>
++#include <priv.h>
++/* RBAC is a Solaris only extensions, not posix */
++#undef _POSIX_SOURCE
++#include <jack/start.h>
+ 
++static struct stat pipe_stat;
+ #endif /* USE_CAPABILITIES */
+ 
+ static JSList *drivers = NULL;
+@@ -469,7 +476,7 @@
+ static void
+ maybe_use_capabilities ()
+ {
+-#ifdef USE_CAPABILITIES
++#if defined(USE_CAPABILITIES) || defined(USE_RBAC)
+ 	int status;
+ 
+ 	/* check to see if there is a pipe in the right descriptor */
+@@ -545,6 +552,9 @@
+ 
+ 	setvbuf (stdout, NULL, _IOLBF, 0);
+ 
++#if defined(USE_RBAC)
++	(void)setpflags(PRIV_AWARE,1);
++#endif
+ 	maybe_use_capabilities ();
+ 
+ 	opterr = 0;
+diff -Naur jack-audio-connection-kit-0.116.2/jackd/jackstart.c jack-audio-connection-kit-0.116.2-patch/jackd/jackstart.c
+--- jack-audio-connection-kit-0.116.2/jackd/jackstart.c	2007-04-12 21:08:34.000000000 +0200
++++ jack-audio-connection-kit-0.116.2-patch/jackd/jackstart.c	2009-09-20 19:20:09.748740380 +0200
+@@ -35,7 +35,15 @@
+ #include <config.h>
+ 
+ #undef _POSIX_SOURCE
++#if defined(USE_CAPABILITIES)
+ #include <sys/capability.h>
++#elif defined(USE_RBAC)
++#include <pwd.h>
++#include <priv.h>
++#include <exec_attr.h>
++#else
++#warning Unknown System
++#endif
+ 
+ #include "jack/start.h"
+ #include "md5.h"
+@@ -49,6 +57,7 @@
+ static char *jackd_md5_sum = JACKD_MD5_SUM;
+ 
+ 
++#if defined(USE_CAPABILITIES)
+ static int check_capabilities (void)
+ {
+ 	cap_t caps = cap_init();
+@@ -121,6 +130,103 @@
+ 	cap_free (caps);
+ 	return 0;
+ }
++#endif
++
++#if defined(USE_RBAC)
++
++int check_jackd_rbac(uid_t uid, char *binpath){
++
++	execattr_t	*exec;
++	struct passwd	*pwent;
++	priv_set_t	*iset = NULL;
++	char		*inh;
++	priv_ptype_t	*p;
++
++	priv_ptype_t priv_list[] =
++                { PRIV_PROC_PRIOCNTL,
++		  PRIV_PROC_LOCK_MEMORY,
++		  PRIV_SYS_RESOURCE,
++		  (priv_ptype_t)NULL };
++
++	if ((pwent = getpwuid(uid)) == NULL) {
++		fprintf(stderr,"Error: Cannot find a username for %d\n",uid);
++		goto fail;
++	}
++
++	if ((exec=getexecuser(pwent->pw_name,KV_COMMAND,
++	    binpath, GET_ONE)) == NULL) {
++		fprintf(stderr, "Error: Cannot get execution attributes\n");
++		goto fail;
++	}
++
++	if ((inh = kva_match(exec->attr, EXECATTR_IPRIV_KW)) == NULL) {
++		fprintf(stderr, "Error: Cannot get inherited privs\n");
++		goto fail;
++	}
++
++	if ((iset = priv_str_to_set(inh, ",", NULL)) == NULL) {
++		fprintf(stderr, "Error: Cannot get inherited privs\n");
++		goto fail;
++	}
++	
++	p = priv_list;
++	while (*p!=(priv_ptype_t)NULL) {
++		if (!priv_ismember(iset,*p)){
++			fprintf(stderr, "Error: Missing %s privilege\n",*p);
++			goto fail;
++		}
++		p++;
++	}
++
++	if (exec) free_execattr(exec);
++	if (iset) priv_freeset(iset);
++	return(0);
++fail:
++	if (exec) free_execattr(exec);
++	if (iset) priv_freeset(iset);
++
++	fprintf(stderr,"\n");
++	fprintf(stderr,"Error: For jackd to use change it's priority to realtime, %s\n",binpath);
++	fprintf(stderr,"       requires the following privileges -\n");
++	p = priv_list;
++	while (*p!=(priv_ptype_t)NULL) {
++		fprintf(stderr,"           - %s\n",*p++);
++	}
++	fprintf(stderr,"\n");
++	return(-1);
++}
++
++int pfexec_execvp(char *binpath, int argc,char **argv){
++
++	static char *pfexec="/usr/bin/pfexec";
++	char **new_argv;
++	char **p;
++	char **argv_p;
++	int i;
++
++	/*
++	 * make a new argv with pfexec added at the front.
++	 */
++	if (!binpath) return(-1);
++	new_argv=(char **)malloc(sizeof(char *)*(argc+2));
++	p=new_argv;
++	*p++=pfexec;
++	*p++=binpath;
++	i=0;
++	argv_p=argv;
++	argv_p++;  /* Skip arg0 */
++	while(*argv_p!=(char *)NULL&&i++<16){
++		*p++=*argv_p++;
++	}
++	*p=(char *)NULL;
++
++	execvp(pfexec,new_argv);
++	fprintf (stderr, "jackstart: Cannot exec %s : %s\n",
++                         jackd_bin_path, strerror(errno));
++	free(new_argv);
++        return(-1);
++}
++#endif
+ 
+ static int check_binary (const char *binpath)
+ {
+@@ -211,6 +317,7 @@
+ 	gid = getgid ();
+ 	euid = geteuid ();
+ 
++#if !defined(USE_RBAC)
+ 	/* are we running suid root? */
+ 	if (uid != 0) {
+ 		if (euid != 0) {
+@@ -219,6 +326,9 @@
+ 			fprintf (stderr, "    make jackstart suid root or start jackd directly\n\n");
+ 		}
+ 	}
++#endif
++
++#if defined(USE_CAPABILITIES)
+ 	/* see if we can get the required capabilities */
+ 	if (check_capabilities () == 0) {
+ 		size_t size;
+@@ -230,6 +340,10 @@
+ 		fprintf (stderr, "    a suitable kernel would have printed something like \"=eip\"\n\n");
+ 	}
+ 
++#elif defined(USE_RBAC)
++	check_jackd_rbac(euid, jackd_bin_path);
++#endif
++
+ 	/* check the executable, owner, permissions, md5 checksum */
+ 	if (check_binary(jackd_bin_path)) {
+ 		exit(1);
+@@ -287,7 +401,11 @@
+ 		/* set gid and uid */
+ 		setregid(gid, gid);
+ 		setreuid(uid, uid);
++#if defined(USE_RBAC)
++		pfexec_execvp(jackd_bin_path, argc, argv);
++#else
+ 		execvp(jackd_bin_path, argv);
++#endif
+ 	
+ 		/* we could not start jackd, clean up and exit */
+ 		fprintf(stderr, "jackstart: unable to execute %s: %s\n", jackd_bin_path, strerror(errno));
+@@ -316,8 +434,10 @@
+ 			}
+ 		}
+ 
++#if defined(USE_CAPABILITIES)
+ 		/* set privileges on jackd process */
+ 		give_capabilities (parent_pid);
++#endif
+ 	}
+ 	exit (0);
+ }
+diff -Naur jack-audio-connection-kit-0.116.2/libjack/client.c jack-audio-connection-kit-0.116.2-patch/libjack/client.c
+--- jack-audio-connection-kit-0.116.2/libjack/client.c	2009-02-06 11:34:49.000000000 +0100
++++ jack-audio-connection-kit-0.116.2-patch/libjack/client.c	2009-09-20 19:20:09.751384143 +0200
+@@ -668,15 +668,15 @@
+ 	}
+ 
+ 	if (!good) {
+-#if defined(USE_CAPABILITIES)
++#if defined(USE_CAPABILITIES) || defined(USE_RBAC)
+ 		command = JACK_LOCATION "/jackstart";
+ 		strncpy(arguments, JACK_LOCATION "/jackstart -T -R -d "
+ 			JACK_DEFAULT_DRIVER " -p 512", 255);
+-#else /* !USE_CAPABILITIES */
++#else /* !USE_CAPABILITIES && !USE_RBAC */
+ 		command = JACK_LOCATION "/jackd";
+ 		strncpy(arguments, JACK_LOCATION "/jackd -T -d "
+ 			JACK_DEFAULT_DRIVER, 255);
+-#endif /* USE_CAPABILITIES */
++#endif /* USE_CAPABILITIES || USE_RBAC */
+ 	} else {
+ 		result = strcspn(arguments, " ");
+ 		command = (char *) malloc(result+1);
+@@ -829,9 +829,9 @@
+ 	snprintf (req.name, sizeof (req.name),
+ 		  "%s", client_name);
+ 	snprintf (req.object_path, sizeof (req.object_path),
+-		  "%s", va->load_name);
++		  "%s", va->load_name?va->load_name:"(null)");
+ 	snprintf (req.object_data, sizeof (req.object_data),
+-		  "%s", va->load_init);
++		  "%s", va->load_init?va->load_init:"(null)");
+ 
+ 	if (write (*req_fd, &req, sizeof (req)) != sizeof (req)) {
+ 		jack_error ("cannot send request to jack server (%s)",
+@@ -1955,7 +1955,7 @@
+ 
+ 	client->control->pid = getpid ();
+ 
+-#ifdef USE_CAPABILITIES
++#if defined(USE_CAPABILITIES) || defined(USE_RBAC)
+ 
+ 	if (client->engine->has_capabilities != 0 &&
+ 	    client->control->pid != 0 && client->engine->real_time != 0) {
+@@ -1985,7 +1985,7 @@
+ 				    "client will run non-realtime");
+ 		} 
+ 	}
+-#endif /* USE_CAPABILITIES */
++#endif /* USE_CAPABILITIES || USE_RBAC */
+ 
+ 	if (client->first_active) {
+ 
+diff -Naur jack-audio-connection-kit-0.116.2/libjack/thread.c jack-audio-connection-kit-0.116.2-patch/libjack/thread.c
+--- jack-audio-connection-kit-0.116.2/libjack/thread.c	2008-10-25 14:29:26.000000000 +0200
++++ jack-audio-connection-kit-0.116.2-patch/libjack/thread.c	2009-09-20 19:20:09.752588950 +0200
+@@ -39,6 +39,12 @@
+ #include <sysdeps/pThreadUtilities.h>
+ #endif
+ 
++#if defined(USE_RBAC)
++#include <sys/types.h>
++#include <sys/priocntl.h>
++#include <sys/rtpriocntl.h>
++#endif
++
+ static inline void
+ log_result (char *msg, int res)
+ {
+@@ -52,7 +58,7 @@
+ static void
+ maybe_get_capabilities (jack_client_t* client)
+ {
+-#ifdef USE_CAPABILITIES
++#if defined(USE_CAPABILITIES) || defined(USE_RBAC)
+ 
+ 	if (client != 0) {
+ 		
+@@ -86,7 +92,7 @@
+ 			}
+ 		}
+ 	}
+-#endif /* USE_CAPABILITIES */
++#endif /* USE_CAPABILITIES || USE_RBAC */
+ }	
+ 
+ static void*
+@@ -257,6 +263,29 @@
+ int
+ jack_acquire_real_time_scheduling (pthread_t thread, int priority)
+ {
++
++#if defined(USE_RBAC)
++	uintptr_t       args[8];
++	uintptr_t       *argsp = &args[0];
++	pcinfo_t        pcinfo;
++	pri_t           maxrtpri;
++
++	maxrtpri = 60;
++	if (priority<0) priority=0;
++	if (priority>maxrtpri) priority=maxrtpri;
++
++	args[0]=RT_KY_PRI;
++	args[1]=priority;
++	args[2]=0;
++
++	if (priocntl(P_LWPID, thread, PC_SETXPARMS, "RT", argsp[0], argsp[1],
++          argsp[2], 0)!=0){
++		fprintf(stderr,"Error: Cannot change to RT priority : %s\n",
++			strerror(errno));
++		return(-1);
++	}
++	return(0);
++#else
+ 	struct sched_param rtparam;
+ 	int x;
+ 	
+@@ -273,6 +302,7 @@
+ 	}
+ 
+         return 0;
++#endif
+ }
+ 
+ #endif /* JACK_USE_MACH_THREADS */
