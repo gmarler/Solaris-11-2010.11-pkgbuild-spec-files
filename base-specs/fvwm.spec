@@ -9,7 +9,7 @@
 
 Name:                   fvwm
 Summary:                fvwm window manager
-Version:                2.5.26
+Version:                2.5.28
 Source:                 %{src_url}/%{name}-%{version}.tar.gz
 
 %prep
