@@ -13,6 +13,8 @@ Version:             3.0.8
 Source:              http://www.ctrlproxy.org/releases/ctrlproxy-%{version}.tar.gz
 Patch1:              ctrlproxy-01-solaris.diff
 Patch2:              ctrlproxy-02-sunpro.diff
+Patch3:              ctrlproxy-03-daemon.diff
+Patch4:              ctrlproxy-04-services.diff
 Url:                 http://www.ctrlproxy.org/
 License:             GPLv3
 SUNW_BaseDir:        %{_basedir}
@@ -50,6 +52,8 @@ SUNW_BaseDir:            /
 %setup -q -n ctrlproxy-%{version}
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
+%patch4 -p1
 
 %build
 
@@ -112,6 +116,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_sysconfdir}/*
 
 %changelog
+* Tue Oct 15 2009 - trisk@opensolaris.org
+- Add patch3.
+- Add patch4. 
 * Wed Oct 07 2009 - trisk@opensolaris.org
 - Update dependencies.
 - Add patch3.

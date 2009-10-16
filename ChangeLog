@@ -1,3 +1,16 @@
+2009-10-15  Albert Lee  <trisk@opensolaris.org>
+
+	* SFEctrlproxy.spec: Add patch3, patch4
+	* SFExorg-input-wacom.spec: Add SUNWncurses dependency for wacdump,
+	  xidump.
+	* base-specs/xf86-input-synaptics.spec: Bump to 1.1.99.1. Drop patch3.
+	* patches/ctrlproxy-03-daemon.diff: Support systems without daemon().
+	* patches/ctrlproxy-04-services.diff: Don't require system service port
+	  definitions.
+	* patches/xf86-input-synaptics-01-alps-tap.diff,
+	  patches/xf86-input-synaptics-02-synclient.diff,
+	  patches/xf86-input-synaptics-05-solaris.diff: Update for 1.1.99.1.
+
 2009-10-13  Brian Cameron  <brian.cameron@sun.com>
 
 	* SFEgnome-zeitgeist.spec, SFEzeitgeist.spec, SFEethos.spec:  No

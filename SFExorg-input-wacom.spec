@@ -28,6 +28,8 @@ BuildRequires: SUNWxorg-headers
 Requires: SUNWhal
 BuildRequires: SUNWhea
 Requires: SUNWTcl
+Requires: SUNWncurses
+BuildRequires: SUNWncurses-devel
 
 %package devel
 Summary:                 %{summary} - development files
@@ -106,6 +108,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_prefix}/X11/include/*
 
 %changelog
+* Wed Sep 23 2009 - Albert Lee <trisk@opensolaris.org>
+- Add SUNWncurses dependency for wacdump, xidump
 * Sun Sep 20 2009 - Albert Lee <trisk@opensolaris.org>
 - Fix %{_datadir} ownership
 * Sun Sep 20 2009 - Albert Lee <trisk@opensolaris.org>

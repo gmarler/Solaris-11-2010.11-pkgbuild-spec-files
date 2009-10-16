@@ -1,0 +1,14 @@
+--- ctrlproxy-3.0.8.orig/lib/url.c	Sat Dec  6 12:36:33 2008
++++ ctrlproxy-3.0.8/lib/url.c	Sun Oct 11 11:56:43 2009
+@@ -57,9 +57,9 @@
+ 	} 
+ 	
+ 	if (*ssl) {
+-		*port = g_strdup("ircs");
++		*port = g_strdup("994");
+ 	} else {
+-		*port = g_strdup("ircd");
++		*port = g_strdup("6667");
+ 	}
+ 
+ 	if (q != NULL) {

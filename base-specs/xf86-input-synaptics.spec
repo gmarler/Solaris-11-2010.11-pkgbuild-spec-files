@@ -7,11 +7,11 @@
 %define src_name         xf86-input-synaptics
 
 Summary:                 Synaptics/ALPS input device driver for X.org
-Version:                 1.1.3
+Version:                 1.1.99.1
 Source:                  http://xorg.freedesktop.org/archive/individual/driver/%{src_name}-%{version}.tar.bz2
 Patch1:                  xf86-input-synaptics-01-alps-tap.diff
 Patch2:                  xf86-input-synaptics-02-synclient.diff
-Patch3:                  xf86-input-synaptics-03-alignment.diff
+#Patch3:                  xf86-input-synaptics-03-alignment.diff
 Patch4:                  xf86-input-synaptics-04-syndaemon.diff
 Patch5:                  xf86-input-synaptics-05-solaris.diff
 SUNW_BaseDir:            %{_basedir}
@@ -22,7 +22,7 @@ Autoreqprov:             on
 %setup -q -n%{src_name}-%{version}
 %patch1 -p1
 %patch2 -p1
-%patch3 -p1
+#%patch3 -p1
 %patch4 -p1
 %patch5 -p1
 
@@ -83,6 +83,9 @@ cp fdi/*.fdi $RPM_BUILD_ROOT%{_datadir}/hal/fdi/policy/20thirdparty
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Thu Oct 15 2009 - Albert Lee <trisk@opensolaris.org>
+- Bump to 1.1.99.1
+- Drop patch3
 * Sun Sep 20 2009 - Albert Lee <trisk@opensolaris.org>
 - Bump to 1.1.3
 - Update X prefix path check
