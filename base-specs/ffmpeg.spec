@@ -4,14 +4,16 @@
 # includes module(s): FFmpeg
 #
 
+%define src_version 0.5
+
 Summary:                 FFmpeg - a very fast video and audio converter
 
-Version:                 0.5
+Version:                 0.5.0.0.20090705
 #Source:                  http://pkgbuild.sf.net/spec-files-extra/tarballs/ffmpeg-export-%{year}-%{month}-%{day}.tar.bz2
 #Source:                  http://electricsheep.org/ffmpeg-0.4.9-p%{year}%{month}%{day}.tar.bz2
-Source:                  http://ffmpeg.mplayerhq.hu/releases/ffmpeg-%{version}.tar.bz2
+Source:                  http://ffmpeg.mplayerhq.hu/releases/ffmpeg-%{src_version}.tar.bz2
 URL:                     http://ffmpeg.mplayerhq.hu/index.html
-#Patch1:                  ffmpeg-01-BE_16.diff
+Patch1:                  ffmpeg-01-svn05.diff
 Patch2:                  ffmpeg-02-configure.diff
 #Patch3:                  ffmpeg-03-v4l2.diff
 Patch4:                  ffmpeg-04-options.diff
@@ -21,13 +23,13 @@ Patch5:                  ffmpeg-05-mlib.diff
 Patch7:                  ffmpeg-07-new-v4l2.diff
 Patch8:                  ffmpeg-08-versionsh.diff
 SUNW_BaseDir:            %{_basedir}
-BuildRoot:               %{_tmppath}/%{name}-%{version}-build
+BuildRoot:               %{_tmppath}/%{name}-%{src_version}-build
 Autoreqprov:             on
 
 %prep
 #%setup -q -n ffmpeg-export-%{year}-%{month}-%{day}
-%setup -q -n ffmpeg-%version
-#%patch1 -p1
+%setup -q -n ffmpeg-%{src_version}
+%patch1 -p1
 %patch2 -p1
 #%patch3 -p1
 %patch4 -p1
@@ -112,6 +114,8 @@ EOM
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Sat Oct 17 2009 - Milan Jurik
+- svn branch 0.5 patch added (2009-07-05)
 * Tue Sep 08 2009 - Milan Jurik
 - support for newer gcc if installed
 * Sun Jun 28 2009 - Milan Jurik

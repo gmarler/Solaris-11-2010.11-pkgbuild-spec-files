@@ -5,6 +5,8 @@
 	  plugins
 	* base-specs/gst-ffmpeg.spec: upgrade to 0.10.9
 	* base-specs/gst-plugins-bad.spec: upgrade to 0.10.14
+	* base-specs/ffmpeg.spec: svn branch 0.5 patch added (2009-07-05)
+	* patches/ffmpeg-01-svn05.diff: ffmpeg svn branch 0.5
 
 2009-10-16  Milan Jurik <sfnet@xylab.cz>
 
