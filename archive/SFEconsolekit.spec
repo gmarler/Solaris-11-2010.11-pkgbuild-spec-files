@@ -244,7 +244,7 @@ rm -rf $RPM_BUILD_ROOT
 - Add patch ck-dynamic.diff to fix bug #19333
 * Tue Oct 21 2008 - halton.huo@sun.com
 - Add standard patch comment
-* Thu Aug 07 2008 - brian.cameorn@sun.com
+* Thu Aug 07 2008 - brian.cameron@sun.com
 - Bump to 0.3.0.
 * Tue Jun 24 2008 - simon.zheng@sun.com
 - Add patch 05-getcurrentsession.diff for freedesktop bug #15866.
