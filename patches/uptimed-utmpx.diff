@@ -1,0 +1,75 @@
+--- uptimed-0.3.16/libuptimed/urec.h	Fri Jan  2 00:46:00 2009
++++ uptimed-0.3.16-patch/libuptimed/urec.h	Sat Oct 17 17:47:24 2009
+@@ -34,8 +34,9 @@
+ 
+ #ifdef PLATFORM_SOLARIS
+ #include <unistd.h>
+-#include <sys/time.h>
+-#include <utmp.h>
++#include <sys/types.h>
++#include <time.h>
++#include <utmpx.h>
+ #include <fcntl.h>
+ #endif
+ 
+--- uptimed-0.3.16/libuptimed/urec.c	Fri Jan  2 00:46:00 2009
++++ uptimed-0.3.16-patch/libuptimed/urec.c	Sat Oct 17 19:54:08 2009
+@@ -148,15 +148,15 @@
+ #ifdef PLATFORM_SOLARIS
+ time_t read_uptime(void) {
+ 	int fd;
+-	struct utmp ut;
++	struct utmpx ut;
+ 	int found=0;
+ 
+-	fd = open (UTMP_FILE, O_RDONLY);
++	fd = open (UTMPX_FILE, O_RDONLY);
+ 	if (fd >= 0) {
+ 		while (!found) {
+-			if (read(fd, &ut, sizeof(ut)) < 0) {
++			if (read(fd, &ut, sizeof(ut)) == -1) {
+ 				found = -1;
+-			} else if (ut.ut_type==BOOT_TIME) {
++			} else if (ut.ut_type == BOOT_TIME) {
+ 				found = 1;
+ 			}
+ 		}
+@@ -163,7 +163,7 @@
+ 		close(fd);
+ 	}
+ 
+-	if (found == 1) return time(0) - ut.ut_time;
++	if (found == 1) return time(0) - ut.ut_tv.tv_sec;
+ 
+ 	return 0;
+ }
+@@ -305,16 +305,16 @@
+ int createbootid(void) {
+ 	FILE *f;
+ 	int fd;
+-	struct utmp ut;
++	struct utmpx ut;
+ 	int found = 0;
+ 	time_t bootid = 0;
+ 
+-	fd = open (UTMP_FILE, O_RDONLY);
++	fd = open (UTMPX_FILE, O_RDONLY);
+ 	if (fd >= 0) {
+ 		while(!found) {
+-			if (read(fd, &ut, sizeof(ut)) < 0) {
++			if (read(fd, &ut, sizeof(ut)) == -1) {
+ 				found = -1;
+-			} else if (ut.ut_type==BOOT_TIME) {
++			} else if (ut.ut_type == BOOT_TIME) {
+ 				found = 1;
+ 			}
+ 		}
+@@ -321,7 +321,7 @@
+ 		close(fd);
+ 	}
+ 
+-	if (found == 1) bootid = ut.ut_time;
++	if (found == 1) bootid = ut.ut_tv.tv_sec;
+ 
+ 	f = fopen(FILE_BOOTID, "w");
+ 	if (!f) {

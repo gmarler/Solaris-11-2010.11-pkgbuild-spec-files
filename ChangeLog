@@ -1,3 +1,7 @@
+2009-10-17  Milan Jurik <sfnet@xylab.cz>
+
+	* SFEuptimed.spec: Initial spec
+
 2009-10-16  Milan Jurik <sfnet@xylab.cz>
 
 	* base-specs/jack.spec: update to newer version
