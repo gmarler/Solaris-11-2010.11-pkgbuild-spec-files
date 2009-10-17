@@ -1,6 +1,10 @@
 2009-10-17  Milan Jurik <sfnet@xylab.cz>
 
 	* SFEuptimed.spec: Initial spec
+	* encumbered/SFEgnome-media-extras.spec: update for the latest bad
+	  plugins
+	* base-specs/gst-ffmpeg.spec: upgrade to 0.10.9
+	* base-specs/gst-plugins-bad.spec: upgrade to 0.10.14
 
 2009-10-16  Milan Jurik <sfnet@xylab.cz>
 

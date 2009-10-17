@@ -3,7 +3,7 @@
 #
 # includes module(s): gst-ffmpeg, gst-plugins-ugly, gst-plugins-bad
 #
-# Copyright 2008 Sun Microsystems, Inc.
+# Copyright 2009 Sun Microsystems, Inc.
 # This file and all modifications and additions to the pristine
 # package are under the same license as the package itself.
 #
@@ -223,6 +223,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, sys) %{_datadir}
 %dir %attr (0755, root, other) %{_datadir}/gstreamer-*
 %{_datadir}/gstreamer-*/presets/*
+%{_datadir}/gstreamer-*/camera-apps/*
 
 %files devel
 %defattr (-, root, bin)
@@ -240,6 +241,8 @@ rm -rf $RPM_BUILD_ROOT
 %attr (-, root, other) %{_datadir}/locale
 %endif
 %changelog
+* Sat Oct 17 2009 Milan Jurik
+- update for the latest bad plugins
 * Fri Sep 18 2009 Milan Jurik
 - SUNWgtk-doc and SUNWgnome-xml as build dependencies
 * Wed Sep 02 2009 Albert Lee <trisk@forkgnu.org>

@@ -1,13 +1,13 @@
 #
 # spec file for package gst-plugins-bad
 #
-# Copyright (c) 2005 Sun Microsystems, Inc.
+# Copyright 2009 Sun Microsystems, Inc.
 # This file and all modifications and additions to the pristine
 # package are under the same license as the package itself.
 #
 Name:           gst-plugins-bad
 License:        GPL
-Version:        0.10.13
+Version:        0.10.14
 Release:        1
 Distribution:   Java Desktop System
 Vendor:         Sun Microsystems, Inc.
@@ -99,26 +99,22 @@ bash ./configure \
   --disable-ivorbis \
   --disable-jack \
   --disable-jp2k \
-  --disable-kate \
   --disable-ladspa \
   --disable-lv2 \
   --disable-libmms \
   --disable-mimic \
-  --disable-mjpegtools \
   --disable-mpeg2enc \
   --disable-mplex \
   --disable-musepack \
   --disable-mythtv \
   --disable-nas \
   --disable-neon \
-  --disable-rsvg \
   --disable-timidity \
   --disable-sdl \
   --disable-soundtouch \
   --disable-spc \
   --disable-gme \
   --disable-swfdec \
-  --disable-theora \
   --disable-dvb \
   --disable-oss4 \
   --disable-selector \
@@ -179,6 +175,8 @@ GStreamer support libraries header files.
 %{_datadir}/gtk-doc
 
 %changelog
+* Sat Oct 17 2009 - Milan Jurik
+- upgrade to 0.10.14
 * Wed Sep 02 2009 - Albert Lee <trisk@forkgnu.org>
 - Disable assrender, kate, lv2, mimic, mjpegtools, rsvg, sdl, gme, theora
 - Enable apexsink

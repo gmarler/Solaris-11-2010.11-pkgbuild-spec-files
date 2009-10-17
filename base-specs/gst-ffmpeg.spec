@@ -1,7 +1,7 @@
 #
 # spec file for package gst-ffmpeg
 #
-# Copyright (c) 2008 Sun Microsystems, Inc.
+# Copyright 2009 Sun Microsystems, Inc.
 # This file and all modifications and additions to the pristine
 # package are under the same license as the package itself.
 #
@@ -9,7 +9,7 @@
 #
 Name:           gst-ffmpeg
 License:        LGPL
-Version:        0.10.8
+Version:        0.10.9
 Release:        1
 Distribution:   Java Desktop System
 Vendor:         Sun Microsystems, Inc.
@@ -111,6 +111,8 @@ GStreamer support libraries header files.
 %{_datadir}/gtk-doc
 
 %changelog
+* Sat Oct 17 2009 - Milan Jurik
+- upgrade to 0.10.9
 * Sun Jul 05 2009 - Milan Jurik
 - upgrade to 0.10.8
 * Sun Jun 28 2009 - Milan Jurik
