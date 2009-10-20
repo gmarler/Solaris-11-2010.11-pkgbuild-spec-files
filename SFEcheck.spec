@@ -8,10 +8,8 @@
 
 Name:           SFEcheck
 Summary:        Check - An unit testing framework for C
-Version:        0.9.6
+Version:        0.9.8
 Source:         %{sf_download}/check/check-%{version}.tar.gz
-# date:2009-01-07 type:bug owner:halton state:upsream
-Patch1:         check-01-ansi.diff
 URL:            http://check.sourceforge.net/
 SUNW_BaseDir:   %{_basedir}
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
@@ -27,7 +25,6 @@ Requires:      %{name}
 
 %prep
 %setup -q -n check-%version
-%patch1 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -37,7 +34,6 @@ fi
 
 export CFLAGS="%optflags"
 
-libtoolize -f -c
 aclocal -I . -I ./m4
 autoheader
 automake -a -f -c
@@ -85,12 +81,14 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*
 
 %changelog
+* Mon Oct 19 2009 - brian.cameron@sun.com
+- Bump to 0.9.8.  Remove check-01-ansi.diff patch since it is no longer needed.
 * Wed Jan 07 2008 - halton.huo@sun.com
-- Bump to 0.9.6
+- Bump to 0.9.6.
 - Seperate -devel pkg
 - Remove upstreamed patch suncc-fail.diff
-- Add patch ansi.diff
+- Add patch ansi.diff.
 * Mon Dec 15 2008 - halton.huo@sun.com
-- Remove suncc-define.diff since SS12 support __attribute__
+- Remove suncc-define.diff since SS12 support __attribute__.
 * Tue Mar 06 2007 - nonsea@users.sourceforge.net
-- Initial spec file
+- Initial spec file.

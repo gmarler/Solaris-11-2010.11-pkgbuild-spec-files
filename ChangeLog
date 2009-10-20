@@ -1,3 +1,8 @@
+2009-10-19  Brian Cameron  <brian.cameron@sun.com>
+
+	* SFEcheck.spec, patches/check-01-ansi.diff: Bump to 0.9.8 and
+	  remove patch which is no longer needed.
+
 2009-10-17  Milan Jurik <sfnet@xylab.cz>
 
 	* SFEuptimed.spec: Initial spec
