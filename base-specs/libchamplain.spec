@@ -11,15 +11,13 @@
 Name:		libchamplain
 License:	GPL
 Group:		Development/Libraries
-Version:	0.4.0
+Version:	0.4.2
 Release:	1
 Distribution:   Java Desktop System
 Vendor:         Sun Microsystems, Inc.
 URL:		http://projects.gnome.org/libchamplain/
 Summary:	a Clutter based widget to display rich, eye-candy and interactive maps
 Source:		http://download.gnome.org/sources/%{name}/0.4/%{name}-%{version}.tar.bz2
-# date:2009-09-18 type:bug owner:halton bugzilla:595534
-Patch1:         %{name}-01-libtool.diff
 BuildRoot:      %{_tmppath}/%{name}-%{version}-root
 
 Requires: 	clutter >= 1.0
@@ -47,7 +45,6 @@ own programs.
 
 %prep
 %setup -q
-%patch1 -p1
 
 #FIXME: When #590829 fixed in next release, remove following lines 
 rm -f m4/lt~obsolete.m4
@@ -111,9 +108,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_prefix}/lib/pkgconfig/*
 
 %changelog
+* Wed Oct 28 2009 - brian.cameron@sun.com
+- Bump to 0.4.2.
 * Fri Sep 18 2009 - halton.huo@sun.com
-- Bump to 0.4.0
+- Bump to 0.4.0.
 - Remove upstreamed patch clutter-1-0.diff for bugzilla #590825
 - Add patch libtool.diff to fix bugzilla #595534.
 * Wed Aug 05 2009 - halton.huo@sun.com
-- Initial spec
+- Initial spec.

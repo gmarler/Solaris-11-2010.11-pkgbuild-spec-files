@@ -1,3 +1,10 @@
+2009-10-28  Brian Cameron  <brian.cameron@sun.com>
+
+	* SFEemerillon.spec: Now build with the 0.1.0 version
+	* base-specs/libchamplain.spec, patches/libchamplain-01-libtool.diff:
+	  Bump to 0.4.2, remove unneeded patch.
+	* SFElibrest.spec: Fix URL line.
+
 2009-10-19  Brian Cameron  <brian.cameron@sun.com>
 
 	* SFEcheck.spec, patches/check-01-ansi.diff: Bump to 0.9.8 and

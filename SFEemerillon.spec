@@ -10,13 +10,14 @@
 Name:                    SFEemerillon
 License:                 GPL v3
 Group:                   Libraries/Multimedia
-Version:                 0.1
+Version:                 0.1.0
+Source:                  http://download.gnome.org/sources/emerillon/0.1/emerillon-%{version}.tar.bz2
 Distribution:            Java Desktop System
 Vendor:                  Sun Microsystems, Inc.
 Summary:                 Map Viewer
 # date:2009-02-13 owner:yippi type:bug bugzilla:24058
 Patch1:                  emerillon-01-Wl.diff
-URL:                     http://www.freedesktop.org/wiki/Software/GeoClue
+URL:                     http://www.novopia.com/emerillon/
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 SUNW_BaseDir:            %{_basedir}
 
@@ -27,12 +28,16 @@ Requires:                SUNWdbus-glib
 Requires:                SUNWgnome-config
 Requires:                SFElibchamplain
 Requires:                SFEgeoclue
+Requires:                SFElibrest
+Requires:                SFEethos
 BuildRequires:           SUNWglib2-devel
 BuildRequires:           SUNWgtk2-devel
 BuildRequires:           SUNWdbus-glib-devel
 BuildRequires:           SUNWgnome-config-devel
-Requires:                SFElibchamplain-devel
+BuildRequires:           SFElibchamplain-devel
 BuildRequires:           SFEgeoclue-devel
+BuildRequires:           SFElibrest-devel
+BuildRequires:           SFEethos-devel
 
 %package root
 Summary:		 %{summary} - / filesystem
@@ -45,26 +50,22 @@ SUNW_BaseDir:            %{_basedir}
 %include default-depend.inc
 
 %prep
-mkdir -p emerillon-%version
-cd emerillon-%version
-rm -fR emerillon
-git-clone git://git.gnome.org/emerillon
-cd emerillon
+%setup -q -n emerillon-%version
 %patch1 -p1
 
 %build
-cd emerillon-%version
-cd emerillon
-./autogen.sh \
+libtoolize --force
+aclocal $ACLOCAL_FLAGS
+autoheader
+automake -a -c -f
+autoconf
+./configure \
    --prefix=%{_prefix} \
    --libexecdir=%{_libexecdir} \
    --sysconfdir=%{_sysconfdir}
 make
 
 %install
-rm -rf $RPM_BUILD_ROOT
-cd emerillon-%version
-cd emerillon
 make install DESTDIR=$RPM_BUILD_ROOT
 
 find $RPM_BUILD_ROOT%{_libdir} -type f -name "*.la" -exec rm -f {} ';'

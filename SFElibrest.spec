@@ -17,7 +17,7 @@ Summary:                 Interface to access RESTful web services.
 Source:                  http://moblin.org/sites/all/files/rest-%{version}.tar.gz
 Patch1:                  librest-01-wall.diff
 Patch2:                  librest-02-example.diff
-URL:                     http://www.freedesktop.org/wiki/Software/GeoClue
+URL:                     http://moblin.org/projects/librest
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 SUNW_BaseDir:            %{_basedir}
 
