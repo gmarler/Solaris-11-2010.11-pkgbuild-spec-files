@@ -1,3 +1,7 @@
+2009-10-29  Matt Lewandowsky <matt@greenviolet.net>
+
+	* SFEoptipng.spec: Update to 0.6.3
+
 2009-10-28  Brian Cameron  <brian.cameron@sun.com>
 
 	* SFEemerillon.spec: Now build with the 0.1.0 version
