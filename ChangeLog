@@ -1,3 +1,13 @@
+2009-10-29  James Choi <jchoi42@pha.jhu.edu>
+
+        * SFElibmtp.spec: Update libdirs, dependencies.
+          Add root pkg (fdi config), remove volatile doxygen pkg
+        * base-specs/libmtp.spec: Bump to 1.0.1, libdirs, disable libtool
+        * SFElibnjp.spec: Initial spec
+        * base-specs/libnjp.spec: Initial spec
+        * SFEgnomad2.spec: Initial spec
+        * base-specs/gnomad2.spec: Initial spec
+
 2009-10-29  Matt Lewandowsky <matt@greenviolet.net>
 
 	* SFEoptipng.spec: Update to 0.6.3
