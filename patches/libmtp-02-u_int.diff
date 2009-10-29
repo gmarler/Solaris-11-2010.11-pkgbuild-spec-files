@@ -1,8 +1,8 @@
---- libmtp-0.2.1/configure.ac.orig	2007-09-18 15:57:27.571218159 +0700
-+++ libmtp-0.2.1/configure.ac	2007-09-18 15:57:32.866226254 +0700
-@@ -87,6 +87,26 @@
+--- libmtp-1.0.1-orig/configure.ac	2009-10-23 01:08:15.464268552 -0400
++++ libmtp-1.0.1/configure.ac	2009-10-23 01:10:04.270117940 -0400
+@@ -96,6 +96,27 @@
  # (No need to use AC_SUBST on this default substituted environment variable.)
- # CFLAGS="$CFLAGS -Wall -Wmissing-prototypes"
+ #CFLAGS="$CFLAGS -Wall -Wmissing-prototypes"
  
 +AC_MSG_CHECKING([if inttypes has u_int32_t etc])
 +AC_COMPILE_IFELSE(
@@ -24,21 +24,20 @@
 +    )],
 +    [AC_DEFINE(HAVE_U_INT_TYPES, 1, [Define to 1 if have u_int32_t types etc])
 +    AC_MSG_RESULT(yes)],[AC_MSG_RESULT(no)])
++ 
  # Output files
  
  # Create a stdint.h-like file containing size-specific integer definitions
---- libmtp-0.2.1/examples/common.h.orig	2007-09-18 16:00:32.671373913 +0700
-+++ libmtp-0.2.1/examples/common.h	2007-09-18 16:01:02.820289580 +0700
-@@ -32,3 +32,12 @@
+--- libmtp-1.0.1-orig/examples/common.h	2009-10-23 01:11:22.968773695 -0400
++++ libmtp-1.0.1/examples/common.h	2009-10-23 01:11:55.749290619 -0400
+@@ -32,3 +32,10 @@
  // Only if using MSVC...
  #include "..\windows\getopt.h"
  #endif
-+#ifdef HAVE_INTTYPES_H
-+#include <inttypes.h>
-+#endif
 +#ifndef HAVE_U_INT_TYPES
 +typedef uint8_t u_int8_t;
 +typedef uint16_t u_int16_t;
 +typedef uint32_t u_int32_t;
 +typedef uint64_t u_int64_t;
 +#endif
++
