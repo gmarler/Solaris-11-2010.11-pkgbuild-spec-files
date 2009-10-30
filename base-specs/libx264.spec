@@ -48,6 +48,11 @@ if $( echo "%{_libdir}" | /usr/xpg4/bin/grep -q %{_arch64} ) ; then
 	if [ `uname -p` == "i386" ]; then
 		export host="amd64-pc-solaris2.11"
 	fi
+	if [ `uname -p` == "sparc" ]; then
+		sed s/v8plusa/v9a/ configure > configure.new
+		mv configure.new configure
+		chmod +x configure 
+	fi
 else
 	unset host
 fi
@@ -73,5 +78,7 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/lib*.*a
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
-* Tue Sep 8 2009 - Milan Jurik
+* Fri Oct 30 2009 - Milan Jurik
+- support for multiarch on sparc
+* Tue Sep 08 2009 - Milan Jurik
 - initial base spec file

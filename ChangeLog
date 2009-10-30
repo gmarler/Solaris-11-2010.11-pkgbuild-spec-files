@@ -1,3 +1,7 @@
+2009-10-30  Milan Jurik <sfnet@xylab.cz>
+
+	* base-specs/libx264.spec: support for multiarch on sparc
+
 2009-10-29  James Choi <jchoi42@pha.jhu.edu>
 
 	* patches/libmtp-01-wall.diff, patches/libmtp-02-u_int.diff:
