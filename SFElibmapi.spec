@@ -4,6 +4,7 @@
 # package are under the same license as the package itself.
 
 %include Solaris.inc
+%define major_version 0.8
 
 Name:                SFElibmapi
 Summary:             A client-side implementation of the MAPI protocol that is used by Microsoft Exchange and Outlook. 
@@ -46,10 +47,10 @@ rm -rf $RPM_BUILD_ROOT
 
 make install DESTDIR=$RPM_BUILD_ROOT
 cd $RPM_BUILD_ROOT/%{_libdir}
-ln -s -f libmapi.so.%{version} libmapi.so.0
-ln -s libmapiadmin.so.%{version} libmapiadmin.so.0
-ln -s libmapiproxy.so.%{version} libmapiproxy.so.0
-ln -s libocpf.so.%{version} libocpf.so.0
+ln -s -f libmapi.so.%{major_version} libmapi.so.0
+ln -s libmapiadmin.so.%{major_version} libmapiadmin.so.0
+ln -s libmapiproxy.so.%{major_version} libmapiproxy.so.0
+ln -s libocpf.so.%{major_version} libocpf.so.0
 cd -
 
 find $RPM_BUILD_ROOT -type f -name "*.la" -exec rm -f {} ';'
@@ -78,6 +79,7 @@ rm -rf $RPM_BUILD_ROOT
 %changelog
 * Mon Nov 02 2009 - brian.lu@sun.com
 - Add patch libmapi-04-no-return-value.diff
+  Add major_version
 * Tue Aug 04 2009 - brian.lu@sun.com
 - Bump to 0.8.2 
   Update the patch libmapi-01-solaris.diff

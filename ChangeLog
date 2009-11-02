@@ -1,3 +1,10 @@
+2009-11-02  Brian Lu  <brian.lu@sun.com>
+
+	* SFElibmapi.spec:
+	* patches/libmapi-04-no-return-value.diff:
+	  Fix the bug ticket 219 
+	  Add major_version
+
 2009-10-30  Milan Jurik <sfnet@xylab.cz>
 
 	* base-specs/libx264.spec: support for multiarch on sparc
