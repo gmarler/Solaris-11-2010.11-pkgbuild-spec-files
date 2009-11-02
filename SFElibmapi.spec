@@ -9,9 +9,10 @@ Name:                SFElibmapi
 Summary:             A client-side implementation of the MAPI protocol that is used by Microsoft Exchange and Outlook. 
 Version:             0.8.2
 Source:              http://downloads.sourceforge.net/openchange/libmapi-%{version}-ROMULUS.tar.gz
-Patch1:              libmapi-03-solaris.diff
+Patch1:              libmapi-01-solaris.diff
+#owner brian.lu@sun.com bugzilla: ticket 219
 Patch2:              libmapi-04-no-return-value.diff
-Patch3:              libmapi-01-solaris.diff
+Patch3:              libmapi-03-remove-gcc-options.diff
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -32,7 +33,7 @@ fi
 
 #export CFLAGS="%optflags"
 export CFLAGS="-g -D__FUNCTION__=__func__"
-export LDFLAGS="%_ldflags"
+export LDFLAGS="%_ldflags -ltevent"
 
 ./autogen.sh
 ./configure --prefix=%{_prefix}  \
@@ -75,6 +76,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/modules/*
 
 %changelog
+* Mon Nov 02 2009 - brian.lu@sun.com
+- Add patch libmapi-04-no-return-value.diff
 * Tue Aug 04 2009 - brian.lu@sun.com
 - Bump to 0.8.2 
   Update the patch libmapi-01-solaris.diff
