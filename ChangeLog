@@ -1,3 +1,9 @@
+2009-11-04  Petr Sobotka  <sobotkap@gmail.com>
+
+	* SFEboost-stdcxx.spec: Boost compiled with STDCXX library 
+	    (version 1.40)
+	* patches/boost-04-fixthread.diff:
+
 2009-11-02  Brian Lu  <brian.lu@sun.com>
 
 	* SFElibmapi.spec:
