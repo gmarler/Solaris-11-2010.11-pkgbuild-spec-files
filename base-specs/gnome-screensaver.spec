@@ -10,12 +10,12 @@
 Name:         gnome-screensaver
 License:      GPL
 Group:        System/GUI/GNOME
-Version:      2.26.1
+Version:      2.28.0
 Release:      1
 Distribution: Java Desktop System
 Vendor:	      Sun Microsystems, Inc.
 Summary:      The GNOME screen saver 
-Source:       http://ftp.gnome.org/pub/GNOME/sources/%{name}/2.26/%{name}-%{version}.tar.bz2
+Source:       http://ftp.gnome.org/pub/GNOME/sources/%{name}/2.28/%{name}-%{version}.tar.bz2
 # date:2009-05-11 owner:johnf type:feature
 Patch1:       gnome-screensaver-01-pam-audit.diff
 URL:          www.gnome.org

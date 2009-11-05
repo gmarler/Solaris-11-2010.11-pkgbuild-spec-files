@@ -1,3 +1,9 @@
+2009-11-05  Jeff Cai  <jeff.cai@sun.com>
+
+	* SUNWgnome-screensaver.spec: Ship added files
+	* base-specs/gnome-screensaver.spec: Bump to 2.28.0
+	* scripts/prepare-ChangeLog.pl: Added a script helps produce changelog
+
 2009-11-04  Petr Sobotka  <sobotkap@gmail.com>
 
 	* SFEboost-stdcxx.spec: Boost compiled with STDCXX library 

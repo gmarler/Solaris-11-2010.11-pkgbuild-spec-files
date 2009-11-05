@@ -106,6 +106,10 @@ test -x $BASEDIR/lib/postrun || exit 0
 %{_datadir}/gnome-screensaver
 %dir %attr (0755, root, other) %{_datadir}/pixmaps
 %{_datadir}/pixmaps/*
+%dir %attr (0755, root, other) %{_datadir}/backgrounds
+%{_datadir}/backgrounds/*
+%dir %attr (0755, root, bin) %{_datadir}/gnome-background-properties
+%{_datadir}/gnome-background-properties/*
 %dir %attr(0755, root, bin) %{_mandir}
 %dir %attr(0755, root, bin) %{_mandir}/man1
 %{_mandir}/man1/gnome-screensaver.1
