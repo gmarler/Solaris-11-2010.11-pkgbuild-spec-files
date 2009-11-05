@@ -1,3 +1,7 @@
+2009-11-05  Petr Sobotka  <sobotkap@gmail.com>
+
+	* include/stdcxx.inc: Include file for easier compilation with STDCXX
+
 2009-11-05  Jeff Cai  <jeff.cai@sun.com>
 
 	* SUNWgnome-screensaver.spec: Ship added files
