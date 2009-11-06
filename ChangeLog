@@ -1,3 +1,10 @@
+2009-10-28  Brian Cameron  <brian.cameron@sun.com>
+
+	* SFEgnome-shell.spec ext-sources/shell.desktop:  No longer install the
+	  shell.desktop file since this is not an appropriate way to launch
+	  GNOME Shell.  Instead users should run "gnome-shell --replace" after
+	  starting their session.
+
 2009-11-05  Petr Sobotka  <sobotkap@gmail.com>
 
 	* include/stdcxx.inc: Include file for easier compilation with STDCXX
@@ -11,7 +18,7 @@
 2009-11-04  Petr Sobotka  <sobotkap@gmail.com>
 
 	* SFEboost-stdcxx.spec: Boost compiled with STDCXX library 
-	    (version 1.40)
+	  (version 1.40)
 	* patches/boost-04-fixthread.diff:
 
 2009-11-02  Brian Lu  <brian.lu@sun.com>
@@ -32,13 +39,13 @@
 
 2009-10-29  James Choi <jchoi42@pha.jhu.edu>
 
-        * SFElibmtp.spec: Update libdirs, dependencies.
-          Add root pkg (fdi config), remove volatile doxygen pkg
-        * base-specs/libmtp.spec: Bump to 1.0.1, libdirs, disable libtool
-        * SFElibnjp.spec: Initial spec
-        * base-specs/libnjp.spec: Initial spec
-        * SFEgnomad2.spec: Initial spec
-        * base-specs/gnomad2.spec: Initial spec
+	* SFElibmtp.spec: Update libdirs, dependencies.
+	  Add root pkg (fdi config), remove volatile doxygen pkg
+	* base-specs/libmtp.spec: Bump to 1.0.1, libdirs, disable libtool
+	* SFElibnjp.spec: Initial spec
+	* base-specs/libnjp.spec: Initial spec
+	* SFEgnomad2.spec: Initial spec
+	* base-specs/gnomad2.spec: Initial spec
 
 2009-10-29  Matt Lewandowsky <matt@greenviolet.net>
 

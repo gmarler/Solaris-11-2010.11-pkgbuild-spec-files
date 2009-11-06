@@ -12,8 +12,6 @@ Summary:                 GNOME Shell
 Version:                 2.28.0
 Source:                  http://ftp.gnome.org/pub/GNOME/sources/gnome-shell/2.28/gnome-shell-%{version}.tar.bz2
 Patch1:                  gnome-shell-01-function.diff
-Source1:                 shell.desktop
-
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 BuildRequires:           SUNWPython26-devel
@@ -75,11 +73,6 @@ make
 %install
 make install DESTDIR=$RPM_BUILD_ROOT
 
-# Install a desktop file so you can log into GNOME Shell.
-#
-install -d $RPM_BUILD_ROOT%{_datadir}/xsessions
-install --mode=0444 %SOURCE1 $RPM_BUILD_ROOT%{_datadir}/xsessions
-
 find $RPM_BUILD_ROOT/%{_libdir} -type f -name "*.la" -exec rm -f {} ';'
 
 %if %build_l10n
@@ -120,7 +113,6 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 %dir %attr (0755, root, other) %{_datadir}/applications
 %{_datadir}/applications/*
 %{_datadir}/gnome-shell
-%{_datadir}/xsessions
 
 %files root
 %defattr(-, root, sys)
@@ -135,6 +127,10 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 %endif
 
 %changelog
+* Thu Nov 05 2009 - Brian Cameron  <brian.cameron@sun.com>
+- No longer install the shell.desktop file since this is not an appropriate
+  way to launch GNOME Shell.  Instead users should run "gnome-shell --replace"
+  after starting their session.
 * Sun Oct 11 2009 - Brian Cameron  <brian.cameron@sun.com>
 - Bump to 2.28.0.
 * Wed Sep 16 2009 - Halton Huo <halton.huo@sun.com>
