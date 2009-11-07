@@ -88,6 +88,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_cxx_libdir}/giomm*
 
 %changelog
+* Fri Nov 06 2009 - jchoi42@pha.jhu.edu
+- comment depreciated patch
 * Fri Sep 25 2009 - jchoi42@pha.jhu.edu
 - specified giomm dir in %files section
 * Sun Jun 29 2008 - river@wikimedia.org

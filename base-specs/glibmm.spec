@@ -9,14 +9,14 @@
 Name:                    glibmm
 License:        	 LGPL
 Group:                   System/Libraries
-Version:                 2.21.3
+Version:                 2.22.1
 Release:                 1
 Distribution:            Java Desktop System
 Vendor:                  Sun Microsystems, Inc.
 Summary:                 glibmm - C++ Wrapper for the Glib2 Library
 URL:                     http://www.gtkmm.org/
-Source:                  http://ftp.gnome.org/pub/GNOME/sources/glibmm/2.21/%{name}-%{version}.tar.bz2
-Patch1:                  glibmm-01-m4-macro.diff
+Source:                  http://ftp.gnome.org/pub/GNOME/sources/glibmm/2.22/%{name}-%{version}.tar.bz2
+#Patch1:                  glibmm-01-m4-macro.diff
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 BuildRequires:           libsigc++-devel >= 2.0.0
 BuildRequires:           glib2-devel >= 2.9.0
@@ -29,7 +29,7 @@ Requires:                glib2-devel >= 2.9.0
 
 %prep
 %setup -q -n glibmm-%version
-%patch1 -p1
+#%patch1 -p1
 
 %build
 %ifos linux
@@ -43,7 +43,9 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
     CPUS=1
 fi
 
-aclocal $ACLOCAL_FLAGS -Iscripts
+#aclocal $ACLOCAL_FLAGS -Iscripts
+aclocal $ACLOCAL_FLAGS -Ibuild
+automake --add-missing
 autoconf
 ./configure --prefix=%{_prefix} --mandir=%{_mandir} \
             --libdir=%{_cxx_libdir}              \
@@ -55,21 +57,23 @@ make -j$CPUS
 rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
 
-cp examples/child_watch/.libs/child_watch $RPM_BUILD_ROOT%{_datadir}/doc/glibmm-2.4/examples/child_watch/child_watch
-cp examples/iochannel_stream/.libs/example $RPM_BUILD_ROOT%{_datadir}/doc/glibmm-2.4/examples/iochannel_stream/example
-cp examples/markup/.libs/parser $RPM_BUILD_ROOT%{_datadir}/doc/glibmm-2.4/examples/markup/parser
-cp examples/markup/test.xml $RPM_BUILD_ROOT%{_datadir}/doc/glibmm-2.4/examples/markup/test.xml
-cp examples/options/.libs/example $RPM_BUILD_ROOT%{_datadir}/doc/glibmm-2.4/examples/options/example
-cp examples/regex/.libs/example $RPM_BUILD_ROOT%{_datadir}/doc/glibmm-2.4/examples/regex/example
-cp examples/thread/.libs/dispatcher $RPM_BUILD_ROOT%{_datadir}/doc/glibmm-2.4/examples/thread/dispatcher
-cp examples/thread/.libs/dispatcher2 $RPM_BUILD_ROOT%{_datadir}/doc/glibmm-2.4/examples/thread/dispatcher2
-cp examples/thread/.libs/thread $RPM_BUILD_ROOT%{_datadir}/doc/glibmm-2.4/examples/thread/thread
-cp examples/thread/.libs/threadpool $RPM_BUILD_ROOT%{_datadir}/doc/glibmm-2.4/examples/thread/threadpool
+#cp examples/child_watch/.libs/child_watch $RPM_BUILD_ROOT%{_datadir}/doc/glibmm-2.4/examples/child_watch/child_watch
+#cp examples/iochannel_stream/.libs/example $RPM_BUILD_ROOT%{_datadir}/doc/glibmm-2.4/examples/iochannel_stream/example
+#cp examples/markup/.libs/parser $RPM_BUILD_ROOT%{_datadir}/doc/glibmm-2.4/examples/markup/parser
+#cp examples/markup/test.xml $RPM_BUILD_ROOT%{_datadir}/doc/glibmm-2.4/examples/markup/test.xml
+#cp examples/options/.libs/example $RPM_BUILD_ROOT%{_datadir}/doc/glibmm-2.4/examples/options/example
+#cp examples/regex/.libs/example $RPM_BUILD_ROOT%{_datadir}/doc/glibmm-2.4/examples/regex/example
+#cp examples/thread/.libs/dispatcher $RPM_BUILD_ROOT%{_datadir}/doc/glibmm-2.4/examples/thread/dispatcher
+#cp examples/thread/.libs/dispatcher2 $RPM_BUILD_ROOT%{_datadir}/doc/glibmm-2.4/examples/thread/dispatcher2
+#cp examples/thread/.libs/thread $RPM_BUILD_ROOT%{_datadir}/doc/glibmm-2.4/examples/thread/thread
+#cp examples/thread/.libs/threadpool $RPM_BUILD_ROOT%{_datadir}/doc/glibmm-2.4/examples/thread/threadpool
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Fri Nov 06 2009 - jchoi42@pha.jhu.edu
+- Bump to 2.22.1, comment copying of depreciated examples
 * Fri Sep 25 2009 - jchoi42@pha.jhu.edu
 - Bump to 2.21.3
 * Mon Mar 31 2008 - damien.carbery@sun.com

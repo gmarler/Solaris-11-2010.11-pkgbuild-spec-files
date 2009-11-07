@@ -1,3 +1,8 @@
+2009-11-06  James Choi <jchoi42@pha.jhu.edu>
+
+	* base-specs/glibmm.spec: Bump to 2.22.1, rem depreciated examples copy
+	* SFEglibmm-gpp.spec: Comment depreciated patch
+
 2009-11-05  Brian Cameron  <brian.cameron@sun.com>
 
 	* SFEgnome-shell.spec ext-sources/shell.desktop:  No longer install the
