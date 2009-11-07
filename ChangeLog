@@ -1,4 +1,4 @@
-2009-10-28  Brian Cameron  <brian.cameron@sun.com>
+2009-11-05  Brian Cameron  <brian.cameron@sun.com>
 
 	* SFEgnome-shell.spec ext-sources/shell.desktop:  No longer install the
 	  shell.desktop file since this is not an appropriate way to launch
