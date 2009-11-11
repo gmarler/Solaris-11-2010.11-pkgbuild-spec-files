@@ -1,3 +1,7 @@
+2009-11-11  Michal Bielicki <michal.bielicki@halokwadrat.de>
+
+        * SFElibssh2.spec: Initial Version
+
 2009-11-06  James Choi <jchoi42@pha.jhu.edu>
 
 	* base-specs/glibmm.spec: Bump to 2.22.1, rem depreciated examples copy
