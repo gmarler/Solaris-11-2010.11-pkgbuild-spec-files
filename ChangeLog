@@ -1,6 +1,12 @@
+2009-11-12  Halton Huo  <halton.huo@sun.com>
+
+	* SFEnautilus-sendto.spec: new module
+	* base-specs/nautilus-sendto.spec: new module
+	* patches/nautilus-sendto-01-gthread.diff: added to fix bugzilla #536355
+
 2009-11-11  Michal Bielicki <michal.bielicki@halokwadrat.de>
 
-        * SFElibssh2.spec: Initial Version
+	* SFElibssh2.spec: Initial Version
 
 2009-11-06  James Choi <jchoi42@pha.jhu.edu>
 
