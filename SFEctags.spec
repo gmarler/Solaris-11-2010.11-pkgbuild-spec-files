@@ -8,7 +8,7 @@
 
 Name:                SFEctags
 Summary:             Exuberant ctags
-Version:             5.7
+Version:             5.8
 Source:              %{sf_download}/ctags/ctags-%{version}.tar.gz
 Patch1:		     ctags-01-destdir.diff
 SUNW_BaseDir:        %{_basedir}
@@ -62,6 +62,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}
 
 %changelog
+* Fri Nov 13 2009 - halton.huo@sun.com
+- Bump to 5.8
 * Thu Oct 30 2008 - jedy.wang@sun.com
 - Bump to 5.7
 * Fri Jul 13 2007 - dougs@truemail.co.th

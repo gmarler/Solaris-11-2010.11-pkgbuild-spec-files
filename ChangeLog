@@ -1,5 +1,11 @@
 2009-11-13  Halton Huo  <halton.huo@sun.com>
 
+	* SFEcscope.spec: Bump to 15.7a, ctags in now in SUNWgnu-emacs,
+	  so replace Requires: SUNWgnu-emacs
+	* SFEctags.spec: Bump to 5.8
+
+2009-11-13  Halton Huo  <halton.huo@sun.com>
+
 	* SFEgob.spec: Update %files to be installed on OpenSolaris.
 
 2009-11-12  Halton Huo  <halton.huo@sun.com>

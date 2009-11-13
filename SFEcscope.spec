@@ -8,7 +8,7 @@
 Name:                    SFEcscope
 License:                 BSD
 Summary:                 Cscope - interactive source code examiner
-Version:                 15.7
+Version:                 15.7a
 Source:                  %{sf_download}/cscope/cscope-%{version}.tar.bz2
 URL:                     http://cscope.sourceforge.net/
 SUNW_BaseDir:            %{_basedir}
@@ -18,7 +18,7 @@ BuildConflicts:      SPROsslnk
 BuildRequires:       SUNWbison
 BuildRequires:       SUNWncurses-devel
 Requires:            SUNWncurses
-Requires:            SFEctags
+Requires:            SUNWgnu-emacs
 
 %prep
 %setup -q -n cscope-%version
@@ -53,6 +53,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/*/*
 
 %changelog
+* Fri Nov 13 2009 - halton.huo@sun.com
+- Bump to 15.7a
+- ctags in now in SUNWgnu-emacs, so replace Requires: SUNWgnu-emacs
 * Fri Feb 20 2009 - halton.huo@sun.com
 - Bump to 15.7
 - Add ncurses dependency.
