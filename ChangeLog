@@ -1,3 +1,10 @@
+2009-11-14  Albert Lee  <trisk@opensolaris.org>
+
+	* SFEjson-glib.spec: Bump to 0.8.2. Drop patch1. Update source URL,
+	  add license. Update dependencies.
+	* SFEpidgin-facebookchat.spec: Bump to 0.63. Add license and URL.
+	* patches/json-glib-01-sunpro.diff: Deleted.
+
 2009-11-13  Halton Huo  <halton.huo@sun.com>
 
 	* SFEcscope.spec: Bump to 15.7a, ctags in now in SUNWgnu-emacs,

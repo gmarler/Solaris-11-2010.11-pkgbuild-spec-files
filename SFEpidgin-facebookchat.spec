@@ -7,8 +7,10 @@
 Name:                    SFEpidgin-facebookchat
 Summary:                 Facebook chat plugin for pidgin
 Group:                   System/GUI/GNOME
-Version:                 1.52
+Version:                 1.63
+License:                 GPL v3
 Source:                  http://pidgin-facebookchat.googlecode.com/files/pidgin-facebookchat-source-%{version}.tar.bz2
+URL:                     http://code.google.com/p/pidgin-facebookchat/
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}_%{version}-build
 %include default-depend.inc
@@ -63,6 +65,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/pixmaps/*
 
 %changelog
+* Sat Nov 14 2009 - Albert Lee <trisk@opensolaris.org>
+- Bump to 0.63
+- Add license and URL
 * Thu Jun 25 2009 - Albert Lee <trisk@forkgnu.org>
 - Bump to 0.52
 - Add SFEjson-glib dependency
