@@ -1,0 +1,13 @@
+Index: gnucash/src/backend/sql/gnc-budget-sql.c
+===================================================================
+--- gnucash/src/backend/sql/gnc-budget-sql.c	(revision 18412)
++++ gnucash/src/backend/sql/gnc-budget-sql.c	(working copy)
+@@ -173,7 +173,7 @@
+ 
+ 	g_return_if_fail( pObj != NULL );
+ 
+-	return gnc_budget_set_account_period_value( info->budget, info->account, info->period_num, value );
++	gnc_budget_set_account_period_value( info->budget, info->account, info->period_num, value );
+ }
+ 
+ /*----------------------------------------------------------------*/

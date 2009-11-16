@@ -1,0 +1,13 @@
+Index: gnucash/doc/Makefile.am
+===================================================================
+--- gnucash/doc/Makefile.am	(revision 18412)
++++ gnucash/doc/Makefile.am	(working copy)
+@@ -62,7 +62,7 @@
+ 	mv $@.tmp $@
+ 
+ tip_of_the_day.list: tip_of_the_day.list.in Makefile
+-	gcc -E -P -x c -D'N_(x)=x' -o $@.tmp $<
++	${CC} -E -P -D'N_(x)=x' -o $@.tmp $<
+ 	cat -s $@.tmp | ${SED} -e 's/^ *\"\(.*\)\" *$$/\1/' > $@
+ 	rm -f $@.tmp
+ 

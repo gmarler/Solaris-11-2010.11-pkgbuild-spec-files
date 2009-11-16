@@ -1,7 +1,7 @@
 #
 # spec file for package gnucash
 #
-# Copyright 2008 Sun Microsystems, Inc.
+# Copyright 2009 Sun Microsystems, Inc.
 # This file and all modifications and additions to the pristine
 # package are under the same license as the package itself.
 #
@@ -13,22 +13,22 @@ Name:           gnucash
 Summary:        GnuCash is an application to keep track of your finances.
 License:        GPL
 Group:          Office
-Version:        2.2.7
+Version:        2.3.7
 Release:        1
 Distribution:   Java Desktop System
 Vendor:         Sun Microsystems, Inc.
 URL:            http://www.gnucash.org/
-Source:         http://www.gnucash.org/pub/gnucash/sources/stable/%{name}-%{version}.tar.bz2
-# date:2008-06-24 owner:halton type:bug bugzilla:539947
-Patch1:         %{name}-01-suncc-function.diff
-# date:2008-06-24 owner:halton type:bug bugzilla:539957
-Patch2:         %{name}-02-namely-struct.diff
+Source:         http://www.gnucash.org/pub/gnucash/sources/unstable/2.3.x/%{name}-%{version}.tar.bz2
 # date:2008-06-25 owner:halton type:bug bugzilla:540452
-Patch3:         %{name}-03-inline.diff
-# date:2008-06-27 owner:halton type:bug  bugzilla:539942
-Patch4:         %{name}-04-configure-fail.diff
-# date:2008-08-22 owner:halton type:bug  bugzilla:548218
-Patch5:         %{name}-05-solaris-sh.diff
+Patch1:         %{name}-01-inline.diff
+# date:2009-11-16 owner:halton type:bug bugzilla:602062
+Patch2:         %{name}-02-gcc.diff
+# date:2009-11-16 owner:halton type:bug bugzilla:602069
+Patch3:         %{name}-03-gmp-inc.diff
+# date:2009-11-16 owner:halton type:bug bugzilla:602070
+Patch4:         %{name}-04-void-return.diff
+# date:2009-11-16 owner:halton type:branding
+Patch5:         %{name}-05-solaris-guile.diff
 BuildRoot:      %{tmpdir}/%{name}-%{version}-root
 
 Requires:       libgnomeui >= %{libgnomeui_version}
@@ -162,6 +162,14 @@ fi
 %{_includedir}/gnucash
 
 %changelog
+* Mon Nov 16 2009 - halton.huo@sun.com
+- Bump to 2.3.7
+- Remove upstreamed patches: suncc-function.diff, namely-struct.diff and
+  configure-fail.diff and solaris-sh.diff
+- Add patch gcc.diff to fix bugzilla #602062.
+- Add patch gmp-inc.diff to fix bugzilla #602069.
+- Add patch void-return.diff to fix bugzilla #602070.
+- Add patch solaris-guile.diff to fix solaris guile issue.
 * Mon Oct 20 2008 - halton.huo@sun.com
 - Bump to 2.2.7
 - Remove upstreamed patches: void-return.diff, libgoffice-0.8.diff and reorder

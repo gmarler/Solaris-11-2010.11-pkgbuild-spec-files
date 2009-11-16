@@ -1,3 +1,18 @@
+2009-11-16  Halton Huo  <halton.huo@sun.com>
+
+	* SFEgnucash.spec: use SUNWguile
+	* base-specs/gnucash.spec: bump to 2.3.7
+	* patches/gnucash-01-inline.diff: rename from -03
+	* patches/gnucash-01-suncc-function.diff: remove upstreamed patch
+	* patches/gnucash-02-gcc.diff: fix bugzilla #602062
+	* patches/gnucash-02-namely-struct.diff: remove upstreamed patch
+	* patches/gnucash-03-gmp-inc.diff: fix bugzilla #602069
+	* patches/gnucash-03-inline.diff:
+	* patches/gnucash-04-configure-fail.diff: remove upstreamed patch
+	* patches/gnucash-04-void-return.diff: fix bugzilla #602070
+	* patches/gnucash-05-solaris-sh.diff: remove upstreamed patch
+	* patches/gnucash-05-solaris-guile.diff: fix solaris guile issue
+
 2009-11-14  Albert Lee  <trisk@opensolaris.org>
 
 	* SFEjson-glib.spec: Bump to 0.8.2. Drop patch1. Update source URL,

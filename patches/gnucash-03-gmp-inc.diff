@@ -1,0 +1,32 @@
+Index: gnucash/src/backend/sql/Makefile.am
+===================================================================
+--- gnucash/src/backend/sql/Makefile.am	(revision 18412)
++++ gnucash/src/backend/sql/Makefile.am	(working copy)
+@@ -12,6 +12,7 @@
+   -I${top_srcdir}/lib/libc\
+   -I${top_srcdir}/src/libqof/qof \
+   ${GLIB_CFLAGS} \
++  ${GUILE_INCS} \
+   ${GCONF_CFLAGS} \
+   ${WARN_CFLAGS}
+ 
+@@ -45,6 +46,7 @@
+ 
+ libgnc_backend_sql_la_LIBADD = \
+    ${GLIB_LIBS} \
++   ${GUILE_LIBS} \
+    ${GCONF_LIBS} \
+    ${top_builddir}/src/engine/libgncmod-engine.la \
+    ${top_builddir}/src/libqof/qof/libgnc-qof.la
+Index: gnucash/src/html/Makefile.am
+===================================================================
+--- gnucash/src/html/Makefile.am	(revision 18412)
++++ gnucash/src/html/Makefile.am	(working copy)
+@@ -14,6 +14,7 @@
+   -I${top_srcdir}/lib/libc \
+   ${QOF_CFLAGS} \
+   ${GLIB_CFLAGS} \
++  ${GUILE_INCS} \
+   ${GTK_CFLAGS} \
+   ${GNOME_CFLAGS} \
+   ${GOFFICE_CFLAGS}

@@ -3,7 +3,7 @@
 #
 # includes module(s): gnucash
 #
-# Copyright 2008 Sun Microsystems, Inc.
+# Copyright 2009 Sun Microsystems, Inc.
 # This file and all modifications and additions to the pristine
 # package are under the same license as the package itself.
 #
@@ -29,25 +29,24 @@ Requires:           SUNWgnome-libs
 #  Cannot find SLIB.  Are you sure you have it installed?
 #  See http://bugzilla.gnome.org/show_bug.cgi?id=347922
 #  and http://bugzilla.gnome.org/show_bug.cgi?id=483631
-# workaround is run following command as:
+# workaround is run following command as root:
 # ln -s /usr/lib/slib /usr/share/guile/1.8/slib
+# mkdir /usr/share/guile/site/
 # guile -c "(use-modules (ice-9 slib)) (require 'new-catalog)"
 Requires:           SUNWslib
 Requires:           SUNWlibgoffice
-Requires:           SFEguile
+Requires:           SUNWguile
 BuildRequires:      SUNWgnome-libs-devel
 BuildRequires:      SUNWlibgoffice-devel
 BuildRequires:      SUNWperl-xml-parser
 BuildRequires:      SUNWlxsl
 BuildRequires:      SUNWswig
-BuildRequires:      SFEguile-devel
 
 %package devel
 Summary:            %{summary} - development files
 SUNW_BaseDir:       %{_basedir}
 %include default-depend.inc
 Requires: %name
-
 
 %if %build_l10n
 %package l10n
@@ -183,6 +182,8 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 
 
 %changelog
+* Mon Nov 16 2009 - halton.huo@sun.com
+- guile integrate into snv_125, use SUNWguile 
 * Mon Oct 20 2008 - halton.huo@sun.com
 - swig integrate into snv_100, rename SFEswig to SUNWswig
 - slib integrate into snv_93, rename SFEslib to SUNWslib
