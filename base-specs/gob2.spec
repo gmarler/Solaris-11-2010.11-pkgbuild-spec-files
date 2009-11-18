@@ -19,6 +19,9 @@ Vendor:         Sun Microsystems, Inc.
 URL:		http://www.5z.com/jirka/gob.html
 Summary:	The GObject Builder
 Source:		http://ftp.5z.com/pub/gob/%{name}-%{version}.tar.gz
+# date:2009-11-18 owner:halton type:bug
+# "#line 0" is not supportted in C99, gcc allow it but sun cc does not.
+Patch1:         %{name}-01-line-control.diff
 BuildRoot:      %{_tmppath}/%{name}-%{version}-root
 
 %description
@@ -39,6 +42,7 @@ own programs.
 
 %prep
 %setup -q
+%patch1 -p1
 
 %build
 %ifos linux
@@ -90,5 +94,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_prefix}/share/aclocal/*
 
 %changelog
+* Wed Nov 18 2009 - halton.huo@sun.com
+- Add patch line-control
 * Fri Aug 08 2009 - halton.huo@sun.com
 - Initial spec

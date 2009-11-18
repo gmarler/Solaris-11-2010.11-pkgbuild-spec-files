@@ -1,0 +1,14 @@
+--- gob2-2.0.16/src/out.c.orig	2009-11-18 15:26:17.018946014 +0800
++++ gob2-2.0.16/src/out.c	2009-11-18 15:28:50.239408071 +0800
+@@ -69,7 +69,10 @@
+ 	} else
+ 		g_assert_not_reached();
+ 
+-	fprintf(fp, "#line %d \"%s\"\n", line, filename);
++	if (line > 0)
++		fprintf(fp, "#line %d \"%s\"\n", line, filename);
++	else
++		fprintf(fp, "#line 1 \"%s\"\n", filename);
+ }
+ 
+ void
