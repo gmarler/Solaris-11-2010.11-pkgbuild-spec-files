@@ -11,15 +11,13 @@
 Name:		nautilus-sendto
 License:	GPL v2
 Group:		Development/Libraries
-Version:	2.28.0
+Version:	2.28.2
 Release:	1
 Distribution:   Java Desktop System
 Vendor:         Sun Microsystems, Inc.
 URL:		http://www.gnome.org/
 Summary:	Nautilus context menu for sending files
 Source:		http://download.gnome.org/sources/%{name}/2.28/%{name}-%{version}.tar.bz2
-# date:2008-06-03 owner:halton type:bug bugzilla:601632
-Patch1:         %{name}-01-gthread.diff
 BuildRoot:      %{_tmppath}/%{name}-%{version}-root
 
 BuildRequires:  gtk2-devel
@@ -41,7 +39,6 @@ Evolution integration.
 
 %prep
 %setup -q
-%patch1 -p1
 
 %build
 %ifos linux
@@ -68,7 +65,12 @@ autoconf
 	    --datadir=%{_datadir} \
 	    --includedir=%{_includedir} \
 	    --sysconfdir=%{_sysconfdir} \
-	    %gtk_doc_option
+	    %gtk_doc_option \
+%if %debug_build
+	    --enable-debug=yes \
+%else
+	    --enable-debug=no \
+%endif
 
 make -j $CPUS
 
@@ -93,5 +95,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/nautilus-sendto.1.gz
 
 %changelog
+* Wed Nov 18 2009 - halton.huo@sun.com
+- Bump to 2.28.2
+- Remove upstramed patch gthread.diff
 * Thu Nov 12 2009 - halton.huo@sun.com
 - Initial spec.

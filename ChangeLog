@@ -1,3 +1,9 @@
+2009-11-18  Halton Huo  <halton.huo@sun.com>
+
+	* SFEnautilus-sendto.spec: Add -devel pkg.
+	* base-specs/nautilus-sendto.spec: Bump to 2.28.2
+	* patches/nautilus-sendto-01-gthread.diff: Remove upstreamd patch
+
 2009-11-16  Halton Huo  <halton.huo@sun.com>
 
 	* SFEgnucash.spec: use SUNWguile

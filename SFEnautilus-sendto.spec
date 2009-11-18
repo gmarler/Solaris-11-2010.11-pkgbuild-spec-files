@@ -46,6 +46,12 @@ Summary:       %{summary} - / filesystem
 SUNW_BaseDir:            /
 %include default-depend.inc
 
+%package devel
+Summary:        %{summary} - development files
+SUNW_BaseDir:   %{_basedir}
+%include default-depend.inc
+Requires:       %name
+
 %prep
 rm -rf %name-%version
 mkdir -p %name-%version
@@ -76,7 +82,6 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, bin) %{_libdir}
 %{_libdir}/nautilus
 %{_libdir}/nautilus-sendto
-%{_libdir}/pidgin
 %dir %attr (0755, root, sys) %{_datadir}
 %{_datadir}/nautilus-sendto
 %dir %attr(0755, root, bin) %{_mandir}
@@ -95,6 +100,18 @@ rm -rf $RPM_BUILD_ROOT
 %attr (0755, root, sys) %dir %{_sysconfdir}
 %{_sysconfdir}/gconf/schemas/nst.schemas
 
+%files devel
+%defattr (-, root, bin)
+%dir %attr (0755, root, bin) %{_includedir}
+%{_includedir}/*
+%dir %attr (0755, root, bin) %{_libdir}
+%dir %attr (0755, root, other) %{_libdir}/pkgconfig
+%{_libdir}/pkgconfig/*
+%dir %attr (0755, root, sys) %dir %{_datadir}
+%{_datadir}/gtk-doc
+
 %changelog
+* Wed Nov 18 2009 - halton.huo@sun.com
+- Add -devel pkg
 * Wed Aug 05 2009 - halton.huo@sun.com
 - Initial spec
