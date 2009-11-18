@@ -5,11 +5,12 @@
 #
 %include Solaris.inc
 
+%define tarball_version 15.7a
 Name:                    SFEcscope
 License:                 BSD
 Summary:                 Cscope - interactive source code examiner
-Version:                 15.7a
-Source:                  %{sf_download}/cscope/cscope-%{version}.tar.bz2
+Version:                 15.7
+Source:                  %{sf_download}/cscope/cscope-%{tarball_version}.tar.bz2
 URL:                     http://cscope.sourceforge.net/
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -18,10 +19,10 @@ BuildConflicts:      SPROsslnk
 BuildRequires:       SUNWbison
 BuildRequires:       SUNWncurses-devel
 Requires:            SUNWncurses
-Requires:            SUNWgnu-emacs
+Requires:            SUNWtoo
 
 %prep
-%setup -q -n cscope-%version
+%setup -q -n cscope-%{tarball_version}
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -53,6 +54,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/*/*
 
 %changelog
+* Wed Nov 18 2009 - halton.huo@sun.com
+- Use tarball_version for 15.7a
+- Replace SUNWgnu-emacs with SUNWtoo
 * Fri Nov 13 2009 - halton.huo@sun.com
 - Bump to 15.7a
 - ctags in now in SUNWgnu-emacs, so replace Requires: SUNWgnu-emacs

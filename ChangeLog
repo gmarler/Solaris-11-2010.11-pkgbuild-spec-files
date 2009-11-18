@@ -1,5 +1,10 @@
 2009-11-18  Halton Huo  <halton.huo@sun.com>
 
+	* SFEcscope.spec: Use tarball_version for 15.7a,
+	  replace SUNWgnu-emacs with SUNWtoo
+
+2009-11-18  Halton Huo  <halton.huo@sun.com>
+
 	* SFEgob.spec: Fix attr of files
 	* base-specs/gob2.spec: Add patch line-control 
 	* patches/gob2-01-line-control.diff: Added
