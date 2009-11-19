@@ -20,7 +20,7 @@
 
 Name:                SFEmpd
 Summary:             Daemon for remote access music playing & managing playlists
-Version:             0.15.1
+Version:             0.15.6
 Source:              http://downloads.sourceforge.net/musicpd/%{srcname}-%{version}.tar.bz2
 
 SUNW_BaseDir:        %{_basedir}
