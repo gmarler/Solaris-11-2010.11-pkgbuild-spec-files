@@ -11,6 +11,7 @@ Version:             4.0.0
 Source:              http://us5.samba.org/samba/ftp/samba4/samba-4.0.0alpha7.tar.gz
 Patch1:              samba4-01-solaris.diff
 Patch2:              samba4-02-map-rename.diff
+Patch3:              samba4-03-checking-suncc.diff
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -26,6 +27,7 @@ SUNW_BaseDir:            /
 %setup -q -n samba-4.0.0alpha7/
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 %build
 
@@ -118,8 +120,10 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0775, root, sys) /var/log/samba
 
 %changelog
+* Thu Nov 19 2009 - brian.lu@sun.com
+- Add patch samba4-03-checking-suncc.diff
 * Thu Aug 27 2009 - brian.lu@sun.com
-- add "-mt" to CFLAGS to set errno correctly in MT environment
+- Add "-mt" to CFLAGS to set errno correctly in MT environment
 * Thu Jun 04 2009 - brian.lu@sun.com
 - Remove patch samba4-03-FUNCTION-macro.diff
 * Wed Feb 18 2009 - jedy.wang@sun.com

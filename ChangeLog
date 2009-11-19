@@ -1,3 +1,9 @@
+2009-11-19  Brian Lu  <brian.lu@sun.com>
+
+	* SFEsamba4.spec:
+	* patches/samba4-03-checking-suncc.diff:
+	  Patch for SS12u1
+
 2009-11-19  Halton Huo  <halton.huo@sun.com>
 
 	* patches/gnucash-05-solaris-guile.diff: Added missing patch.
