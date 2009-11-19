@@ -1,3 +1,7 @@
+2009-11-19  Halton Huo  <halton.huo@sun.com>
+
+	* patches/gnucash-05-solaris-guile.diff: Added missing patch.
+
 2009-11-18  Halton Huo  <halton.huo@sun.com>
 
 	* SFEcscope.spec: Use tarball_version for 15.7a,

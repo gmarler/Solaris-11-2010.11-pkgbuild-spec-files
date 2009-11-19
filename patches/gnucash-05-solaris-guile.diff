@@ -1,0 +1,19 @@
+Index: gnucash/macros/gnome-guile-checks.m4
+===================================================================
+--- gnucash/macros/gnome-guile-checks.m4	(revision 18412)
++++ gnucash/macros/gnome-guile-checks.m4	(working copy)
+@@ -62,10 +62,12 @@
+ 
+ 	if test "x$BUILD_GUILE" = "xyes"; then
+ 		AC_MSG_CHECKING(for guile libraries)
+-		GUILE_LIBS="`$name_build_guile link`"
++		#GUILE_LIBS="`$name_build_guile link`"
++		GUILE_LIBS="-D_REENTRANT -lguile -lltdl -lgmp -lsocket -lnsl -lm -lltdl"
+ 		AC_MSG_RESULT($GUILE_LIBS)
+ 		AC_MSG_CHECKING(for guile headers)
+-		GUILE_INCS="`$name_build_guile compile`"
++		#GUILE_INCS="`$name_build_guile compile`"
++		GUILE_INCS="-I/usr/include/gmp"
+ 		AC_MSG_RESULT($GUILE_INCS)
+ 	else
+ 		GUILE_LIBS="$GNOME_LIBDIR"
