@@ -1,3 +1,7 @@
+2009-11-19  Olivier Mauras <oliver.mauras@gmail.com>
+
+    * encumbered/SFEmpd.spec: Version bump to 0.15.6
+
 2009-11-19  Brian Lu  <brian.lu@sun.com>
 
 	* SFEsamba4.spec:
