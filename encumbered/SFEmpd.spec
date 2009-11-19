@@ -129,6 +129,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/doc/*
 
 %changelog
+* Thu Nov 19 2009 - oliver.mauras@gmail.com
+- Version bump to 0.15.6
 * Thu Jul 30 2009 - oliver.mauras@gmail.com
 - Remove libMAD fix as libMAD spec fixed in r1997
 * Wed Jul 29 2009 - oliver.mauras@gmail.com
