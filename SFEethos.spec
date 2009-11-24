@@ -10,14 +10,12 @@
 Name:                    SFEethos
 License:                 LGPL v2.1
 Group:                   Libraries/Multimedia
-Version:                 0.2.0
+Version:                 0.2.2
 Distribution:            Java Desktop System
 Vendor:                  Sun Microsystems, Inc.
 Summary:                 GNOME Plugin Framework
 Source:                  http://ftp.dronelabs.com/sources/ethos/0.2/ethos-%{version}.tar.gz
-Patch1:                  ethos-01-nomono.diff
-Patch2:                  ethos-02-example.diff
-Patch3:                  ethos-03-loader.diff
+Patch1:                  ethos-01-example.diff
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 SUNW_BaseDir:            %{_basedir}
 
@@ -43,8 +41,6 @@ SUNW_BaseDir:            %{_basedir}
 %prep
 %setup -q -n ethos-%version
 %patch1 -p1
-%patch2 -p1
-%patch3 -p1
 
 %build
 export PYTHON="/usr/bin/python%{pythonver}"
@@ -66,6 +62,8 @@ make install DESTDIR=$RPM_BUILD_ROOT
 find $RPM_BUILD_ROOT%{_libdir} -type f -name "*.la" -exec rm -f {} ';'
 find $RPM_BUILD_ROOT%{_libdir} -type f -name "*.a" -exec rm -f {} ';'
 find $RPM_BUILD_ROOT%{_libdir} -type f -name "*.pyo" -exec rm -f {} ';'
+
+rm -rf $RPM_BUILD_ROOT%{_datadir}/locale
 
 # move to vendor-packages
 mkdir -p $RPM_BUILD_ROOT%{_libdir}/python%{pythonver}/vendor-packages
@@ -102,6 +100,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-doc
 
 %changelog
+* Tue Nov 24 2009 - Brian Cameron  <brian.cameron@sun.com>
+- Bump to 0.2.2.
 * Tue Oct 13 2009 - Brian Cameron  <brian.cameron@sun.com>
 - Do not install .pyo files.
 * Sun Oct 11 2009 - Brian Cameron  <brian.cameron@sun.com>

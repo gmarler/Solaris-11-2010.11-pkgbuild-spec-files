@@ -10,7 +10,7 @@
 
 Name:                SFEvala
 Summary:             Vala programming language
-Version:             0.7.7
+Version:             0.7.8
 Source:              %{src_url}/%{src_name}-%{version}.tar.bz2
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
@@ -76,6 +76,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*
 
 %changelog
+* Tue Nov 24 2009 - brian.cameron@sun.com
+- Bump to 0.7.8.
 * Sun Oct 11 2009 - brian.cameron@sun.com
 - Bump to 0.7.7.
 * Fri Jul 27 2007 - dougs@truemail.co.th

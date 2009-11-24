@@ -1,5 +1,14 @@
 2009-11-24  Brian Cameron  <brian.cameron@sun.com>
 
+	* SFEtaglib.spec: Bump to 1.6.
+	* SFEvala.spec: Bump to 0.7.8.
+	* SFEethos.spec: Bump to 0.2.2.
+	* patches/ethos-01-nomono.diff, patches/ethos-03-loader.diff: Remove
+	  upstream patches.
+	* patches/ethos-01-example.diff: Renumber from 02.
+
+2009-11-24  Brian Cameron  <brian.cameron@sun.com>
+
 	* SFEaudacity.spec: Now depend on SUNWwxwidgets instead of SFEwxwidgets
 	  since the build issues with using SUNWwxwidgets has been fixed since
 	  build 125.
