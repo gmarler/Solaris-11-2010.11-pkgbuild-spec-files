@@ -1,10 +1,19 @@
+2009-11-24  Brian Cameron  <brian.cameron@sun.com>
+
+	* SFEaudacity.spec: Now depend on SUNWwxwidgets instead of SFEwxwidgets
+	  since the build issues with using SUNWwxwidgets has been fixed since
+	  build 125.
+
 2009-09-16  Thomas Wagner  <tom68@users.sourceforge.net>
-        * SFEapch22m-proxyhtml.spec: *new* make apache2.2 mod_proxy_html, a html (reverse)proxy/load-balancer
-        * SFEapch22m-xml2enc.spec: *new* add xml2enc modules used by SFEapch22m-proxyhtml.spec (mod_proxy_html)
+
+	* SFEapch22m-proxyhtml.spec: *new* make apache2.2 mod_proxy_html, a
+	  html (reverse)proxy/load-balancer
+	* SFEapch22m-xml2enc.spec: *new* add xml2enc modules used by
+	  SFEapch22m-proxyhtml.spec (mod_proxy_html)
 
 2009-11-19  Olivier Mauras <oliver.mauras@gmail.com>
 
-        * encumbered/SFEmpd.spec: Version bump to 0.15.6
+	* encumbered/SFEmpd.spec: Version bump to 0.15.6
 
 2009-11-19  Brian Lu  <brian.lu@sun.com>
 
@@ -69,7 +78,8 @@
 
 	* SFEnautilus-sendto.spec: new module
 	* base-specs/nautilus-sendto.spec: new module
-	* patches/nautilus-sendto-01-gthread.diff: added to fix bugzilla #536355
+	* patches/nautilus-sendto-01-gthread.diff: added to fix bugzilla
+	  #536355
 
 2009-11-11  Michal Bielicki <michal.bielicki@halokwadrat.de>
 

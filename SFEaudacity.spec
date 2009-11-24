@@ -53,8 +53,8 @@ BuildRequires: SFEgcc
 BuildRequires: SFEwxwidgets-gnu-devel
 Requires: SFEwxwidgets-gnu
 %else
-BuildRequires: SFEwxwidgets-devel
-Requires: SFEwxwidgets
+BuildRequires: SUNWwxwidgets-devel
+Requires: SUNWwxwidgets
 %endif
 
 # If building with GCC, cannot use SUNWflac which has Studio C++ libraries
