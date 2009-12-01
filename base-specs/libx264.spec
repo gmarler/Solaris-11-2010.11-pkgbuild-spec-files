@@ -61,7 +61,7 @@ fi
     --prefix=%{_prefix}		\
     --bindir=%{_bindir}		\
     --libdir=%{_libdir}		\
-    --enable-mp4-output		\
+    --disable-mp4-output	\
     --enable-pthread		\
     --enable-pic		\
     --extra-cflags="$CFLAGS"	\
@@ -78,6 +78,8 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/lib*.*a
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Sat Nov 28 2009 - Albert Lee <trisk@opensolaris.org>
+- Remove GPAC dependency
 * Fri Oct 30 2009 - Milan Jurik
 - support for multiarch on sparc
 * Tue Sep 08 2009 - Milan Jurik

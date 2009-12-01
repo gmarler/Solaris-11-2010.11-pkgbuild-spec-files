@@ -1,3 +1,14 @@
+2009-11-30  Albert Lee  <trisk@opensolaris.org>
+
+	* base-specs/libx264.spec, encumbered/SFElibx264.spec: Remove GPAC
+	  dependency.
+	* SFEobby.spec, SFEgobby.spec, SFEseahorse.spec, SFEnet6.spec,
+	  SFElinks.spec, SFElibpcap.spec, SFEtcpdump.spec, SFEntfsprogs.spec,
+	  SFElibpng.spec, SFEcmake.spec, SFEsongbird.spec, SFEunrar.spec,
+	  SFEtransmission.spec, SFEsudo.spec, SFETcl.spec, SFElynx.spec,
+	  SFExsane.spec, SFEirssi.spec, SFEelinks.spec: Move integrated software
+	  to archive.
+
 2009-11-24  Brian Cameron  <brian.cameron@sun.com>
 
 	* SFEtaglib.spec: Bump to 1.6.

@@ -28,8 +28,6 @@ Version:                 %{libx264.version}
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
-BuildRequires: SFEgpac-devel
-Requires: SFEgpac
 BuildRequires: SFEyasm
 
 %package devel
@@ -91,7 +89,9 @@ rm -rf $RPM_BUILD_ROOT
 %defattr (-, root, bin)
 %dir %attr (0755, root, bin) %{_bindir}
 %if %can_isaexec
+%ifarch amd64 sparcv9
 %{_bindir}/%{_arch64}/*
+%endif
 %{_bindir}/%{base_isa}/*
 %if %arch_sse2
 %{_bindir}/%{sse2_arch}/*
@@ -129,6 +129,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sat Nov 28 2009 - Albert Lee <trisk@opensolaris.org>
+- Remove GPAC dependency
 * Tue Sep 8 2009 - Milan Jurik
 - multiarch support
 * Mon Mar 16 2009 - andras.barna@gmail.com
