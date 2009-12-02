@@ -8,10 +8,12 @@
 Name:                SFEsamba4
 Summary:             samba - CIFS Server and Domain Controller v4
 Version:             4.0.0
-Source:              http://us5.samba.org/samba/ftp/samba4/samba-4.0.0alpha7.tar.gz
+Source:              http://us5.samba.org/samba/ftp/samba4/samba-4.0.0alpha9.tar.gz
+
+# bugzilla 6945
 Patch1:              samba4-01-solaris.diff
-Patch2:              samba4-02-map-rename.diff
-Patch3:              samba4-03-checking-suncc.diff
+# bugzilla 6931
+Patch2:              samba4-02-gpg-error.diff
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -24,10 +26,9 @@ SUNW_BaseDir:            /
 
 
 %prep
-%setup -q -n samba-4.0.0alpha7/
+%setup -q -n samba-4.0.0alpha9/
 %patch1 -p1
 %patch2 -p1
-%patch3 -p1
 
 %build
 
@@ -92,11 +93,11 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, bin) %{_bindir}
 %{_bindir}/*
 %dir %attr (0755, root, bin) %{_sbindir}
-%{_sbindir}/samba
+%{_sbindir}/*
 %dir %attr (0755, root, bin) %{_libdir}
 %attr (0755, root, other) %{_libdir}/pkgconfig
 %{_libdir}/*.so*
-%{_libdir}/python2.4
+%{_libdir}/python2.6
 %{_libdir}/5.8.4
 %{_libdir}/i86pc-solaris-64int
 %{_libdir}/samba
@@ -120,6 +121,8 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0775, root, sys) /var/log/samba
 
 %changelog
+* Wed Dec 02 2009 - brian.lu@sun.com
+- Bump to Samba4 alpha9
 * Thu Nov 19 2009 - brian.lu@sun.com
 - Add patch samba4-03-checking-suncc.diff
 * Thu Aug 27 2009 - brian.lu@sun.com

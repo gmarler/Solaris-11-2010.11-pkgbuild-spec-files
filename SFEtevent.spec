@@ -7,16 +7,16 @@
 
 Name:                SFEtevent
 Summary:             An event system library.
-Version:             0.9.3
-Source:              http://us5.samba.org/samba/ftp/samba4/samba-4.0.0alpha7.tar.gz
+Version:             0.9.8
+Source:              http://us5.samba.org/samba/ftp/samba4/samba-4.0.0alpha9.tar.gz
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 
 Requires: SUNWPython26
 %prep
-rm -rf samba-4.0.0alpha7
-%setup -q -n samba-4.0.0alpha7/lib/tevent
+rm -rf samba-4.0.0alpha9
+%setup -q -n samba-4.0.0alpha9/lib/tevent
 
 %build
 
@@ -56,7 +56,6 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, bin) %{_libdir}
 %attr (0755, root, other) %{_libdir}/pkgconfig
 %{_libdir}/*.so*
-%{_libdir}/python2.6
 %dir %attr (0755, root, bin) %{_includedir}
 %{_includedir}/*
 

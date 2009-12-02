@@ -14,6 +14,7 @@ Patch1:              libmapi-01-solaris.diff
 #owner brian.lu@sun.com bugzilla: ticket 219
 Patch2:              libmapi-04-no-return-value.diff
 Patch3:              libmapi-03-remove-gcc-options.diff
+Patch4:              libmapi-05-samba4alpha9.diff
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -24,6 +25,7 @@ BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
 
 %build
 
@@ -77,6 +79,9 @@ rm -rf $RPM_BUILD_ROOT
 /usr/modules/*
 
 %changelog
+* Wed Dec 02 2009 - brian.lu@sun.com
+- Add a new patch libmapi-03-remove-gcc-options.diff
+  Add a new patch libmapi-05-samba4alpha9.diff for Samba4 alpha9
 * Mon Nov 02 2009 - brian.lu@sun.com
 - Add patch libmapi-04-no-return-value.diff
   Add major_version

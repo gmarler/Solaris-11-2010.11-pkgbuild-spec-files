@@ -1,3 +1,18 @@
+2009-12-02  Brian Lu  <brian.lu@sun.com>
+
+	* SFElibmapi.spec:
+	* patches/libmapi-03-remove-gcc-options.diff:
+	* patches/libmapi-05-samba4alpha9.diff:
+	  Use Samba4 alpha9
+
+	* SFEsamba4.spec:
+	* SFEtalloc.spec:
+	* SFEtdb.spec:
+	* SFEtevent.spec:
+	* patches/samba4-01-solaris.diff:
+	* patches/samba4-02-gpg-error.diff:
+	  Update to Samba4 alpha9
+
 2009-12-02  Albert Lee  <trisk@opensolaris.org>
 
 	* base-specs/boost.spec: Add patch4 from upstream for #2602. Update URL.

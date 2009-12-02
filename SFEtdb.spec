@@ -7,8 +7,8 @@
 
 Name:                SFEtdb
 Summary:             A trivial database used by samba.
-Version:             1.1.3
-Source:              http://us5.samba.org/samba/ftp/samba4/samba-4.0.0alpha7.tar.gz
+Version:             1.2.0
+Source:              http://us5.samba.org/samba/ftp/samba4/samba-4.0.0alpha9.tar.gz
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -16,8 +16,8 @@ BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 Requires:SUNWPython26
 
 %prep
-rm -rf samba-4.0.0alpha7
-%setup -q -n samba-4.0.0alpha7/lib/tdb
+rm -rf samba-4.0.0alpha9
+%setup -q -n samba-4.0.0alpha9/lib/tdb
 
 %build
 
@@ -64,6 +64,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/*
 
 %changelog
+* Wed Dec 02 2009 - brian.lu@sun.com
+- Bump to Samba4 alpha9
 * Wed Jun 03 2009 - brian.lu@sun.com
 - Add dependency SUNWPython26
 * Wed Feb 18 2009 - jedy.wang@sun.com

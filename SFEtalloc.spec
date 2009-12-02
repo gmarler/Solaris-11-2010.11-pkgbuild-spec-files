@@ -7,8 +7,8 @@
 
 Name:                SFEtalloc
 Summary:             A hierarchical pool based memory system with destructors.
-Version:             1.2.0
-Source:              http://us5.samba.org/samba/ftp/samba4/samba-4.0.0alpha7.tar.gz
+Version:             2.0.1 
+Source:              http://us5.samba.org/samba/ftp/samba4/samba-4.0.0alpha9.tar.gz
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -16,8 +16,8 @@ BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 Requires:SUNWswig
 
 %prep
-rm -rf samba-4.0.0alpha7
-%setup -q -n samba-4.0.0alpha7/lib/talloc
+rm -rf samba-4.0.0alpha9
+%setup -q -n samba-4.0.0alpha9/lib/talloc
 
 %build
 
@@ -41,7 +41,7 @@ rm -rf $RPM_BUILD_ROOT
 
 make install DESTDIR=$RPM_BUILD_ROOT
 cd $RPM_BUILD_ROOT/%{_libdir}
-ln -s -f libtalloc.so.%{version} libtalloc.so.1
+ln -s -f libtalloc.so.%{version} libtalloc.so.2
 ln -s libtalloc.so.%{version} libtalloc.so
 cd -
 
@@ -60,12 +60,13 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, bin) %{_includedir}
 %{_includedir}/*
 %dir %attr (0755, root, sys) %{_datadir}
-%{_datadir}/swig/*
 %dir %attr(0755, root, bin) %{_mandir}
 %dir %attr(0755, root, bin) %{_mandir}/*
 %{_mandir}/*/*
 
 %changelog
+* Wed Dec 02 2009 - brian.lu@sun.com
+- Bump to samba4 alpha9
 * Thu Aug 27 2009 - brian.lu@sun.com
 - add "-mt" to CFLAGS to set errno correctly in MT environment
 * Wed Jun 03 2009 - brian.lu@sun.com
