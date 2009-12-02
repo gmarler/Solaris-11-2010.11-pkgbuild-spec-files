@@ -1,3 +1,7 @@
+2009-12-02  Albert Lee  <trisk@opensolaris.org>
+
+	* base-specs/boost.spec: Add patch4 from upstream for #2602. Update URL.
+
 2009-11-30  Albert Lee  <trisk@opensolaris.org>
 
 	* base-specs/libx264.spec, encumbered/SFElibx264.spec: Remove GPAC

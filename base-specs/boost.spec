@@ -21,13 +21,16 @@ Release:      1
 Distribution: Java Desktop System
 Vendor:       Sun Microsystems, Inc.
 Summary:      boost - free peer-reviewed portable C++ source libraries
-Source:       http://easynews.dl.sourceforge.net/sourceforge/boost/boost_%{ver_boost}.tar.bz2
+Source:       %{sf_download}/boost/boost_%{ver_boost}.tar.bz2
 
 # date:2007-08-13 owner:trisk 
 Patch1:       boost-01-studio.diff
 
 # date:2007-08-13 owner:laca
 Patch2:       boost-02-gcc34.diff
+
+# date:2009-11-04 owner:sobi
+Patch4:       boost-04-fixthread.diff
 
 URL:          http://www.boost.org/
 BuildRoot:    %{_tmppath}/%{name}-%{version}-build
@@ -36,6 +39,7 @@ BuildRoot:    %{_tmppath}/%{name}-%{version}-build
 %setup -q -n %{name}_%{major}_%{minor}_%{patchlevel}
 %patch1 -p1
 %patch2 -p1
+%patch4 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -92,6 +96,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Dec 02 2009 - Albert Lee <trisk@opensolaris.org>
+- Add patch4 from upstream for #2602
+- Update URL
 * Mon Oct 12 2009 - jchoi42@pha.jhu.edu
 - Bump to 1.40.0, updated boost-01-studio patch
 - Initial base spec
