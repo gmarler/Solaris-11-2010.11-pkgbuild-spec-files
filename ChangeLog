@@ -1,3 +1,9 @@
+2009-12-04  Brian Lu  <brian.lu@sun.com>
+
+	* SFEtalloc.spec:
+	  Add swig related code
+	* patches/libmapi-05-samba4alpha9.diff:
+
 2009-12-02  Brian Lu  <brian.lu@sun.com>
 
 	* SFElibmapi.spec:
