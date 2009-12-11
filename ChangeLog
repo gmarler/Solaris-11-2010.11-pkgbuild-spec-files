@@ -1,3 +1,8 @@
+2009-12-11  Simon Jin  <yuntong.jin@sun.com>
+
+	* SFEpython-buildbot.spec:
+          init spec file
+
 2009-12-04  Brian Lu  <brian.lu@sun.com>
 
 	* SFEtalloc.spec:
