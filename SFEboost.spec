@@ -14,8 +14,7 @@ SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 
 %include default-depend.inc
-BuildRequires: SUNWicu
-##BuildRequires: SUNWicud
+BuildRequires: SUNWicud
 BuildRequires: SUNWPython
 Requires: SUNWicu
 
@@ -86,6 +85,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_docdir}/boost-%{version}
 
 %changelog
+* Wed Dec 02 2009 - Albert Lee <trisk@opensolaris.org>
+- Re-add SUNWicud
 * Mon Oct 12 2009 - jchoi42@pha.jhu.edu
 - changed %builddir, created base-specs/boost.spec
 * Thu Nov 22 2007 - daymobrew@users.sourceforge.net

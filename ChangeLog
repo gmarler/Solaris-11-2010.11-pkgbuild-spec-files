@@ -1,5 +1,10 @@
 2009-12-14  Albert Lee  <trisk@opensolaris.org>
 
+	* SFEboost.spec, SFEboost-gpp.spec: Re-add SUNWicud.
+	* SFEgnash.spec: Fix file lists.
+
+2009-12-14  Albert Lee  <trisk@opensolaris.org>
+
 	* SFEagg.spec: *NEW* Anti-Grain Geometry (AGG) rendering engine
 	* SFEgnash.spec: *NEW* Gnash - GNU Flash movie player
 	* patches/agg-01-disable_gpc.diff: Disable gpc.

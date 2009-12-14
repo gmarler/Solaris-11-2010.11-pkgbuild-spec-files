@@ -180,8 +180,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr (-, root, bin)
-%defattr (-, root, bin)
-%dir %attr (0755, root, bin) %{_prefix}
 %dir %attr (0755, root, bin) %{_includedir}
 %{_includedir}/*
 %dir %attr (0755, root, bin) %{_libdir}
@@ -191,12 +189,13 @@ rm -rf $RPM_BUILD_ROOT
 %if %build_l10n
 %files l10n
 %defattr (-, root, other)
-%dir %attr (0755, root, bin) %{_prefix}
 %dir %attr (0755, root, sys) %{_datadir}
-%dir %attr (0755, root, other) %{_datadir}/locale
-%{_datadir}/locale/*
+%dir %attr (0755, root, other) %{_localedir}
+%{_localedir}/*
 %endif
 
 %changelog
+* Mon Dec 14 2009 - Albert Lee <trisk@opensolaris.org>
+- Fix file lists.
 * Tue Dec 01 2009 - Albert Lee <trisk@opensolaris.org>
 - Initial spec.
