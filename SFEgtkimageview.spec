@@ -35,6 +35,13 @@ export CFLAGS="%optflags"
 
 export LDFLAGS="%_ldflags"
 
+aclocal $ACLOCAL_FLAGS
+glib-gettextize --force --copy
+intltoolize --force --automake
+gtkdocize
+
+automake -a -f -c --gnu
+autoconf
 ./configure --prefix=%{_prefix}		\
             --bindir=%{_bindir}		\
             --libdir=%{_libdir}		\
@@ -70,5 +77,7 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Dec 14 2009 - jedy.wang@sun.com
+- Regenerate cofngiure before building.
 * Sun Oct 11 2009 - Milan Jurik
 - Initial spec

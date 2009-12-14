@@ -1,3 +1,10 @@
+2009-12-14  Wang Xin  <jedy.wang@sun.com>
+
+	Update the patch to make it upstreamable.
+
+	* SFEgtkimageview.spec:
+	* patches/gtkimageview-01-cflags.diff:
+
 2009-12-11  Simon Jin  <yuntong.jin@sun.com>
 
 	* SFEpython-buildbot.spec:
