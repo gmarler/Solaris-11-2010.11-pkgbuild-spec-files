@@ -1,0 +1,25 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## 06_fix_recursion_crash.dpatch by Brian Murray <brian@ubuntu.com>
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: Ubuntu: http://launchpad.net/bugs/344849
+## DP: Patch: https://trac.mapnik.org/ticket/253
+## DP: Description: Avoid a crash caused by an infinite recursion when drawing extremely long lines
+
+@DPATCH@
+diff -urNad agg-2.5+dfsg1~/include/agg_rasterizer_cells_aa.h agg-2.5+dfsg1/include/agg_rasterizer_cells_aa.h
+--- agg-2.5+dfsg1~/include/agg_rasterizer_cells_aa.h	2007-10-10 15:06:16.000000000 -0700
++++ agg-2.5+dfsg1/include/agg_rasterizer_cells_aa.h	2009-04-02 18:34:07.000000000 -0700
+@@ -333,6 +333,12 @@
+         {
+             int cx = (x1 + x2) >> 1;
+             int cy = (y1 + y2) >> 1;
++
++            // Bail if values are so large they are likely to wrap
++            if ((abs(x1) >= INT_MAX/2) || (abs(y1) >= INT_MAX/2) ||
++                (abs(x2) >= INT_MAX/2) || (abs(y2) >= INT_MAX/2))
++                    return;
++
+             line(x1, y1, cx, cy);
+             line(cx, cy, x2, y2);
+         }

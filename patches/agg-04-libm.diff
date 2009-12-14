@@ -1,0 +1,12 @@
+--- agg-2.5.orig/configure.in	2006-10-09 00:06:36.000000000 -0400
++++ agg-2.5/configure.in	2009-12-10 20:21:30.410763640 -0500
+@@ -36,6 +36,9 @@
+ fi
+ AM_CONDITIONAL(ENABLE_CTRL,test x$enable_ctrl != xno)
+ 
++# check if math library is required
++AC_SEARCH_LIBS(atan2, m)
++
+ # used as platform library in examples:
+ # todo, make the PREFERED_PLATFORM selectable, after the set of possible 
+ # Platforms to link the examples have been evaluated.

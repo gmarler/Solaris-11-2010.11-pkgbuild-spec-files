@@ -1,3 +1,17 @@
+2009-12-14  Albert Lee  <trisk@opensolaris.org>
+
+	* SFEagg.spec: *NEW* Anti-Grain Geometry (AGG) rendering engine
+	* SFEgnash.spec: *NEW* Gnash - GNU Flash movie player
+	* patches/agg-01-disable_gpc.diff: Disable gpc.
+	* patches/agg-02-rpath.diff: Remove GNU ld -rpath option.
+	* patches/agg-03-fix_recursion_crash.diff: Fix crash caused by infinite
+	  recursion.
+	* patches/agg-04-libm.diff: Check if math library is required.
+	* patches/gnash-01-stdc.diff: Fix uses of C library functions.
+	* patches/gnash-02-sunpro.diff: Sun Studio support.
+	* patches/gnash-03-gnashrc.diff: Improved $GNASHRC list parsing.
+	* patches/gnash-04-plugin.diff: Portability and other fixes for plugin.
+
 2009-12-14  Wang Xin  <jedy.wang@sun.com>
 
 	Update the patch to make it upstreamable.

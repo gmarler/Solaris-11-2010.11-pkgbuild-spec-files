@@ -1,0 +1,296 @@
+--- gnash-0.8.6.orig/configure.ac	2009-09-13 20:13:12.000000000 -0400
++++ gnash-0.8.6/configure.ac	2009-12-14 01:54:30.289061434 -0500
+@@ -1479,6 +1479,7 @@
+ AC_CHECK_HEADERS(signal.h)
+ AC_CHECK_HEADERS(unistd.h)
+ AC_CHECK_HEADERS(sys/time.h)
++AC_CHECK_HEADERS(ieeefp.h)
+ dnl libcurl3-dev on Ubuntu has a dependency on lber, and Gnash won't link
+ dnl on most machines without it. While it isn't diretly used by Gnash at all,
+ dnl it's to work around an Ubuntu packaging bug.
+@@ -1563,30 +1564,36 @@
+ dnl AC_CHECK_FUNCS(strcasecmp stricmp)
+ dnl AC_CHECK_FUNCS(vsnprintf)
+ 
+-dnl These two tests need the math library or they won't link
+-dnl on OpenBSD, even if the functions exist.
+-save_LIBS=$LIBS
+-LIBS="$LIBS -lm"
+ AC_CACHE_CHECK([for finite], ac_cv_finite,
+- [AC_TRY_LINK([#include <math.h>],
++ [AC_TRY_COMPILE([
++   #include <math.h>
++   #ifdef HAVE_IEEEFP_H
++   #include <ieeefp.h>
++   #endif],
+  [double x; int y; y = finite(x);],
+  ac_cv_finite=yes,
+  ac_cv_finite=no
+ )])
+ if test x"$ac_cv_finite" = x"yes"; then
+-  AC_DEFINE(HAVE_FINITE, [1], [Has finite])
++  AC_SEARCH_LIBS(finite, m,
++    [AC_DEFINE(HAVE_FINITE, [1], [Has finite])]
++  )
+ fi
+ 
++AC_LANG_PUSH(C++)
+ AC_CACHE_CHECK([for isfinite], ac_cv_isfinite,
+- [AC_TRY_LINK([#include <math.h>],
+- [double x; int y; y = isfinite(x);],
++ [AC_TRY_COMPILE([#include <cmath>],
++ [using namespace std; double x; int y; y = isfinite(x);],
+  ac_cv_isfinite=yes,
+  ac_cv_isfinite=no
+ )])
++AC_LANG_POP(C++)
+ if test x"$ac_cv_isfinite" = x"yes"; then
++  dnl Don't give up if isfinite is not found in -lm
++  dnl isfinite is defined as a macro in C99.
++  AC_SEARCH_LIBS(isfinite, m)
+   AC_DEFINE(HAVE_ISFINITE, [1], [Has isfinite])
+ fi
+-LIBS=$save_LIBS
+ 
+ AC_LANG_PUSH(C++)
+ AC_CACHE_CHECK([whether $CXX implements __PRETTY_FUNCTION__], ac_cv_implements___PRETTY_FUNCTION__, [
+--- gnash-0.8.6.orig/macros/pthreads.m4	2009-09-13 19:22:18.000000000 -0400
++++ gnash-0.8.6/macros/pthreads.m4	2009-12-09 06:02:42.098671923 -0500
+@@ -118,7 +118,6 @@
+       -*)
+         AC_MSG_CHECKING([whether pthreads work with $flag])
+         PTHREAD_CFLAGS="$flag"
+-        CXXFLAGS="$CXXFLAGS $flag"
+ 	      PTHREAD_LIBS=""
+         ;;
+ 
+@@ -149,8 +148,10 @@
+ 
+     save_LIBS="$LIBS"
+     save_CFLAGS="$CFLAGS"
++    save_CXXFLAGS="$CXXFLAGS"
+     LIBS="$PTHREAD_LIBS $LIBS"
+     CFLAGS="$CFLAGS $PTHREAD_CFLAGS"
++    CXXFLAGS="$CXXFLAGS $PTHREAD_CFLAGS"
+ 
+     dnl Check for various functions.  We must include pthread.h,
+     dnl since some functions may be macros.  (On the Sequent, we
+@@ -169,6 +170,7 @@
+ 
+     LIBS="$save_LIBS"
+     CFLAGS="$save_CFLAGS"
++    CXXFLAGS="$save_CXXFLAGS"
+ 
+     AC_MSG_RESULT($pthreads)
+     if test "x$pthreads" = xyes; then
+--- gnash-0.8.6.orig/libbase/GnashImageJpeg.h	2009-09-13 19:22:16.000000000 -0400
++++ gnash-0.8.6/libbase/GnashImageJpeg.h	2009-12-09 06:43:52.911549122 -0500
+@@ -58,7 +58,7 @@
+ 
+     const char* _errorOccurred;
+ 
+-    jmp_buf _jmpBuf;
++    std::jmp_buf _jmpBuf;
+ 
+     // State needed for input.
+     jpeg::jpeg_decompress_struct m_cinfo;
+--- gnash-0.8.6.orig/libbase/URL.cpp	2009-09-13 19:22:16.000000000 -0400
++++ gnash-0.8.6/libbase/URL.cpp	2009-12-09 06:49:34.761880069 -0500
+@@ -182,7 +182,7 @@
+ 
+         if (!dir) {
+             std::stringstream err;
+-            err << "getcwd failed: " << strerror(errno);
++            err << "getcwd failed: " << std::strerror(errno);
+             throw gnash::GnashException(err.str());
+         }
+ 
+--- gnash-0.8.6.orig/libcore/SWFMatrix.cpp	2009-09-13 19:22:16.000000000 -0400
++++ gnash-0.8.6/libcore/SWFMatrix.cpp	2009-12-07 17:16:03.846022059 -0500
+@@ -192,8 +192,8 @@
+ // Set the scale & rotation part of the SWFMatrix.
+ // angle in radians.
+ {
+-    double   cos_angle = cos(angle);
+-    double   sin_angle = sin(angle);
++    double   cos_angle = std::cos(angle);
++    double   sin_angle = std::sin(angle);
+     sx  = DoubleToFixed16(x_scale * cos_angle);
+     shy = DoubleToFixed16(y_scale * -sin_angle);
+     shx = DoubleToFixed16(x_scale * sin_angle);
+@@ -203,9 +203,9 @@
+ void
+ SWFMatrix::set_x_scale(double xscale)
+ {
+-    double rot_x = atan2((double)shx, (double)sx);
+-    sx  =  DoubleToFixed16(xscale * cos(rot_x));
+-    shx =  DoubleToFixed16(xscale * sin(rot_x)); 
++    double rot_x = std::atan2((double)shx, (double)sx);
++    sx  =  DoubleToFixed16(xscale * std::cos(rot_x));
++    shx =  DoubleToFixed16(xscale * std::sin(rot_x)); 
+ }
+ 
+ void
+@@ -227,15 +227,15 @@
+ void
+ SWFMatrix::set_rotation(double rotation)
+ {   
+-    double rot_x = atan2((double)shx,    (double)sx);
+-    double rot_y = atan2((double)(-shy), (double)sy);
++    double rot_x = std::atan2((double)shx,    (double)sx);
++    double rot_y = std::atan2((double)(-shy), (double)sy);
+     double scale_x = get_x_scale();
+     double scale_y = get_y_scale();
+  
+-    sx  = DoubleToFixed16(scale_x * cos(rotation));
+-    shx = DoubleToFixed16(scale_x * sin(rotation)); 
+-    shy = -DoubleToFixed16(scale_y * sin(rot_y - rot_x + rotation));
+-    sy  =  DoubleToFixed16(scale_y * cos(rot_y - rot_x + rotation));
++    sx  = DoubleToFixed16(scale_x * std::cos(rotation));
++    shx = DoubleToFixed16(scale_x * std::sin(rotation)); 
++    shy = -DoubleToFixed16(scale_y * std::sin(rot_y - rot_x + rotation));
++    sy  =  DoubleToFixed16(scale_y * std::cos(rot_y - rot_x + rotation));
+ }
+ 
+ void
+@@ -334,20 +334,20 @@
+ double
+ SWFMatrix::get_x_scale() const
+ {
+-    return sqrt(((double)sx * sx + (double)shx * shx)) / 65536.0;
++    return std::sqrt(((double)sx * sx + (double)shx * shx)) / 65536.0;
+ }
+ 
+ double
+ SWFMatrix::get_y_scale() const
+ {
+-    return sqrt(((double)sy * sy + (double)shy * shy)) / 65536.0;
++    return std::sqrt(((double)sy * sy + (double)shy * shy)) / 65536.0;
+ }
+ 
+ double
+ SWFMatrix::get_rotation() const
+ {
+     // more successes in misc-ming.all/SWFMatrix_test.c
+-    return atan2(static_cast<double>(shx), sx); 
++    return std::atan2(static_cast<double>(shx), sx); 
+ }
+ 
+ // private
+--- gnash-0.8.6.orig/libcore/asobj/flash/media/Microphone_as.cpp	2009-09-13 19:22:17.000000000 -0400
++++ gnash-0.8.6/libcore/asobj/flash/media/Microphone_as.cpp	2009-12-08 21:53:00.552333428 -0500
+@@ -339,7 +339,7 @@
+         return as_value(50.0);
+     } else {
+         gain = ((ptr->get_gain())*(0.8333333333333)) + 50;
+-        gain = round(gain);
++        gain = std::floor(gain + 0.5);
+         return as_value(gain);
+     }
+ #endif
+--- gnash-0.8.6.orig/libmedia/AudioResampler.cpp	2009-09-13 19:22:17.000000000 -0400
++++ gnash-0.8.6/libmedia/AudioResampler.cpp	2009-12-07 16:23:49.776539235 -0500
+@@ -81,7 +81,7 @@
+     if (inc == 1 && dup == 1)
+     {
+ 	    // No tranformation required
+-	    memcpy(out_data, data, output_sample_count * sizeof(boost::int16_t));
++	    std::memcpy(out_data, data, output_sample_count * sizeof(boost::int16_t));
+     }
+     else if (inc > 1)
+     {
+--- gnash-0.8.6.orig/libmedia/AudioDecoderNellymoser.cpp	2009-09-13 19:22:17.000000000 -0400
++++ gnash-0.8.6/libmedia/AudioDecoderNellymoser.cpp	2009-12-12 16:29:45.971821439 -0500
+@@ -57,6 +57,8 @@
+ namespace gnash {
+ namespace media {
+ 
++const double sqrt1_2 = 0.70710678118654752440;
++
+ float nelly_neg_unpack_table[64] = {
+ -0.0061359000, -0.0306748003, -0.0551952012, -0.0796824023, -0.1041216031,
+ -0.1284981072, -0.1527972072, -0.1770042032, -0.2011045963, -0.2250839025,
+@@ -674,7 +676,7 @@
+ 	for (i = 0; i < 23; i++) {
+ 		if (i > 0)
+ 			val += nelly_delta_table[get_bits(block, &bit_offset, 5)];
+-		pval = pow(2, val/2048);
++		pval = std::pow(2, val/2048);
+ 		for (j = 0; j < nelly_copy_count[i]; j++) {
+ 			*bptr = val;
+ 			*pptr = pval;
+@@ -695,7 +697,7 @@
+ 
+ 		for (j = 0; j < NELLY_FILL_LEN; j++) {
+ 			if (bits[j] <= 0) {
+-				buf[j] = M_SQRT1_2*pows[j];
++				buf[j] = sqrt1_2*pows[j];
+ 
+         
+ 				if (gimme_random() % 2)
+--- gnash-0.8.6.orig/utilities/processor.cpp	2009-09-13 19:22:22.000000000 -0400
++++ gnash-0.8.6/utilities/processor.cpp	2009-12-08 22:44:01.081502556 -0500
+@@ -35,7 +35,7 @@
+ #include <ctime>
+ 
+ #ifdef ENABLE_NLS
+-#include <locale>
++#include <clocale>
+ #endif
+ 
+ #include "MovieFactory.h"
+--- gnash-0.8.6.orig/utilities/dumpshm.cpp	2009-09-13 19:22:22.000000000 -0400
++++ gnash-0.8.6/utilities/dumpshm.cpp	2009-12-09 00:11:16.015435791 -0500
+@@ -60,7 +60,7 @@
+ #include <cerrno>
+ 
+ #ifdef ENABLE_NLS
+-# include <locale>
++# include <clocale>
+ #endif
+ 
+ #include "log.h"
+--- gnash-0.8.6.orig/utilities/soldumper.cpp	2009-09-13 19:22:22.000000000 -0400
++++ gnash-0.8.6/utilities/soldumper.cpp	2009-12-08 22:42:33.201198924 -0500
+@@ -25,7 +25,7 @@
+ #include <cstring>
+ 
+ #ifdef ENABLE_NLS
+-# include <locale>
++# include <clocale>
+ #endif
+ 
+ extern "C"{
+--- gnash-0.8.6.orig/utilities/flvdumper.cpp	2009-09-13 19:22:22.000000000 -0400
++++ gnash-0.8.6/utilities/flvdumper.cpp	2009-12-09 00:12:48.772507206 -0500
+@@ -31,7 +31,7 @@
+ #include <vector>
+ 
+ #ifdef ENABLE_NLS
+-# include <locale>
++# include <clocale>
+ #endif
+ 
+ #include "log.h"
+--- gnash-0.8.6.orig/gui/gnash.cpp	2009-09-13 19:22:16.000000000 -0400
++++ gnash-0.8.6/gui/gnash.cpp	2009-12-09 00:15:07.840459783 -0500
+@@ -51,7 +51,7 @@
+ #include <ios>
+ 
+ #ifdef ENABLE_NLS
+-# include <locale>
++# include <clocale>
+ #endif
+ 
+ #ifdef GUI_ALP
+--- gnash-0.8.6.orig/cygnal/cvm.cpp	2009-09-13 19:22:15.000000000 -0400
++++ gnash-0.8.6/cygnal/cvm.cpp	2009-12-09 05:43:27.186532583 -0500
+@@ -34,7 +34,7 @@
+ #include <ctime>
+ 
+ #ifdef ENABLE_NLS
+-#include <locale>
++#include <clocale>
+ #endif
+ 
+ #include "gettext.h"

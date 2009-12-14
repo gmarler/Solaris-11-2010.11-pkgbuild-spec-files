@@ -1,0 +1,350 @@
+--- gnash-0.8.6.orig/plugin/mozilla-sdk/include/prcpucfg-glibc.h	2009-09-13 19:22:18.000000000 -0400
++++ gnash-0.8.6/plugin/mozilla-sdk/include/prcpucfg-glibc.h	2009-12-10 00:03:56.385049958 -0500
+@@ -19,6 +19,7 @@
+ /*
+  * This file is used by not only Linux but also other glibc systems
+  * such as GNU/Hurd and GNU/k*BSD.
++ * Gnash now uses it for all other Unix-like platforms as well.
+  */
+ 
+ #ifndef nspr_cpucfg___
+@@ -28,7 +29,17 @@
+ #define LINUX
+ #endif
+ 
+-#define PR_AF_INET6 10  /* same as AF_INET6 */
++#if defined(__sgi) || defined(sgi) || defined(__sgi__)
++
++#ifndef IRIX
++	#define IRIX
++#endif
++
++#ifndef _SGI_MP_SOURCE
++	#define _SGI_MP_SOURCE
++#endif
++
++#endif
+ 
+ #if defined(__powerpc64__)
+ 
+@@ -213,7 +224,7 @@
+ #define PR_BYTES_PER_WORD_LOG2  3
+ #define PR_BYTES_PER_DWORD_LOG2 3
+ 
+-#elif defined(__x86_64__)
++#elif defined(__x86_64__) || defined(__x86_64) || defined(__amd64__)
+ 
+ #define IS_LITTLE_ENDIAN 1
+ #undef  IS_BIG_ENDIAN
+@@ -304,55 +315,58 @@
+ #define PR_BYTES_PER_WORD_LOG2   2
+ #define PR_BYTES_PER_DWORD_LOG2  3
+ 
+-#elif defined(__sparc__)
++#elif defined(__sparc__) || defined(sparc)
+ 
+ #undef	IS_LITTLE_ENDIAN
+ #define	IS_BIG_ENDIAN 1
+ 
++#if defined(__sparcv9) || defined(__arch64__)
++#define IS_64
++#endif
++
++#ifdef IS_64
++
+ #define PR_BYTES_PER_BYTE   1
+ #define PR_BYTES_PER_SHORT  2
+ #define PR_BYTES_PER_INT    4
+ #define PR_BYTES_PER_INT64  8
+-#define PR_BYTES_PER_LONG   4
++#define PR_BYTES_PER_LONG   8
+ #define PR_BYTES_PER_FLOAT  4
+ #define PR_BYTES_PER_DOUBLE 8
+-#define PR_BYTES_PER_WORD   4
++#define PR_BYTES_PER_WORD   8
+ #define PR_BYTES_PER_DWORD  8
+ 
+ #define PR_BITS_PER_BYTE    8
+ #define PR_BITS_PER_SHORT   16
+ #define PR_BITS_PER_INT     32
+ #define PR_BITS_PER_INT64   64
+-#define PR_BITS_PER_LONG    32
++#define PR_BITS_PER_LONG    64
+ #define PR_BITS_PER_FLOAT   32
+ #define PR_BITS_PER_DOUBLE  64
+-#define PR_BITS_PER_WORD    32
++#define PR_BITS_PER_WORD    64
+ 
+ #define PR_BITS_PER_BYTE_LOG2   3
+ #define PR_BITS_PER_SHORT_LOG2  4
+ #define PR_BITS_PER_INT_LOG2    5
+ #define PR_BITS_PER_INT64_LOG2  6
+-#define PR_BITS_PER_LONG_LOG2   5
++#define PR_BITS_PER_LONG_LOG2   6
+ #define PR_BITS_PER_FLOAT_LOG2  5
+ #define PR_BITS_PER_DOUBLE_LOG2 6
+-#define PR_BITS_PER_WORD_LOG2   5
++#define PR_BITS_PER_WORD_LOG2   6
+ 
+ #define PR_ALIGN_OF_SHORT   2
+ #define PR_ALIGN_OF_INT     4
+-#define PR_ALIGN_OF_LONG    4
++#define PR_ALIGN_OF_LONG    8
+ #define PR_ALIGN_OF_INT64   8
+ #define PR_ALIGN_OF_FLOAT   4
+ #define PR_ALIGN_OF_DOUBLE  8
+-#define PR_ALIGN_OF_POINTER 4
+-#define PR_ALIGN_OF_WORD    4
+-
+-#define PR_BYTES_PER_WORD_LOG2   2
+-#define PR_BYTES_PER_DWORD_LOG2  3
++#define PR_ALIGN_OF_POINTER 8
++#define PR_ALIGN_OF_WORD    8
+ 
+-#elif defined(__i386__)
++#define PR_BYTES_PER_WORD_LOG2  3
++#define PR_BYTES_PER_DWORD_LOG2 3
+ 
+-#define IS_LITTLE_ENDIAN 1
+-#undef  IS_BIG_ENDIAN
++#else /* IS_64 */
+ 
+ #define PR_BYTES_PER_BYTE   1
+ #define PR_BYTES_PER_SHORT  2
+@@ -385,30 +399,21 @@
+ #define PR_ALIGN_OF_SHORT   2
+ #define PR_ALIGN_OF_INT     4
+ #define PR_ALIGN_OF_LONG    4
+-#define PR_ALIGN_OF_INT64   4
++#define PR_ALIGN_OF_INT64   8
+ #define PR_ALIGN_OF_FLOAT   4
+-#define PR_ALIGN_OF_DOUBLE  4
++#define PR_ALIGN_OF_DOUBLE  8
+ #define PR_ALIGN_OF_POINTER 4
+ #define PR_ALIGN_OF_WORD    4
+ 
+ #define PR_BYTES_PER_WORD_LOG2   2
+ #define PR_BYTES_PER_DWORD_LOG2  3
+ 
+-#elif defined(__sgi) || defined(sgi) || defined(__sgi__)
++#endif /* IS_64 */
+ 
+-#ifndef IRIX
+-	#define IRIX
+-#endif
+-
+-#ifndef _SGI_MP_SOURCE
+-	#define _SGI_MP_SOURCE
+-#endif
+-
+-#undef  IS_LITTLE_ENDIAN
+-#define IS_BIG_ENDIAN 1
++#elif defined(__i386__) || defined(i386)
+ 
+-#undef PR_AF_INET6
+-#define PR_AF_INET6 24  /* same as AF_INET6 */
++#define IS_LITTLE_ENDIAN 1
++#undef  IS_BIG_ENDIAN
+ 
+ #define PR_BYTES_PER_BYTE   1
+ #define PR_BYTES_PER_SHORT  2
+@@ -438,31 +443,24 @@
+ #define PR_BITS_PER_DOUBLE_LOG2 6
+ #define PR_BITS_PER_WORD_LOG2   5
+ 
+-#define PR_BYTES_PER_WORD_LOG2  2
+-#define PR_BYTES_PER_DWORD_LOG2 3
+-
+ #define PR_ALIGN_OF_SHORT   2
+ #define PR_ALIGN_OF_INT     4
+ #define PR_ALIGN_OF_LONG    4
+-#define PR_ALIGN_OF_INT64   8
++#define PR_ALIGN_OF_INT64   4
+ #define PR_ALIGN_OF_FLOAT   4
+-#define PR_ALIGN_OF_DOUBLE  8
++#define PR_ALIGN_OF_DOUBLE  4
+ #define PR_ALIGN_OF_POINTER 4
+ #define PR_ALIGN_OF_WORD    4
+ 
+-#define HAVE_LONG_LONG
+-#define HAVE_ALIGNED_DOUBLES
+-#define HAVE_ALIGNED_LONGLONGS
+-
+-#define _PR_POLL_BACKCOMPAT
+-
++#define PR_BYTES_PER_WORD_LOG2   2
++#define PR_BYTES_PER_DWORD_LOG2  3
+ 
+-#elif defined(__mips__)
++#elif defined(__mips__) || defined(__mips)
+ 
+-#ifdef __MIPSEB__
++#if defined(__MIPSEB__) || defined(__MIPSEB)
+ #define IS_BIG_ENDIAN 1
+ #undef  IS_LITTLE_ENDIAN
+-#elif defined(__MIPSEL__)
++#elif defined(__MIPSEL__) || defined(__MIPSEL)
+ #define IS_LITTLE_ENDIAN 1
+ #undef  IS_BIG_ENDIAN
+ #else
+@@ -699,9 +697,13 @@
+ #define	HAVE_LONG_LONG
+ #if PR_ALIGN_OF_DOUBLE == 8
+ #define HAVE_ALIGNED_DOUBLES
++#else
++#undef HAVE_ALIGNED_DOUBLES
+ #endif
+ #if PR_ALIGN_OF_INT64 == 8
+ #define HAVE_ALIGNED_LONGLONGS
++#else
++#undef HAVE_ALIGNED_LONGLONGS
+ #endif
+ 
+ #ifndef NO_NSPR_10_SUPPORT
+--- gnash-0.8.6.orig/plugin/plugin.cpp	2009-09-13 19:22:18.000000000 -0400
++++ gnash-0.8.6/plugin/plugin.cpp	2009-12-10 21:58:46.637940745 -0500
+@@ -21,6 +21,7 @@
+ #endif
+ 
+ #include <cstdlib> // getenv
++#include <stdlib.h> // putenv
+ 
+ #define MIME_TYPES_HANDLED  "application/x-shockwave-flash"
+ // The name must be this value to get flash movies that check the
+@@ -60,6 +61,7 @@
+ #include "plugin.h" 
+ #include <csignal>
+ #include "GnashSystemIOHeaders.h"
++#include "StringPredicates.h"
+ #include <cstdio>
+ #include <cstddef>
+ #include <cstring>
+@@ -68,6 +70,7 @@
+ #include <sys/wait.h>
+ #include <fcntl.h>
+ #include <cerrno>
++#include <climits>
+ #include <string>
+ #include <vector>
+ #include <iostream>
+@@ -97,6 +100,10 @@
+ # include <nsStringAPI.h>
+ #endif // HAVE_XPCOM
+ 
++#ifndef PATH_MAX
++#define PATH_MAX 1024
++#endif
++
+ extern NPNetscapeFuncs NPNFuncs;
+ 
+ NPBool plugInitialized = FALSE;
+@@ -272,43 +279,43 @@
+     }
+ 
+     // Append SYSCONFDIR/gnashpluginrc and ~/.gnashpluginrc to GNASHRC
+-    do {
+-        // TODO: extract content in a set, add to set
+-        //       and serialize back (to avoid duplicates)
+ 
+-        std::string newGnashRc;
+-        char *gnashrc = std::getenv("GNASHRC");
+-        if ( gnashrc )
+-        {
+-            newGnashRc.assign(gnashrc);
+-            newGnashRc.append(":");
+-        }
++    std::string newGnashRc("GNASHRC=");
+ 
+-        newGnashRc.append(SYSCONFDIR);
+-        newGnashRc.append("/gnashpluginrc");
++    newGnashRc.append(SYSCONFDIR);
++    newGnashRc.append("/gnashpluginrc");
+ 
+-        char *home = std::getenv("HOME");
+-        if ( home )
+-        {
+-            newGnashRc.append(":");
+-            newGnashRc.append(home);
+-            newGnashRc.append("/.gnashpluginrc");
+-        }
+-        else
+-        {
+-            std::cout << "WARNING: NPAPI plugin could not find user home dir" << std::endl;
+-        }
++    char *home = std::getenv("HOME");
++    if ( home )
++    {
++        newGnashRc.append(":");
++        newGnashRc.append(home);
++        newGnashRc.append("/.gnashpluginrc");
++    }
++    else
++    {
++        std::cout << "WARNING: NPAPI plugin could not find user home dir" << std::endl;
++    }
+ 
+-        if ( setenv("GNASHRC", newGnashRc.c_str(), 1) )
+-        {
+-            std::cout << "WARNING: NPAPI plugin could not append to the GNASHRC env variable" << std::endl;
+-        }
+-#if GNASH_PLUGIN_DEBUG > 1
+-        else std::cout << "NOTE: NPAPI plugin set GNASHRC to " << newGnashRc << std::endl;
+-#endif
++    char *gnashrc = std::getenv("GNASHRC");
++    if ( gnashrc )
++    {
++        newGnashRc.append(":");
++        newGnashRc.append(gnashrc);
++    }
+ 
+-    } while (0);
++    // putenv doesn't copy the string in standards-conforming implementations
++    gnashrc = new char[PATH_MAX];
++    std::strncpy(gnashrc, newGnashRc.c_str(), PATH_MAX);
++    gnashrc[PATH_MAX-1] = '\0';
+ 
++    if ( putenv(gnashrc) )
++    {
++        std::cout << "WARNING: NPAPI plugin could not append to the GNASHRC env variable" << std::endl;
++    }
++#if GNASH_PLUGIN_DEBUG > 1
++    else std::cout << "NOTE: NPAPI plugin set GNASHRC to " << newGnashRc << std::endl;
++#endif
+ 
+     /* Success */
+ 
+@@ -429,6 +436,7 @@
+     for (size_t i=0, n=data->argc; i<n; ++i)
+     {
+         std::string name, val;
++        gnash::StringNoCaseEqual noCaseCompare;
+ 
+         if (data->argn[i])
+         {
+@@ -440,7 +448,7 @@
+             val = data->argv[i];
+         }
+ 
+-        if ( ! strcasecmp(name.c_str(), "name") )
++        if (noCaseCompare(name, "name"))
+         {
+             _name = val;
+         }
+@@ -808,7 +816,7 @@
+         return false;
+     }
+ 
+-    if ( ! strncmp(buf, "GET ", 4) )
++    if ( ! std::strncmp(buf, "GET ", 4) )
+     {
+         char* target = buf + 4;
+         if ( ! *target )
+@@ -842,7 +850,7 @@
+         return true;
+ 
+     }
+-    else if ( ! strncmp(buf, "INVOKE ", 7) )
++    else if ( ! std::strncmp(buf, "INVOKE ", 7) )
+     {
+         char* command = buf + 7;
+         if ( ! *command ) {
