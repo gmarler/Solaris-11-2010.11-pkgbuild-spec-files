@@ -54,35 +54,6 @@
  
  AC_LANG_PUSH(C++)
  AC_CACHE_CHECK([whether $CXX implements __PRETTY_FUNCTION__], ac_cv_implements___PRETTY_FUNCTION__, [
---- gnash-0.8.6.orig/macros/pthreads.m4	2009-09-13 19:22:18.000000000 -0400
-+++ gnash-0.8.6/macros/pthreads.m4	2009-12-09 06:02:42.098671923 -0500
-@@ -118,7 +118,6 @@
-       -*)
-         AC_MSG_CHECKING([whether pthreads work with $flag])
-         PTHREAD_CFLAGS="$flag"
--        CXXFLAGS="$CXXFLAGS $flag"
- 	      PTHREAD_LIBS=""
-         ;;
- 
-@@ -149,8 +148,10 @@
- 
-     save_LIBS="$LIBS"
-     save_CFLAGS="$CFLAGS"
-+    save_CXXFLAGS="$CXXFLAGS"
-     LIBS="$PTHREAD_LIBS $LIBS"
-     CFLAGS="$CFLAGS $PTHREAD_CFLAGS"
-+    CXXFLAGS="$CXXFLAGS $PTHREAD_CFLAGS"
- 
-     dnl Check for various functions.  We must include pthread.h,
-     dnl since some functions may be macros.  (On the Sequent, we
-@@ -169,6 +170,7 @@
- 
-     LIBS="$save_LIBS"
-     CFLAGS="$save_CFLAGS"
-+    CXXFLAGS="$save_CXXFLAGS"
- 
-     AC_MSG_RESULT($pthreads)
-     if test "x$pthreads" = xyes; then
 --- gnash-0.8.6.orig/libbase/GnashImageJpeg.h	2009-09-13 19:22:16.000000000 -0400
 +++ gnash-0.8.6/libbase/GnashImageJpeg.h	2009-12-09 06:43:52.911549122 -0500
 @@ -58,7 +58,7 @@
@@ -228,6 +199,31 @@
  
          
  				if (gimme_random() % 2)
+--- gnash-0.8.6.orig/backend/Renderer_ogl.cpp	2009-09-13 19:22:14.000000000 -0400
++++ gnash-0.8.6/backend/Renderer_ogl.cpp	2009-12-15 12:23:27.689228824 -0500
+@@ -789,8 +789,8 @@
+ 
+     gluOrtho2D(x0, x1, y0, y1);
+     
+-    _width  = fabsf(x1 - x0);
+-    _height = fabsf(y1 - y0);
++    _width  = std::fabs(x1 - x0);
++    _height = std::fabs(y1 - y0);
+ 
+     // Setup the clear color. The actual clearing will happen in end_display.
+     if (bg_color.m_a) {
+@@ -1304,9 +1304,9 @@
+          LOG_ONCE( log_unimpl(_("Unidirectionally scaled strokes in OGL renderer")) );
+       }
+       
+-      float stroke_scale = fabsf(mat.get_x_scale()) + fabsf(mat.get_y_scale());
++      float stroke_scale = std::fabs(mat.get_x_scale()) + std::fabs(mat.get_y_scale());
+       stroke_scale /= 2.0f;
+-      stroke_scale *= (fabsf(_xscale) + fabsf(_yscale)) / 2.0f;
++      stroke_scale *= (std::fabs(_xscale) + std::fabs(_yscale)) / 2.0f;
+       width *= stroke_scale;
+       width = twipsToPixels(width);
+ 
 --- gnash-0.8.6.orig/utilities/processor.cpp	2009-09-13 19:22:22.000000000 -0400
 +++ gnash-0.8.6/utilities/processor.cpp	2009-12-08 22:44:01.081502556 -0500
 @@ -35,7 +35,7 @@

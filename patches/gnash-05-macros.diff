@@ -1,0 +1,40 @@
+--- gnash-0.8.6.orig/macros/agg.m4	2009-09-13 19:22:17.000000000 -0400
++++ gnash-0.8.6/macros/agg.m4	2009-12-15 13:20:47.313823859 -0500
+@@ -42,7 +42,7 @@
+         $PKG_CONFIG --atleast-version 2.5.0 libagg && agg25=yes
+  
+         dnl I think this setting of agg_include_dir is too error prone!
+-        agg_include_dir="`$PKG_CONFIG --cflags-only-I libagg | cut -d " " -f 1 | sed -e 's/-I//g'`"
++        agg_include_dir="`$PKG_CONFIG --cflags-only-I libagg | cut -d ' ' -f 1 | sed -e 's/-I//g'`"
+         if test -f $agg_include_dir/agg_gradient_lut.h ; then
+           agg25=yes
+         fi
+--- gnash-0.8.6.orig/macros/pthreads.m4	2009-09-13 19:22:18.000000000 -0400
++++ gnash-0.8.6/macros/pthreads.m4	2009-12-09 06:02:42.098671923 -0500
+@@ -118,7 +118,6 @@
+       -*)
+         AC_MSG_CHECKING([whether pthreads work with $flag])
+         PTHREAD_CFLAGS="$flag"
+-        CXXFLAGS="$CXXFLAGS $flag"
+ 	      PTHREAD_LIBS=""
+         ;;
+ 
+@@ -149,8 +148,10 @@
+ 
+     save_LIBS="$LIBS"
+     save_CFLAGS="$CFLAGS"
++    save_CXXFLAGS="$CXXFLAGS"
+     LIBS="$PTHREAD_LIBS $LIBS"
+     CFLAGS="$CFLAGS $PTHREAD_CFLAGS"
++    CXXFLAGS="$CXXFLAGS $PTHREAD_CFLAGS"
+ 
+     dnl Check for various functions.  We must include pthread.h,
+     dnl since some functions may be macros.  (On the Sequent, we
+@@ -169,6 +170,7 @@
+ 
+     LIBS="$save_LIBS"
+     CFLAGS="$save_CFLAGS"
++    CXXFLAGS="$save_CXXFLAGS"
+ 
+     AC_MSG_RESULT($pthreads)
+     if test "x$pthreads" = xyes; then

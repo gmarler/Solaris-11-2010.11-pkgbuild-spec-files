@@ -16,12 +16,14 @@ Patch1:              gnash-01-stdc.diff
 Patch2:              gnash-02-sunpro.diff
 Patch3:              gnash-03-gnashrc.diff
 Patch4:              gnash-04-plugin.diff
+Patch5:              gnash-04-macros.diff
 Url:                 http://www.gnashdev.org/
 License:             GPLv3+
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 
-# cairo performance is poor
+# cairo correctness/performance is poor
+#%define _with_opengl 1
 %define _with_agg 1
 
 %include default-depend.inc
@@ -43,7 +45,11 @@ Requires: SUNWfreetype2
 Requires: SUNWspeex
 Requires: SUNWcurl
 
-%if %{?_with_agg:1}%{?!_with_agg}
+%if %{?_with_opengl:1}%{?!_with_opengl:0}
+%define renderer ogl
+Requires: SFEgtkglext
+%else
+%if %{?_with_agg:1}%{?!_with_agg:0}
 %define renderer agg
 BuildRequires: SFEagg-devel
 %else
@@ -53,6 +59,8 @@ BuildRequires: SUNWcairo-devel
 Requires: SUNWcairo
 %endif
 %endif
+%endif
+
 
 %if %SUNWglib2
 BuildRequires: SUNWglib2-devel
@@ -97,6 +105,7 @@ Requires:                %{name}
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
+%patch5 -p1
 
 %build
 
@@ -107,13 +116,14 @@ fi
 
 export ACLOCAL_FLAGS="-I %{_datadir}/aclocal"
 # Necessary for mmap, clock_gettime, sigwait
-export CPPFLAGS="-D_XOPEN_SOURCE=500 -D__EXTENSIONS__"
+export CPPFLAGS="-I%{xorg_inc} -D_XOPEN_SOURCE=500 -D__EXTENSIONS__"
 export CFLAGS="%optflags -xlibmil"
 # libtool strips -staticlib=stlport4
-export CXXFLAGS="%cxx_optflags -library=stlport4 -staticlib=stlport4 \
+export CXXFLAGS="%cxx_optflags -xO4 -library=stlport4 -staticlib=stlport4 \
  -XCClinker -staticlib=stlport4 \
- -norunpath -mt -xlibmil -xlibmopt -features=tmplife -features=tmplrefstatic"
+ -mt -xipo -xlibmil -xlibmopt -features=tmplife -features=tmplrefstatic"
 export LDFLAGS="%_ldflags"
+export MSGFMT="/usr/bin/msgfmt"
 
 for dir in macros cygnal libltdl/m4; do
 	[ -d "$dir" ] && aclocalincludes="-I $dir $aclocalincludes"
@@ -131,8 +141,15 @@ autoconf
 	    --enable-renderer=%{renderer}	\
 	    --enable-media=gst		\
 	    --disable-testsuite		\
-	    --disable-glext		\
 	    --with-plugins-install=system
+
+%if %{?_with_opengl:1}%{?!_with_opengl:0}
+%else
+%if %{?_with_agg:1}%{?!_with_agg:0}
+# hack for AGG pod_vector heap corruption with -xO3 and higher
+perl -pi -e 's,-xO[345],-xO2,g' backend/Makefile
+%endif
+%endif
 
 gmake -j $CPUS
 
@@ -195,6 +212,9 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Tue Dec 15 2009 - Albert Lee <trisk@opensolaris.org>
+- Add OpenGL renderer.
+- Add patch5.
 * Mon Dec 14 2009 - Albert Lee <trisk@opensolaris.org>
 - Fix file lists.
 * Tue Dec 01 2009 - Albert Lee <trisk@opensolaris.org>
