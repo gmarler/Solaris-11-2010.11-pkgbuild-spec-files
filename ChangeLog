@@ -1,3 +1,7 @@
+2009-12-17  Milan Jurik <sfnet@xylab.cz>
+
+        * SFEunbound.spec: update to 1.4.1
+
 2009-12-15  Albert Lee  <trisk@opensolaris.org>
 
 	* SFEgnash.spec: Add OpenGL renderer. Add patch5.
