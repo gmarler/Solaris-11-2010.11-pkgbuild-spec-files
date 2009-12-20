@@ -7,7 +7,7 @@
 #
 Name:           gst-plugins-bad
 License:        GPL
-Version:        0.10.14
+Version:        0.10.17
 Release:        1
 Distribution:   Java Desktop System
 Vendor:         Sun Microsystems, Inc.
@@ -80,7 +80,7 @@ bash ./configure \
   --disable-speed \
   --disable-stereo \
   --disable-tta \
-  --disable-videosignal \
+  --disable-videomeasure \
   --disable-vmnc \
   --disable-quicktime \
   --disable-vcd \
@@ -175,6 +175,9 @@ GStreamer support libraries header files.
 %{_datadir}/gtk-doc
 
 %changelog
+* Sun Dec 20 2009 - Milan Jurik
+- upgrade to 0.10.17
+- videosignal added
 * Sat Oct 17 2009 - Milan Jurik
 - upgrade to 0.10.14
 * Wed Sep 02 2009 - Albert Lee <trisk@forkgnu.org>

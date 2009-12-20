@@ -7,7 +7,7 @@
 #
 Name:           gst-plugins-ugly
 License:        GPL
-Version:        0.10.12
+Version:        0.10.13
 Release:        1
 Distribution:   Java Desktop System
 Vendor:         Sun Microsystems, Inc.
@@ -16,7 +16,6 @@ Summary:        GStreamer Streaming-media framework plug-ins - restricted redist
 URL:            http://gstreamer.freedesktop.org/
 Source:         http://gstreamer.freedesktop.org/src/gst-plugins-ugly/gst-plugins-ugly-%{version}.tar.bz2
 Patch1:         gst-plugins-ugly-01-gettext.diff
-Patch2:         gst-plugins-ugly-02-dvdnav.diff
 Patch4:         gst-plugins-ugly-04-xsi_shell.diff
 BuildRoot:      %{_tmppath}/%{name}-%{version}-root
 Docdir:         %{_defaultdocdir}/doc
@@ -36,7 +35,6 @@ plug-ins.
 %prep
 %setup -n gst-plugins-ugly-%{version} -q
 %patch1 -p1
-%patch2 -p1
 %patch4 -p1
 
 %build
@@ -65,7 +63,6 @@ bash ./configure \
 %endif
   --disable-sidplay     \
   --disable-twolame     \
-  --enable-dvdnav       \
   --enable-external     \
   --disable-shave
 
@@ -122,6 +119,8 @@ GStreamer support libraries header files.
 %{_datadir}/gtk-doc
 
 %changelog
+* Sun Dec 20 2009 - Milan Jurik
+- upgrade to 0.10.13
 * Wed Sep 02 2009 - Albert Lee <trisk@forkgnu.org>
 - Add %gtk_doc_option
 - Disable twolame

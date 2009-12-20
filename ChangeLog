@@ -1,3 +1,8 @@
+2009-12-20  Milan Jurik <sfnet@xylab.cz>
+
+	* base-specs/gst-plugins-bad.spec: 0.10.17
+	* base-specs/gst-plugins-ugly.spec: 0.10.13
+
 2009-12-17  Milan Jurik <sfnet@xylab.cz>
 
         * SFEunbound.spec: update to 1.4.1
