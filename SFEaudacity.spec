@@ -20,20 +20,14 @@
 
 Name:                SFEaudacity
 Summary:             Free, Cross-Platform Sound Editor
-Version:             1.3.9
+Version:             1.3.10
 Source:              %{sf_download}/audacity/%{src_name}-minsrc-%{version}.tar.bz2
-Patch1:              audacity-01-m4.diff
 # bug 1910685/
-Patch2:              audacity-02-fixsed.diff
+Patch1:              audacity-01-fixsed.diff
 # bug 1910699
-Patch3:              audacity-03-addgtklibs.diff
-Patch4:              audacity-04-Tmacro.diff
-Patch5:              audacity-05-nyquist.diff
-# Refer to wxWidgets bug #10883.
-Patch6:              audacity-06-gsocket.diff
-Patch7:              audacity-07-soundtouch.diff
-Patch8:              audacity-08-portaudio.diff
-Patch9:              audacity-09-flac.diff
+Patch2:              audacity-02-addgtklibs.diff
+Patch3:              audacity-03-nyquist.diff
+Patch4:              audacity-04-portaudio.diff
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -102,11 +96,6 @@ Requires:                %{name}
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
-%patch5 -p1
-%patch6 -p1
-%patch7 -p1
-%patch8 -p1
-%patch9 -p0
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -238,9 +227,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/applications/*
 %dir %attr (0755, root, other) %{_datadir}/doc
 %{_datadir}/doc/*
+%attr (-, root, other) %{_datadir}/locale
 %dir %attr (-, root, root) %{_datadir}/mime
 %attr (-, root, root) %{_datadir}/mime/*
-%attr (-, root, other) %{_datadir}/locale
+%dir %attr (0755, root, other) %{_datadir}/pixmaps
+%{_datadir}/pixmaps/*
 
 %if %build_l10n
 %files l10n
@@ -251,6 +242,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Tue Dec 22 2009 - brian.cameron@sun.com
+- Bump to 1.3.10.
 * Wed Sep 09 2009 - trisk@forkgnu.org
 - Fix configure on SXCE
 - Fix compilation when FLAC++ is missing, fix typos for twolame

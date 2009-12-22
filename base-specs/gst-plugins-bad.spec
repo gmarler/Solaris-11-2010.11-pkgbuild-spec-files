@@ -21,6 +21,7 @@ Patch3:         gst-plugins-bad-03-xvidmain.diff
 Patch4:         gst-plugins-bad-04-equal.diff
 Patch5:         gst-plugins-bad-05-xsi_shell.diff
 Patch6:         gst-plugins-bad-06-apexsink.diff
+Patch7:         gst-plugins-bad-07-videomeasure.diff
 BuildRoot:      %{_tmppath}/%{name}-%{version}-root
 Docdir:         %{_defaultdocdir}/doc
 Autoreqprov:    on

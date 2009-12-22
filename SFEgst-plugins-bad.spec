@@ -7,11 +7,16 @@
 
 Name:                    SFEgst-plugins-bad
 Summary:                 GStreamer bad plugins
-Version:                 0.10.12
+Version:                 0.10.17
 URL:                     http://gstreamer.freedesktop.org/
 Source:                  http://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-%{version}.tar.bz2
 Patch1:                  gst-plugins-bad-01-gettext.diff
 Patch2:                  gst-plugins-bad-02-gstapexraop.diff
+Patch3:                  gst-plugins-bad-03-xvidmain.diff
+Patch4:                  gst-plugins-bad-04-equal.diff
+Patch5:                  gst-plugins-bad-05-xsi_shell.diff
+Patch6:                  gst-plugins-bad-06-apexsink.diff
+Patch7:                  gst-plugins-bad-07-videomeasure.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -42,6 +47,11 @@ SUNW_BaseDir:            %{_basedir}
 %setup -n gst-plugins-bad-%{version} -q
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
+%patch4 -p1
+%patch5 -p1
+%patch6 -p1
+%patch7 -p1
 
 %build
 # There seems to be an issue with the version of libtool that GStreamer is
@@ -116,6 +126,8 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr (-, root, bin)
+%dir %attr (0755, root, bin) %{_bindir}
+%{_bindir}/*
 %dir %attr (0755, root, bin) %{_libdir}
 %{_libdir}/*
 
@@ -125,11 +137,15 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/gstreamer-%{gst_minmaj}/gst
 %dir %attr (0755, root, sys) %{_datadir}
 %attr (-, root, other) %{_datadir}/locale
+%dir %attr (0755, root, other) %{_datadir}/gstreamer-0.10
+%{_datadir}/gstreamer-0.10/*
 %if %{!?_without_gtk_doc:1}%{?_without_gtk_doc:0}
 %{_datadir}/gtk-doc
 %endif
 
 %changelog
+* Tue Dec 22 2009 - Brian.Cameron@sun.com
+- Bump to 0.10.17.
 * Thu May 21 2009 - Brian.Cameron@sun.com
 - Bump to 0.10.12.  Remove upstream patches.
 * Mon Jan 19 2009 - Brian.Cameron@sun.com

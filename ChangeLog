@@ -1,3 +1,15 @@
+2009-12-22  Brian Cameron  <brian.cameron@sun.com>
+
+	* SFEaudacity.spec: Bump to 1.3.10.
+	* patches/audacity-01-m4.diff, patches/audacity-04-Tmacro.diff,
+	  patches/audacity-06-gsocket.diff,
+	  patches/audacity-07-soundtouch.diff, patches/audacity-09-flac.diff:
+	  Remove upstream patches
+	* SFEtaglib.spec: Bump to 1.6.1.
+	* SFEgst-plugins-bad.spec, base-specs/gst-plugins-bad.spec,
+	  patches/gst-plugins-bad-07-videomeasure.diff: Bump to 0.10.17 and
+	  add patch so that the videomeasure plugin will build.
+
 2009-12-20  Milan Jurik <sfnet@xylab.cz>
 
 	* base-specs/gst-plugins-bad.spec: 0.10.17
