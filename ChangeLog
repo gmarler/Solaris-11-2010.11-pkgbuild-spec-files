@@ -17,7 +17,7 @@
 
 2009-12-17  Milan Jurik <sfnet@xylab.cz>
 
-        * SFEunbound.spec: update to 1.4.1
+	* SFEunbound.spec: update to 1.4.1
 
 2009-12-15  Albert Lee  <trisk@opensolaris.org>
 
@@ -47,14 +47,13 @@
 2009-12-14  Wang Xin  <jedy.wang@sun.com>
 
 	Update the patch to make it upstreamable.
-
 	* SFEgtkimageview.spec:
 	* patches/gtkimageview-01-cflags.diff:
 
 2009-12-11  Simon Jin  <yuntong.jin@sun.com>
 
 	* SFEpython-buildbot.spec:
-          init spec file
+	  init spec file
 
 2009-12-04  Brian Lu  <brian.lu@sun.com>
 
