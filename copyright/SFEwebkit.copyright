@@ -1,0 +1,17 @@
+Copyright 2009 Sun Microsystems, Inc.  All rights reserved.
+Use is subject to license terms.
+--------------------------------------------------------------------
+
+Licensing and copyright information for %{name}:
+
+License: BSD
+ 
+ You can find more information in the following directory:
+ %{_pkg_docdir}
+ 
+  ChangeLog.bz2: List of all changes and authors of %{speex.name}
+  README: More information about %{speex.name}
+
+ The sources of webkit-%{Version} were downloaded
+ from %{SOURCE}
+ 

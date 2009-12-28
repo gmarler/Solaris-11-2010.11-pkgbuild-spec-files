@@ -123,6 +123,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libwebkit*
 %dir %attr (0755, root, sys) %{_datadir}
 %{_datadir}/webkit-1.0/*
+%doc -d webkit-%{Version} ChangeLog README
 
 %files devel
 %defattr (-, root, bin)
@@ -140,6 +141,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Dec 28 2009 - yuntong.jin@sun.com
+ add copyright file
 * Wen Sep 23 2009 - yuntong.jin@sun.com
 - Bump to 1.1.14
 * Sat Aug 15 2009 - Thomas Wagner

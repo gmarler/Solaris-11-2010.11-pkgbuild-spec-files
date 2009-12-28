@@ -1,3 +1,9 @@
+2009-12-28  Simon Jin  <yuntong.jin@sun.com>
+
+	* SFEwebkit.spec:
+	* copyright/SFEwebkit.copyright:
+          add copyright for SFEwebkit	
+
 2009-12-22  Brian Cameron  <brian.cameron@sun.com>
 
 	* SFEaudacity.spec: Bump to 1.3.10.
