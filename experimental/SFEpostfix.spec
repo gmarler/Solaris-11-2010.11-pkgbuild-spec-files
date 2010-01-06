@@ -5,6 +5,7 @@
 # note: this spec derived partly from the provided postfix.spec, you might update this by comparing with vimdiff SFEpostfix.spec BUILD/postfix-*/tmp/postfix.spec
 # note: it also takes several files from the original source-rpm line postfix.spec, make-postfix.spec, postfix-aliases
 
+##TODO## run check-deps.pl on postfix to detect missing Requires 
 
 ##TODO## look for features to be enabled: - these lines are for volunteers :-)
 #mysql
@@ -332,7 +333,7 @@ CCARGS="${CCARGS} -fsigned-char"
 
 export CCARGS AUXLIBS
 # not needed we are a fresh copy .-) 
-# make tidy
+make tidy
 make -f Makefile.init makefiles
 unset CCARGS AUXLIBS
 # -Wno-comment needed due to large number of warnings on RHEL5
@@ -723,7 +724,6 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 
 %files
 %defattr(-, root, bin)
-%doc AAAREADME COMPATIBILITY COPYRIGHT HISTORY INSTALL IPv6-ChangeLog LICENSE PORTING RELEASE_NOTES RELEASE_NOTES-1.0 RELEASE_NOTES-1.1 RELEASE_NOTES-2.0 RELEASE_NOTES-2.1 RELEASE_NOTES-2.2 RELEASE_NOTES-2.3 RELEASE_NOTES-2.4 TLS_ACKNOWLEDGEMENTS TLS_CHANGES TLS_LICENSE US_PATENT_6321267 README_FILES/AAAREADME README_FILES/ADDRESS_CLASS_README README_FILES/ADDRESS_REWRITING_README README_FILES/ADDRESS_VERIFICATION_README README_FILES/BACKSCATTER_README README_FILES/BASIC_CONFIGURATION_README README_FILES/BUILTIN_FILTER_README README_FILES/CDB_README README_FILES/CONNECTION_CACHE_README README_FILES/CONTENT_INSPECTION_README README_FILES/CYRUS_README README_FILES/DATABASE_README README_FILES/DB_README README_FILES/DEBUG_README README_FILES/DSN_README README_FILES/ETRN_README README_FILES/FILTER_README README_FILES/INSTALL README_FILES/IPV6_README README_FILES/LDAP_README README_FILES/LINUX_README README_FILES/LOCAL_RECIPIENT_README README_FILES/MAILDROP_README README_FILES/MILTER_README README_FILES/MYSQL_README README_FILES/NFS_README README_FILES/OVERVIEW README_FILES/PACKAGE_README README_FILES/PCRE_README README_FILES/PGSQL_README README_FILES/QMQP_README README_FILES/QSHAPE_README README_FILES/RELEASE_NOTES README_FILES/RESTRICTION_CLASS_README README_FILES/SASL_README README_FILES/SCHEDULER_README README_FILES/SMTPD_ACCESS_README README_FILES/SMTPD_POLICY_README README_FILES/SMTPD_PROXY_README README_FILES/SOHO_README README_FILES/STANDARD_CONFIGURATION_README README_FILES/STRESS_README README_FILES/TLS_LEGACY_README README_FILES/TLS_README README_FILES/TUNING_README README_FILES/ULTRIX_README README_FILES/UUCP_README README_FILES/VERP_README README_FILES/VIRTUAL_README README_FILES/XCLIENT_README README_FILES/XFORWARD_README
 %dir %attr (0755, root, bin) %{_bindir}
 %{_bindir}/*
 %dir %attr (0755, root, bin) %{_sbindir}
@@ -835,6 +835,9 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 
 
 %changelog
+* Wed Jan 06 2010 - Thomas Wagner
+- reenable "make tidy" ... avoid leftover CDB definitions
+- adjust %files / %doc section
 * Thu Jan 05 2010 - Thomas Wagner
 - fixed configuration generation to really include selected options
 - add patch3 ostfix-03-remove-nisplus-build130.diff to remove NISPLUS for builds >= 130 (this is a temporary fix)
@@ -867,12 +870,4 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 - %doc made monstrous 
 * Sun Jan 2009 - Thomas Wagner
 - Initial spec, parts derived from postfix.spec from the original SRPM
-
-
-
-kommandant tom ~/spec-files-extra ls -ld /usr /var/svc /var/svc/manifest /var/svc/manifest/site
-drwxr-xr-x 51 root sys 65 Jun  7 23:31 /usr
-drwxr-xr-x  5 root sys  5 Feb 15 22:35 /var/svc
-drwxr-xr-x  9 root sys  9 Feb 15 22:35 /var/svc/manifest
-drwxr-xr-x  2 root sys  5 Apr 10 00:10 /var/svc/manifest/site
 
