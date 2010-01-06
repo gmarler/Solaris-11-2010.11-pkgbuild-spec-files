@@ -4,28 +4,19 @@
 # package are under the same license as the package itself.
 
 %include Solaris.inc
-%define major_version 0.8
+%define major_version 0.9
 
 Name:                SFElibmapi
 Summary:             A client-side implementation of the MAPI protocol that is used by Microsoft Exchange and Outlook. 
-Version:             0.8.2
-Source:              http://downloads.sourceforge.net/openchange/libmapi-%{version}-ROMULUS.tar.gz
-Patch1:              libmapi-01-solaris.diff
-#owner brian.lu@sun.com bugzilla: ticket 219
-Patch2:              libmapi-04-no-return-value.diff
-Patch3:              libmapi-03-remove-gcc-options.diff
-Patch4:              libmapi-05-samba4alpha9.diff
+Version:             0.9
+Source:              http://downloads.sourceforge.net/openchange/openchange-%{version}-COCHRANE.tar.gz
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 
 
 %prep
-%setup -q -n libmapi-%{version}-ROMULUS
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
-%patch4 -p1
+%setup -q -n openchange-%{version}-COCHRANE
 
 %build
 
@@ -48,12 +39,6 @@ make -j$CPUS
 rm -rf $RPM_BUILD_ROOT
 
 make install DESTDIR=$RPM_BUILD_ROOT
-cd $RPM_BUILD_ROOT/%{_libdir}
-ln -s -f libmapi.so.%{major_version} libmapi.so.0
-ln -s libmapiadmin.so.%{major_version} libmapiadmin.so.0
-ln -s libmapiproxy.so.%{major_version} libmapiproxy.so.0
-ln -s libocpf.so.%{major_version} libocpf.so.0
-cd -
 
 find $RPM_BUILD_ROOT -type f -name "*.la" -exec rm -f {} ';'
 find $RPM_BUILD_ROOT -type f -name "*.a" -exec rm -f {} ';'
