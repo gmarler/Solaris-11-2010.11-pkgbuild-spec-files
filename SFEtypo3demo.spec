@@ -7,7 +7,7 @@
 
 Name:                SFEtypo3demo
 Summary:             Typo 3 Demo Site - needed to start new installations
-Version:             4.1
+Version:             4.2.10
 Source:              %{sf_download}/typo3/dummy-%{version}.tar.gz
 SUNW_BaseDir:        /
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
@@ -18,7 +18,7 @@ Requires: SFEtypo3
 %prep
 %setup -q -n dummy-%version
 
-#%build
+%build
 
 #dummy - noting to make
 
@@ -27,7 +27,7 @@ rm -rf $RPM_BUILD_ROOT
 
 #make install DESTDIR=$RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/var/typo3/dummy
-[ -L ../typo3_src ] || ln -s ../typo3_src
+[ -L typo3_src ] || ln -s ../typo3_src
 cp -pr * $RPM_BUILD_ROOT/var/typo3/dummy
 
 %clean
@@ -42,6 +42,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
-* 
+* Sun Nov 22 2009 - Thomas Wagner
+- bump to 4.2.10
+- adjust detection for existing symlink
+* Sun Sep 06 2009 - Thomas Wagner
+- bump to 4.2.8
 * Sun Mar 11 2007 - Thomas Wagner
 - Initial spec

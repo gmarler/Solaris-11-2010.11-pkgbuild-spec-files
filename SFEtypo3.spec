@@ -7,13 +7,13 @@
 
 Name:                SFEtypo3
 Summary:             Typo 3 
-Version:             4.1
+Version:             4.2.10
 Source:              %{sf_download}/typo3/typo3_src-%{version}.tar.gz
 SUNW_BaseDir:        /
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 
-Requires: SFEphp
+#pause, seems all is contained in recent builds of the OS # Requires: SFEphp
 
 %prep
 %setup -q -n typo3_src-%version
@@ -42,6 +42,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
-* 
+* Sun Nov 22 2009 - Thomas Wagner
+- bump to 4.2.10, pause Requires SFEphp (to be verified)
+* Sun Sep 06 2009 - Thomas Wagner
+- bump to 4.2.8
 * Sun Mar 11 2007 - Thomas Wagner
 - Initial spec
