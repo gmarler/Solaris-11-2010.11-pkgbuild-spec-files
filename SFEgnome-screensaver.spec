@@ -13,7 +13,7 @@
 
 %use gss = gnome-screensaver.spec
 
-Name:                    SUNWgnome-screensaver
+Name:                    SFEgnome-screensaver
 Summary:                 GNOME screensaver
 Version:                 %{default_pkg_version}
 SUNW_BaseDir:            %{_basedir}
@@ -29,9 +29,9 @@ Requires:	SUNWlxml
 Requires:	SUNWgnome-config
 Requires:	SUNWgnome-panel
 Requires:       SUNWlibms
-Requires:       SUNWmlib
 Requires:       SUNWzlib
 Requires:       SUNWpostrun
+Requires:       %{name}-root
 BuildRequires:	SUNWcsl
 BuildRequires:  SUNWdbus-devel
 BuildRequires:  SUNWgtk2-devel
@@ -40,6 +40,12 @@ BuildRequires:  SUNWlibpopt-devel
 BuildRequires:	SUNWlxml
 BuildRequires:	SUNWgnome-config-devel
 BuildRequires:	SUNWgnome-panel-devel
+
+%package root
+Summary:                 %{summary} - / filesystem
+SUNW_BaseDir:            /
+%include default-depend.inc
+Requires:                %{name}
 
 %if %build_l10n
 %package l10n
@@ -63,8 +69,7 @@ export LDFLAGS="%_ldflags"
 rm -rf $RPM_BUILD_ROOT
 %gss.install -d %name-%version
 
-# TODO: Should we keep the gconf files?
-rm -rf $RPM_BUILD_ROOT%{_sysconfdir}
+rm -r $RPM_BUILD_ROOT%{_sysconfdir}/pam.d
 
 %if %build_l10n
 %else
@@ -115,6 +120,12 @@ test -x $BASEDIR/lib/postrun || exit 0
 %{_mandir}/man1/gnome-screensaver.1
 %{_mandir}/man1/gnome-screensaver-command.1
 %{_mandir}/man1/gnome-screensaver-preferences.1
+
+%files root
+%defattr (-, root, sys)
+%attr (0755, root, sys) %dir %{_sysconfdir}
+%{_sysconfdir}/gconf/schemas/gnome-screensaver.schemas
+%{_sysconfdir}/xdg
 
 %if %build_l10n
 %files l10n

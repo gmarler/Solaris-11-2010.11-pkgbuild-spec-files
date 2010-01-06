@@ -1,0 +1,294 @@
+--- gnome-screensaver-2.28.0/src/gs-window.h.orig	2010-01-06 20:59:03.390728691 +0800
++++ gnome-screensaver-2.28.0/src/gs-window.h	2010-01-04 14:00:17.572287531 +0800
+@@ -52,6 +52,7 @@
+         void            (* deactivated)         (GSWindow *window);
+         void            (* dialog_up)           (GSWindow *window);
+         void            (* dialog_down)         (GSWindow *window);
++        void            (* dialog_timeout)      (GSWindow *window);
+ } GSWindowClass;
+ 
+ GType       gs_window_get_type           (void);
+@@ -96,6 +97,9 @@
+ GtkWidget * gs_window_get_drawing_area   (GSWindow  *window);
+ void        gs_window_clear              (GSWindow  *window);
+ 
++void        gs_window_show_unlock          (GSWindow *window);
++void        gs_window_hide_unlock          (GSWindow *window);
++
+ G_END_DECLS
+ 
+ #endif /* __GS_WINDOW_H */
+--- gnome-screensaver-2.28.0/src/gs-manager.c.orig	2010-01-06 20:50:45.226262893 +0800
++++ gnome-screensaver-2.28.0/src/gs-manager.c	2010-01-06 12:52:44.900096152 +0800
+@@ -504,6 +504,8 @@
+ {
+         if (manager->priv->lock_enabled) {
+                 gs_manager_set_lock_active (manager, TRUE);
++                /* start the unlock dialog right after the screen is locked */
++                gs_manager_start_unlock (manager);
+         }
+ 
+         manager->priv->lock_timeout_id = 0;
+@@ -1137,6 +1139,17 @@
+         g_signal_emit (manager, signals [AUTH_REQUEST_END], 0);
+ }
+ 
++static void
++window_dialog_timeout_cb (GSWindow  *window,
++                       GSManager *manager)
++{
++        g_return_if_fail (manager != NULL);
++        g_return_if_fail (GS_IS_MANAGER (manager));
++
++        gs_debug ("Handling dialog timeout");
++        gs_window_hide_unlock (window);
++}
++
+ static GSWindow *
+ find_window_at_pointer (GSManager *manager)
+ {
+@@ -1381,6 +1394,7 @@
+         g_signal_handlers_disconnect_by_func (window, window_activity_cb, manager);
+         g_signal_handlers_disconnect_by_func (window, window_dialog_up_cb, manager);
+         g_signal_handlers_disconnect_by_func (window, window_dialog_down_cb, manager);
++        g_signal_handlers_disconnect_by_func (window, window_dialog_timeout_cb, manager);
+         g_signal_handlers_disconnect_by_func (window, window_show_cb, manager);
+         g_signal_handlers_disconnect_by_func (window, window_map_cb, manager);
+         g_signal_handlers_disconnect_by_func (window, window_map_event_cb, manager);
+@@ -1410,6 +1424,8 @@
+                                  G_CALLBACK (window_dialog_up_cb), manager, 0);
+         g_signal_connect_object (window, "dialog-down",
+                                  G_CALLBACK (window_dialog_down_cb), manager, 0);
++        g_signal_connect_object (window, "dialog-timeout",
++                                 G_CALLBACK (window_dialog_timeout_cb), manager, 0);
+         g_signal_connect_object (window, "show",
+                                  G_CALLBACK (window_show_cb), manager, G_CONNECT_AFTER);
+         g_signal_connect_object (window, "map",
+@@ -1771,7 +1787,7 @@
+ }
+ 
+ gboolean
+-gs_manager_request_unlock (GSManager *manager)
++gs_manager_start_unlock (GSManager *manager)
+ {
+         GSWindow *window;
+ 
+@@ -1805,6 +1821,44 @@
+         return TRUE;
+ }
+ 
++gboolean
++gs_manager_request_unlock (GSManager *manager)
++{
++        GSWindow *window;
++
++        g_return_val_if_fail (manager != NULL, FALSE);
++        g_return_val_if_fail (GS_IS_MANAGER (manager), FALSE);
++
++        if (! manager->priv->active) {
++                gs_debug ("Request unlock but manager is not active");
++                return FALSE;
++        }
++
++        if (manager->priv->fading) {
++                gs_debug ("Request unlock so finishing fade");
++                gs_fade_finish (manager->priv->fade);
++        }
++
++        if (manager->priv->windows == NULL) {
++                gs_debug ("We don't have any windows!");
++                return FALSE;
++        }
++
++        if (manager->priv->dialog_up) {
++                /* Find the GSWindow that contains the pointer */
++                window = find_window_at_pointer (manager);
++                gs_window_show_unlock (window);
++                return TRUE;
++        }
++
++	if (!manager->priv->lock_enabled) {
++		g_signal_emit (manager, signals [DEACTIVATED], 0);
++		return TRUE;
++	}
++
++        return FALSE;
++}
++
+ void
+ gs_manager_cancel_unlock_request (GSManager *manager)
+ {
+--- gnome-screensaver-2.28.0/src/gs-lock-plug.c.orig	2010-01-06 20:50:45.226087162 +0800
++++ gnome-screensaver-2.28.0/src/gs-lock-plug.c	2010-01-06 20:51:47.304843245 +0800
+@@ -319,11 +319,6 @@
+ static void
+ restart_cancel_timeout (GSLockPlug *plug)
+ {
+-        remove_cancel_timeout (plug);
+-
+-        plug->priv->cancel_timeout_id = g_timeout_add (plug->priv->timeout,
+-                                                       (GSourceFunc)dialog_timed_out,
+-                                                       plug);
+ }
+ 
+ void
+--- gnome-screensaver-2.28.0/src/gs-window-x11.c.orig	2010-01-06 20:50:45.226455005 +0800
++++ gnome-screensaver-2.28.0/src/gs-window-x11.c	2010-01-06 20:58:14.763298449 +0800
+@@ -102,6 +102,8 @@
+ 
+         GTimer    *timer;
+ 
++        guint      dialog_timeout_id;
++
+ #ifdef HAVE_SHAPE_EXT
+         int        shape_event_base;
+ #endif
+@@ -112,6 +114,7 @@
+         DEACTIVATED,
+         DIALOG_UP,
+         DIALOG_DOWN,
++        DIALOG_TIMEOUT,
+         LAST_SIGNAL
+ };
+ 
+@@ -1072,6 +1075,52 @@
+         return result;
+ }
+ 
++static gboolean
++dialog_timedout (GSWindow *window)
++{
++        g_signal_emit (window, signals [DIALOG_TIMEOUT], 0);
++
++        return FALSE;
++}
++
++static void
++remove_dialog_timeout (GSWindow *window)
++{
++        if (window->priv->dialog_timeout_id > 0) {
++                g_source_remove (window->priv->dialog_timeout_id);
++                window->priv->dialog_timeout_id = 0;
++        }
++}
++
++void
++gs_window_show_unlock (GSWindow *window)
++{
++        gs_window_clear_to_background_pixmap (window);
++        set_invisible_cursor (GTK_WIDGET (window)->window, FALSE);
++
++        gtk_widget_show (window->priv->lock_socket);
++        if (window->priv->keyboard_enabled) {
++                gtk_widget_show (window->priv->keyboard_socket);
++        }
++        window->priv->dialog_timeout_id =
++                g_timeout_add (60000,
++                                (GSourceFunc)dialog_timedout,
++                                window);
++}
++
++void
++gs_window_hide_unlock (GSWindow *window)
++{
++        gs_window_clear (window);
++        set_invisible_cursor (GTK_WIDGET (window)->window, TRUE);
++
++        gtk_widget_hide (window->priv->lock_socket);
++        if (window->priv->keyboard_enabled) {
++                gtk_widget_hide (window->priv->keyboard_socket);
++        }
++        remove_dialog_timeout (window);
++}
++
+ static void
+ lock_plug_added (GtkWidget *widget,
+                  GSWindow  *window)
+@@ -1112,7 +1161,6 @@
+                            GSWindow  *window)
+ {
+         g_signal_handlers_disconnect_by_func (widget, keyboard_socket_destroyed, window);
+-        g_signal_handlers_disconnect_by_func (widget, keyboard_plug_added, window);
+         g_signal_handlers_disconnect_by_func (widget, keyboard_plug_removed, window);
+ 
+         window->priv->keyboard_socket = NULL;
+@@ -1164,7 +1212,6 @@
+ {
+         g_signal_handlers_disconnect_by_func (widget, lock_socket_show, window);
+         g_signal_handlers_disconnect_by_func (widget, lock_socket_destroyed, window);
+-        g_signal_handlers_disconnect_by_func (widget, lock_plug_added, window);
+         g_signal_handlers_disconnect_by_func (widget, lock_plug_removed, window);
+ 
+         window->priv->lock_socket = NULL;
+@@ -1183,8 +1230,6 @@
+ 
+         g_signal_connect (window->priv->keyboard_socket, "destroy",
+                           G_CALLBACK (keyboard_socket_destroyed), window);
+-        g_signal_connect (window->priv->keyboard_socket, "plug_added",
+-                          G_CALLBACK (keyboard_plug_added), window);
+         g_signal_connect (window->priv->keyboard_socket, "plug_removed",
+                           G_CALLBACK (keyboard_plug_removed), window);
+         gtk_box_pack_start (GTK_BOX (window->priv->vbox), window->priv->keyboard_socket, FALSE, FALSE, 0);
+@@ -1345,8 +1390,6 @@
+                           G_CALLBACK (lock_socket_show), window);
+         g_signal_connect (window->priv->lock_socket, "destroy",
+                           G_CALLBACK (lock_socket_destroyed), window);
+-        g_signal_connect (window->priv->lock_socket, "plug_added",
+-                          G_CALLBACK (lock_plug_added), window);
+         g_signal_connect (window->priv->lock_socket, "plug_removed",
+                           G_CALLBACK (lock_plug_removed), window);
+ 
+@@ -1566,10 +1609,6 @@
+ 
+         gtk_widget_hide (window->priv->drawing_area);
+ 
+-        gs_window_clear_to_background_pixmap (window);
+-
+-        set_invisible_cursor (GTK_WIDGET (window)->window, FALSE);
+-
+         result = spawn_on_window (window,
+                                   command->str,
+                                   &window->priv->lock_pid,
+@@ -1889,11 +1928,11 @@
+ 
+         handled = FALSE;
+ 
+-        /* if we already have a socket then don't bother */
+-        if (! window->priv->lock_socket
+-            && GTK_WIDGET_IS_SENSITIVE (GTK_WIDGET (window))) {
+-                g_signal_emit (window, signals [ACTIVITY], 0, &handled);
+-        }
++	if (GTK_WIDGET_IS_SENSITIVE (GTK_WIDGET (window))) {
++		if (window->priv->lock_socket)
++			remove_dialog_timeout (window);
++		g_signal_emit (window, signals [ACTIVITY], 0, &handled);
++	}
+ 
+         return handled;
+ }
+@@ -2146,6 +2185,17 @@
+                               G_TYPE_NONE,
+                               0);
+ 
++        signals [DIALOG_TIMEOUT] =
++                g_signal_new ("dialog-timeout",
++                              G_TYPE_FROM_CLASS (object_class),
++                              G_SIGNAL_RUN_LAST,
++                              G_STRUCT_OFFSET (GSWindowClass, dialog_timeout),
++                              NULL,
++                              NULL,
++                              g_cclosure_marshal_VOID__VOID,
++                              G_TYPE_NONE,
++                              0);
++
+         g_object_class_install_property (object_class,
+                                          PROP_OBSCURED,
+                                          g_param_spec_boolean ("obscured",
+@@ -2292,6 +2342,7 @@
+ 
+         remove_watchdog_timer (window);
+         remove_popup_dialog_idle (window);
++        remove_dialog_timeout (window);
+ 
+         if (window->priv->timer) {
+                 g_timer_destroy (window->priv->timer);

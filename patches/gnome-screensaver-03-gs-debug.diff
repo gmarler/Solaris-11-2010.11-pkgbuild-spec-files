@@ -1,0 +1,17 @@
+--- gnome-screensaver-2.28.0/src/gs-debug.h.orig	2010-01-04 13:55:30.357437050 +0800
++++ gnome-screensaver-2.28.0/src/gs-debug.h	2010-01-04 13:55:58.245752863 +0800
+@@ -28,13 +28,7 @@
+ 
+ G_BEGIN_DECLS
+ 
+-#if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L
+-#define gs_debug(...) gs_debug_real (__func__, __FILE__, __LINE__, __VA_ARGS__)
+-#elif defined(__GNUC__) && __GNUC__ >= 3
+-#define gs_debug(...) gs_debug_real (__FUNCTION__, __FILE__, __LINE__, __VA_ARGS__)
+-#else
+-#define gs_debug(...)
+-#endif
++#define gs_debug(...) gs_debug_real (G_STRFUNC, __FILE__, __LINE__, __VA_ARGS__)
+ 
+ void gs_debug_init             (gboolean debug,
+                                 gboolean to_file);

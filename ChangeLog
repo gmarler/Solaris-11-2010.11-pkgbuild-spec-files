@@ -1,3 +1,16 @@
+2010-01-06  Jeff Cai  <jeff.cai@sun.com>
+
+	* SFEgnome-screensaver.spec:
+	* SUNWgnome-screensaver.spec:
+	* base-specs/gnome-screensaver.spec:
+	* patches/gnome-screensaver-02-unlock-first.diff: Start the unlock
+	  dialog once the lock is enabled
+	* patches/gnome-screensaver-03-gs-debug.diff: Make the debug msgs
+	  be printed on Solaris
+
+	Change the file name SUNW to SFE.
+	Add two patches.
+
 2010-01-06  Brian Lu  <brian.lu@sun.com>
 
 	* SFElibmapi.spec:

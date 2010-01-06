@@ -18,6 +18,12 @@ Summary:      The GNOME screen saver
 Source:       http://ftp.gnome.org/pub/GNOME/sources/%{name}/2.28/%{name}-%{version}.tar.bz2
 # date:2009-05-11 owner:johnf type:feature
 Patch1:       gnome-screensaver-01-pam-audit.diff
+
+#This patch starts the unlock dialog first.
+# date:2010-01-06 owner:jefftsai type:feature
+Patch2:       gnome-screensaver-02-unlock-first.diff
+# date:2010-01-06 owner:jefftsai type:bug
+Patch3:       gnome-screensaver-03-gs-debug.diff
 URL:          www.gnome.org
 BuildRoot:    %{_tmppath}/%{name}-%{version}-build
 Autoreqprov:  on
@@ -57,6 +63,8 @@ It is designed to support:
 %prep
 %setup -q
 %patch1 -p1
+%patch2 -p1
+%patch3 -p1
 
 # Fix for 332967.
 for po in po/*.po; do
@@ -87,7 +95,9 @@ automake -a -c -f
     --sysconfdir=%{_sysconfdir} \
     --libexecdir=%{_libexecdir} \
     --localstatedir=/var/lib \
-    --enable-locking
+    --enable-pam=no \
+    --with-passwd-helper=%{_libdir}/gnome-screensaver/pam-helper
+
 make -j $CPUS
 
 %install
@@ -103,6 +113,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/*
 
 %changelog
+* Wed Jan 06 2010 - jeff.cai@sun.com
+- Add patch -02-unlock-first. This patch can start the unlock dialog
+  process once the lock is active. The process keeps running.
+- Also add patch -03-gs-debug, this make the debug message can be 
+  printed on Solaris.
 * Tue May 19 2009 - brian.cameron@sun.com
 - Bump to 2.26.1.  Add patch gnome-screensaver-01-pam-audit.diff which
   John Fischer wrote to add Sun Audit and Sun PAM interfaces.
