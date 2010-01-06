@@ -18,7 +18,7 @@ Name:                    SFEdovecot
 Summary:                 dovecot - A Maildir based pop3/imap email daemon
 URL:                     http://www.dovecot.org
 #note: see downloadversion above
-Version:                 1.1.7
+Version:                 1.1.20
 Source:                  http://dovecot.org/releases/%{downloadversion}/%{src_name}-%{version}.tar.gz
 Source2:		dovecot.xml
 
@@ -77,15 +77,24 @@ fi
             --libexecdir=%{_libdir}/%{src_name}/bin \
             --sysconfdir=%{_sysconfdir}/%{src_name} \
             --enable-shared		\
+            --with-rundir=%{_localstatedir}/run/%{src_name} \
+            --enable-header-install \
+            --with-solr \
 	    --disable-static		
 
+#  --with-rundir=DIR       Runtime data directory (LOCALSTATEDIR/run/dovecot)
+#  --with-statedir=DIR     Permanent data directory (LOCALSTATEDIR/lib/dovecot)
+
+   #	--with-ioloop=select \
 
 gmake -j $CPUS
 
 %install
 rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
-rm -rf $RPM_BUILD_ROOT/usr/include
+#rm -rf $RPM_BUILD_ROOT/usr/include
+
+mkdir -p ${RPM_BUILD_ROOT}/%{_localstatedir}/run/%{src_name}
 
 mkdir -p ${RPM_BUILD_ROOT}/var/svc/manifest/site/
 cp dovecot.xml ${RPM_BUILD_ROOT}/var/svc/manifest/site/
@@ -102,6 +111,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_sbindir}/*
 %dir %attr (0755,root,bin) %{_libdir}
 %{_libdir}/%{src_name}/*
+%dir %attr (0755, root, bin) %{_includedir}
+%{_includedir}/*
 %dir %attr (0755, root, sys) %{_datadir}
 %dir %attr (0755, root, other) %{_docdir}
 %{_docdir}/%{src_name}/*
@@ -115,10 +126,20 @@ rm -rf $RPM_BUILD_ROOT
 %{_sysconfdir}/%{src_name}/*
 %defattr (-, root, sys)
 %dir %attr (0755, root, sys) %{_localstatedir}
+%dir %attr (0755, root, sys) %{_localstatedir}/run/%{src_name}
 %class(manifest) %attr(0444, root, sys)/var/svc/manifest/site/dovecot.xml
 
 
 %changelog
+* Fri Jan 01 2010 - Thomas Wagner
+- bump to 1.1.20
+- add --with-rundir=%{_localstatedir}/run/%{src_name}  since /usr/var/run/dovecot is wrong, add new location to %files
+- add header files to the package by --enable-header-install, add to %files, don't rm header file location
+- add full-text search --with-solr
+* Sat Oct 03 2009  - Thomas Wagner
+- bump to 1.1.19
+* Sun Feb 07 2009  - Thomas Wagner
+- bump to 1.1.11
 * Wed Jan  7 2009 - Thomas Wagner
 - remove %post, %preun, %postun
 - adjust files in %doc, adjust wildcard for %{_docdir}/%{src_name}/*
