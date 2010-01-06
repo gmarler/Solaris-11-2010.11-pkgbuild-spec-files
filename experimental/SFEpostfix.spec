@@ -5,12 +5,32 @@
 # note: this spec derived partly from the provided postfix.spec, you might update this by comparing with vimdiff SFEpostfix.spec BUILD/postfix-*/tmp/postfix.spec
 # note: it also takes several files from the original source-rpm line postfix.spec, make-postfix.spec, postfix-aliases
 
+
+##TODO## look for features to be enabled: - these lines are for volunteers :-)
+#mysql
+#ldap
+#cdb (really needed?)
+#spf
+#tls
+#tlsfix
+
 ##TODO## think on using SUNWsndmr:/etc/mail/aliases file to get the Solaris standard aliases mapping
 #        and setting this file to be %class(renamenew) protected at upgrade/re-install time
 
 ##TODO## tar up the old configuration in case of uninstall of the -root package, valuable configuration would be lost in case of pkgrm. pkgadd with "overwrite" upgrade would not overwrite config and place new configuration files with ".new" appended.
 
-##TODOÃ## add noted to set resource manager to have a zone or preocessgroup or service not locking up the whole CPUs
+##TODO## add noted to set resource manager to have a zone or preocessgroup or service not locking up the whole CPUs if high load occurs
+
+##NOTES / 
+##TODO##
+# make an entry into services, port 465 or 587 - to be checked
+# grep smtps /etc/services
+#ssmtp           465/tcp         smtps           # SMTP over SSL
+
+##TODO##
+# suggest the user to setup procmail (see spamassassin) and if he want Maildir, enter a procmail default rule
+#[ -f /etc/procmailrc ] || echo "DEFAULT=\$HOME/Maildir/" 
+
 
 %include Solaris.inc
 
@@ -21,7 +41,7 @@
 #if userid is already engaged 
 #for other users/groups then postfix/postfix/postdrop, then
 #the user or group will be created with a numeric id given by 
-#the system
+#the system. Currently the UID/GID is possibly taken twice
 %define runuser         postfix
 %define runuserid       161
 %define runusergroup    other
@@ -33,61 +53,11 @@
 # see much more special variables below
 
 %define src_name	postfix
+%define gnu_sysconfdir	/etc/gnu
+%define gnu_libdir	%{_basedir}/gnu/lib
+%define gnu_includedir	%{_basedir}/gnu/include
 
-Name:                    SFEpostfix
-Summary:                 postfix - Mailer System
-URL:                     http://postfix.org/
-Version:                 2.5.6
-Source:                  ftp://ftp.porcupine.org/mirrors/postfix-release/official/postfix-%{version}.tar.gz
-Source2:                 http://ftp.wl0.org/official/2.5/SRPMS/postfix-%{version}-1.src.rpm
-Source3:                 postfix.xml
-Source5:                 postfix-spamassassin-wiki.apache.org-filter.sh
-Patch1:			postfix-01-make-postfix.spec.diff
-Patch2:			postfix-02-solarize-startscript.diff
-
-SUNW_BaseDir:            %{_basedir}
-BuildRoot:               %{_tmppath}/%{name}-%{version}-build
-
-#TODO: BuildReqires:
-BuildRequires: SFEcpio
-BuildRequires: SUNWrpm
-BuildRequires: SUNWggrp
-#TODO: Requires:
-#we need to create user/group-IDs first in preinstall of %{name}-root to get proper verification of file owners
-Requires: %{name}-root
-
-#%config %class(preserve)
-Requires: SUNWswmt
-
-%package root
-Summary:                 %{summary} - / filesystem
-SUNW_BaseDir:            /
-SUNW_PkgType:		root
-%include default-depend.inc
-
-#variables altered from postfix.spec
-%define rmail_patch %(which rmail)
-%define docdir %{_docdir}/%{name}
-#probably not used directly, SMF is the way we should go
-%define initdir /etc/init.d
-%define	V_postfinger	1.30
-
-#original from postfix.spec
-%define readme_dir   %{docdir}/readme
-%define html_dir     %{docdir}/html
-%define examples_dir %{docdir}/examples
-
-%define newaliases_path %{_bindir}/newaliases.postfix
-%define mailq_path %{_bindir}/mailq.postfix
-%define rmail_path %{_bindir}/rmail.postfix
-%define sendmail_path %{_sbindir}/sendmail.postfix
-# Don't use %{_libdir} as it gives the wrong directory on x86_64 servers
-%define usrlib_sendmail /usr/lib/sendmail.postfix
-
-
-
-%include default-depend.inc
-
+##NOTE## this secion is moved up in the file, to have (Build)Requires using them
 # from the postfix source rpm
 #  grep "^%define.*__" postfix.spec.in
 # %define distribution __DISTRIBUTION__
@@ -119,20 +89,89 @@ SUNW_PkgType:		root
 %define requires_zlib 1
 %define smtpd_multiline_greeting 0
 %define with_alt_prio     0
-%define with_cdb          1
+%define with_cdb          0
 %define with_ldap         0
 %define with_mysql        0
 %define with_mysql_redhat 0
 %define with_pcre         1
 %define with_pgsql        0
-%define with_sasl         0
+%define with_sasl         1
 %define with_spf          0
 %define with_dovecot      1
-%define with_tls          0
-%define with_tlsfix       0
+%define with_tls          1
+%define with_tlsfix       1
 %define with_vda          0
 %define rel 1
 
+
+Name:                    SFEpostfix
+Summary:                 postfix - Mailer System
+URL:                     http://postfix.org/
+Version:                 2.5.6
+Source:                  ftp://ftp.porcupine.org/mirrors/postfix-release/official/postfix-%{version}.tar.gz
+Source2:                 http://ftp.wl0.org/official/2.5/SRPMS/postfix-%{version}-1.src.rpm
+Source3:                 postfix.xml
+Source5:                 postfix-spamassassin-wiki.apache.org-filter.sh
+Patch1:			postfix-01-make-postfix.spec.diff
+Patch2:			postfix-02-solarize-startscript.diff
+Patch3:			postfix-03-remove-nisplus-build130.diff
+
+SUNW_BaseDir:            %{_basedir}
+BuildRoot:               %{_tmppath}/%{name}-%{version}-build
+
+#TODO: BuildReqires:
+BuildRequires: SFEcpio
+BuildRequires: SUNWrpm
+BuildRequires: SUNWggrp
+#SASL
+%if %(test %{with_sasl} -eq 1 && echo 1 || echo 0)
+BuildRequires: SUNWlibsasl
+Requires: SUNWlibsasl
+%endif
+#SASL2 
+##TODO## untested, needs the /gnu/ include and libdir below to get found and adjusments to %files section
+%if %(test %{with_sasl} -eq 2 && echo 1 || echo 0)
+BuildRequires: SFEcyrus-sasl
+Requires: SFEcyrus-sasl
+%endif
+
+
+#TODO: Requires:
+#we need to create user/group-IDs first in preinstall of %{name}-root to get proper verification or creation of file owners
+Requires: %{name}-root
+
+#%config %class(preserve)
+Requires: SUNWswmt
+
+%package root
+Summary:                 %{summary} - / filesystem
+SUNW_BaseDir:            /
+SUNW_PkgType:		root
+%include default-depend.inc
+
+#variables altered from postfix.spec
+%define rmail_patch %(which rmail)
+%define docdir %{_docdir}/%{name}
+#probably not used directly, SMF is the way we should go
+%define initdir /etc/init.d
+%define	V_postfinger	1.30
+
+#original from postfix.spec
+%define readme_dir   %{docdir}/readme
+%define html_dir     %{docdir}/html
+%define examples_dir %{docdir}/examples
+
+%define newaliases_path %{_bindir}/newaliases.postfix
+%define mailq_path %{_bindir}/mailq.postfix
+%define rmail_path %{_bindir}/rmail.postfix
+%define sendmail_path %{_sbindir}/sendmail.postfix
+#that below is a linuxism... hey we are on Solaris and we can!
+# Don't use %{_libdir} as it gives the wrong directory on x86_64 servers
+%define usrlib_sendmail /usr/lib/sendmail.postfix
+
+
+
+%include default-depend.inc
 
 
 %prep
@@ -140,11 +179,14 @@ SUNW_PkgType:		root
 
 mkdir tmp
 (cd tmp;
+ ##TODO##save space in the future and only extract files really needed - list probably incomplete
  #rpm2cpio %{SOURCE2} | /usr/gnu/bin/cpio -iumdv  --no-absolute-filenames  postfix.spec.in make-postfix.spec postfix-aliases
  rpm2cpio %{SOURCE2} | /usr/gnu/bin/cpio -iumdv  --no-absolute-filenames 
 )
 
 %patch1 -p1
+#patch2 is below
+%patch3 -p1
 
 
 #postfix manifest
@@ -156,13 +198,15 @@ cp -p %{SOURCE3} postfix.xml
 #see more alternatives on pkgbuild wiki or your favorite internet search engine
 cp -p %{SOURCE5} tmp/filter.sh
 
-(cd tmp; bash make-postfix.spec)
+#(cd tmp; bash make-postfix.spec)
 
+#other patches are above
 %patch2 -p1
 
 #last step: change /bin/sh into /usr/bin/bash
-#alternatively we could search fo rexecutalbes, then if it starts with "#!/bin/sh"
+#alternatively we could search for executables, then if it starts with "#!/bin/sh" , change it
 perl -w -pi.bak -e "s,^#\!\s*/bin/sh,#\!/usr/bin/bash," `find . -type f -exec grep -q "^#\!.*/bin/sh" {} \; -print`
+
 
 %build
 
@@ -233,12 +277,14 @@ CCARGS="${CCARGS} -fsigned-char"
 %if %{with_sasl}
   if [ "%{with_sasl}" -le 1 ]; then
     %define sasl_lib_dir %{_libdir}/sasl
-    CCARGS="${CCARGS} -DUSE_SASL_AUTH -DUSE_CYRUS_SASL"
+    CCARGS="${CCARGS} -I/usr/include/sasl -DUSE_SASL_AUTH -DUSE_CYRUS_SASL"
     AUXLIBS="${AUXLIBS} -L%{sasl_lib_dir} -lsasl"
   else
-    %define sasl_lib_dir %{_libdir}/sasl2
-    CCARGS="${CCARGS} -I/usr/include/sasl -DUSE_SASL_AUTH -DUSE_CYRUS_SASL"
-    AUXLIBS="${AUXLIBS} -L%{sasl_lib_dir} -lsasl2"
+##TODO## here the SFEcyrus-sasl will need the /gnu/ offest integrated, incomplete/untested for the moment
+#it uses gnu_libdir gnu_includedir and gnu_sysconfdir (in the %files section)
+    %define sasl_lib_dir %{gnu_libdir}/sasl2
+    CCARGS="${CCARGS} -I%{gnu_includedir}/sasl2 -DUSE_SASL_AUTH -DUSE_CYRUS_SASL"
+    AUXLIBS="${AUXLIBS} -L%{sasl_lib_dir} -R%{sasl_lib_dir} -lsasl2"
   fi
 %endif
 
@@ -285,8 +331,9 @@ CCARGS="${CCARGS} -fsigned-char"
 %endif
 
 export CCARGS AUXLIBS
+# not needed we are a fresh copy .-) 
+# make tidy
 make -f Makefile.init makefiles
-make tidy
 unset CCARGS AUXLIBS
 # -Wno-comment needed due to large number of warnings on RHEL5
 # suggestion by Eric Hoeve <eric@ehoeve.com>
@@ -402,6 +449,10 @@ install -c auxiliary/qshape/qshape.pl ${RPM_BUILD_ROOT}/%{_sbindir}/qshape
 #disabled cp -f tmp/postfix-aliases ${RPM_BUILD_ROOT}%{_sysconfdir}/postfix/aliases
 #disabled chmod 644 ${RPM_BUILD_ROOT}%{_sysconfdir}/postfix/aliases
 
+# rename aliases file to "unused" - we use the system's existing /etc/mail/aliases file
+# see %files section also
+mv ${RPM_BUILD_ROOT}%{_sysconfdir}/postfix/aliases ${RPM_BUILD_ROOT}%{_sysconfdir}/postfix/aliases.unused
+
 #disabled touch ${RPM_BUILD_ROOT}/%{_sysconfdir}/postfix/aliases.db
 
 for i in active bounce corrupt defer deferred flush incoming private saved \
@@ -451,11 +502,16 @@ ln -sf %{examples_dir} ${RPM_BUILD_ROOT}%{_sysconfdir}/postfix/examples
 # Install the smtpd.conf file for SASL support.
 %if %{with_sasl}
 mkdir -p ${RPM_BUILD_ROOT}%{sasl_lib_dir}
-install -m 644 %SOURCE100 ${RPM_BUILD_ROOT}%{sasl_lib_dir}/smtpd.conf
-mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/pam.d
-install -m 644 %SOURCE101 ${RPM_BUILD_ROOT}%{_sysconfdir}/pam.d/smtp.postfix
-mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/sysconfig
-install -m 644 %SOURCE102 ${RPM_BUILD_ROOT}%{_sysconfdir}/sysconfig/saslauthd.postfix
+##TODO## wondering what a configuration file has to to in a libdir where no configuration should reside...
+#/usr/gnu/lib/sasl2/* locally aka %{gnu_libdir}/sasl2
+install -m 644 tmp/postfix-sasl.conf ${RPM_BUILD_ROOT}%{sasl_lib_dir}/smtpd.conf
+##TODO## check if we do the right thing here for Solaris
+#Not in Solaris mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/pam.d
+#Not on Solaris install -m 644 tmp/postfix-pam.conf ${RPM_BUILD_ROOT}%{_sysconfdir}/pam.d/smtp.postfix
+#Not on Solaris mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/sysconfig
+##TODO## this is for SFEcyrus-sasl .. so check if this is /etc/sasl2 or /etc/gnu/sasl2 (more the second one since usr-gnu.inc is in SFEcyrus-sasl.spec)
+[ -d ${RPM_BUILD_ROOT}%{gnu_sysconfdir}/sasl2/ ] || mkdir -p ${RPM_BUILD_ROOT}%{gnu_sysconfdir}/sasl2/
+install -m 644 tmp/postfix-saslauthd.conf ${RPM_BUILD_ROOT}%{gnu_sysconfdir}/sasl2/saslauthd.postfix
 %endif
 
 # Include README.rpm explaining where the documentation can be found and
@@ -568,10 +624,11 @@ export POSTFIX_MYSQL POSTFIX_MYSQL_PATHS POSTFIX_MYSQL_REDHAT \\
 # interest if you are building Postfix by hand.
 EOF
 
+#we are on Solaris with very fine SMF services, let's add our manifest
 mkdir -p ${RPM_BUILD_ROOT}/var/svc/manifest/site/
 cp postfix.xml ${RPM_BUILD_ROOT}/var/svc/manifest/site/
 
-#this filters email trough spamassassin
+#this filters email trough spamassassin if configured on master.cf and SFEspamassassin is installed
 chmod a+rx tmp/filter.sh
 cp -p tmp/filter.sh ${RPM_BUILD_ROOT}/%{_libexecdir}/postfix/filter.sh
 
@@ -583,6 +640,7 @@ cp -p tmp/filter.sh ${RPM_BUILD_ROOT}/%{_libexecdir}/postfix/filter.sh
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+##NOTES## - selection of User-IDs and Group-IDs - some references to other platforms
 #from: http://freebsd.active-venture.com/porters-handbook/dads-uid.html
 #groups
 #postfix:*:125:
@@ -603,8 +661,10 @@ rm -rf $RPM_BUILD_ROOT
 #	useradd -g postman -u 183 -d / -s /bin/false -M postman
 
 
-# sorry for duplication, but someone in the chain pkgtool/pkgbuild/packagetools doesn't install
+# sorry for duplication of these scripts, but someone in the chain pkgtool/pkgbuild/packagetools doesn't install
 #in the right order (first SFEpostfix-root, second SFEpostfix)
+#so we *try* to create userid/groupid before actually placing files on the disk which wanna be owned by these new IDs
+#this %pre on in the main package is a duplicate by intention, see above
 %pre
 test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 ( echo '/usr/bin/getent group %{rundropgroup} >/dev/null || {';
@@ -625,9 +685,8 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 
 %post
 test -x $BASEDIR/var/lib/postrun/postrun || exit 0
-( echo 'touch /etc/mail/aliases.pag /etc/mail/aliases.dir';
-  echo 'touch /etc/mail/aliases';
-  echo '/usr/sbin/postalias aliases >/dev/null';
+( echo 'touch /etc/mail/aliases';
+  echo '/usr/sbin/postalias /etc/mail/aliases > /dev/null';
   echo '}';
 ) | $BASEDIR/var/lib/postrun/postrun -i -c POSTFIX -a
 
@@ -661,6 +720,41 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 #the script is found automaticly in ext-sources w/o a Source<n> keyword
 %iclass renamenew -f i.renamenew
 
+
+%files
+%defattr(-, root, bin)
+%doc AAAREADME COMPATIBILITY COPYRIGHT HISTORY INSTALL IPv6-ChangeLog LICENSE PORTING RELEASE_NOTES RELEASE_NOTES-1.0 RELEASE_NOTES-1.1 RELEASE_NOTES-2.0 RELEASE_NOTES-2.1 RELEASE_NOTES-2.2 RELEASE_NOTES-2.3 RELEASE_NOTES-2.4 TLS_ACKNOWLEDGEMENTS TLS_CHANGES TLS_LICENSE US_PATENT_6321267 README_FILES/AAAREADME README_FILES/ADDRESS_CLASS_README README_FILES/ADDRESS_REWRITING_README README_FILES/ADDRESS_VERIFICATION_README README_FILES/BACKSCATTER_README README_FILES/BASIC_CONFIGURATION_README README_FILES/BUILTIN_FILTER_README README_FILES/CDB_README README_FILES/CONNECTION_CACHE_README README_FILES/CONTENT_INSPECTION_README README_FILES/CYRUS_README README_FILES/DATABASE_README README_FILES/DB_README README_FILES/DEBUG_README README_FILES/DSN_README README_FILES/ETRN_README README_FILES/FILTER_README README_FILES/INSTALL README_FILES/IPV6_README README_FILES/LDAP_README README_FILES/LINUX_README README_FILES/LOCAL_RECIPIENT_README README_FILES/MAILDROP_README README_FILES/MILTER_README README_FILES/MYSQL_README README_FILES/NFS_README README_FILES/OVERVIEW README_FILES/PACKAGE_README README_FILES/PCRE_README README_FILES/PGSQL_README README_FILES/QMQP_README README_FILES/QSHAPE_README README_FILES/RELEASE_NOTES README_FILES/RESTRICTION_CLASS_README README_FILES/SASL_README README_FILES/SCHEDULER_README README_FILES/SMTPD_ACCESS_README README_FILES/SMTPD_POLICY_README README_FILES/SMTPD_PROXY_README README_FILES/SOHO_README README_FILES/STANDARD_CONFIGURATION_README README_FILES/STRESS_README README_FILES/TLS_LEGACY_README README_FILES/TLS_README README_FILES/TUNING_README README_FILES/ULTRIX_README README_FILES/UUCP_README README_FILES/VERP_README README_FILES/VIRTUAL_README README_FILES/XCLIENT_README README_FILES/XFORWARD_README
+%dir %attr (0755, root, bin) %{_bindir}
+%{_bindir}/*
+%dir %attr (0755, root, bin) %{_sbindir}
+%{_sbindir}/postalias
+%{_sbindir}/postcat
+%{_sbindir}/postconf
+%attr (2755, root, %{rungroup}) %{_sbindir}/postqueue
+%attr (2755, root, %{rungroup}) %{_sbindir}/postdrop
+%{_sbindir}/postfix
+%{_sbindir}/postkick
+%{_sbindir}/postlock
+%{_sbindir}/postlog
+%{_sbindir}/postmap
+%{_sbindir}/postsuper
+%{_sbindir}/smtp-sink
+%{_sbindir}/smtp-source
+%{_sbindir}/qmqp-source
+%{_sbindir}/qshape
+%{_sbindir}/sendmail.postfix
+%dir %attr (0755, root, bin) %{_libdir}
+%{_libdir}/sendmail.postfix
+%dir %attr (0711, root, bin) %{_libdir}/%{src_name}
+%{_libdir}/%{src_name}/*
+%dir %attr (0755, root, sys) %{_datadir}
+%dir %attr (0755, root, other) %{_docdir}
+%{_docdir}/%{name}/*
+%dir %attr(0755, root, bin) %{_mandir}
+%dir %attr(0755, root, bin) %{_mandir}/*
+%{_mandir}/*/*
+
+
 %files root
 %defattr (-, root, bin)
 %attr (0755, root, sys) %dir %{_sysconfdir}
@@ -668,7 +762,7 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 #%{_sysconfdir}/%{src_name}/*
 %class(renamenew) %{_sysconfdir}/%{src_name}/master.cf
 %class(renamenew) %{_sysconfdir}/%{src_name}/main.cf
-%class(renamenew) %{_sysconfdir}/%{src_name}/aliases
+%class(renamenew) %{_sysconfdir}/%{src_name}/aliases.unused
 %{_sysconfdir}/%{src_name}/examples
 %{_sysconfdir}/%{src_name}/bounce.cf.default
 %{_sysconfdir}/%{src_name}/access
@@ -718,47 +812,40 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 %dir %attr (0755, root, bin) %{_localstatedir}/spool/%{src_name}/pid
 
 
+#cyrus sasl or not (SASL with dovecot does not own these files)
+#we use use-gnu.inc:
+%defattr (-, root, bin)
+%dir %attr (0755, root, sys) %{_prefix}
+#listed twice %attr (0755, root, bin) %dir %{_sysconfdir}
+%attr (0755, root, bin) %dir %{gnu_sysconfdir}/sasl2
+%if %(test %{with_sasl} -ge 1 && echo 1 || echo 0)
+%class(renamenew) %{gnu_sysconfdir}/sasl2/saslauthd.postfix
+%endif
+%if %(test %{with_sasl} -ge 1 && echo 1 || echo 0)
+%dir %attr (0755, root, bin) %{gnu_libdir}
+%dir %attr (0755, root, bin) %{gnu_libdir}/sasl2
+%class(renamenew) %{gnu_libdir}/sasl2/smtpd.conf
+%endif
 
-%class(manifest) %attr(0444, root, sys)/var/svc/manifest/site/postfix.xml
 
-
-
-%files
-%defattr(-, root, bin)
-#%doc AAAREADME COMPATIBILITY COPYRIGHT HISTORY INSTALL IPv6-ChangeLog LICENSE PORTING RELEASE_NOTES RELEASE_NOTES-1.0 RELEASE_NOTES-1.1 RELEASE_NOTES-2.0 RELEASE_NOTES-2.1 RELEASE_NOTES-2.2 RELEASE_NOTES-2.3 RELEASE_NOTES-2.4 TLS_ACKNOWLEDGEMENTS TLS_CHANGES TLS_LICENSE US_PATENT_6321267 README_FILES/AAAREADME README_FILES/ADDRESS_CLASS_README README_FILES/ADDRESS_REWRITING_README README_FILES/ADDRESS_VERIFICATION_README README_FILES/BACKSCATTER_README README_FILES/BASIC_CONFIGURATION_README README_FILES/BUILTIN_FILTER_README README_FILES/CDB_README README_FILES/CONNECTION_CACHE_README README_FILES/CONTENT_INSPECTION_README README_FILES/CYRUS_README README_FILES/DATABASE_README README_FILES/DB_README README_FILES/DEBUG_README README_FILES/DSN_README README_FILES/ETRN_README README_FILES/FILTER_README README_FILES/INSTALL README_FILES/IPV6_README README_FILES/LDAP_README README_FILES/LINUX_README README_FILES/LOCAL_RECIPIENT_README README_FILES/MAILDROP_README README_FILES/MILTER_README README_FILES/MYSQL_README README_FILES/NFS_README README_FILES/OVERVIEW README_FILES/PACKAGE_README README_FILES/PCRE_README README_FILES/PGSQL_README README_FILES/QMQP_README README_FILES/QSHAPE_README README_FILES/RELEASE_NOTES README_FILES/RESTRICTION_CLASS_README README_FILES/SASL_README README_FILES/SCHEDULER_README README_FILES/SMTPD_ACCESS_README README_FILES/SMTPD_POLICY_README README_FILES/SMTPD_PROXY_README README_FILES/SOHO_README README_FILES/STANDARD_CONFIGURATION_README README_FILES/STRESS_README README_FILES/TLS_LEGACY_README README_FILES/TLS_README README_FILES/TUNING_README README_FILES/ULTRIX_README README_FILES/UUCP_README README_FILES/VERP_README README_FILES/VIRTUAL_README README_FILES/XCLIENT_README README_FILES/XFORWARD_README
-%dir %attr (0755, root, bin) %{_bindir}
-%{_bindir}/*
-%dir %attr (0755, root, bin) %{_sbindir}
-%{_sbindir}/postalias
-%{_sbindir}/postcat
-%{_sbindir}/postconf
-%attr (2755, root, %{rungroup}) %{_sbindir}/postqueue
-%attr (2755, root, %{rungroup}) %{_sbindir}/postdrop
-%{_sbindir}/postfix
-%{_sbindir}/postkick
-%{_sbindir}/postlock
-%{_sbindir}/postlog
-%{_sbindir}/postmap
-%{_sbindir}/postsuper
-%{_sbindir}/smtp-sink
-%{_sbindir}/smtp-source
-%{_sbindir}/qmqp-source
-%{_sbindir}/qshape
-%{_sbindir}/sendmail.postfix
-%dir %attr (0755, root, bin) %{_libdir}
-%{_libdir}/sendmail.postfix
-%dir %attr (0711, root, bin) %{_libdir}/%{src_name}
-%{_libdir}/%{src_name}/*
-%dir %attr (0755, root, sys) %{_datadir}
-%dir %attr (0755, root, other) %{_docdir}
-%{_docdir}/%{name}/*
-%dir %attr(0755, root, bin) %{_mandir}
-%dir %attr(0755, root, bin) %{_mandir}/*
-%{_mandir}/*/*
+%defattr (-, root, sys)
+%dir %attr (0755, root, sys) %{_localstatedir}/svc
+%class(manifest) %attr(0444, root, sys) %{_localstatedir}/svc/manifest/site/postfix.xml
 
 
 
 %changelog
+* Thu Jan 05 2010 - Thomas Wagner
+- fixed configuration generation to really include selected options
+- add patch3 ostfix-03-remove-nisplus-build130.diff to remove NISPLUS for builds >= 130 (this is a temporary fix)
+- remove with_cdb 
+- pause generation of spec files with make-postfix.spec
+- with_sasl 1: sasl version 1, prepare for sasl2/version 2 from SFEcyrus-sasl (in usr-gnu layout), (Build)Requires
+  adjust path to include /gnu/ for sasl2 or config files, adjust %files for optional including and new layout
+- with_dovecot 1: for sasl authentication, tested: smtp AUTH LOGIN, untested TLS, STARTTLS, certificates, smtp outgoing with auth login on the far end
+- make tidy and make makefiles had wrong order, anyway, pause make tidy as it is not needed
+- rename postfix/aliases to postfix/aliases.unused - users might want /etc/mail/aliases for compatibility
+- change %post script to compile aliases file with "postalias /etc/mail/aliases" , remove touch aliases.*
 * Sun Apr 26 2009 - Thomas Wagner
 - build aliases.pag aliases.dir in /etc/mail/aliases* by a %post script for base package
 - set /usr/lib/postfix to chmod 711 for reading the filter.sh script
@@ -779,4 +866,13 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 * Thu Jan 22 2009 - Thomas Wagner
 - %doc made monstrous 
 * Sun Jan 2009 - Thomas Wagner
-e Initial spec, parts derived from postfix.spec from the original SRPM
+- Initial spec, parts derived from postfix.spec from the original SRPM
+
+
+
+kommandant tom ~/spec-files-extra ls -ld /usr /var/svc /var/svc/manifest /var/svc/manifest/site
+drwxr-xr-x 51 root sys 65 Jun  7 23:31 /usr
+drwxr-xr-x  5 root sys  5 Feb 15 22:35 /var/svc
+drwxr-xr-x  9 root sys  9 Feb 15 22:35 /var/svc/manifest
+drwxr-xr-x  2 root sys  5 Apr 10 00:10 /var/svc/manifest/site
+
