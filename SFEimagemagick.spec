@@ -6,9 +6,10 @@
 %include Solaris.inc
 
 %define src_name	ImageMagick
-%define src_url		ftp://ftp.imagemagick.org/pub/%src_name
-%define major		6.3.6
-%define minor		-10
+#%define src_url		ftp://ftp.imagemagick.net/pub/%src_name
+%define major		6.5.8
+%define minor		-0
+%define src_url         %{sf_download}/imagemagick/files/ImageMagick/00-%{major}
 
 Name:                   SFEimagemagick
 Summary:                ImageMagick - Image Manipulation Utilities and Libraries
@@ -34,8 +35,8 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
 fi
 
  
-export CPPFLAGS="-I/usr/sfw/include/freetype2 -I/usr/X11/include"
-export LDFLAGS="%_ldflags -L/usr/sfw/lib -L/usr/X11/lib -R/usr/sfw/lib -R/usr/X11/lib"
+export CPPFLAGS="-I/usr/include/freetype2 -I/usr/X11/include"
+export LDFLAGS="%_ldflags -L/usr/X11/lib -R/usr/X11/lib"
 if [ "x`basename $CC`" = xgcc ]
 then
 	%error "Building this spec with GCC is not supported."
@@ -86,6 +87,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*
 
 %changelog
+* Thu Nov 26 1009 - Thomas Wagner
+- bump to 6.5.8-0
+- new download-URL
+- changed include path /usr/include/freetype2
 * Sat Jan 26 2008 - moinak.ghosh@sun.com
 - Bump version to 6.3.6-10.
 - Add check to prevent build using Gcc.
