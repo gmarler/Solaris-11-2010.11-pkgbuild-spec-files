@@ -1,3 +1,10 @@
+2010-01-06  Thomas Wagner  <tom68@users.sourceforge.net>
+        * SFEtypo3.spec: bump to 4.2.10, adjust detection for existing 
+          symlink, pause Requires SFEphp
+        * SFEtypo3demo: bump to 4.2.10
+        * SFEimagemagic.spec: bump to 6.5.8-0, changed download-URL, changed 
+          include path /usr/include/freetype2
+
 2010-01-06  Jeff Cai  <jeff.cai@sun.com>
 
 	* SFEgnome-screensaver.spec:
@@ -22,8 +29,9 @@
 	  Bump to openchange 0.9
 
 2010-01-06  Thomas Wagner  <tom68@users.sourceforge.net>
-        * experimental/SFEpostfix.spec: add patch3 for build130+ (nisplus removed), add sasl, 
-          smtp auth login (using dovecot for smtp authentication), prepared for sasl2 (unfinished), see changelog
+        * experimental/SFEpostfix.spec: add patch3 for build130+ (nisplus 
+          removed), add sasl, smtp auth login (using dovecot for smtp authentication), 
+          prepared for sasl2 (unfinished), see changelog
 
 2009-12-28  Simon Jin  <yuntong.jin@sun.com>
 
