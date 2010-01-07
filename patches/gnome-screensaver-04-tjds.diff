@@ -1,0 +1,811 @@
+--- gnome-screensaver/src/trusted-utils.c.orig	2010-01-07 16:52:38.215972431 +0800
++++ gnome-screensaver/src/trusted-utils.c	2010-01-07 16:46:24.028682675 +0800
+@@ -0,0 +1,170 @@
++/*
++ * Trusted xscreensaver
++ *
++ * Copyright 2008 Sun Microsystems, Inc.  All rights reserved.
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining a
++ * copy of this software and associated documentation files (the
++ * "Software"), to deal in the Software without restriction, including
++ * without limitation the rights to use, copy, modify, merge, publish,
++ * distribute, and/or sell copies of the Software, and to permit persons
++ * to whom the Software is furnished to do so, provided that the above
++ * copyright notice(s) and this permission notice appear in all copies of
++ * the Software and that both the above copyright notice(s) and this
++ * permission notice appear in supporting documentation.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
++ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
++ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT
++ * OF THIRD PARTY RIGHTS. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
++ * HOLDERS INCLUDED IN THIS NOTICE BE LIABLE FOR ANY CLAIM, OR ANY SPECIAL
++ * INDIRECT OR CONSEQUENTIAL DAMAGES, OR ANY DAMAGES WHATSOEVER RESULTING
++ * FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT,
++ * NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION
++ * WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
++ *
++ * Except as contained in this notice, the name of a copyright holder
++ * shall not be used in advertising or otherwise to promote the sale, use
++ * or other dealings in this Software without prior written authorization
++ * of the copyright holder.
++ *
++ *
++ *
++ * Based on work by Erwann Chenede, Ghee Teo
++ *
++ * Used to check if we are in a multilabel session and to load
++ * additional functionality within the multilabel session.
++ */
++#include <dlfcn.h>
++#include <link.h>
++#include <stdlib.h>
++#include <user_attr.h>
++#include <sys/types.h>
++#include <unistd.h>
++#include <strings.h>
++#include <stdio.h>
++#include "trusted-utils.h"
++
++/*
++ * Checks for Multi label session
++ */
++gboolean
++tsol_is_multi_label_session (void)
++{
++       static char *session = NULL;
++
++       if (!session)
++               session = (char *)getenv("TRUSTED_SESSION");
++
++       if (!session)
++               return FALSE;
++
++       return TRUE;
++}
++
++/*
++ * dynamicly load the libxtsol library
++ */
++static
++void * dlopen_xtsol (void)
++{
++   void  *handle = NULL;
++
++   if ((handle = dlopen ("/usr/lib/libXtsol.so.1", RTLD_LAZY)) != NULL)
++       return handle;
++   if ((handle = dlopen ("/usr/openwin/lib/libXtsol.so.1", RTLD_LAZY)) != NULL)
++       return handle;
++
++   return handle;
++}
++
++/*
++ * dynamicly load the libDtTsol library
++ */
++static
++void * dlopen_gnometsol (void)
++{
++   void  *handle = NULL;
++
++   if ((handle = dlopen ("/usr/lib/libgnometsol.so.1", RTLD_LAZY)) != NULL)
++       return handle;
++
++   return handle;
++}
++
++xtsol_XTSOLgetWorkstationOwner      libxtsol_XTSOLgetWorkstationOwner = NULL;
++
++void
++XTSOLgetWorkstationOwner(Display *dpy, uid_t *WorkstationOwner)
++{
++  static gpointer xtsol_handle = NULL;
++  static gboolean _xtsol_initialized = FALSE;
++
++  if ( ! _xtsol_initialized ) {
++    _xtsol_initialized = TRUE;
++    xtsol_handle = dlopen_xtsol ();
++    if (xtsol_handle != NULL)
++      libxtsol_XTSOLgetWorkstationOwner = (xtsol_XTSOLgetWorkstationOwner) dlsym(xtsol_handle,
++					     "XTSOLgetWorkstationOwner");
++  }
++
++  if (libxtsol_XTSOLgetWorkstationOwner == NULL) {
++    *WorkstationOwner = getuid();
++  } else
++    libxtsol_XTSOLgetWorkstationOwner(dpy, WorkstationOwner);
++}
++
++xtsol_XTSOLMakeTPWindow      libxtsol_XTSOLMakeTPWindow = NULL;
++
++void
++XTSOLMakeTPWindow(Display *dpy, Window w)
++{
++  static gpointer xtsol_handle = NULL;
++  static gboolean _xtsol_initialized = FALSE;
++
++  if ( ! _xtsol_initialized ) {
++    _xtsol_initialized = TRUE;
++    xtsol_handle = dlopen_xtsol ();
++    if (xtsol_handle != NULL)
++      libxtsol_XTSOLMakeTPWindow = (xtsol_XTSOLMakeTPWindow) dlsym(xtsol_handle,
++					     "XTSOLMakeTPWindow");
++  }
++
++  if (libxtsol_XTSOLMakeTPWindow) {
++	libxtsol_XTSOLMakeTPWindow(dpy, w);
++  }
++}
++
++gnome_tsol_get_usrattr_val		libgnome_tsol_get_usrattr_val = NULL;
++
++/*
++ * Returns a value from uattr for the given key.
++ * If there is no value in user_attr, then it returns the
++ * system wide default from policy.conf or labelencodings
++ * as appropriate.
++ */
++char *
++getusrattrval(userattr_t *uattr, char *keywd)
++{
++  static gpointer gnometsol_handle = NULL;
++  static gboolean _gnometsol_initialized = FALSE;
++  char *value;
++
++  if ( ! _gnometsol_initialized ) {
++    _gnometsol_initialized = TRUE;
++    gnometsol_handle = dlopen_gnometsol ();
++    if (gnometsol_handle != NULL)
++      libgnome_tsol_get_usrattr_val = (gnome_tsol_get_usrattr_val) dlsym(gnometsol_handle,
++					     "gnome_tsol_get_usrattr_val");
++  }
++
++  if (libgnome_tsol_get_usrattr_val == NULL) {
++    if (strcmp(keywd, USERATTR_IDLETIME_KW) == 0)
++      value = strdup("15");
++    else if (strcmp(keywd, USERATTR_IDLECMD_KW) == 0)
++      value = strdup(USERATTR_IDLECMD_LOCK_KW);
++  } else
++    value = libgnome_tsol_get_usrattr_val(uattr, keywd);
++
++  return ( value );
++}
+--- gnome-screensaver/src/trusted-utils.h.orig	2010-01-07 16:52:45.282547412 +0800
++++ gnome-screensaver/src/trusted-utils.h	2010-01-07 16:46:27.271689461 +0800
+@@ -0,0 +1,61 @@
++/*
++ * Trusted xscreensaver
++ *
++ * Copyright 2006 Sun Microsystems, Inc.  All rights reserved.
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining a
++ * copy of this software and associated documentation files (the
++ * "Software"), to deal in the Software without restriction, including
++ * without limitation the rights to use, copy, modify, merge, publish,
++ * distribute, and/or sell copies of the Software, and to permit persons
++ * to whom the Software is furnished to do so, provided that the above
++ * copyright notice(s) and this permission notice appear in all copies of
++ * the Software and that both the above copyright notice(s) and this
++ * permission notice appear in supporting documentation.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
++ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
++ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT
++ * OF THIRD PARTY RIGHTS. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
++ * HOLDERS INCLUDED IN THIS NOTICE BE LIABLE FOR ANY CLAIM, OR ANY SPECIAL
++ * INDIRECT OR CONSEQUENTIAL DAMAGES, OR ANY DAMAGES WHATSOEVER RESULTING
++ * FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT,
++ * NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION
++ * WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
++ *
++ * Except as contained in this notice, the name of a copyright holder
++ * shall not be used in advertising or otherwise to promote the sale, use
++ * or other dealings in this Software without prior written authorization
++ * of the copyright holder.
++ *
++ *
++ * Based on work by Erwann Chenede, Ghee Teo
++ *
++ * Definitions for the trusted functions.
++ */
++#ifndef TRUSTED_XSCREENSAVER_H
++#define TRUSTED_XSCREENSAVER_H
++
++#ifdef HAVE_XTSOL
++#include <X11/extensions/Xtsol.h>
++#endif /* HAVE_XTSOL */
++#include <user_attr.h>
++#include <glib.h>
++#include <X11/Xlib.h>
++#include <sys/types.h>
++#include <unistd.h>
++
++extern gboolean tsol_is_multi_label_session (void);
++extern char *getusrattrval(userattr_t *, char *);
++extern void XTSOLgetWorkstationOwner(Display *, uid_t *);
++
++typedef void (*xtsol_XTSOLgetWorkstationOwner) (Display *, uid_t *);
++extern void XTSOLMakeTPWindow(Display *, Window);
++typedef void (*xtsol_XTSOLMakeTPWindow) (Display *, Window);
++typedef char *(*gnome_tsol_get_usrattr_val) (userattr_t *, char *);
++
++enum {
++	LOCK_CMD = 0,
++	LOGOUT_CMD
++};
++#endif /* TRUSTED_XSCREENSAVER_H */
+ 
+diff --git a/src/gnome-screensaver-preferences.c b/src/gnome-screensaver-preferences.c
+index d8376fb..1b2f0e0 100644
+--- a/src/gnome-screensaver-preferences.c
++++ b/src/gnome-screensaver-preferences.c
+@@ -73,6 +73,18 @@ static GConfEnumStringPair mode_enum_map [] = {
+        { 0, NULL }
+ };
+ 
++#ifdef TRUSTED_EXTENSION
++#include <user_attr.h>
++
++void XTSOLgetWorkstationOwner(Display *, uid_t *);
++char *getusrattrval(userattr_t *, char *);
++gboolean tsol_is_multi_label_session (void);
++static GConfEnumStringPair tsol_mode_enum_map [] = {
++       { GS_MODE_BLANK_ONLY,       "blank-only" },
++       { 0, NULL }
++};
++#endif /* TRUSTED_EXTENSION */
++
+ /* Drag and drop info */
+ enum {
+         TARGET_URI_LIST,
+@@ -94,6 +106,10 @@ config_get_activate_delay (gboolean *is_writable)
+ {
+         GConfClient *client;
+         gint32       delay;
++#ifdef TRUSTED_EXTENSION
++        static gboolean tsol_multi_label_session = False;
++        static gboolean tsol_hack_initialized = False;
++#endif /* TRUSTED_EXTENSION */
+ 
+         client = gconf_client_get_default ();
+ 
+@@ -109,6 +125,33 @@ config_get_activate_delay (gboolean *is_writable)
+                 delay = 1;
+         }
+ 
++#ifdef TRUSTED_EXTENSION
++        if (tsol_hack_initialized != True)
++                tsol_multi_label_session = tsol_is_multi_label_session();
++        
++        tsol_multi_label_session = True;
++
++        if ( tsol_multi_label_session )
++        {
++	        uid_t WorkstationOwner;
++	        Display *dpy = GDK_DISPLAY();
++        	userattr_t *uent;
++        	char *value = NULL;
++        	int idletime;
++
++                XTSOLgetWorkstationOwner(dpy, &WorkstationOwner);
++                uent = getuseruid(WorkstationOwner);
++
++                value = getusrattrval(uent, USERATTR_IDLETIME_KW);
++                if (value != NULL && *value != '\0')
++                  idletime = atoi(value);
++                if (delay > idletime)
++                  delay = idletime;
++
++                tsol_hack_initialized = True;
++        }
++#endif /* TRUSTED_EXTENSION */
++
+         g_object_unref (client);
+ 
+         return delay;
+@@ -118,9 +161,41 @@ static void
+ config_set_activate_delay (gint32 timeout)
+ {
+         GConfClient *client;
++#ifdef TRUSTED_EXTENSION
++        static gboolean tsol_multi_label_session = False;
++        static gboolean tsol_hack_initialized = False;
++#endif /* TRUSTED_EXTENSION */
+ 
+         client = gconf_client_get_default ();
+ 
++#ifdef TRUSTED_EXTENSION
++        if (tsol_hack_initialized != True)
++                tsol_multi_label_session = tsol_is_multi_label_session();
++        
++        tsol_multi_label_session = True;
++
++        if ( tsol_multi_label_session )
++        {
++	        uid_t WorkstationOwner;
++	        Display *dpy = GDK_DISPLAY();
++        	userattr_t *uent;
++        	char *value = NULL;
++        	int idletime;
++
++                XTSOLgetWorkstationOwner(dpy, &WorkstationOwner);
++                uent = getuseruid(WorkstationOwner);
++
++                value = getusrattrval(uent, USERATTR_IDLETIME_KW);
++                if (value != NULL && *value != '\0')
++                  idletime = atoi(value);
++
++                if (timeout > idletime)
++                        timeout = idletime;
++
++                tsol_hack_initialized = True;
++        }
++#endif /* TRUSTED_EXTENSION */
++
+         gconf_client_set_int (client, KEY_ACTIVATE_DELAY, timeout, NULL);
+ 
+         g_object_unref (client);
+@@ -132,6 +207,10 @@ config_get_mode (gboolean *is_writable)
+         GConfClient *client;
+         int          mode;
+         char        *string;
++#ifdef TRUSTED_EXTENSION
++        static gboolean tsol_multi_label_session = False;
++        static gboolean tsol_hack_initialized = False;
++#endif /* TRUSTED_EXTENSION */
+ 
+         client = gconf_client_get_default ();
+ 
+@@ -143,7 +222,19 @@ config_get_mode (gboolean *is_writable)
+ 
+         string = gconf_client_get_string (client, KEY_MODE, NULL);
+         if (string) {
++#ifdef TRUSTED_EXTENSION
++                if ( tsol_hack_initialized != True)
++                        tsol_multi_label_session = tsol_is_multi_label_session();
++
++        tsol_multi_label_session = True;
++
++                if ( tsol_multi_label_session )
++                        gconf_string_to_enum (tsol_mode_enum_map, string, &mode);
++                else
++                        gconf_string_to_enum (mode_enum_map, string, &mode);
++#else
+                 gconf_string_to_enum (mode_enum_map, string, &mode);
++#endif /* TRUSTED_EXTENSION */
+                 g_free (string);
+         } else {
+                 mode = GS_MODE_BLANK_ONLY;
+@@ -159,10 +250,26 @@ config_set_mode (int mode)
+ {
+         GConfClient *client;
+         const char  *mode_string;
++#ifdef TRUSTED_EXTENSION
++        static gboolean tsol_multi_label_session = False;
++        static gboolean tsol_hack_initialized = False;
++#endif /* TRUSTED_EXTENSION */
+ 
+         client = gconf_client_get_default ();
+ 
++#ifdef TRUSTED_EXTENSION
++        if ( tsol_hack_initialized != True)
++                tsol_multi_label_session = tsol_is_multi_label_session();
++
++        tsol_multi_label_session = True;
++
++        if ( tsol_multi_label_session )
++                mode_string = gconf_enum_to_string (tsol_mode_enum_map, mode);
++        else
++                mode_string = gconf_enum_to_string (mode_enum_map, mode);
++#else
+         mode_string = gconf_enum_to_string (mode_enum_map, mode);
++#endif /* TRUSTED_EXTENSION */
+         gconf_client_set_string (client, KEY_MODE, mode_string, NULL);
+ 
+         g_object_unref (client);
+@@ -518,13 +625,38 @@ populate_model (GtkTreeStore *store)
+         GtkTreeIter iter;
+         GSList     *themes        = NULL;
+         GSList     *l;
++#ifdef TRUSTED_EXTENSION
++        static gboolean tsol_multi_label_session = False;
++        static gboolean tsol_hack_initialized = False;
++#endif /* TRUSTED_EXTENSION */
+ 
+         gtk_tree_store_append (store, &iter, NULL);
+         gtk_tree_store_set (store, &iter,
+                             NAME_COLUMN, _("Blank screen"),
+                             ID_COLUMN, "__blank-only",
+                             -1);
++#ifdef TRUSTED_EXTENSION
++        if ( tsol_hack_initialized != True)
++                tsol_multi_label_session = tsol_is_multi_label_session();
++
++        tsol_multi_label_session = True; /* Over-riding actual value for quick hacking,
++                                            remove for production environment */
++
++        if ( tsol_multi_label_session == False )
++        {
++                gtk_tree_store_append (store, &iter, NULL);
++                gtk_tree_store_set (store, &iter,
++                            NAME_COLUMN, _("Random"),
++                            ID_COLUMN, "__random",
++                            -1);
+ 
++                gtk_tree_store_append (store, &iter, NULL);
++                gtk_tree_store_set (store, &iter,
++                            NAME_COLUMN, NULL,
++                            ID_COLUMN, "__separator",
++                            -1);
++        }
++#else
+         gtk_tree_store_append (store, &iter, NULL);
+         gtk_tree_store_set (store, &iter,
+                             NAME_COLUMN, _("Random"),
+@@ -536,7 +668,7 @@ populate_model (GtkTreeStore *store)
+                             NAME_COLUMN, NULL,
+                             ID_COLUMN, "__separator",
+                             -1);
+-
++#endif /* TRUSTED_EXTENSION */
+         themes = get_theme_info_list ();
+ 
+         if (themes == NULL) {
+@@ -621,6 +753,7 @@ tree_selection_changed_cb (GtkTreeSelection *selection,
+         }
+ 
+         preview_set_theme (preview, theme, name);
++
+         config_set_theme (theme);
+ 
+         g_free (theme);
+@@ -1451,6 +1584,11 @@ init_capplet (void)
+         GConfClient *client;
+         GError    *error=NULL;
+ 
++#ifdef TRUSTED_EXTENSION
++	static gboolean tsol_multi_label_session = False;
++	static gboolean tsol_hack_initialized = False;
++#endif /* TRUSTED_EXTENSION */
++
+         gtk_builder_file = g_build_filename (GTKBUILDERDIR, GTK_BUILDER_FILE, NULL);
+         builder = gtk_builder_new();
+         if (!gtk_builder_add_from_file(builder, gtk_builder_file, &error)) {
+@@ -1513,6 +1651,35 @@ init_capplet (void)
+         g_signal_connect (activate_delay_hscale, "format-value",
+                           G_CALLBACK (format_value_callback_time), NULL);
+ 
++#ifdef TRUSTED_EXTENSION
++        if ( tsol_hack_initialized != True)
++                tsol_multi_label_session = tsol_is_multi_label_session();
++
++        tsol_multi_label_session = True; /* Over-riding actual value for quick hacking,
++                                            remove for production environment */
++
++        if ( tsol_multi_label_session )
++        {
++	        uid_t WorkstationOwner;
++	        Display *dpy = GDK_DISPLAY();
++        	userattr_t *uent;
++        	char *value = NULL;
++        	int idletime = 60;
++                GtkAdjustment *adj;
++
++	        XTSOLgetWorkstationOwner(dpy, &WorkstationOwner);
++	        uent = getuseruid(WorkstationOwner);
++
++                adj = gtk_range_get_adjustment ((GtkRange *)activate_delay_hscale);
++	        value = getusrattrval(uent, USERATTR_IDLETIME_KW);
++	        if (value != NULL && *value != '\0')
++	          idletime = atoi(value);
++                gtk_adjustment_set_upper(adj, (gdouble)idletime);
++
++                tsol_hack_initialized = True;
++        }
++#endif /* TRUSTED_EXTENSION */
++
+         gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (lock_checkbox), config_get_lock (&is_writable));
+         if (! is_writable) {
+                 gtk_widget_set_sensitive (lock_checkbox, FALSE);
+@@ -1553,7 +1720,14 @@ init_capplet (void)
+                 int mode;
+                 GSList *list;
+ 
++#ifdef TRUSTED_EXTENSION
++                if ( tsol_multi_label_session )
++                        gconf_string_to_enum (tsol_mode_enum_map, string, &mode);
++                else
++                        gconf_string_to_enum (mode_enum_map, string, &mode);
++#else 
+                 gconf_string_to_enum (mode_enum_map, string, &mode);
++#endif /* TRUSTED_EXTENSION */
+                 g_free (string);
+ 
+                 if (mode == GS_MODE_RANDOM) {
+@@ -1607,13 +1781,20 @@ init_capplet (void)
+                           G_CALLBACK (fullscreen_preview_next_cb), NULL);
+ 
+         g_idle_add ((GSourceFunc)setup_treeview_idle, NULL);
++
++#ifdef TRUSTED_EXTENSION
++        if ( tsol_multi_label_session )
++        {
++                gtk_widget_hide(GTK_WIDGET(enabled_checkbox));
++                gtk_widget_hide(GTK_WIDGET(lock_checkbox));
++        }
++#endif /* TRUSTED_EXTENSION */
+ }
+ 
+ int
+ main (int    argc,
+       char **argv)
+ {
+-
+ #ifdef ENABLE_NLS
+         bindtextdomain (GETTEXT_PACKAGE, GNOMELOCALEDIR);
+ # ifdef HAVE_BIND_TEXTDOMAIN_CODESET
+diff --git a/src/gs-prefs.c b/src/gs-prefs.c
+index dbb576f..140de09 100644
+--- a/src/gs-prefs.c
++++ b/src/gs-prefs.c
+@@ -30,6 +30,17 @@
+ 
+ #include "gs-prefs.h"
+ 
++#ifdef TRUSTED_EXTENSION
++#include <X11/Xlib.h>
++#include <user_attr.h>
++#include <stdlib.h>
++
++void XTSOLgetWorkstationOwner(Display *, uid_t *);
++char *getusrattrval(userattr_t *, char *);
++gboolean tsol_is_multi_label_session (void);
++Display *gdk_display();
++#endif /* TRUSTED_EXTENSION */
++
+ static void gs_prefs_class_init (GSPrefsClass *klass);
+ static void gs_prefs_init       (GSPrefs      *prefs);
+ static void gs_prefs_finalize   (GObject      *object);
+@@ -138,6 +149,11 @@ static void
+ _gs_prefs_set_timeout (GSPrefs *prefs,
+                        int      value)
+ {
++#ifdef TRUSTED_EXTENSION
++        static gboolean tsol_multi_label_session = FALSE;
++        static gboolean tsol_hack_initialized = FALSE;
++#endif /* TRUSTED_EXTENSION */
++
+         if (value < 1)
+                 value = 10;
+ 
+@@ -146,7 +162,36 @@ _gs_prefs_set_timeout (GSPrefs *prefs,
+         if (value > 480)
+                 value = 480;
+ 
++#ifdef TRUSTED_EXTENSION
++        if ( tsol_hack_initialized != TRUE)
++                tsol_multi_label_session = tsol_is_multi_label_session();
++
++        tsol_multi_label_session = TRUE; /* Over-riding actual value for quick hacking,
++                                            remove for production environment */
++
++        if ( tsol_multi_label_session )
++        {
++	        uid_t WorkstationOwner;
++	        Display *dpy = gdk_display();
++        	userattr_t *uent;
++        	char *tmp = NULL;
++        	int idletime = 480;
++
++	        XTSOLgetWorkstationOwner(dpy, &WorkstationOwner);
++	        uent = getuseruid(WorkstationOwner);
++
++	        tmp = getusrattrval(uent, USERATTR_IDLETIME_KW);
++	        if (tmp != NULL && *tmp != '\0')
++	          idletime = atoi(tmp);
++                if (idletime < value)
++                        value = idletime;
++
++                tsol_hack_initialized = TRUE;
++        }
++        prefs->timeout = value * 60000;
++#else
+         prefs->timeout = value * 60000;
++#endif /* TRUSTED_EXTENSION */
+ }
+ 
+ static void
+@@ -231,16 +276,82 @@ static void
+ _gs_prefs_set_lock_enabled (GSPrefs *prefs,
+                             gboolean value)
+ {
++#ifdef TRUSTED_EXTENSION
++        static gboolean tsol_multi_label_session = FALSE;
++        static gboolean tsol_hack_initialized = FALSE;
++
++        if ( tsol_hack_initialized != TRUE)
++                tsol_multi_label_session = tsol_is_multi_label_session();
++
++        tsol_multi_label_session = TRUE; /* Over-riding actual value for quick hacking,
++                                            remove for production environment */
++
++        if ( tsol_multi_label_session == TRUE )
++                prefs->lock_enabled = TRUE;
++        else
++                prefs->lock_enabled = value;
++#else
+         prefs->lock_enabled = value;
++#endif /* TRUSTED_EXTENSION */
+ }
+ 
+ static void
+ _gs_prefs_set_lock_disabled (GSPrefs *prefs,
+                              gboolean value)
+ {
++#ifdef TRUSTED_EXTENSION
++        static gboolean tsol_multi_label_session = FALSE;
++        static gboolean tsol_hack_initialized = FALSE;
++
++        if ( tsol_hack_initialized != TRUE)
++                tsol_multi_label_session = tsol_is_multi_label_session();
++
++        tsol_multi_label_session = TRUE; /* Over-riding actual value for quick hacking,
++                                            remove for production environment */
++
++        if ( tsol_multi_label_session == TRUE )
++                prefs->lock_disabled = FALSE;
++        else
++                prefs->lock_disabled = value;
++#else
+         prefs->lock_disabled = value;
++#endif /* TRUSTED_EXTENSION */
+ }
+ 
++#ifdef TRUSTED_EXTENSION
++static void
++_gs_prefs_set_lock_command(GSPrefs *prefs,
++                           gint value)
++{
++        static gboolean tsol_multi_label_session = FALSE;
++        static gboolean tsol_hack_initialized = FALSE;
++
++        if ( tsol_hack_initialized != TRUE)
++                tsol_multi_label_session = tsol_is_multi_label_session();
++
++        tsol_multi_label_session = TRUE; /* Over-riding actual value for quick hacking,
++                                            remove for production environment */
++
++        if ( tsol_multi_label_session == TRUE )
++        {
++                uid_t WorkstationOwner;
++	        Display *dpy = gdk_display();
++        	userattr_t *uent;
++        	char *tmp = NULL;
++
++	        XTSOLgetWorkstationOwner(dpy, &WorkstationOwner);
++	        uent = getuseruid(WorkstationOwner);
++                tmp = getusrattrval(uent, USERATTR_IDLECMD_KW);
++                if (tmp && strcmp(tmp, USERATTR_IDLECMD_LOGOUT_KW) == 0)
++                        prefs->lock_command = LOGOUT_CMD;
++                else
++                        prefs->lock_command = LOCK_CMD;
++        }
++        else
++                prefs->lock_command = value;
++
++}
++#endif /* TRUSTED_EXTENSION */
+ static void
+ _gs_prefs_set_user_switch_disabled (GSPrefs *prefs,
+                                     gboolean value)
+@@ -764,6 +875,11 @@ key_changed_cb (GConfClient *client,
+ static void
+ gs_prefs_init (GSPrefs *prefs)
+ {
++#ifdef TRUSTED_EXTENSION
++        static gboolean tsol_multi_label_session = FALSE;
++        static gboolean tsol_hack_initialized = FALSE;
++#endif /* TRUSTED_EXTENSION */
++
+         prefs->priv = GS_PREFS_GET_PRIVATE (prefs);
+ 
+         prefs->priv->gconf_client      = gconf_client_get_default ();
+@@ -775,6 +891,39 @@ gs_prefs_init (GSPrefs *prefs)
+         prefs->user_switch_enabled     = FALSE;
+ 
+         prefs->timeout                 = 600000;
++#ifdef TRUSTED_EXTENSION
++        prefs->lock_command                 = LOCK_CMD;
++        if ( tsol_hack_initialized != TRUE)
++                tsol_multi_label_session = tsol_is_multi_label_session();
++
++        tsol_multi_label_session = TRUE; /* Over-riding actual value for quick hacking,
++                                            remove for production environment */
++
++        if ( tsol_multi_label_session == TRUE )
++        {
++	        uid_t WorkstationOwner;
++	        Display *dpy = gdk_display();
++        	userattr_t *uent;
++        	char *tmp = NULL;
++        	int idletime = 480;
++
++	        XTSOLgetWorkstationOwner(dpy, &WorkstationOwner);
++	        uent = getuseruid(WorkstationOwner);
++
++	        tmp = getusrattrval(uent, USERATTR_IDLETIME_KW);
++	        if (tmp != NULL && *tmp != '\0')
++                {
++	                idletime = atoi(tmp);
++                        prefs->timeout = idletime * 60000;
++                }
++
++                tmp = getusrattrval(uent, USERATTR_IDLECMD_KW);
++                if (tmp && strcmp(tmp, USERATTR_IDLECMD_LOGOUT_KW) == 0)
++                        prefs->lock_command = LOGOUT_CMD;
++
++                tsol_hack_initialized = TRUE;
++        }
++#endif /* TRUSTED_EXTENSION */
+         prefs->power_timeout           = 60000;
+         prefs->lock_timeout            = 0;
+         prefs->logout_timeout          = 14400000;
+diff --git a/src/gs-prefs.h b/src/gs-prefs.h
+index cda64be..68fbcb1 100644
+--- a/src/gs-prefs.h
++++ b/src/gs-prefs.h
+@@ -38,6 +38,13 @@ typedef enum {
+         GS_MODE_SINGLE
+ } GSSaverMode;
+ 
++#ifdef TRUSTED_EXTENSION
++enum {
++        LOCK_CMD = 0,
++        LOGOUT_CMD
++};
++#endif /* TRUSTED_EXTENSION */
++
+ typedef struct GSPrefsPrivate GSPrefsPrivate;
+ 
+ typedef struct
+@@ -64,6 +71,9 @@ typedef struct
+         char            *logout_command;        /* command to use to logout */
+         char            *keyboard_command;      /* command to use to embed a keyboard */
+ 
++#ifdef TRUSTED_EXTENSION
++	gint		lock_command;
++#endif /* TRUSTED_EXTENSION */
+         GSList          *themes;                /* the screensaver themes to run */
+         GSSaverMode      mode;                  /* theme selection mode */
+ } GSPrefs;
+diff --git a/src/Makefile.am b/src/Makefile.am
+index 290aac1..bca0095 100644
+--- a/src/Makefile.am
++++ b/src/Makefile.am
+@@ -25,6 +25,7 @@ INCLUDES =							\
+ 	-DTHEMESDIR=\""$(themesdir)"\"				\
+ 	-DGTKBUILDERDIR=\"$(pkgdatadir)\"				\
+ 	-DPAM_SERVICE_NAME=\""gnome-screensaver"\"		\
++	-DTRUSTED_EXTENSION					\
+ 	$(WARN_CFLAGS)						\
+ 	$(AUTH_CFLAGS)						\
+ 	$(DEBUG_CFLAGS)						\
+@@ -196,6 +197,8 @@ gnome_screensaver_SOURCES =	\
+ 	gs-grab.h		\
+ 	gs-fade.c		\
+ 	gs-fade.h		\
++	trusted-utils.c		\
++	trusted-utils.h		\
+ 	$(BUILT_SOURCES)	\
+ 	$(NULL)
+ 
+@@ -229,6 +232,8 @@ gnome_screensaver_preferences_SOURCES =	\
+ 	gs-debug.h			\
+ 	subprocs.c			\
+ 	subprocs.h			\
++	trusted-utils.c			\
++	trusted-utils.hw		\
+ 	$(NULL)
+ 
+ gnome_screensaver_preferences_LDADD =	\

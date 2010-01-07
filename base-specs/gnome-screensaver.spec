@@ -18,12 +18,13 @@ Summary:      The GNOME screen saver
 Source:       http://ftp.gnome.org/pub/GNOME/sources/%{name}/2.28/%{name}-%{version}.tar.bz2
 # date:2009-05-11 owner:johnf type:feature
 Patch1:       gnome-screensaver-01-pam-audit.diff
-
 #This patch starts the unlock dialog first.
 # date:2010-01-06 owner:jefftsai type:feature
 Patch2:       gnome-screensaver-02-unlock-first.diff
 # date:2010-01-06 owner:jefftsai type:bug
 Patch3:       gnome-screensaver-03-gs-debug.diff
+# date:2010-01-07 owner:jefftsai type:bug
+Patch4:       gnome-screensaver-04-tjds.diff
 URL:          www.gnome.org
 BuildRoot:    %{_tmppath}/%{name}-%{version}-build
 Autoreqprov:  on
@@ -65,6 +66,7 @@ It is designed to support:
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
 
 # Fix for 332967.
 for po in po/*.po; do
@@ -113,6 +115,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/*
 
 %changelog
+* Thu Jan 07 2010 - jeff.cai@sun.com
+- Add patch -04-tjds. This patch is formed on xscreensaver support 
+  to trusted jds.
 * Wed Jan 06 2010 - jeff.cai@sun.com
 - Add patch -02-unlock-first. This patch can start the unlock dialog
   process once the lock is active. The process keeps running.

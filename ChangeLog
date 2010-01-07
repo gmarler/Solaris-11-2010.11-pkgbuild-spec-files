@@ -1,3 +1,9 @@
+2010-01-07  Jeff Cai  <set EMAIL_ADDRESS environment variable>
+
+	* base-specs/gnome-screensaver.spec:
+	* patches/gnome-screensaver-04-tjds.diff:
+	Add patch to support trusted JDS.
+
 2010-01-06  Thomas Wagner  <tom68@users.sourceforge.net>
         * SFEtypo3.spec: bump to 4.2.10, adjust detection for existing 
           symlink, pause Requires SFEphp
