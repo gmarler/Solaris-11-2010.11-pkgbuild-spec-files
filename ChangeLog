@@ -1,3 +1,8 @@
+2010-01-08  Thomas Wagner  <tom68@users.sourceforge.net>
+
+        * experimental/SFEdovecot.spec:  *copy* for testing 1.2.9 and with cleaned up pathlayout
+        * experimental/SFEdovecot-plugin-sieve.spec: *new* - plugin for sieve scripting on serverside
+
 2010-01-07  Jeff Cai  <set EMAIL_ADDRESS environment variable>
 
 	* base-specs/gnome-screensaver.spec:
