@@ -25,6 +25,9 @@ Patch2:       gnome-screensaver-02-unlock-first.diff
 Patch3:       gnome-screensaver-03-gs-debug.diff
 # date:2010-01-07 owner:jefftsai type:bug
 Patch4:       gnome-screensaver-04-tjds.diff
+# date:2010-01-07 owner:jefftsai type:feature
+Patch5:       gnome-screensaver-05-pam-helper.diff
+
 URL:          www.gnome.org
 BuildRoot:    %{_tmppath}/%{name}-%{version}-build
 Autoreqprov:  on
@@ -67,6 +70,7 @@ It is designed to support:
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
+%patch5 -p1
 
 # Fix for 332967.
 for po in po/*.po; do
@@ -115,6 +119,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/*
 
 %changelog
+* Thu Jan 07 2010 - jeff.cai@sun.com
+- Add patch -05-pam-helper, add pam helper.
 * Thu Jan 07 2010 - jeff.cai@sun.com
 - Add patch -04-tjds. This patch is formed on xscreensaver support 
   to trusted jds.

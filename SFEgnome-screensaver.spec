@@ -99,9 +99,13 @@ test -x $BASEDIR/lib/postrun || exit 0
 %dir %attr (0755, root, bin) %{_bindir}
 %{_bindir}/*
 %dir %attr (0755, root, bin) %{_libdir}
-%{_libdir}/gnome-screensaver
 %{_libdir}/gnome-screensaver-gl-helper
 %{_libexecdir}/gnome-screensaver-dialog
+%dir %attr (0755, root, bin) %{_libexecdir}/gnome-screensaver
+%attr (06555, root, bin) %{_libexecdir}/gnome-screensaver/pam-helper
+%{_libexecdir}/gnome-screensaver/slideshow
+%{_libexecdir}/gnome-screensaver/floaters
+%{_libexecdir}/gnome-screensaver/popsquares
 %dir %attr (0755, root, other) %{_libdir}/pkgconfig
 %{_libdir}/pkgconfig/*
 %dir %attr(0755, root, sys) %{_datadir}

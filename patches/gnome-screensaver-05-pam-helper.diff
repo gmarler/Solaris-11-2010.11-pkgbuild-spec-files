@@ -1,0 +1,257 @@
+--- gnome-screensaver/src/pam-helper.c.orig	2010-01-07 20:01:59.470446319 +0800
++++ gnome-screensaver/src/pam-helper.c	2010-01-07 20:00:48.685348515 +0800
+@@ -0,0 +1,216 @@
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <unistd.h>
++#include <sys/types.h>
++#include <sys/stat.h>
++#include <syslog.h>
++#include <security/pam_appl.h>
++
++#define LOG_AUTHPRIV    (10<<3)
++
++extern char **environ;
++
++static int
++clearenv (void)
++{
++	if (environ != NULL)
++		environ[0] = NULL;
++	return 0;
++}
++
++static int
++conversation_function (int n, struct pam_message **msg, struct pam_response **resp, void *data)
++{
++	struct pam_response *aresp;
++	char buf[PAM_MAX_RESP_SIZE];
++	int i;
++
++	data = data;
++	if (n <= 0 || n > PAM_MAX_NUM_MSG)
++		return PAM_CONV_ERR;
++
++	if ((aresp = calloc(n, sizeof *aresp)) == NULL)
++		return PAM_BUF_ERR;
++
++	for (i = 0; i < n; ++i) {
++		aresp[i].resp_retcode = 0;
++		aresp[i].resp = NULL;
++		switch (msg[i]->msg_style) {
++
++			case PAM_PROMPT_ECHO_OFF:
++				fprintf (stdout, "PAM_PROMPT_ECHO_OFF ");
++				goto conv1;
++
++			case PAM_PROMPT_ECHO_ON:
++				fprintf (stdout, "PAM_PROMPT_ECHO_ON ");
++conv1:
++				fputs (msg[i]->msg, stdout);
++				if (strlen (msg[i]->msg) > 0 && msg[i]->msg[strlen (msg[i]->msg) - 1] != '\n')
++					fputc ('\n', stdout);
++				fflush (stdout);
++
++				if (fgets (buf, sizeof buf, stdin) == NULL)
++					goto error;
++
++				if (strlen (buf) > 0 &&
++						buf[strlen (buf) - 1] == '\n')
++					buf[strlen (buf) - 1] = '\0';
++
++				aresp[i].resp = strdup (buf);
++				if (aresp[i].resp == NULL)
++					goto error;
++				break;
++
++			case PAM_ERROR_MSG:
++				fprintf (stdout, "PAM_ERROR_MSG ");
++				goto conv2;
++
++			case PAM_TEXT_INFO:
++				fprintf (stdout, "PAM_TEXT_INFO ");
++conv2:
++				fputs (msg[i]->msg, stdout);
++				if (strlen (msg[i]->msg) > 0 &&
++						msg[i]->msg[strlen (msg[i]->msg) - 1] != '\n')
++					fputc ('\n', stdout);
++				fflush (stdout);
++				break;
++
++			default:
++				goto error;
++		}
++	}
++
++	*resp = aresp;
++	return PAM_SUCCESS;
++
++error:
++
++	for (i = 0; i < n; ++i) {
++		if (aresp[i].resp != NULL) {
++			memset (aresp[i].resp, 0, strlen(aresp[i].resp));
++			free (aresp[i].resp);
++		}
++	}
++	memset (aresp, 0, n * sizeof *aresp);
++	*resp = NULL;
++	return PAM_CONV_ERR;
++}
++
++int
++main (int argc, char *argv[])
++{
++	int rc;
++	const char *user_to_auth;
++	struct pam_conv pam_conversation;
++	pam_handle_t *pam_h;
++	void *authed_user;
++
++	rc = 0;
++	pam_h = NULL;
++
++	/* clear the entire environment to avoid attacks using with libraries honoring environment variables */
++	if (clearenv () != 0)
++		goto error;
++
++	/* set a minimal environment */
++	setenv ("PATH", "/usr/sbin:/usr/bin:/sbin:/bin", 1);
++
++	/* check that we are setuid root */
++	if (geteuid () != 0) {
++		fprintf (stderr, "pam-helper: needs to be setuid root\n");
++		goto error;
++	}
++
++	openlog ("pam-helper", LOG_CONS | LOG_PID, LOG_AUTHPRIV);
++
++	/* check for correct invocation */
++	if (argc != 3) {
++		syslog (LOG_NOTICE, "inappropriate use of helper, wrong number of arguments [uid=%d]", getuid ());
++		fprintf (stderr, "pam-helper: wrong number of arguments. This incident has been logged.\n");
++		for (int i = 0; i < argc; i++)
++			fprintf (stderr, "%d %s\n", i, argv[i]);
++		goto error;
++	}
++
++	user_to_auth = argv[2];
++
++	if (getuid () != 0) {
++#if 0
++		/* check we're running with a non-tty stdin */
++		if (isatty (STDIN_FILENO) != 0) {
++			syslog (LOG_NOTICE, "inappropriate use of helper, stdin is a tty [uid=%d]", getuid ());
++			fprintf (stderr, "pam-helper: inappropriate use of helper, stdin is a tty. This incident has been logged.\n");
++			goto error;
++		}
++#endif
++	}
++
++	fprintf (stderr, "pam-helper: user to auth is '%s'.\n", user_to_auth);
++
++	pam_conversation.conv        = conversation_function;
++	pam_conversation.appdata_ptr = NULL;
++
++	/* start the pam stack */
++	rc = pam_start ("pam-helper",
++			user_to_auth,
++			&pam_conversation,
++			&pam_h);
++	if (rc != PAM_SUCCESS) {
++		fprintf (stderr, "pam-helper: pam_start failed: %s\n", pam_strerror (pam_h, rc));
++		goto error;
++	}
++
++	/* set the requesting user */
++	rc = pam_set_item (pam_h, PAM_RUSER, user_to_auth);
++	if (rc != PAM_SUCCESS) {
++		fprintf (stderr, "pam-helper: pam_set_item failed: %s\n", pam_strerror (pam_h, rc));
++		goto error;
++	}
++
++	/* is user really user? */
++	rc = pam_authenticate (pam_h, 0);
++	if (rc != PAM_SUCCESS) {
++		fprintf (stderr, "pam-helper: pam_authenticated failed: %s\n", pam_strerror (pam_h, rc));
++		goto error;
++	}
++
++	/* permitted access? */
++	rc = pam_acct_mgmt (pam_h, 0);
++	if (rc != PAM_SUCCESS) {
++		fprintf (stderr, "pam-helper: pam_acct_mgmt failed: %s\n", pam_strerror (pam_h, rc));
++		goto error;
++	}
++
++	/* did we auth the right user? */
++	rc = pam_get_item (pam_h, PAM_USER, &authed_user);
++	if (rc != PAM_SUCCESS) {
++		fprintf (stderr, "pam-helper: pam_get_item failed: %s\n", pam_strerror (pam_h, rc));
++		goto error;
++	}
++
++	if (strcmp (authed_user, user_to_auth) != 0) {
++		fprintf (stderr, "pam-helper: Tried to auth user '%s' but we got auth for user '%s' instead",
++				user_to_auth, (const char *) authed_user);
++		goto error;
++	}
++
++	fprintf (stderr, "pam-helper: successfully authenticated user '%s'.\n", user_to_auth);
++
++	pam_end (pam_h, rc);
++	pam_h = NULL;
++
++	fprintf (stdout, "SUCCESS\n");
++	fflush (stdout);
++	fflush (stderr);
++	return 0;
++
++error:
++	if (pam_h != NULL)
++		pam_end (pam_h, rc);
++
++	fprintf (stdout, "FAILURE\n");
++	fflush (stdout);
++	fflush (stderr);
++	return 1;
++}
+diff --git a/src/Makefile.am b/src/Makefile.am
+index 290aac1..d76cf5b 100644
+--- a/src/Makefile.am
++++ b/src/Makefile.am
+@@ -44,6 +44,11 @@ libexec_PROGRAMS = \
+ 	gnome-screensaver-gl-helper	\
+ 	$(NULL)
+ 
++pam_helperdir = $(libexecdir)/gnome-screensaver
++pam_helper_PROGRAMS = \
++	pam-helper	\
++	$(NULL)
++
+ noinst_PROGRAMS = 	\
+ 	test-fade	\
+ 	test-passwd	\
+@@ -210,6 +215,10 @@ gnome_screensaver_gl_helper_SOURCES =	\
+ 	gs-visual-gl.h			\
+ 	$(NULL)
+ 
++pam_helper_SOURCES = \
++	pam-helper.c	\
++	$(NULL)
++
+ gnome_screensaver_LDADD =		\
+ 	$(GNOME_SCREENSAVER_LIBS)	\
+ 	$(SAVER_LIBS)			\
+@@ -235,6 +244,10 @@ gnome_screensaver_preferences_LDADD =	\
+ 	$(GNOME_SCREENSAVER_CAPPLET_LIBS)	\
+ 	$(NULL)
+ 
++pam_helper_LDADD = \
++	-lpam	\
++	$(NULL)
++
+ EXTRA_DIST =				\
+ 	debug-screensaver.sh		\
+ 	gs-marshal.list			\

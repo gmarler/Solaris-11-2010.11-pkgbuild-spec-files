@@ -787,7 +787,7 @@ index 290aac1..bca0095 100644
  	-DTHEMESDIR=\""$(themesdir)"\"				\
  	-DGTKBUILDERDIR=\"$(pkgdatadir)\"				\
  	-DPAM_SERVICE_NAME=\""gnome-screensaver"\"		\
-+	-DTRUSTED_EXTENSION					\
++	-DNOT_USE_TRUSTED_EXTENSION					\
  	$(WARN_CFLAGS)						\
  	$(AUTH_CFLAGS)						\
  	$(DEBUG_CFLAGS)						\
