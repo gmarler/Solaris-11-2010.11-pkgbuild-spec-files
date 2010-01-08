@@ -1,3 +1,7 @@
+2010-01-08  Thomas Wagner  <tom68@users.sourceforge.net>
+
+        * experimental/SFEpostfix.spec: pause "Requires: %name" for package %name-root to test dependency order
+
 2010-01-08  Jeff Cai  <jeff.cai@sun.com>
 
 	* SFEgnome-screensaver.spec: Ship pam-helper
