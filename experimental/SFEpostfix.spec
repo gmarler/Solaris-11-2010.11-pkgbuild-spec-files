@@ -144,11 +144,15 @@ Requires: %{name}-root
 #%config %class(preserve)
 Requires: SUNWswmt
 
+%include default-depend.inc
+
+
+Requires: %name-root
 %package root
 Summary:                 %{summary} - / filesystem
 SUNW_BaseDir:            /
 SUNW_PkgType:		root
-%include default-depend.inc
+#pause for testing dependency order # Requires: %name
 
 #variables altered from postfix.spec
 %define rmail_patch %(which rmail)
@@ -172,7 +176,6 @@ SUNW_PkgType:		root
 
 
 
-%include default-depend.inc
 
 
 %prep
@@ -835,6 +838,8 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 
 
 %changelog
+* Fri Jan 09 2010 - Thomas Wagner
+- pause "Requires: %name" for package %name-root to test dependency order
 * Wed Jan 06 2010 - Thomas Wagner
 - reenable "make tidy" ... avoid leftover CDB definitions
 - adjust %files / %doc section
