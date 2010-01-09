@@ -1,3 +1,8 @@
+2010-01-09  Petr Sobotka  <sobotkap@gmail.com>
+
+	* SFErope.spec: Initial commit.
+	* copyright/rope.copyright:
+
 2010-01-08  Thomas Wagner  <tom68@users.sourceforge.net>
 
         * experimental/SFEpostfix.spec: pause "Requires: %name" for package %name-root to test dependency order
