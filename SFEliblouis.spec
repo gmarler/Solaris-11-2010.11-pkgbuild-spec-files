@@ -1,4 +1,4 @@
-# Copyright 2009 Sun Microsystems, Inc.
+# Copyright 2009-2010 Sun Microsystems, Inc.
 # This file and all modifications and additions to the pristine
 # package are under the same license as the package itself.
 
@@ -11,8 +11,6 @@ Version:           %{liblouis.version}
 SUNW_BaseDir:      %{_basedir}
 SUNW_Copyright:    %{name}.copyright
 BuildRoot:         %{_tmppath}/%{name}-%{liblouis.version}-build
-BuildRequires:     SUNWpython24-ctypes
-Requires:          SUNWpython24-ctypes
 
 %include default-depend.inc
 
@@ -31,9 +29,11 @@ ls ../../SOURCES
 gzcat ../../SOURCES/%{liblouis.name}-%{liblouis.version}.tar.gz | tar xf -
 
 %build
+export PYTHON="/usr/bin/python2.6"
 %liblouis.build -d %name-%liblouis.version
 
 %install
+export PYTHON="/usr/bin/python2.6"
 %liblouis.install -d %name-%liblouis.version
 rm $RPM_BUILD_ROOT/%{_infodir}/dir
 
@@ -92,6 +92,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/liblouis/*
 
 %changelog
+* Mon Jan 11 2010 - Willie Walker
+- Update to use python 2.6
 * Tue Aug 25 2009 - Willie Walker
 - Get this working again on b121. Also use the liblouis version number
   instead of the default version number.  Bump to 1.7.0.

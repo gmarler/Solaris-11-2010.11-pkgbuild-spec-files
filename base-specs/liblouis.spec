@@ -1,4 +1,4 @@
-# Copyright 2009 Sun Microsystems, Inc.
+# Copyright 2009-2010 Sun Microsystems, Inc.
 # This file and all modifications and additions to the pristine
 # package are under the same license as the package itself.
 Summary:	Support for contracted braille
@@ -8,7 +8,7 @@ License:	GPL V3
 Group:		Libraries
 Source: 	http://liblouis.googlecode.com/files/%{name}-%{version}.tar.gz
 
-%define python_version 2.4
+%define python_version 2.6
 
 %description
 Library and tools for supporting contracted braille
@@ -48,6 +48,8 @@ cd ..
 %{_libdir}/python?.?/vendor-packages/louis/*
 
 %changelog
+* Mon Jan 11 2010 - Willie Walker
+- Update to use python 2.6
 * Tue Aug 25 2009 - Willie Walker
 - Upgrade to liblouis 1.7.0
 * Tue Jun 16 2009 - Willie Walker
