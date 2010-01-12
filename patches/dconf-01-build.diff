@@ -1,0 +1,148 @@
+diff -uprN dconf-0.2/bin/Makefile.am dconf-0.2-new/bin/Makefile.am
+--- dconf-0.2/bin/Makefile.am	2009-10-08 04:43:29.000000000 +0800
++++ dconf-0.2-new/bin/Makefile.am	2010-01-11 16:34:06.124311373 +0800
+@@ -1,5 +1,4 @@
+-AM_CFLAGS = -I$(top_srcdir)/dconf $(glib_CFLAGS) \
+-		-Wall -Wmissing-prototypes -Wwrite-strings -g
++AM_CFLAGS = -I$(top_srcdir)/dconf $(glib_CFLAGS)
+ 
+ bin_PROGRAMS = \
+ 	dconf-watch	\
+diff -uprN dconf-0.2/dconf/Makefile.am dconf-0.2-new/dconf/Makefile.am
+--- dconf-0.2/dconf/Makefile.am	2009-10-08 04:43:29.000000000 +0800
++++ dconf-0.2-new/dconf/Makefile.am	2010-01-11 12:33:37.603392775 +0800
+@@ -1,5 +1,4 @@
+-AM_CFLAGS = -I$(top_srcdir)/common $(glib_CFLAGS) $(dbus_CFLAGS) \
+-		-Wall -Wmissing-prototypes -Wwrite-strings -g
++AM_CFLAGS = -I$(top_srcdir)/common $(glib_CFLAGS) $(dbus_CFLAGS)
+ 
+ DEFS = -DDCONF_CONF=\"$(sysconfdir)/dconf/dconf.conf\"
+ 
+diff -uprN dconf-0.2/gio/Makefile.am dconf-0.2-new/gio/Makefile.am
+--- dconf-0.2/gio/Makefile.am	2009-09-18 11:55:23.000000000 +0800
++++ dconf-0.2-new/gio/Makefile.am	2010-01-11 16:36:11.884984265 +0800
+@@ -1,5 +1,4 @@
+-AM_CFLAGS = -I$(top_srcdir)/dconf $(gio_CFLAGS) \
+-                -Wall -Wmissing-prototypes -Wwrite-strings
++AM_CFLAGS = -I$(top_srcdir)/dconf $(gio_CFLAGS)
+ 
+ giomodules_LTLIBRARIES = libdconfsettings.la
+ 
+diff -uprN dconf-0.2/service/Makefile.am dconf-0.2-new/service/Makefile.am
+--- dconf-0.2/service/Makefile.am	2009-09-18 11:55:23.000000000 +0800
++++ dconf-0.2-new/service/Makefile.am	2010-01-11 16:35:50.004801980 +0800
+@@ -1,5 +1,4 @@
+-AM_CFLAGS = -I$(top_srcdir)/dconf $(glib_CFLAGS) $(dbus_CFLAGS) \
+-		-Wall -Wmissing-prototypes -Wwrite-strings -g
++AM_CFLAGS = -I$(top_srcdir)/dconf $(glib_CFLAGS) $(dbus_CFLAGS)
+ 
+ libexec_PROGRAMS = dconf-service
+ 
+diff -uprN dconf-0.2/writer/dconf-writer-merge.c dconf-0.2-new/writer/dconf-writer-merge.c
+--- dconf-0.2/writer/dconf-writer-merge.c	2009-10-08 04:43:29.000000000 +0800
++++ dconf-0.2-new/writer/dconf-writer-merge.c	2010-01-11 16:35:26.141214892 +0800
+@@ -467,7 +467,7 @@ dconf_writer_merge_install_new (DConfWri
+ 
+   entry->type = merge_state_get_new_type (state);
+ 
+-  return dconf_writer_merge_write_to_entry (writer, entry, state, TRUE);
++  dconf_writer_merge_write_to_entry (writer, entry, state, TRUE);
+ }
+ 
+ static gint
+@@ -635,7 +635,7 @@ dconf_writer_merge_index (DConfWriter  *
+ 
+       if (entry != NULL && entry->type == merge_state_get_new_type (&state))
+         /* we can do the in-place update. */
+-        return dconf_writer_merge_write_to_entry (writer, entry,
++        dconf_writer_merge_write_to_entry (writer, entry,
+                                                   &state, FALSE);
+     }
+ 
+diff -uprN dconf-0.2/writer/dconf-writer.c dconf-0.2-new/writer/dconf-writer.c
+--- dconf-0.2/writer/dconf-writer.c	2009-10-08 04:43:29.000000000 +0800
++++ dconf-0.2-new/writer/dconf-writer.c	2010-01-11 16:35:06.892679773 +0800
+@@ -247,7 +247,7 @@ dconf_writer_set (DConfWriter  *writer,
+ {
+   const gchar *empty_string = "";
+ 
+-  return dconf_writer_merge (writer, key, &empty_string, &value, 1);
++  dconf_writer_merge (writer, key, &empty_string, &value, 1);
+ }
+ 
+ gboolean
+diff -uprN dconf-0.2/writer/Makefile.am dconf-0.2-new/writer/Makefile.am
+--- dconf-0.2/writer/Makefile.am	2009-09-18 11:55:23.000000000 +0800
++++ dconf-0.2-new/writer/Makefile.am	2010-01-11 16:34:49.028522478 +0800
+@@ -1,5 +1,4 @@
+-AM_CFLAGS = -I$(top_srcdir)/common $(glib_CFLAGS) $(dbus_CFLAGS) \
+-		-Wall -Wmissing-prototypes -Wwrite-strings -g
++AM_CFLAGS = -I$(top_srcdir)/common $(glib_CFLAGS) $(dbus_CFLAGS)
+ 
+ DEFS = -DDCONF_CONF=\"$(sysconfdir)/dconf/dconf.conf\"
+ 
+diff -uprN dconf-0.2/bin/Makefile.in dconf-0.2-new/bin/Makefile.in
+--- dconf-0.2/bin/Makefile.in	2009-10-08 04:44:57.000000000 +0800
++++ dconf-0.2-new/bin/Makefile.in	2010-01-11 16:34:16.028596792 +0800
+@@ -212,8 +212,7 @@ target_alias = @target_alias@
+ top_build_prefix = @top_build_prefix@
+ top_builddir = @top_builddir@
+ top_srcdir = @top_srcdir@
+-AM_CFLAGS = -I$(top_srcdir)/dconf $(glib_CFLAGS) \
+-		-Wall -Wmissing-prototypes -Wwrite-strings -g
++AM_CFLAGS = -I$(top_srcdir)/dconf $(glib_CFLAGS)
+ 
+ dconf_watch_LDADD = ../dconf/libdconf.la $(glib_LIBS)
+ dconf_LDADD = ../dconf/libdconf.la $(glib_LIBS)
+diff -uprN dconf-0.2/dconf/Makefile.in dconf-0.2-new/dconf/Makefile.in
+--- dconf-0.2/dconf/Makefile.in	2009-10-08 04:44:57.000000000 +0800
++++ dconf-0.2-new/dconf/Makefile.in	2010-01-11 12:34:45.964833673 +0800
+@@ -237,8 +237,7 @@ target_alias = @target_alias@
+ top_build_prefix = @top_build_prefix@
+ top_builddir = @top_builddir@
+ top_srcdir = @top_srcdir@
+-AM_CFLAGS = -I$(top_srcdir)/common $(glib_CFLAGS) $(dbus_CFLAGS) \
+-		-Wall -Wmissing-prototypes -Wwrite-strings -g
++AM_CFLAGS = -I$(top_srcdir)/common $(glib_CFLAGS) $(dbus_CFLAGS)
+ 
+ lib_LTLIBRARIES = libdconf.la
+ libdconf_la_LIBADD = $(glib_LIBS) $(dbus_LIBS)
+diff -uprN dconf-0.2/gio/Makefile.in dconf-0.2-new/gio/Makefile.in
+--- dconf-0.2/gio/Makefile.in	2009-10-08 04:44:57.000000000 +0800
++++ dconf-0.2-new/gio/Makefile.in	2010-01-11 16:36:05.765093838 +0800
+@@ -233,8 +233,7 @@ target_alias = @target_alias@
+ top_build_prefix = @top_build_prefix@
+ top_builddir = @top_builddir@
+ top_srcdir = @top_srcdir@
+-AM_CFLAGS = -I$(top_srcdir)/dconf $(gio_CFLAGS) \
+-                -Wall -Wmissing-prototypes -Wwrite-strings
++AM_CFLAGS = -I$(top_srcdir)/dconf $(gio_CFLAGS)
+ 
+ giomodules_LTLIBRARIES = libdconfsettings.la
+ libdconfsettings_la_LIBADD = ../dconf/libdconf.la $(gio_LIBS)
+diff -uprN dconf-0.2/service/Makefile.in dconf-0.2-new/service/Makefile.in
+--- dconf-0.2/service/Makefile.in	2009-10-08 04:44:57.000000000 +0800
++++ dconf-0.2-new/service/Makefile.in	2010-01-11 16:35:45.701233407 +0800
+@@ -210,8 +210,7 @@ target_alias = @target_alias@
+ top_build_prefix = @top_build_prefix@
+ top_builddir = @top_builddir@
+ top_srcdir = @top_srcdir@
+-AM_CFLAGS = -I$(top_srcdir)/dconf $(glib_CFLAGS) $(dbus_CFLAGS) \
+-		-Wall -Wmissing-prototypes -Wwrite-strings -g
++AM_CFLAGS = -I$(top_srcdir)/dconf $(glib_CFLAGS) $(dbus_CFLAGS)
+ 
+ dconf_service_LDADD = $(glib_LIBS) $(dbus_LIBS) ../dconf/libdconf.la
+ dconf_service_SOURCES = dconf-dbus-service.c
+diff -uprN dconf-0.2/writer/Makefile.in dconf-0.2-new/writer/Makefile.in
+--- dconf-0.2/writer/Makefile.in	2009-10-08 04:44:57.000000000 +0800
++++ dconf-0.2-new/writer/Makefile.in	2010-01-11 16:34:42.828746329 +0800
+@@ -226,8 +226,7 @@ target_alias = @target_alias@
+ top_build_prefix = @top_build_prefix@
+ top_builddir = @top_builddir@
+ top_srcdir = @top_srcdir@
+-AM_CFLAGS = -I$(top_srcdir)/common $(glib_CFLAGS) $(dbus_CFLAGS) \
+-		-Wall -Wmissing-prototypes -Wwrite-strings -g
++AM_CFLAGS = -I$(top_srcdir)/common $(glib_CFLAGS) $(dbus_CFLAGS)
+ 
+ noinst_LIBRARIES = libdconf-writer.a
+ libdconf_writer_a_SOURCES = \
