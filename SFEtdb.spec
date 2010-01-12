@@ -5,10 +5,12 @@
 
 %include Solaris.inc
 
+%define source_name samba-4.0.0alpha11
+
 Name:                SFEtdb
 Summary:             A trivial database used by samba.
 Version:             1.2.0
-Source:              http://us5.samba.org/samba/ftp/samba4/samba-4.0.0alpha9.tar.gz
+Source:              http://us5.samba.org/samba/ftp/samba4/%{source_name}.tar.gz
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -16,8 +18,8 @@ BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 Requires:SUNWPython26
 
 %prep
-rm -rf samba-4.0.0alpha9
-%setup -q -n samba-4.0.0alpha9/lib/tdb
+rm -rf %{source_name}
+%setup -q -n %{source_name}/lib/tdb
 
 %build
 
@@ -40,10 +42,6 @@ make -j$CPUS
 rm -rf $RPM_BUILD_ROOT
 
 make install DESTDIR=$RPM_BUILD_ROOT
-cd $RPM_BUILD_ROOT/%{_libdir}
-ln -s -f libtdb.so.%{version} libtdb.so.1
-ln -s libtdb.so.%{version} libtdb.so
-cd -
 
 find $RPM_BUILD_ROOT -type f -name "*.la" -exec rm -f {} ';'
 find $RPM_BUILD_ROOT -type f -name "*.a" -exec rm -f {} ';'
@@ -62,6 +60,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/python2.6
 %dir %attr (0755, root, bin) %{_includedir}
 %{_includedir}/*
+%dir %attr (0755, root, bin) %{_mandir}
+%dir %attr (0755, root, bin) %{_mandir}/man8
+%{_mandir}/man8/*
 
 %changelog
 * Wed Dec 02 2009 - brian.lu@sun.com

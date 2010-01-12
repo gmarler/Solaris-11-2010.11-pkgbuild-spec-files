@@ -5,10 +5,12 @@
 
 %include Solaris.inc
 
+%define source_name samba-4.0.0alpha11
+
 Name:                SFEtalloc
 Summary:             A hierarchical pool based memory system with destructors.
 Version:             2.0.1 
-Source:              http://us5.samba.org/samba/ftp/samba4/samba-4.0.0alpha9.tar.gz
+Source:              http://us5.samba.org/samba/ftp/samba4/%{source_name}.tar.gz
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -16,8 +18,8 @@ BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 Requires:SUNWswig
 
 %prep
-rm -rf samba-4.0.0alpha9
-%setup -q -n samba-4.0.0alpha9/lib/talloc
+rm -rf  %{source_name} 
+%setup -q -n %{source_name}/lib/talloc
 
 %build
 
@@ -40,10 +42,6 @@ make -j$CPUS
 rm -rf $RPM_BUILD_ROOT
 
 make install DESTDIR=$RPM_BUILD_ROOT
-cd $RPM_BUILD_ROOT/%{_libdir}
-ln -s -f libtalloc.so.%{version} libtalloc.so.2
-ln -s libtalloc.so.%{version} libtalloc.so
-cd -
 
 find $RPM_BUILD_ROOT -type f -name "*.la" -exec rm -f {} ';'
 find $RPM_BUILD_ROOT -type f -name "*.a" -exec rm -f {} ';'

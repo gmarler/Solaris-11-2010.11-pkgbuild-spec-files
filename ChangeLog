@@ -1,3 +1,15 @@
+2010-01-12  Brian Lu  <brian.lu@sun.com>
+
+	* SFEsamba4.spec:
+	* SFEtalloc.spec:
+	* SFEtdb.spec:
+	* SFEtevent.spec:
+	* patches/samba4-01-solaris.diff:
+	* patches/samba4-02-gpg-error.diff:
+	* patches/samba4-02-map-rename.diff:
+	* patches/samba4-03-checking-suncc.diff:
+	  Bump to samba4 alpha11
+
 2010-01-12  Simon Jin <yuntong.jin@sun.com>
 
 	* SFEwebkit.spec:

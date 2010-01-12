@@ -4,16 +4,17 @@
 # package are under the same license as the package itself.
 
 %include Solaris.inc
+%define source_name samba-4.0.0alpha11
 
 Name:                SFEsamba4
 Summary:             samba - CIFS Server and Domain Controller v4
 Version:             4.0.0
-Source:              http://us5.samba.org/samba/ftp/samba4/samba-4.0.0alpha9.tar.gz
+Source:              http://us5.samba.org/samba/ftp/samba4/%{source_name}.tar.gz
 
 # bugzilla 6945
-Patch1:              samba4-01-solaris.diff
+#Patch1:              samba4-01-solaris.diff
 # bugzilla 6931
-Patch2:              samba4-02-gpg-error.diff
+#Patch2:              samba4-02-gpg-error.diff
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -26,9 +27,9 @@ SUNW_BaseDir:            /
 
 
 %prep
-%setup -q -n samba-4.0.0alpha9/
-%patch1 -p1
-%patch2 -p1
+%setup -q -n %{source_name} 
+#%patch1 -p1
+#%patch2 -p1
 
 %build
 
@@ -60,18 +61,6 @@ rm -rf $RPM_BUILD_ROOT
 
 cd source4/
 gmake install DESTDIR=$RPM_BUILD_ROOT
-
-cd $RPM_BUILD_ROOT/%{_libdir}
-ln -s -f libdcerpc.so.0.0.1 libdcerpc.so.0
-ln -s -f libdcerpc_atsvc.so.0.0.1 libdcerpc_atsvc.so.0
-ln -s -f libdcerpc_samr.so.0.0.1 libdcerpc_samr.so.0
-ln -s -f libgensec.so.0.0.1 libgensec.so.0
-ln -s -f libldb.so.0.0.1 libldb.so.0
-ln -s -f libndr.so.0.0.1 libndr.so.0
-ln -s -f libregistry.so.0.0.1 libregistry.so.0
-ln -s -f libsamba-hostconfig.so.0.0.1 libsamba-hostconfig.so.0
-ln -s -f libtorture.so.0.0.1 libtorture.so.0
-cd -
 
 rmdir $RPM_BUILD_ROOT/var/run/samba
 rmdir $RPM_BUILD_ROOT/var/run

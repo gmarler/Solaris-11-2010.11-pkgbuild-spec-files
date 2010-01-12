@@ -5,18 +5,20 @@
 
 %include Solaris.inc
 
+%define source_name samba-4.0.0alpha11
+
 Name:                SFEtevent
 Summary:             An event system library.
 Version:             0.9.8
-Source:              http://us5.samba.org/samba/ftp/samba4/samba-4.0.0alpha9.tar.gz
+Source:              http://us5.samba.org/samba/ftp/samba4/%{source_name}.tar.gz
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 
 Requires: SUNWPython26
 %prep
-rm -rf samba-4.0.0alpha9
-%setup -q -n samba-4.0.0alpha9/lib/tevent
+rm -rf %{source_name} 
+%setup -q -n %{source_name}/lib/tevent
 
 %build
 
@@ -39,10 +41,6 @@ make -j$CPUS
 rm -rf $RPM_BUILD_ROOT
 
 make install DESTDIR=$RPM_BUILD_ROOT
-cd $RPM_BUILD_ROOT/%{_libdir}
-ln -s -f libtevent.so.%{version} libtevent.so.0
-ln -s libtevent.so.%{version} libtevent.so
-cd -
 
 find $RPM_BUILD_ROOT -type f -name "*.la" -exec rm -f {} ';'
 find $RPM_BUILD_ROOT -type f -name "*.a" -exec rm -f {} ';'
