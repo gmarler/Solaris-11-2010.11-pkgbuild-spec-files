@@ -1,3 +1,8 @@
+2010-01-12  Simon Jin <yuntong.jin@sun.com>
+
+	* SFEwebkit.spec:
+         Remove *.la *.a file from the package
+
 2010-01-12  Jedy Wang  <jedy.wang@sun.com>
 
 	New spec files for eggdbus.

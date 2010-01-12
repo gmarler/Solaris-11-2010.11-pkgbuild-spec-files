@@ -108,6 +108,10 @@ rm -rf $RPM_BUILD_ROOT
 
 cd webkit-%version
 make install DESTDIR=$RPM_BUILD_ROOT
+
+find $RPM_BUILD_ROOT -type f -name "*.la" -exec rm -f {} ';'                                                                                                                                                                             
+find $RPM_BUILD_ROOT -type f -name "*.a" -exec rm -f {} ';'
+
 %if %build_l10n
 %else
 #REMOVE l10n FILES
@@ -143,6 +147,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Jan 12 2009 - yuntong.jin@sun.com
+  Remove *.la *.a file which will brings -library=no%Cstd dependency for
+applications likedevhelp  
 * Tue Jan 12 2009 - yuntong.jin@sun.com
   Bump to 1.1.17
 * Mon Dec 28 2009 - yuntong.jin@sun.com
