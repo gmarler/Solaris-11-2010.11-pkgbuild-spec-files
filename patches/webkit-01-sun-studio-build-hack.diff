@@ -1,19 +1,104 @@
-diff -Nrup webkit-old/JavaScriptCore/interpreter/RegisterFile.cpp webkit-1.1.7/JavaScriptCore/interpreter/RegisterFile.cpp
---- webkit-old/JavaScriptCore/interpreter/RegisterFile.cpp	2009-06-03 12:55:14.633455000 +0800
-+++ webkit-1.1.7/JavaScriptCore/interpreter/RegisterFile.cpp	2009-06-03 12:55:17.386064000 +0800
-@@ -34,7 +34,7 @@ namespace JSC {
+diff -r 29063d7baea0 GNUmakefile.am
+--- a/GNUmakefile.am	Tue Dec 29 16:38:16 2009 +0800
++++ b/GNUmakefile.am	Tue Dec 29 16:39:12 2009 +0800
+@@ -94,7 +94,6 @@
+ # Don't include them for now to reduce the noise when compiling
+ # $(GLIB_CFLAGS) $(CAIRO_CFLAGS) $(PANGO_CFLAGS)  $(FREETYPE_CFLAGS)
+ corekit_cflags += \
+-	-fno-strict-aliasing \
+ 	$(COVERAGE_CFLAGS) \
+ 	$(ENCHANT_CFLAGS) \
+ 	$(GAIL_CFLAGS) \
+@@ -125,17 +124,9 @@
+ endif
+ 
+ # Default compiler flags
+-global_cflags += \
+-	-Wall -W -Wcast-align -Wchar-subscripts -Wreturn-type \
+-	-Wformat -Wformat-security -Wno-format-y2k -Wundef \
+-	-Wmissing-format-attribute -Wpointer-arith -Wwrite-strings \
+-	-Wno-unused-parameter -Wno-parentheses \
+-	-fno-exceptions
++global_cflags :=
+ 
+-global_cxxflags += \
+-	$(global_cflags) \
+-	$(SYMBOL_VISIBILITY_INLINES) \
+-	-fno-rtti
++global_cxxflags :=
+ 
+ # -no-undefined required for building DLLs on Windows
+ # It breaks the build on other platforms, so we use it conditionally
+@@ -186,8 +177,7 @@
+ 	$(libJavaScriptCore_la_CFLAGS)
+ 
+ libJavaScriptCore_la_CFLAGS = \
+-	-fstrict-aliasing \
+-	-O3 \
++	-xO3 \
+ 	$(global_cflags) \
+ 	$(GLIB_CFLAGS) \
+ 	$(UNICODE_CFLAGS)
+@@ -306,7 +296,6 @@
+ 
+ if !ENABLE_DEBUG
+ global_cppflags += -DNDEBUG
+-global_cflags += $(SYMBOL_VISIBILITY)
+ 
+ else
+ webcoregtk_cppflags += \
+@@ -561,7 +550,6 @@
+ noinst_PROGRAMS += $(TEST_PROGS)
+ 
+ webkit_tests_cflags = \
+-	-fno-strict-aliasing \
+ 	-I$(srcdir)/JavaScriptCore/ForwardingHeaders \
+ 	-I$(srcdir)/WebKit/gtk \
+ 	-I$(top_builddir)/WebKit/gtk \
+diff -r 29063d7baea0 JavaScriptCore/GNUmakefile.am
+--- a/JavaScriptCore/GNUmakefile.am	Tue Dec 29 16:38:16 2009 +0800
++++ b/JavaScriptCore/GNUmakefile.am	Tue Dec 29 16:39:12 2009 +0800
+@@ -552,15 +552,13 @@
+ 	$(javascriptcore_cppflags)
+ 
+ Programs_minidom_CFLAGS = \
+-	-ansi \
+-	-fno-strict-aliasing \
+ 	$(global_cflags) \
+ 	$(GLOBALDEPS_CFLAGS)
+ 
+ Programs_minidom_LDADD = \
+ 	 libJavaScriptCore.la \
+ 	 -lm \
+-	 -lstdc++
++	 -lstdcxx4
+ 
+ Programs_minidom_LDFLAGS = \
+ 	-no-install \
+@@ -575,7 +573,6 @@
+ 	$(javascriptcore_cppflags)
+ 
+ Programs_jsc_CXXFLAGS = \
+-	-fno-strict-aliasing \
+ 	$(global_cxxflags) \
+ 	$(global_cflags) \
+ 	$(GLOBALDEPS_CFLAGS) \
+diff -r 29063d7baea0 JavaScriptCore/interpreter/RegisterFile.cpp
+--- a/JavaScriptCore/interpreter/RegisterFile.cpp	Tue Dec 29 16:38:16 2009 +0800
++++ b/JavaScriptCore/interpreter/RegisterFile.cpp	Tue Dec 29 16:39:12 2009 +0800
+@@ -34,7 +34,7 @@
  RegisterFile::~RegisterFile()
  {
  #if HAVE(MMAP)
 -    munmap(m_buffer, ((m_max - m_start) + m_maxGlobals) * sizeof(Register));
 +    munmap((char *)m_buffer, ((m_max - m_start) + m_maxGlobals) * sizeof(Register));
  #elif HAVE(VIRTUALALLOC)
-     VirtualFree(m_buffer, 0, MEM_RELEASE);
- #else
-diff -Nrup webkit-old/JavaScriptCore/jsc.cpp webkit-1.1.7/JavaScriptCore/jsc.cpp
---- webkit-old/JavaScriptCore/jsc.cpp	2009-06-03 12:55:14.710433000 +0800
-+++ webkit-1.1.7/JavaScriptCore/jsc.cpp	2009-06-03 12:55:17.584592000 +0800
-@@ -304,6 +304,7 @@ JSValue JSC_HOST_CALL functionQuit(ExecS
+ #if PLATFORM(WINCE)
+     VirtualFree(m_buffer, DWORD(m_commitEnd) - DWORD(m_buffer), MEM_DECOMMIT);
+diff -r 29063d7baea0 JavaScriptCore/jsc.cpp
+--- a/JavaScriptCore/jsc.cpp	Tue Dec 29 16:38:16 2009 +0800
++++ b/JavaScriptCore/jsc.cpp	Tue Dec 29 16:39:12 2009 +0800
+@@ -294,6 +294,7 @@
  {
      cleanupGlobalData(&exec->globalData());
      exit(EXIT_SUCCESS);
@@ -21,10 +106,10 @@ diff -Nrup webkit-old/JavaScriptCore/jsc.cpp webkit-1.1.7/JavaScriptCore/jsc.cpp
  }
  
  // Use SEH for Release builds only to get rid of the crash report dialog
-diff -Nrup webkit-old/JavaScriptCore/pcre/pcre_exec.cpp webkit-1.1.7/JavaScriptCore/pcre/pcre_exec.cpp
---- webkit-old/JavaScriptCore/pcre/pcre_exec.cpp	2009-06-03 12:55:14.717078000 +0800
-+++ webkit-1.1.7/JavaScriptCore/pcre/pcre_exec.cpp	2009-06-03 12:55:17.699166000 +0800
-@@ -1821,8 +1821,8 @@ RRETURN_SWITCH:
+diff -r 29063d7baea0 JavaScriptCore/pcre/pcre_exec.cpp
+--- a/JavaScriptCore/pcre/pcre_exec.cpp	Tue Dec 29 16:38:16 2009 +0800
++++ b/JavaScriptCore/pcre/pcre_exec.cpp	Tue Dec 29 16:39:12 2009 +0800
+@@ -1821,8 +1821,8 @@
          case 24: goto RRETURN_24;
          case 26: goto RRETURN_26;
          case 27: goto RRETURN_27;
@@ -35,10 +120,10 @@ diff -Nrup webkit-old/JavaScriptCore/pcre/pcre_exec.cpp webkit-1.1.7/JavaScriptC
          case 30: goto RRETURN_30;
          case 31: goto RRETURN_31;
          case 38: goto RRETURN_38;
-diff -Nrup webkit-old/JavaScriptCore/wtf/TCSystemAlloc.cpp webkit-1.1.7/JavaScriptCore/wtf/TCSystemAlloc.cpp
---- webkit-old/JavaScriptCore/wtf/TCSystemAlloc.cpp	2009-06-03 12:55:14.720538000 +0800
-+++ webkit-1.1.7/JavaScriptCore/wtf/TCSystemAlloc.cpp	2009-06-03 12:55:17.699896000 +0800
-@@ -187,10 +187,10 @@ static void* TryMmap(size_t size, size_t
+diff -r 29063d7baea0 JavaScriptCore/wtf/TCSystemAlloc.cpp
+--- a/JavaScriptCore/wtf/TCSystemAlloc.cpp	Tue Dec 29 16:38:16 2009 +0800
++++ b/JavaScriptCore/wtf/TCSystemAlloc.cpp	Tue Dec 29 16:39:12 2009 +0800
+@@ -193,10 +193,10 @@
  
    // Return the unused memory to the system
    if (adjust > 0) {
@@ -51,7 +136,7 @@ diff -Nrup webkit-old/JavaScriptCore/wtf/TCSystemAlloc.cpp webkit-1.1.7/JavaScri
    }
  
    ptr += adjust;
-@@ -429,7 +429,7 @@ void TCMalloc_SystemRelease(void* start,
+@@ -442,7 +442,7 @@
  
  void TCMalloc_SystemRelease(void* start, size_t length)
  {
@@ -60,19 +145,19 @@ diff -Nrup webkit-old/JavaScriptCore/wtf/TCSystemAlloc.cpp webkit-1.1.7/JavaScri
    // If the mmap failed then that's ok, we just won't return the memory to the system.
    ASSERT_UNUSED(newAddress, newAddress == start || newAddress == reinterpret_cast<void*>(MAP_FAILED));
  }
-diff -Nrup webkit-old/JavaScriptCore/wtf/Vector.h webkit-1.1.7/JavaScriptCore/wtf/Vector.h
---- webkit-old/JavaScriptCore/wtf/Vector.h	2009-06-03 12:55:14.727256000 +0800
-+++ webkit-1.1.7/JavaScriptCore/wtf/Vector.h	2009-06-03 12:55:17.772930000 +0800
-@@ -37,7 +37,7 @@ namespace WTF {
+diff -r 29063d7baea0 JavaScriptCore/wtf/Vector.h
+--- a/JavaScriptCore/wtf/Vector.h	Tue Dec 29 16:38:16 2009 +0800
++++ b/JavaScriptCore/wtf/Vector.h	Tue Dec 29 16:39:12 2009 +0800
+@@ -38,7 +38,7 @@
      using std::max;
  
      // WTF_ALIGN_OF / WTF_ALIGNED
 -    #if COMPILER(GCC) || COMPILER(MINGW) || COMPILER(RVCT) || COMPILER(WINSCW)
-+    #if COMPILER(GCC) || COMPILER(MINGW) || COMPILER(RVCT) || COMPILER(WINSCW) || COMPILER(SUNCC)
++    #if COMPILER(GCC) || COMPILER(MINGW) || COMPILER(RVCT) || COMPILER(WINSCW)|| COMPILER(SUNCC) 
          #define WTF_ALIGN_OF(type) __alignof__(type)
          #define WTF_ALIGNED(variable_type, variable, n) variable_type variable __attribute__((__aligned__(n)))
      #elif COMPILER(MSVC)
-@@ -119,7 +119,7 @@ namespace WTF {
+@@ -127,7 +127,7 @@
          {
              while (src != srcEnd) {
                  new (dst) T(*src);
@@ -81,10 +166,10 @@ diff -Nrup webkit-old/JavaScriptCore/wtf/Vector.h webkit-1.1.7/JavaScriptCore/wt
                  ++dst;
                  ++src;
              }
-diff -Nrup webkit-old/WebCore/bindings/js/JSJavaScriptCallFrameCustom.cpp webkit-1.1.7/WebCore/bindings/js/JSJavaScriptCallFrameCustom.cpp
---- webkit-old/WebCore/bindings/js/JSJavaScriptCallFrameCustom.cpp	2009-06-03 12:55:15.840710000 +0800
-+++ webkit-1.1.7/WebCore/bindings/js/JSJavaScriptCallFrameCustom.cpp	2009-06-03 12:55:19.178362000 +0800
-@@ -46,7 +46,7 @@ JSValue JSJavaScriptCallFrame::evaluate(
+diff -r 29063d7baea0 WebCore/bindings/js/JSJavaScriptCallFrameCustom.cpp
+--- a/WebCore/bindings/js/JSJavaScriptCallFrameCustom.cpp	Tue Dec 29 16:38:16 2009 +0800
++++ b/WebCore/bindings/js/JSJavaScriptCallFrameCustom.cpp	Tue Dec 29 16:39:12 2009 +0800
+@@ -48,7 +48,7 @@
  
  JSValue JSJavaScriptCallFrame::thisObject(ExecState*) const
  {
@@ -93,10 +178,10 @@ diff -Nrup webkit-old/WebCore/bindings/js/JSJavaScriptCallFrameCustom.cpp webkit
  }
  
  JSValue JSJavaScriptCallFrame::type(ExecState* exec) const
-diff -Nrup webkit-old/WebCore/bindings/js/JSPluginElementFunctions.cpp webkit-1.1.7/WebCore/bindings/js/JSPluginElementFunctions.cpp
---- webkit-old/WebCore/bindings/js/JSPluginElementFunctions.cpp	2009-06-03 12:55:15.906910000 +0800
-+++ webkit-1.1.7/WebCore/bindings/js/JSPluginElementFunctions.cpp	2009-06-03 12:55:19.240766000 +0800
-@@ -62,7 +62,7 @@ JSValue runtimeObjectGetter(ExecState* e
+diff -r 29063d7baea0 WebCore/bindings/js/JSPluginElementFunctions.cpp
+--- a/WebCore/bindings/js/JSPluginElementFunctions.cpp	Tue Dec 29 16:38:16 2009 +0800
++++ b/WebCore/bindings/js/JSPluginElementFunctions.cpp	Tue Dec 29 16:39:12 2009 +0800
+@@ -62,7 +62,7 @@
      JSHTMLElement* thisObj = static_cast<JSHTMLElement*>(asObject(slot.slotBase()));
      HTMLElement* element = static_cast<HTMLElement*>(thisObj->impl());
      RuntimeObjectImp* runtimeObject = getRuntimeObject(exec, element);
@@ -105,11 +190,10 @@ diff -Nrup webkit-old/WebCore/bindings/js/JSPluginElementFunctions.cpp webkit-1.
  }
  
  JSValue runtimeObjectPropertyGetter(ExecState* exec, const Identifier& propertyName, const PropertySlot& slot)
-Binary files webkit-old/WebCore/core and webkit-1.1.7/WebCore/core differ
-diff -Nrup webkit-old/WebCore/css/make-css-file-arrays.pl webkit-1.1.7/WebCore/css/make-css-file-arrays.pl
---- webkit-old/WebCore/css/make-css-file-arrays.pl	2009-06-03 12:55:16.048841000 +0800
-+++ webkit-1.1.7/WebCore/css/make-css-file-arrays.pl	2009-06-03 12:55:19.959556000 +0800
-@@ -28,7 +28,7 @@ my $preprocessor;
+diff -r 29063d7baea0 WebCore/css/make-css-file-arrays.pl
+--- a/WebCore/css/make-css-file-arrays.pl	Tue Dec 29 16:38:16 2009 +0800
++++ b/WebCore/css/make-css-file-arrays.pl	Tue Dec 29 16:39:12 2009 +0800
+@@ -28,7 +28,7 @@
  GetOptions('preprocessor=s' => \$preprocessor);
  
  if (!$preprocessor) {
@@ -118,10 +202,10 @@ diff -Nrup webkit-old/WebCore/css/make-css-file-arrays.pl webkit-1.1.7/WebCore/c
  }
  
  my $header = $ARGV[0];
-diff -Nrup webkit-old/WebCore/dom/NodeRenderStyle.h webkit-1.1.7/WebCore/dom/NodeRenderStyle.h
---- webkit-old/WebCore/dom/NodeRenderStyle.h	2009-06-03 12:55:15.937204000 +0800
-+++ webkit-1.1.7/WebCore/dom/NodeRenderStyle.h	2009-06-03 12:55:19.346912000 +0800
-@@ -33,7 +33,7 @@ namespace WebCore {
+diff -r 29063d7baea0 WebCore/dom/NodeRenderStyle.h
+--- a/WebCore/dom/NodeRenderStyle.h	Tue Dec 29 16:38:16 2009 +0800
++++ b/WebCore/dom/NodeRenderStyle.h	Tue Dec 29 16:39:12 2009 +0800
+@@ -33,7 +33,7 @@
  
  inline RenderStyle* Node::renderStyle() const
  {
@@ -130,34 +214,34 @@ diff -Nrup webkit-old/WebCore/dom/NodeRenderStyle.h webkit-1.1.7/WebCore/dom/Nod
  }
  
  }
-diff -Nrup webkit-old/WebCore/dom/XMLTokenizerLibxml2.cpp webkit-1.1.7/WebCore/dom/XMLTokenizerLibxml2.cpp
---- webkit-old/WebCore/dom/XMLTokenizerLibxml2.cpp	2009-06-03 12:55:15.969769000 +0800
-+++ webkit-1.1.7/WebCore/dom/XMLTokenizerLibxml2.cpp	2009-06-03 12:55:19.439504000 +0800
-@@ -841,7 +841,7 @@ void XMLTokenizer::error(ErrorType type,
+diff -r 29063d7baea0 WebCore/dom/XMLTokenizerLibxml2.cpp
+--- a/WebCore/dom/XMLTokenizerLibxml2.cpp	Tue Dec 29 16:38:16 2009 +0800
++++ b/WebCore/dom/XMLTokenizerLibxml2.cpp	Tue Dec 29 16:39:12 2009 +0800
+@@ -891,7 +891,7 @@
      if (m_parserStopped)
          return;
  
--#if PLATFORM(WIN_OS)
-+#if PLATFORM(WIN_OS) || PLATFORM(SOLARIS)
+-#if COMPILER(MSVC)
++#if COMPILER(MSVC) || 1
      char m[1024];
      vsnprintf(m, sizeof(m) - 1, message, args);
  #else
-diff -Nrup webkit-old/WebCore/editing/CompositeEditCommand.cpp webkit-1.1.7/WebCore/editing/CompositeEditCommand.cpp
---- webkit-old/WebCore/editing/CompositeEditCommand.cpp	2009-06-03 12:55:15.460104000 +0800
-+++ webkit-1.1.7/WebCore/editing/CompositeEditCommand.cpp	2009-06-03 12:55:18.777306000 +0800
-@@ -780,7 +780,7 @@ void CompositeEditCommand::moveParagraph
+diff -r 29063d7baea0 WebCore/editing/CompositeEditCommand.cpp
+--- a/WebCore/editing/CompositeEditCommand.cpp	Tue Dec 29 16:38:16 2009 +0800
++++ b/WebCore/editing/CompositeEditCommand.cpp	Tue Dec 29 16:39:12 2009 +0800
+@@ -918,7 +918,7 @@
  
-     // FIXME: This is an inefficient way to preserve style on nodes in the paragraph to move.  It 
+     // FIXME: This is an inefficient way to preserve style on nodes in the paragraph to move. It
      // shouldn't matter though, since moved paragraphs will usually be quite small.
 -    RefPtr<DocumentFragment> fragment = startOfParagraphToMove != endOfParagraphToMove ? createFragmentFromMarkup(document(), createMarkup(range.get(), 0, DoNotAnnotateForInterchange, true), "") : 0;
 +    RefPtr<DocumentFragment> fragment = startOfParagraphToMove != endOfParagraphToMove ? createFragmentFromMarkup(document(), createMarkup(range.get(), 0, DoNotAnnotateForInterchange, true), "") : (WTF::PassRefPtr<WebCore::DocumentFragment>)0;
      
      // A non-empty paragraph's style is moved when we copy and move it.  We don't move 
      // anything if we're given an empty paragraph, but an empty paragraph can have style
-diff -Nrup webkit-old/WebCore/editing/markup.cpp webkit-1.1.7/WebCore/editing/markup.cpp
---- webkit-old/WebCore/editing/markup.cpp	2009-06-03 12:55:15.459716000 +0800
-+++ webkit-1.1.7/WebCore/editing/markup.cpp	2009-06-03 12:55:18.777056000 +0800
-@@ -950,7 +950,7 @@ String createMarkup(const Range* range, 
+diff -r 29063d7baea0 WebCore/editing/markup.cpp
+--- a/WebCore/editing/markup.cpp	Tue Dec 29 16:38:16 2009 +0800
++++ b/WebCore/editing/markup.cpp	Tue Dec 29 16:39:12 2009 +0800
+@@ -967,7 +967,7 @@
      Node* body = enclosingNodeWithTag(Position(commonAncestor, 0), bodyTag);
      // FIXME: Do this for all fully selected blocks, not just the body.
      Node* fullySelectedRoot = body && *VisibleSelection::selectionFromContentsOfNode(body).toNormalizedRange() == *updatedRange ? body : 0;
@@ -166,10 +250,31 @@ diff -Nrup webkit-old/WebCore/editing/markup.cpp webkit-1.1.7/WebCore/editing/ma
      if (annotate && fullySelectedRoot) {
          if (shouldIncludeWrapperForFullySelectedRoot(fullySelectedRoot, fullySelectedRootStyle.get()))
              specialCommonAncestor = fullySelectedRoot;
-diff -Nrup webkit-old/WebCore/loader/DocumentLoader.cpp webkit-1.1.7/WebCore/loader/DocumentLoader.cpp
---- webkit-old/WebCore/loader/DocumentLoader.cpp	2009-06-03 12:55:15.180250000 +0800
-+++ webkit-1.1.7/WebCore/loader/DocumentLoader.cpp	2009-06-03 12:55:18.493605000 +0800
-@@ -519,7 +519,7 @@ ArchiveResource* DocumentLoader::archive
+diff -r 29063d7baea0 WebCore/html/HTMLParser.cpp
+--- a/WebCore/html/HTMLParser.cpp	Tue Dec 29 16:38:16 2009 +0800
++++ b/WebCore/html/HTMLParser.cpp	Tue Dec 29 16:39:12 2009 +0800
+@@ -137,7 +137,7 @@
+     , m_reportErrors(reportErrors)
+     , m_handlingResidualStyleAcrossBlocks(false)
+     , m_inStrayTableContent(0)
+-    , m_parserQuirks(m_document->page() ? m_document->page()->chrome()->client()->createHTMLParserQuirks() : 0)
++    , m_parserQuirks(m_document->page() ? m_document->page()->chrome()->client()->createHTMLParserQuirks() : (WTF::PassOwnPtr<WebCore::HTMLParserQuirks>)0)
+ {
+ }
+ 
+@@ -155,7 +155,7 @@
+     , m_reportErrors(false)
+     , m_handlingResidualStyleAcrossBlocks(false)
+     , m_inStrayTableContent(0)
+-    , m_parserQuirks(m_document->page() ? m_document->page()->chrome()->client()->createHTMLParserQuirks() : 0)
++    , m_parserQuirks(m_document->page() ? m_document->page()->chrome()->client()->createHTMLParserQuirks() : (WTF::PassOwnPtr<WebCore::HTMLParserQuirks>)0)
+ {
+     if (frag)
+         frag->ref();
+diff -r 29063d7baea0 WebCore/loader/DocumentLoader.cpp
+--- a/WebCore/loader/DocumentLoader.cpp	Tue Dec 29 16:38:16 2009 +0800
++++ b/WebCore/loader/DocumentLoader.cpp	Tue Dec 29 16:39:12 2009 +0800
+@@ -500,7 +500,7 @@
  
  PassRefPtr<Archive> DocumentLoader::popArchiveForSubframe(const String& frameName)
  {
@@ -178,10 +283,10 @@ diff -Nrup webkit-old/WebCore/loader/DocumentLoader.cpp webkit-1.1.7/WebCore/loa
  }
  
  void DocumentLoader::clearArchiveResources()
-diff -Nrup webkit-old/WebCore/loader/DocumentLoader.h webkit-1.1.7/WebCore/loader/DocumentLoader.h
---- webkit-old/WebCore/loader/DocumentLoader.h	2009-06-03 12:55:15.178458000 +0800
-+++ webkit-1.1.7/WebCore/loader/DocumentLoader.h	2009-06-03 12:55:18.466947000 +0800
-@@ -166,7 +166,7 @@ namespace WebCore {
+diff -r 29063d7baea0 WebCore/loader/DocumentLoader.h
+--- a/WebCore/loader/DocumentLoader.h	Tue Dec 29 16:38:16 2009 +0800
++++ b/WebCore/loader/DocumentLoader.h	Tue Dec 29 16:39:12 2009 +0800
+@@ -163,7 +163,7 @@
          String clientRedirectDestinationForHistory() const { return urlForHistory(); }
          void setClientRedirectSourceForHistory(const String& clientedirectSourceForHistory) { m_clientRedirectSourceForHistory = clientedirectSourceForHistory; }
          
@@ -190,10 +295,10 @@ diff -Nrup webkit-old/WebCore/loader/DocumentLoader.h webkit-1.1.7/WebCore/loade
          String serverRedirectDestinationForHistory() const { return url(); }
  
          bool didCreateGlobalHistoryEntry() const { return m_didCreateGlobalHistoryEntry; }
-diff -Nrup webkit-old/WebCore/loader/FrameLoader.cpp webkit-1.1.7/WebCore/loader/FrameLoader.cpp
---- webkit-old/WebCore/loader/FrameLoader.cpp	2009-06-03 12:55:15.178394000 +0800
-+++ webkit-1.1.7/WebCore/loader/FrameLoader.cpp	2009-06-03 14:51:22.861802000 +0800
-@@ -2292,7 +2292,7 @@ void FrameLoader::load(const ResourceReq
+diff -r 29063d7baea0 WebCore/loader/FrameLoader.cpp
+--- a/WebCore/loader/FrameLoader.cpp	Tue Dec 29 16:38:16 2009 +0800
++++ b/WebCore/loader/FrameLoader.cpp	Tue Dec 29 16:39:12 2009 +0800
+@@ -1932,7 +1932,7 @@
      m_loadType = FrameLoadTypeStandard;
      RefPtr<DocumentLoader> loader = m_client->createDocumentLoader(request, substituteData);
      if (lockHistory && m_documentLoader)
@@ -202,7 +307,7 @@ diff -Nrup webkit-old/WebCore/loader/FrameLoader.cpp webkit-1.1.7/WebCore/loader
      load(loader.get());
  }
  
-@@ -2316,7 +2316,7 @@ void FrameLoader::loadWithNavigationActi
+@@ -1956,7 +1956,7 @@
  {
      RefPtr<DocumentLoader> loader = m_client->createDocumentLoader(request, SubstituteData());
      if (lockHistory && m_documentLoader)
@@ -211,10 +316,10 @@ diff -Nrup webkit-old/WebCore/loader/FrameLoader.cpp webkit-1.1.7/WebCore/loader
  
      loader->setTriggeringAction(action);
      if (m_documentLoader)
-diff -Nrup webkit-old/WebCore/loader/archive/ArchiveFactory.cpp webkit-1.1.7/WebCore/loader/archive/ArchiveFactory.cpp
---- webkit-old/WebCore/loader/archive/ArchiveFactory.cpp	2009-06-03 12:55:15.176387000 +0800
-+++ webkit-1.1.7/WebCore/loader/archive/ArchiveFactory.cpp	2009-06-03 12:55:18.447727000 +0800
-@@ -75,7 +75,7 @@ bool ArchiveFactory::isArchiveMimeType(c
+diff -r 29063d7baea0 WebCore/loader/archive/ArchiveFactory.cpp
+--- a/WebCore/loader/archive/ArchiveFactory.cpp	Tue Dec 29 16:38:16 2009 +0800
++++ b/WebCore/loader/archive/ArchiveFactory.cpp	Tue Dec 29 16:39:12 2009 +0800
+@@ -76,7 +76,7 @@
  PassRefPtr<Archive> ArchiveFactory::create(SharedBuffer* data, const String& mimeType)
  {
      RawDataCreationFunction* function = archiveMIMETypes().get(mimeType);
@@ -223,10 +328,10 @@ diff -Nrup webkit-old/WebCore/loader/archive/ArchiveFactory.cpp webkit-1.1.7/Web
  }
  
  void ArchiveFactory::registerKnownArchiveMIMETypes()
-diff -Nrup webkit-old/WebCore/loader/archive/ArchiveResource.cpp webkit-1.1.7/WebCore/loader/archive/ArchiveResource.cpp
---- webkit-old/WebCore/loader/archive/ArchiveResource.cpp	2009-06-03 12:55:15.176568000 +0800
-+++ webkit-1.1.7/WebCore/loader/archive/ArchiveResource.cpp	2009-06-03 12:55:18.447900000 +0800
-@@ -35,17 +35,17 @@ namespace WebCore {
+diff -r 29063d7baea0 WebCore/loader/archive/ArchiveResource.cpp
+--- a/WebCore/loader/archive/ArchiveResource.cpp	Tue Dec 29 16:38:16 2009 +0800
++++ b/WebCore/loader/archive/ArchiveResource.cpp	Tue Dec 29 16:39:12 2009 +0800
+@@ -35,17 +35,17 @@
  
  PassRefPtr<ArchiveResource> ArchiveResource::create(PassRefPtr<SharedBuffer> data, const KURL& url, const ResourceResponse& response)
  {
@@ -247,22 +352,10 @@ diff -Nrup webkit-old/WebCore/loader/archive/ArchiveResource.cpp webkit-1.1.7/We
  }
  
  ArchiveResource::ArchiveResource(PassRefPtr<SharedBuffer> data, const KURL& url, const ResourceResponse& response)
-diff -Nrup webkit-old/WebCore/loader/icon/IconDatabase.cpp webkit-1.1.7/WebCore/loader/icon/IconDatabase.cpp
---- webkit-old/WebCore/loader/icon/IconDatabase.cpp	2009-06-03 12:55:15.135235000 +0800
-+++ webkit-1.1.7/WebCore/loader/icon/IconDatabase.cpp	2009-06-03 12:55:18.411636000 +0800
-@@ -508,7 +508,7 @@ void IconDatabase::setIconDataForIconURL
-     if (!isOpen() || iconURLOriginal.isEmpty())
-         return;
-     
--    RefPtr<SharedBuffer> data = dataOriginal ? dataOriginal->copy() : 0;
-+    RefPtr<SharedBuffer> data = dataOriginal ? dataOriginal->copy() : (WTF::PassRefPtr<WebCore::SharedBuffer>)0;
-     String iconURL = iconURLOriginal.copy();
-     
-     Vector<String> pageURLs;
-diff -Nrup webkit-old/WebCore/page/animation/AnimationBase.cpp webkit-1.1.7/WebCore/page/animation/AnimationBase.cpp
---- webkit-old/WebCore/page/animation/AnimationBase.cpp	2009-06-03 12:55:15.355723000 +0800
-+++ webkit-1.1.7/WebCore/page/animation/AnimationBase.cpp	2009-06-03 12:55:18.650657000 +0800
-@@ -132,7 +132,7 @@ static inline TransformOperations blendF
+diff -r 29063d7baea0 WebCore/page/animation/AnimationBase.cpp
+--- a/WebCore/page/animation/AnimationBase.cpp	Tue Dec 29 16:38:16 2009 +0800
++++ b/WebCore/page/animation/AnimationBase.cpp	Tue Dec 29 16:39:12 2009 +0800
+@@ -146,7 +146,7 @@
          for (unsigned i = 0; i < size; i++) {
              RefPtr<TransformOperation> fromOp = (i < fromSize) ? from.operations()[i].get() : 0;
              RefPtr<TransformOperation> toOp = (i < toSize) ? to.operations()[i].get() : 0;
@@ -271,9 +364,9 @@ diff -Nrup webkit-old/WebCore/page/animation/AnimationBase.cpp webkit-1.1.7/WebC
              if (blendedOp)
                  result.operations().append(blendedOp);
              else {
-diff -Nrup webkit-old/WebCore/platform/network/ResourceHandleInternal.h webkit-1.1.7/WebCore/platform/network/ResourceHandleInternal.h
---- webkit-old/WebCore/platform/network/ResourceHandleInternal.h	2009-06-03 12:55:15.034081000 +0800
-+++ webkit-1.1.7/WebCore/platform/network/ResourceHandleInternal.h	2009-06-03 12:55:18.284381000 +0800
+diff -r 29063d7baea0 WebCore/platform/network/ResourceHandleInternal.h
+--- a/WebCore/platform/network/ResourceHandleInternal.h	Tue Dec 29 16:38:16 2009 +0800
++++ b/WebCore/platform/network/ResourceHandleInternal.h	Tue Dec 29 16:39:12 2009 +0800
 @@ -47,7 +47,7 @@
  
  #if USE(SOUP)
@@ -283,10 +376,10 @@ diff -Nrup webkit-old/WebCore/platform/network/ResourceHandleInternal.h webkit-1
  #endif
  
  #if PLATFORM(QT)
-diff -Nrup webkit-old/WebCore/platform/text/TextCodecICU.cpp webkit-1.1.7/WebCore/platform/text/TextCodecICU.cpp
---- webkit-old/WebCore/platform/text/TextCodecICU.cpp	2009-06-03 12:55:14.864568000 +0800
-+++ webkit-1.1.7/WebCore/platform/text/TextCodecICU.cpp	2009-06-03 12:55:18.160466000 +0800
-@@ -355,6 +355,7 @@ static UChar getGbkEscape(UChar32 codePo
+diff -r 29063d7baea0 WebCore/platform/text/TextCodecICU.cpp
+--- a/WebCore/platform/text/TextCodecICU.cpp	Tue Dec 29 16:38:16 2009 +0800
++++ b/WebCore/platform/text/TextCodecICU.cpp	Tue Dec 29 16:39:12 2009 +0800
+@@ -355,6 +355,7 @@
      }
  }
  
@@ -294,7 +387,7 @@ diff -Nrup webkit-old/WebCore/platform/text/TextCodecICU.cpp webkit-1.1.7/WebCor
  // Invalid character handler when writing escaped entities for unrepresentable
  // characters. See the declaration of TextCodec::encode for more.
  static void urlEscapedEntityCallback(const void* context, UConverterFromUnicodeArgs* fromUArgs, const UChar* codeUnits, int32_t length,
-@@ -370,6 +371,7 @@ static void urlEscapedEntityCallback(con
+@@ -370,6 +371,7 @@
          UCNV_FROM_U_CALLBACK_ESCAPE(context, fromUArgs, codeUnits, length, codePoint, reason, err);
  }
  
@@ -302,7 +395,7 @@ diff -Nrup webkit-old/WebCore/platform/text/TextCodecICU.cpp webkit-1.1.7/WebCor
  // Substitutes special GBK characters, escaping all other unassigned entities.
  static void gbkCallbackEscape(const void* context, UConverterFromUnicodeArgs* fromUArgs, const UChar* codeUnits, int32_t length,
                                UChar32 codePoint, UConverterCallbackReason reason, UErrorCode* err) 
-@@ -414,6 +416,8 @@ static void gbkCallbackSubstitute(const 
+@@ -414,6 +416,8 @@
      UCNV_FROM_U_CALLBACK_SUBSTITUTE(context, fromUArgs, codeUnits, length, codePoint, reason, err);
  }
  
@@ -311,10 +404,10 @@ diff -Nrup webkit-old/WebCore/platform/text/TextCodecICU.cpp webkit-1.1.7/WebCor
  CString TextCodecICU::encode(const UChar* characters, size_t length, UnencodableHandling handling)
  {
      if (!length)
-diff -Nrup webkit-old/WebCore/plugins/npapi.cpp webkit-1.1.7/WebCore/plugins/npapi.cpp
---- webkit-old/WebCore/plugins/npapi.cpp	2009-06-03 12:55:16.034722000 +0800
-+++ webkit-1.1.7/WebCore/plugins/npapi.cpp	2009-06-03 12:55:19.758483000 +0800
-@@ -171,7 +171,9 @@ void NPN_PopPopupsEnabledState(NPP insta
+diff -r 29063d7baea0 WebCore/plugins/npapi.cpp
+--- a/WebCore/plugins/npapi.cpp	Tue Dec 29 16:38:16 2009 +0800
++++ b/WebCore/plugins/npapi.cpp	Tue Dec 29 16:39:12 2009 +0800
+@@ -171,7 +171,9 @@
      pluginViewForInstance(instance)->popPopupsEnabledState();
  }
  
@@ -324,10 +417,10 @@ diff -Nrup webkit-old/WebCore/plugins/npapi.cpp webkit-1.1.7/WebCore/plugins/npa
      PluginMainThreadScheduler::scheduler().scheduleCall(instance, func, userData);
  }
 +U_CDECL_END
-diff -Nrup webkit-old/WebCore/rendering/RenderLayer.cpp webkit-1.1.7/WebCore/rendering/RenderLayer.cpp
---- webkit-old/WebCore/rendering/RenderLayer.cpp	2009-06-03 12:55:16.137428000 +0800
-+++ webkit-1.1.7/WebCore/rendering/RenderLayer.cpp	2009-06-03 12:55:21.027693000 +0800
-@@ -3115,7 +3115,7 @@ void RenderLayer::styleChanged(StyleDiff
+diff -r 29063d7baea0 WebCore/rendering/RenderLayer.cpp
+--- a/WebCore/rendering/RenderLayer.cpp	Tue Dec 29 16:38:16 2009 +0800
++++ b/WebCore/rendering/RenderLayer.cpp	Tue Dec 29 16:39:12 2009 +0800
+@@ -3332,7 +3332,7 @@
  void RenderLayer::updateScrollCornerStyle()
  {
      RenderObject* actualRenderer = renderer()->node() ? renderer()->node()->shadowAncestorNode()->renderer() : renderer();
@@ -336,7 +429,7 @@ diff -Nrup webkit-old/WebCore/rendering/RenderLayer.cpp webkit-1.1.7/WebCore/ren
      if (corner) {
          if (!m_scrollCorner) {
              m_scrollCorner = new (renderer()->renderArena()) RenderScrollbarPart(renderer()->document());
-@@ -3131,7 +3131,7 @@ void RenderLayer::updateScrollCornerStyl
+@@ -3348,7 +3348,7 @@
  void RenderLayer::updateResizerStyle()
  {
      RenderObject* actualRenderer = renderer()->node() ? renderer()->node()->shadowAncestorNode()->renderer() : renderer();
@@ -345,10 +438,10 @@ diff -Nrup webkit-old/WebCore/rendering/RenderLayer.cpp webkit-1.1.7/WebCore/ren
      if (resizer) {
          if (!m_resizer) {
              m_resizer = new (renderer()->renderArena()) RenderScrollbarPart(renderer()->document());
-diff -Nrup webkit-old/WebCore/rendering/RenderScrollbar.cpp webkit-1.1.7/WebCore/rendering/RenderScrollbar.cpp
---- webkit-old/WebCore/rendering/RenderScrollbar.cpp	2009-06-03 12:55:16.622329000 +0800
-+++ webkit-1.1.7/WebCore/rendering/RenderScrollbar.cpp	2009-06-03 12:55:21.050703000 +0800
-@@ -183,7 +183,7 @@ void RenderScrollbar::updateScrollbarPar
+diff -r 29063d7baea0 WebCore/rendering/RenderScrollbar.cpp
+--- a/WebCore/rendering/RenderScrollbar.cpp	Tue Dec 29 16:38:16 2009 +0800
++++ b/WebCore/rendering/RenderScrollbar.cpp	Tue Dec 29 16:39:12 2009 +0800
+@@ -199,7 +199,7 @@
      if (partType == NoPart)
          return;
  
@@ -357,9 +450,9 @@ diff -Nrup webkit-old/WebCore/rendering/RenderScrollbar.cpp webkit-1.1.7/WebCore
      
      bool needRenderer = !destroy && partStyle && partStyle->display() != NONE && partStyle->visibility() == VISIBLE;
      
-diff -Nrup webkit-old/WebCore/rendering/RenderTextFragment.cpp webkit-1.1.7/WebCore/rendering/RenderTextFragment.cpp
---- webkit-old/WebCore/rendering/RenderTextFragment.cpp	2009-06-03 12:55:16.273382000 +0800
-+++ webkit-1.1.7/WebCore/rendering/RenderTextFragment.cpp	2009-06-03 12:55:21.034200000 +0800
+diff -r 29063d7baea0 WebCore/rendering/RenderTextFragment.cpp
+--- a/WebCore/rendering/RenderTextFragment.cpp	Tue Dec 29 16:38:16 2009 +0800
++++ b/WebCore/rendering/RenderTextFragment.cpp	Tue Dec 29 16:39:12 2009 +0800
 @@ -28,7 +28,7 @@
  namespace WebCore {
  
@@ -369,10 +462,10 @@ diff -Nrup webkit-old/WebCore/rendering/RenderTextFragment.cpp webkit-1.1.7/WebC
      , m_start(startOffset)
      , m_end(length)
      , m_firstLetter(0)
-diff -Nrup webkit-old/WebCore/svg/SVGComponentTransferFunctionElement.cpp webkit-1.1.7/WebCore/svg/SVGComponentTransferFunctionElement.cpp
---- webkit-old/WebCore/svg/SVGComponentTransferFunctionElement.cpp	2009-06-03 12:55:16.744174000 +0800
-+++ webkit-1.1.7/WebCore/svg/SVGComponentTransferFunctionElement.cpp	2009-06-03 12:55:21.059671000 +0800
-@@ -32,7 +32,7 @@
+diff -r 29063d7baea0 WebCore/svg/SVGComponentTransferFunctionElement.cpp
+--- a/WebCore/svg/SVGComponentTransferFunctionElement.cpp	Tue Dec 29 16:38:16 2009 +0800
++++ b/WebCore/svg/SVGComponentTransferFunctionElement.cpp	Tue Dec 29 16:39:12 2009 +0800
+@@ -30,7 +30,7 @@
  
  namespace WebCore {
  
@@ -381,10 +474,10 @@ diff -Nrup webkit-old/WebCore/svg/SVGComponentTransferFunctionElement.cpp webkit
  
  SVGComponentTransferFunctionElement::SVGComponentTransferFunctionElement(const QualifiedName& tagName, Document* doc)
      : SVGElement(tagName, doc)
-diff -Nrup webkit-old/WebCore/svg/SVGElement.cpp webkit-1.1.7/WebCore/svg/SVGElement.cpp
---- webkit-old/WebCore/svg/SVGElement.cpp	2009-06-03 12:55:17.240117000 +0800
-+++ webkit-1.1.7/WebCore/svg/SVGElement.cpp	2009-06-03 12:55:21.084591000 +0800
-@@ -214,7 +214,7 @@ void SVGElement::sendSVGLoadEventIfPossi
+diff -r 29063d7baea0 WebCore/svg/SVGElement.cpp
+--- a/WebCore/svg/SVGElement.cpp	Tue Dec 29 16:38:16 2009 +0800
++++ b/WebCore/svg/SVGElement.cpp	Tue Dec 29 16:39:12 2009 +0800
+@@ -209,7 +209,7 @@
              event->setTarget(currentTarget);
              currentTarget->dispatchGenericEvent(event.release());
          }
@@ -393,10 +486,10 @@ diff -Nrup webkit-old/WebCore/svg/SVGElement.cpp webkit-1.1.7/WebCore/svg/SVGEle
      }
  }
  
-diff -Nrup webkit-old/WebCore/svg/SVGExternalResourcesRequired.cpp webkit-1.1.7/WebCore/svg/SVGExternalResourcesRequired.cpp
---- webkit-old/WebCore/svg/SVGExternalResourcesRequired.cpp	2009-06-03 12:55:17.212163000 +0800
-+++ webkit-1.1.7/WebCore/svg/SVGExternalResourcesRequired.cpp	2009-06-03 12:55:21.074285000 +0800
-@@ -32,7 +32,7 @@
+diff -r 29063d7baea0 WebCore/svg/SVGExternalResourcesRequired.cpp
+--- a/WebCore/svg/SVGExternalResourcesRequired.cpp	Tue Dec 29 16:38:16 2009 +0800
++++ b/WebCore/svg/SVGExternalResourcesRequired.cpp	Tue Dec 29 16:39:12 2009 +0800
+@@ -30,7 +30,7 @@
  
  namespace WebCore {
  
@@ -404,11 +497,11 @@ diff -Nrup webkit-old/WebCore/svg/SVGExternalResourcesRequired.cpp webkit-1.1.7/
 +const char SVGExternalResourcesRequiredIdentifier[] = "SVGExternalResourcesRequired";
  
  SVGExternalResourcesRequired::SVGExternalResourcesRequired()
-     : m_externalResourcesRequired(this, SVGNames::externalResourcesRequiredAttr, false)
-diff -Nrup webkit-old/WebCore/svg/SVGExternalResourcesRequired.h webkit-1.1.7/WebCore/svg/SVGExternalResourcesRequired.h
---- webkit-old/WebCore/svg/SVGExternalResourcesRequired.h	2009-06-03 12:55:17.191842000 +0800
-+++ webkit-1.1.7/WebCore/svg/SVGExternalResourcesRequired.h	2009-06-03 12:55:21.068004000 +0800
-@@ -28,7 +28,7 @@
+ {
+diff -r 29063d7baea0 WebCore/svg/SVGExternalResourcesRequired.h
+--- a/WebCore/svg/SVGExternalResourcesRequired.h	Tue Dec 29 16:38:16 2009 +0800
++++ b/WebCore/svg/SVGExternalResourcesRequired.h	Tue Dec 29 16:39:12 2009 +0800
+@@ -27,7 +27,7 @@
  
  namespace WebCore {
  
@@ -416,10 +509,10 @@ diff -Nrup webkit-old/WebCore/svg/SVGExternalResourcesRequired.h webkit-1.1.7/We
 +    extern const char SVGExternalResourcesRequiredIdentifier[];
      class MappedAttribute;
  
-     // FIXME: This is wrong for several reasons:
-diff -Nrup webkit-old/WebCore/svg/SVGFEDiffuseLightingElement.cpp webkit-1.1.7/WebCore/svg/SVGFEDiffuseLightingElement.cpp
---- webkit-old/WebCore/svg/SVGFEDiffuseLightingElement.cpp	2009-06-03 12:55:17.252435000 +0800
-+++ webkit-1.1.7/WebCore/svg/SVGFEDiffuseLightingElement.cpp	2009-06-03 12:55:21.092713000 +0800
+     // Notes on a SVG 1.1 spec discrepancy:
+diff -r 29063d7baea0 WebCore/svg/SVGFEDiffuseLightingElement.cpp
+--- a/WebCore/svg/SVGFEDiffuseLightingElement.cpp	Tue Dec 29 16:38:16 2009 +0800
++++ b/WebCore/svg/SVGFEDiffuseLightingElement.cpp	Tue Dec 29 16:39:12 2009 +0800
 @@ -35,8 +35,8 @@
  
  namespace WebCore {
@@ -431,10 +524,10 @@ diff -Nrup webkit-old/WebCore/svg/SVGFEDiffuseLightingElement.cpp webkit-1.1.7/W
  
  SVGFEDiffuseLightingElement::SVGFEDiffuseLightingElement(const QualifiedName& tagName, Document* doc)
      : SVGFilterPrimitiveStandardAttributes(tagName, doc)
-diff -Nrup webkit-old/WebCore/svg/SVGFEGaussianBlurElement.cpp webkit-1.1.7/WebCore/svg/SVGFEGaussianBlurElement.cpp
---- webkit-old/WebCore/svg/SVGFEGaussianBlurElement.cpp	2009-06-03 12:55:17.236066000 +0800
-+++ webkit-1.1.7/WebCore/svg/SVGFEGaussianBlurElement.cpp	2009-06-03 12:55:21.080741000 +0800
-@@ -32,8 +32,8 @@
+diff -r 29063d7baea0 WebCore/svg/SVGFEGaussianBlurElement.cpp
+--- a/WebCore/svg/SVGFEGaussianBlurElement.cpp	Tue Dec 29 16:38:16 2009 +0800
++++ b/WebCore/svg/SVGFEGaussianBlurElement.cpp	Tue Dec 29 16:39:12 2009 +0800
+@@ -30,8 +30,8 @@
  
  namespace WebCore {
  
@@ -445,9 +538,9 @@ diff -Nrup webkit-old/WebCore/svg/SVGFEGaussianBlurElement.cpp webkit-1.1.7/WebC
  
  SVGFEGaussianBlurElement::SVGFEGaussianBlurElement(const QualifiedName& tagName, Document* doc)
      : SVGFilterPrimitiveStandardAttributes(tagName, doc)
-diff -Nrup webkit-old/WebCore/svg/SVGFELightElement.cpp webkit-1.1.7/WebCore/svg/SVGFELightElement.cpp
---- webkit-old/WebCore/svg/SVGFELightElement.cpp	2009-06-03 12:55:17.236461000 +0800
-+++ webkit-1.1.7/WebCore/svg/SVGFELightElement.cpp	2009-06-03 12:55:21.081557000 +0800
+diff -r 29063d7baea0 WebCore/svg/SVGFELightElement.cpp
+--- a/WebCore/svg/SVGFELightElement.cpp	Tue Dec 29 16:38:16 2009 +0800
++++ b/WebCore/svg/SVGFELightElement.cpp	Tue Dec 29 16:39:12 2009 +0800
 @@ -29,7 +29,7 @@
  
  namespace WebCore {
@@ -457,10 +550,10 @@ diff -Nrup webkit-old/WebCore/svg/SVGFELightElement.cpp webkit-1.1.7/WebCore/svg
  
  SVGFELightElement::SVGFELightElement(const QualifiedName& tagName, Document* doc)
      : SVGElement(tagName, doc)
-diff -Nrup webkit-old/WebCore/svg/SVGFETurbulenceElement.cpp webkit-1.1.7/WebCore/svg/SVGFETurbulenceElement.cpp
---- webkit-old/WebCore/svg/SVGFETurbulenceElement.cpp	2009-06-03 12:55:17.235579000 +0800
-+++ webkit-1.1.7/WebCore/svg/SVGFETurbulenceElement.cpp	2009-06-03 12:55:21.080243000 +0800
-@@ -31,8 +31,8 @@
+diff -r 29063d7baea0 WebCore/svg/SVGFETurbulenceElement.cpp
+--- a/WebCore/svg/SVGFETurbulenceElement.cpp	Tue Dec 29 16:38:16 2009 +0800
++++ b/WebCore/svg/SVGFETurbulenceElement.cpp	Tue Dec 29 16:39:12 2009 +0800
+@@ -29,8 +29,8 @@
  
  namespace WebCore {
  
@@ -471,10 +564,10 @@ diff -Nrup webkit-old/WebCore/svg/SVGFETurbulenceElement.cpp webkit-1.1.7/WebCor
  
  SVGFETurbulenceElement::SVGFETurbulenceElement(const QualifiedName& tagName, Document* doc)
      : SVGFilterPrimitiveStandardAttributes(tagName, doc)
-diff -Nrup webkit-old/WebCore/svg/SVGFilterElement.cpp webkit-1.1.7/WebCore/svg/SVGFilterElement.cpp
---- webkit-old/WebCore/svg/SVGFilterElement.cpp	2009-06-03 12:55:17.252210000 +0800
-+++ webkit-1.1.7/WebCore/svg/SVGFilterElement.cpp	2009-06-03 12:55:21.092490000 +0800
-@@ -36,8 +36,8 @@
+diff -r 29063d7baea0 WebCore/svg/SVGFilterElement.cpp
+--- a/WebCore/svg/SVGFilterElement.cpp	Tue Dec 29 16:38:16 2009 +0800
++++ b/WebCore/svg/SVGFilterElement.cpp	Tue Dec 29 16:39:12 2009 +0800
+@@ -39,8 +39,8 @@
  
  namespace WebCore {
  
@@ -485,10 +578,10 @@ diff -Nrup webkit-old/WebCore/svg/SVGFilterElement.cpp webkit-1.1.7/WebCore/svg/
  
  SVGFilterElement::SVGFilterElement(const QualifiedName& tagName, Document* doc)
      : SVGStyledElement(tagName, doc)
-diff -Nrup webkit-old/WebCore/svg/SVGFilterPrimitiveStandardAttributes.cpp webkit-1.1.7/WebCore/svg/SVGFilterPrimitiveStandardAttributes.cpp
---- webkit-old/WebCore/svg/SVGFilterPrimitiveStandardAttributes.cpp	2009-06-03 12:55:17.197202000 +0800
-+++ webkit-1.1.7/WebCore/svg/SVGFilterPrimitiveStandardAttributes.cpp	2009-06-03 12:55:21.069090000 +0800
-@@ -35,7 +35,7 @@
+diff -r 29063d7baea0 WebCore/svg/SVGFilterPrimitiveStandardAttributes.cpp
+--- a/WebCore/svg/SVGFilterPrimitiveStandardAttributes.cpp	Tue Dec 29 16:38:16 2009 +0800
++++ b/WebCore/svg/SVGFilterPrimitiveStandardAttributes.cpp	Tue Dec 29 16:39:12 2009 +0800
+@@ -33,7 +33,7 @@
  
  namespace WebCore {
  
@@ -497,10 +590,10 @@ diff -Nrup webkit-old/WebCore/svg/SVGFilterPrimitiveStandardAttributes.cpp webki
  
  SVGFilterPrimitiveStandardAttributes::SVGFilterPrimitiveStandardAttributes(const QualifiedName& tagName, Document* doc)
      : SVGStyledElement(tagName, doc)
-diff -Nrup webkit-old/WebCore/svg/SVGFitToViewBox.cpp webkit-1.1.7/WebCore/svg/SVGFitToViewBox.cpp
---- webkit-old/WebCore/svg/SVGFitToViewBox.cpp	2009-06-03 12:55:16.899248000 +0800
-+++ webkit-1.1.7/WebCore/svg/SVGFitToViewBox.cpp	2009-06-03 12:55:21.062939000 +0800
-@@ -36,7 +36,7 @@
+diff -r 29063d7baea0 WebCore/svg/SVGFitToViewBox.cpp
+--- a/WebCore/svg/SVGFitToViewBox.cpp	Tue Dec 29 16:38:16 2009 +0800
++++ b/WebCore/svg/SVGFitToViewBox.cpp	Tue Dec 29 16:39:12 2009 +0800
+@@ -35,7 +35,7 @@
  
  namespace WebCore {
  
@@ -508,11 +601,11 @@ diff -Nrup webkit-old/WebCore/svg/SVGFitToViewBox.cpp webkit-1.1.7/WebCore/svg/S
 +const char SVGFitToViewBoxIdentifier[] = "SVGFitToViewBox";
  
  SVGFitToViewBox::SVGFitToViewBox()
-     : m_viewBox(this, SVGNames::viewBoxAttr)
-diff -Nrup webkit-old/WebCore/svg/SVGFitToViewBox.h webkit-1.1.7/WebCore/svg/SVGFitToViewBox.h
---- webkit-old/WebCore/svg/SVGFitToViewBox.h	2009-06-03 12:55:16.743688000 +0800
-+++ webkit-1.1.7/WebCore/svg/SVGFitToViewBox.h	2009-06-03 12:55:21.059152000 +0800
-@@ -29,7 +29,7 @@
+ {
+diff -r 29063d7baea0 WebCore/svg/SVGFitToViewBox.h
+--- a/WebCore/svg/SVGFitToViewBox.h	Tue Dec 29 16:38:16 2009 +0800
++++ b/WebCore/svg/SVGFitToViewBox.h	Tue Dec 29 16:39:12 2009 +0800
+@@ -27,7 +27,7 @@
  
  namespace WebCore {
  
@@ -521,10 +614,10 @@ diff -Nrup webkit-old/WebCore/svg/SVGFitToViewBox.h webkit-1.1.7/WebCore/svg/SVG
  
      class TransformationMatrix;
  
-diff -Nrup webkit-old/WebCore/svg/SVGGradientElement.cpp webkit-1.1.7/WebCore/svg/SVGGradientElement.cpp
---- webkit-old/WebCore/svg/SVGGradientElement.cpp	2009-06-03 12:55:17.212113000 +0800
-+++ webkit-1.1.7/WebCore/svg/SVGGradientElement.cpp	2009-06-03 12:55:21.074228000 +0800
-@@ -39,7 +39,7 @@
+diff -r 29063d7baea0 WebCore/svg/SVGGradientElement.cpp
+--- a/WebCore/svg/SVGGradientElement.cpp	Tue Dec 29 16:38:16 2009 +0800
++++ b/WebCore/svg/SVGGradientElement.cpp	Tue Dec 29 16:39:12 2009 +0800
+@@ -37,7 +37,7 @@
  
  namespace WebCore {
  
@@ -533,10 +626,10 @@ diff -Nrup webkit-old/WebCore/svg/SVGGradientElement.cpp webkit-1.1.7/WebCore/sv
  
  SVGGradientElement::SVGGradientElement(const QualifiedName& tagName, Document* doc)
      : SVGStyledElement(tagName, doc)
-diff -Nrup webkit-old/WebCore/svg/SVGGradientElement.h webkit-1.1.7/WebCore/svg/SVGGradientElement.h
---- webkit-old/WebCore/svg/SVGGradientElement.h	2009-06-03 12:55:17.253440000 +0800
-+++ webkit-1.1.7/WebCore/svg/SVGGradientElement.h	2009-06-03 12:55:21.093801000 +0800
-@@ -32,7 +32,7 @@
+diff -r 29063d7baea0 WebCore/svg/SVGGradientElement.h
+--- a/WebCore/svg/SVGGradientElement.h	Tue Dec 29 16:38:16 2009 +0800
++++ b/WebCore/svg/SVGGradientElement.h	Tue Dec 29 16:39:12 2009 +0800
+@@ -30,7 +30,7 @@
  
  namespace WebCore {
  
@@ -545,9 +638,9 @@ diff -Nrup webkit-old/WebCore/svg/SVGGradientElement.h webkit-1.1.7/WebCore/svg/
  
      class SVGGradientElement : public SVGStyledElement,
                                 public SVGURIReference,
-diff -Nrup webkit-old/WebCore/svg/SVGMarkerElement.cpp webkit-1.1.7/WebCore/svg/SVGMarkerElement.cpp
---- webkit-old/WebCore/svg/SVGMarkerElement.cpp	2009-06-03 12:55:17.207502000 +0800
-+++ webkit-1.1.7/WebCore/svg/SVGMarkerElement.cpp	2009-06-03 12:55:21.072564000 +0800
+diff -r 29063d7baea0 WebCore/svg/SVGMarkerElement.cpp
+--- a/WebCore/svg/SVGMarkerElement.cpp	Tue Dec 29 16:38:16 2009 +0800
++++ b/WebCore/svg/SVGMarkerElement.cpp	Tue Dec 29 16:39:12 2009 +0800
 @@ -35,8 +35,8 @@
  
  namespace WebCore {
@@ -559,10 +652,10 @@ diff -Nrup webkit-old/WebCore/svg/SVGMarkerElement.cpp webkit-1.1.7/WebCore/svg/
  
  SVGMarkerElement::SVGMarkerElement(const QualifiedName& tagName, Document* doc)
      : SVGStyledElement(tagName, doc)
-diff -Nrup webkit-old/WebCore/svg/SVGMarkerElement.h webkit-1.1.7/WebCore/svg/SVGMarkerElement.h
---- webkit-old/WebCore/svg/SVGMarkerElement.h	2009-06-03 12:55:17.239085000 +0800
-+++ webkit-1.1.7/WebCore/svg/SVGMarkerElement.h	2009-06-03 12:55:21.083422000 +0800
-@@ -35,8 +35,8 @@ namespace WebCore {
+diff -r 29063d7baea0 WebCore/svg/SVGMarkerElement.h
+--- a/WebCore/svg/SVGMarkerElement.h	Tue Dec 29 16:38:16 2009 +0800
++++ b/WebCore/svg/SVGMarkerElement.h	Tue Dec 29 16:39:12 2009 +0800
+@@ -35,8 +35,8 @@
      class Document;
      class SVGAngle;
  
@@ -573,10 +666,10 @@ diff -Nrup webkit-old/WebCore/svg/SVGMarkerElement.h webkit-1.1.7/WebCore/svg/SV
  
      class SVGMarkerElement : public SVGStyledElement,
                               public SVGLangSpace,
-diff -Nrup webkit-old/WebCore/svg/SVGStyledElement.cpp webkit-1.1.7/WebCore/svg/SVGStyledElement.cpp
---- webkit-old/WebCore/svg/SVGStyledElement.cpp	2009-06-03 12:55:17.256320000 +0800
-+++ webkit-1.1.7/WebCore/svg/SVGStyledElement.cpp	2009-06-03 12:55:21.094619000 +0800
-@@ -44,7 +44,7 @@ namespace WebCore {
+diff -r 29063d7baea0 WebCore/svg/SVGStyledElement.cpp
+--- a/WebCore/svg/SVGStyledElement.cpp	Tue Dec 29 16:38:16 2009 +0800
++++ b/WebCore/svg/SVGStyledElement.cpp	Tue Dec 29 16:39:12 2009 +0800
+@@ -44,7 +44,7 @@
  
  using namespace SVGNames;
  
@@ -585,10 +678,10 @@ diff -Nrup webkit-old/WebCore/svg/SVGStyledElement.cpp webkit-1.1.7/WebCore/svg/
  static HashSet<const SVGStyledElement*>* gElementsWithInstanceUpdatesBlocked = 0;
  
  SVGStyledElement::SVGStyledElement(const QualifiedName& tagName, Document* doc)
-diff -Nrup webkit-old/WebCore/svg/SVGStyledElement.h webkit-1.1.7/WebCore/svg/SVGStyledElement.h
---- webkit-old/WebCore/svg/SVGStyledElement.h	2009-06-03 12:55:17.196904000 +0800
-+++ webkit-1.1.7/WebCore/svg/SVGStyledElement.h	2009-06-03 12:55:21.068757000 +0800
-@@ -30,7 +30,7 @@
+diff -r 29063d7baea0 WebCore/svg/SVGStyledElement.h
+--- a/WebCore/svg/SVGStyledElement.h	Tue Dec 29 16:38:16 2009 +0800
++++ b/WebCore/svg/SVGStyledElement.h	Tue Dec 29 16:39:12 2009 +0800
+@@ -28,7 +28,7 @@
  
  namespace WebCore {
  
@@ -597,10 +690,10 @@ diff -Nrup webkit-old/WebCore/svg/SVGStyledElement.h webkit-1.1.7/WebCore/svg/SV
      class SVGResource;
  
      class SVGStyledElement : public SVGElement,
-diff -Nrup webkit-old/WebCore/svg/SVGStyledTransformableElement.cpp webkit-1.1.7/WebCore/svg/SVGStyledTransformableElement.cpp
---- webkit-old/WebCore/svg/SVGStyledTransformableElement.cpp	2009-06-03 12:55:17.197785000 +0800
-+++ webkit-1.1.7/WebCore/svg/SVGStyledTransformableElement.cpp	2009-06-03 12:55:21.070110000 +0800
-@@ -35,7 +35,7 @@
+diff -r 29063d7baea0 WebCore/svg/SVGStyledTransformableElement.cpp
+--- a/WebCore/svg/SVGStyledTransformableElement.cpp	Tue Dec 29 16:38:16 2009 +0800
++++ b/WebCore/svg/SVGStyledTransformableElement.cpp	Tue Dec 29 16:39:12 2009 +0800
+@@ -33,7 +33,7 @@
  
  namespace WebCore {
  
@@ -609,10 +702,10 @@ diff -Nrup webkit-old/WebCore/svg/SVGStyledTransformableElement.cpp webkit-1.1.7
  
  SVGStyledTransformableElement::SVGStyledTransformableElement(const QualifiedName& tagName, Document* doc)
      : SVGStyledLocatableElement(tagName, doc)
-diff -Nrup webkit-old/WebCore/svg/SVGStyledTransformableElement.h webkit-1.1.7/WebCore/svg/SVGStyledTransformableElement.h
---- webkit-old/WebCore/svg/SVGStyledTransformableElement.h	2009-06-03 12:55:17.211225000 +0800
-+++ webkit-1.1.7/WebCore/svg/SVGStyledTransformableElement.h	2009-06-03 12:55:21.073264000 +0800
-@@ -30,7 +30,7 @@
+diff -r 29063d7baea0 WebCore/svg/SVGStyledTransformableElement.h
+--- a/WebCore/svg/SVGStyledTransformableElement.h	Tue Dec 29 16:38:16 2009 +0800
++++ b/WebCore/svg/SVGStyledTransformableElement.h	Tue Dec 29 16:39:12 2009 +0800
+@@ -28,7 +28,7 @@
  
  namespace WebCore {
  
@@ -621,9 +714,9 @@ diff -Nrup webkit-old/WebCore/svg/SVGStyledTransformableElement.h webkit-1.1.7/W
  
      class TransformationMatrix;
  
-diff -Nrup webkit-old/WebCore/svg/SVGTextContentElement.cpp webkit-1.1.7/WebCore/svg/SVGTextContentElement.cpp
---- webkit-old/WebCore/svg/SVGTextContentElement.cpp	2009-06-03 12:55:17.252289000 +0800
-+++ webkit-1.1.7/WebCore/svg/SVGTextContentElement.cpp	2009-06-03 12:55:21.092570000 +0800
+diff -r 29063d7baea0 WebCore/svg/SVGTextContentElement.cpp
+--- a/WebCore/svg/SVGTextContentElement.cpp	Tue Dec 29 16:38:16 2009 +0800
++++ b/WebCore/svg/SVGTextContentElement.cpp	Tue Dec 29 16:39:12 2009 +0800
 @@ -43,7 +43,7 @@
  
  namespace WebCore {
@@ -633,10 +726,10 @@ diff -Nrup webkit-old/WebCore/svg/SVGTextContentElement.cpp webkit-1.1.7/WebCore
  
  SVGTextContentElement::SVGTextContentElement(const QualifiedName& tagName, Document* doc)
      : SVGStyledElement(tagName, doc)
-diff -Nrup webkit-old/WebCore/svg/SVGTextContentElement.h webkit-1.1.7/WebCore/svg/SVGTextContentElement.h
---- webkit-old/WebCore/svg/SVGTextContentElement.h	2009-06-03 12:55:16.744014000 +0800
-+++ webkit-1.1.7/WebCore/svg/SVGTextContentElement.h	2009-06-03 12:55:21.059514000 +0800
-@@ -31,7 +31,7 @@
+diff -r 29063d7baea0 WebCore/svg/SVGTextContentElement.h
+--- a/WebCore/svg/SVGTextContentElement.h	Tue Dec 29 16:38:16 2009 +0800
++++ b/WebCore/svg/SVGTextContentElement.h	Tue Dec 29 16:39:12 2009 +0800
+@@ -29,7 +29,7 @@
  
  namespace WebCore {
  
@@ -645,10 +738,10 @@ diff -Nrup webkit-old/WebCore/svg/SVGTextContentElement.h webkit-1.1.7/WebCore/s
  
      class SVGLength;
  
-diff -Nrup webkit-old/WebCore/svg/SVGTextPositioningElement.cpp webkit-1.1.7/WebCore/svg/SVGTextPositioningElement.cpp
---- webkit-old/WebCore/svg/SVGTextPositioningElement.cpp	2009-06-03 12:55:17.236917000 +0800
-+++ webkit-1.1.7/WebCore/svg/SVGTextPositioningElement.cpp	2009-06-03 12:55:21.082016000 +0800
-@@ -32,7 +32,7 @@
+diff -r 29063d7baea0 WebCore/svg/SVGTextPositioningElement.cpp
+--- a/WebCore/svg/SVGTextPositioningElement.cpp	Tue Dec 29 16:38:16 2009 +0800
++++ b/WebCore/svg/SVGTextPositioningElement.cpp	Tue Dec 29 16:39:12 2009 +0800
+@@ -30,7 +30,7 @@
  
  namespace WebCore {
  
@@ -657,10 +750,10 @@ diff -Nrup webkit-old/WebCore/svg/SVGTextPositioningElement.cpp webkit-1.1.7/Web
  
  SVGTextPositioningElement::SVGTextPositioningElement(const QualifiedName& tagName, Document* doc)
      : SVGTextContentElement(tagName, doc)
-diff -Nrup webkit-old/WebCore/svg/SVGTextPositioningElement.h webkit-1.1.7/WebCore/svg/SVGTextPositioningElement.h
---- webkit-old/WebCore/svg/SVGTextPositioningElement.h	2009-06-03 12:55:17.196760000 +0800
-+++ webkit-1.1.7/WebCore/svg/SVGTextPositioningElement.h	2009-06-03 13:39:52.235992000 +0800
-@@ -30,7 +30,7 @@
+diff -r 29063d7baea0 WebCore/svg/SVGTextPositioningElement.h
+--- a/WebCore/svg/SVGTextPositioningElement.h	Tue Dec 29 16:38:16 2009 +0800
++++ b/WebCore/svg/SVGTextPositioningElement.h	Tue Dec 29 16:39:12 2009 +0800
+@@ -28,7 +28,7 @@
  
  namespace WebCore {
  
@@ -669,9 +762,9 @@ diff -Nrup webkit-old/WebCore/svg/SVGTextPositioningElement.h webkit-1.1.7/WebCo
  
      class SVGTextPositioningElement : public SVGTextContentElement {
      public:
-diff -Nrup webkit-old/WebCore/svg/SVGURIReference.cpp webkit-1.1.7/WebCore/svg/SVGURIReference.cpp
---- webkit-old/WebCore/svg/SVGURIReference.cpp	2009-06-03 12:55:17.219451000 +0800
-+++ webkit-1.1.7/WebCore/svg/SVGURIReference.cpp	2009-06-03 12:55:21.076456000 +0800
+diff -r 29063d7baea0 WebCore/svg/SVGURIReference.cpp
+--- a/WebCore/svg/SVGURIReference.cpp	Tue Dec 29 16:38:16 2009 +0800
++++ b/WebCore/svg/SVGURIReference.cpp	Tue Dec 29 16:39:12 2009 +0800
 @@ -27,7 +27,7 @@
  
  namespace WebCore {
@@ -680,11 +773,11 @@ diff -Nrup webkit-old/WebCore/svg/SVGURIReference.cpp webkit-1.1.7/WebCore/svg/S
 +const char SVGURIReferenceIdentifier[] = "SVGURIReference";
  
  SVGURIReference::SVGURIReference()
-     : m_href(this, XLinkNames::hrefAttr)
-diff -Nrup webkit-old/WebCore/svg/SVGURIReference.h webkit-1.1.7/WebCore/svg/SVGURIReference.h
---- webkit-old/WebCore/svg/SVGURIReference.h	2009-06-03 12:55:17.256575000 +0800
-+++ webkit-1.1.7/WebCore/svg/SVGURIReference.h	2009-06-03 12:55:21.094852000 +0800
-@@ -29,7 +29,7 @@
+ {
+diff -r 29063d7baea0 WebCore/svg/SVGURIReference.h
+--- a/WebCore/svg/SVGURIReference.h	Tue Dec 29 16:38:16 2009 +0800
++++ b/WebCore/svg/SVGURIReference.h	Tue Dec 29 16:39:12 2009 +0800
+@@ -27,7 +27,7 @@
  
  namespace WebCore {
  
@@ -693,21 +786,9 @@ diff -Nrup webkit-old/WebCore/svg/SVGURIReference.h webkit-1.1.7/WebCore/svg/SVG
      class MappedAttribute;
  
      class SVGURIReference {
-diff -Nrup webkit-old/autotools/webkit.m4 webkit-1.1.7/autotools/webkit.m4
---- webkit-old/autotools/webkit.m4	2009-06-03 12:55:14.758812000 +0800
-+++ webkit-1.1.7/autotools/webkit.m4	2009-06-03 12:55:17.827706000 +0800
-@@ -137,6 +137,9 @@ if test "$unicode_backend" = "icu"; then
- 	elif test "$os_win32" = "yes"; then
- 		UNICODE_CFLAGS=""
- 		UNICODE_LIBS="-licuin -licuuc"
-+	elif test "$os_sunos" = "yes"; then
-+		UNICODE_CFLAGS="-I/usr/include"
-+		UNICODE_LIBS="-licui18n -licuuc -licudata"
- 	else
- 		AC_PATH_PROG(icu_config, icu-config, no)
- 		if test "$icu_config" = "no"; then
---- webkit-1.1.10/WebKitTools/GNUmakefile.am.orig	2009-06-16 11:44:24.064675738 +0800
-+++ webkit-1.1.10/WebKitTools/GNUmakefile.am	2009-06-16 11:45:19.067062323 +0800
+diff -r 29063d7baea0 WebKitTools/GNUmakefile.am
+--- a/WebKitTools/GNUmakefile.am	Tue Dec 29 16:38:16 2009 +0800
++++ b/WebKitTools/GNUmakefile.am	Tue Dec 29 16:39:12 2009 +0800
 @@ -13,8 +13,6 @@
  	WebKitTools/GtkLauncher/main.c
  
@@ -717,7 +798,7 @@ diff -Nrup webkit-old/autotools/webkit.m4 webkit-1.1.7/autotools/webkit.m4
  	$(global_cflags) \
  	$(GTK_CFLAGS) \
  	$(LIBSOUP_CFLAGS)
-@@ -66,7 +64,6 @@
+@@ -72,7 +70,6 @@
  	$(Programs_DumpRenderTree_CFLAGS)
  
  Programs_DumpRenderTree_CFLAGS = \
@@ -725,92 +806,10 @@ diff -Nrup webkit-old/autotools/webkit.m4 webkit-1.1.7/autotools/webkit.m4
  	$(dumprendertree_cppflags) \
  	$(global_cflags) \
  	$(GLOBALDEPS_CFLAGS) \
---- webkit-1.1.10/GNUmakefile.am.orig	2009-06-16 11:59:52.884596390 +0800
-+++ webkit-1.1.10/GNUmakefile.am	2009-06-16 12:02:39.529050354 +0800
-@@ -81,7 +81,6 @@
- # Don't include them for now to reduce the noise when compiling
- # $(GLIB_CFLAGS) $(CAIRO_CFLAGS) $(PANGO_CFLAGS)  $(FREETYPE_CFLAGS)
- corekit_cflags += \
--	-fno-strict-aliasing \
- 	$(COVERAGE_CFLAGS) \
- 	$(ENCHANT_CFLAGS) \
- 	$(GAIL_CFLAGS) \
-@@ -112,17 +111,9 @@
- endif
- 
- # Default compiler flags
--global_cflags += \
--	-Wall -W -Wcast-align -Wchar-subscripts -Wreturn-type \
--	-Wformat -Wformat-security -Wno-format-y2k -Wundef \
--	-Wmissing-format-attribute -Wpointer-arith -Wwrite-strings \
--	-Wno-unused-parameter -Wno-parentheses \
--	-fno-exceptions
-+global_cflags :=
- 
--global_cxxflags += \
--	$(global_cflags) \
--	$(SYMBOL_VISIBILITY_INLINES) \
--	-fno-rtti
-+global_cxxflags :=
- 
- # -no-undefined required for building DLLs on Windows
- # It breaks the build on other platforms, so we use it conditionally
-@@ -172,8 +163,7 @@
- 	$(libJavaScriptCore_la_CFLAGS)
- 
- libJavaScriptCore_la_CFLAGS = \
--	-fstrict-aliasing \
--	-O3 \
-+	-xO3 \
- 	$(global_cflags) \
- 	$(GLIB_CFLAGS) \
- 	$(UNICODE_CFLAGS)
-@@ -293,7 +283,6 @@
- 
- if !ENABLE_DEBUG
- global_cppflags += -DNDEBUG
--global_cflags += $(SYMBOL_VISIBILITY)
- 
- else
- webcoregtk_cppflags += \
-@@ -506,7 +495,6 @@
- noinst_PROGRAMS += $(TEST_PROGS)
- 
- webkit_tests_cflags = \
--	-fno-strict-aliasing \
- 	-I$(srcdir)/JavaScriptCore/ForwardingHeaders \
- 	-I$(srcdir)/WebKit/gtk \
- 	-I$(top_builddir)/WebKit/gtk \
---- webkit-1.1.10/JavaScriptCore/GNUmakefile.am.orig	2009-06-16 12:03:42.676391833 +0800
-+++ webkit-1.1.10/JavaScriptCore/GNUmakefile.am	2009-06-16 12:05:35.859550644 +0800
-@@ -542,15 +542,13 @@
- 	$(javascriptcore_cppflags)
- 
- Programs_minidom_CFLAGS = \
--	-ansi \
--	-fno-strict-aliasing \
- 	$(global_cflags) \
- 	$(GLOBALDEPS_CFLAGS)
- 
- Programs_minidom_LDADD = \
- 	 libJavaScriptCore.la \
- 	 -lm \
--	 -lstdc++
-+	 -lstdcxx4
- 
- Programs_minidom_LDFLAGS = \
- 	-no-install \
-@@ -565,7 +563,6 @@
- 	$(javascriptcore_cppflags)
- 
- Programs_jsc_CXXFLAGS = \
--	-fno-strict-aliasing \
- 	$(global_cxxflags) \
- 	$(global_cflags) \
- 	$(GLOBALDEPS_CFLAGS) \
---- webkit-1.1.10/configure.ac.orig	2009-06-16 11:46:24.300621155 +0800
-+++ webkit-1.1.10/configure.ac	2009-06-16 15:36:25.606141942 +0800
-@@ -52,6 +52,9 @@
+diff -r 29063d7baea0 configure.ac
+--- a/configure.ac	Tue Dec 29 16:38:16 2009 +0800
++++ b/configure.ac	Tue Dec 29 16:39:12 2009 +0800
+@@ -66,6 +66,9 @@
       *-*-darwin*)
         os_darwin=yes
         ;;
@@ -820,7 +819,7 @@ diff -Nrup webkit-old/autotools/webkit.m4 webkit-1.1.7/autotools/webkit.m4
  esac
  
  case "$host_os" in
-@@ -498,27 +501,34 @@
+@@ -551,27 +554,34 @@
                               [Enable JIT compilation default=yes]),
                [],[enable_jit="yes"])
  if test "$enable_jit" = "yes"; then
@@ -872,7 +871,7 @@ diff -Nrup webkit-old/autotools/webkit.m4 webkit-1.1.7/autotools/webkit.m4
      esac
  fi
  AC_MSG_RESULT([$enable_jit])
-@@ -546,11 +556,11 @@
+@@ -631,11 +641,11 @@
  
  # Add the appropriate 'O' level for optimized builds
  if test "$enable_optimizations" = "yes"; then
@@ -888,23 +887,29 @@ diff -Nrup webkit-old/autotools/webkit.m4 webkit-1.1.7/autotools/webkit.m4
  fi
  
  PKG_CHECK_MODULES([LIBSOUP],
---- webkit-1.1.10/WebCore/html/HTMLParser.cpp.orig	2009-06-16 16:01:13.605644351 +0800
-+++ webkit-1.1.10/WebCore/html/HTMLParser.cpp	2009-06-16 16:01:58.498203167 +0800
-@@ -137,7 +137,7 @@
-     , m_reportErrors(reportErrors)
-     , m_handlingResidualStyleAcrossBlocks(false)
-     , m_inStrayTableContent(0)
--    , m_parserQuirks(m_document->page() ? m_document->page()->chrome()->client()->createHTMLParserQuirks() : 0)
-+    , m_parserQuirks(m_document->page() ? m_document->page()->chrome()->client()->createHTMLParserQuirks() : (WTF::PassOwnPtr<WebCore::HTMLParserQuirks>)0)
- {
- }
- 
-@@ -155,7 +155,7 @@
-     , m_reportErrors(false)
-     , m_handlingResidualStyleAcrossBlocks(false)
-     , m_inStrayTableContent(0)
--    , m_parserQuirks(m_document->page() ? m_document->page()->chrome()->client()->createHTMLParserQuirks() : 0)
-+    , m_parserQuirks(m_document->page() ? m_document->page()->chrome()->client()->createHTMLParserQuirks() : (WTF::PassOwnPtr<WebCore::HTMLParserQuirks>)0)
- {
-     if (frag)
-         frag->ref();
+diff -r 102e5e9a65e8 autotools/webkit.m4
+--- a/autotools/webkit.m4	Tue Dec 29 16:37:34 2009 +0800
++++ b/autotools/webkit.m4	Tue Dec 29 17:04:36 2009 +0800
+@@ -153,6 +153,10 @@
+ 		UNICODE_CFLAGS=""
+ 		UNICODE_LIBS="-licuin -licuuc"
+                 ;;
++            *solaris*)
++               UNICODE_CFLAGS="-I/usr/include"
++               UNICODE_LIBS="-licui18n -licuuc -licudata"
++                ;;
+             *)
+ 		AC_PATH_PROG(icu_config, icu-config, no)
+ 		if test "$icu_config" = "no"; then
+diff -r 102e5e9a65e8 WebCore/loader/icon/IconDatabase.cpp
+--- a/WebCore/loader/icon/IconDatabase.cpp	Tue Dec 29 16:37:34 2009 +0800
++++ b/WebCore/loader/icon/IconDatabase.cpp	Tue Dec 29 17:15:55 2009 +0800
+@@ -511,7 +511,7 @@
+     if (!isOpen() || iconURLOriginal.isEmpty())
+         return;
+     
+-    RefPtr<SharedBuffer> data = dataOriginal ? dataOriginal->copy() : 0;
++    RefPtr<SharedBuffer> data = dataOriginal ? dataOriginal->copy() : (WTF::PassRefPtr<WebCore::SharedBuffer>)0;
+     String iconURL = iconURLOriginal.crossThreadString();
+     
+     Vector<String> pageURLs;

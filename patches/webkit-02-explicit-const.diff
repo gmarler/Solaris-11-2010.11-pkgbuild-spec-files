@@ -1,47 +1,19 @@
-diff -Nrup webkit-1.1.6/WebCore/svg/SVGAElement.h webkit-new/WebCore/svg/SVGAElement.h
---- webkit-1.1.6/WebCore/svg/SVGAElement.h	2009-05-14 14:43:15.760445000 +0800
-+++ webkit-new/WebCore/svg/SVGAElement.h	2009-05-14 14:43:40.443068000 +0800
-@@ -64,7 +64,7 @@ namespace WebCore {
-         virtual const SVGElement* contextElement() const { return this; }
- 
-     private:
--        ANIMATED_PROPERTY_DECLARATIONS(SVGAElement, SVGNames::aTagString, SVGNames::targetAttrString, String, Target, target)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGAElement, (const char *)SVGNames::aTagString, (const char *)SVGNames::targetAttrString, String, Target, target)
-     };
- 
- } // namespace WebCore
-diff -Nrup webkit-1.1.6/WebCore/svg/SVGCircleElement.h webkit-new/WebCore/svg/SVGCircleElement.h
---- webkit-1.1.6/WebCore/svg/SVGCircleElement.h	2009-05-14 14:43:15.766379000 +0800
-+++ webkit-new/WebCore/svg/SVGCircleElement.h	2009-05-14 14:43:40.449527000 +0800
-@@ -51,9 +51,9 @@ namespace WebCore {
-         virtual bool hasRelativeValues() const;
- 
-     private:
--        ANIMATED_PROPERTY_DECLARATIONS(SVGCircleElement, SVGNames::circleTagString, SVGNames::cxAttrString, SVGLength, Cx, cx)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGCircleElement, SVGNames::circleTagString, SVGNames::cyAttrString, SVGLength, Cy, cy)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGCircleElement, SVGNames::circleTagString, SVGNames::rAttrString, SVGLength, R, r)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGCircleElement, (const char *)SVGNames::circleTagString, (const char *)SVGNames::cxAttrString, SVGLength, Cx, cx)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGCircleElement, (const char *)SVGNames::circleTagString, (const char *)SVGNames::cyAttrString, SVGLength, Cy, cy)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGCircleElement, (const char *)SVGNames::circleTagString, (const char *)SVGNames::rAttrString, SVGLength, R, r)
-     };
- 
- } // namespace WebCore
-diff -Nrup webkit-1.1.6/WebCore/svg/SVGClipPathElement.h webkit-new/WebCore/svg/SVGClipPathElement.h
---- webkit-1.1.6/WebCore/svg/SVGClipPathElement.h	2009-05-14 14:43:15.929821000 +0800
-+++ webkit-new/WebCore/svg/SVGClipPathElement.h	2009-05-14 14:43:40.438865000 +0800
-@@ -54,7 +54,7 @@ namespace WebCore {
-         virtual const SVGElement* contextElement() const { return this; }
+diff -r b231d986b084 WebCore/svg/SVGClipPathElement.h
+--- a/WebCore/svg/SVGClipPathElement.h	Tue Dec 29 14:38:40 2009 +0800
++++ b/WebCore/svg/SVGClipPathElement.h	Tue Dec 29 15:09:47 2009 +0800
+@@ -48,7 +48,7 @@
+         virtual SVGResource* canvasResource();
  
      private:
 -        ANIMATED_PROPERTY_DECLARATIONS(SVGClipPathElement, SVGNames::clipPathTagString, SVGNames::clipPathUnitsAttrString, int, ClipPathUnits, clipPathUnits)
 +        ANIMATED_PROPERTY_DECLARATIONS(SVGClipPathElement, (const char *)SVGNames::clipPathTagString, (const char *)SVGNames::clipPathUnitsAttrString, int, ClipPathUnits, clipPathUnits)
  
-         RefPtr<SVGResourceClipper> m_clipper;
-     };
-diff -Nrup webkit-1.1.6/WebCore/svg/SVGComponentTransferFunctionElement.h webkit-new/WebCore/svg/SVGComponentTransferFunctionElement.h
---- webkit-1.1.6/WebCore/svg/SVGComponentTransferFunctionElement.h	2009-05-14 14:43:15.994752000 +0800
-+++ webkit-new/WebCore/svg/SVGComponentTransferFunctionElement.h	2009-05-14 14:43:40.442574000 +0800
-@@ -42,13 +42,13 @@ namespace WebCore {
+         // SVGExternalResourcesRequired
+         ANIMATED_PROPERTY_DECLARATIONS(SVGClipPathElement, SVGExternalResourcesRequiredIdentifier,
+diff -r b231d986b084 WebCore/svg/SVGComponentTransferFunctionElement.h
+--- a/WebCore/svg/SVGComponentTransferFunctionElement.h	Tue Dec 29 14:38:40 2009 +0800
++++ b/WebCore/svg/SVGComponentTransferFunctionElement.h	Tue Dec 29 15:09:47 2009 +0800
+@@ -41,13 +41,13 @@
          ComponentTransferFunction transferFunction() const;
  
      private:
@@ -62,11 +34,11 @@ diff -Nrup webkit-1.1.6/WebCore/svg/SVGComponentTransferFunctionElement.h webkit
      };
  
  } // namespace WebCore
-diff -Nrup webkit-1.1.6/WebCore/svg/SVGCursorElement.h webkit-new/WebCore/svg/SVGCursorElement.h
---- webkit-1.1.6/WebCore/svg/SVGCursorElement.h	2009-05-14 14:43:15.963885000 +0800
-+++ webkit-new/WebCore/svg/SVGCursorElement.h	2009-05-14 14:43:40.450094000 +0800
-@@ -54,8 +54,8 @@ namespace WebCore {
-         virtual const SVGElement* contextElement() const { return this; }
+diff -r b231d986b084 WebCore/svg/SVGCursorElement.h
+--- a/WebCore/svg/SVGCursorElement.h	Tue Dec 29 14:38:40 2009 +0800
++++ b/WebCore/svg/SVGCursorElement.h	Tue Dec 29 15:09:47 2009 +0800
+@@ -49,8 +49,8 @@
+         virtual void addSubresourceAttributeURLs(ListHashSet<KURL>&) const;
  
      private:
 -        ANIMATED_PROPERTY_DECLARATIONS(SVGCursorElement, SVGNames::cursorTagString, SVGNames::xAttrString, SVGLength, X, x)
@@ -74,12 +46,12 @@ diff -Nrup webkit-1.1.6/WebCore/svg/SVGCursorElement.h webkit-new/WebCore/svg/SV
 +        ANIMATED_PROPERTY_DECLARATIONS(SVGCursorElement, (const char *)SVGNames::cursorTagString, (const char *)SVGNames::xAttrString, SVGLength, X, x)
 +        ANIMATED_PROPERTY_DECLARATIONS(SVGCursorElement, (const char *)SVGNames::cursorTagString, (const char *)SVGNames::yAttrString, SVGLength, Y, y)
  
-         HashSet<SVGElement*> m_clients;
-     };
-diff -Nrup webkit-1.1.6/WebCore/svg/SVGEllipseElement.h webkit-new/WebCore/svg/SVGEllipseElement.h
---- webkit-1.1.6/WebCore/svg/SVGEllipseElement.h	2009-05-14 14:43:15.756126000 +0800
-+++ webkit-new/WebCore/svg/SVGEllipseElement.h	2009-05-14 14:43:40.445780000 +0800
-@@ -51,10 +51,10 @@ namespace WebCore {
+         // SVGURIReference
+         ANIMATED_PROPERTY_DECLARATIONS(SVGCursorElement, SVGURIReferenceIdentifier, XLinkNames::hrefAttrString, String, Href, href)
+diff -r b231d986b084 WebCore/svg/SVGEllipseElement.h
+--- a/WebCore/svg/SVGEllipseElement.h	Tue Dec 29 14:38:40 2009 +0800
++++ b/WebCore/svg/SVGEllipseElement.h	Tue Dec 29 15:09:47 2009 +0800
+@@ -48,10 +48,10 @@
          virtual bool hasRelativeValues() const;
  
      private:
@@ -91,424 +63,13 @@ diff -Nrup webkit-1.1.6/WebCore/svg/SVGEllipseElement.h webkit-new/WebCore/svg/S
 +        ANIMATED_PROPERTY_DECLARATIONS(SVGEllipseElement, (const char *)SVGNames::ellipseTagString, (const char *)SVGNames::cyAttrString, SVGLength, Cy, cy)
 +        ANIMATED_PROPERTY_DECLARATIONS(SVGEllipseElement, (const char *)SVGNames::ellipseTagString, (const char *)SVGNames::rxAttrString, SVGLength, Rx, rx)
 +        ANIMATED_PROPERTY_DECLARATIONS(SVGEllipseElement, (const char *)SVGNames::ellipseTagString, (const char *)SVGNames::ryAttrString, SVGLength, Ry, ry)
-     };
  
- } // namespace WebCore
-diff -Nrup webkit-1.1.6/WebCore/svg/SVGExternalResourcesRequired.h webkit-new/WebCore/svg/SVGExternalResourcesRequired.h
---- webkit-1.1.6/WebCore/svg/SVGExternalResourcesRequired.h	2009-05-14 14:43:15.766588000 +0800
-+++ webkit-new/WebCore/svg/SVGExternalResourcesRequired.h	2009-05-14 14:43:40.449723000 +0800
-@@ -53,7 +53,7 @@ namespace WebCore {
- 
-     private:
-         ANIMATED_PROPERTY_DECLARATIONS(SVGExternalResourcesRequired, SVGExternalResourcesRequiredIdentifier,
--                                       SVGNames::externalResourcesRequiredAttrString, bool,
-+                                       (const char *)SVGNames::externalResourcesRequiredAttrString, bool,
-                                        ExternalResourcesRequired, externalResourcesRequired)
-     };
- 
-diff -Nrup webkit-1.1.6/WebCore/svg/SVGFEMergeNodeElement.h webkit-new/WebCore/svg/SVGFEMergeNodeElement.h
---- webkit-1.1.6/WebCore/svg/SVGFEMergeNodeElement.h	2009-05-14 14:43:15.845644000 +0800
-+++ webkit-new/WebCore/svg/SVGFEMergeNodeElement.h	2009-05-14 14:43:40.444392000 +0800
-@@ -39,7 +39,7 @@ namespace WebCore {
-         virtual const SVGElement* contextElement() const { return this; }
- 
-     private:
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFEMergeNodeElement, SVGNames::feMergeNodeTagString, SVGNames::inAttrString, String, In1, in1)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFEMergeNodeElement, (const char *)SVGNames::feMergeNodeTagString, (const char *)SVGNames::inAttrString, String, In1, in1)
-     };
- 
- } // namespace WebCore
-diff -Nrup webkit-1.1.6/WebCore/svg/SVGFilterElement.h webkit-new/WebCore/svg/SVGFilterElement.h
---- webkit-1.1.6/WebCore/svg/SVGFilterElement.h	2009-05-14 14:43:15.757005000 +0800
-+++ webkit-new/WebCore/svg/SVGFilterElement.h	2009-05-14 14:43:40.444932000 +0800
-@@ -55,14 +55,14 @@ namespace WebCore {
-         virtual const SVGElement* contextElement() const { return this; }
- 
-     private:
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFilterElement, SVGNames::filterTagString, SVGNames::filterUnitsAttrString, int, FilterUnits, filterUnits)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFilterElement, SVGNames::filterTagString, SVGNames::primitiveUnitsAttrString, int, PrimitiveUnits, primitiveUnits)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFilterElement, SVGNames::filterTagString, SVGNames::xAttrString, SVGLength, X, x)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFilterElement, SVGNames::filterTagString, SVGNames::yAttrString, SVGLength, Y, y)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFilterElement, SVGNames::filterTagString, SVGNames::widthAttrString, SVGLength, Width, width)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFilterElement, SVGNames::filterTagString, SVGNames::heightAttrString, SVGLength, Height, height)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFilterElement, SVGNames::filterTagString, SVGFilterResXIdentifier, long, FilterResX, filterResX)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFilterElement, SVGNames::filterTagString, SVGFilterResYIdentifier, long, FilterResY, filterResY)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFilterElement, (const char *)SVGNames::filterTagString, (const char *)SVGNames::filterUnitsAttrString, int, FilterUnits, filterUnits)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFilterElement, (const char *)SVGNames::filterTagString, (const char *)SVGNames::primitiveUnitsAttrString, int, PrimitiveUnits, primitiveUnits)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFilterElement, (const char *)SVGNames::filterTagString, (const char *)SVGNames::xAttrString, SVGLength, X, x)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFilterElement, (const char *)SVGNames::filterTagString, (const char *)SVGNames::yAttrString, SVGLength, Y, y)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFilterElement, (const char *)SVGNames::filterTagString, (const char *)SVGNames::widthAttrString, SVGLength, Width, width)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFilterElement, (const char *)SVGNames::filterTagString, (const char *)SVGNames::heightAttrString, SVGLength, Height, height)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFilterElement, (const char *)SVGNames::filterTagString, SVGFilterResXIdentifier, long, FilterResX, filterResX)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFilterElement, (const char *)SVGNames::filterTagString, SVGFilterResYIdentifier, long, FilterResY, filterResY)
- 
-         RefPtr<SVGResourceFilter> m_filter;
-     };
-diff -Nrup webkit-1.1.6/WebCore/svg/SVGFitToViewBox.h webkit-new/WebCore/svg/SVGFitToViewBox.h
---- webkit-1.1.6/WebCore/svg/SVGFitToViewBox.h	2009-05-14 14:43:15.756326000 +0800
-+++ webkit-new/WebCore/svg/SVGFitToViewBox.h	2009-05-14 14:43:40.440566000 +0800
-@@ -47,8 +47,8 @@ namespace WebCore {
-         virtual const SVGElement* contextElement() const = 0;
- 
-     private:
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFitToViewBox, SVGFitToViewBoxIdentifier, SVGNames::viewBoxAttrString, FloatRect, ViewBox, viewBox)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGFitToViewBox, SVGFitToViewBoxIdentifier, SVGNames::preserveAspectRatioAttrString, SVGPreserveAspectRatio, PreserveAspectRatio, preserveAspectRatio)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFitToViewBox, SVGFitToViewBoxIdentifier, (const char *)SVGNames::viewBoxAttrString, FloatRect, ViewBox, viewBox)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGFitToViewBox, SVGFitToViewBoxIdentifier, (const char *)SVGNames::preserveAspectRatioAttrString, SVGPreserveAspectRatio, PreserveAspectRatio, preserveAspectRatio)
-     };
- 
- } // namespace WebCore
-diff -Nrup webkit-1.1.6/WebCore/svg/SVGForeignObjectElement.h webkit-new/WebCore/svg/SVGForeignObjectElement.h
---- webkit-1.1.6/WebCore/svg/SVGForeignObjectElement.h	2009-05-14 14:43:15.826101000 +0800
-+++ webkit-new/WebCore/svg/SVGForeignObjectElement.h	2009-05-14 14:43:40.443283000 +0800
-@@ -52,10 +52,10 @@ namespace WebCore {
-         virtual const SVGElement* contextElement() const { return this; }
- 
-     private:
--        ANIMATED_PROPERTY_DECLARATIONS(SVGForeignObjectElement, SVGNames::foreignObjectTagString, SVGNames::xAttrString, SVGLength, X, x)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGForeignObjectElement, SVGNames::foreignObjectTagString, SVGNames::yAttrString, SVGLength, Y, y)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGForeignObjectElement, SVGNames::foreignObjectTagString, SVGNames::widthAttrString, SVGLength, Width, width)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGForeignObjectElement, SVGNames::foreignObjectTagString, SVGNames::heightAttrString, SVGLength, Height, height)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGForeignObjectElement, (const char *)SVGNames::foreignObjectTagString, (const char *)SVGNames::xAttrString, SVGLength, X, x)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGForeignObjectElement, (const char *)SVGNames::foreignObjectTagString, (const char *)SVGNames::yAttrString, SVGLength, Y, y)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGForeignObjectElement, (const char *)SVGNames::foreignObjectTagString, (const char *)SVGNames::widthAttrString, SVGLength, Width, width)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGForeignObjectElement, (const char *)SVGNames::foreignObjectTagString, (const char *)SVGNames::heightAttrString, SVGLength, Height, height)
-     };
- 
- } // namespace WebCore
-diff -Nrup webkit-1.1.6/WebCore/svg/SVGGradientElement.h webkit-new/WebCore/svg/SVGGradientElement.h
---- webkit-1.1.6/WebCore/svg/SVGGradientElement.h	2009-05-14 14:43:15.963314000 +0800
-+++ webkit-new/WebCore/svg/SVGGradientElement.h	2009-05-14 14:43:40.445571000 +0800
-@@ -63,9 +63,9 @@ namespace WebCore {
-         virtual const SVGElement* contextElement() const { return this; }
- 
-     protected:
--        ANIMATED_PROPERTY_DECLARATIONS(SVGGradientElement, SVGGradientElementIdentifier, SVGNames::spreadMethodAttrString, int, SpreadMethod, spreadMethod)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGGradientElement, SVGGradientElementIdentifier, SVGNames::gradientUnitsAttrString, int, GradientUnits, gradientUnits)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGGradientElement, SVGGradientElementIdentifier, SVGNames::gradientTransformAttrString, SVGTransformList, GradientTransform, gradientTransform)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGGradientElement, SVGGradientElementIdentifier, (const char *)SVGNames::spreadMethodAttrString, int, SpreadMethod, spreadMethod)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGGradientElement, SVGGradientElementIdentifier, (const char *)SVGNames::gradientUnitsAttrString, int, GradientUnits, gradientUnits)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGGradientElement, SVGGradientElementIdentifier, (const char *)SVGNames::gradientTransformAttrString, SVGTransformList, GradientTransform, gradientTransform)
-     };
- 
- } // namespace WebCore
-diff -Nrup webkit-1.1.6/WebCore/svg/SVGImageElement.h webkit-new/WebCore/svg/SVGImageElement.h
---- webkit-1.1.6/WebCore/svg/SVGImageElement.h	2009-05-14 14:43:15.841170000 +0800
-+++ webkit-new/WebCore/svg/SVGImageElement.h	2009-05-14 14:43:40.448089000 +0800
-@@ -64,11 +64,11 @@ namespace WebCore {
-         virtual const SVGElement* contextElement() const { return this; }
- 
-     private:
--        ANIMATED_PROPERTY_DECLARATIONS(SVGImageElement, SVGNames::imageTagString, SVGNames::xAttrString, SVGLength, X, x)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGImageElement, SVGNames::imageTagString, SVGNames::yAttrString, SVGLength, Y, y)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGImageElement, SVGNames::imageTagString, SVGNames::widthAttrString, SVGLength, Width, width)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGImageElement, SVGNames::imageTagString, SVGNames::heightAttrString, SVGLength, Height, height)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGImageElement, SVGNames::imageTagString, SVGNames::preserveAspectRatioAttrString, SVGPreserveAspectRatio, PreserveAspectRatio, preserveAspectRatio)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGImageElement, (const char *)SVGNames::imageTagString, (const char *)SVGNames::xAttrString, SVGLength, X, x)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGImageElement, (const char *)SVGNames::imageTagString, (const char *)SVGNames::yAttrString, SVGLength, Y, y)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGImageElement, (const char *)SVGNames::imageTagString, (const char *)SVGNames::widthAttrString, SVGLength, Width, width)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGImageElement, (const char *)SVGNames::imageTagString, (const char *)SVGNames::heightAttrString, SVGLength, Height, height)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGImageElement, (const char *)SVGNames::imageTagString, (const char *)SVGNames::preserveAspectRatioAttrString, SVGPreserveAspectRatio, PreserveAspectRatio, preserveAspectRatio)
- 
-         SVGImageLoader m_imageLoader;
-     };
-diff -Nrup webkit-1.1.6/WebCore/svg/SVGLineElement.h webkit-new/WebCore/svg/SVGLineElement.h
---- webkit-1.1.6/WebCore/svg/SVGLineElement.h	2009-05-14 14:43:15.842276000 +0800
-+++ webkit-new/WebCore/svg/SVGLineElement.h	2009-05-14 14:43:40.441718000 +0800
-@@ -55,10 +55,10 @@ namespace WebCore {
-         virtual bool hasRelativeValues() const;
- 
-     private:
--        ANIMATED_PROPERTY_DECLARATIONS(SVGLineElement, SVGNames::lineTagString, SVGNames::x1AttrString, SVGLength, X1, x1)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGLineElement, SVGNames::lineTagString, SVGNames::y1AttrString, SVGLength, Y1, y1)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGLineElement, SVGNames::lineTagString, SVGNames::x2AttrString, SVGLength, X2, x2)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGLineElement, SVGNames::lineTagString, SVGNames::y2AttrString, SVGLength, Y2, y2)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGLineElement, (const char *)SVGNames::lineTagString, (const char *)SVGNames::x1AttrString, SVGLength, X1, x1)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGLineElement, (const char *)SVGNames::lineTagString, (const char *)SVGNames::y1AttrString, SVGLength, Y1, y1)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGLineElement, (const char *)SVGNames::lineTagString, (const char *)SVGNames::x2AttrString, SVGLength, X2, x2)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGLineElement, (const char *)SVGNames::lineTagString, (const char *)SVGNames::y2AttrString, SVGLength, Y2, y2)
-     };
- 
- } // namespace WebCore
-diff -Nrup webkit-1.1.6/WebCore/svg/SVGLinearGradientElement.h webkit-new/WebCore/svg/SVGLinearGradientElement.h
---- webkit-1.1.6/WebCore/svg/SVGLinearGradientElement.h	2009-05-14 14:43:15.963558000 +0800
-+++ webkit-new/WebCore/svg/SVGLinearGradientElement.h	2009-05-14 14:43:40.449156000 +0800
-@@ -46,10 +46,10 @@ namespace WebCore {
-         LinearGradientAttributes collectGradientProperties() const;
- 
-     private:
--        ANIMATED_PROPERTY_DECLARATIONS(SVGLinearGradientElement, SVGNames::linearGradientTagString, SVGNames::x1AttrString, SVGLength, X1, x1)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGLinearGradientElement, SVGNames::linearGradientTagString, SVGNames::y1AttrString, SVGLength, Y1, y1)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGLinearGradientElement, SVGNames::linearGradientTagString, SVGNames::x2AttrString, SVGLength, X2, x2)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGLinearGradientElement, SVGNames::linearGradientTagString, SVGNames::y2AttrString, SVGLength, Y2, y2)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGLinearGradientElement, (const char *)SVGNames::linearGradientTagString, (const char *)SVGNames::x1AttrString, SVGLength, X1, x1)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGLinearGradientElement, (const char *)SVGNames::linearGradientTagString, (const char *)SVGNames::y1AttrString, SVGLength, Y1, y1)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGLinearGradientElement, (const char *)SVGNames::linearGradientTagString, (const char *)SVGNames::x2AttrString, SVGLength, X2, x2)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGLinearGradientElement, (const char *)SVGNames::linearGradientTagString, (const char *)SVGNames::y2AttrString, SVGLength, Y2, y2)
-     };
- 
- } // namespace WebCore
-diff -Nrup webkit-1.1.6/WebCore/svg/SVGMarkerElement.h webkit-new/WebCore/svg/SVGMarkerElement.h
---- webkit-1.1.6/WebCore/svg/SVGMarkerElement.h	2009-05-14 14:43:15.845368000 +0800
-+++ webkit-new/WebCore/svg/SVGMarkerElement.h	2009-05-14 14:43:40.443729000 +0800
-@@ -72,13 +72,13 @@ namespace WebCore {
-         virtual const SVGElement* contextElement() const { return this; }
- 
-     private:
--        ANIMATED_PROPERTY_DECLARATIONS(SVGMarkerElement, SVGNames::markerTagString, SVGNames::refXAttrString, SVGLength, RefX, refX)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGMarkerElement, SVGNames::markerTagString, SVGNames::refYAttrString, SVGLength, RefY, refY)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGMarkerElement, SVGNames::markerTagString, SVGNames::markerWidthAttrString, SVGLength, MarkerWidth, markerWidth)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGMarkerElement, SVGNames::markerTagString, SVGNames::markerHeightAttrString, SVGLength, MarkerHeight, markerHeight)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGMarkerElement, SVGNames::markerTagString, SVGNames::markerUnitsAttrString, int, MarkerUnits, markerUnits)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGMarkerElement, SVGNames::markerTagString, SVGOrientTypeAttrIdentifier, int, OrientType, orientType)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGMarkerElement, SVGNames::markerTagString, SVGOrientAngleAttrIdentifier, SVGAngle, OrientAngle, orientAngle)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGMarkerElement, (const char *)SVGNames::markerTagString, (const char *)SVGNames::refXAttrString, SVGLength, RefX, refX)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGMarkerElement, (const char *)SVGNames::markerTagString, (const char *)SVGNames::refYAttrString, SVGLength, RefY, refY)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGMarkerElement, (const char *)SVGNames::markerTagString, (const char *)SVGNames::markerWidthAttrString, SVGLength, MarkerWidth, markerWidth)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGMarkerElement, (const char *)SVGNames::markerTagString, (const char *)SVGNames::markerHeightAttrString, SVGLength, MarkerHeight, markerHeight)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGMarkerElement, (const char *)SVGNames::markerTagString, (const char *)SVGNames::markerUnitsAttrString, int, MarkerUnits, markerUnits)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGMarkerElement, (const char *)SVGNames::markerTagString, SVGOrientTypeAttrIdentifier, int, OrientType, orientType)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGMarkerElement, (const char *)SVGNames::markerTagString, SVGOrientAngleAttrIdentifier, SVGAngle, OrientAngle, orientAngle)
- 
-         RefPtr<SVGResourceMarker> m_marker;
-     };
-diff -Nrup webkit-1.1.6/WebCore/svg/SVGMaskElement.h webkit-new/WebCore/svg/SVGMaskElement.h
---- webkit-1.1.6/WebCore/svg/SVGMaskElement.h	2009-05-14 14:43:15.777389000 +0800
-+++ webkit-new/WebCore/svg/SVGMaskElement.h	2009-05-14 14:43:40.438658000 +0800
-@@ -57,12 +57,12 @@ namespace WebCore {
-         virtual const SVGElement* contextElement() const { return this; }
- 
-     private:
--        ANIMATED_PROPERTY_DECLARATIONS(SVGMaskElement, SVGNames::maskTagString, SVGNames::maskUnitsAttrString, int, MaskUnits, maskUnits)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGMaskElement, SVGNames::maskTagString, SVGNames::maskContentUnitsAttrString, int, MaskContentUnits, maskContentUnits)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGMaskElement, SVGNames::maskTagString, SVGNames::xAttrString, SVGLength, X, x)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGMaskElement, SVGNames::maskTagString, SVGNames::yAttrString, SVGLength, Y, y)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGMaskElement, SVGNames::maskTagString, SVGNames::widthAttrString, SVGLength, Width, width)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGMaskElement, SVGNames::maskTagString, SVGNames::heightAttrString, SVGLength, Height, height)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGMaskElement, (const char *)SVGNames::maskTagString, (const char *)SVGNames::maskUnitsAttrString, int, MaskUnits, maskUnits)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGMaskElement, (const char *)SVGNames::maskTagString, (const char *)SVGNames::maskContentUnitsAttrString, int, MaskContentUnits, maskContentUnits)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGMaskElement, (const char *)SVGNames::maskTagString, (const char *)SVGNames::xAttrString, SVGLength, X, x)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGMaskElement, (const char *)SVGNames::maskTagString, (const char *)SVGNames::yAttrString, SVGLength, Y, y)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGMaskElement, (const char *)SVGNames::maskTagString, (const char *)SVGNames::widthAttrString, SVGLength, Width, width)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGMaskElement, (const char *)SVGNames::maskTagString, (const char *)SVGNames::heightAttrString, SVGLength, Height, height)
- 
-         RefPtr<SVGResourceMasker> m_masker;
-     };
-diff -Nrup webkit-1.1.6/WebCore/svg/SVGPathElement.h webkit-new/WebCore/svg/SVGPathElement.h
---- webkit-1.1.6/WebCore/svg/SVGPathElement.h	2009-05-14 14:43:15.927608000 +0800
-+++ webkit-new/WebCore/svg/SVGPathElement.h	2009-05-14 14:43:40.439710000 +0800
-@@ -106,7 +106,7 @@ namespace WebCore {
-     private:
-         mutable RefPtr<SVGPathSegList> m_pathSegList;
- 
--        ANIMATED_PROPERTY_DECLARATIONS(SVGPathElement, SVGNames::pathTagString, SVGNames::pathLengthAttrString, float, PathLength, pathLength)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGPathElement, (const char *)SVGNames::pathTagString, (const char *)SVGNames::pathLengthAttrString, float, PathLength, pathLength)
-     };
- 
- } // namespace WebCore
-diff -Nrup webkit-1.1.6/WebCore/svg/SVGPatternElement.h webkit-new/WebCore/svg/SVGPatternElement.h
---- webkit-1.1.6/WebCore/svg/SVGPatternElement.h	2009-05-14 14:43:15.826018000 +0800
-+++ webkit-new/WebCore/svg/SVGPatternElement.h	2009-05-14 14:43:40.451061000 +0800
-@@ -62,13 +62,13 @@ namespace WebCore {
-         virtual const SVGElement* contextElement() const { return this; }
- 
-     private:
--        ANIMATED_PROPERTY_DECLARATIONS(SVGPatternElement, SVGNames::patternTagString, SVGNames::xAttrString, SVGLength, X, x)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGPatternElement, SVGNames::patternTagString, SVGNames::yAttrString, SVGLength, Y, y)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGPatternElement, SVGNames::patternTagString, SVGNames::widthAttrString, SVGLength, Width, width)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGPatternElement, SVGNames::patternTagString, SVGNames::heightAttrString, SVGLength, Height, height)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGPatternElement, SVGNames::patternTagString, SVGNames::patternUnitsAttrString, int, PatternUnits, patternUnits)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGPatternElement, SVGNames::patternTagString, SVGNames::patternContentUnitsAttrString, int, PatternContentUnits, patternContentUnits)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGPatternElement, SVGNames::patternTagString, SVGNames::patternTransformAttrString, SVGTransformList, PatternTransform, patternTransform)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGPatternElement, (const char *)SVGNames::patternTagString, (const char *)SVGNames::xAttrString, SVGLength, X, x)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGPatternElement, (const char *)SVGNames::patternTagString, (const char *)SVGNames::yAttrString, SVGLength, Y, y)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGPatternElement, (const char *)SVGNames::patternTagString, (const char *)SVGNames::widthAttrString, SVGLength, Width, width)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGPatternElement, (const char *)SVGNames::patternTagString, (const char *)SVGNames::heightAttrString, SVGLength, Height, height)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGPatternElement, (const char *)SVGNames::patternTagString, (const char *)SVGNames::patternUnitsAttrString, int, PatternUnits, patternUnits)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGPatternElement, (const char *)SVGNames::patternTagString, (const char *)SVGNames::patternContentUnitsAttrString, int, PatternContentUnits, patternContentUnits)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGPatternElement, (const char *)SVGNames::patternTagString, (const char *)SVGNames::patternTransformAttrString, SVGTransformList, PatternTransform, patternTransform)
- 
-         mutable RefPtr<SVGPaintServerPattern> m_resource;
- 
-diff -Nrup webkit-1.1.6/WebCore/svg/SVGRadialGradientElement.h webkit-new/WebCore/svg/SVGRadialGradientElement.h
---- webkit-1.1.6/WebCore/svg/SVGRadialGradientElement.h	2009-05-14 14:43:15.783531000 +0800
-+++ webkit-new/WebCore/svg/SVGRadialGradientElement.h	2009-05-14 14:43:40.441938000 +0800
-@@ -46,11 +46,11 @@ namespace WebCore {
-         RadialGradientAttributes collectGradientProperties() const;
- 
-     private:
--        ANIMATED_PROPERTY_DECLARATIONS(SVGRadialGradientElement, SVGNames::radialGradientTagString, SVGNames::cxAttrString, SVGLength, Cx, cx)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGRadialGradientElement, SVGNames::radialGradientTagString, SVGNames::cyAttrString, SVGLength, Cy, cy)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGRadialGradientElement, SVGNames::radialGradientTagString, SVGNames::rAttrString, SVGLength, R, r)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGRadialGradientElement, SVGNames::radialGradientTagString, SVGNames::fxAttrString, SVGLength, Fx, fx)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGRadialGradientElement, SVGNames::radialGradientTagString, SVGNames::fyAttrString, SVGLength, Fy, fy)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGRadialGradientElement, (const char *)SVGNames::radialGradientTagString, (const char *)SVGNames::cxAttrString, SVGLength, Cx, cx)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGRadialGradientElement, (const char *)SVGNames::radialGradientTagString, (const char *)SVGNames::cyAttrString, SVGLength, Cy, cy)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGRadialGradientElement, (const char *)SVGNames::radialGradientTagString, (const char *)SVGNames::rAttrString, SVGLength, R, r)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGRadialGradientElement, (const char *)SVGNames::radialGradientTagString, (const char *)SVGNames::fxAttrString, SVGLength, Fx, fx)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGRadialGradientElement, (const char *)SVGNames::radialGradientTagString, (const char *)SVGNames::fyAttrString, SVGLength, Fy, fy)
-     };
- 
- } // namespace WebCore
-diff -Nrup webkit-1.1.6/WebCore/svg/SVGRectElement.h webkit-new/WebCore/svg/SVGRectElement.h
---- webkit-1.1.6/WebCore/svg/SVGRectElement.h	2009-05-14 14:43:15.796580000 +0800
-+++ webkit-new/WebCore/svg/SVGRectElement.h	2009-05-14 14:43:40.446955000 +0800
-@@ -51,12 +51,12 @@ namespace WebCore {
-         virtual bool hasRelativeValues() const;
- 
-     private:
--        ANIMATED_PROPERTY_DECLARATIONS(SVGRectElement, SVGNames::rectTagString, SVGNames::xAttrString, SVGLength, X, x)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGRectElement, SVGNames::rectTagString, SVGNames::yAttrString, SVGLength, Y, y)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGRectElement, SVGNames::rectTagString, SVGNames::widthAttrString, SVGLength, Width, width)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGRectElement, SVGNames::rectTagString, SVGNames::heightAttrString, SVGLength, Height, height)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGRectElement, SVGNames::rectTagString, SVGNames::rxAttrString, SVGLength, Rx, rx)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGRectElement, SVGNames::rectTagString, SVGNames::ryAttrString, SVGLength, Ry, ry)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGRectElement, (const char *)SVGNames::rectTagString, (const char *)SVGNames::xAttrString, SVGLength, X, x)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGRectElement, (const char *)SVGNames::rectTagString, (const char *)SVGNames::yAttrString, SVGLength, Y, y)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGRectElement, (const char *)SVGNames::rectTagString, (const char *)SVGNames::widthAttrString, SVGLength, Width, width)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGRectElement, (const char *)SVGNames::rectTagString, (const char *)SVGNames::heightAttrString, SVGLength, Height, height)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGRectElement, (const char *)SVGNames::rectTagString, (const char *)SVGNames::rxAttrString, SVGLength, Rx, rx)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGRectElement, (const char *)SVGNames::rectTagString, (const char *)SVGNames::ryAttrString, SVGLength, Ry, ry)
-     };
- 
- } // namespace WebCore
-diff -Nrup webkit-1.1.6/WebCore/svg/SVGSVGElement.h webkit-new/WebCore/svg/SVGSVGElement.h
---- webkit-1.1.6/WebCore/svg/SVGSVGElement.h	2009-05-14 14:43:15.767508000 +0800
-+++ webkit-new/WebCore/svg/SVGSVGElement.h	2009-05-14 14:43:40.437627000 +0800
-@@ -145,10 +145,10 @@ namespace WebCore
-         bool isOutermostSVG() const;
- 
-     private:
--        ANIMATED_PROPERTY_DECLARATIONS(SVGSVGElement, SVGNames::svgTagString, SVGNames::xAttrString, SVGLength, X, x)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGSVGElement, SVGNames::svgTagString, SVGNames::yAttrString, SVGLength, Y, y)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGSVGElement, SVGNames::svgTagString, SVGNames::widthAttrString, SVGLength, Width, width)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGSVGElement, SVGNames::svgTagString, SVGNames::heightAttrString, SVGLength, Height, height)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGSVGElement, (const char *)SVGNames::svgTagString, (const char *)SVGNames::xAttrString, SVGLength, X, x)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGSVGElement, (const char *)SVGNames::svgTagString, (const char *)SVGNames::yAttrString, SVGLength, Y, y)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGSVGElement, (const char *)SVGNames::svgTagString, (const char *)SVGNames::widthAttrString, SVGLength, Width, width)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGSVGElement, (const char *)SVGNames::svgTagString, (const char *)SVGNames::heightAttrString, SVGLength, Height, height)
- 
-         virtual void documentWillBecomeInactive();
-         virtual void documentDidBecomeActive();
-diff -Nrup webkit-1.1.6/WebCore/svg/SVGStyledElement.h webkit-new/WebCore/svg/SVGStyledElement.h
---- webkit-1.1.6/WebCore/svg/SVGStyledElement.h	2009-05-14 14:43:15.767583000 +0800
-+++ webkit-new/WebCore/svg/SVGStyledElement.h	2009-05-14 14:43:40.439916000 +0800
-@@ -71,7 +71,7 @@ namespace WebCore {
-         static int cssPropertyIdForSVGAttributeName(const QualifiedName&);
- 
-     private:
--        ANIMATED_PROPERTY_DECLARATIONS(SVGStyledElement, SVGStyledElementIdentifier, HTMLNames::classAttrString, String, ClassName, className)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGStyledElement, SVGStyledElementIdentifier, (const char *)HTMLNames::classAttrString, String, ClassName, className)
-     };
- 
- } // namespace WebCore
-diff -Nrup webkit-1.1.6/WebCore/svg/SVGStyledTransformableElement.h webkit-new/WebCore/svg/SVGStyledTransformableElement.h
---- webkit-1.1.6/WebCore/svg/SVGStyledTransformableElement.h	2009-05-14 14:43:15.783676000 +0800
-+++ webkit-new/WebCore/svg/SVGStyledTransformableElement.h	2009-05-14 14:43:40.448299000 +0800
-@@ -62,7 +62,7 @@ namespace WebCore {
- 
-     protected:
-         ANIMATED_PROPERTY_DECLARATIONS(SVGStyledTransformableElement, SVGStyledTransformableElementIdentifier,
--                                       SVGNames::transformAttrString, SVGTransformList, Transform, transform)
-+                                       (const char *)SVGNames::transformAttrString, SVGTransformList, Transform, transform)
- 
-     private:
-         // Used by <animateMotion>
-diff -Nrup webkit-1.1.6/WebCore/svg/SVGTextContentElement.h webkit-new/WebCore/svg/SVGTextContentElement.h
---- webkit-1.1.6/WebCore/svg/SVGTextContentElement.h	2009-05-14 14:43:15.756749000 +0800
-+++ webkit-new/WebCore/svg/SVGTextContentElement.h	2009-05-14 14:43:40.447697000 +0800
-@@ -70,8 +70,8 @@ namespace WebCore {
-         virtual const SVGElement* contextElement() const { return this; }
- 
-     private:
--        ANIMATED_PROPERTY_DECLARATIONS(SVGTextContentElement, SVGTextContentElementIdentifier, SVGNames::textLengthAttrString, SVGLength, TextLength, textLength)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGTextContentElement, SVGTextContentElementIdentifier, SVGNames::lengthAdjustAttrString, int, LengthAdjust, lengthAdjust)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGTextContentElement, SVGTextContentElementIdentifier, (const char *)SVGNames::textLengthAttrString, SVGLength, TextLength, textLength)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGTextContentElement, SVGTextContentElementIdentifier, (const char *)SVGNames::lengthAdjustAttrString, int, LengthAdjust, lengthAdjust)
-     };
- 
- } // namespace WebCore
-diff -Nrup webkit-1.1.6/WebCore/svg/SVGTextElement.h webkit-new/WebCore/svg/SVGTextElement.h
---- webkit-1.1.6/WebCore/svg/SVGTextElement.h	2009-05-14 14:43:15.964609000 +0800
-+++ webkit-new/WebCore/svg/SVGTextElement.h	2009-05-14 14:46:09.376007000 +0800
-@@ -52,7 +52,7 @@ namespace WebCore {
-         virtual void svgAttributeChanged(const QualifiedName&);
- 
-     private:
--        ANIMATED_PROPERTY_DECLARATIONS(SVGTextElement, SVGNames::textTagString, SVGNames::transformAttrString, SVGTransformList, Transform, transform)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGTextElement, (const char *)SVGNames::textTagString, (const char *)SVGNames::transformAttrString, SVGTransformList, Transform, transform)
-        
-        // Used by <animateMotion>
-        OwnPtr<TransformationMatrix> m_supplementalTransform;
-diff -Nrup webkit-1.1.6/WebCore/svg/SVGTextPathElement.h webkit-new/WebCore/svg/SVGTextPathElement.h
---- webkit-1.1.6/WebCore/svg/SVGTextPathElement.h	2009-05-14 14:43:15.802752000 +0800
-+++ webkit-new/WebCore/svg/SVGTextPathElement.h	2009-05-14 14:43:40.438049000 +0800
-@@ -70,9 +70,9 @@ namespace WebCore
-         virtual const SVGElement* contextElement() const { return this; }
- 
-     private:
--        ANIMATED_PROPERTY_DECLARATIONS(SVGTextPathElement, SVGNames::textPathTagString, SVGNames::startOffsetAttrString, SVGLength, StartOffset, startOffset)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGTextPathElement, SVGNames::textPathTagString, SVGNames::methodAttrString, int, Method, method)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGTextPathElement, SVGNames::textPathTagString, SVGNames::spacingAttrString, int, Spacing, spacing)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGTextPathElement, (const char *)SVGNames::textPathTagString, (const char *)SVGNames::startOffsetAttrString, SVGLength, StartOffset, startOffset)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGTextPathElement, (const char *)SVGNames::textPathTagString, (const char *)SVGNames::methodAttrString, int, Method, method)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGTextPathElement, (const char *)SVGNames::textPathTagString, (const char *)SVGNames::spacingAttrString, int, Spacing, spacing)
-     };
- 
- } // namespace WebCore
-diff -Nrup webkit-1.1.6/WebCore/svg/SVGTextPositioningElement.h webkit-new/WebCore/svg/SVGTextPositioningElement.h
---- webkit-1.1.6/WebCore/svg/SVGTextPositioningElement.h	2009-05-14 14:43:15.767371000 +0800
-+++ webkit-new/WebCore/svg/SVGTextPositioningElement.h	2009-05-14 14:43:40.440367000 +0800
-@@ -42,11 +42,11 @@ namespace WebCore {
-         bool isKnownAttribute(const QualifiedName&);
- 
-     private:
--        ANIMATED_PROPERTY_DECLARATIONS(SVGTextPositioningElement, SVGTextPositioningElementIdentifier, SVGNames::xAttrString, SVGLengthList, X, x)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGTextPositioningElement, SVGTextPositioningElementIdentifier, SVGNames::yAttrString, SVGLengthList, Y, y)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGTextPositioningElement, SVGTextPositioningElementIdentifier, SVGNames::dxAttrString, SVGLengthList, Dx, dx)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGTextPositioningElement, SVGTextPositioningElementIdentifier, SVGNames::dyAttrString, SVGLengthList, Dy, dy)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGTextPositioningElement, SVGTextPositioningElementIdentifier, SVGNames::rotateAttrString, SVGNumberList, Rotate, rotate)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGTextPositioningElement, SVGTextPositioningElementIdentifier, (const char *)SVGNames::xAttrString, SVGLengthList, X, x)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGTextPositioningElement, SVGTextPositioningElementIdentifier, (const char *)SVGNames::yAttrString, SVGLengthList, Y, y)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGTextPositioningElement, SVGTextPositioningElementIdentifier, (const char *)SVGNames::dxAttrString, SVGLengthList, Dx, dx)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGTextPositioningElement, SVGTextPositioningElementIdentifier, (const char *)SVGNames::dyAttrString, SVGLengthList, Dy, dy)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGTextPositioningElement, SVGTextPositioningElementIdentifier, (const char *)SVGNames::rotateAttrString, SVGNumberList, Rotate, rotate)
-     };
- 
- } // namespace WebCore
-diff -Nrup webkit-1.1.6/WebCore/svg/SVGURIReference.h webkit-new/WebCore/svg/SVGURIReference.h
---- webkit-1.1.6/WebCore/svg/SVGURIReference.h	2009-05-14 14:43:15.964694000 +0800
-+++ webkit-new/WebCore/svg/SVGURIReference.h	2009-05-14 14:43:40.446347000 +0800
-@@ -45,7 +45,7 @@ namespace WebCore {
-         virtual const SVGElement* contextElement() const = 0;
- 
-     private:
--        ANIMATED_PROPERTY_DECLARATIONS(SVGURIReference, SVGURIReferenceIdentifier, XLinkNames::hrefAttrString, String, Href, href)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGURIReference, SVGURIReferenceIdentifier, (const char *)XLinkNames::hrefAttrString, String, Href, href)
-     };
- 
- } // namespace WebCore
-diff -Nrup webkit-1.1.6/WebCore/svg/SVGUseElement.h webkit-new/WebCore/svg/SVGUseElement.h
---- webkit-1.1.6/WebCore/svg/SVGUseElement.h	2009-05-14 14:43:15.826251000 +0800
-+++ webkit-new/WebCore/svg/SVGUseElement.h	2009-05-14 14:43:40.444189000 +0800
-@@ -72,10 +72,10 @@ namespace WebCore {
-         virtual const SVGElement* contextElement() const { return this; }
- 
-     private:
--        ANIMATED_PROPERTY_DECLARATIONS(SVGUseElement, SVGNames::useTagString, SVGNames::xAttrString, SVGLength, X, x)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGUseElement, SVGNames::useTagString, SVGNames::yAttrString, SVGLength, Y, y)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGUseElement, SVGNames::useTagString, SVGNames::widthAttrString, SVGLength, Width, width)
--        ANIMATED_PROPERTY_DECLARATIONS(SVGUseElement, SVGNames::useTagString, SVGNames::heightAttrString, SVGLength, Height, height)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGUseElement, (const char *)SVGNames::useTagString, (const char *)SVGNames::xAttrString, SVGLength, X, x)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGUseElement, (const char *)SVGNames::useTagString, (const char *)SVGNames::yAttrString, SVGLength, Y, y)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGUseElement, (const char *)SVGNames::useTagString, (const char *)SVGNames::widthAttrString, SVGLength, Width, width)
-+        ANIMATED_PROPERTY_DECLARATIONS(SVGUseElement, (const char *)SVGNames::useTagString, (const char *)SVGNames::heightAttrString, SVGLength, Height, height)
- 
-     private:
-         // Instance tree handling
---- webkit-1.1.10/WebCore/svg/SVGFEColorMatrixElement.h.orig	2009-06-16 13:52:51.595363229 +0800
-+++ webkit-1.1.10/WebCore/svg/SVGFEColorMatrixElement.h	2009-06-16 13:57:31.377727610 +0800
-@@ -39,9 +39,9 @@
+         // SVGExternalResourcesRequired
+         ANIMATED_PROPERTY_DECLARATIONS(SVGEllipseElement, SVGExternalResourcesRequiredIdentifier,
+diff -r b231d986b084 WebCore/svg/SVGFEColorMatrixElement.h
+--- a/WebCore/svg/SVGFEColorMatrixElement.h	Tue Dec 29 14:38:40 2009 +0800
++++ b/WebCore/svg/SVGFEColorMatrixElement.h	Tue Dec 29 15:09:47 2009 +0800
+@@ -37,9 +37,9 @@
          virtual bool build(SVGResourceFilter*);
  
      private:
@@ -521,9 +82,10 @@ diff -Nrup webkit-1.1.6/WebCore/svg/SVGUseElement.h webkit-new/WebCore/svg/SVGUs
      };
  
  } // namespace WebCore
---- webkit-1.1.10/WebCore/svg/SVGFECompositeElement.h.orig	2009-06-16 14:00:18.806927894 +0800
-+++ webkit-1.1.10/WebCore/svg/SVGFECompositeElement.h	2009-06-16 14:02:05.831170446 +0800
-@@ -38,13 +38,13 @@
+diff -r b231d986b084 WebCore/svg/SVGFECompositeElement.h
+--- a/WebCore/svg/SVGFECompositeElement.h	Tue Dec 29 14:38:40 2009 +0800
++++ b/WebCore/svg/SVGFECompositeElement.h	Tue Dec 29 15:09:47 2009 +0800
+@@ -36,13 +36,13 @@
          virtual bool build(SVGResourceFilter*);
  
      private:
@@ -544,8 +106,9 @@ diff -Nrup webkit-1.1.6/WebCore/svg/SVGUseElement.h webkit-new/WebCore/svg/SVGUs
      };
  
  } // namespace WebCore
---- webkit-1.1.10/WebCore/svg/SVGFEDiffuseLightingElement.h.orig	2009-06-16 14:05:17.520869924 +0800
-+++ webkit-1.1.10/WebCore/svg/SVGFEDiffuseLightingElement.h	2009-06-16 14:06:13.900849861 +0800
+diff -r b231d986b084 WebCore/svg/SVGFEDiffuseLightingElement.h
+--- a/WebCore/svg/SVGFEDiffuseLightingElement.h	Tue Dec 29 14:38:40 2009 +0800
++++ b/WebCore/svg/SVGFEDiffuseLightingElement.h	Tue Dec 29 15:09:47 2009 +0800
 @@ -43,11 +43,11 @@
          virtual bool build(SVGResourceFilter*);
  
@@ -563,8 +126,9 @@ diff -Nrup webkit-1.1.6/WebCore/svg/SVGUseElement.h webkit-new/WebCore/svg/SVGUs
  
          LightSource* findLights() const;
      };
---- webkit-1.1.10/WebCore/svg/SVGFEDisplacementMapElement.h.orig	2009-06-16 14:09:58.699366252 +0800
-+++ webkit-1.1.10/WebCore/svg/SVGFEDisplacementMapElement.h	2009-06-16 14:10:37.558178086 +0800
+diff -r b231d986b084 WebCore/svg/SVGFEDisplacementMapElement.h
+--- a/WebCore/svg/SVGFEDisplacementMapElement.h	Tue Dec 29 14:38:40 2009 +0800
++++ b/WebCore/svg/SVGFEDisplacementMapElement.h	Tue Dec 29 15:09:47 2009 +0800
 @@ -37,11 +37,11 @@
          virtual bool build(SVGResourceFilter*);
          
@@ -582,9 +146,10 @@ diff -Nrup webkit-1.1.6/WebCore/svg/SVGUseElement.h webkit-new/WebCore/svg/SVGUs
      };
  
  } // namespace WebCore
---- webkit-1.1.10/WebCore/svg/SVGFEGaussianBlurElement.h.orig	2009-06-16 14:11:14.552731329 +0800
-+++ webkit-1.1.10/WebCore/svg/SVGFEGaussianBlurElement.h	2009-06-16 14:13:52.661315656 +0800
-@@ -43,9 +43,9 @@
+diff -r b231d986b084 WebCore/svg/SVGFEGaussianBlurElement.h
+--- a/WebCore/svg/SVGFEGaussianBlurElement.h	Tue Dec 29 14:38:40 2009 +0800
++++ b/WebCore/svg/SVGFEGaussianBlurElement.h	Tue Dec 29 15:09:47 2009 +0800
+@@ -41,9 +41,9 @@
          virtual bool build(SVGResourceFilter*);
  
      private:
@@ -597,20 +162,34 @@ diff -Nrup webkit-1.1.6/WebCore/svg/SVGUseElement.h webkit-new/WebCore/svg/SVGUs
      };
  
  } // namespace WebCore
---- webkit-1.1.10/WebCore/svg/SVGFEImageElement.h.orig	2009-06-16 14:14:24.967923674 +0800
-+++ webkit-1.1.10/WebCore/svg/SVGFEImageElement.h	2009-06-16 14:14:39.313215347 +0800
-@@ -53,7 +53,7 @@
-         virtual const SVGElement* contextElement() const { return this; }
+diff -r b231d986b084 WebCore/svg/SVGFEImageElement.h
+--- a/WebCore/svg/SVGFEImageElement.h	Tue Dec 29 14:38:40 2009 +0800
++++ b/WebCore/svg/SVGFEImageElement.h	Tue Dec 29 15:09:47 2009 +0800
+@@ -48,7 +48,7 @@
+         virtual bool build(SVGResourceFilter*);
  
      private:
 -        ANIMATED_PROPERTY_DECLARATIONS(SVGFEImageElement, SVGNames::feImageTagString, SVGNames::preserveAspectRatioAttrString, SVGPreserveAspectRatio, PreserveAspectRatio, preserveAspectRatio)
 +        ANIMATED_PROPERTY_DECLARATIONS(SVGFEImageElement, (const char *)SVGNames::feImageTagString, (const char *)SVGNames::preserveAspectRatioAttrString, SVGPreserveAspectRatio, PreserveAspectRatio, preserveAspectRatio)
  
-         CachedResourceHandle<CachedImage> m_cachedImage;
+         // SVGURIReference
+         ANIMATED_PROPERTY_DECLARATIONS(SVGFEImageElement, SVGURIReferenceIdentifier, XLinkNames::hrefAttrString, String, Href, href)
+diff -r b231d986b084 WebCore/svg/SVGFEMergeNodeElement.h
+--- a/WebCore/svg/SVGFEMergeNodeElement.h	Tue Dec 29 14:38:40 2009 +0800
++++ b/WebCore/svg/SVGFEMergeNodeElement.h	Tue Dec 29 15:09:47 2009 +0800
+@@ -35,7 +35,7 @@
+         virtual void parseMappedAttribute(MappedAttribute*);
+ 
+     private:
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGFEMergeNodeElement, SVGNames::feMergeNodeTagString, SVGNames::inAttrString, String, In1, in1)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGFEMergeNodeElement, (const char *)SVGNames::feMergeNodeTagString, (const char *)SVGNames::inAttrString, String, In1, in1)
      };
---- webkit-1.1.10/WebCore/svg/SVGFEOffsetElement.h.orig	2009-06-16 14:15:05.966286948 +0800
-+++ webkit-1.1.10/WebCore/svg/SVGFEOffsetElement.h	2009-06-16 14:15:31.051975503 +0800
-@@ -38,9 +38,9 @@
+ 
+ } // namespace WebCore
+diff -r b231d986b084 WebCore/svg/SVGFEOffsetElement.h
+--- a/WebCore/svg/SVGFEOffsetElement.h	Tue Dec 29 14:38:40 2009 +0800
++++ b/WebCore/svg/SVGFEOffsetElement.h	Tue Dec 29 15:09:47 2009 +0800
+@@ -36,9 +36,9 @@
          virtual bool build(SVGResourceFilter*);
  
      private:
@@ -623,8 +202,9 @@ diff -Nrup webkit-1.1.6/WebCore/svg/SVGUseElement.h webkit-new/WebCore/svg/SVGUs
      };
  
  } // namespace WebCore
---- webkit-1.1.10/WebCore/svg/SVGFESpecularLightingElement.h.orig	2009-06-16 14:18:08.637937161 +0800
-+++ webkit-1.1.10/WebCore/svg/SVGFESpecularLightingElement.h	2009-06-16 14:18:53.182113588 +0800
+diff -r b231d986b084 WebCore/svg/SVGFESpecularLightingElement.h
+--- a/WebCore/svg/SVGFESpecularLightingElement.h	Tue Dec 29 14:38:40 2009 +0800
++++ b/WebCore/svg/SVGFESpecularLightingElement.h	Tue Dec 29 15:09:47 2009 +0800
 @@ -42,12 +42,12 @@
          virtual bool build(SVGResourceFilter*);
  
@@ -644,9 +224,10 @@ diff -Nrup webkit-1.1.6/WebCore/svg/SVGUseElement.h webkit-new/WebCore/svg/SVGUs
          
          LightSource* findLights() const;
      };
---- webkit-1.1.10/WebCore/svg/SVGFETileElement.h.orig	2009-06-16 14:19:54.707423018 +0800
-+++ webkit-1.1.10/WebCore/svg/SVGFETileElement.h	2009-06-16 14:20:10.132304810 +0800
-@@ -38,7 +38,7 @@
+diff -r b231d986b084 WebCore/svg/SVGFETileElement.h
+--- a/WebCore/svg/SVGFETileElement.h	Tue Dec 29 14:38:40 2009 +0800
++++ b/WebCore/svg/SVGFETileElement.h	Tue Dec 29 15:09:47 2009 +0800
+@@ -36,7 +36,7 @@
          virtual bool build(SVGResourceFilter*);
  
      private:
@@ -655,9 +236,10 @@ diff -Nrup webkit-1.1.6/WebCore/svg/SVGUseElement.h webkit-new/WebCore/svg/SVGUs
      };
  
  } // namespace WebCore
---- webkit-1.1.10/WebCore/svg/SVGFETurbulenceElement.h.orig	2009-06-16 14:20:46.308761794 +0800
-+++ webkit-1.1.10/WebCore/svg/SVGFETurbulenceElement.h	2009-06-16 14:21:34.800147091 +0800
-@@ -47,12 +47,12 @@
+diff -r b231d986b084 WebCore/svg/SVGFETurbulenceElement.h
+--- a/WebCore/svg/SVGFETurbulenceElement.h	Tue Dec 29 14:38:40 2009 +0800
++++ b/WebCore/svg/SVGFETurbulenceElement.h	Tue Dec 29 15:09:47 2009 +0800
+@@ -45,12 +45,12 @@
          virtual bool build(SVGResourceFilter*);
  
      private:
@@ -676,10 +258,37 @@ diff -Nrup webkit-1.1.6/WebCore/svg/SVGUseElement.h webkit-new/WebCore/svg/SVGUs
      };
  
  } // namespace WebCore
---- webkit-1.1.10/WebCore/svg/SVGFilterPrimitiveStandardAttributes.h.orig	2009-06-16 14:21:53.704641243 +0800
-+++ webkit-1.1.10/WebCore/svg/SVGFilterPrimitiveStandardAttributes.h	2009-06-16 14:23:06.243506003 +0800
-@@ -52,11 +52,11 @@
-         virtual const SVGElement* contextElement() const { return this; }
+diff -r b231d986b084 WebCore/svg/SVGFilterElement.h
+--- a/WebCore/svg/SVGFilterElement.h	Tue Dec 29 14:38:40 2009 +0800
++++ b/WebCore/svg/SVGFilterElement.h	Tue Dec 29 15:09:47 2009 +0800
+@@ -50,14 +50,14 @@
+         virtual bool rendererIsNeeded(RenderStyle*) { return false; }
+ 
+     private:
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGFilterElement, SVGNames::filterTagString, SVGNames::filterUnitsAttrString, int, FilterUnits, filterUnits)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGFilterElement, SVGNames::filterTagString, SVGNames::primitiveUnitsAttrString, int, PrimitiveUnits, primitiveUnits)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGFilterElement, SVGNames::filterTagString, SVGNames::xAttrString, SVGLength, X, x)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGFilterElement, SVGNames::filterTagString, SVGNames::yAttrString, SVGLength, Y, y)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGFilterElement, SVGNames::filterTagString, SVGNames::widthAttrString, SVGLength, Width, width)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGFilterElement, SVGNames::filterTagString, SVGNames::heightAttrString, SVGLength, Height, height)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGFilterElement, SVGNames::filterTagString, SVGFilterResXIdentifier, long, FilterResX, filterResX)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGFilterElement, SVGNames::filterTagString, SVGFilterResYIdentifier, long, FilterResY, filterResY)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGFilterElement, (const char *)SVGNames::filterTagString, (const char *)SVGNames::filterUnitsAttrString, int, FilterUnits, filterUnits)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGFilterElement, (const char *)SVGNames::filterTagString, (const char *)SVGNames::primitiveUnitsAttrString, int, PrimitiveUnits, primitiveUnits)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGFilterElement, (const char *)SVGNames::filterTagString, (const char *)SVGNames::xAttrString, SVGLength, X, x)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGFilterElement, (const char *)SVGNames::filterTagString, (const char *)SVGNames::yAttrString, SVGLength, Y, y)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGFilterElement, (const char *)SVGNames::filterTagString, (const char *)SVGNames::widthAttrString, SVGLength, Width, width)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGFilterElement, (const char *)SVGNames::filterTagString, (const char *)SVGNames::heightAttrString, SVGLength, Height, height)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGFilterElement, (const char *)SVGNames::filterTagString, SVGFilterResXIdentifier, long, FilterResX, filterResX)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGFilterElement, (const char *)SVGNames::filterTagString, SVGFilterResYIdentifier, long, FilterResY, filterResY)
+ 
+         // SVGURIReference
+         ANIMATED_PROPERTY_DECLARATIONS(SVGFilterElement, SVGURIReferenceIdentifier, XLinkNames::hrefAttrString, String, Href, href)
+diff -r b231d986b084 WebCore/svg/SVGFilterPrimitiveStandardAttributes.h
+--- a/WebCore/svg/SVGFilterPrimitiveStandardAttributes.h	Tue Dec 29 14:38:40 2009 +0800
++++ b/WebCore/svg/SVGFilterPrimitiveStandardAttributes.h	Tue Dec 29 15:09:47 2009 +0800
+@@ -50,11 +50,11 @@
+         void setStandardAttributes(SVGResourceFilter*, FilterEffect*) const;
  
      private:
 -        ANIMATED_PROPERTY_DECLARATIONS(SVGFilterPrimitiveStandardAttributes, SVGFilterPrimitiveStandardAttributesIdentifier, SVGNames::xAttrString, SVGLength, X, x)
@@ -695,3 +304,852 @@ diff -Nrup webkit-1.1.6/WebCore/svg/SVGUseElement.h webkit-new/WebCore/svg/SVGUs
      };
  
  } // namespace WebCore
+diff -r b231d986b084 WebCore/svg/SVGForeignObjectElement.h
+--- a/WebCore/svg/SVGForeignObjectElement.h	Tue Dec 29 14:38:40 2009 +0800
++++ b/WebCore/svg/SVGForeignObjectElement.h	Tue Dec 29 15:09:47 2009 +0800
+@@ -47,10 +47,10 @@
+         virtual RenderObject* createRenderer(RenderArena* arena, RenderStyle* style);
+ 
+     private:
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGForeignObjectElement, SVGNames::foreignObjectTagString, SVGNames::xAttrString, SVGLength, X, x)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGForeignObjectElement, SVGNames::foreignObjectTagString, SVGNames::yAttrString, SVGLength, Y, y)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGForeignObjectElement, SVGNames::foreignObjectTagString, SVGNames::widthAttrString, SVGLength, Width, width)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGForeignObjectElement, SVGNames::foreignObjectTagString, SVGNames::heightAttrString, SVGLength, Height, height)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGForeignObjectElement, (const char *)SVGNames::foreignObjectTagString, (const char *)SVGNames::xAttrString, SVGLength, X, x)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGForeignObjectElement, (const char *)SVGNames::foreignObjectTagString, (const char *)SVGNames::yAttrString, SVGLength, Y, y)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGForeignObjectElement, (const char *)SVGNames::foreignObjectTagString, (const char *)SVGNames::widthAttrString, SVGLength, Width, width)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGForeignObjectElement, (const char *)SVGNames::foreignObjectTagString, (const char *)SVGNames::heightAttrString, SVGLength, Height, height)
+ 
+         // SVGURIReference
+         ANIMATED_PROPERTY_DECLARATIONS(SVGForeignObjectElement, SVGURIReferenceIdentifier, XLinkNames::hrefAttrString, String, Href, href)
+diff -r b231d986b084 WebCore/svg/SVGGradientElement.h
+--- a/WebCore/svg/SVGGradientElement.h	Tue Dec 29 14:38:40 2009 +0800
++++ b/WebCore/svg/SVGGradientElement.h	Tue Dec 29 15:09:47 2009 +0800
+@@ -59,9 +59,9 @@
+         mutable RefPtr<SVGPaintServerGradient> m_resource;
+  
+     protected:
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGGradientElement, SVGGradientElementIdentifier, SVGNames::spreadMethodAttrString, int, SpreadMethod, spreadMethod)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGGradientElement, SVGGradientElementIdentifier, SVGNames::gradientUnitsAttrString, int, GradientUnits, gradientUnits)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGGradientElement, SVGGradientElementIdentifier, SVGNames::gradientTransformAttrString, SVGTransformList, GradientTransform, gradientTransform)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGGradientElement, SVGGradientElementIdentifier, (const char *)SVGNames::spreadMethodAttrString, int, SpreadMethod, spreadMethod)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGGradientElement, SVGGradientElementIdentifier, (const char *)SVGNames::gradientUnitsAttrString, int, GradientUnits, gradientUnits)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGGradientElement, SVGGradientElementIdentifier, (const char *)SVGNames::gradientTransformAttrString, SVGTransformList, GradientTransform, gradientTransform)
+ 
+         // SVGURIReference
+         ANIMATED_PROPERTY_DECLARATIONS(SVGGradientElement, SVGURIReferenceIdentifier, XLinkNames::hrefAttrString, String, Href, href)
+diff -r b231d986b084 WebCore/svg/SVGImageElement.h
+--- a/WebCore/svg/SVGImageElement.h	Tue Dec 29 14:38:40 2009 +0800
++++ b/WebCore/svg/SVGImageElement.h	Tue Dec 29 15:09:47 2009 +0800
+@@ -61,11 +61,11 @@
+         virtual bool hasRelativeValues() const;
+ 
+     private:
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGImageElement, SVGNames::imageTagString, SVGNames::xAttrString, SVGLength, X, x)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGImageElement, SVGNames::imageTagString, SVGNames::yAttrString, SVGLength, Y, y)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGImageElement, SVGNames::imageTagString, SVGNames::widthAttrString, SVGLength, Width, width)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGImageElement, SVGNames::imageTagString, SVGNames::heightAttrString, SVGLength, Height, height)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGImageElement, SVGNames::imageTagString, SVGNames::preserveAspectRatioAttrString, SVGPreserveAspectRatio, PreserveAspectRatio, preserveAspectRatio)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGImageElement, (const char *)SVGNames::imageTagString, (const char *)SVGNames::xAttrString, SVGLength, X, x)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGImageElement, (const char *)SVGNames::imageTagString, (const char *)SVGNames::yAttrString, SVGLength, Y, y)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGImageElement, (const char *)SVGNames::imageTagString, (const char *)SVGNames::widthAttrString, SVGLength, Width, width)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGImageElement, (const char *)SVGNames::imageTagString, (const char *)SVGNames::heightAttrString, SVGLength, Height, height)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGImageElement, (const char *)SVGNames::imageTagString, (const char *)SVGNames::preserveAspectRatioAttrString, SVGPreserveAspectRatio, PreserveAspectRatio, preserveAspectRatio)
+ 
+         // SVGURIReference
+         ANIMATED_PROPERTY_DECLARATIONS(SVGImageElement, SVGURIReferenceIdentifier, XLinkNames::hrefAttrString, String, Href, href)
+diff -r b231d986b084 WebCore/svg/SVGLineElement.h
+--- a/WebCore/svg/SVGLineElement.h	Tue Dec 29 14:38:40 2009 +0800
++++ b/WebCore/svg/SVGLineElement.h	Tue Dec 29 15:09:47 2009 +0800
+@@ -52,10 +52,10 @@
+         virtual bool hasRelativeValues() const;
+ 
+     private:
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGLineElement, SVGNames::lineTagString, SVGNames::x1AttrString, SVGLength, X1, x1)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGLineElement, SVGNames::lineTagString, SVGNames::y1AttrString, SVGLength, Y1, y1)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGLineElement, SVGNames::lineTagString, SVGNames::x2AttrString, SVGLength, X2, x2)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGLineElement, SVGNames::lineTagString, SVGNames::y2AttrString, SVGLength, Y2, y2)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGLineElement, (const char *)SVGNames::lineTagString, (const char *)SVGNames::x1AttrString, SVGLength, X1, x1)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGLineElement, (const char *)SVGNames::lineTagString, (const char *)SVGNames::y1AttrString, SVGLength, Y1, y1)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGLineElement, (const char *)SVGNames::lineTagString, (const char *)SVGNames::x2AttrString, SVGLength, X2, x2)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGLineElement, (const char *)SVGNames::lineTagString, (const char *)SVGNames::y2AttrString, SVGLength, Y2, y2)
+ 
+         // SVGExternalResourcesRequired
+         ANIMATED_PROPERTY_DECLARATIONS(SVGLineElement, SVGExternalResourcesRequiredIdentifier,
+diff -r b231d986b084 WebCore/svg/SVGLinearGradientElement.h
+--- a/WebCore/svg/SVGLinearGradientElement.h	Tue Dec 29 14:38:40 2009 +0800
++++ b/WebCore/svg/SVGLinearGradientElement.h	Tue Dec 29 15:09:47 2009 +0800
+@@ -44,10 +44,10 @@
+         LinearGradientAttributes collectGradientProperties() const;
+ 
+     private:
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGLinearGradientElement, SVGNames::linearGradientTagString, SVGNames::x1AttrString, SVGLength, X1, x1)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGLinearGradientElement, SVGNames::linearGradientTagString, SVGNames::y1AttrString, SVGLength, Y1, y1)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGLinearGradientElement, SVGNames::linearGradientTagString, SVGNames::x2AttrString, SVGLength, X2, x2)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGLinearGradientElement, SVGNames::linearGradientTagString, SVGNames::y2AttrString, SVGLength, Y2, y2)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGLinearGradientElement, (const char *)SVGNames::linearGradientTagString, (const char *)SVGNames::x1AttrString, SVGLength, X1, x1)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGLinearGradientElement, (const char *)SVGNames::linearGradientTagString, (const char *)SVGNames::y1AttrString, SVGLength, Y1, y1)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGLinearGradientElement, (const char *)SVGNames::linearGradientTagString, (const char *)SVGNames::x2AttrString, SVGLength, X2, x2)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGLinearGradientElement, (const char *)SVGNames::linearGradientTagString, (const char *)SVGNames::y2AttrString, SVGLength, Y2, y2)
+     };
+ 
+ } // namespace WebCore
+diff -r b231d986b084 WebCore/svg/SVGMarkerElement.h
+--- a/WebCore/svg/SVGMarkerElement.h	Tue Dec 29 14:38:40 2009 +0800
++++ b/WebCore/svg/SVGMarkerElement.h	Tue Dec 29 15:09:47 2009 +0800
+@@ -71,13 +71,13 @@
+         virtual SVGResource* canvasResource();
+ 
+     private:
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGMarkerElement, SVGNames::markerTagString, SVGNames::refXAttrString, SVGLength, RefX, refX)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGMarkerElement, SVGNames::markerTagString, SVGNames::refYAttrString, SVGLength, RefY, refY)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGMarkerElement, SVGNames::markerTagString, SVGNames::markerWidthAttrString, SVGLength, MarkerWidth, markerWidth)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGMarkerElement, SVGNames::markerTagString, SVGNames::markerHeightAttrString, SVGLength, MarkerHeight, markerHeight)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGMarkerElement, SVGNames::markerTagString, SVGNames::markerUnitsAttrString, int, MarkerUnits, markerUnits)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGMarkerElement, SVGNames::markerTagString, SVGOrientTypeAttrIdentifier, int, OrientType, orientType)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGMarkerElement, SVGNames::markerTagString, SVGOrientAngleAttrIdentifier, SVGAngle, OrientAngle, orientAngle)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGMarkerElement, (const char *)SVGNames::markerTagString, (const char *)SVGNames::refXAttrString, SVGLength, RefX, refX)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGMarkerElement, (const char *)SVGNames::markerTagString, (const char *)SVGNames::refYAttrString, SVGLength, RefY, refY)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGMarkerElement, (const char *)SVGNames::markerTagString, (const char *)SVGNames::markerWidthAttrString, SVGLength, MarkerWidth, markerWidth)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGMarkerElement, (const char *)SVGNames::markerTagString, (const char *)SVGNames::markerHeightAttrString, SVGLength, MarkerHeight, markerHeight)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGMarkerElement, (const char *)SVGNames::markerTagString, (const char *)SVGNames::markerUnitsAttrString, int, MarkerUnits, markerUnits)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGMarkerElement, (const char *)SVGNames::markerTagString, SVGOrientTypeAttrIdentifier, int, OrientType, orientType)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGMarkerElement, (const char *)SVGNames::markerTagString, SVGOrientAngleAttrIdentifier, SVGAngle, OrientAngle, orientAngle)
+ 
+         // SVGExternalResourcesRequired
+         ANIMATED_PROPERTY_DECLARATIONS(SVGMarkerElement, SVGExternalResourcesRequiredIdentifier,
+diff -r b231d986b084 WebCore/svg/SVGMaskElement.h
+--- a/WebCore/svg/SVGMaskElement.h	Tue Dec 29 14:38:40 2009 +0800
++++ b/WebCore/svg/SVGMaskElement.h	Tue Dec 29 15:09:47 2009 +0800
+@@ -53,12 +53,12 @@
+         PassOwnPtr<ImageBuffer> drawMaskerContent(const FloatRect& targetRect, FloatRect& maskRect) const;
+ 
+     private:
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGMaskElement, SVGNames::maskTagString, SVGNames::maskUnitsAttrString, int, MaskUnits, maskUnits)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGMaskElement, SVGNames::maskTagString, SVGNames::maskContentUnitsAttrString, int, MaskContentUnits, maskContentUnits)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGMaskElement, SVGNames::maskTagString, SVGNames::xAttrString, SVGLength, X, x)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGMaskElement, SVGNames::maskTagString, SVGNames::yAttrString, SVGLength, Y, y)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGMaskElement, SVGNames::maskTagString, SVGNames::widthAttrString, SVGLength, Width, width)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGMaskElement, SVGNames::maskTagString, SVGNames::heightAttrString, SVGLength, Height, height)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGMaskElement, (const char *)SVGNames::maskTagString, (const char *)SVGNames::maskUnitsAttrString, int, MaskUnits, maskUnits)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGMaskElement, (const char *)SVGNames::maskTagString, (const char *)SVGNames::maskContentUnitsAttrString, int, MaskContentUnits, maskContentUnits)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGMaskElement, (const char *)SVGNames::maskTagString, (const char *)SVGNames::xAttrString, SVGLength, X, x)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGMaskElement, (const char *)SVGNames::maskTagString, (const char *)SVGNames::yAttrString, SVGLength, Y, y)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGMaskElement, (const char *)SVGNames::maskTagString, (const char *)SVGNames::widthAttrString, SVGLength, Width, width)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGMaskElement, (const char *)SVGNames::maskTagString, (const char *)SVGNames::heightAttrString, SVGLength, Height, height)
+ 
+         // SVGURIReference
+         ANIMATED_PROPERTY_DECLARATIONS(SVGMaskElement, SVGURIReferenceIdentifier, XLinkNames::hrefAttrString, String, Href, href)
+diff -r b231d986b084 WebCore/svg/SVGPathElement.h
+--- a/WebCore/svg/SVGPathElement.h	Tue Dec 29 14:38:40 2009 +0800
++++ b/WebCore/svg/SVGPathElement.h	Tue Dec 29 15:09:47 2009 +0800
+@@ -100,11 +100,11 @@
+     private:
+         mutable RefPtr<SVGPathSegList> m_pathSegList;
+ 
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGPathElement, SVGNames::pathTagString, SVGNames::pathLengthAttrString, float, PathLength, pathLength)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGPathElement, (const char *)SVGNames::pathTagString, (const char *)SVGNames::pathLengthAttrString, float, PathLength, pathLength)
+ 
+         // SVGExternalResourcesRequired
+         ANIMATED_PROPERTY_DECLARATIONS(SVGPathElement, SVGExternalResourcesRequiredIdentifier,
+-                                       SVGNames::externalResourcesRequiredAttrString, bool,
++                                       (const char *)SVGNames::externalResourcesRequiredAttrString, bool,
+                                        ExternalResourcesRequired, externalResourcesRequired)
+     };
+ 
+diff -r b231d986b084 WebCore/svg/SVGPatternElement.h
+--- a/WebCore/svg/SVGPatternElement.h	Tue Dec 29 14:38:40 2009 +0800
++++ b/WebCore/svg/SVGPatternElement.h	Tue Dec 29 15:09:47 2009 +0800
+@@ -57,13 +57,13 @@
+         virtual SVGResource* canvasResource();
+ 
+     private:
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGPatternElement, SVGNames::patternTagString, SVGNames::xAttrString, SVGLength, X, x)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGPatternElement, SVGNames::patternTagString, SVGNames::yAttrString, SVGLength, Y, y)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGPatternElement, SVGNames::patternTagString, SVGNames::widthAttrString, SVGLength, Width, width)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGPatternElement, SVGNames::patternTagString, SVGNames::heightAttrString, SVGLength, Height, height)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGPatternElement, SVGNames::patternTagString, SVGNames::patternUnitsAttrString, int, PatternUnits, patternUnits)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGPatternElement, SVGNames::patternTagString, SVGNames::patternContentUnitsAttrString, int, PatternContentUnits, patternContentUnits)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGPatternElement, SVGNames::patternTagString, SVGNames::patternTransformAttrString, SVGTransformList, PatternTransform, patternTransform)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGPatternElement, (const char *)SVGNames::patternTagString, (const char *)SVGNames::xAttrString, SVGLength, X, x)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGPatternElement, (const char *)SVGNames::patternTagString, (const char *)SVGNames::yAttrString, SVGLength, Y, y)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGPatternElement, (const char *)SVGNames::patternTagString, (const char *)SVGNames::widthAttrString, SVGLength, Width, width)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGPatternElement, (const char *)SVGNames::patternTagString, (const char *)SVGNames::heightAttrString, SVGLength, Height, height)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGPatternElement, (const char *)SVGNames::patternTagString, (const char *)SVGNames::patternUnitsAttrString, int, PatternUnits, patternUnits)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGPatternElement, (const char *)SVGNames::patternTagString, (const char *)SVGNames::patternContentUnitsAttrString, int, PatternContentUnits, patternContentUnits)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGPatternElement, (const char *)SVGNames::patternTagString, (const char *)SVGNames::patternTransformAttrString, SVGTransformList, PatternTransform, patternTransform)
+ 
+         // SVGURIReference
+         ANIMATED_PROPERTY_DECLARATIONS(SVGPatternElement, SVGURIReferenceIdentifier, XLinkNames::hrefAttrString, String, Href, href)
+diff -r b231d986b084 WebCore/svg/SVGRadialGradientElement.h
+--- a/WebCore/svg/SVGRadialGradientElement.h	Tue Dec 29 14:38:40 2009 +0800
++++ b/WebCore/svg/SVGRadialGradientElement.h	Tue Dec 29 15:09:47 2009 +0800
+@@ -44,11 +44,11 @@
+         RadialGradientAttributes collectGradientProperties() const;
+ 
+     private:
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGRadialGradientElement, SVGNames::radialGradientTagString, SVGNames::cxAttrString, SVGLength, Cx, cx)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGRadialGradientElement, SVGNames::radialGradientTagString, SVGNames::cyAttrString, SVGLength, Cy, cy)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGRadialGradientElement, SVGNames::radialGradientTagString, SVGNames::rAttrString, SVGLength, R, r)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGRadialGradientElement, SVGNames::radialGradientTagString, SVGNames::fxAttrString, SVGLength, Fx, fx)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGRadialGradientElement, SVGNames::radialGradientTagString, SVGNames::fyAttrString, SVGLength, Fy, fy)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGRadialGradientElement, (const char *)SVGNames::radialGradientTagString, (const char *)SVGNames::cxAttrString, SVGLength, Cx, cx)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGRadialGradientElement, (const char *)SVGNames::radialGradientTagString, (const char *)SVGNames::cyAttrString, SVGLength, Cy, cy)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGRadialGradientElement, (const char *)SVGNames::radialGradientTagString, (const char *)SVGNames::rAttrString, SVGLength, R, r)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGRadialGradientElement, (const char *)SVGNames::radialGradientTagString, (const char *)SVGNames::fxAttrString, SVGLength, Fx, fx)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGRadialGradientElement, (const char *)SVGNames::radialGradientTagString, (const char *)SVGNames::fyAttrString, SVGLength, Fy, fy)
+     };
+ 
+ } // namespace WebCore
+diff -r b231d986b084 WebCore/svg/SVGRectElement.h
+--- a/WebCore/svg/SVGRectElement.h	Tue Dec 29 14:38:40 2009 +0800
++++ b/WebCore/svg/SVGRectElement.h	Tue Dec 29 15:09:47 2009 +0800
+@@ -48,16 +48,16 @@
+         virtual bool hasRelativeValues() const;
+ 
+     private:
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGRectElement, SVGNames::rectTagString, SVGNames::xAttrString, SVGLength, X, x)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGRectElement, SVGNames::rectTagString, SVGNames::yAttrString, SVGLength, Y, y)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGRectElement, SVGNames::rectTagString, SVGNames::widthAttrString, SVGLength, Width, width)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGRectElement, SVGNames::rectTagString, SVGNames::heightAttrString, SVGLength, Height, height)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGRectElement, SVGNames::rectTagString, SVGNames::rxAttrString, SVGLength, Rx, rx)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGRectElement, SVGNames::rectTagString, SVGNames::ryAttrString, SVGLength, Ry, ry)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGRectElement, (const char *)SVGNames::rectTagString, (const char *)SVGNames::xAttrString, SVGLength, X, x)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGRectElement, (const char *)SVGNames::rectTagString, (const char *)SVGNames::yAttrString, SVGLength, Y, y)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGRectElement, (const char *)SVGNames::rectTagString, (const char *)SVGNames::widthAttrString, SVGLength, Width, width)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGRectElement, (const char *)SVGNames::rectTagString, (const char *)SVGNames::heightAttrString, SVGLength, Height, height)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGRectElement, (const char *)SVGNames::rectTagString, (const char *)SVGNames::rxAttrString, SVGLength, Rx, rx)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGRectElement, (const char *)SVGNames::rectTagString, (const char *)SVGNames::ryAttrString, SVGLength, Ry, ry)
+ 
+         // SVGExternalResourcesRequired
+         ANIMATED_PROPERTY_DECLARATIONS(SVGRectElement, SVGExternalResourcesRequiredIdentifier,
+-                                       SVGNames::externalResourcesRequiredAttrString, bool,
++                                       (const char *)SVGNames::externalResourcesRequiredAttrString, bool,
+                                        ExternalResourcesRequired, externalResourcesRequired)
+     };
+ 
+diff -r b231d986b084 WebCore/svg/SVGSVGElement.h
+--- a/WebCore/svg/SVGSVGElement.h	Tue Dec 29 14:38:40 2009 +0800
++++ b/WebCore/svg/SVGSVGElement.h	Tue Dec 29 15:09:47 2009 +0800
+@@ -139,10 +139,10 @@
+         bool isOutermostSVG() const;
+ 
+     private:
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGSVGElement, SVGNames::svgTagString, SVGNames::xAttrString, SVGLength, X, x)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGSVGElement, SVGNames::svgTagString, SVGNames::yAttrString, SVGLength, Y, y)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGSVGElement, SVGNames::svgTagString, SVGNames::widthAttrString, SVGLength, Width, width)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGSVGElement, SVGNames::svgTagString, SVGNames::heightAttrString, SVGLength, Height, height)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGSVGElement, (const char *)SVGNames::svgTagString, (const char *)SVGNames::xAttrString, SVGLength, X, x)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGSVGElement, (const char *)SVGNames::svgTagString, (const char *)SVGNames::yAttrString, SVGLength, Y, y)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGSVGElement, (const char *)SVGNames::svgTagString, (const char *)SVGNames::widthAttrString, SVGLength, Width, width)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGSVGElement, (const char *)SVGNames::svgTagString, (const char *)SVGNames::heightAttrString, SVGLength, Height, height)
+ 
+         // SVGExternalResourcesRequired
+         ANIMATED_PROPERTY_DECLARATIONS(SVGSVGElement, SVGExternalResourcesRequiredIdentifier,
+diff -r b231d986b084 WebCore/svg/SVGStyledElement.h
+--- a/WebCore/svg/SVGStyledElement.h	Tue Dec 29 14:38:40 2009 +0800
++++ b/WebCore/svg/SVGStyledElement.h	Tue Dec 29 15:09:47 2009 +0800
+@@ -69,7 +69,7 @@
+         static int cssPropertyIdForSVGAttributeName(const QualifiedName&);
+ 
+     private:
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGStyledElement, SVGStyledElementIdentifier, HTMLNames::classAttrString, String, ClassName, className)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGStyledElement, SVGStyledElementIdentifier, (const char *)HTMLNames::classAttrString, String, ClassName, className)
+     };
+ 
+ } // namespace WebCore
+diff -r b231d986b084 WebCore/svg/SVGStyledTransformableElement.h
+--- a/WebCore/svg/SVGStyledTransformableElement.h	Tue Dec 29 14:38:40 2009 +0800
++++ b/WebCore/svg/SVGStyledTransformableElement.h	Tue Dec 29 15:09:47 2009 +0800
+@@ -60,7 +60,7 @@
+ 
+     protected:
+         ANIMATED_PROPERTY_DECLARATIONS(SVGStyledTransformableElement, SVGStyledTransformableElementIdentifier,
+-                                       SVGNames::transformAttrString, SVGTransformList, Transform, transform)
++                                       (const char *)SVGNames::transformAttrString, SVGTransformList, Transform, transform)
+ 
+     private:
+         // Used by <animateMotion>
+diff -r b231d986b084 WebCore/svg/SVGTextContentElement.h
+--- a/WebCore/svg/SVGTextContentElement.h	Tue Dec 29 14:38:40 2009 +0800
++++ b/WebCore/svg/SVGTextContentElement.h	Tue Dec 29 15:09:47 2009 +0800
+@@ -65,12 +65,12 @@
+         bool isKnownAttribute(const QualifiedName&);
+ 
+     private:
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGTextContentElement, SVGTextContentElementIdentifier, SVGNames::textLengthAttrString, SVGLength, TextLength, textLength)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGTextContentElement, SVGTextContentElementIdentifier, SVGNames::lengthAdjustAttrString, int, LengthAdjust, lengthAdjust)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGTextContentElement, SVGTextContentElementIdentifier, (const char *)SVGNames::textLengthAttrString, SVGLength, TextLength, textLength)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGTextContentElement, SVGTextContentElementIdentifier, (const char *)SVGNames::lengthAdjustAttrString, int, LengthAdjust, lengthAdjust)
+ 
+         // SVGExternalResourcesRequired
+         ANIMATED_PROPERTY_DECLARATIONS(SVGTextContentElement, SVGExternalResourcesRequiredIdentifier,
+-                                       SVGNames::externalResourcesRequiredAttrString, bool,
++                                       (const char *)SVGNames::externalResourcesRequiredAttrString, bool,
+                                        ExternalResourcesRequired, externalResourcesRequired) 
+     };
+ 
+diff -r b231d986b084 WebCore/svg/SVGTextElement.h
+--- a/WebCore/svg/SVGTextElement.h	Tue Dec 29 14:38:40 2009 +0800
++++ b/WebCore/svg/SVGTextElement.h	Tue Dec 29 15:09:47 2009 +0800
+@@ -50,7 +50,7 @@
+         virtual void svgAttributeChanged(const QualifiedName&);
+ 
+     private:
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGTextElement, SVGNames::textTagString, SVGNames::transformAttrString, SVGTransformList, Transform, transform)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGTextElement, (const char *)SVGNames::textTagString, (const char *)SVGNames::transformAttrString, SVGTransformList, Transform, transform)
+        
+        // Used by <animateMotion>
+        OwnPtr<TransformationMatrix> m_supplementalTransform;
+diff -r b231d986b084 WebCore/svg/SVGTextPathElement.h
+--- a/WebCore/svg/SVGTextPathElement.h	Tue Dec 29 14:38:40 2009 +0800
++++ b/WebCore/svg/SVGTextPathElement.h	Tue Dec 29 15:09:47 2009 +0800
+@@ -63,9 +63,9 @@
+         bool childShouldCreateRenderer(Node*) const;
+ 
+     private:
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGTextPathElement, SVGNames::textPathTagString, SVGNames::startOffsetAttrString, SVGLength, StartOffset, startOffset)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGTextPathElement, SVGNames::textPathTagString, SVGNames::methodAttrString, int, Method, method)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGTextPathElement, SVGNames::textPathTagString, SVGNames::spacingAttrString, int, Spacing, spacing)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGTextPathElement, (const char *)SVGNames::textPathTagString, (const char *)SVGNames::startOffsetAttrString, SVGLength, StartOffset, startOffset)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGTextPathElement, (const char *)SVGNames::textPathTagString, (const char *)SVGNames::methodAttrString, int, Method, method)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGTextPathElement, (const char *)SVGNames::textPathTagString, (const char *)SVGNames::spacingAttrString, int, Spacing, spacing)
+     
+         // SVGURIReference
+         ANIMATED_PROPERTY_DECLARATIONS(SVGTextPathElement, SVGURIReferenceIdentifier, XLinkNames::hrefAttrString, String, Href, href)
+diff -r b231d986b084 WebCore/svg/SVGTextPositioningElement.h
+--- a/WebCore/svg/SVGTextPositioningElement.h	Tue Dec 29 14:38:40 2009 +0800
++++ b/WebCore/svg/SVGTextPositioningElement.h	Tue Dec 29 15:09:47 2009 +0800
+@@ -40,11 +40,11 @@
+         bool isKnownAttribute(const QualifiedName&);
+ 
+     private:
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGTextPositioningElement, SVGTextPositioningElementIdentifier, SVGNames::xAttrString, SVGLengthList, X, x)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGTextPositioningElement, SVGTextPositioningElementIdentifier, SVGNames::yAttrString, SVGLengthList, Y, y)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGTextPositioningElement, SVGTextPositioningElementIdentifier, SVGNames::dxAttrString, SVGLengthList, Dx, dx)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGTextPositioningElement, SVGTextPositioningElementIdentifier, SVGNames::dyAttrString, SVGLengthList, Dy, dy)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGTextPositioningElement, SVGTextPositioningElementIdentifier, SVGNames::rotateAttrString, SVGNumberList, Rotate, rotate)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGTextPositioningElement, SVGTextPositioningElementIdentifier, (const char *)SVGNames::xAttrString, SVGLengthList, X, x)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGTextPositioningElement, SVGTextPositioningElementIdentifier, (const char *)SVGNames::yAttrString, SVGLengthList, Y, y)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGTextPositioningElement, SVGTextPositioningElementIdentifier, (const char *)SVGNames::dxAttrString, SVGLengthList, Dx, dx)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGTextPositioningElement, SVGTextPositioningElementIdentifier, (const char *)SVGNames::dyAttrString, SVGLengthList, Dy, dy)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGTextPositioningElement, SVGTextPositioningElementIdentifier, (const char *)SVGNames::rotateAttrString, SVGNumberList, Rotate, rotate)
+     };
+ 
+ } // namespace WebCore
+diff -r b231d986b084 WebCore/svg/SVGUseElement.h
+--- a/WebCore/svg/SVGUseElement.h	Tue Dec 29 14:38:40 2009 +0800
++++ b/WebCore/svg/SVGUseElement.h	Tue Dec 29 15:09:47 2009 +0800
+@@ -67,10 +67,10 @@
+         SVGElementInstance* instanceForShadowTreeElement(Node* element) const;
+ 
+     private:
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGUseElement, SVGNames::useTagString, SVGNames::xAttrString, SVGLength, X, x)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGUseElement, SVGNames::useTagString, SVGNames::yAttrString, SVGLength, Y, y)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGUseElement, SVGNames::useTagString, SVGNames::widthAttrString, SVGLength, Width, width)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGUseElement, SVGNames::useTagString, SVGNames::heightAttrString, SVGLength, Height, height)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGUseElement, (const char *)SVGNames::useTagString, (const char *)SVGNames::xAttrString, SVGLength, X, x)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGUseElement, (const char *)SVGNames::useTagString, (const char *)SVGNames::yAttrString, SVGLength, Y, y)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGUseElement, (const char *)SVGNames::useTagString, (const char *)SVGNames::widthAttrString, SVGLength, Width, width)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGUseElement, (const char *)SVGNames::useTagString, (const char *)SVGNames::heightAttrString, SVGLength, Height, height)
+ 
+         // SVGURIReference
+         ANIMATED_PROPERTY_DECLARATIONS(SVGUseElement, SVGURIReferenceIdentifier, XLinkNames::hrefAttrString, String, Href, href)
+diff -r ba5b209d2211 WebCore/svg/SVGCircleElement.h
+--- a/WebCore/svg/SVGCircleElement.h	Tue Dec 29 16:27:36 2009 +0800
++++ b/WebCore/svg/SVGCircleElement.h	Tue Dec 29 16:42:03 2009 +0800
+@@ -48,13 +48,13 @@
+         virtual bool hasRelativeValues() const;
+ 
+     private:
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGCircleElement, SVGNames::circleTagString, SVGNames::cxAttrString, SVGLength, Cx, cx)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGCircleElement, SVGNames::circleTagString, SVGNames::cyAttrString, SVGLength, Cy, cy)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGCircleElement, SVGNames::circleTagString, SVGNames::rAttrString, SVGLength, R, r)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGCircleElement,  (const char *)SVGNames::circleTagString,  (const char *)SVGNames::cxAttrString, SVGLength, Cx, cx)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGCircleElement,  (const char *)SVGNames::circleTagString,  (const char *)SVGNames::cyAttrString, SVGLength, Cy, cy)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGCircleElement,  (const char *)SVGNames::circleTagString,  (const char *)SVGNames::rAttrString, SVGLength, R, r)
+ 
+         // SVGExternalResourcesRequired
+         ANIMATED_PROPERTY_DECLARATIONS(SVGCircleElement, SVGExternalResourcesRequiredIdentifier,
+-                                       SVGNames::externalResourcesRequiredAttrString, bool,
++                                        (const char *)SVGNames::externalResourcesRequiredAttrString, bool,
+                                        ExternalResourcesRequired, externalResourcesRequired)
+     };
+ 
+diff -r ba5b209d2211 WebCore/svg/SVGAElement.h
+--- a/WebCore/svg/SVGAElement.h	Tue Dec 29 16:27:36 2009 +0800
++++ b/WebCore/svg/SVGAElement.h	Tue Dec 29 16:46:35 2009 +0800
+@@ -59,14 +59,14 @@
+         virtual bool childShouldCreateRenderer(Node*) const;
+ 
+     private:
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGAElement, SVGNames::aTagString, SVGNames::targetAttrString, String, Target, target)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGAElement, (const char *)SVGNames::aTagString, (const char *)SVGNames::targetAttrString, String, Target, target)
+ 
+         // SVGURIReference
+         ANIMATED_PROPERTY_DECLARATIONS(SVGAElement, SVGURIReferenceIdentifier, XLinkNames::hrefAttrString, String, Href, href)
+ 
+         // SVGExternalResourcesRequired
+         ANIMATED_PROPERTY_DECLARATIONS(SVGAElement, SVGExternalResourcesRequiredIdentifier,
+-                                       SVGNames::externalResourcesRequiredAttrString, bool,
++                                       (const char *)SVGNames::externalResourcesRequiredAttrString, bool,
+                                        ExternalResourcesRequired, externalResourcesRequired)
+     };
+ 
+diff -r 955af27a8729 WebCore/svg/SVGCursorElement.h
+--- a/WebCore/svg/SVGCursorElement.h	Tue Dec 29 17:21:28 2009 +0800
++++ b/WebCore/svg/SVGCursorElement.h	Tue Dec 29 18:13:10 2009 +0800
+@@ -53,11 +53,11 @@
+         ANIMATED_PROPERTY_DECLARATIONS(SVGCursorElement, (const char *)SVGNames::cursorTagString, (const char *)SVGNames::yAttrString, SVGLength, Y, y)
+ 
+         // SVGURIReference
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGCursorElement, SVGURIReferenceIdentifier, XLinkNames::hrefAttrString, String, Href, href)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGCursorElement, SVGURIReferenceIdentifier, (const char *)XLinkNames::hrefAttrString, String, Href, href)
+ 
+         // SVGExternalResourcesRequired
+         ANIMATED_PROPERTY_DECLARATIONS(SVGCursorElement, SVGExternalResourcesRequiredIdentifier,
+-                                       SVGNames::externalResourcesRequiredAttrString, bool,
++                                       (const char *)SVGNames::externalResourcesRequiredAttrString, bool,
+                                        ExternalResourcesRequired, externalResourcesRequired)
+ 
+         HashSet<SVGElement*> m_clients;
+diff -r 955af27a8729 WebCore/svg/SVGFontElement.h
+--- a/WebCore/svg/SVGFontElement.h	Tue Dec 29 17:21:28 2009 +0800
++++ b/WebCore/svg/SVGFontElement.h	Tue Dec 29 18:13:10 2009 +0800
+@@ -50,7 +50,7 @@
+     private:
+         // SVGExternalResourcesRequired
+         ANIMATED_PROPERTY_DECLARATIONS(SVGFontElement, SVGExternalResourcesRequiredIdentifier,
+-                                       SVGNames::externalResourcesRequiredAttrString, bool,
++                                       (const char *)SVGNames::externalResourcesRequiredAttrString, bool,
+                                        ExternalResourcesRequired, externalResourcesRequired)
+ 
+         void ensureGlyphCache() const;
+diff -r 955af27a8729 WebCore/svg/SVGForeignObjectElement.h
+--- a/WebCore/svg/SVGForeignObjectElement.h	Tue Dec 29 17:21:28 2009 +0800
++++ b/WebCore/svg/SVGForeignObjectElement.h	Tue Dec 29 18:13:10 2009 +0800
+@@ -53,11 +53,11 @@
+         ANIMATED_PROPERTY_DECLARATIONS(SVGForeignObjectElement, (const char *)SVGNames::foreignObjectTagString, (const char *)SVGNames::heightAttrString, SVGLength, Height, height)
+ 
+         // SVGURIReference
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGForeignObjectElement, SVGURIReferenceIdentifier, XLinkNames::hrefAttrString, String, Href, href)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGForeignObjectElement, SVGURIReferenceIdentifier, (const char *)XLinkNames::hrefAttrString, String, Href, href)
+ 
+         // SVGExternalResourcesRequired
+         ANIMATED_PROPERTY_DECLARATIONS(SVGForeignObjectElement, SVGExternalResourcesRequiredIdentifier,
+-                                       SVGNames::externalResourcesRequiredAttrString, bool,
++                                       (const char *)SVGNames::externalResourcesRequiredAttrString, bool,
+                                        ExternalResourcesRequired, externalResourcesRequired)
+     };
+ 
+diff -r 955af27a8729 WebCore/svg/SVGScriptElement.h
+--- a/WebCore/svg/SVGScriptElement.h	Tue Dec 29 17:21:28 2009 +0800
++++ b/WebCore/svg/SVGScriptElement.h	Tue Dec 29 18:13:10 2009 +0800
+@@ -71,11 +71,11 @@
+ 
+     private:
+         // SVGURIReference
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGScriptElement, SVGURIReferenceIdentifier, XLinkNames::hrefAttrString, String, Href, href)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGScriptElement, SVGURIReferenceIdentifier, (const char*)XLinkNames::hrefAttrString, String, Href, href)
+ 
+         // SVGExternalResourcesRequired
+         ANIMATED_PROPERTY_DECLARATIONS(SVGScriptElement, SVGExternalResourcesRequiredIdentifier,
+-                                       SVGNames::externalResourcesRequiredAttrString, bool,
++                                       (const char*)SVGNames::externalResourcesRequiredAttrString, bool,
+                                        ExternalResourcesRequired, externalResourcesRequired)
+ 
+     private:
+diff -r 955af27a8729 WebCore/svg/SVGUseElement.h
+--- a/WebCore/svg/SVGUseElement.h	Tue Dec 29 17:21:28 2009 +0800
++++ b/WebCore/svg/SVGUseElement.h	Tue Dec 29 18:13:10 2009 +0800
+@@ -73,11 +73,11 @@
+         ANIMATED_PROPERTY_DECLARATIONS(SVGUseElement, (const char *)SVGNames::useTagString, (const char *)SVGNames::heightAttrString, SVGLength, Height, height)
+ 
+         // SVGURIReference
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGUseElement, SVGURIReferenceIdentifier, XLinkNames::hrefAttrString, String, Href, href)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGUseElement, SVGURIReferenceIdentifier, (const char *)XLinkNames::hrefAttrString, String, Href, href)
+ 
+         // SVGExternalResourcesRequired
+         ANIMATED_PROPERTY_DECLARATIONS(SVGUseElement, SVGExternalResourcesRequiredIdentifier,
+-                                       SVGNames::externalResourcesRequiredAttrString, bool,
++                                       (const char *)SVGNames::externalResourcesRequiredAttrString, bool,
+                                        ExternalResourcesRequired, externalResourcesRequired)
+ 
+     private:
+diff -r 672df5b4bb67 WebCore/svg/SVGGradientElement.h
+--- a/WebCore/svg/SVGGradientElement.h	Tue Dec 29 18:22:45 2009 +0800
++++ b/WebCore/svg/SVGGradientElement.h	Wed Dec 30 12:37:03 2009 +0800
+@@ -64,11 +64,11 @@
+         ANIMATED_PROPERTY_DECLARATIONS(SVGGradientElement, SVGGradientElementIdentifier, (const char *)SVGNames::gradientTransformAttrString, SVGTransformList, GradientTransform, gradientTransform)
+ 
+         // SVGURIReference
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGGradientElement, SVGURIReferenceIdentifier, XLinkNames::hrefAttrString, String, Href, href)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGGradientElement, SVGURIReferenceIdentifier, (const char *)XLinkNames::hrefAttrString, String, Href, href)
+ 
+         // SVGExternalResourcesRequired
+         ANIMATED_PROPERTY_DECLARATIONS(SVGGradientElement, SVGExternalResourcesRequiredIdentifier,
+-                                       SVGNames::externalResourcesRequiredAttrString, bool,
++                                       (const char *)SVGNames::externalResourcesRequiredAttrString, bool,
+                                        ExternalResourcesRequired, externalResourcesRequired)
+     };
+ 
+diff -r b4095009b2d4 WebCore/svg/SVGImageElement.h
+--- a/WebCore/svg/SVGImageElement.h	Wed Dec 30 13:56:12 2009 +0800
++++ b/WebCore/svg/SVGImageElement.h	Wed Dec 30 13:58:16 2009 +0800
+@@ -68,11 +68,11 @@
+         ANIMATED_PROPERTY_DECLARATIONS(SVGImageElement, (const char *)SVGNames::imageTagString, (const char *)SVGNames::preserveAspectRatioAttrString, SVGPreserveAspectRatio, PreserveAspectRatio, preserveAspectRatio)
+ 
+         // SVGURIReference
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGImageElement, SVGURIReferenceIdentifier, XLinkNames::hrefAttrString, String, Href, href)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGImageElement,SVGURIReferenceIdentifier, (const char *)XLinkNames::hrefAttrString, String, Href, href)
+ 
+         // SVGExternalResourcesRequired
+         ANIMATED_PROPERTY_DECLARATIONS(SVGImageElement, SVGExternalResourcesRequiredIdentifier,
+-                                       SVGNames::externalResourcesRequiredAttrString, bool,
++                                       (const char *)SVGNames::externalResourcesRequiredAttrString, bool,
+                                        ExternalResourcesRequired, externalResourcesRequired)
+ 
+         SVGImageLoader m_imageLoader;
+diff -r 868a8149e2c3 WebCore/html/HTMLInputElement.cpp
+--- a/WebCore/html/HTMLInputElement.cpp	Wed Dec 30 14:05:48 2009 +0800
++++ b/WebCore/html/HTMLInputElement.cpp	Wed Dec 30 14:06:37 2009 +0800
+@@ -330,11 +330,11 @@
+         // double's fractional part size is DBL_MAN_DIG-bit.  If the current
+         // value is greater than step*2^DBL_MANT_DIG, the following fmod() makes
+         // no sense.
+-        if (doubleValue / pow(2, DBL_MANT_DIG) > step)
++        if (doubleValue / pow((double)2, DBL_MANT_DIG) > step)
+             return false;
+         double remainder = fmod(doubleValue, step);
+         // Accepts errors in lower 7-bit.
+-        double acceptableError = step / pow(2, DBL_MANT_DIG - 7);
++        double acceptableError = step / pow((double)2, DBL_MANT_DIG - 7);
+         return acceptableError < remainder && remainder < (step - acceptableError);
+     }
+     // Non-RANGE types should be rejected by getAllowedValueStep().
+diff -r b9728d9ef45d WebCore/svg/SVGAElement.h
+--- a/WebCore/svg/SVGAElement.h	Tue Jan 05 12:33:02 2010 +0800
++++ b/WebCore/svg/SVGAElement.h	Tue Jan 05 12:57:14 2010 +0800
+@@ -62,7 +62,7 @@
+         ANIMATED_PROPERTY_DECLARATIONS(SVGAElement, (const char *)SVGNames::aTagString, (const char *)SVGNames::targetAttrString, String, Target, target)
+ 
+         // SVGURIReference
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGAElement, SVGURIReferenceIdentifier, XLinkNames::hrefAttrString, String, Href, href)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGAElement, SVGURIReferenceIdentifier, (const char *)XLinkNames::hrefAttrString, String, Href, href)
+ 
+         // SVGExternalResourcesRequired
+         ANIMATED_PROPERTY_DECLARATIONS(SVGAElement, SVGExternalResourcesRequiredIdentifier,
+diff -r b9728d9ef45d WebCore/svg/SVGAltGlyphElement.h
+--- a/WebCore/svg/SVGAltGlyphElement.h	Tue Jan 05 12:33:02 2010 +0800
++++ b/WebCore/svg/SVGAltGlyphElement.h	Tue Jan 05 12:57:14 2010 +0800
+@@ -49,7 +49,7 @@
+ 
+     private:    
+         // SVGURIReference
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGAltGlyphElement, SVGURIReferenceIdentifier, XLinkNames::hrefAttrString, String, Href, href)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGAltGlyphElement, SVGURIReferenceIdentifier, (const char*)XLinkNames::hrefAttrString, String, Href, href)
+     };
+ 
+ } // namespace WebCore
+diff -r b9728d9ef45d WebCore/svg/SVGAnimationElement.h
+--- a/WebCore/svg/SVGAnimationElement.h	Tue Jan 05 12:33:02 2010 +0800
++++ b/WebCore/svg/SVGAnimationElement.h	Tue Jan 05 12:57:14 2010 +0800
+@@ -107,7 +107,7 @@
+     protected:
+         // SVGExternalResourcesRequired
+         ANIMATED_PROPERTY_DECLARATIONS(SVGAnimationElement, SVGExternalResourcesRequiredIdentifier,
+-                                       SVGNames::externalResourcesRequiredAttrString, bool,
++                                       (const char*)SVGNames::externalResourcesRequiredAttrString, bool,
+                                        ExternalResourcesRequired, externalResourcesRequired)
+ 
+         bool m_animationValid;
+diff -r b9728d9ef45d WebCore/svg/SVGClipPathElement.h
+--- a/WebCore/svg/SVGClipPathElement.h	Tue Jan 05 12:33:02 2010 +0800
++++ b/WebCore/svg/SVGClipPathElement.h	Tue Jan 05 12:57:14 2010 +0800
+@@ -52,7 +52,7 @@
+ 
+         // SVGExternalResourcesRequired
+         ANIMATED_PROPERTY_DECLARATIONS(SVGClipPathElement, SVGExternalResourcesRequiredIdentifier,
+-                                       SVGNames::externalResourcesRequiredAttrString, bool,
++                                       (const char*)SVGNames::externalResourcesRequiredAttrString, bool,
+                                        ExternalResourcesRequired, externalResourcesRequired)
+ 
+         RefPtr<SVGResourceClipper> m_clipper;
+diff -r b9728d9ef45d WebCore/svg/SVGDefsElement.h
+--- a/WebCore/svg/SVGDefsElement.h	Tue Jan 05 12:33:02 2010 +0800
++++ b/WebCore/svg/SVGDefsElement.h	Tue Jan 05 12:57:14 2010 +0800
+@@ -44,7 +44,7 @@
+     private:
+         // SVGExternalResourcesRequired
+         ANIMATED_PROPERTY_DECLARATIONS(SVGDefsElement, SVGExternalResourcesRequiredIdentifier,
+-                                       SVGNames::externalResourcesRequiredAttrString, bool,
++                                       (const char*)SVGNames::externalResourcesRequiredAttrString, bool,
+                                        ExternalResourcesRequired, externalResourcesRequired)
+     };
+ 
+diff -r b9728d9ef45d WebCore/svg/SVGEllipseElement.h
+--- a/WebCore/svg/SVGEllipseElement.h	Tue Jan 05 12:33:02 2010 +0800
++++ b/WebCore/svg/SVGEllipseElement.h	Tue Jan 05 12:57:14 2010 +0800
+@@ -55,7 +55,7 @@
+ 
+         // SVGExternalResourcesRequired
+         ANIMATED_PROPERTY_DECLARATIONS(SVGEllipseElement, SVGExternalResourcesRequiredIdentifier,
+-                                       SVGNames::externalResourcesRequiredAttrString, bool,
++                                       (const char *)SVGNames::externalResourcesRequiredAttrString, bool,
+                                        ExternalResourcesRequired, externalResourcesRequired)
+     };
+ 
+diff -r b9728d9ef45d WebCore/svg/SVGLineElement.h
+--- a/WebCore/svg/SVGLineElement.h	Tue Jan 05 12:33:02 2010 +0800
++++ b/WebCore/svg/SVGLineElement.h	Tue Jan 05 12:57:14 2010 +0800
+@@ -59,7 +59,7 @@
+ 
+         // SVGExternalResourcesRequired
+         ANIMATED_PROPERTY_DECLARATIONS(SVGLineElement, SVGExternalResourcesRequiredIdentifier,
+-                                       SVGNames::externalResourcesRequiredAttrString, bool,
++                                       (const char *)SVGNames::externalResourcesRequiredAttrString, bool,
+                                        ExternalResourcesRequired, externalResourcesRequired)
+     };
+ 
+diff -r b9728d9ef45d WebCore/svg/SVGMPathElement.h
+--- a/WebCore/svg/SVGMPathElement.h	Tue Jan 05 12:33:02 2010 +0800
++++ b/WebCore/svg/SVGMPathElement.h	Tue Jan 05 12:57:14 2010 +0800
+@@ -41,11 +41,11 @@
+         
+     private:
+         // SVGURIReference
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGMPathElement, SVGURIReferenceIdentifier, XLinkNames::hrefAttrString, String, Href, href)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGMPathElement, SVGURIReferenceIdentifier, (const char*)XLinkNames::hrefAttrString, String, Href, href)
+ 
+         // SVGExternalResourcesRequired
+         ANIMATED_PROPERTY_DECLARATIONS(SVGMPathElement, SVGExternalResourcesRequiredIdentifier,
+-                                       SVGNames::externalResourcesRequiredAttrString, bool,
++                                       (const char*)SVGNames::externalResourcesRequiredAttrString, bool,
+                                        ExternalResourcesRequired, externalResourcesRequired)
+     };
+ 
+diff -r b9728d9ef45d WebCore/svg/SVGMaskElement.h
+--- a/WebCore/svg/SVGMaskElement.h	Tue Jan 05 12:33:02 2010 +0800
++++ b/WebCore/svg/SVGMaskElement.h	Tue Jan 05 12:57:14 2010 +0800
+@@ -61,11 +61,11 @@
+         ANIMATED_PROPERTY_DECLARATIONS(SVGMaskElement, (const char *)SVGNames::maskTagString, (const char *)SVGNames::heightAttrString, SVGLength, Height, height)
+ 
+         // SVGURIReference
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGMaskElement, SVGURIReferenceIdentifier, XLinkNames::hrefAttrString, String, Href, href)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGMaskElement, SVGURIReferenceIdentifier, (const char *)XLinkNames::hrefAttrString, String, Href, href)
+ 
+         // SVGExternalResourcesRequired
+         ANIMATED_PROPERTY_DECLARATIONS(SVGMaskElement, SVGExternalResourcesRequiredIdentifier,
+-                                       SVGNames::externalResourcesRequiredAttrString, bool,
++                                       (const char *)SVGNames::externalResourcesRequiredAttrString, bool,
+                                        ExternalResourcesRequired, externalResourcesRequired)
+ 
+         RefPtr<SVGResourceMasker> m_masker;
+diff -r b9728d9ef45d WebCore/svg/SVGPatternElement.h
+--- a/WebCore/svg/SVGPatternElement.h	Tue Jan 05 12:33:02 2010 +0800
++++ b/WebCore/svg/SVGPatternElement.h	Tue Jan 05 12:57:14 2010 +0800
+@@ -66,16 +66,16 @@
+         ANIMATED_PROPERTY_DECLARATIONS(SVGPatternElement, (const char *)SVGNames::patternTagString, (const char *)SVGNames::patternTransformAttrString, SVGTransformList, PatternTransform, patternTransform)
+ 
+         // SVGURIReference
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGPatternElement, SVGURIReferenceIdentifier, XLinkNames::hrefAttrString, String, Href, href)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGPatternElement, SVGURIReferenceIdentifier, (const char *)XLinkNames::hrefAttrString, String, Href, href)
+ 
+         // SVGExternalResourcesRequired
+         ANIMATED_PROPERTY_DECLARATIONS(SVGPatternElement, SVGExternalResourcesRequiredIdentifier,
+-                                       SVGNames::externalResourcesRequiredAttrString, bool,
++                                       (const char *)SVGNames::externalResourcesRequiredAttrString, bool,
+                                        ExternalResourcesRequired, externalResourcesRequired)
+ 
+         // SVGPatternElement
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGPatternElement, SVGFitToViewBoxIdentifier, SVGNames::viewBoxAttrString, FloatRect, ViewBox, viewBox)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGPatternElement, SVGFitToViewBoxIdentifier, SVGNames::preserveAspectRatioAttrString, SVGPreserveAspectRatio, PreserveAspectRatio, preserveAspectRatio)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGPatternElement, SVGFitToViewBoxIdentifier, (const char *)SVGNames::viewBoxAttrString, FloatRect, ViewBox, viewBox)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGPatternElement, SVGFitToViewBoxIdentifier, (const char *)SVGNames::preserveAspectRatioAttrString, SVGPreserveAspectRatio, PreserveAspectRatio, preserveAspectRatio)
+  
+         mutable RefPtr<SVGPaintServerPattern> m_resource;
+ 
+diff -r b9728d9ef45d WebCore/svg/SVGPolyElement.h
+--- a/WebCore/svg/SVGPolyElement.h	Tue Jan 05 12:33:02 2010 +0800
++++ b/WebCore/svg/SVGPolyElement.h	Tue Jan 05 12:57:14 2010 +0800
+@@ -55,7 +55,7 @@
+     private:
+         // SVGExternalResourcesRequired
+         ANIMATED_PROPERTY_DECLARATIONS(SVGPolyElement, SVGExternalResourcesRequiredIdentifier,
+-                                       SVGNames::externalResourcesRequiredAttrString, bool,
++                                      (const char*)SVGNames::externalResourcesRequiredAttrString, bool,
+                                        ExternalResourcesRequired, externalResourcesRequired)
+ 
+         mutable RefPtr<SVGPointList> m_points;
+diff -r b9728d9ef45d WebCore/svg/SVGSwitchElement.h
+--- a/WebCore/svg/SVGSwitchElement.h	Tue Jan 05 12:33:02 2010 +0800
++++ b/WebCore/svg/SVGSwitchElement.h	Tue Jan 05 12:57:14 2010 +0800
+@@ -45,7 +45,7 @@
+     private:
+         // SVGExternalResourcesRequired
+         ANIMATED_PROPERTY_DECLARATIONS(SVGSwitchElement, SVGExternalResourcesRequiredIdentifier,
+-                                       SVGNames::externalResourcesRequiredAttrString, bool,
++                                       (const char*)SVGNames::externalResourcesRequiredAttrString, bool,
+                                        ExternalResourcesRequired, externalResourcesRequired)
+     };
+ 
+diff -r b9728d9ef45d WebCore/svg/SVGSymbolElement.h
+--- a/WebCore/svg/SVGSymbolElement.h	Tue Jan 05 12:33:02 2010 +0800
++++ b/WebCore/svg/SVGSymbolElement.h	Tue Jan 05 12:57:14 2010 +0800
+@@ -45,12 +45,12 @@
+     private:
+         // SVGExternalResourcesRequired
+         ANIMATED_PROPERTY_DECLARATIONS(SVGSymbolElement, SVGExternalResourcesRequiredIdentifier,
+-                                       SVGNames::externalResourcesRequiredAttrString, bool,
++                                       (const char*)SVGNames::externalResourcesRequiredAttrString, bool,
+                                        ExternalResourcesRequired, externalResourcesRequired)
+  
+         // SVGFitToViewBox
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGSymbolElement, SVGFitToViewBoxIdentifier, SVGNames::viewBoxAttrString, FloatRect, ViewBox, viewBox)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGSymbolElement, SVGFitToViewBoxIdentifier, SVGNames::preserveAspectRatioAttrString, SVGPreserveAspectRatio, PreserveAspectRatio, preserveAspectRatio) 
++        ANIMATED_PROPERTY_DECLARATIONS(SVGSymbolElement, SVGFitToViewBoxIdentifier, (const char*)SVGNames::viewBoxAttrString, FloatRect, ViewBox, viewBox)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGSymbolElement, SVGFitToViewBoxIdentifier, (const char*)SVGNames::preserveAspectRatioAttrString, SVGPreserveAspectRatio, PreserveAspectRatio, preserveAspectRatio) 
+     };
+ 
+ } // namespace WebCore
+diff -r b9728d9ef45d WebCore/svg/SVGTRefElement.h
+--- a/WebCore/svg/SVGTRefElement.h	Tue Jan 05 12:33:02 2010 +0800
++++ b/WebCore/svg/SVGTRefElement.h	Tue Jan 05 12:57:14 2010 +0800
+@@ -42,7 +42,7 @@
+         void updateReferencedText();
+ 
+         // SVGURIReference
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGTRefElement, SVGURIReferenceIdentifier, XLinkNames::hrefAttrString, String, Href, href)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGTRefElement, SVGURIReferenceIdentifier, (const char*)XLinkNames::hrefAttrString, String, Href, href)
+     };
+ 
+ } // namespace WebCore
+diff -r 3ed57e787acf WebCore/svg/SVGFEImageElement.h
+--- a/WebCore/svg/SVGFEImageElement.h	Tue Jan 05 16:38:13 2010 +0800
++++ b/WebCore/svg/SVGFEImageElement.h	Tue Jan 05 16:50:01 2010 +0800
+@@ -51,11 +51,11 @@
+         ANIMATED_PROPERTY_DECLARATIONS(SVGFEImageElement, (const char *)SVGNames::feImageTagString, (const char *)SVGNames::preserveAspectRatioAttrString, SVGPreserveAspectRatio, PreserveAspectRatio, preserveAspectRatio)
+ 
+         // SVGURIReference
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGFEImageElement, SVGURIReferenceIdentifier, XLinkNames::hrefAttrString, String, Href, href)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGFEImageElement, SVGURIReferenceIdentifier, (const char *)XLinkNames::hrefAttrString, String, Href, href)
+ 
+         // SVGExternalResourcesRequired
+         ANIMATED_PROPERTY_DECLARATIONS(SVGFEImageElement, SVGExternalResourcesRequiredIdentifier,
+-                                       SVGNames::externalResourcesRequiredAttrString, bool,
++                                       (const char *)SVGNames::externalResourcesRequiredAttrString, bool,
+                                        ExternalResourcesRequired, externalResourcesRequired)
+ 
+         CachedResourceHandle<CachedImage> m_cachedImage;
+diff -r 3ed57e787acf WebCore/svg/SVGFilterElement.h
+--- a/WebCore/svg/SVGFilterElement.h	Tue Jan 05 16:38:13 2010 +0800
++++ b/WebCore/svg/SVGFilterElement.h	Tue Jan 05 16:50:01 2010 +0800
+@@ -60,11 +60,11 @@
+         ANIMATED_PROPERTY_DECLARATIONS(SVGFilterElement, (const char *)SVGNames::filterTagString, SVGFilterResYIdentifier, long, FilterResY, filterResY)
+ 
+         // SVGURIReference
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGFilterElement, SVGURIReferenceIdentifier, XLinkNames::hrefAttrString, String, Href, href)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGFilterElement, SVGURIReferenceIdentifier, (const char *)XLinkNames::hrefAttrString, String, Href, href)
+ 
+         // SVGExternalResourcesRequired
+         ANIMATED_PROPERTY_DECLARATIONS(SVGFilterElement, SVGExternalResourcesRequiredIdentifier,
+-                                       SVGNames::externalResourcesRequiredAttrString, bool,
++                                       (const char *)SVGNames::externalResourcesRequiredAttrString, bool,
+                                        ExternalResourcesRequired, externalResourcesRequired)
+ 
+         mutable RefPtr<SVGResourceFilter> m_filter;
+diff -r 8e211a7c2b27 WebCore/svg/SVGViewElement.h
+--- a/WebCore/svg/SVGViewElement.h	Tue Jan 05 16:59:11 2010 +0800
++++ b/WebCore/svg/SVGViewElement.h	Tue Jan 05 17:02:38 2010 +0800
+@@ -47,12 +47,12 @@
+     private:
+         // SVGExternalResourcesRequired
+         ANIMATED_PROPERTY_DECLARATIONS(SVGViewElement, SVGExternalResourcesRequiredIdentifier,
+-                                       SVGNames::externalResourcesRequiredAttrString, bool,
++                                       (const char*)SVGNames::externalResourcesRequiredAttrString, bool,
+                                        ExternalResourcesRequired, externalResourcesRequired)
+  
+         // SVGFitToViewBox
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGViewElement, SVGFitToViewBoxIdentifier, SVGNames::viewBoxAttrString, FloatRect, ViewBox, viewBox)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGViewElement, SVGFitToViewBoxIdentifier, SVGNames::preserveAspectRatioAttrString, SVGPreserveAspectRatio, PreserveAspectRatio, preserveAspectRatio)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGViewElement, SVGFitToViewBoxIdentifier, (const char*)SVGNames::viewBoxAttrString, FloatRect, ViewBox, viewBox)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGViewElement, SVGFitToViewBoxIdentifier, (const char*)SVGNames::preserveAspectRatioAttrString, SVGPreserveAspectRatio, PreserveAspectRatio, preserveAspectRatio)
+  
+         mutable RefPtr<SVGStringList> m_viewTarget;
+     };
+diff -r 0263bc638d3b WebCore/svg/SVGGElement.h
+--- a/WebCore/svg/SVGGElement.h	Tue Jan 05 17:11:34 2010 +0800
++++ b/WebCore/svg/SVGGElement.h	Tue Jan 05 18:00:41 2010 +0800
+@@ -48,7 +48,7 @@
+     private:
+         // SVGExternalResourcesRequired
+         ANIMATED_PROPERTY_DECLARATIONS(SVGGElement, SVGExternalResourcesRequiredIdentifier,
+-                                       SVGNames::externalResourcesRequiredAttrString, bool,
++                                       (const char*)SVGNames::externalResourcesRequiredAttrString, bool,
+                                        ExternalResourcesRequired, externalResourcesRequired)
+ 
+         friend class SVGUseElement;
+diff -r 0263bc638d3b WebCore/svg/SVGMarkerElement.h
+--- a/WebCore/svg/SVGMarkerElement.h	Tue Jan 05 17:11:34 2010 +0800
++++ b/WebCore/svg/SVGMarkerElement.h	Tue Jan 05 18:00:41 2010 +0800
+@@ -81,12 +81,12 @@
+ 
+         // SVGExternalResourcesRequired
+         ANIMATED_PROPERTY_DECLARATIONS(SVGMarkerElement, SVGExternalResourcesRequiredIdentifier,
+-                                       SVGNames::externalResourcesRequiredAttrString, bool,
++                                       (const char *)SVGNames::externalResourcesRequiredAttrString, bool,
+                                        ExternalResourcesRequired, externalResourcesRequired)
+ 
+         // SVGFitToViewBox
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGMarkerElement, SVGFitToViewBoxIdentifier, SVGNames::viewBoxAttrString, FloatRect, ViewBox, viewBox)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGMarkerElement, SVGFitToViewBoxIdentifier, SVGNames::preserveAspectRatioAttrString, SVGPreserveAspectRatio, PreserveAspectRatio, preserveAspectRatio)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGMarkerElement, SVGFitToViewBoxIdentifier, (const char *)SVGNames::viewBoxAttrString, FloatRect, ViewBox, viewBox)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGMarkerElement, SVGFitToViewBoxIdentifier, (const char *)SVGNames::preserveAspectRatioAttrString, SVGPreserveAspectRatio, PreserveAspectRatio, preserveAspectRatio)
+  
+         RefPtr<SVGResourceMarker> m_marker;
+     };
+diff -r 0263bc638d3b WebCore/svg/SVGSVGElement.h
+--- a/WebCore/svg/SVGSVGElement.h	Tue Jan 05 17:11:34 2010 +0800
++++ b/WebCore/svg/SVGSVGElement.h	Tue Jan 05 18:00:41 2010 +0800
+@@ -146,12 +146,12 @@
+ 
+         // SVGExternalResourcesRequired
+         ANIMATED_PROPERTY_DECLARATIONS(SVGSVGElement, SVGExternalResourcesRequiredIdentifier,
+-                                       SVGNames::externalResourcesRequiredAttrString, bool,
++                                       (const char *)SVGNames::externalResourcesRequiredAttrString, bool,
+                                        ExternalResourcesRequired, externalResourcesRequired)
+ 
+         // SVGFitToViewBox
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGSVGElement, SVGFitToViewBoxIdentifier, SVGNames::viewBoxAttrString, FloatRect, ViewBox, viewBox)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGSVGElement, SVGFitToViewBoxIdentifier, SVGNames::preserveAspectRatioAttrString, SVGPreserveAspectRatio, PreserveAspectRatio, preserveAspectRatio)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGSVGElement, SVGFitToViewBoxIdentifier, (const char *)SVGNames::viewBoxAttrString, FloatRect, ViewBox, viewBox)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGSVGElement, SVGFitToViewBoxIdentifier, (const char *)SVGNames::preserveAspectRatioAttrString, SVGPreserveAspectRatio, PreserveAspectRatio, preserveAspectRatio)
+  
+         virtual void documentWillBecomeInactive();
+         virtual void documentDidBecomeActive();
+diff -r 0263bc638d3b WebCore/svg/SVGTextPathElement.h
+--- a/WebCore/svg/SVGTextPathElement.h	Tue Jan 05 17:11:34 2010 +0800
++++ b/WebCore/svg/SVGTextPathElement.h	Tue Jan 05 18:00:41 2010 +0800
+@@ -68,7 +68,7 @@
+         ANIMATED_PROPERTY_DECLARATIONS(SVGTextPathElement, (const char *)SVGNames::textPathTagString, (const char *)SVGNames::spacingAttrString, int, Spacing, spacing)
+     
+         // SVGURIReference
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGTextPathElement, SVGURIReferenceIdentifier, XLinkNames::hrefAttrString, String, Href, href)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGTextPathElement, SVGURIReferenceIdentifier, (const char *)XLinkNames::hrefAttrString, String, Href, href)
+     };
+ 
+ } // namespace WebCore
+diff -r 0263bc638d3b WebCore/svg/SVGViewSpec.h
+--- a/WebCore/svg/SVGViewSpec.h	Tue Jan 05 17:11:34 2010 +0800
++++ b/WebCore/svg/SVGViewSpec.h	Tue Jan 05 18:00:41 2010 +0800
+@@ -57,8 +57,8 @@
+         const SVGSVGElement* m_contextElement;
+ 
+         // SVGFitToViewBox
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGViewSpec, SVGFitToViewBoxIdentifier, SVGNames::viewBoxAttrString, FloatRect, ViewBox, viewBox)
+-        ANIMATED_PROPERTY_DECLARATIONS(SVGViewSpec, SVGFitToViewBoxIdentifier, SVGNames::preserveAspectRatioAttrString, SVGPreserveAspectRatio, PreserveAspectRatio, preserveAspectRatio)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGViewSpec, SVGFitToViewBoxIdentifier, (const char*)SVGNames::viewBoxAttrString, FloatRect, ViewBox, viewBox)
++        ANIMATED_PROPERTY_DECLARATIONS(SVGViewSpec, SVGFitToViewBoxIdentifier, (const char*)SVGNames::preserveAspectRatioAttrString, SVGPreserveAspectRatio, PreserveAspectRatio, preserveAspectRatio)
+ 
+         mutable RefPtr<SVGTransformList> m_transform;
+         String m_viewTargetString;

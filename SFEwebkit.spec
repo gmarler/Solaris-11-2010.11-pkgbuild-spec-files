@@ -10,7 +10,7 @@
 
 Name:                    SFEwebkit
 Summary:                 WetKit, an open source web browser engine that's used by Safari, Dashboard, Mail, and many other OS X applications.
-Version:                 1.1.14
+Version:                 1.1.17
 Source:                  http://www.webkitgtk.org/webkit-%{version}.tar.gz
 URL:                     http://www.webkitgtk.org/
 
@@ -21,6 +21,7 @@ Patch2:                  webkit-02-explicit-const.diff
 # owner:jouby date:2009-09-14 type:bug
 Patch3:                  webkit-03-1.1.13-failed.diff
 Patch4:                  webkit-04-1.1.14-new.diff
+Patch5:                  webkit-07-17-new.diff
 
 SUNW_BaseDir:            %{_basedir}
 # copyright place holder.
@@ -75,12 +76,13 @@ cd webkit-%version
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
+%patch5 -p1
 
 %build
 export LD=CC
 export CPPFLAGS=`pkg-config --cflags-only-I libstdcxx4`
-export CXXFLAGS=`pkg-config --cflags-only-other libstdcxx4`
-export LDFLAGS=`pkg-config --libs libstdcxx4`
+export CXXFLAGS=`pkg-config --cflags-only-other libstdcxx4` 
+export LDFLAGS="`pkg-config --libs libstdcxx4` -Wl,-zmuldefs" 
 cd webkit-%version
 
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -100,7 +102,7 @@ autoconf
 sed '/CCLD =/s/(CC)/(CXX)/g' GNUmakefile > GNUmakefile.tmp 
 mv GNUmakefile.tmp GNUmakefile 
 
-make -j$CPUS
+make  -j$CPUS
 %install
 rm -rf $RPM_BUILD_ROOT
 
@@ -123,7 +125,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libwebkit*
 %dir %attr (0755, root, sys) %{_datadir}
 %{_datadir}/webkit-1.0/*
-%doc -d webkit-%{Version} ChangeLog README
+#%doc -d webkit-%{Version} ChangeLog README
 
 %files devel
 %defattr (-, root, bin)
@@ -141,6 +143,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Jan 12 2009 - yuntong.jin@sun.com
+  Bump to 1.1.17
 * Mon Dec 28 2009 - yuntong.jin@sun.com
  add copyright file
 * Wen Sep 23 2009 - yuntong.jin@sun.com

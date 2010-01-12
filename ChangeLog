@@ -1,3 +1,13 @@
+2010-01-12  Simon Jin <yuntong.jin@sun.com>
+
+	* SFEwebkit.spec:
+	* patches/webkit-01-sun-studio-build-hack.diff:
+	* patches/webkit-02-explicit-const.diff:
+	* patches/webkit-03-1.1.13-failed.diff:
+	* patches/webkit-04-1.1.14-new.diff:
+	* patches/webkit-07-17-new.diff:
+          Bump to 1.1.17	
+
 2010-01-12  Jedy Wang  <jedy.wang@sun.com>
 
 	New spec files for dconf.

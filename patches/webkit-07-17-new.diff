@@ -1,0 +1,22 @@
+diff -r 5ddc785b6982 WebKitTools/DumpRenderTree/LayoutTestController.cpp
+--- a/WebKitTools/DumpRenderTree/LayoutTestController.cpp	Tue Jan 12 13:10:18 2010 +0800
++++ b/WebKitTools/DumpRenderTree/LayoutTestController.cpp	Tue Jan 12 13:13:58 2010 +0800
+@@ -38,6 +38,7 @@
+ #include <wtf/Assertions.h>
+ #include <wtf/MathExtras.h>
+ #include <wtf/RefPtr.h>
++#include <locale.h>
+ 
+ LayoutTestController::LayoutTestController(const std::string& testPathOrURL, const std::string& expectedPixelHash)
+     : m_dumpAsPDF(false)
+diff -r 5ddc785b6982 WebKitTools/DumpRenderTree/gtk/DumpRenderTree.cpp
+--- a/WebKitTools/DumpRenderTree/gtk/DumpRenderTree.cpp	Tue Jan 12 13:10:18 2010 +0800
++++ b/WebKitTools/DumpRenderTree/gtk/DumpRenderTree.cpp	Tue Jan 12 13:13:58 2010 +0800
+@@ -52,6 +52,7 @@
+ #include <getopt.h>
+ #include <stdlib.h>
+ #include <string.h>
++#include <locale.h>
+ 
+ using namespace std;
+ 
