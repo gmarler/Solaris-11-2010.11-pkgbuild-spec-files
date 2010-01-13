@@ -1,8 +1,14 @@
+2010-01-13  Halton Huo  <halton.huo@sun.com>
+
+	Move nautilus-sendto to spec-files, ready to integrate
+	* SFEnautilus-sendto.spec:
+	* base-specs/nautilus-sendto.spec:
+
 2010-01-13  Simon Jin <yuntong.jin@sun.com>
 
 	* SFEwebkit.spec:
 	* patches/webkit-05-17-cstd.diff:
-          Add patch webkit-05-17-cstd.diff to get ride of Cstd linked in
+	  Add patch webkit-05-17-cstd.diff to get ride of Cstd linked in
 	  webkit.so	
 
 2010-01-12  Brian Lu  <brian.lu@sun.com>
@@ -20,7 +26,7 @@
 2010-01-12  Simon Jin <yuntong.jin@sun.com>
 
 	* SFEwebkit.spec:
-         Remove *.la *.a file from the package
+	 Remove *.la *.a file from the package
 
 2010-01-12  Jedy Wang  <jedy.wang@sun.com>
 
@@ -37,7 +43,7 @@
 	* patches/webkit-03-1.1.13-failed.diff:
 	* patches/webkit-04-1.1.14-new.diff:
 	* patches/webkit-07-17-new.diff:
-          Bump to 1.1.17	
+	  Bump to 1.1.17	
 
 2010-01-12  Jedy Wang  <jedy.wang@sun.com>
 
@@ -49,8 +55,8 @@
 
 2010-01-11  Willie Walker <william.walker@sun.com>
 
-        * base-specs/liblouis.spec: use Python 2.6
-        * SFEliblouis.spec: use Python 2.6
+	* base-specs/liblouis.spec: use Python 2.6
+	* SFEliblouis.spec: use Python 2.6
 
 2010-01-09  Petr Sobotka  <sobotkap@gmail.com>
 
@@ -59,7 +65,7 @@
 
 2010-01-08  Thomas Wagner  <tom68@users.sourceforge.net>
 
-        * experimental/SFEpostfix.spec: pause "Requires: %name" for package %name-root to test dependency order
+	* experimental/SFEpostfix.spec: pause "Requires: %name" for package %name-root to test dependency order
 
 2010-01-08  Jeff Cai  <jeff.cai@sun.com>
 
@@ -70,8 +76,8 @@
 
 2010-01-08  Thomas Wagner  <tom68@users.sourceforge.net>
 
-        * experimental/SFEdovecot.spec:  *copy* for testing 1.2.9 and with cleaned up pathlayout
-        * experimental/SFEdovecot-plugin-sieve.spec: *new* - plugin for sieve scripting on serverside
+	* experimental/SFEdovecot.spec:  *copy* for testing 1.2.9 and with cleaned up pathlayout
+	* experimental/SFEdovecot-plugin-sieve.spec: *new* - plugin for sieve scripting on serverside
 
 2010-01-07  Jeff Cai  <set EMAIL_ADDRESS environment variable>
 
@@ -80,11 +86,11 @@
 	Add patch to support trusted JDS.
 
 2010-01-06  Thomas Wagner  <tom68@users.sourceforge.net>
-        * SFEtypo3.spec: bump to 4.2.10, adjust detection for existing 
-          symlink, pause Requires SFEphp
-        * SFEtypo3demo: bump to 4.2.10
-        * SFEimagemagic.spec: bump to 6.5.8-0, changed download-URL, changed 
-          include path /usr/include/freetype2
+	* SFEtypo3.spec: bump to 4.2.10, adjust detection for existing 
+	  symlink, pause Requires SFEphp
+	* SFEtypo3demo: bump to 4.2.10
+	* SFEimagemagic.spec: bump to 6.5.8-0, changed download-URL, changed 
+	  include path /usr/include/freetype2
 
 2010-01-06  Jeff Cai  <jeff.cai@sun.com>
 
@@ -110,15 +116,15 @@
 	  Bump to openchange 0.9
 
 2010-01-06  Thomas Wagner  <tom68@users.sourceforge.net>
-        * experimental/SFEpostfix.spec: add patch3 for build130+ (nisplus 
-          removed), add sasl, smtp auth login (using dovecot for smtp authentication), 
-          prepared for sasl2 (unfinished), see changelog
+	* experimental/SFEpostfix.spec: add patch3 for build130+ (nisplus 
+	  removed), add sasl, smtp auth login (using dovecot for smtp authentication), 
+	  prepared for sasl2 (unfinished), see changelog
 
 2009-12-28  Simon Jin  <yuntong.jin@sun.com>
 
 	* SFEwebkit.spec:
 	* copyright/SFEwebkit.copyright:
-          add copyright for SFEwebkit	
+	  add copyright for SFEwebkit	
 
 2009-12-22  Brian Cameron  <brian.cameron@sun.com>
 
@@ -498,8 +504,7 @@
 2009-10-06  Milan Jurik <sfnet@xylab.cz>
 
 	* base-specs/lame.spec: LDFLAGS for gcc are not valid, removed
-	                        xmmintrin.h hack removed, configure script
-	                        detects it correctly now
+	  xmmintrin.h hack removed, configure script detects it correctly now
 
 2009-10-04  Petr Sobotka  <sobotkap@gmail.com>
 
