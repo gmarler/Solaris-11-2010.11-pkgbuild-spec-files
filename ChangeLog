@@ -1,3 +1,10 @@
+2010-01-13  Simon Jin <yuntong.jin@sun.com>
+
+	* SFEwebkit.spec:
+	* patches/webkit-05-17-cstd.diff:
+          Add patch webkit-05-17-cstd.diff to get ride of Cstd linked in
+	  webkit.so	
+
 2010-01-12  Brian Lu  <brian.lu@sun.com>
 
 	* SFEsamba4.spec:

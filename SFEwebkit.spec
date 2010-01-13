@@ -21,7 +21,8 @@ Patch2:                  webkit-02-explicit-const.diff
 # owner:jouby date:2009-09-14 type:bug
 Patch3:                  webkit-03-1.1.13-failed.diff
 Patch4:                  webkit-04-1.1.14-new.diff
-Patch5:                  webkit-07-17-new.diff
+Patch5:                  webkit-05-17-cstd.diff 
+Patch6:                  webkit-07-17-new.diff
 
 SUNW_BaseDir:            %{_basedir}
 # copyright place holder.
@@ -77,6 +78,7 @@ cd webkit-%version
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
+%patch6 -p1
 
 %build
 export LD=CC
@@ -147,13 +149,15 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wen Jan 12 2009 - yuntong.jin@sun.com
+- Add patch webkit-05-17-cstd.diff to get ride of Cstd linked in webkit.so 
 * Tue Jan 12 2009 - yuntong.jin@sun.com
-  Remove *.la *.a file which will brings -library=no%Cstd dependency for
+- Remove *.la *.a file which will brings -library=no%Cstd dependency for
 applications likedevhelp  
 * Tue Jan 12 2009 - yuntong.jin@sun.com
-  Bump to 1.1.17
+- Bump to 1.1.17
 * Mon Dec 28 2009 - yuntong.jin@sun.com
- add copyright file
+- Add copyright file
 * Wen Sep 23 2009 - yuntong.jin@sun.com
 - Bump to 1.1.14
 * Sat Aug 15 2009 - Thomas Wagner

@@ -1,0 +1,20 @@
+--- webkit-1.1.17/autotools/libtool.m4.orig	2010-01-13 14:00:34.184690892 +0800
++++ webkit-1.1.17/autotools/libtool.m4	2010-01-13 14:02:04.442669316 +0800
+@@ -6518,7 +6518,7 @@
+     # it if it's in CXXFLAGS. Ignore libCrun as
+     # -library=stlport4 depends on it.
+     case " $CXX $CXXFLAGS " in
+-    *" -library=stlport4 "*)
++    *" -library=no%Cstd "*)
+       solaris_use_stlport4=yes
+       ;;
+     esac
+@@ -6538,7 +6538,7 @@
+     # it if it's in CXXFLAGS. Ignore libCrun as
+     # -library=stlport4 depends on it.
+     case " $CXX $CXXFLAGS " in
+-    *" -library=stlport4 "*)
++    *" -library=no%Cstd "*)
+       solaris_use_stlport4=yes
+       ;;
+     esac
