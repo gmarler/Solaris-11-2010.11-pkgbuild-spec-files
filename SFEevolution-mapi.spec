@@ -7,8 +7,8 @@
 
 Name:                SFEevolution-mapi
 Summary:             evolution-mapi provides connectivity to Microsoft Exchange 2007 servers using Openchange's libmapi in Evolution.
-Version:             0.27.2
-Source:              http://ftp.gnome.org/pub/GNOME/sources/evolution-mapi/0.27/evolution-mapi-%{version}.tar.gz
+Version:             0.28.2
+Source:              http://ftp.gnome.org/pub/GNOME/sources/evolution-mapi/0.28/evolution-mapi-%{version}.tar.gz
 Patch1:              evolution-mapi-01-solaris.diff
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
@@ -67,9 +67,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/*
 %dir %attr (0755, root, sys) %{_datadir}
 %{_datadir}/evolution-data-server-2.28
-%attr (0755, root, other) %{_libdir}/locale
+%attr (0755, root, other) %{_datadir}/locale
 
 %changelog
+* Thu Jan 14 2010 - brian.lu@sun.com
+- Bump to 0.28.2
 * Wed Feb 18 2009 - jedy.wang@sun.com
 - Do not use optimization option for now.
 * Tue Feb 17 2009 - jedy.wang@sun.com

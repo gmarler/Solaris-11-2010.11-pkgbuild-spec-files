@@ -1,3 +1,8 @@
+2010-01-14  Brian Lu  <brian.lu@sun.com>
+
+	* SFEevolution-mapi.spec:
+	  Bump to 0.28.2
+
 2010-01-13  Halton Huo  <halton.huo@sun.com>
 
 	Move nautilus-sendto to spec-files, ready to integrate
