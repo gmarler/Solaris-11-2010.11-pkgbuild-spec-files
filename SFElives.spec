@@ -11,12 +11,10 @@
 Name:                   SFElives
 License:		GPL v3
 Summary:                Video Editing System
-Version:                1.1.2
+Version:                1.1.8
 Source:                 %{src_url}/%{src_name}-%{version}.tar.bz2
-Patch1:			lives-01-fionread.diff
-Patch2:			lives-02-w_memcpy.diff
-Patch3:			lives-03-defines.diff
 Patch4:			lives-04-inline.diff
+Patch5:			lives-05-jackdoss.diff
 SUNW_BaseDir:           %{_basedir}
 BuildRoot:              %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -24,8 +22,8 @@ BuildRoot:              %{_tmppath}/%{name}-%{version}-build
 Requires:	SFEmplayer
 BuildRequires:	SUNWjpg-devel
 Requires:	SUNWjpg
-BuildRequires:	SFEsox-devel
-Requires:	SFEsox
+BuildRequires:	SUNWsound-exchange
+Requires:	SUNWsound-exchange
 Requires:	SUNWimagick
 Requires:	SFEjack
 BuildRequires:	SFEjack-devel
@@ -33,17 +31,14 @@ Requires:	SFEmjpegtools
 
 %prep
 %setup -q -n lives-%{version}
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
 %patch4 -p1
+%patch5 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
 if test "x$CPUS" = "x" -o $CPUS = 0; then
     CPUS=1
 fi
-
 
 LDFLAGS="-lsocket -lresolv -lnsl"	\
 ./configure --prefix=%{_prefix}		\
@@ -86,5 +81,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/*
 
 %changelog
+* Sat Jan 16 2010 - Milan Jurik
+- update to 1.1.8
 * Fri Sep 18 2009 - Milan Jurik
 - Initial version

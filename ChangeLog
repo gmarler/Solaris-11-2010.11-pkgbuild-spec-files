@@ -1,3 +1,7 @@
+2010-01-16  Milan Jurik <sfnet@xylab.cz>
+
+	* SFElives.spec: update to 1.1.8, move from experimental
+
 2010-01-14  Brian Lu  <brian.lu@sun.com>
 
 	* SFEevolution-mapi.spec:
