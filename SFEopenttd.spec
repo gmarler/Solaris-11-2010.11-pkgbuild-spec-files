@@ -6,9 +6,10 @@
 %define src_name openttd
 
 Name:           SFEopenttd
-Version:        0.7.2
+Version:        0.7.5
 Summary:        Transport system simulation game
 Source:         http://binaries.openttd.org/releases/%{version}/%{src_name}-%{version}-source.tar.bz2
+Patch1:         openttd-01-makedependlimit.diff
 URL:            http://www.openttd.org/
 SUNW_BaseDir:   %{_basedir}
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-build
@@ -67,6 +68,7 @@ doxygen
 
 %install
 rm -rf $RPM_BUILD_ROOT
+%patch1 -p1
 make install VERBOSE=1
 
 # Remove the installed docs - we will install subset of those
@@ -122,6 +124,9 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 %{_datadir}/openttd/*
 
 %changelog
+* Sat jan 16 2010 - Milan Jurik
+- update to 0.7.5
+- disable makepend because of CR 6917536
 * Sun Aug 16 2009 - Milan Jurik
 - update to 0.7.2
 - fix for post-scripts

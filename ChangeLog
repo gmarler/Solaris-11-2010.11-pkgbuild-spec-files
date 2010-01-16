@@ -1,6 +1,7 @@
 2010-01-16  Milan Jurik <sfnet@xylab.cz>
 
 	* SFElives.spec: update to 1.1.8, move from experimental
+	* SFEopenttd.spec: update to 0.7.5
 
 2010-01-14  Brian Lu  <brian.lu@sun.com>
 

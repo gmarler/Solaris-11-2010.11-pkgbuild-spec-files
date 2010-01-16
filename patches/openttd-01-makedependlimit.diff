@@ -1,0 +1,7 @@
+--- openttd-0.7.5/objs/release/Makefile	2010-01-16 17:26:31.068350851 +0100
++++ openttd-0.7.5-patch/objs/release/Makefile	2010-01-16 17:22:19.823327588 +0100
+@@ -165,3 +165,3 @@
+ # Calculate the deps via makedepend
+-	$(Q)$(MAKEDEPEND) -f$(SRC_OBJS_DIR)/Makefile.dep.tmp -o.o -Y -v -- $(CFLAGS_MAKEDEP) -- $(SRCS:%=$(SRC_DIR)/%) 2>/dev/null
++#	$(Q)$(MAKEDEPEND) -f$(SRC_OBJS_DIR)/Makefile.dep.tmp -o.o -Y -v -- $(CFLAGS_MAKEDEP) -- $(SRCS:%=$(SRC_DIR)/%) 2>/dev/null
+ 
