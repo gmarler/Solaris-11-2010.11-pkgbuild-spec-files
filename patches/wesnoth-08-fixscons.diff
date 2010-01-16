@@ -1,0 +1,24 @@
+--- wesnoth-1.6.1/SConstruct.fixscons	2009-04-26 15:36:24.758686785 +0200
++++ wesnoth-1.6.1/SConstruct	2009-04-26 15:36:47.252494118 +0200
+@@ -115,8 +115,8 @@
+     env.Tool("suncc")
+     env.Tool("sunar")
+     env.Tool("sunlink")
+-    env.Append(CXXFLAGS = Split("-library=stlport4 -staticlib=stlport4 -norunpath -features=tmplife -features=tmplrefstatic -features=extensions"))
+-    env.Append(LINKFLAGS = Split("-library=stlport4 -staticlib=stlport4 -lsocket -lnsl -lboost_iostreams -L. -R."))
++    env.Append(CXXFLAGS = Split("-library=stlport4 -norunpath -features=tmplife -features=tmplrefstatic -features=extensions"))
++    env.Append(LINKFLAGS = Split("-library=stlport4 -lsocket -lnsl -lboost_iostreams -L."))
+     env['CC'] = env['CXX']
+ else:
+     from cross_compile import *
+@@ -309,8 +309,8 @@
+         env["DEBUG_FLAGS"] = Split("-O0 -DDEBUG -ggdb3")
+ 
+     if "suncc" in env["TOOLS"]:
+-        env["OPT_FLAGS"] = "-g0"
+-        env["DEBUG_FLAGS"] = "-g"
++        env["OPT_FLAGS"] = "-04"
++        env["DEBUG_FLAGS"] = "-g1"
+ 
+     if env['gui'] == 'tiny':
+         env.Append(CPPDEFINES = "USE_TINY_GUI")
