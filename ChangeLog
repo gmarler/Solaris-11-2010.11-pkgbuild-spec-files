@@ -1,3 +1,7 @@
+2010-01-17  Milan Jurik <sfnet@xylab.cz>
+
+	* SFEaudacity.spec: membar for Sun Studio build
+
 2010-01-16  Milan Jurik <sfnet@xylab.cz>
 
 	* SFElives.spec: update to 1.1.8, move from experimental

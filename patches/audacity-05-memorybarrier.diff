@@ -1,0 +1,14 @@
+--- audacity-src-1.3.10/lib-src/portaudio-v19/src/common/pa_memorybarrier.h	Tue Dec  1 20:32:06 2009
++++ audacity-src-1.3.10-patch/lib-src/portaudio-v19/src/common/pa_memorybarrier.h	Sun Jan 17 17:30:49 2010
+@@ -110,6 +110,11 @@
+ #   define PaUtil_FullMemoryBarrier()  _asm { lock add    [esp], 0 }
+ #   define PaUtil_ReadMemoryBarrier()  _asm { lock add    [esp], 0 }
+ #   define PaUtil_WriteMemoryBarrier() _asm { lock add    [esp], 0 }
++#elif defined(__sun) && defined(__SVR4)
++#   include <sys/atomic.h>
++#   define PaUtil_FullMemoryBarrier()  membar_exit();
++#   define PaUtil_ReadMemoryBarrier()  membar_exit();
++#   define PaUtil_WriteMemoryBarrier() membar_exit();
+ #else
+ #   ifdef ALLOW_SMP_DANGERS
+ #      warning Memory barriers not defined on this system or system unknown

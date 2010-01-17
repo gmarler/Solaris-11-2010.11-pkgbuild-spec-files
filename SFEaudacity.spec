@@ -28,6 +28,7 @@ Patch1:              audacity-01-fixsed.diff
 Patch2:              audacity-02-addgtklibs.diff
 Patch3:              audacity-03-nyquist.diff
 Patch4:              audacity-04-portaudio.diff
+Patch5:              audacity-05-memorybarrier.diff
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -96,6 +97,7 @@ Requires:                %{name}
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
+%patch5 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -242,6 +244,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Sun Jan 17 2010 - Milan Jurik
+- membar for Sun Studio build
 * Tue Dec 22 2009 - brian.cameron@sun.com
 - Bump to 1.3.10.
 * Wed Sep 09 2009 - trisk@forkgnu.org
