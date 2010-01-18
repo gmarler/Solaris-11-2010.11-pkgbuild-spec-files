@@ -1,0 +1,16 @@
+--- enchant-1.5.0/src/zemberek/zemberek.cpp.orig	2009-11-04 14:30:45.265059416 +0530
++++ enchant-1.5.0/src/zemberek/zemberek.cpp	2009-11-04 14:31:17.403509768 +0530
+@@ -43,10 +43,11 @@
+       g_error_free (Error);
+       return false;
+   }
+-  proxy = dbus_g_proxy_new_for_name (connection,
++  proxy = dbus_g_proxy_new_for_name_owner (connection,
+                                      "net.zemberekserver.server.dbus",
+                                      "/net/zemberekserver/server/dbus/ZemberekDbus",
+-                                     "net.zemberekserver.server.dbus.ZemberekDbusInterface");
++                                     "net.zemberekserver.server.dbus.ZemberekDbusInterface",
++				      &Error);
+ 
+   dbus_g_connection_unref (connection);
+   if (proxy == NULL) {

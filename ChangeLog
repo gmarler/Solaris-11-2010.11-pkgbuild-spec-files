@@ -1,5 +1,16 @@
 2010-01-18  Simon  <yuntong.jin@sun.com>
 
+	* SFEgnome-spell-apachestl.spec:
+	* base-specs/enchant.spec:
+	* patches/enchant-02-build-request-dict.diff:
+	* patches/enchant-03-zemberek-segv.diff:
+	* patches/enchant-04-ordering.diff:
+	* patches/enchant-05-build-ispell.diff:
+	* patches/enchant-06-zemberek-dict-only-if-installed.diff:
+          Init SFEgnome-spell-apachestd.spec	
+
+2010-01-18  Simon  <yuntong.jin@sun.com>
+
 	* SFElibchamplain.spec:
 	* base-specs/libchamplain.spec:
           Add doc like copyright file etc and licence info	
