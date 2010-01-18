@@ -1,3 +1,7 @@
+2010-01-18  Simon Jin  <yuntong.jin@sun.com>
+
+	* SFEwebkit.spec: Add dependency SFEgnome-spell-apachest
+
 2010-01-18  Simon  <yuntong.jin@sun.com>
 
 	* SFEgnome-spell-apachestl.spec:

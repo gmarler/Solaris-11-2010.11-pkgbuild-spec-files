@@ -32,9 +32,9 @@ BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 Requires: SUNWlibstdcxx4
 Requires: SUNWcurl
-Requires: SUNWgnome-spell
+Requires: SFEgnome-spell-apachestl
+BuildRequires: SFEgnome-spell-apachestl
 Requires: SUNWopenssl
-Requires: SUNWgnome-spell
 Requires: SUNWgnu-idn
 Requires: SUNWgnome-base-libs
 Requires: SUNWicu
@@ -149,6 +149,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Jan 18 2009 - yuntong.jin@sun.com
+- Add dependency SFEgnome-spell-apachestl
 * Wen Jan 12 2009 - yuntong.jin@sun.com
 - Add patch webkit-05-17-cstd.diff to get ride of Cstd linked in webkit.so 
 * Tue Jan 12 2009 - yuntong.jin@sun.com
