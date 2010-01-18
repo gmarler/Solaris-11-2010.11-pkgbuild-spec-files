@@ -5,7 +5,7 @@
 # This file and all modifications and additions to the pristine
 # package are under the same license as the package itself.
 #
-# Owner:halton
+%define owner jouby
 #
 
 Name:		libchamplain
@@ -28,6 +28,15 @@ Requires: 	gdk >= 2.14
 Requires: 	sqlite >= 3.0
 Requires: 	gtk >= 2.12
 Requires: 	clutter-gtk >= 0.10
+BuildRequires:	cairo-devel >= 1.4
+BuildRequires:	clutter-cairo-devel >= 0.8
+BuildRequires:	clutter-devel >= 0.8.4
+BuildRequires:	clutter-gtk-devel >= 0.8
+BuildRequires:	clutter-devel >= 1.0.0
+BuildRequires:	clutter-gtk-devel >= 0.10
+BuildRequires:	gir-repository-devel
+BuildRequires:	glib2-devel >= 2.16
+BuildRequires:	gobject-introspection-devel
 
 %description
 libchamplain is a Clutter based widget to display rich, eye-candy and

@@ -7,7 +7,7 @@
 # This file and all modifications and additions to the pristine
 # package are under the same license as the package itself.
 #
-# Owner: halton
+%define owner jouby
 #
 
 %include Solaris.inc
@@ -16,6 +16,8 @@
 
 Name:               SFElibchamplain
 Summary:            libchamplain - a Clutter based widget to display rich, eye-candy and interactive maps
+SUNW_Copyright:     %{name}.copyright
+License:            LGPLv2
 Version:            %{libchamplain.version}
 SUNW_BaseDir:       %{_basedir}
 BuildRoot:          %{_tmppath}/%{name}-%{version}-build
@@ -24,6 +26,7 @@ Requires:           SUNWclutter
 BuildRequires:      SUNWclutter-devel
 Requires:           SUNWclutter-gtk
 BuildRequires:      SUNWclutter-gtk-devel
+BuildRequires:           SUNWgobject-introspection 
 
 %package devel
 Summary:       %{summary} - development files
@@ -54,6 +57,8 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr (-, root, bin)
+%doc -d libchamplain-{version} README AUTHORS INSTALL NEWS
+%doc(bzip2) -d libchamplain-{libchamplain.version} ChangeLog COPYING
 %dir %attr (0755, root, bin) %{_libdir}
 %{_libdir}/lib*.so*
 %{_libdir}/gir*
@@ -73,5 +78,7 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Mon Jan 02 2010 - yuntong.jin@sun.com
+- Add doc like copyright file etc and licence info  
 * Wed Aug 05 2009 - halton.huo@sun.com
 - Initial spec
