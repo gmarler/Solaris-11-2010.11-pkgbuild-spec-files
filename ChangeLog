@@ -1,3 +1,9 @@
+2010-01-19  Simon Jin  <yuntong.jin@sun.com>
+
+	* SFEgnome-eog-plugins.spec:
+	* base-specs/eog-plugins.spec:
+         Init SFEgnome-eog-plugins.spec, that plugins of eog	
+
 2010-01-18  Simon Jin  <yuntong.jin@sun.com>
 
 	* SFEwebkit.spec: Add dependency SFEgnome-spell-apachest
