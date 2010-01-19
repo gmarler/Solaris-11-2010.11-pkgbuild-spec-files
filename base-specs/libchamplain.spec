@@ -11,7 +11,7 @@
 Name:		libchamplain
 License:	GPL
 Group:		Development/Libraries
-Version:	0.4.2
+Version:	0.4.3
 Release:	1
 Distribution:   Java Desktop System
 Vendor:         Sun Microsystems, Inc.

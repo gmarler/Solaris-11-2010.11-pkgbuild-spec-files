@@ -26,7 +26,7 @@ Requires:           SUNWclutter
 BuildRequires:      SUNWclutter-devel
 Requires:           SUNWclutter-gtk
 BuildRequires:      SUNWclutter-gtk-devel
-BuildRequires:           SUNWgobject-introspection 
+BuildRequires:      SUNWgobject-introspection 
 
 %package devel
 Summary:       %{summary} - development files
@@ -52,18 +52,24 @@ rm -rf $RPM_BUILD_ROOT
 rm -rf $RPM_BUILD_ROOT%{_datadir}/gtk-doc
 %endif
 
+find $RPM_BUILD_ROOT -type f -name "*.la" -exec rm -f {} ';'
+find $RPM_BUILD_ROOT -type f -name "*.a" -exec rm -f {} ';'
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr (-, root, bin)
-%doc -d libchamplain-{version} README AUTHORS INSTALL NEWS
-%doc(bzip2) -d libchamplain-{libchamplain.version} ChangeLog COPYING
+
 %dir %attr (0755, root, bin) %{_libdir}
 %{_libdir}/lib*.so*
 %{_libdir}/gir*
 %dir %attr (0755, root, sys) %{_datadir}
 %{_datadir}/gir*
+
+%doc -d libchamplain-%{libchamplain.version} README AUTHORS INSTALL NEWS
+%doc(bzip2) -d libchamplain-%{libchamplain.version} ChangeLog COPYING  
+
 
 %files devel
 %defattr (-, root, bin)
