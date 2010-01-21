@@ -1,3 +1,9 @@
+2010-01-21  Simon Jin <yuntong.jin@sun.com>
+
+	* SFEgedit-plugins.spec:
+	* copyright/gedit-plugins.copyright:
+          Init spec for gedit-plugins	
+
 2010-01-19  Simon Jin <yuntong.jin@sun.com>
 
 	* SFElibchamplain.spec:
