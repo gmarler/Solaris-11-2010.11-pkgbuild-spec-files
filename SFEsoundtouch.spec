@@ -8,10 +8,8 @@
 Name:                    SFEsoundtouch
 Summary:                 Audio Processing Library
 URL:                     http://www.surina.net/soundtouch
-Version:                 1.4.0
+Version:                 1.5.0
 Source:                  http://www.surina.net/soundtouch/soundtouch-%{version}.tar.gz
-Patch1:                  soundtouch-01-noopt.diff
-Patch2:                  soundtouch-02-fixpow.diff
 Patch3:                  soundtouch-03-nomsse.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -26,8 +24,6 @@ SUNW_BaseDir: %{_basedir}
 %prep
 %setup -q -n soundtouch
 
-%patch1 -p1
-%patch2 -p1
 %patch3 -p1
 
 touch NEWS README AUTHORS ChangeLog COPYING
@@ -86,6 +82,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/aclocal/*
 
 %changelog
+* Thu Jan 21 2010 - Milan Jurik
+- update to 1.5.0, remove upstream fixes
 * Tue Feb 24 2009 - brian.cameron@sun.com
 - Bump to 1.4.0, remove upstream patch soundtouch-03-fixconst.diff.
 * Mon Mar 17 2008 - brian.cameron@sun.com
