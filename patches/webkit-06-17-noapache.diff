@@ -1,0 +1,211 @@
+diff -r 327900a45e29 JavaScriptCore/runtime/MarkStackPosix.cpp
+--- a/JavaScriptCore/runtime/MarkStackPosix.cpp	Thu Jan 07 14:17:51 2010 +0800
++++ b/JavaScriptCore/runtime/MarkStackPosix.cpp	Thu Jan 07 16:54:17 2010 +0800
+@@ -44,7 +44,7 @@
+ }
+ void MarkStack::releaseStack(void* addr, size_t size)
+ {
+-    munmap(addr, size);
++    munmap(reinterpret_cast<char*>(addr), size);
+ }
+ 
+ }
+diff -r 327900a45e29 JavaScriptCore/runtime/Structure.cpp
+--- a/JavaScriptCore/runtime/Structure.cpp	Thu Jan 07 14:17:51 2010 +0800
++++ b/JavaScriptCore/runtime/Structure.cpp	Thu Jan 07 16:54:17 2010 +0800
+@@ -157,7 +157,7 @@
+ {
+     if (m_previous) {
+         if (m_nameInPrevious)
+-            m_previous->table.remove(make_pair(m_nameInPrevious.get(), m_attributesInPrevious), m_specificValueInPrevious);
++            m_previous->table.remove(make_pair<RefPtr<UString::Rep>, unsigned>(m_nameInPrevious.get(), m_attributesInPrevious), m_specificValueInPrevious);
+         else
+             m_previous->table.removeAnonymousSlotTransition(m_anonymousSlotsInPrevious);
+ 
+@@ -344,7 +344,7 @@
+     ASSERT(!structure->isDictionary());
+     ASSERT(structure->typeInfo().type() == ObjectType);
+ 
+-    if (Structure* existingTransition = structure->table.get(make_pair(propertyName.ustring().rep(), attributes), specificValue)) {
++    if (Structure* existingTransition = structure->table.get(make_pair<RefPtr<UString::Rep>, unsigned>(propertyName.ustring().rep(), attributes), specificValue)) {
+         ASSERT(existingTransition->m_offset != noOffset);
+         offset = existingTransition->m_offset;
+         return existingTransition;
+@@ -399,7 +399,7 @@
+ 
+     transition->m_offset = offset;
+ 
+-    structure->table.add(make_pair(propertyName.ustring().rep(), attributes), transition.get(), specificValue);
++    structure->table.add(make_pair<RefPtr<UString::Rep>, unsigned>(propertyName.ustring().rep(), attributes), transition.get(), specificValue);
+     return transition.release();
+ }
+ 
+@@ -859,7 +859,7 @@
+ 
+ bool Structure::hasTransition(UString::Rep* rep, unsigned attributes)
+ {
+-    return table.hasTransition(make_pair(rep, attributes));
++    return table.hasTransition(make_pair<RefPtr<UString::Rep>, unsigned>(rep, attributes));
+ }
+ 
+ size_t Structure::remove(const Identifier& propertyName)
+diff -r 327900a45e29 JavaScriptCore/wtf/HashMap.h
+--- a/JavaScriptCore/wtf/HashMap.h	Thu Jan 07 14:17:51 2010 +0800
++++ b/JavaScriptCore/wtf/HashMap.h	Thu Jan 07 16:54:17 2010 +0800
+@@ -178,7 +178,11 @@
+     HashMap<T, U, V, W, X>::inlineAdd(const KeyType& key, const MappedType& mapped) 
+     {
+         typedef HashMapTranslator<ValueType, ValueTraits, HashFunctions> TranslatorType;
+-        return m_impl.template add<KeyType, MappedType, TranslatorType>(key, mapped);
++        pair<typename HashTableType::iterator, bool> p = m_impl.template add<KeyType, MappedType, TranslatorType>(key, mapped);
++	typename HashMap<T, U, V, W, X>::iterator temp = p.first;
++        return make_pair<typename HashMap<T, U, V, W, X>::iterator, bool>(temp, p.second);
++//      return m_impl.template add<KeyType, MappedType, TranslatorType>(key, mapped);
++
+     }
+ 
+     template<typename T, typename U, typename V, typename W, typename X>
+diff -r 327900a45e29 JavaScriptCore/wtf/HashSet.h
+--- a/JavaScriptCore/wtf/HashSet.h	Thu Jan 07 14:17:51 2010 +0800
++++ b/JavaScriptCore/wtf/HashSet.h	Thu Jan 07 16:54:17 2010 +0800
+@@ -207,7 +207,13 @@
+     template<typename T, typename U, typename V>
+     pair<typename HashSet<T, U, V>::iterator, bool> HashSet<T, U, V>::add(const ValueType& value)
+     {
+-        return m_impl.add(value);
++        pair<typename HashTable<T, T, IdentityExtractor<T>, U, V, V>::iterator, bool> p = m_impl.add(value);
++        typename HashSet<T, U, V>::iterator temp = p.first;
++        pair<typename HashSet<T, U, V>::iterator, bool> p2 = make_pair<typename HashSet<T, U, V>::iterator, bool>(temp, p.second);
++ //       p2.first = p.first;
++ //       p2.second = p.second;
++        return p2;
++
+     }
+ 
+     template<typename Value, typename HashFunctions, typename Traits>
+@@ -216,7 +222,9 @@
+     HashSet<Value, HashFunctions, Traits>::add(const T& value)
+     {
+         typedef HashSetTranslatorAdapter<ValueType, ValueTraits, T, HashTranslator> Adapter;
+-        return m_impl.template addPassingHashCode<T, T, Adapter>(value, value);
++        pair<typename HashTableType::iterator, bool> p = m_impl.template addPassingHashCode<T, T, Adapter>(value, value);
++	return make_pair<iterator, bool>(p.first, p.second);
++
+     }
+ 
+     template<typename T, typename U, typename V>
+diff -r 327900a45e29 JavaScriptCore/wtf/RefPtrHashMap.h
+--- a/JavaScriptCore/wtf/RefPtrHashMap.h	Thu Jan 07 14:17:51 2010 +0800
++++ b/JavaScriptCore/wtf/RefPtrHashMap.h	Thu Jan 07 16:54:17 2010 +0800
+@@ -205,14 +205,25 @@
+     HashMap<RefPtr<T>, U, V, W, X>::inlineAdd(const KeyType& key, const MappedType& mapped) 
+     {
+         typedef HashMapTranslator<ValueType, ValueTraits, HashFunctions> TranslatorType;
+-        return m_impl.template add<KeyType, MappedType, TranslatorType>(key, mapped);
++        pair<typename HashTableType::iterator, bool> p = m_impl.template add<KeyType, MappedType, TranslatorType>(key, mapped);
++//        typename HashMap<RefPtr<T>, U, V, W, X>::iterator temp = p.first;
++        return make_pair<typename HashMap<RefPtr<T>, U, V, W, X>::iterator, bool>(
++            typename HashMap<RefPtr<T>, U, V, W, X>::iterator(p.first), p.second);
++
++//        return m_impl.template add<KeyType, MappedType, TranslatorType>(key, mapped);
++
+     }
+ 
+     template<typename T, typename U, typename V, typename W, typename X>
+     inline pair<typename HashMap<RefPtr<T>, U, V, W, X>::iterator, bool>
+     HashMap<RefPtr<T>, U, V, W, X>::inlineAdd(RawKeyType key, const MappedType& mapped) 
+     {
+-        return m_impl.template add<RawKeyType, MappedType, RawKeyTranslator>(key, mapped);
++        pair<typename HashTableType::iterator, bool> p = m_impl.template add<RawKeyType, MappedType, RawKeyTranslator>(key, mapped);
++        return make_pair<typename HashMap<RefPtr<T>, U, V, W, X>::iterator, bool>(
++            typename HashMap<RefPtr<T>, U, V, W, X>::iterator(p.first), p.second);
++
++ //       return m_impl.template add<RawKeyType, MappedType, RawKeyTranslator>(key, mapped);
++
+     }
+ 
+     template<typename T, typename U, typename V, typename W, typename X>
+diff -r 327900a45e29 JavaScriptCore/wtf/Vector.h
+--- a/JavaScriptCore/wtf/Vector.h	Thu Jan 07 14:17:51 2010 +0800
++++ b/JavaScriptCore/wtf/Vector.h	Thu Jan 07 16:54:17 2010 +0800
+@@ -45,7 +45,7 @@
+         #define WTF_ALIGN_OF(type) __alignof(type)
+         #define WTF_ALIGNED(variable_type, variable, n) __declspec(align(n)) variable_type variable
+     #else
+-        #error WTF_ALIGN macros need alignment control.
++        #define WTF_ALIGN_OF(type)   0
+     #endif
+ 
+     #if COMPILER(GCC) && (((__GNUC__ * 100) + __GNUC_MINOR__) >= 303)
+@@ -54,6 +54,7 @@
+         typedef char AlignedBufferChar; 
+     #endif
+ 
++#ifdef WTF_ALIGNED
+     template <size_t size, size_t alignment> struct AlignedBuffer;
+     template <size_t size> struct AlignedBuffer<size, 1> { AlignedBufferChar buffer[size]; };
+     template <size_t size> struct AlignedBuffer<size, 2> { WTF_ALIGNED(AlignedBufferChar, buffer[size], 2);  };
+@@ -62,6 +63,19 @@
+     template <size_t size> struct AlignedBuffer<size, 16> { WTF_ALIGNED(AlignedBufferChar, buffer[size], 16); };
+     template <size_t size> struct AlignedBuffer<size, 32> { WTF_ALIGNED(AlignedBufferChar, buffer[size], 32); };
+     template <size_t size> struct AlignedBuffer<size, 64> { WTF_ALIGNED(AlignedBufferChar, buffer[size], 64); };
++    #else
++    template <size_t size, size_t> struct AlignedBuffer
++    {
++        AlignedBufferChar oversizebuffer[size + 64];
++        AlignedBufferChar *buffer()
++        {
++            AlignedBufferChar *ptr = oversizebuffer;
++            ptr += 64 - (reinterpret_cast<size_t>(ptr) & 0x3f);
++            return ptr;
++
++        }
++    };
++    #endif
+ 
+     template <size_t size, size_t alignment>
+     void swap(AlignedBuffer<size, alignment>& a, AlignedBuffer<size, alignment>& b)
+@@ -456,7 +470,11 @@
+         using Base::m_capacity;
+ 
+         static const size_t m_inlineBufferSize = inlineCapacity * sizeof(T);
+-        T* inlineBuffer() { return reinterpret_cast<T*>(m_inlineBuffer.buffer); }
++#ifdef WTF_ALIGNED        
++T* inlineBuffer() { return reinterpret_cast<T*>(m_inlineBuffer.buffer); }
++        #else
++        T* inlineBuffer() { return reinterpret_cast<T*>(m_inlineBuffer.buffer()); }
++        #endif
+ 
+         AlignedBuffer<m_inlineBufferSize, WTF_ALIGN_OF(T)> m_inlineBuffer;
+     };
+@@ -863,7 +881,7 @@
+         // one is needed. 
+         new (end()) T(static_cast<T>(*ptr));
+ #else
+-        new (end()) T(*ptr);
++        //new (end()) T(static_cast(*ptr));
+ #endif
+         ++m_size;
+     }
+diff -r 8fe0de0de49a JavaScriptCore/runtime/Structure.h
+--- a/JavaScriptCore/runtime/Structure.h	Fri Jan 08 13:28:19 2010 +0800
++++ b/JavaScriptCore/runtime/Structure.h	Fri Jan 08 15:39:17 2010 +0800
+@@ -307,7 +307,7 @@
+         TransitionTable* transitionTable = new TransitionTable;
+         setTransitionTable(transitionTable);
+         if (existingTransition)
+-            add(make_pair(existingTransition->m_nameInPrevious.get(), existingTransition->m_attributesInPrevious), existingTransition, existingTransition->m_specificValueInPrevious);
++            add(std::make_pair<WTF::RefPtr<UString::Rep>,unsigned>(existingTransition->m_nameInPrevious.get(),	existingTransition->m_attributesInPrevious),existingTransition, existingTransition->m_specificValueInPrevious);
+     }
+ } // namespace JSC
+ 
+diff -r 39af4c70e3ec WebKitTools/DumpRenderTree/LayoutTestController.cpp
+--- a/WebKitTools/DumpRenderTree/LayoutTestController.cpp	Fri Jan 08 19:07:31 2010 +0800
++++ b/WebKitTools/DumpRenderTree/LayoutTestController.cpp	Fri Jan 08 19:08:03 2010 +0800
+@@ -1367,5 +1367,5 @@
+ {
+     char localeBuf[32];
+     JSStringGetUTF8CString(locale, localeBuf, sizeof(localeBuf));
+-    setlocale(LC_ALL, localeBuf);
++    setlocale(LC_CTYPE, localeBuf);
+ }
