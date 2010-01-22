@@ -9,7 +9,7 @@
 #
 
 Name:         eog-plugins
-License:      GPL
+License:      GPLv2
 Group:        System/GUI/GNOME
 Version:      2.29.5
 Release:      1
@@ -18,7 +18,7 @@ Vendor:       Sun Microsystems, Inc.
 Summary:      Plugins of eog 
 Source:       http://ftp.gnome.org/pub/GNOME/sources/eog-plugins/2.29/eog-plugins-%{version}.tar.bz2
 
-URL:          http://www.gnome.org
+URL:          http://live.gnome.org/EyeOfGnome/Plugins
 BuildRoot:    %{_tmppath}/%{name}-%{version}-build
 Docdir:       %{_defaultdocdir}/doc
 Autoreqprov:  on

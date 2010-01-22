@@ -29,14 +29,15 @@ SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 
 %include default-depend.inc
-Requires: SUNWlibart
-Requires: SUNWgtk2
-Requires: SUNWgnome-libs
-Requires: SUNWglib2 
 Requires: SUNWgnome-img-view
-Requires: SUNWpython26
-Requires: SFElibchamplian
+Requires: SUNWlibchamplian
 Requires: SUNWgnome-python-libs
+Requires: SUNWglib2 
+Requires: SUNWpython26
+
+BuildRequires: SUNWgnome-img-view-devel
+BuildRequires: SUNWlibchamplian-devel
+
 
 
 %if %build_l10n
@@ -52,7 +53,7 @@ rm -rf %name-%version
 mkdir %name-%version
 %eog_plugins.prep -d %name-%version
 cd %{_builddir}/%name-%version
-#gzcat %SOURCE0 | tar xf -
+
 
 %build
 %eog_plugins.build -d %name-%version
