@@ -1,60 +1,59 @@
 %include Solaris.inc
 
-%define src_name gtkimageview
+%ifarch amd64 sparcv9
+%include arch64.inc
+%use gtkimageview64 = gtkimageview.spec
+%endif
 
-Name:		SFEgtkimageview
-Summary:	Image metadata library
-Version:	1.6.4
-URL:		http://trac.bjourne.webfactional.com/chrome/common/releases/
-Source:		%{url}%{src_name}-%{version}.tar.gz
-Patch1:		gtkimageview-01-cflags.diff 
-Patch2:		gtkimageview-02-void.diff 
+%include base.inc
+%use gtkimageview = gtkimageview.spec
+
+Name:           SFEgtkimageview
+Summary:        Image metadata library
+Version:        %{default_pkg_version}
 SUNW_BaseDir:	%{_basedir}
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 
 %include default-depend.inc
 
-%package devel
-Summary:        %{summary} - development files
-SUNW_BaseDir:   %{_basedir}
-%include default-depend.inc
-
 %prep
-%setup -q -n %{src_name}-%{version}
-%patch1 -p1
-%patch2 -p1
+rm -rf %name-%version
+mkdir %name-%version
+
+%ifarch amd64 sparcv9
+mkdir %name-%version/%{_arch64}
+%gtkimageview64.prep -d %name-%version/%{_arch64}
+%endif
+
+mkdir %name-%version/%{base_arch}
+%gtkimageview.prep -d %name-%version/%{base_arch}
+
 
 %build
-
-CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
-if test "x$CPUS" = "x" -o $CPUS = 0; then
-     CPUS=1
-fi
-
-export CFLAGS="%optflags"
-
+%ifarch amd64 sparcv9
+export PKG_CONFIG_PATH=%{_libdir}/%{_arch64}/pkgconfig
+export CFLAGS="%optflags64"
 export LDFLAGS="%_ldflags"
+%gtkimageview64.build -d %name-%version/%{_arch64}
+%endif
 
-aclocal $ACLOCAL_FLAGS
-glib-gettextize --force --copy
-intltoolize --force --automake
-gtkdocize
+export PKG_CONFIG_PATH=%{_libdir}/pkgconfig
+export CFLAGS="%optflags"
+export LDFLAGS="%_ldflags"
+%gtkimageview.build -d %name-%version/%{base_arch}
 
-automake -a -f -c --gnu
-autoconf
-./configure --prefix=%{_prefix}		\
-            --bindir=%{_bindir}		\
-            --libdir=%{_libdir}		\
-            --mandir=%{_mandir}		\
-            --enable-compile-warnings=no\
-            --disable-static
-
-make -j$CPUS
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-make install DESTDIR=$RPM_BUILD_ROOT
+%ifarch amd64 sparcv9
+%gtkimageview64.install -d %name-%version/%{_arch64}
+%endif
+
+%gtkimageview.install -d %name-%version/%{base_arch}
+
+find $RPM_BUILD_ROOT%{_libdir} -type f -name "*.a" -exec rm -f {} ';'
+find $RPM_BUILD_ROOT%{_libdir} -type f -name "*.la" -exec rm -f {} ';'
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -62,21 +61,24 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr (-, root, bin)
 %dir %attr (0755, root, bin) %{_libdir}
-%{_libdir}/lib*
-%dir %attr (0755, root, sys) %{_datadir}
-%dir %attr (0755, root, bin) %{_datadir}/gtk-doc
-%dir %attr (0755, root, bin) %{_datadir}/gtk-doc/html
-%attr(755, root, root) %{_datadir}/gtk-doc/html/gtkimageview/*
-
-%files devel
-%defattr (-, root, bin)
-%dir %attr (0755, root, bin) %{_includedir}
-%{_includedir}/*
+%{_libdir}/libgtkimageview.so*
 %dir %attr (0755, root, other) %{_libdir}/pkgconfig
-%{_libdir}/pkgconfig/*
+%{_libdir}/pkgconfig/gtkimageview.pc
+%ifarch amd64 sparcv9
+%dir %attr (0755, root, bin) %dir %{_libdir}/%{_arch64}
+%{_libdir}/%{_arch64}/libgtkimageview.so*
+%dir %attr (0755, root, other) %{_libdir}/%{_arch64}/pkgconfig
+%{_libdir}/%{_arch64}/pkgconfig/gtkimageview.pc
+%endif
+%dir %attr (0755, root, bin) %{_includedir}
+%{_includedir}/gtkimageview/*.h
+%dir %attr (0755, root, sys) %{_datadir}
+%{_datadir}/gtk-doc
 
 
 %changelog
+* Fri Jan 22 2010 - jedy.wang@sun.com
+- Add 64-bit support.
 * Mon Dec 14 2009 - jedy.wang@sun.com
 - Regenerate cofngiure before building.
 * Sun Oct 11 2009 - Milan Jurik
