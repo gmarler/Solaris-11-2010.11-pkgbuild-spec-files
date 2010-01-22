@@ -34,7 +34,6 @@ bzcat %SOURCE1 | tar xf -
 cd po-sun; make; cd ..
 %endif
 
-
 for po in po/*.po; do
   dos2unix -ascii $po $po
 done

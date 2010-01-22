@@ -1,6 +1,13 @@
 2010-01-22  Simon Jin <yuntong.jin@sun.com>
 
 	* SFEgedit-plugins.spec:
+	* SFEgnome-eog-plugins.spec:
+	* base-specs/eog-plugins.spec:
+          Rename SFEgedit-plugins to SFEgnome-gedit-plugins, update dependency	
+
+2010-01-22  Simon Jin <yuntong.jin@sun.com>
+
+	* SFEgedit-plugins.spec:
          Update dependecy 	
 
 2010-01-22  Simon Jin <yuntong.jin@sun.com>

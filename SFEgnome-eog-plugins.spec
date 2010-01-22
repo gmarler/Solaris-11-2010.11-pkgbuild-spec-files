@@ -1,5 +1,5 @@
 #
-# spec file for plugins of package SUNWgnome-img-viewer
+# spec file for plugins of SUNWgnome-img-viewer
 #
 # includes module(s): eog-plugins
 #
@@ -23,22 +23,26 @@
 %define _libdir %{eog_libdir}
 
 Name:                    SFEgnome-eog-plugins
-Summary:                 extra plugins of eog 
+Summary:                 A collection of extra eog plugins 
 Version:                 %{default_pkg_version}
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 
 %include default-depend.inc
-Requires: SUNWgnome-img-view
+Requires: SUNWgnome-img-viewer
 Requires: SUNWlibchamplian
 Requires: SUNWgnome-python-libs
 Requires: SUNWglib2 
 Requires: SUNWpython26
 
-BuildRequires: SUNWgnome-img-view-devel
-BuildRequires: SUNWlibchamplian-devel
+BuildRequires: SUNWlibexif
+BuildRequires: SUNWgnome-img-viewer-devel
+BuildRequires: SUNWgnome-common-devel
 
-
+%description
+It's a collection of plugins for use with the Eye of GNOME Image Viewer.
+The included plugins provide a map view for where the picture was taken,
+display of Exif information, Zoom to fit, etc. 
 
 %if %build_l10n
 %package l10n
@@ -83,6 +87,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+% Fri Jan 22 2010 - yuntong.jin@sun.com
+- Update dependency,license
 % Tue Jan 19 2010 - yuntong.jin@sun.com
 - Init 
 
