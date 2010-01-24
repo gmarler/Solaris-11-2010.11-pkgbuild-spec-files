@@ -1,7 +1,7 @@
 --- x264-snapshot-20090314-2245.orig/configure	Sun Mar 15 11:42:09 2009
 +++ x264-snapshot-20090314-2245/configure	Sun Mar 15 11:42:26 2009
-@@ -359,7 +359,7 @@
-     LDFLAGS="$LDFLAGS $libpthread"
+@@ -456,7 +456,7 @@ if [ "$ffms_input" = "auto" ] ; then
+     fi
  fi
  
 -MP4_LDFLAGS="-lgpac_static"

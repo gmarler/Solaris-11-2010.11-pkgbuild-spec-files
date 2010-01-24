@@ -4,7 +4,7 @@
 # includes module(s): libx264
 #
 
-%define         snap    20090816
+%define         snap    20100123
 %define         snaph   2245
 %define src_name x264-snapshot
 %define src_url	 http://download.videolan.org/pub/videolan/x264/snapshots

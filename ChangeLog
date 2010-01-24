@@ -1,3 +1,11 @@
+2010-01-24  Jedy Wang  <jedy.wang@sun.com>
+
+	Bump to 20100123.
+
+	* base-specs/libx264.spec:
+	* patches/libx264-03-ld.diff:
+	* patches/libx264-06-gpac.diff:
+
 2010-01-22  Jedy Wang  <jedy.wang@sun.com>
 
 	Add 64-bit support.
