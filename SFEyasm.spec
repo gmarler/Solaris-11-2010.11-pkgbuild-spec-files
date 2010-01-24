@@ -10,7 +10,7 @@
 
 Name:                   SFEyasm
 Summary:                Yet another assembler
-Version:                0.7.1
+Version:                0.8.0
 Source:                 %{src_url}/%{src_name}-%{version}.tar.gz
 Patch1:                 yasm-01-bin_multi_test.sh.diff
 Patch2:                 yasm-02-configure.diff
