@@ -1,3 +1,7 @@
+2010-01-24  Milan Jurik <sfnet@xylab.cz>
+
+	* SFEhatari.spec: Initial commit
+
 2010-01-24  Jedy Wang  <jedy.wang@sun.com>
 
 	* SFEyasm.spec: Bump to 0.8.0

@@ -1,0 +1,34 @@
+--- hatari-1.3.1/src/includes/scandir.h	Sat Sep  5 00:52:43 2009
++++ hatari-1.3.1-patch/src/includes/scandir.h	Sun Jan 24 11:50:01 2010
+@@ -15,7 +15,7 @@
+ #define dirent direct
+ #endif
+ 
+-#if defined(__BEOS__) || (defined(__sun) && defined(__SVR4)) || defined(WIN32) || defined(__CEGCC__)
++#if defined(__BEOS__) || defined(WIN32) || defined(__CEGCC__)
+ extern int alphasort(const void *d1, const void *d2);
+ extern int scandir(const char *dirname, struct dirent ***namelist, int (*sdfilter)(struct dirent *), int (*dcomp)(const void *, const void *));
+ #endif
+--- hatari-1.3.1/src/scandir.c	Sun Jan 24 11:54:01 2010
++++ hatari-1.3.1-patch/src/scandir.c	Sun Jan 24 11:54:31 2010
+@@ -4,7 +4,7 @@
+   This file is distributed under the GNU Public License, version 2 or at
+   your option any later version. Read the file gpl.txt for details.
+ 
+-  scandir function for BEOS, SunOS etc..
++  scandir function for BEOS etc..
+ */
+ const char ScanDir_fileid[] = "Hatari scandir.c : " __DATE__ " " __TIME__;
+ 
+@@ -20,9 +20,9 @@
+ #include "log.h"
+ 
+ /*-----------------------------------------------------------------------
+- * Here come alphasort and scandir for BeOS and SunOS
++ * Here come alphasort and scandir for BeOS
+  *-----------------------------------------------------------------------*/
+-#if defined(__BEOS__) || (defined(__sun) && defined(__SVR4))
++#if defined(__BEOS__)
+ 
+ #undef DIRSIZ
+ 
