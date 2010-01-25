@@ -1,5 +1,9 @@
 2010-01-25  Jedy Wang  <jedy.wang@sun.com>
 
+	* SFEvim.spec: Bump to release 344.
+
+2010-01-25  Jedy Wang  <jedy.wang@sun.com>
+
 	Removes pentium_pro+mmx.
 
 	* encumbered/SFElame.spec:
