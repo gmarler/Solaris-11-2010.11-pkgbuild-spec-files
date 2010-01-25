@@ -32,13 +32,19 @@ BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 Requires: SUNWlibstdcxx4
 Requires: SUNWcurl
-Requires: SFEgnome-spell-apachestl
-BuildRequires: SFEgnome-spell-apachestl
+Requires: SUNWgnome-spell
 Requires: SUNWopenssl
 Requires: SUNWgnu-idn
 Requires: SUNWgnome-base-libs
 Requires: SUNWicu
 Requires: SUNWlxml
+Requires: SUNWsqlite3
+Requires: SUNWzlib
+Requires: SUNWlibsoup
+
+BuildRequires: SUNWicud
+BuildRequires: SUNWgnu-gettext
+BuildRequires: SUNWgnu-gperf
 
 %if %OS2nnn
 Requires: SUNWopenssl
@@ -48,27 +54,15 @@ Requires: SUNWopenssl-libraries
 %endif
 
 #Requires: SUNWpr
-Requires: SUNWsqlite3
 #Requires: SUNWtls
-Requires: SUNWzlib
-BuildRequires: SUNWgcc
-BuildRequires: SUNWicud
+
+
+
 
 %package devel
 Summary:                 %{summary} - development files
 SUNW_BaseDir:            %{_basedir}
 %include default-depend.inc
-Requires: SUNWlibstdcxx4
-Requires: SUNWcurl
-Requires: SUNWgnu-idn
-Requires: SUNWgnome-base-libs
-Requires: SUNWicu
-Requires: SUNWlxml
-#Requires: SUNWpr
-Requires: SUNWsqlite3
-#Requires: SUNWtls
-Requires: SUNWzlib
-BuildRequires: SUNWgcc
 
 %prep
 %setup -q -n %name-%version -c -a0
@@ -83,7 +77,7 @@ cd webkit-%version
 %build
 export LD=CC
 export CPPFLAGS=`pkg-config --cflags-only-I libstdcxx4`
-export CXXFLAGS=`pkg-config --cflags-only-other libstdcxx4` 
+export CXXFLAGS="`pkg-config --cflags-only-other libstdcxx4`" 
 export LDFLAGS="`pkg-config --libs libstdcxx4` -Wl,-zmuldefs" 
 cd webkit-%version
 
@@ -95,7 +89,7 @@ aclocal -I autotools
 automake -a -c -f
 autoconf 
 ./configure --prefix=%{_prefix}			\
-	    --libdir=%{_libdir}         \
+	    --libdir=%{_libdir}                 \
             --sysconfdir=%{_sysconfdir}         \
 	    --mandir=%{_mandir}                 \
 	    --datadir=%{_datadir}               \
@@ -149,7 +143,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
-* Mon Jan 18 2009 - yuntong.jin@sun.com
+* Mon Jan 25 2010 - yuntong.jin@sun.com
+- Update dependency
+* Mon Jan 18 2010 - yuntong.jin@sun.com
 - Add dependency SFEgnome-spell-apachestl
 * Wen Jan 12 2009 - yuntong.jin@sun.com
 - Add patch webkit-05-17-cstd.diff to get ride of Cstd linked in webkit.so 

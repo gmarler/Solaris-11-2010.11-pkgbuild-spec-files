@@ -1,3 +1,7 @@
+2010-01-25  Simon Jin  <yuntong.jin@sun.com>
+
+	* SFEwebkit.spec: Update dependency
+
 2010-01-24  Milan Jurik <sfnet@xylab.cz>
 
 	* SFEhatari.spec: Initial commit
