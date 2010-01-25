@@ -1,3 +1,10 @@
+2010-01-25  Jedy Wang  <jedy.wang@sun.com>
+
+	Removes pentium_pro+mmx.
+
+	* encumbered/SFElame.spec:
+	* encumbered/SFElibx264.spec:
+
 2010-01-25  Simon Jin  <yuntong.jin@sun.com>
 
 	* SFEwebkit.spec: Update dependency

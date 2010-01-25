@@ -12,13 +12,6 @@
 %use libx264_64 = libx264.spec
 %endif
 
-%if %arch_sse2
-%define arch_opt --cpu=i686 --enable-mmx --enable-mmx2
-%include x86_sse2.inc
-%define arch_ldadd
-%use libx264_sse2 = libx264.spec
-%endif
-
 %include base.inc
 %use libx264 = libx264.spec
 
@@ -44,11 +37,6 @@ mkdir %name-%version/%_arch64
 %libx264_64.prep -d %name-%version/%_arch64
 %endif
 
-%if %arch_sse2
-mkdir %name-%version/%sse2_arch
-%libx264_sse2.prep -d %name-%version/%sse2_arch
-%endif
-
 mkdir %name-%version/%{base_arch}
 %libx264.prep -d %name-%version/%{base_arch}
 
@@ -58,10 +46,6 @@ mkdir %name-%version/%{base_arch}
 %libx264_64.build -d %name-%version/%_arch64
 %endif
 
-%if %arch_sse2
-%libx264_sse2.build -d %name-%version/%sse2_arch
-%endif
-
 %libx264.build -d %name-%version/%{base_arch}
 
 
@@ -69,10 +53,6 @@ mkdir %name-%version/%{base_arch}
 rm -rf $RPM_BUILD_ROOT
 %ifarch amd64 sparcv9
 %libx264_64.install -d %name-%version/%_arch64
-%endif
-
-%if %arch_sse2
-%libx264_sse2.install -d %name-%version/%sse2_arch
 %endif
 
 %libx264.install -d %name-%version/%{base_arch}
@@ -93,9 +73,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/%{_arch64}/*
 %endif
 %{_bindir}/%{base_isa}/*
-%if %arch_sse2
-%{_bindir}/%{sse2_arch}/*
-%endif
 %hard %{_bindir}/x264
 %else
 %{_bindir}/*
@@ -105,10 +82,6 @@ rm -rf $RPM_BUILD_ROOT
 %ifarch amd64 sparcv9
 %dir %attr (0755, root, bin) %{_libdir}/%{_arch64}
 %{_libdir}/%{_arch64}/lib*.so*
-%endif
-%if %arch_sse2
-%dir %attr (0755, root, bin) %{_libdir}/%{sse2_arch}
-%{_libdir}/%{sse2_arch}/lib*.so*
 %endif
 
 
@@ -121,10 +94,6 @@ rm -rf $RPM_BUILD_ROOT
 %ifarch amd64 sparcv9
 %dir %attr (0755, root, other) %{_libdir}/%{_arch64}/pkgconfig
 %{_libdir}/%{_arch64}/pkgconfig/*
-%endif
-%if %arch_sse2
-%dir %attr (0755, root, other) %{_libdir}/%{sse2_arch}/pkgconfig
-%{_libdir}/%{sse2_arch}/pkgconfig/*
 %endif
 
 

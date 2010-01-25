@@ -22,12 +22,6 @@
 %use toolame_64 = toolame.spec
 %endif
 
-%if %arch_sse2
-%include x86_sse2.inc
-%use lame_sse2 = lame.spec
-%use toolame_sse2 = toolame.spec
-%endif
-
 %include base.inc
 
 %use lame = lame.spec
@@ -84,12 +78,6 @@ mkdir %name-%version/%_arch64
 %toolame_64.prep -d %name-%version/%_arch64
 %endif
 
-%if %arch_sse2
-mkdir %name-%version/%sse2_arch
-%lame_sse2.prep -d %name-%version/%{sse2_arch}
-%toolame_sse2.prep -d %name-%version/%{sse2_arch}
-%endif
-
 mkdir %name-%version/%{base_arch}
 %lame.prep -d %name-%version/%{base_arch}
 %toolame.prep -d %name-%version/%{base_arch}
@@ -101,11 +89,6 @@ mkdir %name-%version/%{base_arch}
 %toolame_64.build -d %name-%version/%_arch64
 %endif
 
-%if %arch_sse2
-%lame_sse2.build -d %name-%version/%{sse2_arch}
-%toolame_sse2.build -d %name-%version/%{sse2_arch}
-%endif
-
 %lame.build -d %name-%version/%{base_arch}
 %toolame.build -d %name-%version/%{base_arch}
 
@@ -115,11 +98,6 @@ rm -rf $RPM_BUILD_ROOT
 %ifarch amd64 sparcv9
 %lame_64.install -d %name-%version/%_arch64
 %toolame_64.install -d %name-%version/%_arch64
-%endif
-
-%if %arch_sse2
-%lame_sse2.install -d %name-%version/%{sse2_arch}
-%toolame_sse2.install -d %name-%version/%{sse2_arch}
 %endif
 
 %lame.install -d %name-%version/%{base_arch}
@@ -165,12 +143,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/%{_arch64}/*
 %dir %attr (0755, root, bin) %{_libdir}/%{_arch64}
 %{_libdir}/%{_arch64}/lib*.so*
-%endif
-%if %arch_sse2
-%dir %attr (0755, root, bin) %{_bindir}/%{sse2_arch}
-%{_bindir}/%{sse2_arch}/*
-%dir %attr (0755, root, bin) %{_libdir}/%{sse2_arch}
-%{_libdir}/%{sse2_arch}/lib*.so*
 %endif
 
 %files devel
