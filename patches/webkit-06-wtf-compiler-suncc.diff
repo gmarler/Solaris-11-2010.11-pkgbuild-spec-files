@@ -1,0 +1,15 @@
+diff --git a/JavaScriptCore/wtf/Platform.h b/JavaScriptCore/wtf/Platform.h
+index 6557c28..53b96ef 100644
+--- a/JavaScriptCore/wtf/Platform.h
++++ b/JavaScriptCore/wtf/Platform.h
+@@ -89,6 +89,10 @@
+ #endif
+ 
+ 
++/* COMPILER(SUNCC) - Sun Studio */
++#if defined(__SUNPRO_C) || defined(__SUNPRO_CC)
++#define WTF_COMPILER_SUNCC 1
++#endif
+ 
+ /* ==== CPU() - the target CPU architecture ==== */
+ 

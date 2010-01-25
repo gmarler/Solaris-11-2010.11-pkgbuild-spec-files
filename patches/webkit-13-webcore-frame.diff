@@ -1,0 +1,13 @@
+diff --git a/WebCore/platform/network/ResourceHandleInternal.h b/WebCore/platform/network/ResourceHandleInternal.h
+index 328fc89..38ccc65 100644
+--- a/WebCore/platform/network/ResourceHandleInternal.h
++++ b/WebCore/platform/network/ResourceHandleInternal.h
+@@ -47,7 +47,7 @@
+ 
+ #if USE(SOUP)
+ #include <libsoup/soup.h>
+-class Frame;
++class WebCore::Frame;
+ #endif
+ 
+ #if PLATFORM(QT)

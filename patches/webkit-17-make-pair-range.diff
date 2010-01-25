@@ -1,0 +1,13 @@
+diff --git a/WebCore/svg/SVGFontElement.cpp b/WebCore/svg/SVGFontElement.cpp
+index 7d62b8c..b6dcdb1 100644
+--- a/WebCore/svg/SVGFontElement.cpp
++++ b/WebCore/svg/SVGFontElement.cpp
+@@ -175,7 +175,7 @@ static bool parseUnicodeRangeList(const UChar* characters, unsigned length, Vect
+             UChar character = remainingCharacters[0];
+             if (character == ',')
+                 return false;
+-            ranges.append(make_pair(character, character));
++            ranges.append(make_pair((unsigned)character, (unsigned)character));
+             ++remainingCharacters;
+             --remainingLength;
+         }

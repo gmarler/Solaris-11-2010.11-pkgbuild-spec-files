@@ -1,0 +1,45 @@
+diff --git a/JavaScriptCore/API/JSBase.h b/JavaScriptCore/API/JSBase.h
+index 2e16720..c948035 100644
+--- a/JavaScriptCore/API/JSBase.h
++++ b/JavaScriptCore/API/JSBase.h
+@@ -69,6 +69,8 @@ typedef struct OpaqueJSValue* JSObjectRef;
+     #define JS_EXPORT
+ #elif defined(__GNUC__) && !defined(__CC_ARM) && !defined(__ARMCC__)
+     #define JS_EXPORT __attribute__((visibility("default")))
++#elif defined(__SUNPRO_C) || defined(__SUNPRO_CC)
++    #define JS_EXPORT __global
+ #elif defined(WIN32) || defined(_WIN32) || defined(_WIN32_WCE)
+     #if defined(BUILDING_JavaScriptCore) || defined(BUILDING_WTF)
+         #define JS_EXPORT __declspec(dllexport)
+diff --git a/WebCore/WebCorePrefix.h b/WebCore/WebCorePrefix.h
+index 1ffb675..9a477cb 100644
+--- a/WebCore/WebCorePrefix.h
++++ b/WebCore/WebCorePrefix.h
+@@ -66,6 +66,9 @@
+ #ifdef __cplusplus
+ // Must come before include of algorithm.
+ #define PREFIX_FOR_WEBCORE 1
++#if defined(__SUNPRO_C) || defined(__SUNPRO_CC)
++#define EXPORT __global
++#else
+ #define EXPORT __attribute__((visibility("default")))
+ #endif
+ // Android uses a single set of include directories when building WebKit and
+diff --git a/WebKit/gtk/webkit/webkitdefines.h b/WebKit/gtk/webkit/webkitdefines.h
+index a5884f3..ae07a5e 100644
+--- a/WebKit/gtk/webkit/webkitdefines.h
++++ b/WebKit/gtk/webkit/webkitdefines.h
+@@ -31,9 +31,13 @@
+     #endif
+     #define WEBKIT_OBSOLETE_API WEBKIT_API
+ #else
++#if defined(__SUNPRO_C) || defined(__SUNPRO_CC)
++    #define WEBKIT_API __global
++#else
+     #define WEBKIT_API __attribute__((visibility("default")))
+     #define WEBKIT_OBSOLETE_API WEBKIT_API __attribute__((deprecated))
+ #endif
++#endif
+ 
+ #ifndef WEBKIT_API
+     #define WEBKIT_API

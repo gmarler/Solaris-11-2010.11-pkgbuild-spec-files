@@ -10,20 +10,33 @@
 
 Name:                    SFEwebkit
 Summary:                 WetKit, an open source web browser engine that's used by Safari, Dashboard, Mail, and many other OS X applications.
-Version:                 1.1.17
+Version:                 1.1.19
 Source:                  http://www.webkitgtk.org/webkit-%{version}.tar.gz
 URL:                     http://www.webkitgtk.org/
 
-# owner:alfred date:2008-11-26 type:bug
-Patch1:                  webkit-01-sun-studio-build-hack-noapache.diff
-# owner:alfred date:2008-11-26 type:bug
-Patch2:                  webkit-02-explicit-const.diff 
-# owner:jouby date:2009-09-14 type:bug
-Patch3:                  webkit-03-1.1.13-failed.diff
-Patch4:                  webkit-04-1.1.14-new.diff
-Patch5:                  webkit-06-17-noapache.diff
-Patch6:                   webkit-07-17-new.diff
-#Patch7:                   webkit-05-17-cstd.diff
+# owner:jouby date:2010-01-25 type:bug
+Patch1:                 webkit-01-configure-and-makefile.diff
+Patch2:                 webkit-02-mmap.diff
+Patch3:                 webkit-03-return.diff
+Patch4:                 webkit-04-make-pair.diff
+Patch5:                 webkit-05-ustring.diff
+Patch6:                 webkit-06-wtf-compiler-suncc.diff
+Patch7:                 webkit-07-wtf-aligned.diff
+Patch8:                 webkit-08-svgpodlist.diff
+Patch9:                 webkit-09-ternary-operator.diff
+Patch10:                 webkit-10-pow.diff
+Patch11:                 webkit-11-g-byte-order-marco.diff
+Patch12:                 webkit-12-isnan.diff
+Patch13:                 webkit-13-webcore-frame.diff
+Patch14:                 webkit-14-extern-c.diff
+Patch15:                 webkit-15-static.diff
+Patch16:                 webkit-16-const-string.diff
+Patch17:                 webkit-17-make-pair-range.diff
+Patch18:                 webkit-18-locale-h.diff
+Patch19:                 webkit-19-ss12-ternary-operator.diff
+Patch20:                 webkit-20-visibility.diff
+Patch21:                 webkit-21-vector-not-const.diff
+Patch22:                 webkit-22-not-reinterpretcast.diff
 
 SUNW_BaseDir:            %{_basedir}
 # copyright place holder.
@@ -31,15 +44,21 @@ SUNW_BaseDir:            %{_basedir}
 SUNW_Copyright:          SFEwebkit.copyright
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
-#Requires: SUNWlibstdcxx4
+
 Requires: SUNWcurl
 Requires: SUNWgnome-spell
 Requires: SUNWopenssl
-Requires: SUNWgnome-spell
 Requires: SUNWgnu-idn
 Requires: SUNWgnome-base-libs
 Requires: SUNWicu
 Requires: SUNWlxml
+Requires: SUNWsqlite3
+Requires: SUNWzlib
+Requires: SUNWlibsoup
+
+BuildRequires: SUNWicud
+BuildRequires: SUNWgnu-gettext
+BuildRequires: SUNWgnu-gperf
 
 %if %OS2nnn
 Requires: SUNWopenssl
@@ -48,28 +67,13 @@ BuildRequires: SUNWopenssl-include
 Requires: SUNWopenssl-libraries
 %endif
 
-#Requires: SUNWpr
-Requires: SUNWsqlite3
-#Requires: SUNWtls
-Requires: SUNWzlib
-BuildRequires: SUNWgcc
-BuildRequires: SUNWicud
+
 
 %package devel
 Summary:                 %{summary} - development files
 SUNW_BaseDir:            %{_basedir}
 %include default-depend.inc
-#Requires: SUNWlibstdcxx4
-Requires: SUNWcurl
-Requires: SUNWgnu-idn
-Requires: SUNWgnome-base-libs
-Requires: SUNWicu
-Requires: SUNWlxml
-#Requires: SUNWpr
-Requires: SUNWsqlite3
-#Requires: SUNWtls
-Requires: SUNWzlib
-BuildRequires: SUNWgcc
+
 
 %prep
 %setup -q -n %name-%version -c -a0
@@ -80,14 +84,31 @@ cd webkit-%version
 %patch4 -p1
 %patch5 -p1
 %patch6 -p1
-#%patch7 -p1
+%patch7 -p1
+%patch8 -p1
+%patch9 -p1
+%patch10 -p1
+%patch11 -p1
+%patch12 -p1
+%patch13 -p1
+%patch14 -p1
+%patch15 -p1
+%patch16 -p1
+%patch17 -p1
+%patch18 -p1
+%patch19 -p1
+%patch20 -p1
+%patch21 -p1
+%patch22 -p1
 
 %build
 #export LD=CC
 #export CPPFLAGS=`pkg-config --cflags-only-I libstdcxx4`
 #export CXXFLAGS=`pkg-config --cflags-only-other libstdcxx4` 
 #export LDFLAGS=`pkg-config --libs libstdcxx4`
-export  LDFLAGS="%_ldflags -Wl,-zmuldefs"
+#export CPPFLAGS="-D__FUNCTION__=__func__"
+#export CXXFLAGS="%cxx_optflags -features=extensions"
+#export  LDFLAGS="%_ldflags -Wl,-zmuldefs"
 cd webkit-%version
 
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -98,14 +119,13 @@ aclocal -I autotools
 automake -a -c -f
 autoconf 
 ./configure --prefix=%{_prefix}			\
-	    --libdir=%{_libdir}         \
+            --disable-jit                       \
+	    --libdir=%{_libdir}                 \
             --sysconfdir=%{_sysconfdir}         \
 	    --mandir=%{_mandir}                 \
 	    --datadir=%{_datadir}               \
             --infodir=%{_datadir}/info  
 
-sed '/CCLD =/s/(CC)/(CXX)/g' GNUmakefile > GNUmakefile.tmp 
-mv GNUmakefile.tmp GNUmakefile 
 
 make -j$CPUS
 %install
@@ -148,5 +168,7 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Jan 25 2010 - yuntong.jin@sun.com
+- Bump to 1.1.19 and repatch
 * Tue Jan 21 2010 - yuntong.jin@sun.com
 - Initial version, webkit build with Cstd instead of apache stl stdcxx4

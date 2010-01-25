@@ -1,0 +1,240 @@
+diff --git a/WebCore/html/HTMLParser.cpp b/WebCore/html/HTMLParser.cpp
+index f4ae6c2..b581e98 100644
+--- a/WebCore/html/HTMLParser.cpp
++++ b/WebCore/html/HTMLParser.cpp
+@@ -139,7 +139,7 @@ HTMLParser::HTMLParser(HTMLDocument* doc, bool reportErrors)
+     , m_handlingResidualStyleAcrossBlocks(false)
+     , m_inStrayTableContent(0)
+     , m_scriptingPermission(FragmentScriptingAllowed)
+-    , m_parserQuirks(m_document->page() ? m_document->page()->chrome()->client()->createHTMLParserQuirks() : 0)
++    , m_parserQuirks(m_document->page() ? m_document->page()->chrome()->client()->createHTMLParserQuirks() : PassOwnPtr<HTMLParserQuirks>(0))
+ {
+ }
+ 
+@@ -158,7 +158,7 @@ HTMLParser::HTMLParser(DocumentFragment* frag, FragmentScriptingPermission scrip
+     , m_handlingResidualStyleAcrossBlocks(false)
+     , m_inStrayTableContent(0)
+     , m_scriptingPermission(scriptingPermission)
+-    , m_parserQuirks(m_document->page() ? m_document->page()->chrome()->client()->createHTMLParserQuirks() : 0)
++    , m_parserQuirks(m_document->page() ? m_document->page()->chrome()->client()->createHTMLParserQuirks() : PassOwnPtr<HTMLParserQuirks>(0))
+ {
+     if (frag)
+         frag->ref();
+diff --git a/WebCore/loader/DocumentLoader.cpp b/WebCore/loader/DocumentLoader.cpp
+index 37a2de2..3be695b 100644
+--- a/WebCore/loader/DocumentLoader.cpp
++++ b/WebCore/loader/DocumentLoader.cpp
+@@ -438,7 +438,7 @@ ArchiveResource* DocumentLoader::archiveResourceForURL(const KURL& url) const
+ 
+ PassRefPtr<Archive> DocumentLoader::popArchiveForSubframe(const String& frameName)
+ {
+-    return m_archiveResourceCollection ? m_archiveResourceCollection->popSubframeArchive(frameName) : 0;
++    return m_archiveResourceCollection ? m_archiveResourceCollection->popSubframeArchive(frameName) : PassRefPtr<Archive>(0);
+ }
+ 
+ void DocumentLoader::clearArchiveResources()
+diff --git a/WebCore/editing/markup.cpp b/WebCore/editing/markup.cpp
+index 714909f..fcb366b 100644
+--- a/WebCore/editing/markup.cpp
++++ b/WebCore/editing/markup.cpp
+@@ -965,7 +965,7 @@ String createMarkup(const Range* range, Vector<Node*>* nodes, EAnnotateForInterc
+     Node* body = enclosingNodeWithTag(Position(commonAncestor, 0), bodyTag);
+     // FIXME: Do this for all fully selected blocks, not just the body.
+     Node* fullySelectedRoot = body && *VisibleSelection::selectionFromContentsOfNode(body).toNormalizedRange() == *updatedRange ? body : 0;
+-    RefPtr<CSSMutableStyleDeclaration> fullySelectedRootStyle = fullySelectedRoot ? styleFromMatchedRulesAndInlineDecl(fullySelectedRoot) : 0;
++    RefPtr<CSSMutableStyleDeclaration> fullySelectedRootStyle = fullySelectedRoot ? styleFromMatchedRulesAndInlineDecl(fullySelectedRoot) : PassRefPtr<CSSMutableStyleDeclaration>(0);
+     if (annotate && fullySelectedRoot) {
+         if (shouldIncludeWrapperForFullySelectedRoot(fullySelectedRoot, fullySelectedRootStyle.get()))
+             specialCommonAncestor = fullySelectedRoot;
+diff --git a/WebCore/editing/CompositeEditCommand.cpp b/WebCore/editing/CompositeEditCommand.cpp
+index e9b6971..907c7f9 100644
+--- a/WebCore/editing/CompositeEditCommand.cpp
++++ b/WebCore/editing/CompositeEditCommand.cpp
+@@ -930,7 +930,7 @@ void CompositeEditCommand::moveParagraphs(const VisiblePosition& startOfParagrap
+ 
+     // FIXME: This is an inefficient way to preserve style on nodes in the paragraph to move. It
+     // shouldn't matter though, since moved paragraphs will usually be quite small.
+-    RefPtr<DocumentFragment> fragment = startOfParagraphToMove != endOfParagraphToMove ? createFragmentFromMarkup(document(), createMarkup(range.get(), 0, DoNotAnnotateForInterchange, true), "") : 0;
++    RefPtr<DocumentFragment> fragment = startOfParagraphToMove != endOfParagraphToMove ? createFragmentFromMarkup(document(), createMarkup(range.get(), 0, DoNotAnnotateForInterchange, true), "") : PassRefPtr<DocumentFragment>(0);
+     
+     // A non-empty paragraph's style is moved when we copy and move it.  We don't move 
+     // anything if we're given an empty paragraph, but an empty paragraph can have style
+diff --git a/WebCore/css/CSSComputedStyleDeclaration.cpp b/WebCore/css/CSSComputedStyleDeclaration.cpp
+index 8039e35..67a39f1 100644
+--- a/WebCore/css/CSSComputedStyleDeclaration.cpp
++++ b/WebCore/css/CSSComputedStyleDeclaration.cpp
+@@ -566,8 +566,8 @@ PassRefPtr<CSSValue> CSSComputedStyleDeclaration::valueForShadow(const ShadowDat
+         RefPtr<CSSPrimitiveValue> x = CSSPrimitiveValue::create(s->x, CSSPrimitiveValue::CSS_PX);
+         RefPtr<CSSPrimitiveValue> y = CSSPrimitiveValue::create(s->y, CSSPrimitiveValue::CSS_PX);
+         RefPtr<CSSPrimitiveValue> blur = CSSPrimitiveValue::create(s->blur, CSSPrimitiveValue::CSS_PX);
+-        RefPtr<CSSPrimitiveValue> spread = propertyID == CSSPropertyTextShadow ? 0 : CSSPrimitiveValue::create(s->spread, CSSPrimitiveValue::CSS_PX);
+-        RefPtr<CSSPrimitiveValue> style = propertyID == CSSPropertyTextShadow || s->style == Normal ? 0 : CSSPrimitiveValue::createIdentifier(CSSValueInset);
++        RefPtr<CSSPrimitiveValue> spread = propertyID == CSSPropertyTextShadow ? PassRefPtr<CSSPrimitiveValue>(0) : CSSPrimitiveValue::create(s->spread, CSSPrimitiveValue::CSS_PX);
++        RefPtr<CSSPrimitiveValue> style = propertyID == CSSPropertyTextShadow || s->style == Normal ? PassRefPtr<CSSPrimitiveValue>(0) : CSSPrimitiveValue::createIdentifier(CSSValueInset);
+         RefPtr<CSSPrimitiveValue> color = CSSPrimitiveValue::createColor(s->color.rgb());
+         list->prepend(ShadowValue::create(x.release(), y.release(), blur.release(), spread.release(), style.release(), color.release()));
+     }
+diff --git a/WebCore/bindings/js/JSPluginElementFunctions.cpp b/WebCore/bindings/js/JSPluginElementFunctions.cpp
+index e927ef1..3ea02ed 100644
+--- a/WebCore/bindings/js/JSPluginElementFunctions.cpp
++++ b/WebCore/bindings/js/JSPluginElementFunctions.cpp
+@@ -62,7 +62,7 @@ JSValue runtimeObjectGetter(ExecState* exec, const Identifier&, const PropertySl
+     JSHTMLElement* thisObj = static_cast<JSHTMLElement*>(asObject(slot.slotBase()));
+     HTMLElement* element = static_cast<HTMLElement*>(thisObj->impl());
+     RuntimeObjectImp* runtimeObject = getRuntimeObject(exec, element);
+-    return runtimeObject ? runtimeObject : jsUndefined();
++    return runtimeObject ? (JSValue)runtimeObject : jsUndefined();
+ }
+ 
+ JSValue runtimeObjectPropertyGetter(ExecState* exec, const Identifier& propertyName, const PropertySlot& slot)
+diff --git a/WebCore/bindings/js/JSJavaScriptCallFrameCustom.cpp b/WebCore/bindings/js/JSJavaScriptCallFrameCustom.cpp
+index afbdf5d..6ba1f90 100644
+--- a/WebCore/bindings/js/JSJavaScriptCallFrameCustom.cpp
++++ b/WebCore/bindings/js/JSJavaScriptCallFrameCustom.cpp
+@@ -48,7 +48,7 @@ JSValue JSJavaScriptCallFrame::evaluate(ExecState* exec, const ArgList& args)
+ 
+ JSValue JSJavaScriptCallFrame::thisObject(ExecState*) const
+ {
+-    return impl()->thisObject() ? impl()->thisObject() : jsNull();
++    return impl()->thisObject() ? (JSValue)impl()->thisObject() : jsNull();
+ }
+ 
+ JSValue JSJavaScriptCallFrame::type(ExecState* exec) const
+diff --git a/WebCore/loader/icon/IconDatabase.cpp b/WebCore/loader/icon/IconDatabase.cpp
+index 4be3684..41fd021 100644
+--- a/WebCore/loader/icon/IconDatabase.cpp
++++ b/WebCore/loader/icon/IconDatabase.cpp
+@@ -511,7 +511,7 @@ void IconDatabase::setIconDataForIconURL(PassRefPtr<SharedBuffer> dataOriginal,
+     if (!isOpen() || iconURLOriginal.isEmpty())
+         return;
+     
+-    RefPtr<SharedBuffer> data = dataOriginal ? dataOriginal->copy() : 0;
++    RefPtr<SharedBuffer> data = dataOriginal ? dataOriginal->copy() : (PassRefPtr<SharedBuffer>)0;
+     String iconURL = iconURLOriginal.crossThreadString();
+     
+     Vector<String> pageURLs;
+diff --git a/WebCore/loader/archive/ArchiveResource.cpp b/WebCore/loader/archive/ArchiveResource.cpp
+index 691f66a..b6317da 100644
+--- a/WebCore/loader/archive/ArchiveResource.cpp
++++ b/WebCore/loader/archive/ArchiveResource.cpp
+@@ -35,17 +35,17 @@ namespace WebCore {
+ 
+ PassRefPtr<ArchiveResource> ArchiveResource::create(PassRefPtr<SharedBuffer> data, const KURL& url, const ResourceResponse& response)
+ {
+-    return data ? adoptRef(new ArchiveResource(data, url, response)) : 0;
++    return data ? adoptRef(new ArchiveResource(data, url, response)) : PassRefPtr<ArchiveResource>(0);
+ }
+ 
+ PassRefPtr<ArchiveResource> ArchiveResource::create(PassRefPtr<SharedBuffer> data, const KURL& url, const String& mimeType, const String& textEncoding, const String& frameName)
+ {
+-    return data ? adoptRef(new ArchiveResource(data, url, mimeType, textEncoding, frameName)) : 0;
++    return data ? adoptRef(new ArchiveResource(data, url, mimeType, textEncoding, frameName)) : PassRefPtr<ArchiveResource>(0);
+ }
+ 
+ PassRefPtr<ArchiveResource> ArchiveResource::create(PassRefPtr<SharedBuffer> data, const KURL& url, const String& mimeType, const String& textEncoding, const String& frameName, const ResourceResponse& resourceResponse)
+ {
+-    return data ? adoptRef(new ArchiveResource(data, url, mimeType, textEncoding, frameName, resourceResponse)) : 0;
++    return data ? adoptRef(new ArchiveResource(data, url, mimeType, textEncoding, frameName, resourceResponse)) : PassRefPtr<ArchiveResource>(0);
+ }
+ 
+ ArchiveResource::ArchiveResource(PassRefPtr<SharedBuffer> data, const KURL& url, const ResourceResponse& response)
+diff --git a/WebCore/loader/archive/ArchiveFactory.cpp b/WebCore/loader/archive/ArchiveFactory.cpp
+index d09b064..8c80150 100644
+--- a/WebCore/loader/archive/ArchiveFactory.cpp
++++ b/WebCore/loader/archive/ArchiveFactory.cpp
+@@ -76,7 +76,7 @@ bool ArchiveFactory::isArchiveMimeType(const String& mimeType)
+ PassRefPtr<Archive> ArchiveFactory::create(SharedBuffer* data, const String& mimeType)
+ {
+     RawDataCreationFunction* function = archiveMIMETypes().get(mimeType);
+-    return function ? function(data) : 0;
++    return function ? function(data) : PassRefPtr<Archive>(0);
+ }
+ 
+ void ArchiveFactory::registerKnownArchiveMIMETypes()
+diff --git a/WebCore/page/animation/AnimationBase.cpp b/WebCore/page/animation/AnimationBase.cpp
+index 135365c..8dde52d 100644
+--- a/WebCore/page/animation/AnimationBase.cpp
++++ b/WebCore/page/animation/AnimationBase.cpp
+@@ -146,7 +146,7 @@ static inline TransformOperations blendFunc(const AnimationBase* anim, const Tra
+         for (unsigned i = 0; i < size; i++) {
+             RefPtr<TransformOperation> fromOp = (i < fromSize) ? from.operations()[i].get() : 0;
+             RefPtr<TransformOperation> toOp = (i < toSize) ? to.operations()[i].get() : 0;
+-            RefPtr<TransformOperation> blendedOp = toOp ? toOp->blend(fromOp.get(), progress) : (fromOp ? fromOp->blend(0, progress, true) : 0);
++            RefPtr<TransformOperation> blendedOp = toOp ? toOp->blend(fromOp.get(), progress) : (fromOp ? fromOp->blend(0, progress, true) : PassRefPtr<TransformOperation>(0));
+             if (blendedOp)
+                 result.operations().append(blendedOp);
+             else {
+diff --git a/WebCore/rendering/RenderLayer.cpp b/WebCore/rendering/RenderLayer.cpp
+index d8a3288..9bf0437 100644
+--- a/WebCore/rendering/RenderLayer.cpp
++++ b/WebCore/rendering/RenderLayer.cpp
+@@ -3374,7 +3374,7 @@ void RenderLayer::styleChanged(StyleDifference diff, const RenderStyle*)
+ void RenderLayer::updateScrollCornerStyle()
+ {
+     RenderObject* actualRenderer = renderer()->node() ? renderer()->node()->shadowAncestorNode()->renderer() : renderer();
+-    RefPtr<RenderStyle> corner = renderer()->hasOverflowClip() ? actualRenderer->getUncachedPseudoStyle(SCROLLBAR_CORNER, actualRenderer->style()) : 0;
++    RefPtr<RenderStyle> corner = renderer()->hasOverflowClip() ? actualRenderer->getUncachedPseudoStyle(SCROLLBAR_CORNER, actualRenderer->style()) : PassRefPtr<RenderStyle>(0);
+     if (corner) {
+         if (!m_scrollCorner) {
+             m_scrollCorner = new (renderer()->renderArena()) RenderScrollbarPart(renderer()->document());
+@@ -3390,7 +3390,7 @@ void RenderLayer::updateScrollCornerStyle()
+ void RenderLayer::updateResizerStyle()
+ {
+     RenderObject* actualRenderer = renderer()->node() ? renderer()->node()->shadowAncestorNode()->renderer() : renderer();
+-    RefPtr<RenderStyle> resizer = renderer()->hasOverflowClip() ? actualRenderer->getUncachedPseudoStyle(RESIZER, actualRenderer->style()) : 0;
++    RefPtr<RenderStyle> resizer = renderer()->hasOverflowClip() ? actualRenderer->getUncachedPseudoStyle(RESIZER, actualRenderer->style()) : PassRefPtr<RenderStyle>(0);
+     if (resizer) {
+         if (!m_resizer) {
+             m_resizer = new (renderer()->renderArena()) RenderScrollbarPart(renderer()->document());
+diff --git a/WebCore/rendering/RenderScrollbar.cpp b/WebCore/rendering/RenderScrollbar.cpp
+index 63fce8d..0144fd1 100644
+--- a/WebCore/rendering/RenderScrollbar.cpp
++++ b/WebCore/rendering/RenderScrollbar.cpp
+@@ -199,7 +199,7 @@ void RenderScrollbar::updateScrollbarPart(ScrollbarPart partType, bool destroy)
+     if (partType == NoPart)
+         return;
+ 
+-    RefPtr<RenderStyle> partStyle = !destroy ? getScrollbarPseudoStyle(partType,  pseudoForScrollbarPart(partType)) : 0;
++    RefPtr<RenderStyle> partStyle = !destroy ? getScrollbarPseudoStyle(partType,  pseudoForScrollbarPart(partType)) : PassRefPtr<RenderStyle>(0);
+     
+     bool needRenderer = !destroy && partStyle && partStyle->display() != NONE && partStyle->visibility() == VISIBLE;
+     
+diff --git a/WebCore/rendering/RenderTextFragment.cpp b/WebCore/rendering/RenderTextFragment.cpp
+index 9ff1106..876784b 100644
+--- a/WebCore/rendering/RenderTextFragment.cpp
++++ b/WebCore/rendering/RenderTextFragment.cpp
+@@ -28,7 +28,7 @@
+ namespace WebCore {
+ 
+ RenderTextFragment::RenderTextFragment(Node* node, StringImpl* str, int startOffset, int length)
+-    : RenderText(node, str ? str->substring(startOffset, length) : 0)
++    : RenderText(node, str ? str->substring(startOffset, length) : PassRefPtr<StringImpl>(0))
+     , m_start(startOffset)
+     , m_end(length)
+     , m_firstLetter(0)
+diff --git a/WebCore/loader/appcache/ApplicationCacheGroup.cpp b/WebCore/loader/appcache/ApplicationCacheGroup.cpp
+index c8a485a..c424895 100644
+--- a/WebCore/loader/appcache/ApplicationCacheGroup.cpp
++++ b/WebCore/loader/appcache/ApplicationCacheGroup.cpp
+@@ -775,7 +775,7 @@ void ApplicationCacheGroup::checkIfLoadIsComplete()
+             ASSERT(cacheStorage().isMaximumSizeReached() && m_calledReachedMaxAppCacheSize);
+         }
+ 
+-        RefPtr<ApplicationCache> oldNewestCache = (m_newestCache == m_cacheBeingUpdated) ? 0 : m_newestCache;
++        RefPtr<ApplicationCache> oldNewestCache = (m_newestCache == m_cacheBeingUpdated) ? RefPtr<ApplicationCache>(0) : m_newestCache;
+ 
+         setNewestCache(m_cacheBeingUpdated.release());
+         if (cacheStorage().storeNewestCache(this)) {
+diff --git a/WebCore/svg/SVGElement.cpp b/WebCore/svg/SVGElement.cpp
+index d039a4f..7acfa53 100644
+--- a/WebCore/svg/SVGElement.cpp
++++ b/WebCore/svg/SVGElement.cpp
+@@ -208,7 +208,7 @@ void SVGElement::sendSVGLoadEventIfPossible(bool sendParentLoadEvents)
+             event->setTarget(currentTarget);
+             currentTarget->dispatchGenericEvent(event.release());
+         }
+-        currentTarget = (parent && parent->isSVGElement()) ? static_pointer_cast<SVGElement>(parent) : 0;
++        currentTarget = (parent && parent->isSVGElement()) ? static_pointer_cast<SVGElement>(parent) : RefPtr<SVGElement>(0);
+     }
+ }
+ 

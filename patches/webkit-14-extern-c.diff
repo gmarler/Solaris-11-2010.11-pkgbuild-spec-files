@@ -1,0 +1,36 @@
+diff --git a/WebCore/platform/text/TextCodecICU.cpp b/WebCore/platform/text/TextCodecICU.cpp
+index 7ebce2c..548e9c1 100644
+--- a/WebCore/platform/text/TextCodecICU.cpp
++++ b/WebCore/platform/text/TextCodecICU.cpp
+@@ -371,7 +371,7 @@ static void urlEscapedEntityCallback(const void* context, UConverterFromUnicodeA
+ }
+ 
+ // Substitutes special GBK characters, escaping all other unassigned entities.
+-static void gbkCallbackEscape(const void* context, UConverterFromUnicodeArgs* fromUArgs, const UChar* codeUnits, int32_t length,
++extern "C" static void gbkCallbackEscape(const void* context, UConverterFromUnicodeArgs* fromUArgs, const UChar* codeUnits, int32_t length,
+                               UChar32 codePoint, UConverterCallbackReason reason, UErrorCode* err) 
+ {
+     UChar outChar;
+@@ -401,7 +401,7 @@ static void gbkUrlEscapedEntityCallack(const void* context, UConverterFromUnicod
+     UCNV_FROM_U_CALLBACK_ESCAPE(context, fromUArgs, codeUnits, length, codePoint, reason, err);
+ }
+ 
+-static void gbkCallbackSubstitute(const void* context, UConverterFromUnicodeArgs* fromUArgs, const UChar* codeUnits, int32_t length,
++extern "C" static void gbkCallbackSubstitute(const void* context, UConverterFromUnicodeArgs* fromUArgs, const UChar* codeUnits, int32_t length,
+                                   UChar32 codePoint, UConverterCallbackReason reason, UErrorCode* err) 
+ {
+     UChar outChar;
+diff --git a/WebCore/plugins/npapi.cpp b/WebCore/plugins/npapi.cpp
+index 4135b64..457db0e 100644
+--- a/WebCore/plugins/npapi.cpp
++++ b/WebCore/plugins/npapi.cpp
+@@ -171,7 +171,9 @@ void NPN_PopPopupsEnabledState(NPP instance)
+     pluginViewForInstance(instance)->popPopupsEnabledState();
+ }
+ 
++U_CDECL_BEGIN
+ void NPN_PluginThreadAsyncCall(NPP instance, void (*func) (void *), void *userData)
+ {
+     PluginMainThreadScheduler::scheduler().scheduleCall(instance, func, userData);
+ }
++U_CDECL_END

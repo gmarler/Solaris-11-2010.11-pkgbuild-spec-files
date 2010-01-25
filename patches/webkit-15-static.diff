@@ -1,0 +1,13 @@
+diff --git a/WebCore/rendering/RenderListMarker.cpp b/WebCore/rendering/RenderListMarker.cpp
+index 5ce9a21..b5666e9 100644
+--- a/WebCore/rendering/RenderListMarker.cpp
++++ b/WebCore/rendering/RenderListMarker.cpp
+@@ -78,7 +78,7 @@ static String toRoman(int number, bool upper)
+     return String(&letters[lettersSize - length], length);
+ }
+ 
+-static String toAlphabetic(int number, const UChar* alphabet, int alphabetSize)
++String toAlphabetic(int number, const UChar* alphabet, int alphabetSize)
+ {
+     ASSERT(alphabetSize >= 10);
+ 

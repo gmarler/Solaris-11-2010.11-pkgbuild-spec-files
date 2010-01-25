@@ -1,0 +1,268 @@
+diff --git a/GNUmakefile.am b/GNUmakefile.am
+index f9ad21c..f440ec0 100644
+--- a/GNUmakefile.am
++++ b/GNUmakefile.am
+@@ -95,7 +95,6 @@ MAINTAINERCLEANFILES :=
+ # Don't include them for now to reduce the noise when compiling
+ # $(GLIB_CFLAGS) $(CAIRO_CFLAGS) $(PANGO_CFLAGS)  $(FREETYPE_CFLAGS)
+ corekit_cflags += \
+-	-fno-strict-aliasing \
+ 	$(COVERAGE_CFLAGS) \
+ 	$(ENCHANT_CFLAGS) \
+ 	$(GAIL_CFLAGS) \
+@@ -126,17 +125,10 @@ corekit_cppflags += -DXP_UNIX
+ endif
+ 
+ # Default compiler flags
+-global_cflags += \
+-	-Wall -W -Wcast-align -Wchar-subscripts -Wreturn-type \
+-	-Wformat -Wformat-security -Wno-format-y2k -Wundef \
+-	-Wmissing-format-attribute -Wpointer-arith -Wwrite-strings \
+-	-Wno-unused-parameter -Wno-parentheses \
+-	-fno-exceptions
++global_cflags += -mt
+ 
+ global_cxxflags += \
+-	$(global_cflags) \
+-	$(SYMBOL_VISIBILITY_INLINES) \
+-	-fno-rtti
++	$(global_cflags)
+ 
+ # -no-undefined required for building DLLs on Windows
+ # It breaks the build on other platforms, so we use it conditionally
+@@ -186,8 +178,7 @@ libJavaScriptCore_la_CXXFLAGS = \
+ 	$(libJavaScriptCore_la_CFLAGS)
+ 
+ libJavaScriptCore_la_CFLAGS = \
+-	-fstrict-aliasing \
+-	-O3 \
++	-xO4 \
+ 	$(global_cflags) \
+ 	$(GLIB_CFLAGS) \
+ 	$(UNICODE_CFLAGS)
+@@ -289,7 +280,7 @@ endif
+ 
+ if !ENABLE_DEBUG
+ global_cppflags += -DNDEBUG
+-global_cflags += $(SYMBOL_VISIBILITY)
++global_cflags +=
+ 
+ else
+ webcoregtk_cppflags += \
+@@ -546,7 +537,6 @@ include WebKit/gtk/po/GNUmakefile.am
+ noinst_PROGRAMS += $(TEST_PROGS)
+ 
+ webkit_tests_cflags = \
+-	-fno-strict-aliasing \
+ 	-I$(srcdir)/JavaScriptCore/ForwardingHeaders \
+ 	-I$(srcdir)/WebKit/gtk \
+ 	-I$(top_builddir)/WebKit/gtk \
+@@ -561,9 +551,7 @@ webkit_tests_ldadd = \
+ 	$(GLIB_LIBS) \
+ 	$(LIBSOUP_LIBS)
+ 
+-webkit_tests_ldflags = \
+-	-no-install \
+-	-no-fast-install
++webkit_tests_ldflags =
+ 
+ TEST_PROGS += Programs/unittests/testhttpbackend \
+ 	Programs/unittests/testloading \
+diff --git a/GNUmakefile.in b/GNUmakefile.in
+index 3cdfc04..6aba754 100644
+--- a/GNUmakefile.in
++++ b/GNUmakefile.in
+@@ -108,7 +108,7 @@ noinst_PROGRAMS = Programs/minidom$(EXEEXT) \
+ @ENABLE_FAST_MALLOC_FALSE@	-DUSE_SYSTEM_MALLOC
+ 
+ @ENABLE_DEBUG_FALSE@am__append_5 = -DNDEBUG
+-@ENABLE_DEBUG_FALSE@am__append_6 = $(SYMBOL_VISIBILITY)
++@ENABLE_DEBUG_FALSE@am__append_6 = -xldscope=hidden
+ @ENABLE_DEBUG_TRUE@am__append_7 = \
+ @ENABLE_DEBUG_TRUE@	-DG_DISABLE_DEPRECATED \
+ @ENABLE_DEBUG_TRUE@	-DGDK_PIXBUF_DISABLE_DEPRECATED \
+@@ -6176,7 +6176,7 @@ INTROSPECTION_CFLAGS = @INTROSPECTION_CFLAGS@
+ INTROSPECTION_LIBS = @INTROSPECTION_LIBS@
+ JPEG_LIBS = @JPEG_LIBS@
+ LD = @LD@
+-LDFLAGS = @LDFLAGS@
++LDFLAGS = @LDFLAGS@ -Wl,-z -Wl,muldefs
+ LIBOBJS = @LIBOBJS@
+ LIBS = @LIBS@
+ LIBSOUP_2_29_3_CFLAGS = @LIBSOUP_2_29_3_CFLAGS@
+@@ -6223,8 +6223,8 @@ SHELL = @SHELL@
+ SQLITE3_CFLAGS = @SQLITE3_CFLAGS@
+ SQLITE3_LIBS = @SQLITE3_LIBS@
+ STRIP = @STRIP@
+-SYMBOL_VISIBILITY = @SYMBOL_VISIBILITY@
+-SYMBOL_VISIBILITY_INLINES = @SYMBOL_VISIBILITY_INLINES@
++SYMBOL_VISIBILITY =
++SYMBOL_VISIBILITY_INLINES =
+ UNICODE_CFLAGS = @UNICODE_CFLAGS@
+ UNICODE_LIBS = @UNICODE_LIBS@
+ VERSION = @VERSION@
+@@ -8629,20 +8629,16 @@ global_cppflags := -DBUILDING_CAIRO__=1 -DBUILDING_GTK__=1 \
+ 	$(am__append_5) $(am__append_8) $(am__append_43)
+ 
+ # Default compiler flags
+-global_cflags := -Wall -W -Wcast-align -Wchar-subscripts -Wreturn-type \
+-	-Wformat -Wformat-security -Wno-format-y2k -Wundef \
+-	-Wmissing-format-attribute -Wpointer-arith -Wwrite-strings \
+-	-Wno-unused-parameter -Wno-parentheses -fno-exceptions \
++global_cflags := \
+ 	$(am__append_6)
+-global_cxxflags := $(global_cflags) $(SYMBOL_VISIBILITY_INLINES) \
+-	-fno-rtti
++global_cxxflags := $(global_cflags)
+ 
+ # CFLAGS/CXXFLAGS used by WebCore and WebKit
+ #
+ # gtk+.pc already include glib, cairo, freetype and pango CFLAGS
+ # Don't include them for now to reduce the noise when compiling
+ # $(GLIB_CFLAGS) $(CAIRO_CFLAGS) $(PANGO_CFLAGS)  $(FREETYPE_CFLAGS)
+-corekit_cflags := -fno-strict-aliasing $(COVERAGE_CFLAGS) \
++corekit_cflags := $(COVERAGE_CFLAGS) \
+ 	$(ENCHANT_CFLAGS) $(GAIL_CFLAGS) $(GEOCLUE_CFLAGS) \
+ 	$(GLIB_CFLAGS) $(GSTREAMER_CFLAGS) $(GTK_CFLAGS) \
+ 	$(HILDON_CFLAGS) $(LIBSOUP_CFLAGS) $(LIBXML_CFLAGS) \
+@@ -8743,8 +8739,6 @@ libJavaScriptCore_la_CXXFLAGS = \
+ 	$(libJavaScriptCore_la_CFLAGS)
+ 
+ libJavaScriptCore_la_CFLAGS = \
+-	-fstrict-aliasing \
+-	-O3 \
+ 	$(global_cflags) \
+ 	$(GLIB_CFLAGS) \
+ 	$(UNICODE_CFLAGS)
+@@ -8845,19 +8839,16 @@ Programs_minidom_CPPFLAGS = \
+ 	$(javascriptcore_cppflags)
+ 
+ Programs_minidom_CFLAGS = \
+-	-ansi \
+-	-fno-strict-aliasing \
+ 	$(global_cflags) \
+ 	$(GLOBALDEPS_CFLAGS)
+ 
+ Programs_minidom_LDADD = \
+ 	 libJavaScriptCore.la \
+ 	 -lm \
+-	 -lstdc++
++	 -lCstd \
++	 -lCrun
+ 
+-Programs_minidom_LDFLAGS = \
+-	-no-install \
+-	-no-fast-install
++Programs_minidom_LDFLAGS =
+ 
+ 
+ # jsc
+@@ -8869,7 +8860,6 @@ Programs_jsc_CPPFLAGS = \
+ 	$(javascriptcore_cppflags)
+ 
+ Programs_jsc_CXXFLAGS = \
+-	-fno-strict-aliasing \
+ 	$(global_cxxflags) \
+ 	$(global_cflags) \
+ 	$(GLOBALDEPS_CFLAGS) \
+@@ -8995,8 +8985,6 @@ Programs_GtkLauncher_SOURCES = \
+ 	WebKitTools/GtkLauncher/main.c
+ 
+ Programs_GtkLauncher_CFLAGS = \
+-	-ansi \
+-	-fno-strict-aliasing \
+ 	$(global_cflags) \
+ 	$(GTK_CFLAGS) \
+ 	$(LIBSOUP_CFLAGS)
+@@ -9006,9 +8994,7 @@ Programs_GtkLauncher_LDADD = \
+ 	$(GTK_LIBS) \
+ 	$(GLIB_LIBS)
+ 
+-Programs_GtkLauncher_LDFLAGS = \
+-	-no-fast-install \
+-	-no-install
++Programs_GtkLauncher_LDFLAGS =
+ 
+ 
+ # DumpRenderTree
+@@ -9051,7 +9037,6 @@ Programs_DumpRenderTree_CXXFLAGS = \
+ 	$(Programs_DumpRenderTree_CFLAGS)
+ 
+ Programs_DumpRenderTree_CFLAGS = \
+-	-fno-strict-aliasing \
+ 	$(dumprendertree_cppflags) \
+ 	$(global_cflags) \
+ 	$(GLOBALDEPS_CFLAGS) \
+@@ -9069,9 +9054,7 @@ Programs_DumpRenderTree_LDADD = \
+ 	$(LIBSOUP_LIBS) \
+ 	$(FREETYPE_LIBS)
+ 
+-Programs_DumpRenderTree_LDFLAGS = \
+-	-no-fast-install \
+-	-no-install
++Programs_DumpRenderTree_LDFLAGS =
+ 
+ @TARGET_X11_TRUE@TestNetscapePlugin_libtestnetscapeplugin_la_CPPFLAGS = \
+ @TARGET_X11_TRUE@	-I$(srcdir)/WebKitTools/DumpRenderTree \
+@@ -9105,7 +9088,6 @@ XGETTEXT := $(shell which xgettext)
+ MSGMERGE := $(shell which msgmerge)
+ MSGMERGE_UPDATE := $(MSGMERGE) --update
+ webkit_tests_cflags = \
+-	-fno-strict-aliasing \
+ 	-I$(srcdir)/JavaScriptCore/ForwardingHeaders \
+ 	-I$(srcdir)/WebKit/gtk \
+ 	-I$(top_builddir)/WebKit/gtk \
+diff --git a/JavaScriptCore/GNUmakefile.am b/JavaScriptCore/GNUmakefile.am
+index 13d6092..1204fbb 100644
+--- a/JavaScriptCore/GNUmakefile.am
++++ b/JavaScriptCore/GNUmakefile.am
+@@ -559,19 +559,15 @@ Programs_minidom_CPPFLAGS = \
+ 	$(javascriptcore_cppflags)
+ 
+ Programs_minidom_CFLAGS = \
+-	-ansi \
+-	-fno-strict-aliasing \
+ 	$(global_cflags) \
+ 	$(GLOBALDEPS_CFLAGS)
+ 
+ Programs_minidom_LDADD = \
+ 	 libJavaScriptCore.la \
+ 	 -lm \
+-	 -lstdc++
++	 -lCstd
+ 
+-Programs_minidom_LDFLAGS = \
+-	-no-install \
+-	-no-fast-install
++Programs_minidom_LDFLAGS =
+ 
+ # jsc
+ Programs_jsc_SOURCES = \
+@@ -582,7 +578,6 @@ Programs_jsc_CPPFLAGS = \
+ 	$(javascriptcore_cppflags)
+ 
+ Programs_jsc_CXXFLAGS = \
+-	-fno-strict-aliasing \
+ 	$(global_cxxflags) \
+ 	$(global_cflags) \
+ 	$(GLOBALDEPS_CFLAGS) \
+diff --git a/configure.ac b/configure.ac
+index 3924294..ef805e0 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -623,11 +623,11 @@ fi
+ 
+ # Add the appropriate 'O' level for optimized builds
+ if test "$enable_optimizations" = "yes"; then
+-   CXXFLAGS="$CXXFLAGS -O2"
+-   CFLAGS="$CFLAGS -O2"
++   CXXFLAGS="$CXXFLAGS -xO4"
++   CFLAGS="$CFLAGS -xO4"
+ else
+-   CXXFLAGS="$CXXFLAGS -O0"
+-   CFLAGS="$CFLAGS -O0"
++   CXXFLAGS="$CXXFLAGS -xO0"
++   CFLAGS="$CFLAGS -xO0"
+ fi
+ 
+ PKG_CHECK_MODULES([LIBSOUP],

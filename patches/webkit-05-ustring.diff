@@ -1,0 +1,75 @@
+diff --git a/JavaScriptCore/runtime/UString.cpp b/JavaScriptCore/runtime/UString.cpp
+index e75a05c..3484d58 100644
+--- a/JavaScriptCore/runtime/UString.cpp
++++ b/JavaScriptCore/runtime/UString.cpp
+@@ -858,19 +858,6 @@ int compare(const UString& s1, const UString& s2)
+     return (l1 > l2) ? 1 : -1;
+ }
+ 
+-bool equal(const UString::Rep* r, const UString::Rep* b)
+-{
+-    int length = r->size();
+-    if (length != b->size())
+-        return false;
+-    const UChar* d = r->data();
+-    const UChar* s = b->data();
+-    for (int i = 0; i != length; ++i) {
+-        if (d[i] != s[i])
+-            return false;
+-    }
+-    return true;
+-}
+ 
+ CString UString::UTF8String(bool strict) const
+ {
+diff --git a/JavaScriptCore/runtime/UStringImpl.h b/JavaScriptCore/runtime/UStringImpl.h
+index abed637..81e0b77 100644
+--- a/JavaScriptCore/runtime/UStringImpl.h
++++ b/JavaScriptCore/runtime/UStringImpl.h
+@@ -259,9 +259,11 @@ private:
+         checkConsistency();
+     }
+ 
++public:
+     using Noncopyable::operator new;
+-    void* operator new(size_t, void* inPlace) { return inPlace; }
++    void* operator new(size_t, void* p) { return p; }
+ 
++private:
+     ~UStringImpl();
+ 
+     // This number must be at least 2 to avoid sharing empty, null as well as 1 character strings from SmallStrings.
+@@ -296,7 +298,19 @@ private:
+     friend void initializeUString();
+ };
+ 
+-bool equal(const UStringImpl*, const UStringImpl*);
++bool equal(const UStringImpl* r, const UStringImpl* b)
++{
++    int length = r->size();
++    if (length != b->size())
++        return false;
++    const UChar* d = r->data();
++    const UChar* s = b->data();
++    for (int i = 0; i != length; ++i) {
++        if (d[i] != s[i])
++            return false;
++    }
++    return true;
++};
+ 
+ }
+ 
+diff --git a/WebCore/platform/text/StringImpl.h b/WebCore/platform/text/StringImpl.h
+index a105985..0d6613e 100644
+--- a/WebCore/platform/text/StringImpl.h
++++ b/WebCore/platform/text/StringImpl.h
+@@ -181,7 +181,7 @@ public:
+ 
+ private:
+     using Noncopyable::operator new;
+-    void* operator new(size_t, void* inPlace) { ASSERT(inPlace); return inPlace; }
++    void* operator new(size_t, void* p) { ASSERT(p); return p; }
+ 
+     static PassRefPtr<StringImpl> createStrippingNullCharactersSlowCase(const UChar*, unsigned length);
+     

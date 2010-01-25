@@ -1,0 +1,48 @@
+diff --git a/WebCore/dom/NodeRenderStyle.h b/WebCore/dom/NodeRenderStyle.h
+index 3a67e02..71cebbd 100644
+--- a/WebCore/dom/NodeRenderStyle.h
++++ b/WebCore/dom/NodeRenderStyle.h
+@@ -33,7 +33,7 @@ namespace WebCore {
+ 
+ inline RenderStyle* Node::renderStyle() const
+ {
+-    return m_renderer ? m_renderer->style() : nonRendererRenderStyle();
++    return m_renderer ? (RenderStyle*)m_renderer->style() : nonRendererRenderStyle();
+ }
+ 
+ }
+diff --git a/WebCore/loader/DocumentLoader.h b/WebCore/loader/DocumentLoader.h
+index 76a5aee..c9a7dcd 100644
+--- a/WebCore/loader/DocumentLoader.h
++++ b/WebCore/loader/DocumentLoader.h
+@@ -163,7 +163,7 @@ namespace WebCore {
+         String clientRedirectDestinationForHistory() const { return urlForHistory(); }
+         void setClientRedirectSourceForHistory(const String& clientedirectSourceForHistory) { m_clientRedirectSourceForHistory = clientedirectSourceForHistory; }
+         
+-        String serverRedirectSourceForHistory() const { return urlForHistory() == url() ? String() : urlForHistory(); } // null if no server redirect occurred.
++        String serverRedirectSourceForHistory() const { return urlForHistory() == url() ? String() : (String)urlForHistory(); } // null if no server redirect occurred.
+         String serverRedirectDestinationForHistory() const { return url(); }
+ 
+         bool didCreateGlobalHistoryEntry() const { return m_didCreateGlobalHistoryEntry; }
+diff --git a/WebCore/loader/FrameLoader.cpp b/WebCore/loader/FrameLoader.cpp
+index 8770f5c..d78d28c 100644
+--- a/WebCore/loader/FrameLoader.cpp
++++ b/WebCore/loader/FrameLoader.cpp
+@@ -1974,7 +1974,7 @@ void FrameLoader::load(const ResourceRequest& request, const SubstituteData& sub
+     m_loadType = FrameLoadTypeStandard;
+     RefPtr<DocumentLoader> loader = m_client->createDocumentLoader(request, substituteData);
+     if (lockHistory && m_documentLoader)
+-        loader->setClientRedirectSourceForHistory(m_documentLoader->didCreateGlobalHistoryEntry() ? m_documentLoader->urlForHistory() : m_documentLoader->clientRedirectSourceForHistory());
++        loader->setClientRedirectSourceForHistory(m_documentLoader->didCreateGlobalHistoryEntry() ? (String)m_documentLoader->urlForHistory() : m_documentLoader->clientRedirectSourceForHistory());
+     load(loader.get());
+ }
+ 
+@@ -1998,7 +1998,7 @@ void FrameLoader::loadWithNavigationAction(const ResourceRequest& request, const
+ {
+     RefPtr<DocumentLoader> loader = m_client->createDocumentLoader(request, SubstituteData());
+     if (lockHistory && m_documentLoader)
+-        loader->setClientRedirectSourceForHistory(m_documentLoader->didCreateGlobalHistoryEntry() ? m_documentLoader->urlForHistory() : m_documentLoader->clientRedirectSourceForHistory());
++        loader->setClientRedirectSourceForHistory(m_documentLoader->didCreateGlobalHistoryEntry() ? (String)m_documentLoader->urlForHistory() : m_documentLoader->clientRedirectSourceForHistory());
+ 
+     loader->setTriggeringAction(action);
+     if (m_documentLoader)

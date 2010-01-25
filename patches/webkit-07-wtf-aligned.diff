@@ -1,0 +1,51 @@
+diff --git a/JavaScriptCore/wtf/Vector.h b/JavaScriptCore/wtf/Vector.h
+index decc9c9..e65d435 100644
+--- a/JavaScriptCore/wtf/Vector.h
++++ b/JavaScriptCore/wtf/Vector.h
+@@ -44,6 +44,8 @@ namespace WTF {
+     #elif COMPILER(MSVC)
+         #define WTF_ALIGN_OF(type) __alignof(type)
+         #define WTF_ALIGNED(variable_type, variable, n) __declspec(align(n)) variable_type variable
++    #elif COMPILER(SUNCC)
++	#define WTF_ALIGN_OF(type) __alignof__(type)
+     #else
+         #error WTF_ALIGN macros need alignment control.
+     #endif
+@@ -54,6 +56,7 @@ namespace WTF {
+         typedef char AlignedBufferChar; 
+     #endif
+ 
++#ifdef WTF_ALIGNED
+     template <size_t size, size_t alignment> struct AlignedBuffer;
+     template <size_t size> struct AlignedBuffer<size, 1> { AlignedBufferChar buffer[size]; };
+     template <size_t size> struct AlignedBuffer<size, 2> { WTF_ALIGNED(AlignedBufferChar, buffer[size], 2);  };
+@@ -62,6 +65,16 @@ namespace WTF {
+     template <size_t size> struct AlignedBuffer<size, 16> { WTF_ALIGNED(AlignedBufferChar, buffer[size], 16); };
+     template <size_t size> struct AlignedBuffer<size, 32> { WTF_ALIGNED(AlignedBufferChar, buffer[size], 32); };
+     template <size_t size> struct AlignedBuffer<size, 64> { WTF_ALIGNED(AlignedBufferChar, buffer[size], 64); };
++#else
++    template <size_t size, size_t alignment> struct AlignedBuffer
++    {
++	AlignedBufferChar oversizebuffer[size + alignment -1];
++	AlignedBufferChar *buffer()
++	{
++	    return (AlignedBufferChar *)((size_t)(oversizebuffer + alignment - 1) & (size_t)~(alignment - 1));
++	}
++    };
++#endif
+ 
+     template <size_t size, size_t alignment>
+     void swap(AlignedBuffer<size, alignment>& a, AlignedBuffer<size, alignment>& b)
+@@ -456,8 +469,11 @@ namespace WTF {
+         using Base::m_capacity;
+ 
+         static const size_t m_inlineBufferSize = inlineCapacity * sizeof(T);
++#ifdef WTF_ALIGNED 
+         T* inlineBuffer() { return reinterpret_cast<T*>(m_inlineBuffer.buffer); }
+-
++#else
++	T* inlineBuffer() { return reinterpret_cast<T*>(m_inlineBuffer.buffer()); }
++#endif
+         AlignedBuffer<m_inlineBufferSize, WTF_ALIGN_OF(T)> m_inlineBuffer;
+     };
+ 

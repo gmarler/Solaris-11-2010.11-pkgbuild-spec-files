@@ -1,0 +1,65 @@
+diff --git a/JavaScriptCore/interpreter/RegisterFile.cpp b/JavaScriptCore/interpreter/RegisterFile.cpp
+index 510effe..0d90f2d 100644
+--- a/JavaScriptCore/interpreter/RegisterFile.cpp
++++ b/JavaScriptCore/interpreter/RegisterFile.cpp
+@@ -34,7 +34,7 @@ namespace JSC {
+ RegisterFile::~RegisterFile()
+ {
+ #if HAVE(MMAP)
+-    munmap(m_buffer, ((m_max - m_start) + m_maxGlobals) * sizeof(Register));
++    munmap((caddr_t)m_buffer, ((m_max - m_start) + m_maxGlobals) * sizeof(Register));
+ #elif HAVE(VIRTUALALLOC)
+ #if OS(WINCE)
+     VirtualFree(m_buffer, DWORD(m_commitEnd) - DWORD(m_buffer), MEM_DECOMMIT);
+diff --git a/JavaScriptCore/interpreter/RegisterFile.h b/JavaScriptCore/interpreter/RegisterFile.h
+index 1fc4f82..e2c5922 100644
+--- a/JavaScriptCore/interpreter/RegisterFile.h
++++ b/JavaScriptCore/interpreter/RegisterFile.h
+@@ -174,7 +174,7 @@ namespace JSC {
+ 
+         size_t bufferLength = (capacity + maxGlobals) * sizeof(Register);
+     #if HAVE(MMAP)
+-        m_buffer = static_cast<Register*>(mmap(0, bufferLength, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANON, VM_TAG_FOR_REGISTERFILE_MEMORY, 0));
++        m_buffer = reinterpret_cast<Register*>(mmap(0, bufferLength, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANON, VM_TAG_FOR_REGISTERFILE_MEMORY, 0));
+         if (m_buffer == MAP_FAILED) {
+ #if OS(WINCE)
+             fprintf(stderr, "Could not allocate register file: %d\n", GetLastError());
+diff --git a/JavaScriptCore/runtime/MarkStackPosix.cpp b/JavaScriptCore/runtime/MarkStackPosix.cpp
+index c28bc0d..4c9d3e2 100644
+--- a/JavaScriptCore/runtime/MarkStackPosix.cpp
++++ b/JavaScriptCore/runtime/MarkStackPosix.cpp
+@@ -44,7 +44,7 @@ void* MarkStack::allocateStack(size_t size)
+ }
+ void MarkStack::releaseStack(void* addr, size_t size)
+ {
+-    munmap(addr, size);
++    munmap((caddr_t)addr, size);
+ }
+ 
+ }
+diff --git a/JavaScriptCore/wtf/TCSystemAlloc.cpp b/JavaScriptCore/wtf/TCSystemAlloc.cpp
+index 4d02919..3e7888f 100644
+--- a/JavaScriptCore/wtf/TCSystemAlloc.cpp
++++ b/JavaScriptCore/wtf/TCSystemAlloc.cpp
+@@ -193,10 +193,10 @@ static void* TryMmap(size_t size, size_t *actual_size, size_t alignment) {
+ 
+   // Return the unused memory to the system
+   if (adjust > 0) {
+-    munmap(reinterpret_cast<void*>(ptr), adjust);
++    munmap(reinterpret_cast<caddr_t>(ptr), adjust);
+   }
+   if (adjust < extra) {
+-    munmap(reinterpret_cast<void*>(ptr + adjust + size), extra - adjust);
++    munmap(reinterpret_cast<caddr_t>(ptr + adjust + size), extra - adjust);
+   }
+ 
+   ptr += adjust;
+@@ -442,7 +442,7 @@ void TCMalloc_SystemRelease(void* start, size_t length)
+ 
+ void TCMalloc_SystemRelease(void* start, size_t length)
+ {
+-  void* newAddress = mmap(start, length, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS | MAP_FIXED, -1, 0);
++  void* newAddress = mmap((caddr_t)start, length, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS | MAP_FIXED, -1, 0);
+   // If the mmap failed then that's ok, we just won't return the memory to the system.
+   ASSERT_UNUSED(newAddress, newAddress == start || newAddress == reinterpret_cast<void*>(MAP_FAILED));
+ }

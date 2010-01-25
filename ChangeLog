@@ -1,3 +1,30 @@
+2010-01-25  Simon  <yuntong.jin@sun.com>
+
+	* SFEwebkit-cstd.spec:
+	* patches/webkit-01-configure-and-makefile.diff:
+	* patches/webkit-02-mmap.diff:
+	* patches/webkit-03-return.diff:
+	* patches/webkit-04-make-pair.diff:
+	* patches/webkit-05-ustring.diff:
+	* patches/webkit-06-wtf-compiler-suncc.diff:
+	* patches/webkit-07-wtf-aligned.diff:
+	* patches/webkit-08-svgpodlist.diff:
+	* patches/webkit-09-ternary-operator.diff:
+	* patches/webkit-10-pow.diff:
+	* patches/webkit-11-g-byte-order-marco.diff:
+	* patches/webkit-12-isnan.diff:
+	* patches/webkit-13-webcore-frame.diff:
+	* patches/webkit-14-extern-c.diff:
+	* patches/webkit-15-static.diff:
+	* patches/webkit-16-const-string.diff:
+	* patches/webkit-17-make-pair-range.diff:
+	* patches/webkit-18-locale-h.diff:
+	* patches/webkit-19-ss12-ternary-operator.diff:
+	* patches/webkit-20-visibility.diff:
+	* patches/webkit-21-vector-not-const.diff:
+	* patches/webkit-22-not-reinterpretcast.diff:
+          Bump to 1.1.19 and repatched 	
+
 2010-01-25  Jedy Wang  <jedy.wang@sun.com>
 
 	* SFEvim.spec: Bump to release 344.

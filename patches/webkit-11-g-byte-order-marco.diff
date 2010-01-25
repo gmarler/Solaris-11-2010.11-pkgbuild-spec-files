@@ -1,0 +1,26 @@
+diff --git a/WebCore/platform/graphics/gtk/VideoSinkGStreamer.cpp b/WebCore/platform/graphics/gtk/VideoSinkGStreamer.cpp
+index 5e0f8e2..4024ae9 100644
+--- a/WebCore/platform/graphics/gtk/VideoSinkGStreamer.cpp
++++ b/WebCore/platform/graphics/gtk/VideoSinkGStreamer.cpp
+@@ -33,15 +33,19 @@
+ #include <gst/gst.h>
+ #include <gst/video/video.h>
+ 
++#if G_BYTE_ORDER == G_LITTLE_ENDIAN
+ static GstStaticPadTemplate sinktemplate = GST_STATIC_PAD_TEMPLATE("sink",
+                                                                    GST_PAD_SINK, GST_PAD_ALWAYS,
+ // CAIRO_FORMAT_RGB24 used to render the video buffers is little/big endian dependant.
+-#if G_BYTE_ORDER == G_LITTLE_ENDIAN
+                                                                    GST_STATIC_CAPS(GST_VIDEO_CAPS_BGRx ";" GST_VIDEO_CAPS_BGRA)
++);
+ #else
++static GstStaticPadTemplate sinktemplate = GST_STATIC_PAD_TEMPLATE("sink",
++                                                                   GST_PAD_SINK, GST_PAD_ALWAYS,
++// CAIRO_FORMAT_RGB24 used to render the video buffers is little/big endian dependant.
+                                                                    GST_STATIC_CAPS(GST_VIDEO_CAPS_xRGB ";" GST_VIDEO_CAPS_ARGB)
+-#endif
+ );
++#endif
+ 
+ GST_DEBUG_CATEGORY_STATIC(webkit_video_sink_debug);
+ #define GST_CAT_DEFAULT webkit_video_sink_debug

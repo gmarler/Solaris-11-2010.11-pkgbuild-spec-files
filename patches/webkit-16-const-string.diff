@@ -1,0 +1,13 @@
+diff --git a/WebCore/svg/SVGAnimatedProperty.h b/WebCore/svg/SVGAnimatedProperty.h
+index 984046f..4384642 100644
+--- a/WebCore/svg/SVGAnimatedProperty.h
++++ b/WebCore/svg/SVGAnimatedProperty.h
+@@ -498,7 +498,7 @@ namespace WebCore {
+     // Helper macro used to register animated properties within SVG* classes
+     #define ANIMATED_PROPERTY_DECLARATIONS(OwnerType, ElementTag, AttributeTag, AnimatedType, UpperProperty, LowerProperty) \
+     private: \
+-        typedef SVGAnimatedProperty<OwnerType, AnimatedType, ElementTag, AttributeTag> SVGAnimatedProperty##UpperProperty; \
++        typedef SVGAnimatedProperty<OwnerType, AnimatedType, static_cast<const char*>(ElementTag), static_cast<const char*>(AttributeTag)> SVGAnimatedProperty##UpperProperty; \
+         typedef SVGAnimatedTypeValue<AnimatedType>::DecoratedType DecoratedTypeFor##UpperProperty; \
+         SVGAnimatedProperty##UpperProperty m_##LowerProperty; \
+     public: \

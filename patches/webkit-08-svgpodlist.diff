@@ -1,0 +1,71 @@
+diff --git a/WebCore/bindings/js/JSSVGPODListCustom.h b/WebCore/bindings/js/JSSVGPODListCustom.h
+index 3852505..6ae534f 100644
+--- a/WebCore/bindings/js/JSSVGPODListCustom.h
++++ b/WebCore/bindings/js/JSSVGPODListCustom.h
+@@ -103,9 +103,8 @@ static JSC::JSValue initialize(JSPODListType* wrapper, JSC::ExecState* exec, con
+ {
+     ExceptionCode ec = 0;
+     typename JSSVGPODListTraits<PODType>::PODList* listImp = wrapper->impl();
+-    return finishSetter<PODType>(exec, ec, wrapper->context(), listImp,
+-                                 listImp->initialize(JSSVGPODListTraits<PODType>::PODListItem::copy(conversion(args.at(0))), ec));
+-
++    PassRefPtr<typename JSSVGPODListTraits<PODType>::PODListItem> item = listImp->initialize(JSSVGPODListTraits<PODType>::PODListItem::copy(conversion(args.at(0))), ec);
++    return finishSetter<PODType>(exec, ec, wrapper->context(), listImp, item);
+ }
+ 
+ template<typename JSPODListType, typename PODType>
+@@ -121,8 +120,8 @@ static JSC::JSValue getItem(JSPODListType* wrapper, JSC::ExecState* exec, const
+ 
+     ExceptionCode ec = 0;
+     typename JSSVGPODListTraits<PODType>::PODList* listImp = wrapper->impl();
+-    return finishGetter<PODType>(exec, ec, wrapper->context(), listImp,
+-                                 listImp->getItem(index, ec));
++    PassRefPtr<typename JSSVGPODListTraits<PODType>::PODListItem> item = listImp->getItem(index, ec);
++    return finishGetter<PODType>(exec, ec, wrapper->context(), listImp, item);
+ }
+ 
+ template<typename JSPODListType, typename PODType>
+@@ -138,8 +137,8 @@ static JSC::JSValue insertItemBefore(JSPODListType* wrapper, JSC::ExecState* exe
+ 
+     ExceptionCode ec = 0;
+     typename JSSVGPODListTraits<PODType>::PODList* listImp = wrapper->impl();
+-    return finishSetter<PODType>(exec, ec, wrapper->context(), listImp,
+-                                 listImp->insertItemBefore(JSSVGPODListTraits<PODType>::PODListItem::copy(conversion(args.at(0))), index, ec));
++    PassRefPtr<typename JSSVGPODListTraits<PODType>::PODListItem> item = listImp->insertItemBefore(JSSVGPODListTraits<PODType>::PODListItem::copy(conversion(args.at(0))), index, ec);
++    return finishSetter<PODType>(exec, ec, wrapper->context(), listImp, item);
+ }
+ 
+ template<typename JSPODListType, typename PODType>
+@@ -155,8 +154,8 @@ static JSC::JSValue replaceItem(JSPODListType* wrapper, JSC::ExecState* exec, co
+ 
+     ExceptionCode ec = 0;
+     typename JSSVGPODListTraits<PODType>::PODList* listImp = wrapper->impl();
+-    return finishSetter<PODType>(exec, ec, wrapper->context(), listImp,
+-                                 listImp->replaceItem(JSSVGPODListTraits<PODType>::PODListItem::copy(conversion(args.at(0))), index, ec));
++    PassRefPtr<typename JSSVGPODListTraits<PODType>::PODListItem> item = listImp->replaceItem(JSSVGPODListTraits<PODType>::PODListItem::copy(conversion(args.at(0))), index, ec);
++    return finishSetter<PODType>(exec, ec, wrapper->context(), listImp, item);
+ }
+ 
+ template<typename JSPODListType, typename PODType>
+@@ -172,8 +171,8 @@ static JSC::JSValue removeItem(JSPODListType* wrapper, JSC::ExecState* exec, con
+ 
+     ExceptionCode ec = 0;
+     typename JSSVGPODListTraits<PODType>::PODList* listImp = wrapper->impl();
+-    return finishSetterReadOnlyResult<PODType>(exec, ec, wrapper->context(), listImp,
+-                                               listImp->removeItem(index, ec));
++    PassRefPtr<typename JSSVGPODListTraits<PODType>::PODListItem> item = listImp->removeItem(index, ec);
++    return finishSetterReadOnlyResult<PODType>(exec, ec, wrapper->context(), listImp, item);
+ }
+ 
+ template<typename JSPODListType, typename PODType>
+@@ -182,8 +181,8 @@ static JSC::JSValue appendItem(JSPODListType* wrapper, JSC::ExecState* exec, con
+ {
+     ExceptionCode ec = 0;
+     typename JSSVGPODListTraits<PODType>::PODList* listImp = wrapper->impl();
+-    return finishSetter<PODType>(exec, ec, wrapper->context(), listImp,
+-                                 listImp->appendItem(JSSVGPODListTraits<PODType>::PODListItem::copy(conversion(args.at(0))), ec));
++    PassRefPtr<typename JSSVGPODListTraits<PODType>::PODListItem> item = listImp->appendItem(JSSVGPODListTraits<PODType>::PODListItem::copy(conversion(args.at(0))), ec);
++    return finishSetter<PODType>(exec, ec, wrapper->context(), listImp, item);
+ }
+ 
+ }

@@ -1,0 +1,28 @@
+diff --git a/JavaScriptCore/jsc.cpp b/JavaScriptCore/jsc.cpp
+index 252fb96..e24f81a 100644
+--- a/JavaScriptCore/jsc.cpp
++++ b/JavaScriptCore/jsc.cpp
+@@ -304,6 +304,10 @@ JSValue JSC_HOST_CALL functionQuit(ExecState* exec, JSObject*, JSValue, const Ar
+     // Without this, Visual Studio will complain that this method does not return a value.
+     return jsUndefined();
+ #endif
++
++#if COMPILER(SUNCC)
++    return jsUndefined();
++#endif
+ }
+ 
+ // Use SEH for Release builds only to get rid of the crash report dialog
+diff --git a/JavaScriptCore/wtf/FastMalloc.cpp b/JavaScriptCore/wtf/FastMalloc.cpp
+index c834212..26f2f1c 100644
+--- a/JavaScriptCore/wtf/FastMalloc.cpp
++++ b/JavaScriptCore/wtf/FastMalloc.cpp
+@@ -1426,7 +1426,7 @@ void TCMalloc_PageHeap::init()
+ void* TCMalloc_PageHeap::runScavengerThread(void* context)
+ {
+   static_cast<TCMalloc_PageHeap*>(context)->scavengerThread();
+-#if COMPILER(MSVC)
++#if COMPILER(MSVC) || COMPILER(SUNCC)
+   // Without this, Visual Studio will complain that this method does not return a value.
+   return 0;
+ #endif

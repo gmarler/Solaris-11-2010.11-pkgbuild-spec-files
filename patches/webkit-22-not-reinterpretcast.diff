@@ -1,0 +1,33 @@
+diff -r 6e54e6079035 WebCore/platform/gtk/PopupMenuGtk.cpp
+--- a/WebCore/platform/gtk/PopupMenuGtk.cpp	Mon Jan 25 13:26:39 2010 +0800
++++ b/WebCore/platform/gtk/PopupMenuGtk.cpp	Mon Jan 25 16:24:14 2010 +0800
+@@ -54,7 +54,7 @@
+         m_popup = GTK_MENU(gtk_menu_new());
+         g_signal_connect(m_popup.get(), "unmap", G_CALLBACK(menuUnmapped), this);
+     } else
+-        gtk_container_foreach(GTK_CONTAINER(m_popup.get()), reinterpret_cast<GtkCallback>(menuRemoveItem), this);
++        gtk_container_foreach(GTK_CONTAINER(m_popup.get()), (GtkCallback)(menuRemoveItem), this);
+ 
+     int x, y;
+     gdk_window_get_origin(GTK_WIDGET(view->hostWindow()->platformPageClient())->window, &x, &y);
+@@ -104,7 +104,7 @@
+             // Center vertically the empty popup in the combo box area
+             m_menuPosition.setY(m_menuPosition.y() - rect.height() / 2);
+ 
+-    gtk_menu_popup(m_popup.get(), 0, 0, reinterpret_cast<GtkMenuPositionFunc>(menuPositionFunction), this, 0, gtk_get_current_event_time());
++    gtk_menu_popup(m_popup.get(), 0, 0, (GtkMenuPositionFunc)(menuPositionFunction), this, 0, gtk_get_current_event_time());
+ }
+ 
+ void PopupMenu::hide()
+diff -r 6e54e6079035 WebCore/platform/network/soup/ResourceHandleSoup.cpp
+--- a/WebCore/platform/network/soup/ResourceHandleSoup.cpp	Mon Jan 25 13:26:39 2010 +0800
++++ b/WebCore/platform/network/soup/ResourceHandleSoup.cpp	Mon Jan 25 16:24:29 2010 +0800
+@@ -534,7 +534,7 @@
+                                                                         g_mapped_file_get_length(fileMapping),
+                                                                         fileMapping,
+ #if GLIB_CHECK_VERSION(2, 21, 3)
+-                                                                        reinterpret_cast<GDestroyNotify>(g_mapped_file_unref));
++                                                                        (GDestroyNotify)(g_mapped_file_unref));
+ #else
+                                                                         reinterpret_cast<GDestroyNotify>(g_mapped_file_free));
+ #endif

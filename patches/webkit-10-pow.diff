@@ -1,0 +1,13 @@
+diff --git a/WebCore/platform/graphics/filters/FEComponentTransfer.cpp b/WebCore/platform/graphics/filters/FEComponentTransfer.cpp
+index 1d9cfff..c088868 100644
+--- a/WebCore/platform/graphics/filters/FEComponentTransfer.cpp
++++ b/WebCore/platform/graphics/filters/FEComponentTransfer.cpp
+@@ -140,7 +140,7 @@ static void linear(unsigned char* values, const ComponentTransferFunction& trans
+ static void gamma(unsigned char* values, const ComponentTransferFunction& transferFunction)
+ {
+     for (unsigned i = 0; i < 256; ++i) {
+-        double val = 255.0 * (transferFunction.amplitude * pow((i / 255.0), transferFunction.exponent) + transferFunction.offset);
++        double val = 255.0 * (transferFunction.amplitude * pow(double(i / 255.0), double(transferFunction.exponent)) + transferFunction.offset);
+         val = std::max(0.0, std::min(255.0, val));
+         values[i] = static_cast<unsigned char>(val);
+     }
