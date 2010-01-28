@@ -85,7 +85,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %changelog -n hatari
 * Sun Jan 24 2010 - Milan Jurik
-* conversion for SFE
+- conversion for SFE
 
 * Sat Sep 05 2009 - Thomas Huth
 - Hatari version 1.3.1
