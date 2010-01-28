@@ -1,0 +1,69 @@
+--- pure-ftpd-1.0.27/configure	Mon Nov 30 15:54:00 2009
++++ pure-ftpd-1.0.27-patch/configure	Sun Jan 24 18:00:30 2010
+@@ -11391,13 +11391,13 @@
+ 
+ fi
+ 
+-    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for ber_init in -llber" >&5
+-$as_echo_n "checking for ber_init in -llber... " >&6; }
++    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for ber_init in -llber-2.4" >&5
++$as_echo_n "checking for ber_init in -llber-2.4... " >&6; }
+ if test "${ac_cv_lib_lber_ber_init+set}" = set; then :
+   $as_echo_n "(cached) " >&6
+ else
+   ac_check_lib_save_LIBS=$LIBS
+-LIBS="-llber  $LIBS"
++LIBS="-llber-2.4  $LIBS"
+ cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+ /* end confdefs.h.  */
+ 
+@@ -11432,19 +11432,19 @@
+ #define HAVE_LIBLBER 1
+ _ACEOF
+ 
+-  LIBS="-llber $LIBS"
++  LIBS="-llber-2.4 $LIBS"
+ 
+ else
+-  as_fn_error "liblber is needed for LDAP support" "$LINENO" 5
++  as_fn_error "liblber-2.4 is needed for LDAP support" "$LINENO" 5
+ fi
+ 
+-    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for ldap_init in -lldap" >&5
+-$as_echo_n "checking for ldap_init in -lldap... " >&6; }
++    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for ldap_init in -lldap-2.4" >&5
++$as_echo_n "checking for ldap_init in -lldap-2.4... " >&6; }
+ if test "${ac_cv_lib_ldap_ldap_init+set}" = set; then :
+   $as_echo_n "(cached) " >&6
+ else
+   ac_check_lib_save_LIBS=$LIBS
+-LIBS="-lldap  $LIBS"
++LIBS="-lldap-2.4  $LIBS"
+ cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+ /* end confdefs.h.  */
+ 
+@@ -11479,18 +11479,18 @@
+ #define HAVE_LIBLDAP 1
+ _ACEOF
+ 
+-  LIBS="-lldap $LIBS"
++  LIBS="-lldap-2.4 $LIBS"
+ 
+ else
+-  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Initial check for -lldap failed! May need -lssl -lcrypto" >&5
+-$as_echo "$as_me: WARNING: Initial check for -lldap failed! May need -lssl -lcrypto" >&2;}
+-      { $as_echo "$as_me:${as_lineno-$LINENO}: checking for ldap_bind in -lldap" >&5
+-$as_echo_n "checking for ldap_bind in -lldap... " >&6; }
++  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Initial check for -lldap-2.4 failed! May need -lssl -lcrypto" >&5
++$as_echo "$as_me: WARNING: Initial check for -lldap-2.4 failed! May need -lssl -lcrypto" >&2;}
++      { $as_echo "$as_me:${as_lineno-$LINENO}: checking for ldap_bind in -lldap-2.4" >&5
++$as_echo_n "checking for ldap_bind in -lldap-2.4... " >&6; }
+ if test "${ac_cv_lib_ldap_ldap_bind+set}" = set; then :
+   $as_echo_n "(cached) " >&6
+ else
+   ac_check_lib_save_LIBS=$LIBS
+-LIBS="-lldap -lssl -lcrypto $LIBS"
++LIBS="-lldap-2.4 -lssl -lcrypto $LIBS"
+ cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+ /* end confdefs.h.  */
+ 
