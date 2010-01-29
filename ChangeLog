@@ -1,3 +1,7 @@
+2009-12-29  Brian Cameron  <brian.cameron@sun.com>
+
+	* SFEaudacity.spec: Bump to 1.3.11.
+
 2010-01-29  Simon Jin  <yuntong.jin@sun.com>
 
 	* SFEgnome-eog-plugins.spec:

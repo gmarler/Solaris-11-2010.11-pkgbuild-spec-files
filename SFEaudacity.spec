@@ -20,7 +20,7 @@
 
 Name:                SFEaudacity
 Summary:             Free, Cross-Platform Sound Editor
-Version:             1.3.10
+Version:             1.3.11
 Source:              %{sf_download}/audacity/%{src_name}-minsrc-%{version}.tar.bz2
 # bug 1910685/
 Patch1:              audacity-01-fixsed.diff
@@ -92,7 +92,7 @@ SUNW_BaseDir:            %{_basedir}
 Requires:                %{name}
 
 %prep
-%setup -q -n %{src_name}-src-%{version}
+%setup -q -n %{src_name}-src-%{version}-beta
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
@@ -244,6 +244,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Fri Jan 29 2010 - Brian Cameron
+- Bump to 1.3.11
 * Sun Jan 17 2010 - Milan Jurik
 - membar for Sun Studio build
 * Tue Dec 22 2009 - brian.cameron@sun.com
