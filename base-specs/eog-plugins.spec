@@ -66,7 +66,9 @@ CFLAGS="$RPM_OPT_FLAGS -g"			\
 	    --sysconfdir=%{_sysconfdir} \
 	    --libexecdir=%{_libexecdir} \
 	    --disable-scrollkeeper	\
-            --without-lcms
+            --without-lcms              \
+            --with-plugins=champlain,exif-display,fit-to-width,pythonconsole,slideshowshuffle
+
 make -j $CPUS
 
 %install
@@ -78,7 +80,6 @@ unset GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL
 
 %clean
 rm -rf $RPM_BUILD_ROOT
-
 
 %changelog
 % Tue Jan 19 2010 - yuntong.jin@sun.com

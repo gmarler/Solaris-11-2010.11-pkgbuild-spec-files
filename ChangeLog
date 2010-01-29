@@ -1,3 +1,9 @@
+2010-01-29  Simon Jin  <yuntong.jin@sun.com>
+
+	* SFEgnome-eog-plugins.spec:
+	* base-specs/eog-plugins.spec:
+          Remove .la .a file from package, disable postr plugins	
+
 2010-01-28  Milan Jurik <sfnet@xylab.cz>
 
 	* SFEpure-ftpd.spec: initial import to SFE

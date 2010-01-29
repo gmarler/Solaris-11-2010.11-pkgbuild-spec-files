@@ -69,6 +69,9 @@ rm -rf $RPM_BUILD_ROOT
 
 %{?pkgbuild_postprocess: %pkgbuild_postprocess -v -c "%{version}:%{jds_version}:%{name}(eog_plugins):$RPM_ARCH:%(date +%%Y-%%m-%%d):%{support_level}" $RPM_BUILD_ROOT}
 
+find $RPM_BUILD_ROOT -type f -name "*.la" -exec rm -f {} ';'
+find $RPM_BUILD_ROOT -type f -name "*.a"  -exec rm -f {} ';
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -87,8 +90,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
-% Fri Jan 22 2010 - yuntong.jin@sun.com
+* Fri Jan 29 2010 - yuntong.jin@sun.com
+- Remove .la .a file from package, disable postr plugins
+* Fri Jan 22 2010 - yuntong.jin@sun.com
 - Update dependency,license
-% Tue Jan 19 2010 - yuntong.jin@sun.com
+* Tue Jan 19 2010 - yuntong.jin@sun.com
 - Init 
 
