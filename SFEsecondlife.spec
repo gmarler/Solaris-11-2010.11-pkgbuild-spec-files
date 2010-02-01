@@ -14,6 +14,7 @@ Group:                   Libraries/Multimedia
 Version:                 1.23.4
 Vendor:                  Sun Microsystems, Inc.
 Summary:                 SecondLife Client
+URL:			 http://wiki.secondlife.com/wiki/Source_archive
 Source:                  http://secondlife.com/developers/opensource/downloads/2009/06/slviewer-src-viewer-%{tarball_version}.tar.gz
 Source2:                 http://secondlife.com/developers/opensource/downloads/2009/06/slviewer-artwork-viewer-%{tarball_version}.zip
 Source3:                 http://secondlife.com/developers/opensource/downloads/2009/06/slviewer-linux-libs-viewer-%{tarball_version}.tar.gz
@@ -106,8 +107,13 @@ tar -cf - app_settings | (cd $RPM_BUILD_ROOT/%{_libdir}/secondlife; tar xf -)
 tar -cf - character | (cd $RPM_BUILD_ROOT/%{_libdir}/secondlife; tar xf -)
 tar -cf - fonts | (cd $RPM_BUILD_ROOT/%{_libdir}/secondlife; tar xf -)
 tar -cf - skins | (cd $RPM_BUILD_ROOT/%{_libdir}/secondlife; tar xf -)
+
 cd ../..
 cp scripts/messages/message_template.msg $RPM_BUILD_ROOT/%{_libdir}/secondlife/app_settings
+cp indra/newview/featuretable.txt $RPM_BUILD_ROOT/%{_libdir}/secondlife
+cp indra/newview/featuretable_solaris.txt $RPM_BUILD_ROOT/%{_libdir}/secondlife
+cp indra/newview/gpu_table.txt $RPM_BUILD_ROOT/%{_libdir}/secondlife
+
 cp %{SOURCE4} $RPM_BUILD_ROOT/%{_bindir}
 
 %{?pkgbuild_postprocess: %pkgbuild_postprocess -v -c "%{version}:%{jds_version}:%{name}:$RPM_ARCH:%(date +%%Y-%%m-%%d):%{support_level}" $RPM_BUILD_ROOT}
