@@ -13,6 +13,8 @@
 %define        patchlevel 0
 %define        ver_boost  %{major}_%{minor}_%{patchlevel}
 
+%{!?boost_with_mt: %define boost_with_mt 0}
+
 Name:         boost
 License:      Boost License Version
 Group:        System/Libraries
@@ -22,15 +24,12 @@ Distribution: Java Desktop System
 Vendor:       Sun Microsystems, Inc.
 Summary:      boost - free peer-reviewed portable C++ source libraries
 Source:       %{sf_download}/boost/boost_%{ver_boost}.tar.bz2
-
 # date:2007-08-13 owner:trisk 
 Patch1:       boost-01-studio.diff
-
 # date:2007-08-13 owner:laca
 Patch2:       boost-02-gcc34.diff
-
 # date:2009-11-04 owner:sobi
-Patch4:       boost-04-fixthread.diff
+Patch4:	      boost-04-fixthread.diff
 
 URL:          http://www.boost.org/
 BuildRoot:    %{_tmppath}/%{name}-%{version}-build
@@ -60,7 +59,6 @@ export CXXFLAGS="%cxx_optflags -library=stlport4 -staticlib=stlport4 -norunpath 
 export LDFLAGS="%_ldflags -library=stlport4 -staticlib=stlport4"
 %endif
 
-#PYTHON_VERSION=`python -c "import sys; print (\"%%d.%%d\" %% (sys.version_info[0], sys.version_info[1]))"`
 PYTHON_VERSION=`python -c 'import platform; print platform.python_version()' | cut -d '.' -f1-2`
 PYTHON_ROOT=`python -c "import sys; print sys.prefix"`
 
@@ -82,20 +80,35 @@ EOF
 cd "tools/jam/src" && ./build.sh "$TOOLSET"
 cd $BOOST_ROOT
 
+%if %boost_with_mt
+BOOST_BJAM_LAYOUT="--layout=tagged"
+%else
+BOOST_BJAM_LAYOUT="--layout=system"
+%endif
+
+# Do not build with ICU if building with GCC since ICU is built with SunStudio.
+%if %cc_is_gcc
+BOOST_BJAM_ICU_PATH=""
+%else
+BOOST_BJAM_ICU_PATH="-sICU_PATH=/usr"
+%endif
+
 # Build Boost
 BJAM=`find tools/jam/src -name bjam -a -type f`
-$BJAM --v2 -j$CPUS -sBUILD="release <threading>single/multi" -sICU_PATH=/usr \
-  --layout=system --user-config=user-config.jam release stage
-
+$BJAM --v2 -j$CPUS -sBUILD="release <threading>single/multi" \
+  $BOOST_BJAM_ICU_PATH $BOOST_BJAM_LAYOUT --user-config=user-config.jam \
+  release stage
 
 %install
-
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-
 %changelog
+* Fri Jan 29 2010 - Brian Cameron <brian.cameron@sun.com>
+- Add boost-with-mt option to build the mt version of the libraries.
+  Do not build with ICU support if building the GCC version, otherwise the
+  boost regex library is not usable.
 * Wed Dec 02 2009 - Albert Lee <trisk@opensolaris.org>
 - Add patch4 from upstream for #2602
 - Update URL

@@ -10,7 +10,7 @@
 
 Name:                    SFEbdb
 Summary:                 Berkeley DB
-Version:                 4.7.25
+Version:                 4.8.26
 #Source:                  http://download-west.oracle.com/berkeley-db/db-%{version}.tar.gz
 Source:			http://download.oracle.com/berkeley-db/db-%{version}.tar.gz
 URL:                     http://www.oracle.com/technology/software/products/berkeley-db/index.html
@@ -35,7 +35,6 @@ cd build_unix
         --mandir=%{_mandir}                 \
         --datadir=%{_datadir}               \
         --infodir=%{_datadir}/info          \
-        --enable-rpc			    \
 	--enable-compat185		    \
         --disable-static                    \
         --enable-shared
@@ -60,16 +59,17 @@ rm -rf $RPM_BUILD_ROOT
 %defattr (-, root, bin)
 %dir %attr (0755, root, bin) %{_bindir}
 %{_bindir}/db*
-%{_bindir}/be*
 %dir %attr (0755, root, bin) %{_libdir}
 %{_libdir}/libdb*
 %dir %attr (0755, root, bin) %{_includedir}
 %{_includedir}/*
 %dir %attr (0755, root, sys) %{_datadir}
-%dir %attr (0755, root, other) %{_datadir}/doc
+%dir %attr (0755, root, bin) %{_datadir}/doc
 %{_datadir}/doc/*
 
 %changelog
+* Fri Jan 29 2010 - brian.cameron@sun.com
+- Bump to 4.8.26.
 * Thr Apr 30 2009 - Thomas Wagner
 - bump version to 4.7.25
 - use usr-gnu.inc to avoid conflicts with SUNWbdb (which unfortunately doesn't provide db.h)

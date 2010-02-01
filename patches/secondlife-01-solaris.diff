@@ -1,0 +1,2230 @@
+--- linden/indra/CMakeLists.txt-orig	2010-01-29 11:09:37.792624852 -0600
++++ linden/indra/CMakeLists.txt	2010-01-29 11:14:17.068124489 -0600
+@@ -82,8 +82,8 @@ if (VIEWER)
+     # add_dependencies(viewer windows-updater windows-setup windows-crash-logger)
+     add_dependencies(viewer windows-updater windows-crash-logger)
+   elseif (SOLARIS)
+-    add_subdirectory(solaris_crash_logger)
+-    add_dependencies(viewer solaris-crash-logger)
++    #add_subdirectory(solaris_crash_logger)
++    #add_dependencies(viewer solaris-crash-logger)
+   endif (LINUX)
+ 
+   add_subdirectory(${VIEWER_PREFIX}newview)
+--- linden/indra/llrender/llglheaders.h-orig	2010-01-29 11:10:20.876222615 -0600
++++ linden/indra/llrender/llglheaders.h	2010-01-29 11:14:17.083107375 -0600
+@@ -237,6 +237,14 @@ extern PFNGLFRAMEBUFFERRENDERBUFFEREXTPR
+ extern PFNGLGETFRAMEBUFFERATTACHMENTPARAMETERIVEXTPROC glGetFramebufferAttachmentParameterivEXT;
+ extern PFNGLGENERATEMIPMAPEXTPROC glGenerateMipmapEXT;
+ 
++// New functions we need to import for 1.23
++extern PFNGLCLIENTACTIVETEXTUREARBPROC glClientActiveTextureARB;
++extern PFNGLDRAWRANGEELEMENTSPROC glDrawRangeElements;
++extern PFNGLACTIVETEXTUREARBPROC glActiveTextureARB;
++extern PFNGLDRAWBUFFERSARBPROC glDrawBuffersARB;
++extern PFNGLBLITFRAMEBUFFEREXTPROC glBlitFramebufferEXT;
++extern PFNGLRENDERBUFFERSTORAGEMULTISAMPLEEXTPROC glRenderbufferStorageMultisampleEXT;
++
+ #elif LL_MESA
+ //----------------------------------------------------------------------------
+ // MESA headers
+--- linden/indra/develop.py-orig	2010-01-29 11:09:46.037099557 -0600
++++ linden/indra/develop.py	2010-01-29 11:14:17.068714818 -0600
+@@ -125,6 +125,7 @@ class PlatformSetup(object):
+         #if simple:
+         #    return 'cmake %(opts)s %(dir)r' % args
+         return ('cmake -DCMAKE_BUILD_TYPE:STRING=%(type)s '
++                '-DLL_SOLARIS=1'
+                 '-DSTANDALONE:BOOL=%(standalone)s '
+                 '-DUNATTENDED:BOOL=%(unattended)s '
+                 '-G %(generator)r %(opts)s %(dir)r' % args)
+@@ -250,6 +251,34 @@ class UnixSetup(PlatformSetup):
+             raise CommandError('the command %r %s' %
+                                (name, event))
+ 
++    def run_build(self, opts, targets):
++        if targets:
++            targets = ' '.join(targets)
++        else:
++            targets = 'all'
++
++        for d in self.build_dirs():
++            cmd = 'make -C %r %s %s' % (d, ' '.join(opts), targets)
++            print 'Running %r' % cmd
++            self.run(cmd)
++
++class SolarisSetup(UnixSetup):
++    '''Solaris build instructions.'''
++
++    def os(self):
++        return 'solaris'
++
++    def run_build(self, opts, targets):
++        if targets:
++            targets = ' '.join(targets)
++        else:
++            targets = 'all'
++        numprocs = len(os.popen('/usr/sbin/psrinfo').readlines())
++        
++        for d in self.build_dirs():
++            cmd = 'make -j %d -C %r %s %s' % (numprocs, d, ' '.join(opts), targets)
++            print 'Running %r' % cmd
++            self.run(cmd)
+ 
+ class LinuxSetup(UnixSetup):
+     def __init__(self):
+@@ -633,7 +662,8 @@ setup_platform = {
+     'darwin': DarwinSetup,
+     'linux2': LinuxSetup,
+     'win32' : WindowsSetup,
+-    'cygwin' : CygwinSetup
++    'cygwin' : CygwinSetup,
++    'sunos5' : SolarisSetup
+     }
+ 
+ 
+--- linden/indra/cmake/FindBerkeleyDB.cmake-orig	2010-01-29 11:08:35.595380962 -0600
++++ linden/indra/cmake/FindBerkeleyDB.cmake	2010-01-29 11:14:17.066472366 -0600
+@@ -14,12 +14,13 @@ FIND_PATH(DB_INCLUDE_DIR db.h
+ /usr/local/include
+ /usr/include/db4
+ /usr/include
++/usr/gnu/include
+ )
+ 
+ SET(DB_NAMES ${DB_NAMES} db)
+ FIND_LIBRARY(DB_LIBRARY
+   NAMES ${DB_NAMES}
+-  PATHS /usr/lib /usr/local/lib
++  PATHS /usr/lib /usr/local/lib /usr/gnu/lib
+   )
+ 
+ IF (DB_LIBRARY AND DB_INCLUDE_DIR)
+--- linden/indra/cmake/OpenSSL.cmake-orig	2010-01-29 11:08:57.850769307 -0600
++++ linden/indra/cmake/OpenSSL.cmake	2010-01-29 11:14:17.067085760 -0600
+@@ -16,8 +16,8 @@ else (STANDALONE)
+   set(OPENSSL_INCLUDE_DIRS ${LIBS_PREBUILT_DIR}/${LL_ARCH_DIR}/include)
+ endif (STANDALONE)
+ 
+-if (LINUX)
++if (LINUX OR SOLARIS)
+   set(CRYPTO_LIBRARIES crypto)
+ elseif (DARWIN)
+   set(CRYPTO_LIBRARIES llcrypto)
+-endif (LINUX)
++endif (LINUX OR SOLARIS)
+--- linden/indra/cmake/UI.cmake-orig	2010-01-29 11:09:05.423337850 -0600
++++ linden/indra/cmake/UI.cmake	2010-01-29 11:14:17.067504644 -0600
+@@ -4,7 +4,7 @@ include(Prebuilt)
+ if (STANDALONE)
+   include(FindPkgConfig)
+     
+-  if (LINUX)
++  if (LINUX OR SOLARIS)
+     set(PKGCONFIG_PACKAGES
+         atk
+         cairo
+@@ -21,7 +21,7 @@ if (STANDALONE)
+         pangoxft
+         sdl
+         )
+-  endif (LINUX)
++  endif (LINUX OR SOLARIS)
+ 
+   foreach(pkg ${PKGCONFIG_PACKAGES})
+     pkg_check_modules(${pkg} REQUIRED ${pkg})
+@@ -32,7 +32,7 @@ if (STANDALONE)
+   endforeach(pkg)
+ else (STANDALONE)
+   use_prebuilt_binary(gtk-atk-pango-glib)
+-  if (LINUX)
++  if (LINUX OR SOLARIS)
+     set(UI_LIBRARIES
+         atk-1.0
+         gdk-x11-2.0
+@@ -48,7 +48,7 @@ else (STANDALONE)
+         pangox-1.0
+         pangoxft-1.0
+         )
+-  endif (LINUX)
++  endif (LINUX OR SOLARIS)
+ 
+   include_directories (
+       ${LIBS_PREBUILT_DIR}/${LL_ARCH_DIR}/include
+@@ -59,6 +59,6 @@ else (STANDALONE)
+   endforeach(include)
+ endif (STANDALONE)
+ 
+-if (LINUX)
++if (LINUX OR SOLARIS)
+   add_definitions(-DLL_GTK=1 -DLL_X11=1)
+-endif (LINUX)
++endif (LINUX OR SOLARIS)
+--- linden/indra/cmake/00-Common.cmake-orig	2010-01-29 11:07:55.578903634 -0600
++++ linden/indra/cmake/00-Common.cmake	2010-01-29 11:14:17.065779932 -0600
+@@ -169,6 +169,30 @@ if (LINUX)
+ endif (LINUX)
+ 
+ 
++if (SOLARIS)
++  add_definitions(
++      -DLL_SOLARIS=1
++      -D_REENTRANT
++      -fexceptions
++      -fno-math-errno
++      -fno-strict-aliasing
++      -fsigned-char
++      -g
++      )
++
++  if (VIEWER)
++    add_definitions(-DAPPID=secondlife)
++    # don't catch SIGCHLD in our base application class for the viewer - some of our 3rd party libs may need their *own* SIGCHLD handler to work.  Sigh!  The viewer doesn't need to catch SIGCHLD anyway.
++    add_definitions(-DLL_IGNORE_SIGCHLD)
++  endif (VIEWER)
++
++#  include_directories(/usr/apr/1.3/include /usr/local/include/boost-1_39)
++#  link_directories(/usr/apr/1.3/lib)
++
++  set(CMAKE_CXX_FLAGS_DEBUG "-fno-inline ${CMAKE_CXX_FLAGS_DEBUG}")
++  set(CMAKE_CXX_FLAGS_RELEASE "-O2 ${CMAKE_CXX_FLAGS_RELEASE}")
++endif (SOLARIS)
++
+ if (DARWIN)
+   add_definitions(-DLL_DARWIN=1)
+   set(CMAKE_CXX_LINK_FLAGS "-Wl,-headerpad_max_install_names,-search_paths_first")
+--- linden/indra/cmake/Variables.cmake-orig	2010-01-29 11:09:19.238711718 -0600
++++ linden/indra/cmake/Variables.cmake	2010-01-29 11:14:17.067813869 -0600
+@@ -55,6 +55,14 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "Linux"
+   set(LL_ARCH_DIR ${ARCH}-linux)
+ endif (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+ 
++if (${CMAKE_SYSTEM_NAME} MATCHES "SunOS")
++  set(SOLARIS ON BOOl FORCE)
++  execute_process(COMMAND uname -p
++                  OUTPUT_VARIABLE ARCH OUTPUT_STRIP_TRAILING_WHITESPACE)
++  set(LL_ARCH ${ARCH}_solaris)
++  set(LL_ARCH_DIR ${ARCH}-solaris)
++endif (${CMAKE_SYSTEM_NAME} MATCHES "SunOS")
++
+ if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+   set(DARWIN 1)
+   # set this dynamically from the build system now -
+@@ -82,7 +90,7 @@ set(VIEWER ON CACHE BOOL "Build Second L
+ set(VIEWER_CHANNEL "Developer" CACHE STRING "Viewer Channel Name")
+ set(VIEWER_LOGIN_CHANNEL ${VIEWER_CHANNEL} CACHE STRING "Fake login channel for A/B Testing")
+ 
+-set(STANDALONE OFF CACHE BOOL "Do not use Linden-supplied prebuilt libraries.")
++set(STANDALONE ON CACHE BOOL "Do not use Linden-supplied prebuilt libraries.")
+ 
+ if (NOT STANDALONE AND EXISTS ${CMAKE_SOURCE_DIR}/llphysics)
+     set(SERVER ON CACHE BOOL "Build Second Life server software.")
+--- linden/indra/cmake/Linking.cmake-orig	2010-01-29 11:08:44.421209512 -0600
++++ linden/indra/cmake/Linking.cmake	2010-01-29 11:14:17.066788374 -0600
+@@ -30,6 +30,10 @@ else (LINUX)
+   set(PTHREAD_LIBRARY "")
+ endif (LINUX)
+ 
++if (SOLARIS)
++  set(SOLARIS_LIBRARIES kstat)
++endif (SOLARIS)
++
+ if (WINDOWS)
+   set(WINDOWS_LIBRARIES
+       advapi32
+@@ -47,4 +51,4 @@ else (WINDOWS)
+   set(WINDOWS_LIBRARIES "")
+ endif (WINDOWS)
+     
+-mark_as_advanced(DL_LIBRARY PTHREAD_LIBRARY WINDOWS_LIBRARIES)
++mark_as_advanced(DL_LIBRARY SOLARIS_LIBRARIES PTHREAD_LIBRARY WINDOWS_LIBRARIES)
+--- linden/indra/cmake/FindAPR.cmake-orig	2010-01-29 11:08:17.314175147 -0600
++++ linden/indra/cmake/FindAPR.cmake	2010-01-29 11:14:17.066164093 -0600
+@@ -16,12 +16,13 @@ FIND_PATH(APR_INCLUDE_DIR apr.h
+ /usr/local/include/apr-1.0
+ /usr/include/apr-1
+ /usr/include/apr-1.0
++/usr/apr/1.3/include
+ )
+ 
+ SET(APR_NAMES ${APR_NAMES} apr-1)
+ FIND_LIBRARY(APR_LIBRARY
+   NAMES ${APR_NAMES}
+-  PATHS /usr/lib /usr/local/lib
++  PATHS /usr/lib /usr/local/lib /usr/apr/1.3/lib
+   )
+ 
+ IF (APR_LIBRARY AND APR_INCLUDE_DIR)
+@@ -58,12 +59,13 @@ FIND_PATH(APRUTIL_INCLUDE_DIR apu.h
+ /usr/local/include/apr-1.0
+ /usr/include/apr-1
+ /usr/include/apr-1.0
++/usr/apr-util/1.3/include
+ )
+ 
+ SET(APRUTIL_NAMES ${APRUTIL_NAMES} aprutil-1)
+ FIND_LIBRARY(APRUTIL_LIBRARY
+   NAMES ${APRUTIL_NAMES}
+-  PATHS /usr/lib /usr/local/lib
++  PATHS /usr/lib /usr/local/lib /usr/apr-util/1.3/lib
+   )
+ 
+ IF (APRUTIL_LIBRARY AND APRUTIL_INCLUDE_DIR)
+--- linden/indra/newview/CMakeLists.txt-orig	2010-01-29 11:10:50.042671388 -0600
++++ linden/indra/newview/CMakeLists.txt	2010-01-29 11:14:17.084572523 -0600
+@@ -909,6 +909,15 @@ if (LINUX)
+         )
+ endif (LINUX)
+ 
++if (SOLARIS)
++    LIST(APPEND viewer_SOURCE_FILES llappviewerlinux.cpp)
++    LIST(APPEND viewer_SOURCE_FILES llappviewerlinux_api_dbus.cpp)
++
++    set(viewer_LIBRARIES
++        Xinerama
++        )
++endif (SOLARIS)
++
+ if (WINDOWS)
+     list(APPEND viewer_SOURCE_FILES
+          llappviewerwin32.cpp
+@@ -1446,6 +1455,7 @@ target_link_libraries(${VIEWER_BINARY_NA
+     ${UI_LIBRARIES}
+     ${QUICKTIME_LIBRARY}
+     ${WINDOWS_LIBRARIES}
++    ${SOLARIS_LIBRARIES}
+     ${XMLRPCEPI_LIBRARIES}
+     ${ELFIO_LIBRARIES}
+     )
+@@ -1456,10 +1466,10 @@ set(ARTWORK_DIR ${CMAKE_CURRENT_SOURCE_D
+     "Path to artwork files.")
+ 
+ 
+-if (LINUX)
++if (LINUX OR SOLARIS)
+   add_custom_command(
+       OUTPUT secondlife-stripped
+-      COMMAND strip
++      COMMAND /usr/gnu/bin/strip
+       ARGS --strip-debug -o secondlife-stripped ${VIEWER_BINARY_NAME}
+       DEPENDS ${VIEWER_BINARY_NAME}
+       )
+@@ -1488,7 +1498,7 @@ if (LINUX)
+     add_custom_target(package ALL DEPENDS ${product}.tar.bz2)
+     add_dependencies(package linux-crash-logger-strip-target)
+   endif (NOT INSTALL)
+-endif (LINUX)
++endif (LINUX OR SOLARIS)
+ 
+ if (DARWIN)
+   set(product "Second Life")
+--- linden/indra/newview/viewer_manifest.py-orig	2010-01-29 11:11:05.053024923 -0600
++++ linden/indra/newview/viewer_manifest.py	2010-01-29 11:14:17.085731156 -0600
+@@ -580,6 +580,126 @@ class DarwinManifest(ViewerManifest):
+         self.package_file = finalname
+         self.remove(sparsename)
+ 
++class SolarisManifest(ViewerManifest):
++    def construct(self):
++#        super(LinuxManifest, self).construct()
++        self.path("secondlife-stripped","bin/do-not-directly-run-secondlife-bin")
++        self.path("licenses-linux.txt","licenses.txt")
++        self.path("res/ll_icon.png","secondlife_icon.png")
++        if self.prefix("linux_tools", dst=""):
++            self.path("client-readme.txt","README-linux.txt")
++            self.path("client-readme-voice.txt","README-linux-voice.txt")
++            self.path("client-readme-joystick.txt","README-linux-joystick.txt")
++            self.path("wrapper.sh","secondlife")
++            self.path("handle_secondlifeprotocol.sh")
++            self.path("register_secondlifeprotocol.sh")
++            self.end_prefix("linux_tools")
++
++        # Create an appropriate gridargs.dat for this package, denoting required grid.
++        self.put_in_file(self.flags_list(), 'gridargs.dat')
++
++
++    def package_finish(self):
++        if 'installer_name' in self.args:
++            installer_name = self.args['installer_name']
++        else:
++            installer_name_components = ['SecondLife_', self.args.get('arch')]
++            installer_name_components.extend(self.args['version'])
++            installer_name = "_".join(installer_name_components)
++            if self.default_channel():
++                if not self.default_grid():
++                    installer_name += '_' + self.args['grid'].upper()
++            else:
++                installer_name += '_' + self.channel_oneword().upper()
++
++        # Fix access permissions
++        self.run_command("""
++                find %(dst)s -type d | /usr/gnu/bin/xargs --no-run-if-empty chmod 755;
++                find %(dst)s -type f -perm 0700 | /usr/gnu/bin/xargs --no-run-if-empty chmod 0755;
++                find %(dst)s -type f -perm 0500 | /usr/gnu/bin/xargs --no-run-if-empty chmod 0555;
++                find %(dst)s -type f -perm 0600 | /usr/gnu/bin/xargs --no-run-if-empty chmod 0644;
++                find %(dst)s -type f -perm 0400 | /usr/gnu/bin/xargs --no-run-if-empty chmod 0444;
++                true""" %  {'dst':self.get_dst_prefix() })
++        self.package_file = installer_name + '.tar.bz2'
++
++        # temporarily move directory tree so that it has the right
++        # name in the tarfile
++        self.run_command("mv %(dst)s %(inst)s" % {
++            'dst': self.get_dst_prefix(),
++            'inst': self.build_path_of(installer_name)})
++        try:
++            # --numeric-owner hides the username of the builder for
++            # security etc.
++            self.run_command('/usr/gnu/bin/tar -C %(dir)s --numeric-owner -cjf '
++                             '%(inst_path)s.tar.bz2 %(inst_name)s' % {
++                'dir': self.get_build_prefix(),
++                'inst_name': installer_name,
++                'inst_path':self.build_path_of(installer_name)})
++        finally:
++            self.run_command("mv %(inst)s %(dst)s" % {
++                'dst': self.get_dst_prefix(),
++                'inst': self.build_path_of(installer_name)})
++
++class Solaris_i386Manifest(ViewerManifest):
++    def construct(self):
++#        super(LinuxManifest, self).construct()
++        self.path("secondlife-stripped","bin/do-not-directly-run-secondlife-bin")
++        self.path("licenses-linux.txt","licenses.txt")
++        self.path("res/ll_icon.png","secondlife_icon.png")
++        if self.prefix("linux_tools", dst=""):
++            self.path("client-readme.txt","README-linux.txt")
++            self.path("client-readme-voice.txt","README-linux-voice.txt")
++            self.path("client-readme-joystick.txt","README-linux-joystick.txt")
++            self.path("wrapper.sh","secondlife")
++            self.path("handle_secondlifeprotocol.sh")
++            self.path("register_secondlifeprotocol.sh")
++            self.end_prefix("linux_tools")
++
++        # Create an appropriate gridargs.dat for this package, denoting required grid.
++        self.put_in_file(self.flags_list(), 'gridargs.dat')
++
++
++    def package_finish(self):
++        if 'installer_name' in self.args:
++            installer_name = self.args['installer_name']
++        else:
++            installer_name_components = ['SecondLife_', self.args.get('arch')]
++            installer_name_components.extend(self.args['version'])
++            installer_name = "_".join(installer_name_components)
++            if self.default_channel():
++                if not self.default_grid():
++                    installer_name += '_' + self.args['grid'].upper()
++            else:
++                installer_name += '_' + self.channel_oneword().upper()
++
++        # Fix access permissions
++        self.run_command("""
++                find %(dst)s -type d | /usr/gnu/bin/xargs --no-run-if-empty chmod 755;
++                find %(dst)s -type f -perm 0700 | /usr/gnu/bin/xargs --no-run-if-empty chmod 0755;
++                find %(dst)s -type f -perm 0500 | /usr/gnu/bin/xargs --no-run-if-empty chmod 0555;
++                find %(dst)s -type f -perm 0600 | /usr/gnu/bin/xargs --no-run-if-empty chmod 0644;
++                find %(dst)s -type f -perm 0400 | /usr/gnu/bin/xargs --no-run-if-empty chmod 0444;
++                true""" %  {'dst':self.get_dst_prefix() })
++        self.package_file = installer_name + '.tar.bz2'
++
++        # temporarily move directory tree so that it has the right
++        # name in the tarfile
++        self.run_command("mv %(dst)s %(inst)s" % {
++            'dst': self.get_dst_prefix(),
++            'inst': self.build_path_of(installer_name)})
++        try:
++            # --numeric-owner hides the username of the builder for
++            # security etc.
++            self.run_command('/usr/gnu/bin/tar -C %(dir)s --numeric-owner -cjf '
++                             '%(inst_path)s.tar.bz2 %(inst_name)s' % {
++                'dir': self.get_build_prefix(),
++                'inst_name': installer_name,
++                'inst_path':self.build_path_of(installer_name)})
++        finally:
++            self.run_command("mv %(inst)s %(dst)s" % {
++                'dst': self.get_dst_prefix(),
++                'inst': self.build_path_of(installer_name)})
++
+ class LinuxManifest(ViewerManifest):
+     def construct(self):
+         super(LinuxManifest, self).construct()
+@@ -613,11 +733,11 @@ class LinuxManifest(ViewerManifest):
+ 
+         # Fix access permissions
+         self.run_command("""
+-                find %(dst)s -type d | xargs --no-run-if-empty chmod 755;
+-                find %(dst)s -type f -perm 0700 | xargs --no-run-if-empty chmod 0755;
+-                find %(dst)s -type f -perm 0500 | xargs --no-run-if-empty chmod 0555;
+-                find %(dst)s -type f -perm 0600 | xargs --no-run-if-empty chmod 0644;
+-                find %(dst)s -type f -perm 0400 | xargs --no-run-if-empty chmod 0444;
++                find %(dst)s -type d | /usr/gnu/bin/xargs --no-run-if-empty chmod 755;
++                find %(dst)s -type f -perm 0700 | /usr/gnu/bin/xargs --no-run-if-empty chmod 0755;
++                find %(dst)s -type f -perm 0500 | /usr/gnu/bin/xargs --no-run-if-empty chmod 0555;
++                find %(dst)s -type f -perm 0600 | /usr/gnu/bin/xargs --no-run-if-empty chmod 0644;
++                find %(dst)s -type f -perm 0400 | /usr/gnu/bin/xargs --no-run-if-empty chmod 0444;
+                 true""" %  {'dst':self.get_dst_prefix() })
+         self.package_file = installer_name + '.tar.bz2'
+ 
+@@ -629,7 +749,7 @@ class LinuxManifest(ViewerManifest):
+         try:
+             # --numeric-owner hides the username of the builder for
+             # security etc.
+-            self.run_command('tar -C %(dir)s --numeric-owner -cjf '
++            self.run_command('/usr/gnu/bin/tar -C %(dir)s --numeric-owner -cjf '
+                              '%(inst_path)s.tar.bz2 %(inst_name)s' % {
+                 'dir': self.get_build_prefix(),
+                 'inst_name': installer_name,
+--- linden/indra/llvfs/CMakeLists.txt-orig	2010-01-29 11:10:32.894768126 -0600
++++ linden/indra/llvfs/CMakeLists.txt	2010-01-29 11:14:17.083390931 -0600
+@@ -47,6 +47,18 @@ if (LINUX)
+   endif (VIEWER AND INSTALL)
+ endif (LINUX)
+ 
++if (SOLARIS)
++  LIST(APPEND llvfs_SOURCE_FILES lldir_solaris.cpp)
++  LIST(APPEND llvfs_HEADER_FILES lldir_solaris.h)
++
++  if (VIEWER AND INSTALL)
++    set_source_files_properties(lldir_solaris.cpp
++                                PROPERTIES COMPILE_FLAGS
++                                "-DAPP_RO_DATA_DIR=\\\"${APP_SHARE_DIR}\\\""
++                                )
++  endif (VIEWER AND INSTALL)
++endif (SOLARIS)
++
+ if (WINDOWS)
+   LIST(APPEND llvfs_SOURCE_FILES lldir_win32.cpp)
+   LIST(APPEND llvfs_HEADER_FILES lldir_win32.h)
+--- linden/indra/llwindow/CMakeLists.txt-orig	2010-01-29 11:10:41.592412053 -0600
++++ linden/indra/llwindow/CMakeLists.txt	2010-01-29 11:14:17.083744714 -0600
+@@ -75,7 +75,7 @@ if (DARWIN)
+       )
+ endif (DARWIN)
+ 
+-if (LINUX)
++if (LINUX OR SOLARIS)
+   list(APPEND viewer_SOURCE_FILES 
+        llkeyboardsdl.cpp 
+        llwindowsdl.cpp
+@@ -84,7 +84,7 @@ if (LINUX)
+        llkeyboardsdl.h
+        llwindowsdl.h
+        )
+-endif (LINUX)
++endif (LINUX OR SOLARIS)
+ 
+ if (WINDOWS)
+   list(APPEND llwindow_SOURCE_FILES
+@@ -99,15 +99,6 @@ if (WINDOWS)
+        )
+ endif (WINDOWS)
+ 
+-if (SOLARIS)
+-  list(APPEND llwindow_SOURCE_FILES
+-       llwindowsolaris.cpp
+-       )
+-  list(APPEND llwindow_HEADER_FILES
+-       llwindowsolaris.h
+-       )
+-endif (SOLARIS)
+-
+ set_source_files_properties(${llwindow_HEADER_FILES}
+                             PROPERTIES HEADER_FILE_ONLY TRUE)
+ 
+--- linden/indra/lib/python/indra/base/lluuid.py-orig	2010-01-29 11:10:05.817408166 -0600
++++ linden/indra/lib/python/indra/base/lluuid.py	2010-01-29 11:14:17.069104814 -0600
+@@ -26,7 +26,7 @@ THE SOFTWARE.
+ $/LicenseInfo$
+ """
+ 
+-import md5, random, socket, string, time, re
++import hashlib, random, socket, string, time, re
+ import uuid
+ 
+ def _int2binstr(i,l):
+--- linden/scripts/install.py-orig	2010-01-29 11:11:15.019904165 -0600
++++ linden/scripts/install.py	2010-01-29 11:14:17.086602680 -0600
+@@ -64,7 +64,7 @@ def add_indra_lib_path():
+ base_dir = add_indra_lib_path()
+ 
+ import copy
+-import md5
++import hashlib
+ import optparse
+ import os
+ import platform
+@@ -75,7 +75,7 @@ import tempfile
+ import urllib2
+ import urlparse
+ 
+-from sets import Set as set, ImmutableSet as frozenset
++#from sets import Set as set, ImmutableSet as frozenset
+ 
+ from indra.base import llsd
+ from indra.util import helpformatter
+@@ -771,7 +771,7 @@ def _get_platform():
+         'linux2': 'linux',
+         'win32' : 'windows',
+         'cygwin' : 'windows',
+-        'solaris' : 'solaris'
++        'sunos5' : 'solaris'
+         }
+     this_platform = platform_map[sys.platform]
+     if this_platform == 'linux':
+--- linden/indra/llcommon/lluuid.cpp-orig	2010-01-29 12:29:20.844939652 -0600
++++ linden/indra/llcommon/lluuid.cpp	2010-01-29 12:29:49.450327413 -0600
+@@ -660,11 +660,6 @@ S32 LLUUID::getNodeID(unsigned char *nod
+ 	for (i = 0; i < n; i+= ifreq_size(*ifr) ) {
+ 		ifrp = (struct ifreq *)((char *) ifc.ifc_buf+i);
+ 		strncpy(ifr.ifr_name, ifrp->ifr_name, IFNAMSIZ);		/* Flawfinder: ignore */
+-#ifdef SIOCGIFHWADDR
+-		if (ioctl(sd, SIOCGIFHWADDR, &ifr) < 0)
+-			continue;
+-		a = (unsigned char *) &ifr.ifr_hwaddr.sa_data;
+-#else
+ #ifdef SIOCGENADDR
+ 		if (ioctl(sd, SIOCGENADDR, &ifr) < 0)
+ 			continue;
+@@ -677,7 +672,6 @@ S32 LLUUID::getNodeID(unsigned char *nod
+ 		close(sd);
+ 		return 0;
+ #endif /* SIOCGENADDR */
+-#endif /* SIOCGIFHWADDR */
+ 		if (!a[0] && !a[1] && !a[2] && !a[3] && !a[4] && !a[5])
+ 			continue;
+ 		if (node_id) {
+--- linden/indra/lib/python/indra/util/llmanifest.py-orig	2010-01-31 14:37:45.187425944 -0600
++++ linden/indra/lib/python/indra/util/llmanifest.py	2010-01-31 15:16:58.499189180 -0600
+@@ -72,7 +72,8 @@ def get_default_platform(dummy):
+             'linux1':'linux',
+             'cygwin':'windows',
+             'win32':'windows',
+-            'darwin':'darwin'
++            'darwin':'darwin',
++            'sunos5':'solaris'
+             }[sys.platform]
+ 
+ def get_default_version(srctree):
+--- /dev/null	2010-01-31 19:18:37.000000000 -0600
++++ linden-old/indra/llwindow/glh/glh_linear.h	2009-10-14 14:09:25.000000000 -0500
+@@ -0,0 +1,1621 @@
++/*
++    glh - is a platform-indepenedent C++ OpenGL helper library 
++
++
++    Copyright (c) 2000 Cass Everitt
++	Copyright (c) 2000 NVIDIA Corporation
++    All rights reserved.
++
++    Redistribution and use in source and binary forms, with or
++	without modification, are permitted provided that the following
++	conditions are met:
++
++     * Redistributions of source code must retain the above
++	   copyright notice, this list of conditions and the following
++	   disclaimer.
++
++     * Redistributions in binary form must reproduce the above
++	   copyright notice, this list of conditions and the following
++	   disclaimer in the documentation and/or other materials
++	   provided with the distribution.
++
++     * The names of contributors to this software may not be used
++	   to endorse or promote products derived from this software
++	   without specific prior written permission. 
++
++       THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
++	   ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
++	   LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
++	   FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
++	   REGENTS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
++	   INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
++	   BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
++	   LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
++	   CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
++	   LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
++	   ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
++	   POSSIBILITY OF SUCH DAMAGE. 
++
++
++    Cass Everitt - cass@r3.nu
++*/
++
++/*
++glh_linear.h
++*/
++
++// Author:  Cass W. Everitt
++
++#ifndef GLH_LINEAR_H
++#define GLH_LINEAR_H
++
++#include <memory.h>
++#include <math.h>
++#include <assert.h>
++
++// only supports float for now...
++#define GLH_REAL_IS_FLOAT
++
++#ifdef GLH_REAL_IS_FLOAT
++# define GLH_REAL float
++# define GLH_REAL_NAMESPACE ns_float
++#endif
++
++#define     GLH_QUATERNION_NORMALIZATION_THRESHOLD  64
++
++#define     GLH_RAD_TO_DEG      GLH_REAL(57.2957795130823208767981548141052)
++#define     GLH_DEG_TO_RAD      GLH_REAL(0.0174532925199432957692369076848861)
++#define     GLH_ZERO            GLH_REAL(0.0)
++#define     GLH_ONE             GLH_REAL(1.0)
++#define     GLH_TWO             GLH_REAL(2.0)
++#define     GLH_EPSILON         GLH_REAL(10e-6)
++#define     GLH_PI              GLH_REAL(3.1415926535897932384626433832795)    
++
++#define     equivalent(a,b)     (((a < b + GLH_EPSILON) && (a > b - GLH_EPSILON)) ? true : false)
++
++namespace glh
++{
++
++	inline GLH_REAL to_degrees(GLH_REAL radians) { return radians*GLH_RAD_TO_DEG; }
++	inline GLH_REAL to_radians(GLH_REAL degrees) { return degrees*GLH_DEG_TO_RAD; }
++
++	// forward declarations for friend template functions.
++	template <int N, class T> class vec;
++	
++	// forward declarations for friend template functions.
++	template <int N, class T>
++		bool operator == ( const vec<N,T> & v1, const vec<N,T> & v2 );
++	
++	// forward declarations for friend template functions.
++	template <int N, class T>
++		bool operator != ( const vec<N,T> & v1, const vec<N,T> & v2 );
++
++	template <int N, class T>	
++	class vec
++	{				
++    public:
++		int size() const { return N; }
++		
++		vec(const T & t = T()) 
++		{ for(int i = 0; i < N; i++) v[i] = t; }
++		vec(const T * tp)
++		{ for(int i = 0; i < N; i++) v[i] = tp[i]; }
++		
++		const T * get_value() const
++		{ return v; }
++		
++		
++		T dot( const vec<N,T> & rhs ) const
++		{ 
++			T r = 0;
++			for(int i = 0; i < N; i++) r += v[i]*rhs.v[i];
++			return r;
++		}
++		
++		T length() const
++		{
++			T r = 0;
++			for(int i = 0; i < N; i++) r += v[i]*v[i]; 
++			return T(sqrt(r));
++		}	
++		
++		T square_norm() const
++		{
++			T r = 0;
++			for(int i = 0; i < N; i++) r += v[i]*v[i]; 
++			return r;
++		}	
++		
++		void  negate()
++		{ for(int i = 0; i < N; i++) v[i] = -v[i]; }
++		
++		
++		T normalize() 
++		{ 
++			T sum(0);
++			for(int i = 0; i < N; i++) 
++                sum += v[i]*v[i];
++			sum = T(sqrt(sum));
++            if (sum > GLH_EPSILON)
++			    for(int i = 0; i < N; i++) 
++                    v[i] /= sum;
++			return sum;
++		}
++		
++		
++		vec<N,T> & set_value( const T * rhs )
++		{ for(int i = 0; i < N; i++) v[i] = rhs[i]; return *this; }
++		
++		T & operator [] ( int i )
++		{ return v[i]; }
++		
++		const T & operator [] ( int i ) const
++		{ return v[i]; }
++
++		vec<N,T> & operator *= ( T d )
++		{ for(int i = 0; i < N; i++) v[i] *= d; return *this;}
++		
++		vec<N,T> & operator *= ( const vec<N,T> & u )
++		{ for(int i = 0; i < N; i++) v[i] *= u[i]; return *this;}
++		
++		vec<N,T> & operator /= ( T d )
++		{ if(d == 0) return *this; for(int i = 0; i < N; i++) v[i] /= d; return *this;}
++		
++		vec<N,T> & operator += ( const vec<N,T> & u )
++		{ for(int i = 0; i < N; i++) v[i] += u.v[i]; return *this;}
++		
++		vec<N,T> & operator -= ( const vec<N,T> & u )
++		{ for(int i = 0; i < N; i++) v[i] -= u.v[i]; return *this;}
++		
++		
++		vec<N,T> operator - () const
++		{ vec<N,T> rv = v; rv.negate(); return rv; }
++		
++		vec<N,T> operator + ( const vec<N,T> &v) const
++		{ vec<N,T> rt(*this); return rt += v; }
++		
++		vec<N,T> operator - ( const vec<N,T> &v) const
++		{ vec<N,T> rt(*this); return rt -= v; }
++		
++		vec<N,T> operator * ( T d) const
++		{ vec<N,T> rt(*this); return rt *= d; }
++		
++		friend bool operator == <> ( const vec<N,T> &v1, const vec<N,T> &v2 );
++		friend bool operator != <> ( const vec<N,T> &v1, const vec<N,T> &v2 );
++		
++		
++	//protected:
++		T v[N];
++	};
++	
++	
++	
++	// vector friend operators
++	
++	template <int N, class T> inline
++		vec<N,T> operator * ( const vec<N,T> & b, T d )
++	{
++		vec<N,T> rt(b);
++		return rt *= d;
++	}
++
++	template <int N, class T> inline
++		vec<N,T> operator * ( T d, const vec<N,T> & b )
++	{ return b*d; }
++	
++	template <int N, class T> inline
++		vec<N,T> operator * ( const vec<N,T> & b, const vec<N,T> & d )
++	{
++		vec<N,T> rt(b);
++		return rt *= d;
++	}
++
++	template <int N, class T> inline
++		vec<N,T> operator / ( const vec<N,T> & b, T d )
++	{ vec<N,T> rt(b); return rt /= d; }
++	
++	template <int N, class T> inline
++		vec<N,T> operator + ( const vec<N,T> & v1, const vec<N,T> & v2 )
++	{ vec<N,T> rt(v1); return rt += v2; }
++	
++	template <int N, class T> inline
++		vec<N,T> operator - ( const vec<N,T> & v1, const vec<N,T> & v2 )
++	{ vec<N,T> rt(v1); return rt -= v2; }
++	
++	
++	template <int N, class T> inline
++		bool operator == ( const vec<N,T> & v1, const vec<N,T> & v2 )
++	{
++		for(int i = 0; i < N; i++)
++			if(v1.v[i] != v2.v[i])
++				return false;
++			return true;
++	}
++	
++	template <int N, class T> inline
++		bool operator != ( const vec<N,T> & v1, const vec<N,T> & v2 )
++	{ return !(v1 == v2); }
++	
++
++	typedef vec<3,unsigned char> vec3ub;
++	typedef vec<4,unsigned char> vec4ub;
++
++
++
++
++
++	namespace GLH_REAL_NAMESPACE
++	{
++	typedef GLH_REAL real;
++
++	class line;
++	class plane;
++	class matrix4;
++	class quaternion;
++	typedef quaternion rotation; 
++  
++	class vec2 : public vec<2,real>
++	{
++    public:
++		vec2(const real & t = real()) : vec<2,real>(t)
++		{}
++		vec2(const vec<2,real> & t) : vec<2,real>(t)
++		{}
++		vec2(const real * tp) : vec<2,real>(tp)
++		{}
++		
++		vec2(real x, real y )
++		{ v[0] = x; v[1] = y; }
++		
++		void get_value(real & x, real & y) const
++		{ x = v[0]; y = v[1]; }
++		
++		vec2 & set_value( const real & x, const real & y)
++		{ v[0] = x; v[1] = y; return *this; }
++		
++	};
++	
++	
++	class vec3 : public vec<3,real>
++	{
++    public:
++		vec3(const real & t = real()) : vec<3,real>(t)
++		{}
++		vec3(const vec<3,real> & t) : vec<3,real>(t)
++		{}
++		vec3(const real * tp) : vec<3,real>(tp)
++		{}
++		
++		vec3(real x, real y, real z)
++		{ v[0] = x; v[1] = y; v[2] = z; }
++		
++		void get_value(real & x, real & y, real & z) const
++		{ x = v[0]; y = v[1]; z = v[2]; }
++		
++		vec3 cross( const vec3 &rhs ) const
++		{
++			vec3 rt;
++			rt.v[0] = v[1]*rhs.v[2]-v[2]*rhs.v[1];
++			rt.v[1] = v[2]*rhs.v[0]-v[0]*rhs.v[2];
++			rt.v[2] = v[0]*rhs.v[1]-v[1]*rhs.v[0];	
++			return rt;
++		}
++		
++		vec3 & set_value( const real & x, const real & y, const real & z)
++		{ v[0] = x; v[1] = y; v[2] = z; return *this; }
++		
++	};
++
++  		
++    class vec4 : public vec<4,real>
++    {
++    public:
++        vec4(const real & t = real()) : vec<4,real>(t)
++        {}
++        vec4(const vec<4,real> & t) : vec<4,real>(t)
++        {}
++
++        vec4(const vec<3,real> & t, real fourth)
++
++        { v[0] = t.v[0]; v[1] = t.v[1]; v[2] = t.v[2]; v[3] = fourth; }
++        vec4(const real * tp) : vec<4,real>(tp)
++        {}
++        vec4(real x, real y, real z, real w)
++        { v[0] = x; v[1] = y; v[2] = z; v[3] = w; }
++
++        void get_value(real & x, real & y, real & z, real & w) const
++        { x = v[0]; y = v[1]; z = v[2]; w = v[3]; }
++  
++        vec4 & set_value( const real & x, const real & y, const real & z, const real & w)
++        { v[0] = x; v[1] = y; v[2] = z; v[3] = w; return *this; }
++    };
++
++    inline
++    vec3 homogenize(const vec4 & v)
++    {
++      vec3 rt;
++      assert(v.v[3] != GLH_ZERO);
++      rt.v[0] = v.v[0]/v.v[3];
++      rt.v[1] = v.v[1]/v.v[3];
++      rt.v[2] = v.v[2]/v.v[3];
++      return rt;
++    }
++  
++
++
++    class line
++    {
++    public:
++  
++        line()
++        { set_value(vec3(0,0,0),vec3(0,0,1)); }
++
++        line( const vec3 & p0, const vec3 &p1)
++        { set_value(p0,p1); }
++
++        void set_value( const vec3 &p0, const vec3 &p1)
++        {
++          position = p0;
++          direction = p1-p0;
++          direction.normalize();
++        }
++  
++        bool get_closest_points(const line &line2, 
++					          vec3 &pointOnThis,
++					          vec3 &pointOnThat)
++        {
++  
++          // quick check to see if parallel -- if so, quit.
++          if(fabs(direction.dot(line2.direction)) == 1.0)
++	          return 0;
++          line l2 = line2;
++  
++          // Algorithm: Brian Jean
++          // 
++          register real u;
++          register real v;
++          vec3 Vr = direction;
++          vec3 Vs = l2.direction;
++          register real Vr_Dot_Vs = Vr.dot(Vs);
++          register real detA = real(1.0 - (Vr_Dot_Vs * Vr_Dot_Vs));
++          vec3 C = l2.position - position;
++          register real C_Dot_Vr =  C.dot(Vr);
++          register real C_Dot_Vs =  C.dot(Vs);
++  
++          u = (C_Dot_Vr - Vr_Dot_Vs * C_Dot_Vs)/detA;
++          v = (C_Dot_Vr * Vr_Dot_Vs - C_Dot_Vs)/detA;
++  
++          pointOnThis = position;
++          pointOnThis += direction * u;
++          pointOnThat = l2.position;
++          pointOnThat += l2.direction * v;
++  
++          return 1;
++        }
++  
++        vec3 get_closest_point(const vec3 &point)
++        {
++          vec3 np = point - position;
++          vec3 rp = direction*direction.dot(np)+position;
++          return rp;
++        }
++  
++        const vec3 & get_position() const {return position;}
++
++        const vec3 & get_direction() const {return direction;}
++  
++    //protected:
++        vec3 position;
++        vec3 direction;
++    };
++  
++  
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++  
++  
++
++
++
++
++
++
++
++
++
++
++
++  // matrix
++
++  
++  class matrix4
++  {
++    
++  public:
++        
++    matrix4() { make_identity(); }
++    
++	matrix4( real r ) 
++	{ set_value(r); }
++
++	matrix4( real * m )
++	{ set_value(m); }
++    
++    matrix4( real a00, real a01, real a02, real a03,
++	       real a10, real a11, real a12, real a13,
++		   real a20, real a21, real a22, real a23,
++		   real a30, real a31, real a32, real a33 )
++	{
++		element(0,0) = a00;
++		element(0,1) = a01;
++		element(0,2) = a02;
++		element(0,3) = a03;
++		
++		element(1,0) = a10;
++		element(1,1) = a11;
++		element(1,2) = a12;
++		element(1,3) = a13;
++		
++		element(2,0) = a20;
++		element(2,1) = a21;
++		element(2,2) = a22;
++		element(2,3) = a23;
++		
++		element(3,0) = a30;
++		element(3,1) = a31;
++		element(3,2) = a32;
++		element(3,3) = a33;
++	}
++            
++    
++    void get_value( real * mp ) const
++	{
++		int c = 0;
++		for(int j=0; j < 4; j++)
++			for(int i=0; i < 4; i++)
++				mp[c++] = element(i,j);
++	}
++    
++    
++    const real * get_value() const
++	{ return m; }
++    
++	void set_value( real * mp)
++	{
++		int c = 0;
++		for(int j=0; j < 4; j++)
++			for(int i=0; i < 4; i++)
++				element(i,j) = mp[c++];
++	}
++    
++	void set_value( real r ) 
++	{
++		for(int i=0; i < 4; i++)
++			for(int j=0; j < 4; j++)
++				element(i,j) = r;
++	}
++    
++    void make_identity()
++	{
++		element(0,0) = 1.0;
++		element(0,1) = 0.0;
++		element(0,2) = 0.0; 
++		element(0,3) = 0.0;
++		
++		element(1,0) = 0.0;
++		element(1,1) = 1.0; 
++		element(1,2) = 0.0;
++		element(1,3) = 0.0;
++		
++		element(2,0) = 0.0;
++		element(2,1) = 0.0;
++		element(2,2) = 1.0;
++		element(2,3) = 0.0;
++		
++		element(3,0) = 0.0; 
++		element(3,1) = 0.0; 
++		element(3,2) = 0.0;
++		element(3,3) = 1.0;
++	}
++	
++	
++    static matrix4 identity()
++	{
++		static matrix4 mident (
++			1.0, 0.0, 0.0, 0.0,
++			0.0, 1.0, 0.0, 0.0,
++			0.0, 0.0, 1.0, 0.0,
++			0.0, 0.0, 0.0, 1.0  );
++		return mident;
++	}
++    
++        
++    void set_scale( real s )
++	{
++		element(0,0) = s;
++		element(1,1) = s;
++		element(2,2) = s;
++	}
++    
++    void set_scale( const vec3 & s )
++	{
++		element(0,0) = s.v[0];
++		element(1,1) = s.v[1];
++		element(2,2) = s.v[2];
++	}
++    
++    
++    void set_translate( const vec3 & t )
++	{
++		element(0,3) = t.v[0];
++		element(1,3) = t.v[1];
++		element(2,3) = t.v[2];
++	}
++    
++	void set_row(int r, const vec4 & t)
++	{
++		element(r,0) = t.v[0];
++		element(r,1) = t.v[1];
++		element(r,2) = t.v[2];
++		element(r,3) = t.v[3];
++	}
++
++	void set_column(int c, const vec4 & t)
++	{
++		element(0,c) = t.v[0];
++		element(1,c) = t.v[1];
++		element(2,c) = t.v[2];
++		element(3,c) = t.v[3];
++	}
++
++    
++	void get_row(int r, vec4 & t) const
++	{
++		t.v[0] = element(r,0);
++		t.v[1] = element(r,1);
++		t.v[2] = element(r,2);
++		t.v[3] = element(r,3);
++	}
++
++	vec4 get_row(int r) const
++	{
++		vec4 v; get_row(r, v);
++		return v;
++	}
++
++	void get_column(int c, vec4 & t) const
++	{
++		t.v[0] = element(0,c);
++		t.v[1] = element(1,c);
++		t.v[2] = element(2,c);
++		t.v[3] = element(3,c);
++	}
++
++	vec4 get_column(int c) const
++	{
++		vec4 v; get_column(c, v);
++		return v;
++	}
++
++    matrix4 inverse() const
++	{
++		matrix4 minv;
++		
++		real r1[8], r2[8], r3[8], r4[8];
++		real *s[4], *tmprow;
++		
++		s[0] = &r1[0];
++		s[1] = &r2[0];
++		s[2] = &r3[0];
++		s[3] = &r4[0];
++		
++		register int i,j,p,jj;
++		for(i=0;i<4;i++)
++		{
++			for(j=0;j<4;j++)
++			{
++				s[i][j] = element(i,j);
++				if(i==j) s[i][j+4] = 1.0;
++				else     s[i][j+4] = 0.0;
++			}
++		}
++		real scp[4];
++		for(i=0;i<4;i++)
++		{
++			scp[i] = real(fabs(s[i][0]));
++			for(j=1;j<4;j++)
++				if(real(fabs(s[i][j])) > scp[i]) scp[i] = real(fabs(s[i][j]));
++				if(scp[i] == 0.0) return minv; // singular matrix!
++		}
++		
++		int pivot_to;
++		real scp_max;
++		for(i=0;i<4;i++)
++		{
++			// select pivot row
++			pivot_to = i;
++			scp_max = real(fabs(s[i][i]/scp[i]));
++			// find out which row should be on top
++			for(p=i+1;p<4;p++)
++				if(real(fabs(s[p][i]/scp[p])) > scp_max)
++				{ scp_max = real(fabs(s[p][i]/scp[p])); pivot_to = p; }
++				// Pivot if necessary
++				if(pivot_to != i)
++				{
++					tmprow = s[i];
++					s[i] = s[pivot_to];
++					s[pivot_to] = tmprow;
++					real tmpscp;
++					tmpscp = scp[i];
++					scp[i] = scp[pivot_to];
++					scp[pivot_to] = tmpscp;
++				}
++				
++				real mji;
++				// perform gaussian elimination
++				for(j=i+1;j<4;j++)
++				{
++					mji = s[j][i]/s[i][i];
++					s[j][i] = 0.0;
++					for(jj=i+1;jj<8;jj++)
++						s[j][jj] -= mji*s[i][jj];
++				}
++		}
++		if(s[3][3] == 0.0) return minv; // singular matrix!
++		
++		//
++		// Now we have an upper triangular matrix.
++		//
++		//  x x x x | y y y y
++		//  0 x x x | y y y y 
++		//  0 0 x x | y y y y
++		//  0 0 0 x | y y y y
++		//
++		//  we'll back substitute to get the inverse
++		//
++		//  1 0 0 0 | z z z z
++		//  0 1 0 0 | z z z z
++		//  0 0 1 0 | z z z z
++		//  0 0 0 1 | z z z z 
++		//
++		
++		real mij;
++		for(i=3;i>0;i--)
++		{
++			for(j=i-1;j > -1; j--)
++			{
++				mij = s[j][i]/s[i][i];
++				for(jj=j+1;jj<8;jj++)
++					s[j][jj] -= mij*s[i][jj];
++			}
++		}
++		
++		for(i=0;i<4;i++)
++			for(j=0;j<4;j++)
++				minv(i,j) = s[i][j+4] / s[i][i];
++			
++			return minv;
++	}
++    
++    
++    matrix4 transpose() const
++	{
++		matrix4 mtrans;
++		
++		for(int i=0;i<4;i++)
++			for(int j=0;j<4;j++)
++				mtrans(i,j) = element(j,i);		
++		return mtrans;
++	}
++    
++    matrix4 & mult_right( const matrix4 & b )
++	{
++		matrix4 mt(*this);
++		set_value(real(0));
++
++		for(int i=0; i < 4; i++)
++			for(int j=0; j < 4; j++)
++				for(int c=0; c < 4; c++)
++					element(i,j) += mt(i,c) * b(c,j);
++		return *this;
++	}    
++
++    matrix4 & mult_left( const matrix4 & b )
++	{
++		matrix4 mt(*this);
++		set_value(real(0));
++
++		for(int i=0; i < 4; i++)
++			for(int j=0; j < 4; j++)
++				for(int c=0; c < 4; c++)
++					element(i,j) += b(i,c) * mt(c,j);
++		return *this;
++	}
++	
++	// dst = M * src
++    void mult_matrix_vec( const vec3 &src, vec3 &dst ) const
++	{
++		real w = (
++			src.v[0] * element(3,0) +
++			src.v[1] * element(3,1) + 
++			src.v[2] * element(3,2) +
++			element(3,3)          );
++        
++        assert(w != GLH_ZERO);
++
++        dst.v[0]  = (
++			src.v[0] * element(0,0) +
++			src.v[1] * element(0,1) +
++			src.v[2] * element(0,2) +
++			element(0,3)          ) / w;
++		dst.v[1]  = (
++			src.v[0] * element(1,0) +
++			src.v[1] * element(1,1) +
++			src.v[2] * element(1,2) +
++			element(1,3)          ) / w;
++		dst.v[2]  = (
++			src.v[0] * element(2,0) +
++			src.v[1] * element(2,1) + 
++			src.v[2] * element(2,2) +
++			element(2,3)          ) / w;
++	}
++    
++	void mult_matrix_vec( vec3 & src_and_dst) const
++	{ mult_matrix_vec(vec3(src_and_dst), src_and_dst); }
++
++
++    // dst = src * M
++    void mult_vec_matrix( const vec3 &src, vec3 &dst ) const
++	{
++		real w = (
++			src.v[0] * element(0,3) +
++			src.v[1] * element(1,3) +
++			src.v[2] * element(2,3) +
++			element(3,3)          );
++        
++        assert(w != GLH_ZERO);
++
++		dst.v[0]  = (
++			src.v[0] * element(0,0) +
++			src.v[1] * element(1,0) + 
++			src.v[2] * element(2,0) + 
++			element(3,0)          ) / w;
++		dst.v[1]  = (
++			src.v[0] * element(0,1) +
++			src.v[1] * element(1,1) +
++			src.v[2] * element(2,1) +
++			element(3,1)          ) / w;
++		dst.v[2]  = (
++			src.v[0] * element(0,2) +
++			src.v[1] * element(1,2) +
++			src.v[2] * element(2,2) +
++			element(3,2)          ) / w;
++	}
++        
++
++	void mult_vec_matrix( vec3 & src_and_dst) const
++	{ mult_vec_matrix(vec3(src_and_dst), src_and_dst); }
++
++	// dst = M * src
++    void mult_matrix_vec( const vec4 &src, vec4 &dst ) const
++	{
++        dst.v[0]  = (
++			src.v[0] * element(0,0) +
++			src.v[1] * element(0,1) +
++			src.v[2] * element(0,2) +
++			src.v[3] * element(0,3));
++		dst.v[1]  = (
++			src.v[0] * element(1,0) +
++			src.v[1] * element(1,1) +
++			src.v[2] * element(1,2) +
++			src.v[3] * element(1,3));
++		dst.v[2]  = (
++			src.v[0] * element(2,0) +
++			src.v[1] * element(2,1) + 
++			src.v[2] * element(2,2) +
++			src.v[3] * element(2,3));
++		dst.v[3] = (
++			src.v[0] * element(3,0) +
++			src.v[1] * element(3,1) + 
++			src.v[2] * element(3,2) +
++			src.v[3] * element(3,3));
++	}
++    
++	void mult_matrix_vec( vec4 & src_and_dst) const
++	{ mult_matrix_vec(vec4(src_and_dst), src_and_dst); }
++
++
++    // dst = src * M
++    void mult_vec_matrix( const vec4 &src, vec4 &dst ) const
++	{
++		dst.v[0]  = (
++			src.v[0] * element(0,0) +
++			src.v[1] * element(1,0) + 
++			src.v[2] * element(2,0) + 
++			src.v[3] * element(3,0));
++		dst.v[1]  = (
++			src.v[0] * element(0,1) +
++			src.v[1] * element(1,1) +
++			src.v[2] * element(2,1) +
++			src.v[3] * element(3,1));
++		dst.v[2]  = (
++			src.v[0] * element(0,2) +
++			src.v[1] * element(1,2) +
++			src.v[2] * element(2,2) +
++			src.v[3] * element(3,2));
++		dst.v[3] = (
++			src.v[0] * element(0,3) +
++			src.v[1] * element(1,3) +
++			src.v[2] * element(2,3) +
++			src.v[3] * element(3,3));
++	}
++        
++
++	void mult_vec_matrix( vec4 & src_and_dst) const
++	{ mult_vec_matrix(vec4(src_and_dst), src_and_dst); }
++
++    
++    // dst = M * src
++    void mult_matrix_dir( const vec3 &src, vec3 &dst ) const
++	{
++		dst.v[0]  = (
++			src.v[0] * element(0,0) +
++			src.v[1] * element(0,1) +
++			src.v[2] * element(0,2) ) ;
++		dst.v[1]  = ( 
++			src.v[0] * element(1,0) +
++			src.v[1] * element(1,1) +
++			src.v[2] * element(1,2) ) ;
++		dst.v[2]  = ( 
++			src.v[0] * element(2,0) +
++			src.v[1] * element(2,1) + 
++			src.v[2] * element(2,2) ) ;
++	}
++        
++
++	void mult_matrix_dir( vec3 & src_and_dst) const
++	{ mult_matrix_dir(vec3(src_and_dst), src_and_dst); }
++
++
++	// dst = src * M
++    void mult_dir_matrix( const vec3 &src, vec3 &dst ) const
++	{
++		dst.v[0]  = ( 
++			src.v[0] * element(0,0) +
++			src.v[1] * element(1,0) +
++			src.v[2] * element(2,0) ) ;
++		dst.v[1]  = ( 
++			src.v[0] * element(0,1) +
++			src.v[1] * element(1,1) +
++			src.v[2] * element(2,1) ) ;
++		dst.v[2]  = (
++			src.v[0] * element(0,2) +
++			src.v[1] * element(1,2) + 
++			src.v[2] * element(2,2) ) ;
++	}
++    
++    
++	void mult_dir_matrix( vec3 & src_and_dst) const
++	{ mult_dir_matrix(vec3(src_and_dst), src_and_dst); }
++
++
++    real & operator () (int row, int col)
++    { return element(row,col); }
++
++    const real & operator () (int row, int col) const
++    { return element(row,col); }
++
++	real & element (int row, int col)
++    { return m[row | (col<<2)]; }
++
++    const real & element (int row, int col) const
++    { return m[row | (col<<2)]; }
++
++    matrix4 & operator *= ( const matrix4 & mat )
++	{
++		mult_right( mat );
++		return *this;
++	}
++    
++    matrix4 & operator *= ( const real & r )
++	{
++		for (int i = 0; i < 4; ++i)
++        {
++            element(0,i) *= r;
++            element(1,i) *= r;
++            element(2,i) *= r;
++            element(3,i) *= r;
++        }
++		return *this;
++	}
++
++    matrix4 & operator += ( const matrix4 & mat )
++	{
++		for (int i = 0; i < 4; ++i)
++        {
++            element(0,i) += mat.element(0,i);
++            element(1,i) += mat.element(1,i);
++            element(2,i) += mat.element(2,i);
++            element(3,i) += mat.element(3,i);
++        }
++		return *this;
++	}
++
++    friend matrix4 operator * ( const matrix4 & m1,	const matrix4 & m2 );
++    friend bool operator == ( const matrix4 & m1, const matrix4 & m2 );
++    friend bool operator != ( const matrix4 & m1, const matrix4 & m2 );
++    
++  //protected:
++	  real m[16];
++  };
++  
++  inline  
++  matrix4 operator * ( const matrix4 & m1, const matrix4 & m2 )
++  {
++	  matrix4 product;
++	  
++	  product = m1;
++	  product.mult_right(m2);
++	  
++	  return product;
++  }
++  
++  inline
++  bool operator ==( const matrix4 &m1, const matrix4 &m2 )
++  {
++	  return ( 
++		  m1(0,0) == m2(0,0) &&
++		  m1(0,1) == m2(0,1) &&
++		  m1(0,2) == m2(0,2) &&
++		  m1(0,3) == m2(0,3) &&
++		  m1(1,0) == m2(1,0) &&
++		  m1(1,1) == m2(1,1) &&
++		  m1(1,2) == m2(1,2) &&
++		  m1(1,3) == m2(1,3) &&
++		  m1(2,0) == m2(2,0) &&
++		  m1(2,1) == m2(2,1) &&
++		  m1(2,2) == m2(2,2) &&
++		  m1(2,3) == m2(2,3) &&
++		  m1(3,0) == m2(3,0) &&
++		  m1(3,1) == m2(3,1) &&
++		  m1(3,2) == m2(3,2) &&
++		  m1(3,3) == m2(3,3) );
++  }
++  
++  inline
++  bool operator != ( const matrix4 & m1, const matrix4 & m2 )
++  { return !( m1 == m2 ); }  
++
++
++
++
++
++
++
++
++
++
++
++
++  
++    class quaternion
++    {
++    public:
++    
++    quaternion()
++    {
++        *this = identity();
++    }
++
++    quaternion( const real v[4] )
++    {
++        set_value( v );
++    }
++
++
++    quaternion( real q0, real q1, real q2, real q3 )
++    {
++        set_value( q0, q1, q2, q3 );
++    }
++
++
++    quaternion( const matrix4 & m )
++    {
++        set_value( m );
++    }
++
++
++    quaternion( const vec3 &axis, real radians )
++    {
++        set_value( axis, radians );
++    }
++
++
++    quaternion( const vec3 &rotateFrom, const vec3 &rotateTo )
++    {
++        set_value( rotateFrom, rotateTo );
++    }
++
++    quaternion( const vec3 & from_look, const vec3 & from_up,
++		      const vec3 & to_look, const vec3& to_up)
++    {
++	    set_value(from_look, from_up, to_look, to_up);
++    }
++
++    const real * get_value() const
++    {
++        return  &q[0];
++    }
++
++    void get_value( real &q0, real &q1, real &q2, real &q3 ) const
++    {
++        q0 = q[0];
++        q1 = q[1];
++        q2 = q[2];
++        q3 = q[3];
++    }
++
++    quaternion & set_value( real q0, real q1, real q2, real q3 )
++    {
++        q[0] = q0;
++        q[1] = q1;
++        q[2] = q2;
++        q[3] = q3;
++        counter = 0;
++        return *this;
++    }
++
++    void get_value( vec3 &axis, real &radians ) const
++    {
++        radians = real(acos( q[3] ) * GLH_TWO);
++        if ( radians == GLH_ZERO )
++            axis = vec3( 0.0, 0.0, 1.0 );
++        else
++        {
++            axis.v[0] = q[0];
++            axis.v[1] = q[1];
++            axis.v[2] = q[2];
++            axis.normalize();
++        }
++    }
++
++    void get_value( matrix4 & m ) const
++    {
++        real s, xs, ys, zs, wx, wy, wz, xx, xy, xz, yy, yz, zz;
++
++        real norm = q[0] * q[0] + q[1] * q[1] + q[2] * q[2] + q[3] * q[3];
++
++        s = (equivalent(norm,GLH_ZERO)) ? GLH_ZERO : ( GLH_TWO / norm );
++
++        xs = q[0] * s;
++        ys = q[1] * s;
++        zs = q[2] * s;
++
++        wx = q[3] * xs;
++        wy = q[3] * ys;
++        wz = q[3] * zs;
++
++        xx = q[0] * xs;
++        xy = q[0] * ys;
++        xz = q[0] * zs;
++
++        yy = q[1] * ys;
++        yz = q[1] * zs;
++        zz = q[2] * zs;
++
++        m(0,0) = real( GLH_ONE - ( yy + zz ));
++        m(1,0) = real ( xy + wz );
++        m(2,0) = real ( xz - wy );
++
++        m(0,1) = real ( xy - wz );
++        m(1,1) = real ( GLH_ONE - ( xx + zz ));
++        m(2,1) = real ( yz + wx );
++
++        m(0,2) = real ( xz + wy );
++        m(1,2) = real ( yz - wx );
++        m(2,2) = real ( GLH_ONE - ( xx + yy ));
++
++        m(3,0) = m(3,1) = m(3,2) = m(0,3) = m(1,3) = m(2,3) = GLH_ZERO;
++        m(3,3) = GLH_ONE;
++    }
++
++    quaternion & set_value( const real * qp )
++    {
++        memcpy(q,qp,sizeof(real) * 4);
++
++        counter = 0;
++        return *this;
++    }
++
++    quaternion & set_value( const matrix4 & m )
++    {
++        real tr, s;
++        int i, j, k;
++        const int nxt[3] = { 1, 2, 0 };
++
++        tr = m(0,0) + m(1,1) + m(2,2);
++
++        if ( tr > GLH_ZERO )
++        {
++            s = real(sqrt( tr + m(3,3) ));
++            q[3] = real ( s * 0.5 );
++            s = real(0.5) / s;
++
++            q[0] = real ( ( m(1,2) - m(2,1) ) * s );
++            q[1] = real ( ( m(2,0) - m(0,2) ) * s );
++            q[2] = real ( ( m(0,1) - m(1,0) ) * s );
++        }
++        else
++        {
++            i = 0;
++            if ( m(1,1) > m(0,0) )
++              i = 1;
++
++            if ( m(2,2) > m(i,i) )
++              i = 2;
++
++            j = nxt[i];
++            k = nxt[j];
++
++            s = real(sqrt( ( m(i,j) - ( m(j,j) + m(k,k) )) + GLH_ONE ));
++
++            q[i] = real ( s * 0.5 );
++            s = real(0.5 / s);
++
++            q[3] = real ( ( m(j,k) - m(k,j) ) * s );
++            q[j] = real ( ( m(i,j) + m(j,i) ) * s );
++            q[k] = real ( ( m(i,k) + m(k,i) ) * s );
++        }
++
++        counter = 0;
++        return *this;
++    }
++
++    quaternion & set_value( const vec3 &axis, real theta )
++    {
++        real sqnorm = axis.square_norm();
++
++        if (sqnorm <= GLH_EPSILON)
++        {
++            // axis too small.
++            x = y = z = 0.0;
++            w = 1.0;
++        } 
++        else 
++        {
++            theta *= real(0.5);
++            real sin_theta = real(sin(theta));
++
++            if (!equivalent(sqnorm,GLH_ONE)) 
++              sin_theta /= real(sqrt(sqnorm));
++            x = sin_theta * axis.v[0];
++            y = sin_theta * axis.v[1];
++            z = sin_theta * axis.v[2];
++            w = real(cos(theta));
++        }
++        return *this;
++    }
++
++    quaternion & set_value( const vec3 & rotateFrom, const vec3 & rotateTo )
++    {
++        vec3 p1, p2;
++        real alpha;
++
++        p1 = rotateFrom; 
++        p1.normalize();
++        p2 = rotateTo;  
++        p2.normalize();
++
++        alpha = p1.dot(p2);
++
++        if(equivalent(alpha,GLH_ONE))
++        { 
++            *this = identity(); 
++            return *this; 
++        }
++
++        // ensures that the anti-parallel case leads to a positive dot
++        if(equivalent(alpha,-GLH_ONE))
++        {
++            vec3 v;
++
++            if(p1.v[0] != p1.v[1] || p1.v[0] != p1.v[2])
++    	        v = vec3(p1.v[1], p1.v[2], p1.v[0]);
++            else
++    	        v = vec3(-p1.v[0], p1.v[1], p1.v[2]);
++
++            v -= p1 * p1.dot(v);
++            v.normalize();
++
++            set_value(v, GLH_PI);
++            return *this;
++        }
++
++        p1 = p1.cross(p2);  
++        p1.normalize();
++        set_value(p1,real(acos(alpha)));
++
++        counter = 0;
++        return *this;
++    }
++
++    quaternion & set_value( const vec3 & from_look, const vec3 & from_up,
++		      const vec3 & to_look, const vec3 & to_up)
++    {
++	    quaternion r_look = quaternion(from_look, to_look);
++	    
++	    vec3 rotated_from_up(from_up);
++	    r_look.mult_vec(rotated_from_up);
++	    
++	    quaternion r_twist = quaternion(rotated_from_up, to_up);
++	    
++	    *this = r_twist;
++	    *this *= r_look;
++	    return *this;
++    }
++
++    quaternion & operator *= ( const quaternion & qr )
++    {
++        quaternion ql(*this);
++   
++        w = ql.w * qr.w - ql.x * qr.x - ql.y * qr.y - ql.z * qr.z;
++        x = ql.w * qr.x + ql.x * qr.w + ql.y * qr.z - ql.z * qr.y;
++        y = ql.w * qr.y + ql.y * qr.w + ql.z * qr.x - ql.x * qr.z;
++        z = ql.w * qr.z + ql.z * qr.w + ql.x * qr.y - ql.y * qr.x;
++
++        counter += qr.counter;
++        counter++;
++        counter_normalize();
++        return *this;
++    }
++
++    void normalize()
++    {
++        real rnorm = GLH_ONE / real(sqrt(w * w + x * x + y * y + z * z));
++        if (equivalent(rnorm, GLH_ZERO))
++            return;
++        x *= rnorm;
++        y *= rnorm;
++        z *= rnorm;
++        w *= rnorm;
++        counter = 0;
++    }
++
++    friend bool operator == ( const quaternion & q1, const quaternion & q2 );      
++
++    friend bool operator != ( const quaternion & q1, const quaternion & q2 );
++
++    friend quaternion operator * ( const quaternion & q1, const quaternion & q2 );
++
++    bool equals( const quaternion & r, real tolerance ) const
++    {
++        real t;
++
++        t = (
++			(q[0]-r.q[0])*(q[0]-r.q[0]) +
++            (q[1]-r.q[1])*(q[1]-r.q[1]) +
++            (q[2]-r.q[2])*(q[2]-r.q[2]) +
++            (q[3]-r.q[3])*(q[3]-r.q[3]) );
++        if(t > GLH_EPSILON) 
++            return false;
++        return 1;
++    }
++
++    quaternion & conjugate()
++    {
++        q[0] *= -GLH_ONE;
++        q[1] *= -GLH_ONE;
++        q[2] *= -GLH_ONE;
++        return *this;
++    }
++
++    quaternion & invert()
++    {
++        return conjugate();
++    }
++
++    quaternion inverse() const
++    {
++        quaternion r = *this;
++        return r.invert();
++    }
++
++    //
++    // Quaternion multiplication with cartesian vector
++    // v' = q*v*q(star)
++    //
++    void mult_vec( const vec3 &src, vec3 &dst ) const
++    {
++        real v_coef = w * w - x * x - y * y - z * z;                     
++        real u_coef = GLH_TWO * (src.v[0] * x + src.v[1] * y + src.v[2] * z);  
++        real c_coef = GLH_TWO * w;                                       
++
++        dst.v[0] = v_coef * src.v[0] + u_coef * x + c_coef * (y * src.v[2] - z * src.v[1]);
++        dst.v[1] = v_coef * src.v[1] + u_coef * y + c_coef * (z * src.v[0] - x * src.v[2]);
++        dst.v[2] = v_coef * src.v[2] + u_coef * z + c_coef * (x * src.v[1] - y * src.v[0]);
++    }
++
++    void mult_vec( vec3 & src_and_dst) const
++    {
++        mult_vec(vec3(src_and_dst), src_and_dst);
++    }
++
++    void scale_angle( real scaleFactor )
++    {
++        vec3 axis;
++        real radians;
++
++        get_value(axis, radians);
++        radians *= scaleFactor;
++        set_value(axis, radians);
++    }
++
++    static quaternion slerp( const quaternion & p, const quaternion & q, real alpha )
++    {
++        quaternion r;
++
++        real cos_omega = p.x * q.x + p.y * q.y + p.z * q.z + p.w * q.w;
++        // if B is on opposite hemisphere from A, use -B instead
++      
++        int bflip;
++        if ( ( bflip = (cos_omega < GLH_ZERO)) )
++            cos_omega = -cos_omega;
++
++        // complementary interpolation parameter
++        real beta = GLH_ONE - alpha;     
++
++        if(cos_omega <= GLH_ONE - GLH_EPSILON)
++            return p;
++
++        real omega = real(acos(cos_omega));
++        real one_over_sin_omega = GLH_ONE / real(sin(omega));
++
++        beta    = real(sin(omega*beta)  * one_over_sin_omega);
++        alpha   = real(sin(omega*alpha) * one_over_sin_omega);
++
++        if (bflip)
++            alpha = -alpha;
++
++        r.x = beta * p.q[0]+ alpha * q.q[0];
++        r.y = beta * p.q[1]+ alpha * q.q[1];
++        r.z = beta * p.q[2]+ alpha * q.q[2];
++        r.w = beta * p.q[3]+ alpha * q.q[3];
++        return r;
++    }
++
++    static quaternion identity()
++    {
++        static quaternion ident( vec3( 0.0, 0.0, 0.0 ), GLH_ONE );
++        return ident;
++    }
++
++    real & operator []( int i )
++    {
++        assert(i < 4);
++        return q[i];
++    }
++
++    const real & operator []( int i ) const
++    {
++        assert(i < 4);
++        return q[i];
++    }
++
++    protected:
++
++        void counter_normalize()
++        {
++            if (counter > GLH_QUATERNION_NORMALIZATION_THRESHOLD)
++                normalize();
++        }
++
++        union 
++        {
++            struct 
++            {
++                real q[4];
++            };
++            struct 
++            {
++                real x;
++                real y;
++                real z;
++                real w;
++            };
++        };
++
++        // renormalization counter
++        unsigned char counter;
++    };
++
++    inline
++    bool operator == ( const quaternion & q1, const quaternion & q2 )
++    {
++        return (equivalent(q1.x, q2.x) &&
++		        equivalent(q1.y, q2.y) &&
++		        equivalent(q1.z, q2.z) &&
++		        equivalent(q1.w, q2.w) );
++    }
++
++    inline
++    bool operator != ( const quaternion & q1, const quaternion & q2 )
++    { 
++        return ! ( q1 == q2 ); 
++    }
++
++    inline
++    quaternion operator * ( const quaternion & q1, const quaternion & q2 )
++    {	
++        quaternion r(q1); 
++        r *= q2; 
++        return r; 
++    }
++  
++      
++    
++
++
++
++
++
++  
++  
++  class plane
++  {
++  public:
++	  
++	  plane()
++      {
++		  planedistance = 0.0;
++		  planenormal.set_value( 0.0, 0.0, 1.0 );
++      }
++	  
++	  
++	  plane( const vec3 &p0, const vec3 &p1, const vec3 &p2 )
++      {
++		  vec3 v0 = p1 - p0;
++		  vec3 v1 = p2 - p0;
++		  planenormal = v0.cross(v1);  
++		  planenormal.normalize();
++		  planedistance = p0.dot(planenormal);
++      }
++	  
++	  plane( const vec3 &normal, real distance )
++      {
++		  planedistance = distance;
++		  planenormal = normal;
++		  planenormal.normalize();
++      }
++	  
++	  plane( const vec3 &normal, const vec3 &point )
++      {
++		  planenormal = normal;
++		  planenormal.normalize();
++		  planedistance = point.dot(planenormal);
++      }
++	  
++	  void offset( real d )
++      {
++		  planedistance += d;
++      }
++	  
++	  bool intersect( const line &l, vec3 &intersection ) const
++      {
++		  vec3 pos, dir;
++		  vec3 pn = planenormal;
++		  real pd = planedistance;
++		  
++		  pos = l.get_position();
++		  dir = l.get_direction();
++		  
++		  if(dir.dot(pn) == 0.0) return 0;
++		  pos -= pn*pd;
++		  // now we're talking about a plane passing through the origin
++		  if(pos.dot(pn) < 0.0) pn.negate();
++		  if(dir.dot(pn) > 0.0) dir.negate();
++		  vec3 ppos = pn * pos.dot(pn);
++		  pos = (ppos.length()/dir.dot(-pn))*dir;
++		  intersection = l.get_position();
++		  intersection += pos;
++		  return 1;
++      }
++	  void transform( const matrix4 &matrix )
++      {
++		  matrix4 invtr = matrix.inverse();
++		  invtr = invtr.transpose();
++		  
++		  vec3 pntOnplane = planenormal * planedistance;
++		  vec3 newPntOnplane;
++		  vec3 newnormal;
++		  
++		  invtr.mult_dir_matrix(planenormal, newnormal);
++		  matrix.mult_vec_matrix(pntOnplane, newPntOnplane);
++		  
++		  newnormal.normalize();
++		  planenormal = newnormal;
++		  planedistance = newPntOnplane.dot(planenormal);
++      }
++	  
++	  bool is_in_half_space( const vec3 &point ) const
++      {
++		  
++		  if(( point.dot(planenormal) - planedistance) < 0.0)
++			  return 0;
++		  return 1;
++      }
++	  
++	  
++	  real distance( const vec3 & point ) const 
++      {
++		  return planenormal.dot(point - planenormal*planedistance);
++      }
++	  
++	  const vec3 &get_normal() const
++      {
++		  return planenormal;
++      }
++	  
++	  
++	  real get_distance_from_origin() const
++      {
++		  return planedistance;
++      }
++	  
++	  
++	  friend bool operator == ( const plane & p1, const plane & p2 );
++	  
++	  
++	  friend bool operator != ( const plane & p1, const plane & p2 );
++	  
++  //protected:
++	  vec3 planenormal;
++	  real planedistance;
++  };
++  
++  inline
++  bool operator == (const plane & p1, const plane & p2 )
++  {
++	  return (  p1.planedistance == p2.planedistance && p1.planenormal == p2.planenormal);
++  }
++  
++  inline
++  bool operator != ( const plane & p1, const plane & p2 )
++  { return  ! (p1 == p2); }
++  
++  
++
++  } // "ns_##GLH_REAL"
++
++  // make common typedefs...
++#ifdef GLH_REAL_IS_FLOAT
++  typedef GLH_REAL_NAMESPACE::vec2 vec2f;
++  typedef GLH_REAL_NAMESPACE::vec3 vec3f;
++  typedef GLH_REAL_NAMESPACE::vec4 vec4f;
++  typedef GLH_REAL_NAMESPACE::quaternion quaternionf;
++  typedef GLH_REAL_NAMESPACE::quaternion rotationf;
++  typedef GLH_REAL_NAMESPACE::line linef;
++  typedef GLH_REAL_NAMESPACE::plane planef;
++  typedef GLH_REAL_NAMESPACE::matrix4 matrix4f;
++#endif
++
++  
++
++
++}  // namespace glh
++
++
++
++#endif
++

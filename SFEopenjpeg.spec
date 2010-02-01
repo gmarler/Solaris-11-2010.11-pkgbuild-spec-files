@@ -39,6 +39,8 @@ rm -rf $RPM_BUILD_ROOT
 export prefix=%{_prefix}
 cd trunk
 make install DESTDIR=$RPM_BUILD_ROOT
+cd $RPM_BUILD_ROOT/%{_libdir}
+ln -s ./libopenjpeg.so.* ./libopenjpeg.so
 
 %clean
 rm -rf $RPM_BUILD_ROOT
