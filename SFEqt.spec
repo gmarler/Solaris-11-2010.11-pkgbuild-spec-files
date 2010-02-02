@@ -5,6 +5,8 @@
 
 %include Solaris.inc
 
+%define cc_is_gcc 1
+
 Name:                SFEqt
 Summary:             Cross-platform development framework/toolkit
 URL:                 http://trolltech.com/products/qt
@@ -17,8 +19,8 @@ SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 
-Requires: SFEgccruntime
-BuildRequires: SFEgcc
+Requires: SUNWgccruntime
+BuildRequires: SUNWgcc
 #FIXME: Requires: SUNWxorg-mesa
 # Guarantee X/freetype environment concisely (hopefully):
 Requires: SUNWGtku
@@ -43,9 +45,10 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
      CPUS=1
 fi
 
-export CC=/usr/gnu/bin/gcc
-export CXX=/usr/gnu/bin/g++
+export CC=gcc
+export CXX=g++
 export CFLAGS="-O4 -fPIC -DPIC -Xlinker -i -fno-omit-frame-pointer"
+export CXXFLAGS="%gcc_cxx_optflags"
 export LDFLAGS="%_ldflags"
 
 echo yes | ./configure -prefix %{_prefix} \
@@ -101,17 +104,22 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/doc/*
 
 %changelog
+* Tue Feb 02 2010 - Brian Cameron
+- Fix spec-file so it builds.  Now use define cc_is_gcc, for example.
 * Mar 07 2009 - Thomas Wagner
-- rework shared patch qt-01-use_bash.diff (to be more independent of qt version SFEqt SFEqt4 in verison 4.x / 4.5)
+- rework shared patch qt-01-use_bash.diff (to be more independent of qt version
+  SFEqt SFEqt4 in verison 4.x / 4.5)
 * Wed Mar 04 2009 - Thomas Wagner
 - can't find libcstd++.6.*, add to configure:
-  -L /usr/gnu/lib -R /usr/gnu/lib (gcc4, for gcc3 this would be sfw instead gnu)
+  -L /usr/gnu/lib -R /usr/gnu/lib (gcc4, for gcc3 this would be sfw instead
+  gnu)
 - enable configure's hint -no-exceptions (smaller code, less memory)
-- force to SFEgcc 4.x because sfw/gcc3 failed to compile qdrawhelper_mmx3dnow.cpp
-  with missing mm3dnow.h (to be found only in gcc4)
+- force to SFEgcc 4.x because sfw/gcc3 failed to compile
+  qdrawhelper_mmx3dnow.cpp with missing mm3dnow.h (to be found only in gcc4)
   (change Requires from SUNWgccruntime to SFEgcc(runtime),
    <CC|CXX>=/usr/gnu/bin/<gcc|g++>)
-  ##TODO## is this a failure of configure/something else to depend on a *.h not present?
+  ##TODO## is this a failure of configure/something else to depend on a *.h not
+  present?
 * Mon Nov 24 2008 - alexander@skwar.name
 - Add qt-01-use_bash.diff, which replaces all calls to sh with bash,
   because Qt won't build when sh isn't bash.

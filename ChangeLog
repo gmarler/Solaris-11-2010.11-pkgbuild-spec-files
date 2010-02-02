@@ -1,5 +1,10 @@
 2010-02-01  Brian Cameron  <brian.cameron@sun.com>
 
+	* SFEsecondlife.spec: Fix for debug builds.
+	* SFEqt.spec: Fix so it builds.
+
+2010-02-01  Brian Cameron  <brian.cameron@sun.com>
+
 	* SFEsecondlife.spec, patches/secondlife-01-solaris.diff: New
 	  spec file for building the SecondLife client version 1.23.4.
 	* SFEbdb.spec: Bump to 4.8.26.

@@ -84,7 +84,11 @@ export LDFLAGS="%{_ldflags} -L%{_cxx_libdir} -R%{_cxx_libdir}"
 cd indra
 ./develop.py clean
 ./develop.py
+%if %option_with_debug
+./develop.py --type=Debug build
+%else
 ./develop.py build
+%endif
 
 %install
 
@@ -130,5 +134,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/secondlife/*
 
 %changelog
+* Tue Feb 02 2010 - Brian Cameron  <brian.cameron@sun.com>
+- Add --type=Debug argument to build when debug is enabled.
 * Fri Jan 29 2010 - Brian Cameron  <brian.cameron@sun.com>
 - Created with version 1.7.0.
