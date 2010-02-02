@@ -1,0 +1,6 @@
+<FilesMatch "(ftp|install)\.php$">
+  AuthName "TYPOlight back end"
+  AuthType Basic
+  AuthUserFile .htpasswd
+  require valid-user
+</FilesMatch>

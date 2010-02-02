@@ -1,0 +1,34 @@
+# copy this file over from samples-conf.d to conf.d and reload your apache configuration
+#
+# Use name-based virtual hosting.
+# (you may include conf.d/vhosts.conf to get the line below)
+#NameVirtualHost *:80
+
+
+
+<VirtualHost *:80>
+    ServerAdmin webmaster@localhost
+    DocumentRoot "/var/typolight/"
+    ServerName typolight
+    ServerAlias typolight.yourdomain.com
+    <Directory /var/typolight>
+        Options MultiViews Indexes FollowSymLinks SymlinksIfOwnerMatch Includes ExecCGI
+        AllowOverride FileInfo AuthConfig Indexes
+        Order allow,deny
+        Allow from all
+    </Directory>
+    ErrorLog "/var/apache2/2.2/logs/typolight.yourdomain.com-error_log"
+    CustomLog "/var/apache2/2.2/logs/typolight.yourdomain.com-access_log" common
+    <IfModule mod_php5.c>
+    php_admin_flag short_open_tag on
+    php_admin_flag safe_mode off
+    php_admin_flag magic_quotes_gpc on
+    php_admin_flag display_errors on
+#    php_admin_value session.save_handler "memcache"
+    php_admin_value session.save_handler "files"
+    </IfModule>
+</VirtualHost>
+ 
+ 
+ 
+ 
