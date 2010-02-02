@@ -1,3 +1,7 @@
+2010-02-02  Thomas Wagner  <tom68@users.sourceforge.net>
+
+        * SFEtypolight.spec: *new* - slim CMS using mysql (and other DB) - nothing in common with typo3
+
 2010-02-01  Brian Cameron  <brian.cameron@sun.com>
 
 	* SFEsecondlife.spec: Fix for debug builds.
