@@ -10,7 +10,7 @@
 Name:                    SFEsugar-base
 Summary:                 Sugar Learning Platform Base
 URL:                     http://www.sugarlabs.org/
-Version:                 0.84.1
+Version:                 0.87.2
 Source:                  http://download.sugarlabs.org/sources/sucrose/glucose/sugar-base/sugar-base-%{version}.tar.bz2
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -19,9 +19,11 @@ BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 Requires:                SUNWgtk2
 Requires:                SUNWgnome-config
 Requires:                SUNWgnome-python26-libs
+Requires:                SFEpython26-decorator
 BuildRequires:           SUNWgtk2-devel
 BuildRequires:           SUNWgnome-config-devel
 BuildRequires:           SUNWgnome-python26-libs-devel
+BuildRequires:           SFEpython26-decorator
 
 %if %build_l10n
 %package l10n
@@ -73,7 +75,6 @@ rm -rf $RPM_BUILD_ROOT
 %defattr (-, root, bin)
 %dir %attr (0755, root, bin) %{_libdir}
 %{_libdir}/python%{pythonver}/vendor-packages/sugar
-%dir %attr (0755, root, sys) %{_datadir}
 
 %if %build_l10n
 %files l10n
@@ -86,5 +87,7 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Tue Feb 02 2010 - Brian Cameron  <brian.cameron@sun.com>
+- Bump to 0.87.2.
 * Sun Jul 08 2009 - Brian Cameron  <brian.cameron@sun.com>
 - Created with 0.84.1.

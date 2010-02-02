@@ -17,7 +17,6 @@ Name:                    SUNWlibtelepathy
 Summary:                 A GLib library to ease writing Telepathy clients in glib
 Version:                 %{default_pkg_version}
 SUNW_BaseDir:            %{_basedir}
-SUNW_Copyright:          %{name}.copyright
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 
 %include default-depend.inc

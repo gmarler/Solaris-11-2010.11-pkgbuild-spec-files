@@ -1,81 +1,65 @@
---- sugar-0.84.6/data/em.py-orig	2009-07-08 10:34:20.746278000 -0500
-+++ sugar-0.84.6/data/em.py	2009-07-08 10:34:26.519842000 -0500
-@@ -1,4 +1,4 @@
--#!/usr/bin/env python
-+#!/usr/bin/python2.6
- #
- # $Id: //projects/empy/em.py#146 $ $Date: 2003/10/27 $
- 
---- sugar-0.84.6/bin/sugar-install-bundle-orig	2009-07-08 10:32:10.900594000 -0500
-+++ sugar-0.84.6/bin/sugar-install-bundle	2009-07-08 10:32:16.487542000 -0500
-@@ -1,4 +1,4 @@
--#!/usr/bin/env python
-+#!/usr/bin/python2.6
- import sys
- 
- from sugar.bundle.activitybundle import ActivityBundle
---- sugar-0.84.6/bin/sugar-ui-check-orig	2009-07-08 10:32:22.083744000 -0500
-+++ sugar-0.84.6/bin/sugar-ui-check	2009-07-08 10:32:27.216755000 -0500
-@@ -1,4 +1,4 @@
--#!/usr/bin/env python
-+#!/usr/bin/python2.6
- # Copyright (C) 2008, Red Hat, Inc.
- #
- # This program is free software; you can redistribute it and/or modify
---- sugar-0.84.6/bin/sugar-session-orig	2009-07-08 10:32:31.957925000 -0500
-+++ sugar-0.84.6/bin/sugar-session	2009-07-08 10:32:37.965484000 -0500
+--- sugar-0.87.3/bin/sugar-session-orig	2010-02-02 13:00:28.456268622 -0600
++++ sugar-0.87.3/bin/sugar-session	2010-02-02 13:01:41.633535000 -0600
 @@ -1,4 +1,4 @@
 -#!/usr/bin/env python
 +#!/usr/bin/python2.6
  # Copyright (C) 2006, Red Hat, Inc.
+ # Copyright (C) 2009, One Laptop Per Child Association Inc
  #
- # This program is free software; you can redistribute it and/or modify
---- sugar-0.84.6/bin/sugar-activity-orig	2009-07-08 10:32:47.217348000 -0500
-+++ sugar-0.84.6/bin/sugar-activity	2009-07-08 10:32:52.795593000 -0500
-@@ -1,4 +1,4 @@
--#!/usr/bin/env python
-+#!/usr/bin/python2.6
- 
- # Copyright (C) 2006-2008, Red Hat, Inc.
- #
---- sugar-0.84.6/bin/sugar-launch-orig	2009-07-08 10:32:58.081282000 -0500
-+++ sugar-0.84.6/bin/sugar-launch	2009-07-08 10:33:03.808902000 -0500
+--- sugar-0.87.3/bin/sugar-launch-orig	2010-02-02 13:00:51.019984553 -0600
++++ sugar-0.87.3/bin/sugar-launch	2010-02-02 13:01:35.536884078 -0600
 @@ -1,4 +1,4 @@
 -#!/usr/bin/env python
 +#!/usr/bin/python2.6
  
  # Copyright (C) 2007, Red Hat, Inc.
  #
---- sugar-0.84.6/bin/sugar-emulator-orig	2009-07-08 10:33:08.899148000 -0500
-+++ sugar-0.84.6/bin/sugar-emulator	2009-07-08 10:33:14.243010000 -0500
+--- sugar-0.87.3/bin/sugar-activity-orig	2010-02-02 13:00:24.596152944 -0600
++++ sugar-0.87.3/bin/sugar-activity	2010-02-02 13:01:04.303843633 -0600
 @@ -1,4 +1,4 @@
 -#!/usr/bin/env python
 +#!/usr/bin/python2.6
+ 
  # Copyright (C) 2006-2008, Red Hat, Inc.
  #
- # This program is free software; you can redistribute it and/or modify
---- sugar-0.84.6/bin/sugar-control-panel-orig	2009-07-08 10:31:47.294982000 -0500
-+++ sugar-0.84.6/bin/sugar-control-panel	2009-07-08 10:31:54.496326000 -0500
+--- sugar-0.87.3/bin/sugar-ui-check-orig	2010-02-02 13:00:43.817912287 -0600
++++ sugar-0.87.3/bin/sugar-ui-check	2010-02-02 13:01:48.145870025 -0600
 @@ -1,4 +1,4 @@
 -#!/usr/bin/env python
 +#!/usr/bin/python2.6
  # Copyright (C) 2008, Red Hat, Inc.
  #
  # This program is free software; you can redistribute it and/or modify
---- sugar-0.84.6/bin/sugar.in-orig	2009-07-08 10:47:03.695918000 -0500
-+++ sugar-0.84.6/bin/sugar.in	2009-07-08 10:47:14.540391000 -0500
-@@ -1,10 +1,12 @@
- #!/bin/sh
+--- sugar-0.87.3/bin/sugar-control-panel-orig	2010-02-02 13:00:19.330422454 -0600
++++ sugar-0.87.3/bin/sugar-control-panel	2010-02-02 13:01:13.024490449 -0600
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/python2.6
+ # Copyright (C) 2008, Red Hat, Inc.
+ #
+ # This program is free software; you can redistribute it and/or modify
+--- sugar-0.87.3/bin/sugar-install-bundle-orig	2010-02-02 13:00:39.348714698 -0600
++++ sugar-0.87.3/bin/sugar-install-bundle	2010-02-02 13:01:28.864832912 -0600
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/python2.6
+ import sys
  
- if test -z "$SUGAR_SCALING"; then
--    export SUGAR_SCALING=100
-+    SUGAR_SCALING=100
-+    export SUGAR_SCALING
+ from sugar.bundle.activitybundle import ActivityBundle
+--- sugar-0.87.3/bin/sugar.in-orig	2010-02-02 13:02:09.543970535 -0600
++++ sugar-0.87.3/bin/sugar.in	2010-02-02 13:02:51.316313786 -0600
+@@ -1,4 +1,4 @@
+-#!/bin/sh
++#!/bin/bash
+ 
+ usage() {
+     cat <<EOF
+@@ -53,7 +53,7 @@ if [ -f ~/.sugar/debug ]; then
+         . ~/.sugar/debug
  fi
  
--export GTK2_RC_FILES="@prefix@/share/sugar/data/sugar-$SUGAR_SCALING.gtkrc"
-+GTK2_RC_FILES="@prefix@/share/sugar/data/sugar-$SUGAR_SCALING.gtkrc"
-+export GTK2_RC_FILES
+-echo Xcursor.theme: sugar | xrdb -merge
++echo Xcursor.theme: sugar | /usr/X11/bin/xrdb -merge
+ metacity --no-force-fullscreen -d $DISPLAY &
  
- if ! test -f "$GTK2_RC_FILES"; then
-     echo "sugar: ERROR: Gtk theme for scaling $SUGAR_SCALING not available in path $GTK2_RC_FILES"
+ exec sugar-session

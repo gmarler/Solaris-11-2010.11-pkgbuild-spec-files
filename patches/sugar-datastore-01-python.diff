@@ -1,0 +1,16 @@
+--- sugar-datastore-0.87.2/bin/datastore-service-orig	2010-02-02 16:10:55.916704332 -0600
++++ sugar-datastore-0.87.2/bin/datastore-service	2010-02-02 16:11:07.258130834 -0600
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/python2.6
+ import sys, os, signal, logging
+ import gobject
+ import dbus.service
+--- sugar-datastore-0.87.2/bin/copy-from-journal-orig	2010-02-02 16:11:02.617154241 -0600
++++ sugar-datastore-0.87.2/bin/copy-from-journal	2010-02-02 16:11:13.778785421 -0600
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/python2.6
+ #
+ # Simple script to export a file from the datastore
+ # Reinier Heeres, <reinier@heeres.eu>, 2007-12-24

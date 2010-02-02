@@ -5,13 +5,16 @@
 #
 %include Solaris.inc
 
+%define cc_is_gcc 1
+%include base.inc
+
 %define	src_name xapian-omega
-%define	src_url	http://www.oligarchy.co.uk/xapian/1.0.2
+%define	src_url	http://www.oligarchy.co.uk/xapian/1.0.17
 
 Name:                SFExapian-omega
 Summary:             Search Engine built on Xapian
 Group:               System/Libraries
-Version:             1.0.2
+Version:             1.0.17
 Source:              %{src_url}/%{src_name}-%{version}.tar.gz
 SUNW_Copyright:      %{name}.copyright
 SUNW_BaseDir:        %{_basedir}
@@ -34,8 +37,9 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
      CPUS=1
 fi
 
-export CFLAGS="%optflags"
-export CXXFLAGS="%cxx_optflags"
+export CC=gcc
+export CXX=g++
+export CXXFLAGS="%gcc_cxx_optflags"
 export LDFLAGS="%_ldflags -lm"
 
 aclocal
@@ -81,5 +85,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_sysconfdir}
 
 %changelog
+* Tue Feb 02 2010 - brian.cameron@sun.com
+- Bump to 1.0.17.
 * Sun Jul 29 2007 - dougs@truemail.co.th
 - Initial spec

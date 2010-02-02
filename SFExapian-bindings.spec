@@ -5,13 +5,17 @@
 #
 %include Solaris.inc
 
+%define cc_is_gcc 1
+%define pythonver 2.6
+%include base.inc
+
 %define	src_name xapian-bindings
-%define	src_url	http://www.oligarchy.co.uk/xapian/1.0.2
+%define	src_url	http://www.oligarchy.co.uk/xapian/1.0.17
 
 Name:                SFExapian-bindings
 Summary:             Xapian bindings
 Group:               System/Libraries
-Version:             1.0.2
+Version:             1.0.17
 Source:              %{src_url}/%{src_name}-%{version}.tar.gz
 SUNW_BaseDir:        %{_basedir}
 SUNW_Copyright:       %{name}.copyright
@@ -19,6 +23,8 @@ BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 BuildRequires: SFExapian-core-devel
 Requires: SFExapian-core
+Requires: SUNWruby18u
+BuildRequires: SUNWruby18u
 
 %prep
 %setup -q -n %{src_name}-%version
@@ -29,8 +35,10 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
      CPUS=1
 fi
 
-export CFLAGS="%optflags"
-export CXXFLAGS="%cxx_optflags"
+export PYTHON=/usr/bin/python%{pythonver}
+export CC=gcc
+export CXX=g++
+export CXXFLAGS="%gcc_cxx_optflags"
 export LDFLAGS="%_ldflags -lm"
 
 aclocal
@@ -67,10 +75,12 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, sys) %{_datadir}
 %dir %attr (0755, root, other) %{_datadir}/doc
 %{_datadir}/doc/*
+%{_prefix}/ruby
 
 %changelog
+* Tue Feb 02 2010 - brian.cameron@sun.com
+- Bump to 1.0.17.
 * Tue Oct 21 2008  - Pradhap Devarajan <pradhap (at) gmail.com>
 - Fix copyright 
-
 * Sun Jul 29 2007 - dougs@truemail.co.th
 - Initial spec

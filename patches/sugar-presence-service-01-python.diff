@@ -1,0 +1,16 @@
+--- sugar-presence-service-0.87.1/src/main.py-orig	2010-02-02 16:07:15.133453615 -0600
++++ sugar-presence-service-0.87.1/src/main.py	2010-02-02 16:07:43.146231744 -0600
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/python2.6
+ # vi: ts=4 ai noet 
+ #
+ # Copyright (C) 2006, Red Hat, Inc.
+--- sugar-presence-service-0.87.1/src/sugar-presence-service.in-orig	2010-02-02 16:07:30.380704506 -0600
++++ sugar-presence-service-0.87.1/src/sugar-presence-service.in	2010-02-02 16:07:36.993975693 -0600
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/python2.6
+ # Copyright (C) 2008, Red Hat, Inc.
+ #
+ # This program is free software; you can redistribute it and/or modify

@@ -10,9 +10,11 @@
 Name:                    SFEsugar
 Summary:                 Sugar Learning Platform
 URL:                     http://www.sugarlabs.org/
-Version:                 0.84.6
+Version:                 0.87.3
 Source:                  http://download.sugarlabs.org/sources/sucrose/glucose/sugar/sugar-%{version}.tar.bz2
+Source1:                 sugar.desktop
 Patch1:                  sugar-01-python.diff
+Patch2:                  sugar-02-mouse.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 
@@ -23,10 +25,12 @@ Requires:                SUNWgnome-python26-libs
 Requires:                SFEsugar-base
 Requires:                SFEsugar-toolkit
 Requires:                SFEhippodraw
+Requires:                SFEpython26-telepathy
 BuildRequires:           SUNWgtk2-devel
 BuildRequires:           SUNWgnome-config-devel
 BuildRequires:           SUNWgnome-python26-libs-devel
 BuildRequires:           SFEhippodraw-devel
+BuildRequires:           SFEpython26-telepathy
 
 %package root
 Summary:      %{summary} - / filesystem
@@ -44,6 +48,7 @@ Requires:     %{name}
 %prep
 %setup -q -n sugar-%version
 %patch1 -p1
+%patch2 -p1
 
 %build
 export PYTHON=/usr/bin/python%{pythonver}
@@ -60,6 +65,9 @@ mkdir -p $RPM_BUILD_ROOT%{_libdir}/python%{pythonver}/vendor-packages
 mv $RPM_BUILD_ROOT%{_libdir}/python%{pythonver}/site-packages/* \
    $RPM_BUILD_ROOT%{_libdir}/python%{pythonver}/vendor-packages/
 rmdir $RPM_BUILD_ROOT%{_libdir}/python%{pythonver}/site-packages
+
+mkdir -p $RPM_BUILD_ROOT/usr/share/xsessions
+cp %{SOURCE1} $RPM_BUILD_ROOT/usr/share/xsessions
 
 %if %build_l10n
 %else
@@ -81,11 +89,18 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, bin) %{_libdir}
 %{_libdir}/python%{pythonver}/vendor-packages/jarabe
 %dir %attr (0755, root, sys) %{_datadir}
+%dir %attr (0755, root, other) %{_datadir}/applications
+%{_datadir}/applications/*
+%dir %attr (0755, root, other) %{_datadir}/icons
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/scalable
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/scalable/apps
+%attr (-, root, other) %{_datadir}/icons/hicolor/scalable/apps/*
 %dir %attr (0755, root, root) %{_datadir}/mime
 %dir %attr (0755, root, root) %{_datadir}/mime/packages
 %attr(644,root,bin) %{_datadir}/mime/packages/sugar.xml
 %{_datadir}/sugar
-%{_datadir}/xsessions
+%{_datadir}/xsessions/*
 
 %files root
 %defattr (-, root, sys)
@@ -106,5 +121,7 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Tue Feb 02 2010 - Brian Cameron  <brian.cameron@sun.com>
+- Bump to 0.87.3.
 * Sun Jul 08 2009 - Brian Cameron  <brian.cameron@sun.com>
 - Created with 0.84.6.

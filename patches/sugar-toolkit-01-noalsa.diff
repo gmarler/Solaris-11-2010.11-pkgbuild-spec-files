@@ -35,18 +35,135 @@
  	$(EXT_CFLAGS)		\
  	$(PYTHON_INCLUDES)
  
---- sugar-toolkit-0.84.4/src/sugar/acme-volume-alsa.c-orig	2009-07-05 08:29:28.181254000 -0500
-+++ sugar-toolkit-0.84.4/src/sugar/acme-volume-alsa.c	2009-07-05 08:29:43.693795000 -0500
-@@ -24,6 +24,7 @@
- #include "config.h"
- #endif
+--- sugar-toolkit-0.87.3/src/sugar/acme-volume-alsa.c-orig	2010-02-02 14:19:37.593373355 -0600
++++ sugar-toolkit-0.87.3/src/sugar/acme-volume-alsa.c	2010-02-02 14:23:08.345907689 -0600
+@@ -26,7 +26,9 @@
  
-+#ifdef HAVE_ALSA
  #include "acme-volume-alsa.h"
  
++#ifdef HAVE_ALSA
  #include <alsa/asoundlib.h>
-@@ -315,3 +316,4 @@ acme_volume_alsa_class_init (AcmeVolumeA
- 	volume_class->get_threshold = acme_volume_alsa_get_threshold;
++#endif
+ 
+ #ifndef DEFAULT_CARD
+ #define DEFAULT_CARD "default"
+@@ -45,8 +47,10 @@ struct AcmeVolumeAlsaPrivate
+ {
+ 	long pmin, pmax;
+ 	gboolean has_mute, has_master;
++#ifdef HAVE_ALSA
+ 	snd_mixer_t *handle;
+ 	snd_mixer_elem_t *elem;
++#endif
+ 	int saved_volume;
+ 	guint timer_id;
+ };
+@@ -85,6 +89,7 @@ acme_volume_alsa_finalize (GObject *obje
+ static void
+ acme_volume_alsa_set_mute (AcmeVolume *vol, gboolean val)
+ {
++#ifdef HAVE_ALSA
+ 	AcmeVolumeAlsa *self = (AcmeVolumeAlsa *) vol;
+ 
+ 	if (acme_volume_alsa_open (self) == FALSE)
+@@ -111,11 +116,13 @@ acme_volume_alsa_set_mute (AcmeVolume *v
+ 			acme_volume_alsa_set_volume (vol,
+ 					self->_priv->saved_volume);
+ 	}
++#endif
  }
  
+ static gboolean
+ acme_volume_alsa_get_mute (AcmeVolume *vol)
+ {
++#ifdef HAVE_ALSA
+ 	AcmeVolumeAlsa *self = (AcmeVolumeAlsa *) vol;
+ 	int ival;
+ 
+@@ -135,11 +142,15 @@ acme_volume_alsa_get_mute (AcmeVolume *v
+ 
+ 		return (acme_volume_alsa_get_volume (vol) == 0);
+ 	}
++#else
++        return FALSE;
 +#endif
+ }
+ 
+ static int
+ acme_volume_alsa_get_volume (AcmeVolume *vol)
+ {
++#ifdef HAVE_ALSA
+ 	AcmeVolumeAlsa *self = (AcmeVolumeAlsa *) vol;
+ 	long lval, rval;
+ 	int tmp;
+@@ -160,11 +171,15 @@ acme_volume_alsa_get_volume (AcmeVolume 
+ 	tmp = ROUND (alsa_vol);
+ 
+ 	return tmp;
++#else
++        return 0;
++#endif
+ }
+ 
+ static void
+ acme_volume_alsa_set_volume (AcmeVolume *vol, int val)
+ {
++#ifdef HAVE_ALSA
+ 	AcmeVolumeAlsa *self = (AcmeVolumeAlsa *) vol;
+ 	float volume;
+ 	int tmp;
+@@ -179,11 +194,13 @@ acme_volume_alsa_set_volume (AcmeVolume 
+ 	snd_mixer_selem_set_playback_volume_all (self->_priv->elem, tmp);
+ 
+ 	acme_volume_alsa_close (self);
++#endif
+ }
+ 
+ static int
+ acme_volume_alsa_get_threshold (AcmeVolume *vol)
+ {
++#ifdef HAVE_ALSA
+ 	AcmeVolumeAlsa *self = (AcmeVolumeAlsa *) vol;
+ 	int steps;
+ 
+@@ -194,11 +211,15 @@ acme_volume_alsa_get_threshold (AcmeVolu
+ 
+ 	steps = self->_priv->pmax - self->_priv->pmin;
+ 	return (steps > 0) ? 100 / steps + 1 : 1;
++#else
++        return 1;
++#endif
+ }
+ 
+ static gboolean
+ acme_volume_alsa_close_real (AcmeVolumeAlsa *self)
+ {
++#ifdef HAVE_ALSA
+ 	if (self->_priv == NULL)
+ 		return FALSE;
+ 
+@@ -211,13 +232,14 @@ acme_volume_alsa_close_real (AcmeVolumeA
+ 	}
+ 
+ 	self->_priv->timer_id = 0;
+-
++#endif
+ 	return FALSE;
+ }
+ 
+ static gboolean
+ acme_volume_alsa_open (AcmeVolumeAlsa *self)
+ {
++#ifdef HAVE_ALSA
+ 	snd_mixer_selem_id_t *sid;
+ 	snd_mixer_t *handle;
+ 	snd_mixer_elem_t *elem;
+@@ -286,6 +308,7 @@ acme_volume_alsa_open (AcmeVolumeAlsa *s
+ 
+ bail:
+ 	acme_volume_alsa_close_real (self);
++#endif
+ 	return FALSE;
+ }
+ 
+ 

@@ -1,6 +1,37 @@
+2010-02-02  Brian Cameron  <brian.cameron@sun.com>
+
+	* SFEsugar.spec, ext-sources/sugar.desktop: Bump to 0.87.3 and
+	  add desktop file.
+	* patches/sugar-01-python.diff: Rework.
+	* patches/sugar-02-mouse.diff: Add patch so that sugar does not mess
+	  up the mouse buttons.
+	* SFEsugar-base.spec: Bump to 0.87.2.
+	* SFEsugar-toolkit.spec, patches/sugar-toolkit-01-noalsa.diff: Bump
+	  to 0.87.3 and rework patch.
+	* SFEsugar-artwork.spec: Add spec-file with version 0.87.1.
+	* SFEsugar-presence-service.spec,
+	  patches/sugar-presence-service-01-python.diff: Add spec-file with
+	  verson 0.87.1.  Add patch needed to work.
+	* SFEsugar-datastore.spec, patches/sugar-datastore-01-python.diff:
+	  Add spec-file with version 0.87.2.  Add patch needed to work.
+	* SFEpython26-cjson.spec: Add spec-file with version 1.0.5.
+	* SFEpython26-decorator.spec: Add spec-file with version 3.1.2.
+	* SFEicon-slicer.spec: Add spec-file with version 0.3.
+	* SFEhippo-canvas.spec: Add spec-file with version 0.3.0.
+	* SFEpython26-telepathy.spec: Add with version 0.15.15.
+	* SUNWlibtelepathy.spec, SUNWtelepathy-glib.spec: Remove 
+	  SUNW_Copyright line since there is no copyright file.
+	* base-specs/telepathy-glib.spec,
+	  patches/telepathy-glib-01-struct.diff: Bump to 0.10.0 and remove
+	  upstream patch.
+	* SFEhippodraw.spec: Now build with GCC.
+	* SFExapian-core.spec, SFExapian-bindings.spec, SFExapian-omega.spec:
+	  bump to 1.0.17 and now build with GCC.
+
 2010-02-02  Thomas Wagner  <tom68@users.sourceforge.net>
 
-        * SFEtypolight.spec: *new* - slim CMS using mysql (and other DB) - nothing in common with typo3
+        * SFEtypolight.spec: *new* - slim CMS using mysql (and other DB) -
+	  nothing in common with typo3
 
 2010-02-01  Brian Cameron  <brian.cameron@sun.com>
 

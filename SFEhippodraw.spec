@@ -1,11 +1,12 @@
 #
-# Copyright 2008 Sun Microsystems, Inc.
+# Copyright 2010 Sun Microsystems, Inc.
 # This file and all modifications and additions to the pristine
 # package are under the same license as the package itself.
-
-%define pythonver 2.6
-
 %include Solaris.inc
+
+%define cc_is_gcc 1
+%define pythonver 2.6
+%include base.inc
 
 Name:                SFEhippodraw
 Summary:             Highly interactive data analysis environment
@@ -18,10 +19,10 @@ SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 
-Requires: SFEboost
-Requires: SFEqt4
-BuildRequires: SFEboost-devel
-BuildRequires: SFEqt4-devel
+Requires: SFEboost-gpp
+Requires: SFEqt
+BuildRequires: SFEboost-gpp-devel
+BuildRequires: SFEqt-devel
 
 %package devel
 Summary:        %{summary} - development files
@@ -35,6 +36,11 @@ Requires: %name
 %patch2 -p1
 
 %build
+export CC=gcc
+export CXX=g++
+export CXXFLAGS="%gcc_cxx_optflags"
+export LDFLAGS="%{_ldflags} -L%{_cxx_libdir} -R%{_cxx_libdir}"
+
 export PYTHON=/usr/bin/python%{pythonver}
 
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -42,15 +48,6 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
      CPUS=1
 fi
 
-##TODO## this might be omitted, if pkgbuild/environment was installed with SunStudio as default compiler
-export CC=cc
-export CXX=CC
-##TODO## check build flags if they better be jds cbe default and make sure they are honored by configure
-export CFLAGS=""
-export CXXFLAGS="-library=stlport4 -staticlib=stlport4"
-export LDFLAGS="-library=stlport4 -staticlib=stlport4 -lCrun"
-
-#aclocal $ACLOCAL_FLAGS -I config/m4
 autoheader
 automake -a -c -f
 autoconf
@@ -58,8 +55,8 @@ echo yes | ./configure -prefix %{_prefix} \
            -sysconfdir %{_sysconfdir} \
            --enable-numpybuild \
            --enable-boostbuild \
-           --with-boost-root=%{_prefix} \
-           --with-boot-include=%{_includedir}/boost \
+           --with-boost-lib=/usr/lib/g++/3.4.3 \
+           --with-boost-include=/usr/sfw/include/c++/3.4.3 \
            --with-boost-libname=boost_python
 
 make -j$CPUS

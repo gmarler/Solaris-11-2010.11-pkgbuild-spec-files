@@ -1,0 +1,8 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Sugar
+Comment=This session logs you into the Sugar Environment
+Exec=/usr/bin/sugar
+TryExec=/usr/bin/sugar
+Icon=
+Type=Application

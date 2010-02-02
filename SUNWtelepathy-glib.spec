@@ -17,7 +17,6 @@ Name:                    SUNWtelepathy-glib
 Summary:                 A GLib-based helper library for clients and connection managers
 Version:                 %{default_pkg_version}
 SUNW_BaseDir:            %{_basedir}
-SUNW_Copyright:          %{name}.copyright
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 
 %include default-depend.inc

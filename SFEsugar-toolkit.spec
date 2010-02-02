@@ -10,7 +10,7 @@
 Name:                    SFEsugar-toolkit
 Summary:                 Sugar Learning Platform Toolkit
 URL:                     http://www.sugarlabs.org/
-Version:                 0.84.4
+Version:                 0.87.3
 Source:                  http://download.sugarlabs.org/sources/sucrose/glucose/sugar-toolkit/sugar-toolkit-%{version}.tar.bz2
 Patch1:                  sugar-toolkit-01-noalsa.diff
 SUNW_BaseDir:            %{_basedir}
@@ -21,10 +21,12 @@ Requires:                SUNWgtk2
 Requires:                SUNWgnome-config
 Requires:                SUNWgnome-python26-libs
 Requires:                SFEhippodraw
+Requires:                SFEpython26-telepathy
 BuildRequires:           SUNWgtk2-devel
 BuildRequires:           SUNWgnome-config-devel
 BuildRequires:           SUNWgnome-python26-libs-devel
 BuildRequires:           SFEhippodraw-devel
+BuildRequires:           SFEpython26-telepathy
 
 %if %build_l10n
 %package l10n
@@ -93,5 +95,7 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Tue Feb 02 2010 - Brian Cameron  <brian.cameron@sun.com>
+- Bump to 0.87.3.
 * Sun Jul 08 2009 - Brian Cameron  <brian.cameron@sun.com>
 - Created with 0.84.1.

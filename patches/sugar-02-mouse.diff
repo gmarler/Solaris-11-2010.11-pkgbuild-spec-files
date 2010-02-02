@@ -1,0 +1,11 @@
+--- sugar-0.87.3/bin/sugar-session-orig	2010-02-02 14:56:21.936520319 -0600
++++ sugar-0.87.3/bin/sugar-session	2010-02-02 14:56:48.312294042 -0600
+@@ -218,8 +218,6 @@ def main():
+     logger.start('shell')
+ 
+     client = gconf.client_get_default()
+-    client.set_string('/apps/metacity/general/mouse_button_modifier',
+-                      'disabled')
+ 
+     timezone = client.get_string('/desktop/sugar/date/timezone')
+     if timezone is not None and timezone:
