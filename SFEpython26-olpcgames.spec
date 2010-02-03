@@ -1,5 +1,5 @@
 #
-# spec file for package SFEpython26-telepathy
+# spec file for package SFEpython26-olpcgames
 #
 # Copyright 2010 Sun Microsystems, Inc.
 # This file and all modifications and additions to the pristine
@@ -8,34 +8,30 @@
 
 %include Solaris.inc
 
-Name:                    SFEpython26-telepathy
-
-Summary:                 Telepathy Python Bindings
-Version:                 0.15.15
-Source:                  http://telepathy.freedesktop.org/releases/telepathy-python/telepathy-python-%{version}.tar.gz
+Name:                    SFEpython26-olpcgames
+Summary:                 Python OLPC Games
+Version:                 1.6
+URL:                     http://wiki.laptop.org/go/OLPCGames
+Source:                  http://dev.laptop.org/~mcfletch/OLPCGames/OLPCGames-%{version}.zip
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 Requires:                SUNWPython26
-Requires:                SUNWlibtelepathy
 BuildRequires:           SUNWPython26-devel
-BuildRequires:           SUNWPython-devel
-BuildRequires:           SUNWlibtelepathy
 
 %include default-depend.inc
 
 %define python_version 2.6
 
 %prep
-%setup -q -n telepathy-python-%{version}
+%setup -q -n OLPCGames-%{version}
 
 %build
 export PYTHON=/usr/bin/python%{python_version}
-./configure --prefix=%{_prefix}
-make
+python%{python_version} setup.py build
 
 %install
 rm -rf $RPM_BUILD_ROOT
-make install DESTDIR=$RPM_BUILD_ROOT
+python%{python_version} setup.py install --root=$RPM_BUILD_ROOT
 
 # move to vendor-packages
 mkdir -p $RPM_BUILD_ROOT%{_libdir}/python%{python_version}/vendor-packages
@@ -55,4 +51,4 @@ rm -rf $RPM_BUILD_ROOT
 
 %changelog
 * Tue Feb 02 2010 - brian.cameron@sun.com
-- Created with version 0.15.15.
+- Created with version 1.0.5.

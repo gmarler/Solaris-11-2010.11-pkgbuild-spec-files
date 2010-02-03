@@ -5,15 +5,16 @@
 #
 %include Solaris.inc
 
-%define python_version  2.4
+%define python_version 2.6
 
 Name:                    SFEpygame
 Summary:                 Python gaming
 URL:                     http://www.pygame.org/
-Version:                 1.8.1
+Version:                 1.9.1
 Source:                  http://www.pygame.org/ftp/pygame-%{version}release.tar.gz
 Patch1:                  pygame-01-scrap.diff
 Patch2:                  pygame-02-noconfirm.diff
+Patch3:                  pygame-03-pgcompat.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 
@@ -34,12 +35,13 @@ Requires: %{name}
 %setup -q -n pygame-%{version}release
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 %build
 
 %install
 rm -rf $RPM_BUILD_ROOT
-python setup.py install --root=$RPM_BUILD_ROOT --prefix=%{_prefix} --no-compile
+python%{python_version} setup.py install --root=$RPM_BUILD_ROOT --prefix=%{_prefix} --no-compile
 
 # move to vendor-packages
 mkdir -p $RPM_BUILD_ROOT%{_libdir}/python%{python_version}/vendor-packages
@@ -60,9 +62,11 @@ rm -rf $RPM_BUILD_ROOT
 %files devel
 %defattr (0755, root, bin)
 %dir %attr (0755, root, bin) %{_includedir}
-%{_includedir}/python2.4/pygame
+%{_includedir}/python%{python_version}/pygame
 
 %changelog
+* Wed Feb 02 2010 - Brian Cameron  <brian.cameron@sun.com>
+- Bump to 1.9.1.
 * Wed Jan 21 2009 - Brian Cameron  <brian.cameron@sun.com>
 - Created with version 1.8.1.
 

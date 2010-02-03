@@ -1,0 +1,15 @@
+--- abiword-2.8.1/src/af/util/xp/ut_endian.h-orig	2010-02-03 09:11:09.705224811 -0600
++++ abiword-2.8.1/src/af/util/xp/ut_endian.h	2010-02-03 09:14:39.497935947 -0600
+@@ -102,6 +102,12 @@
+ 	#if !defined(UT_LITTLE_ENDIAN) && !defined(UT_BIG_ENDIAN)
+ 		#define UT_LITTLE_ENDIAN
+ 	#endif		
++#elif defined (__sun)
++        #if defined (__LITTLE_ENDIAN)
++		#define UT_LITTLE_ENDIAN
++        #else
++		#define UT_BIG_ENDIAN
++        #endif
+ #else /* this is for Linux */
+ 	#include <endian.h>
+ 	#if __BYTE_ORDER == __LITTLE_ENDIAN		

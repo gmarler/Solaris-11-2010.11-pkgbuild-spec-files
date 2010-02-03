@@ -1,0 +1,9 @@
+--- pyabiword-0.8.0/src/Makefile.am-orig	2010-02-03 10:03:18.764676690 -0600
++++ pyabiword-0.8.0/src/Makefile.am	2010-02-03 10:03:25.902645517 -0600
+@@ -1,6 +1,5 @@
+ 
+ AM_CPPFLAGS = 				\
+-	-Wno-long-long 			\
+ 	$(PYTHON_CFLAGS) 		\
+ 	$(PYTHON_INCLUDES) 		\
+ 	$(PYGTK_INCLUDES) 		\

@@ -15,7 +15,8 @@ URL:                     http://pypi.python.org/pypi/python-cjson/
 Source:                  http://pypi.python.org/packages/source/p/python-cjson/python-cjson-%{version}.tar.gz
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
-Requires:                SUNWPython
+Requires:                SUNWPython26
+BuildRequires:           SUNWPython26-devel
 
 %include default-depend.inc
 

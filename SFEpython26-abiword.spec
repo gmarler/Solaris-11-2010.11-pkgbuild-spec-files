@@ -1,5 +1,5 @@
 #
-# spec file for package SFEpython26-telepathy
+# spec file for package SFEpython26-abiword
 #
 # Copyright 2010 Sun Microsystems, Inc.
 # This file and all modifications and additions to the pristine
@@ -8,28 +8,34 @@
 
 %include Solaris.inc
 
-Name:                    SFEpython26-telepathy
-
-Summary:                 Telepathy Python Bindings
-Version:                 0.15.15
-Source:                  http://telepathy.freedesktop.org/releases/telepathy-python/telepathy-python-%{version}.tar.gz
+Name:                    SFEpython26-abiword
+Summary:                 Python abiword
+Version:                 0.8.0
+URL:                     http://www.abisource.com/
+Source:                  http://www.abisource.com/downloads/pyabiword/0.8.0/pyabiword-%{version}.tar.gz
+Patch1:                  pyabiword-01-makefile.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 Requires:                SUNWPython26
-Requires:                SUNWlibtelepathy
+Requires:                SFEabiword
 BuildRequires:           SUNWPython26-devel
-BuildRequires:           SUNWPython-devel
-BuildRequires:           SUNWlibtelepathy
+BuildRequires:           SFEabiword-devel
 
 %include default-depend.inc
 
 %define python_version 2.6
 
 %prep
-%setup -q -n telepathy-python-%{version}
+%setup -q -n pyabiword-%{version}
+%patch1 -p1
 
 %build
 export PYTHON=/usr/bin/python%{python_version}
+export CFLAGS="-I/usr/include/python2.6 $CFLAGS"
+export CXXFLAGS="-I/usr/include/python2.6 $CXXFLAGS"
+export PYGTK_DEFSDIR="/usr/share/pygtk/2.0/defs"
+aclocal $ACLOCAL_FLAGS
+automake -a -c -f
 ./configure --prefix=%{_prefix}
 make
 
@@ -52,7 +58,9 @@ rm -rf $RPM_BUILD_ROOT
 %defattr (-, root, bin)
 %dir %attr (0755, root, bin) %{_libdir}
 %{_libdir}/python%{python_version}/vendor-packages/*
+%dir %attr (0755, root, sys) %{_datadir}
+%{_datadir}/pygtk
 
 %changelog
-* Tue Feb 02 2010 - brian.cameron@sun.com
-- Created with version 0.15.15.
+* Tue Feb 03 2010 - brian.cameron@sun.com
+- Created with version 0.8.0

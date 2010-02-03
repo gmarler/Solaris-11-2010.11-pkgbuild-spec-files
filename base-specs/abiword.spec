@@ -6,19 +6,16 @@
 #
 
 Name:        abiword
-Version:     2.5.2
+Version:     2.8.1
 Release:     1
 Summary:     Lean and fast full-featured word processor
 Copyright:   GPL
 URL:         http://www.abisource.com/
 Source:      http://www.abisource.com/downloads/%{name}/%{version}/source/%{name}-%{version}.tar.gz
-Patch1:      %{name}-01-const-cast.diff
-Patch2:      %{name}-02-reinterpret-cast.diff
-Patch3:      %{name}-03-namespace-std.diff
-Patch4:      %{name}-04-suncc-map.diff
-Patch5:      %{name}-05-ut-xml-define.diff
-Patch6:      %{name}-06-define-func.diff
-Patch7:      %{name}-07-unistd.diff
+Patch1:      %{name}-01-suncc-map.diff
+Patch2:      %{name}-02-ut-xml-define.diff
+Patch3:      %{name}-03-unistd.diff
+Patch4:      %{name}-04-endian.diff
 BuildRoot:   %{_tmppath}/%{name}-%{version}-root
 BuildRequires:	GConf-devel
 BuildRequires:	autoconf
@@ -64,9 +61,6 @@ Windows and most Unix Systems. Features include:
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
-%patch5 -p1
-%patch6 -p1
-%patch7 -p1
 
 %build
 %ifos linux
@@ -119,6 +113,8 @@ rm -rf ${RPM_BUILD_ROOT}
 /usr/X11R6/bin/abiword
 
 %changelog
+* Wed Feb 03 2010 - brian.cameron@sun.com
+- Bump to 2.8.1.  Remove upstream patches and patches that no longer apply.
 * Sat Nov 17 2007 - daymobrew@users.sourceforge.net
 - Remove obsolete patch, 08-package-str.
 * Wed Sep 26 2007 - nonsea@users.sourceforge.net

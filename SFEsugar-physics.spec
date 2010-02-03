@@ -1,29 +1,27 @@
 #
-# spec file for package SFEsugar-base
+# spec file for package SFEsugar-physics
 #
-# includes module(s): sugar-base
+# includes module(s): sugar-physics
 #
 
 %define pythonver 2.6
 
 %include Solaris.inc
-Name:                    SFEsugar-base
-Summary:                 Sugar Learning Platform Base
+Name:                    SFEsugar-physics
+Summary:                 Sugar Physics
 URL:                     http://www.sugarlabs.org/
-Version:                 0.87.2
-Source:                  http://download.sugarlabs.org/sources/sucrose/glucose/sugar-base/sugar-base-%{version}.tar.bz2
+Version:                 2 
+Source:                  http://download.sugarlabs.org/sources/honey/Physics/Physics-%{version}.tar.bz2
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 
 %include default-depend.inc
-Requires:                SUNWgtk2
-Requires:                SUNWgnome-config
-Requires:                SUNWgnome-python26-libs
-Requires:                SFEpython26-decorator
-BuildRequires:           SUNWgtk2-devel
-BuildRequires:           SUNWgnome-config-devel
-BuildRequires:           SUNWgnome-python26-libs-devel
-BuildRequires:           SFEpython26-decorator
+Requires:                SFEsugar
+BuildRequires:           SFEsugar
+Requires:                SFEpygame
+BuildRequires:           SFEpygame
+Requires:                SFEpython26-olpcgames
+BuildRequires:           SFEpython26-olpcgames
 
 %if %build_l10n
 %package l10n
@@ -34,22 +32,15 @@ Requires:     %{name}
 %endif
 
 %prep
-%setup -q -n sugar-base-%version
+%setup -q -n Physics-%version
 
 %build
 export PYTHON=/usr/bin/python%{pythonver}
-./configure --prefix=%{_prefix}
-make
+python%{pythonver} setup.py build
 
 %install
 rm -rf $RPM_BUILD_ROOT
-make install DESTDIR=$RPM_BUILD_ROOT
-
-# move to verndor-packages
-mkdir -p $RPM_BUILD_ROOT%{_libdir}/python%{pythonver}/vendor-packages
-mv $RPM_BUILD_ROOT%{_libdir}/python%{pythonver}/site-packages/* \
-   $RPM_BUILD_ROOT%{_libdir}/python%{pythonver}/vendor-packages/
-rmdir $RPM_BUILD_ROOT%{_libdir}/python%{pythonver}/site-packages
+python%{pythonver} setup.py install --prefix=$RPM_BUILD_ROOT/usr
 
 %if %build_l10n
 %else
@@ -73,13 +64,13 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr (-, root, bin)
-%dir %attr (0755, root, bin) %{_libdir}
-%{_libdir}/python%{pythonver}/vendor-packages/sugar
 %dir %attr (0755, root, sys) %{_datadir}
+%{_datadir}/sugar
 
 %if %build_l10n
 %files l10n
 %defattr (-, root, bin)
+%dir %attr (0755, root, sys) %{_datadir}
 %attr (-, root, other) %{_datadir}/locale
 %dir %attr (0755, root, other) %{_datadir}/gnome
 %{_datadir}/gnome/help/*/[a-z]*
@@ -88,6 +79,4 @@ rm -rf $RPM_BUILD_ROOT
 
 %changelog
 * Tue Feb 02 2010 - Brian Cameron  <brian.cameron@sun.com>
-- Bump to 0.87.2.
-* Sun Jul 08 2009 - Brian Cameron  <brian.cameron@sun.com>
-- Created with 0.84.1.
+- Created with 2.

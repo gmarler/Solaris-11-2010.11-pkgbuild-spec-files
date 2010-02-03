@@ -1,3 +1,36 @@
+2010-02-03  Brian Cameron  <brian.cameron@sun.com>
+
+	* SFEsugar-base.spec: Minor fix to packaging.
+	* SFEsugar-readetexts.spec, SFEsugar-xoeditor.spec,
+	  SFEsugar-typingturtle.spec, SFEsugar-turtleart.spec,
+	  SFEsugar-read.spec, SFEsugar-bounce.spec, SFEsugar-getiabooks.spec,
+	  SFEsugar-pippy.spec, SFEsugar-chat.spec, SFEsugar-cardsort.spec,
+	  SFEsugar-colors.spec, SFEsugar-clock.spec, SFEsugar-paint.spec,
+	  SFEsugar-cartoonbuilder.spec, SFEsugar-record.spec,
+	  SFEsugar-erikos.spec, SFEsugar-ruler.spec,
+	  SFEsugar-measure.spec, SFEsugar-moon.spec, SFEsugar-visualmatch.spec,
+	  SFEsugar-sliderule.spec, SFEsugar-imageviewer.spec,
+	  SFEsugar-labyrinth.spec, SFEsugar-physics.spec,
+	  SFEsugar-calculate.spec, SFEsugar-jukebox.spec,
+	  SFEsugar-terminal.spec, SFEsugar-flipsticks.spec,
+	  SFEsugar-finance.spec, SFEsugar-write.spec, SFEsugar-log.spec,
+	  SFEsugar-memorize.spec: Add spec-files for sugar applications.
+	* SFEpython26-olpcgames.spec: Added.
+	* SFEpygame.spec, patches/pygame-01-scrap.diff,
+	  patches/pygame-02-noconfirm.diff: Update to 1.9.1 and rework
+	  patches.
+	* patches/pygame-03-pgcompat.diff: Add new patch needed to build.
+	* SFEabiword.spec, base-specs/abiword.spec: Bump to 2.8.1.
+	* patches/abiword-01-const-cast.diff,
+	  patches/abiword-02-reinterpret-cast.spec,
+	  patches/abiword-03-namespace-std.diff,
+	  patches/abiword-06-define-func.diff: Remove patches that are
+	  upstream or no longer apply.  Renumber the rest.
+	* SFEpython26-abiword.spec, patches/pyabiword-01-makefile.diff:
+	  Add new spec file and patch needed to build.
+	* SFEpython26-cjson.spec, SFEpython26-decorator.spec,
+	  SFEpython26-telepathy.spec: Fix Requires lines.
+
 2010-02-03  simon Jin <yuntong.jin@sun.com>
 
 	* SFEgnome-gedit-plugins.spec: add depedency SUNWpython26

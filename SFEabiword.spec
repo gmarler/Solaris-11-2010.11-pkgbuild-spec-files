@@ -7,8 +7,9 @@
 # This file and all modifications and additions to the pristine
 # package are under the same license as the package itself.
 #
-
 %include Solaris.inc
+%define cc_is_gcc 1
+%include base.inc
 
 %define SUNWaspell      %(/usr/bin/pkginfo -q SUNWaspell && echo 1 || echo 0)
 
@@ -36,6 +37,7 @@ Requires:           SUNWfontconfig
 Requires:           SUNWperl584core
 Requires:           SUNWlibgsf
 Requires:           SFElibfribidi
+Requires:           SFEwv
 BuildRequires:      SUNWgnome-base-libs-devel
 BuildRequires:      SUNWpng-devel
 BuildRequires:      SUNWlxml-devel
@@ -45,6 +47,8 @@ BuildRequires:      SUNWgnome-character-map-devel
 BuildRequires:      SUNWgnome-print-devel
 BuildRequires:      SUNWlibgsf-devel
 BuildRequires:      SFElibfribidi-devel
+BuildRequires:      SFEwv-devel
+
 %if %SUNWaspell
 Requires:           SUNWaspell
 BuildRequires:      SUNWaspell-devel
@@ -59,13 +63,11 @@ Requires: SUNWgnu-gettext
 Requires: SUNWuiu8
 %endif
 
-
 %package devel
 Summary:       %{summary} - development files
 SUNW_BaseDir:            %{_basedir}
 %include default-depend.inc
 Requires:      %{name}
-
 
 %prep
 rm -rf %name-%version
@@ -74,11 +76,10 @@ mkdir -p %name-%version
 
 %build
 export ACLOCAL_FLAGS="-I %{_datadir}/aclocal"
-export CFLAGS="%optflags"
-%if %option_with_gnu_iconv
-export CFLAGS="$CFLAGS -I/usr/gnu/include -L/usr/gnu/lib -R/usr/gnu/lib -lintl"
-export CXXFLAGS="$CXXFLAGS -I/usr/gnu/include -L/usr/gnu/lib -R/usr/gnu/lib -lintl"
-%endif
+export CC=gcc
+export CXX=g++
+export CXXFLAGS="%gcc_cxx_optflags"
+export LDFLAGS="%{_ldflags}"
 export RPM_OPT_FLAGS="$CFLAGS"
 %abiword.build -d %name-%version
 
@@ -96,14 +97,15 @@ rm -rf $RPM_BUILD_ROOT
 %defattr (-, root, bin)
 %dir %attr (0755, root, bin) %{_bindir}
 %{_bindir}/*
+%dir %attr (0755, root, bin) %{_libdir}
+%{_libdir}/lib*.so*
+%{_libdir}/abiword-2.8
 %dir %attr (0755, root, sys) %{_datadir}
 %{_datadir}/abiword*
 %dir %attr (0755, root, other) %{_datadir}/applications
 %{_datadir}/applications/*
 %dir %attr (-, root, other) %{_datadir}/icons
 %{_datadir}/icons/*.png
-%dir %attr (0755, root, other) %{_datadir}/mime-info
-%{_datadir}/mime-info/*
 
 %files devel
 %defattr (-, root, bin)
@@ -114,6 +116,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*
 
 %changelog
+* Wed Feb 03 2010 - brian.cameron@sun.com
+- Now build with gcc since the new 2.8.1 version does not build with Sun
+  Studio.
 * Fri Aug 15 2008 - glynn.foster@sun.com
 - Add copyright and grouping
 * Mon Apr 14 2008 - nonsea@users.sourceforge.net
