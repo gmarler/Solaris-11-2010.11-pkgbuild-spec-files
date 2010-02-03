@@ -12,6 +12,7 @@ Summary:                 Sugar Bounce
 URL:                     http://www.sugarlabs.org/
 Version:                 7 
 Source:                  http://download.sugarlabs.org/sources/honey/Bounce/Bounce-%{version}.tar.bz2
+Patch1:                  sugar-bounce-01-makefile.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 
@@ -31,14 +32,20 @@ Requires:     %{name}
 
 %prep
 %setup -q -n Bounce-%version
+%patch1 -p1
 
 %build
-export PYTHON=/usr/bin/python%{pythonver}
-python%{pythonver} setup.py build
+make
 
 %install
 rm -rf $RPM_BUILD_ROOT
-python%{pythonver} setup.py install --prefix=$RPM_BUILD_ROOT/usr
+make install DESTDIR=$RPM_BUILD_ROOT
+
+# move to vendor-packages
+mkdir -p $RPM_BUILD_ROOT%{_libdir}/python%{pythonver}/vendor-packages
+mv $RPM_BUILD_ROOT%{_libdir}/python%{pythonver}/site-packages/* \
+   $RPM_BUILD_ROOT%{_libdir}/python%{pythonver}/vendor-packages/
+rmdir $RPM_BUILD_ROOT%{_libdir}/python%{pythonver}/site-packages
 
 %if %build_l10n
 %else
@@ -62,6 +69,8 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr (-, root, bin)
+%dir %attr (0755, root, bin) %{_libdir}
+%{_libdir}/python%{pythonver}/vendor-packages/pongc
 %dir %attr (0755, root, sys) %{_datadir}
 %{_datadir}/sugar
 

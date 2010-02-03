@@ -45,7 +45,7 @@ make
 rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
 
-# move to verndor-packages
+# move to vendor-packages
 mkdir -p $RPM_BUILD_ROOT%{_libdir}/python%{pythonver}/vendor-packages
 mv $RPM_BUILD_ROOT%{_libdir}/python%{pythonver}/site-packages/* \
    $RPM_BUILD_ROOT%{_libdir}/python%{pythonver}/vendor-packages/

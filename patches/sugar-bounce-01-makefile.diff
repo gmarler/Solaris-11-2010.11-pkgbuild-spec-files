@@ -1,0 +1,19 @@
+--- Bounce-7/Makefile-orig	2010-02-03 11:02:49.131012147 -0600
++++ Bounce-7/Makefile	2010-02-03 11:03:18.047001248 -0600
+@@ -1,12 +1,13 @@
+-pythondir = $(shell python -c "from distutils import sysconfig; print sysconfig.get_python_lib()")
++SHELL=/bin/bash
++pythondir = $(shell python2.6 -c "from distutils import sysconfig; print sysconfig.get_python_lib()")
+ 
+ all clean:
+ 	$(MAKE) -C pongc $@
+ 
+ install: all
+-	./setup.py fix_manifest
++	python2.6 ./setup.py fix_manifest
+ 	sed -i /^pongc/d MANIFEST
+-	./setup.py install --prefix=$(DESTDIR)/usr
++	python2.6 ./setup.py install --prefix=$(DESTDIR)/usr
+ 	for i in __init__.py _pongc.so pongc.py; do \
+ 		install -m 644 -D pongc/$$i $(DESTDIR)/$(pythondir)/pongc/$$i; \
+ 	done

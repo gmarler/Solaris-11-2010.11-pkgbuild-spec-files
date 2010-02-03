@@ -1,0 +1,20 @@
+--- Colors!-15/Makefile-orig	2010-02-03 11:07:07.554219658 -0600
++++ Colors!-15/Makefile	2010-02-03 11:07:29.896797223 -0600
+@@ -1,12 +1,14 @@
+-pythondir = $(shell python -c "from distutils import sysconfig; print sysconfig.get_python_lib()")
++SHELL=/bin/bash
++
++pythondir = $(shell python2.6 -c "from distutils import sysconfig; print sysconfig.get_python_lib()")
+ 
+ all clean:
+ 	$(MAKE) -C colorsc $@
+ 
+ install: all
+-	./setup.py fix_manifest
++	python2.6 ./setup.py fix_manifest
+ 	sed -i /^colorsc/d MANIFEST
+-	./setup.py install --prefix=$(DESTDIR)/usr
++	python2.6 ./setup.py install --prefix=$(DESTDIR)/usr
+ 	for i in __init__.py _colorsc.so colorsc.py; do \
+ 		install -m 644 -D colorsc/$$i $(DESTDIR)/$(pythondir)/colorsc/$$i; \
+ 	done

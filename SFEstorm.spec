@@ -27,7 +27,7 @@ python%{pythonver} setup.py build
 rm -rf $RPM_BUILD_ROOT
 python%{pythonver} setup.py install --root=%{buildroot}
 
-# move to verndor-packages
+# move to vendor-packages
 mkdir -p $RPM_BUILD_ROOT%{_libdir}/python%{pythonver}/vendor-packages
 mv $RPM_BUILD_ROOT%{_libdir}/python%{pythonver}/site-packages/* \
    $RPM_BUILD_ROOT%{_libdir}/python%{pythonver}/vendor-packages/

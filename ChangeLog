@@ -1,5 +1,15 @@
 2010-02-03  Brian Cameron  <brian.cameron@sun.com>
 
+	* SFEsugar-bounce.spec, SFEsugar-colors.spec,
+	  patches/sugar-bounce-01-makefile.diff,
+	  patches/sugar-color-01-makefile.diff: Fix so they build correctly.
+	* SFEsugar-datastore, SFEzeitgeist.spec, SFEgnome-zeitgeist.spec,
+	  SFEsugar.spec, SFEsugar-base.spec, SFEsugar-toolkit.spec,
+	  SFEmoovida.spec, SFEmoovida-plugins.spec, SFEstorm.spec: Fix
+	  spelling.
+
+2010-02-03  Brian Cameron  <brian.cameron@sun.com>
+
 	* SFEsugar-base.spec: Minor fix to packaging.
 	* SFEsugar-readetexts.spec, SFEsugar-xoeditor.spec,
 	  SFEsugar-typingturtle.spec, SFEsugar-turtleart.spec,

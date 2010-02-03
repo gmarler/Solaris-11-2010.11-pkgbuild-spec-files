@@ -90,7 +90,7 @@ rm -rf $RPM_BUILD_ROOT
 %moovida_plugins_good.install -d %name-%version
 %moovida_plugins_bad.install -d %name-%version
 
-# move to verndor-packages
+# move to vendor-packages
 mkdir -p $RPM_BUILD_ROOT%{_libdir}/python%{pythonver}/vendor-packages
 mv $RPM_BUILD_ROOT%{_libdir}/python%{pythonver}/site-packages/* \
    $RPM_BUILD_ROOT%{_libdir}/python%{pythonver}/vendor-packages/
