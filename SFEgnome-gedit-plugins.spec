@@ -26,6 +26,9 @@ SUNW_Copyright: %{name}.copyright
 
 Requires:       SUNWgnome-text-editor
 Requires:       SUNWgnome-python-desktop
+Requires:       SUNWgnome-gtksourceview
+Requires:       SUNWpython26 
+
 
 BuildRequires:  SUNWgnome-text-editor-devel
 BuildRequires:  SUNWgnome-doc-utils
@@ -99,6 +102,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_sysconfdir}/gconf/schemas/*
 
 %changelog
+* Wen Feb 03 2010 - yuntong.jin@sun.com
+- Add dependency SUNWgnome-gtksourceview SUNWpython26
 * Tue Jan 13 2010 - yuntong.jin@sun.com
 - Bump to 2.28.0 and put it into SFE 
 * Mon Apr 27 2009 - andras.barna@gmail.com

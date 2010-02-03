@@ -1,5 +1,10 @@
 2010-02-03  simon Jin <yuntong.jin@sun.com>
 
+	* SFEgnome-gedit-plugins.spec: add depedency SUNWpython26
+	  SUNWgnome-gtksourceview
+
+2010-02-03  simon Jin <yuntong.jin@sun.com>
+
 	* SFEwebkit-cstd.spec:
 	* patches/webkit-01-configure-and-makefile.diff:
 	  Drop off aclocal and automake step
