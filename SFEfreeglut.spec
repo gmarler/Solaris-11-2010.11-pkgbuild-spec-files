@@ -15,11 +15,10 @@
 Name:                   SFEfreeglut
 Summary:                %{freeglut.summary}
 Version:                %{freeglut.version}
-Patch1:			freeglut260-01.diff
+Patch1:                 freeglut-01-sun.diff
 SUNW_BaseDir:           %{_basedir}
 BuildRoot:              %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
-#BuildRequires: SFEjam
 
 %package devel
 Summary:                 %{summary} - development files
@@ -32,11 +31,16 @@ mkdir %name-%version
 %ifarch amd64 sparcv9
 mkdir %name-%version/%_arch64
 %freeglut_64.prep -d %name-%version/%_arch64
+cd %name-%version/%_arch64/freeglut-%{version}
+%patch1 -p0
+cd ../../..
 %endif
 
 mkdir %name-%version/%{base_arch}
 %freeglut.prep -d %name-%version/%{base_arch}
-
+cd %name-%version/%{base_arch}/freeglut-%{version}
+%patch1 -p0
+cd ../../..
 
 %build
 %ifarch amd64 sparcv9

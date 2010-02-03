@@ -9,8 +9,8 @@
 
 Name:                   SFEfreeglut
 Summary:                Free OpenGL Library
-Version:                2.6.0.1
-Source:                 %{src_url}/%{src_name}-2.6.0-rc1.tar.gz
+Version:                2.6.0
+Source:                 %{src_url}/freeglut/%{src_name}-%{version}.tar.gz
 BuildRoot:              %{_tmppath}/%{name}-%{version}-build
 
 %prep
@@ -46,7 +46,9 @@ rm $RPM_BUILD_ROOT%{_libdir}/lib*a
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Wed Feb 03 2010 - Brian Cameron <brian.cameron@sun.com>
+- Bump to 2.6.0.
 * Tue Oct 13 2009 - Milan Jurik
-- autogen is not needed, all configure stuff is on place already
+- autogen is not needed, all configure stuff is on place already.
 * Fri Aug 21 2009 - Milan Jurik
-- Initial base spec file
+- Initial base spec file.

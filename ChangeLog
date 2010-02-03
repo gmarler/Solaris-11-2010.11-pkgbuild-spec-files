@@ -1,5 +1,11 @@
 2010-02-03  Brian Cameron  <brian.cameron@sun.com>
 
+	* SFEfreeglut.spec, base-specs/freeglut.spec: Bump to 2.6.0.
+	* patches/freeglut260-01.diff: Remove unused patch.
+	* patches/freeglut-01-sun.diff: Add patch needed to build.
+
+2010-02-03  Brian Cameron  <brian.cameron@sun.com>
+
 	* SFEsugar-bounce.spec, SFEsugar-colors.spec,
 	  patches/sugar-bounce-01-makefile.diff,
 	  patches/sugar-color-01-makefile.diff: Fix so they build correctly.
