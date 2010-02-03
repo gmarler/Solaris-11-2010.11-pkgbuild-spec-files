@@ -266,3 +266,34 @@ index 3924294..ef805e0 100644
  fi
  
  PKG_CHECK_MODULES([LIBSOUP],
+--- a/WebKitTools/GNUmakefile.am.orig	2010-02-02 19:22:34.410202130 +0800
++++ b/WebKitTools/GNUmakefile.am	2010-02-02 19:22:54.190144775 +0800
+@@ -13,8 +13,6 @@
+ 	WebKitTools/GtkLauncher/main.c
+ 
+ Programs_GtkLauncher_CFLAGS = \
+-	-ansi \
+-	-fno-strict-aliasing \
+ 	$(global_cflags) \
+ 	$(GTK_CFLAGS) \
+ 	$(LIBSOUP_CFLAGS)
+@@ -24,9 +22,6 @@
+ 	$(GTK_LIBS) \
+ 	$(GLIB_LIBS)
+ 
+-Programs_GtkLauncher_LDFLAGS = \
+-	-no-fast-install \
+-	-no-install
+ 
+ # DumpRenderTree
+ dumprendertree_cppflags := \
+@@ -90,9 +85,6 @@
+ 	$(LIBSOUP_LIBS) \
+ 	$(FREETYPE_LIBS)
+ 
+-Programs_DumpRenderTree_LDFLAGS = \
+-	-no-fast-install \
+-	-no-install
+ 
+ # clean target
+ CLEANFILES += \

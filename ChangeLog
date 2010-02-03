@@ -1,3 +1,9 @@
+2010-02-03  simon Jin <yuntong.jin@sun.com>
+
+	* SFEwebkit-cstd.spec:
+	* patches/webkit-01-configure-and-makefile.diff:
+	  Drop off aclocal and automake step
+
 2010-02-02  Brian Cameron  <brian.cameron@sun.com>
 
 	* SFEsugar.spec, ext-sources/sugar.desktop: Bump to 0.87.3 and

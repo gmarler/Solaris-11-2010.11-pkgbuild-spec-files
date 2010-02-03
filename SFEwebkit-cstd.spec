@@ -115,8 +115,10 @@ CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
 if test "x$CPUS" = "x" -o $CPUS = 0; then
     CPUS=1
 fi 
-aclocal -I autotools
-automake -a -c -f
+#aclocal -I autotools
+#automake -a -c -f
+#autom4te=/usr/bin/autom4te
+#automake-1.10
 autoconf 
 ./configure --prefix=%{_prefix}			\
             --disable-jit                       \
@@ -168,6 +170,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wen Feb 03 2010 - yuntong.jin@sun.com
+- Drop off aclocal and automake step case aclocal regenerate GNUmakefile.in and
+  automake doesn,t make any different here
 * Mon Jan 25 2010 - yuntong.jin@sun.com
 - Bump to 1.1.19 and repatch
 * Tue Jan 21 2010 - yuntong.jin@sun.com
