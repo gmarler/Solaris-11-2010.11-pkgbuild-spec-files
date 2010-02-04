@@ -1,3 +1,7 @@
+2010-02-04  Brian Cameron  <brian.cameron@sun.com>
+
+	* SFEc-ares.spec: Add new spec file.
+
 2010-02-04  Halton Huo  <halton.huo@sun.com>
 
 	* SFElibsamplerate.spec: Add SUNWaudioh as BuildRequires
