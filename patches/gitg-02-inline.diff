@@ -1,0 +1,11 @@
+--- gitg-0.0.5/gitg/gitg-label-renderer.c.orig	2010-02-04 18:13:45.131425228 +0800
++++ gitg-0.0.5/gitg/gitg-label-renderer.c	2010-02-04 17:52:10.296799734 +0800
+@@ -241,7 +241,7 @@ gitg_label_renderer_get_ref_at_pos (GtkW
+ 	return ret;
+ }
+ 
+-inline guint8
++static inline guint8
+ convert_color_channel (guint8 src,
+                        guint8 alpha)
+ {

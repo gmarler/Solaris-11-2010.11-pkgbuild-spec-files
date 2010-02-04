@@ -1,0 +1,36 @@
+--- gtig-0.05/gitg/gitg-runner.c.orig	2010-02-04 18:10:04.490750789 +0800
++++ gitg-0.05/gitg/gitg-runner.c	2010-02-04 18:11:31.090007293 +0800
+@@ -569,8 +569,8 @@ gitg_runner_run_with_arguments(GitgRunne
+ {
+ 	g_return_val_if_fail(GITG_IS_RUNNER(runner), FALSE);
+ 
+-	gint stdout;
+-	gint stdin;
++	gint stdoutf;
++	gint stdinf;
+ 
+ 	gitg_runner_cancel(runner);
+ 
+@@ -583,8 +583,8 @@ gitg_runner_run_with_arguments(GitgRunne
+ 	                                        NULL, 
+ 	                                        NULL,
+ 	                                         &(runner->priv->pid), 
+-	                                         input ? &stdin : NULL, 
+-	                                         &stdout, 
++	                                         input ? &stdinf : NULL, 
++	                                         &stdoutf, 
+ 	                                         NULL, 
+ 	                                         error);
+ 
+@@ -598,9 +598,9 @@ gitg_runner_run_with_arguments(GitgRunne
+ 	GOutputStream *output_stream = NULL;
+ 
+ 	if (input)
+-		output_stream = G_OUTPUT_STREAM(g_unix_output_stream_new(stdin, TRUE));
++		output_stream = G_OUTPUT_STREAM(g_unix_output_stream_new(stdinf, TRUE));
+ 		
+-	input_stream = G_INPUT_STREAM(g_unix_input_stream_new(stdout, TRUE));	
++	input_stream = G_INPUT_STREAM(g_unix_input_stream_new(stdoutf, TRUE));	
+ 	ret = gitg_runner_run_streams(runner, input_stream, output_stream, input, error);
+ 	
+ 	if (output_stream)
