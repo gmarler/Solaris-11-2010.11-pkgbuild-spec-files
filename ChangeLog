@@ -1,3 +1,7 @@
+2010-02-04  Halton Huo  <halton.huo@sun.com>
+
+	* SFElibsamplerate.spec: Add SUNWaudioh as BuildRequires
+
 2010-02-04  Simon Jin <yuntong.jin@sun.com>
 
 	* patches/webkit-04-make-pair.diff:append to it

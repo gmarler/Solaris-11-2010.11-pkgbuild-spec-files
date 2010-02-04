@@ -22,6 +22,7 @@ SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 
+BuildRequires:  SUNWaudh
 #if build, examples will require libsndfile
 %if %SFElibsndfile
 BuildRequires: SFElibsndfile-devel
@@ -92,6 +93,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Thu Feb 04 2010 - Halton Huo <halton.huo@gmail.com>
+- Add SUNWaudioh as BuildRequires
 * Tue Feb 17 2009 - Thomas Wagner
 - make (Build-)Requires conditional SUNWlibsndfile|SFElibsndfile(-devel)
 * Thu Sep 06 2007 - Thomas Wagner
