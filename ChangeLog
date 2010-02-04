@@ -1,3 +1,7 @@
+2010-02-04  Simon Jin <yuntong.jin@sun.com>
+
+	* patches/webkit-04-make-pair.diff:append to it
+
 2010-02-03  Brian Cameron  <brian.cameron@sun.com>
 
 	* SFEfreeglut.spec, base-specs/freeglut.spec: Bump to 2.6.0.

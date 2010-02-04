@@ -122,3 +122,14 @@ index 9433025..3b68439 100644
      }
  
      template<typename T, typename U, typename V, typename W, typename X>
+--- a/WebCore/editing/markup.cpp	2010-02-04 13:45:56.196284758 +0800
++++ b/WebCore/editing/markup.cpp	2010-02-04 13:46:04.065956803 +0800
+@@ -185,7 +185,7 @@
+ static String escapeContentText(const String& in, bool escapeNBSP)
+ {
+     Vector<UChar> buffer;
+-    appendEscapedContent(buffer, make_pair(in.characters(), in.length()), escapeNBSP);
++    appendEscapedContent(buffer, make_pair<const unsigned short*, unsigned long>(in.characters(), in.length()), escapeNBSP);
+     return String::adopt(buffer);
+ }
+     
