@@ -37,6 +37,8 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
     CPUS=1
 fi
 
+export CFLAGS="%optflags"
+
 ./configure --prefix=%{_prefix}		\
 	    --bindir=%{_bindir}		\
 	    --mandir=%{_mandir}		\
@@ -82,5 +84,7 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Feb 04 2010 - Albert Lee <trisk@opensolaris.org>
+- Set CFLAGS
 * Thu Jan 07 2010 - Thomas Wagner
 - initial 0.1.14

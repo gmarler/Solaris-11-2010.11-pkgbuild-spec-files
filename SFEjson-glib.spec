@@ -8,9 +8,9 @@
 
 Name:                    SFEjson-glib
 Summary:                 JSON parser library for GLib
-Version:                 0.8.2
+Version:                 0.10.0
 License:                 LGPL v2.1
-Source:			 http://ftp.gnome.org/pub/GNOME/sources/json-glib/0.8/json-glib-%{version}.tar.bz2
+Source:			 http://ftp.gnome.org/pub/GNOME/sources/json-glib/0.10/json-glib-%{version}.tar.bz2
 Url:                     http://live.gnome.org/JsonGlib
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -86,6 +86,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Wed Feb 03 2010 - Albert Lee <trisk@opensolaris.org>
+- Bump to 0.10.0
 * Sat Nov 14 2009 - Albert Lee <trisk@opensolaris.org>
 - Bump to 0.8.2
 - Drop patch1

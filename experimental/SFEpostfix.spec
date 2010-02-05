@@ -838,6 +838,8 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 
 
 %changelog
+* Thu Feb 04 2010 - Albert Lee <trisk@opensolaris.org>
+- Set CFLAGS
 * Fri Jan 09 2010 - Thomas Wagner
 - pause "Requires: %name" for package %name-root to test dependency order
 * Wed Jan 06 2010 - Thomas Wagner

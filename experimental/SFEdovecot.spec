@@ -51,6 +51,7 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
     CPUS=1
 fi
 
+export CFLAGS="%optflags"
 
 ./configure --prefix=%{_prefix}		\
 	    --bindir=%{_bindir}		\
@@ -107,11 +108,15 @@ rm -rf $RPM_BUILD_ROOT
 %{_sysconfdir}/%{src_name}/*
 %defattr (-, root, sys)
 %dir %attr (0755, root, sys) %{_localstatedir}
+%dir %attr (0755, root, sys) %{_localstatedir}/run
 %dir %attr (0755, root, sys) %{_localstatedir}/run/%{src_name}
 %class(manifest) %attr(0444, root, sys)/var/svc/manifest/site/dovecot.xml
 
 
 %changelog
+* Thu Feb 04 2010 - Albert Lee <trisk@opensolaris.org>
+- Set CFLAGS
+- Fix /var/run permissions
 * Thu Jan 07 2010 - Thomas Wagner
 - bump to 1.2.9
 - adjust _libexexdir
