@@ -145,10 +145,12 @@ nlsopt=-disable-nls
 %define ld_options      -zignore -zcombreloc -Bdirect -i
 
 export CONFIG_SHELL=/usr/bin/bash
-export CFLAGS=""
 export CPP="cc -E -Xs"
-export STAGE1_CFLAGS="$(CFLAGS)"
-export CFLAGS_FOR_TARGET="-g -O3"
+export CFLAGS="-O"
+# for stage2 and stage3 GCC
+export BOOT_CFLAGS="%gcc_optflags -Os -Xlinker -i %gcc_picflags"
+# for target libraries (built with bootstrapped GCC)
+export CFLAGS_FOR_TARGET="%gcc_optflags -O2 -Xlinker -i %gcc_picflags"
 export LDFLAGS="%_ldflags %gnu_lib_path"
 export LD_OPTIONS="%ld_options %gnu_lib_path"
 
@@ -194,17 +196,10 @@ export LD="/usr/gnu/bin/ld"
 %endif
 	$nlsopt
 
-make -j$CPUS bootstrap
+make -j$CPUS bootstrap-lean BOOT_CFLAGS="$BOOT_CFLAGS" CFLAGS_FOR_TARGET="$CFLAGS_FOR_TARGET" CXXFLAGS_FOR_TARGET="$CFLAGS_FOR_TARGET"
 
 %install
 rm -rf $RPM_BUILD_ROOT
-
-export CONFIG_SHELL=/usr/bin/bash
-export CFLAGS="%optflags"
-export STAGE1_CFLAGS="$(CFLAGS)"
-export CFLAGS_FOR_TARGET="-g -O3"
-export LDFLAGS="%_ldflags %gnu_lib_path"
-export LD_OPTIONS="%ld_options %gnu_lib_path"
 
 cd gcc
 make install DESTDIR=$RPM_BUILD_ROOT
@@ -294,6 +289,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Fri Feb 05 2010 - Albert Lee <trisk@opensolaris.org>
+- Fix bootstrap compiler options
 * Sun Aug 09 2009 - Thomas Wagner
 - BuildRequires: SUNWbash
 * Sat Mar 14 2009 - Thomas Wagner

@@ -10,6 +10,8 @@ Summary:                 maildrop - mail delivery agent with filtering capabilit
 Version:                 2.3.0
 License:                 GPLv2
 Source:                  %{sf_download}/courier/files/maildrop/%{version}/maildrop-%{version}.tar.bz2
+# owner:trisk type:bug debian:564601
+Patch1:                  maildrop-01-cve-2010-0301.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -21,6 +23,7 @@ Requires: SUNWlibms
 
 %prep
 %setup -q -n maildrop-%version
+%patch1 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -70,7 +73,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/reformail
 %{_bindir}/deliverquota
 %{_bindir}/mailbot
-%attr (6755, root, mail) %{_bindir}/maildrop
+%attr (2755, root, mail) %{_bindir}/maildrop
 %dir %attr (0755, root, sys) %{_datadir}
 %dir %attr (0755, root, bin) %{_mandir}
 %dir %attr (0755, root, bin) %{_mandir}/man1
@@ -86,5 +89,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
-* Tue Feb 04 2010 - Albert Lee <trisk@opensolaris.org>
+* Fri Feb 05 2010 - Albert Lee <trisk@opensolaris.org>
+- Add patch1 for CVE-2010-0301
+- Drop setuid root
+* Thu Feb 04 2010 - Albert Lee <trisk@opensolaris.org>
 - Initial spec

@@ -1,3 +1,9 @@
+2010-02-05  Albert Lee  <trisk@opensolaris.org>
+
+	* SFEgcc.spec: Fix bootstrap compiler flags
+	* SFEmaildrop.spec: Add patch1 for CVE-2010-0301. Drop setuid root.
+	* patches/maildrop-01-cve-2010-0301.diff: Fix GID when run as root.
+
 2010-02-04  Albert Lee  <trisk@opensolaris.org>
 
 	* SFEjson-glib: Bump to 0.10.0.
