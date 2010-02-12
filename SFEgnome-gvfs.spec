@@ -57,8 +57,8 @@ export LDFLAGS="%_ldflags"
 %install
 rm -rf $RPM_BUILD_ROOT
 %gvfs.install -d %name-%version
-rm $RPM_BUILD_ROOT%{_libdir}/libgvfscommon.la
-rm $RPM_BUILD_ROOT%{_libdir}/gio/modules/libgvfsdbus.la
+rm $RPM_BUILD_ROOT%{_cxx_libdir}/libgvfscommon.la
+rm $RPM_BUILD_ROOT%{_cxx_libdir}/gio/modules/libgvfsdbus.la
 
 %{?pkgbuild_postprocess: %pkgbuild_postprocess -v -c "%{version}:%{jds_version}:%{name}:$RPM_ARCH:%(date +%%Y-%%m-%%d):%{support_level}" $RPM_BUILD_ROOT}
 
@@ -67,22 +67,26 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr (-, root, bin)
-%dir %attr (0755, root, bin) %{_libdir}
-%{_libdir}/gvfsd*
-%{_libdir}/libgvfscommon.so*
-%{_libdir}/gio/modules/*.so*
+%{_bindir}/gvfs*
+%dir %attr (0755, root, bin) %{_cxx_libdir}
+%{_cxx_libdir}/*
 %dir %attr (0755, root, sys) %{_datadir}
-%{_datadir}/dbus-1/services/gvfs-daemon.service
+%{_datadir}/dbus-1/services/gvfs*
+%{_datadir}/gvfs*
+%dir %attr (-, root, other) %{_datadir}/locale
+%{_datadir}/locale/[a-z]*/LC_MESSAGES/*
 %dir %attr (0755, root, bin) %{_includedir}
 %{_includedir}/*
 
 %files root
 %defattr (-, root, sys)
 %attr (0755, root, sys) %dir %{_sysconfdir}
-%{_sysconfdir}/gvfs
+%{_sysconfdir}/profile.d/*
 
 
 %changelog
+* Fri Feb 12 2010 - jchoi42@pha.jhu.edu
+- modify files to reflect version update
 * Sun Nov 18 2007 - daymobrew@users.sourceforge.net
 - Add support for building on Indiana systems. Add changes for gvfs 0.0.2.
 * Fri Nov 09 2007 - nonsea@users.sourceforge.net

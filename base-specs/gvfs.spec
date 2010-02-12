@@ -10,12 +10,12 @@
 Name:         gvfs
 License:      LGPL
 Group:        System/Libraries/GNOME
-Version:      0.0.2
+Version:      1.5.1
 Release:      4
 Distribution: Java Desktop System
 Vendor:       Sun Microsystems, Inc.
 Summary:      Virtual File System Library for GNOME
-Source:       http://ftp.gnome.org/pub/GNOME/sources/%{name}/0.0/%{name}-%{version}.tar.bz2
+Source:       http://ftp.gnome.org/pub/GNOME/sources/%{name}/1.5/%{name}-%{version}.tar.bz2
 URL:          http://www.gnome.org/
 BuildRoot:    %{_tmppath}/%{name}-%{version}-build
 Docdir:	      %{_defaultdocdir}/doc
@@ -49,6 +49,8 @@ make DESTDIR=$RPM_BUILD_ROOT install
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Fri Feb 12 2010 - jchoi42@pha.jhu.edu
+- bump to 1.5.1
 * Sat Nov 17 2007 - daymobrew@users.sourceforge.net
 - Bump to 0.0.2. Remove upstream patches, 01-solaris and 02-solaris2.
 * Fri Nov 09 2007 - daymobrew@users.sourceforge.net

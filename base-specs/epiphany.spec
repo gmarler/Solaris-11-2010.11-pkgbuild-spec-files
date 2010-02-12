@@ -7,19 +7,22 @@
 #
 # Owner: gheet
 #
+
+%define revision 2.28
+
 Name:         epiphany
 License:      LGPL
 Group:        System/Libraries/GNOME
-Version:      2.20.1
+Version:      2.28.2
 Release:      4
 Distribution: Java Desktop System
 Vendor:       Sun Microsystems, Inc.
 Summary:      GNOME web browser
-Source:       http://ftp.gnome.org/pub/GNOME/sources/%{name}/2.20/%{name}-%{version}.tar.bz2
+Source:       http://ftp.gnome.org/pub/GNOME/sources/%{name}/%{revision}/%{name}-%{version}.tar.bz2
 Patch1:       epiphany-01-runpath.diff
 Patch2:       epiphany-02-grep-q.diff
-Patch3:       epiphany-03-solaris.diff
-Patch4:       epiphany-04-ns-headers.diff
+#Patch3:       epiphany-03-solaris.diff
+#Patch4:       epiphany-04-ns-headers.diff
 URL:          http://www.gnome.org/
 BuildRoot:    %{_tmppath}/%{name}-%{version}-build
 Docdir:	      %{_defaultdocdir}/doc
@@ -29,8 +32,8 @@ Autoreqprov:  on
 %setup -q
 %patch1 -p1
 %patch2 -p1
-%patch3 -p1
-%patch4 -p1
+#%patch3 -p1
+#%patch4 -p1
 
 %build
 %ifos linux
@@ -58,5 +61,8 @@ make DESTDIR=$RPM_BUILD_ROOT install
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Fri Feb 12 2010 - jchoi42@pha.jhu.edu
+- bump to 2.28.2, remove depreciated patches, update patch 1 and 2
+- update to _cxx_libdir, add %revision
 * Wed Nov 07 2007 - damien.carbery@sun.com
 - Initial version.

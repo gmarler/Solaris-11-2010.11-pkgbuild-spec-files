@@ -42,6 +42,11 @@ export RPM_OPT_FLAGS="$CFLAGS"
 rm -rf $RPM_BUILD_ROOT
 %gio.install -d %name-%version
 
+# Remove files already included in SUNWglib2-devel
+#rm -rf $RPM_BUILD_ROOT%{_datadir}/gtk-doc*
+rm -rf $RPM_BUILD_ROOT%{_datadir}
+rm -rf $RPM_BUILD_ROOT%{_libdir}/pkgconfig*
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -57,18 +62,12 @@ rm -rf $RPM_BUILD_ROOT
 %defattr (-, root, bin)
 %dir %attr (0755, root, bin) %{_includedir}
 %{_includedir}/*
-%dir %attr (0755, root, bin) %{_libdir}
-%dir %attr (0755, root, other) %{_libdir}/pkgconfig
-%{_libdir}/pkgconfig/*
-%dir %attr (0755, root, sys) %{_datadir}
-%dir %attr (0755, root, bin) %{_datadir}/gtk-doc
-%dir %attr (0755, root, bin) %{_datadir}/gtk-doc/html
-%{_datadir}/gtk-doc/html/gio
 
 
 %changelog
+* Fri Feb 12 2010 - jchoi42@pha.jhu.edu
+- Remove files already provided by SUNWglib2-devel
 * Thu Nov 08 2007 - daymobrew@users.sourceforge.net
 - Remove l10n package as no l10n files are installed.
-
 * Wed Nov 07 2007 - nonsea@users.sourceforge.net
 - Initial spec

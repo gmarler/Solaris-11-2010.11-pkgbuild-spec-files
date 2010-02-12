@@ -1,0 +1,11 @@
+--- gio.orig/gio/test-streams.c	2010-02-12 05:12:35.421389264 -0500
++++ gio/gio/test-streams.c	2010-02-12 05:13:25.549327242 -0500
+@@ -38,7 +38,7 @@
+      if G_LIKELY(expr) { } else 			      	        \
+         test_assert_warning (__FILE__,    	          \
+                              __LINE__,	              \
+-                             G_GNUC_PRETTY_FUNCTION,	    \
++                             G_STRFUNC,	    \
+ 	                           #expr);		  }G_STMT_END
+ 
+ static void

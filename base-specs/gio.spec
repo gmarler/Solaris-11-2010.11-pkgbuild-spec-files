@@ -21,9 +21,11 @@ Vendor:         Sun Microsystems, Inc.
 URL:            http://mail.gnome.org/archives/gtk-devel-list/2007-February/msg00062.html
 Summary:        a set of daemons handling access to various file resources
 Source:         http://ftp.gnome.org/pub/GNOME/sources/%{real_name}/0.1/%{real_name}-%{version}.tar.bz2
+Patch1:		gio-01-strfunc.diff
 BuildRoot:      %{_tmppath}/%{name}-%{version}-root
 
 BuildRequires: gamin-devel
+BuildRequires: glibmm-gpp >= 2.16
 
 %description
 The gio library is meant to be a part of glib. Its a generic I/O
@@ -43,6 +45,7 @@ developing with gio
 
 %prep
 %setup -q -n %{real_name}-%{version}
+%patch1 -p1
 
 %build
 %ifos linux
@@ -106,8 +109,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*.pc
 
 %changelog
+* Fri Feb 12 2010 - jchoi42@pha.jhu.edu
+- patch to use G_STRFUNC instead of G_GNUC_PRETTY_FUNCTION, +glib check
 * Fri Nov 16 2007 - nonsea@users.sourceforge.net
-- Bump to 0.1.2.
+- Bump to 0.1.2. 
 - Remove upstreamed patches void-return, solaris-statfs, pretty-func.
 * Wed Nov 07 2007 - nonsea@users.sourceforge.net
 - Initial version

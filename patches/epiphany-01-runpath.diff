@@ -1,26 +1,15 @@
---- epiphany-2.20.1/configure.ac.orig	2007-11-19 10:35:22.383179000 +0000
-+++ epiphany-2.20.1/configure.ac	2007-11-19 10:39:35.045185000 +0000
-@@ -422,7 +422,7 @@
- EOF
- 
- 	if /bin/sh ../libtool --mode=compile ${CC} $PYTHON_CFLAGS -c testpython.c >/dev/null 2>&1 && \
--		/bin/sh ../libtool --mode=link ${CC} -o testpython.la -rpath `pwd` -module -avoid-version $PYTHON_LIB_LOC testpython.lo $PYTHON_LIBS $PYTHON_EXTRA_LIBS >/dev/null 2>&1 && \
-+		/bin/sh ../libtool --mode=link ${CC} -o testpython.la -R `pwd` -module -avoid-version $PYTHON_LIB_LOC testpython.lo $PYTHON_LIBS $PYTHON_EXTRA_LIBS >/dev/null 2>&1 && \
- 		grep 'dlname.*testpython' testpython.la >/dev/null 2>&1; then
- 		result=yes
- 	else
---- epiphany-2.20.1/configure.orig	2007-11-19 10:35:26.698489000 +0000
-+++ epiphany-2.20.1/configure	2007-11-19 10:39:14.750321000 +0000
-@@ -7944,7 +7944,7 @@
+--- epiphany.orig/configure	Fri Feb 12 08:54:10 2010
++++ epiphany/configure	Fri Feb 12 08:56:53 2010
+@@ -8452,7 +8452,7 @@
      # are reset later if shared libraries are not supported. Putting them
      # here allows them to be overridden if necessary.
      runpath_var=LD_RUN_PATH
--    hardcode_libdir_flag_spec='${wl}--rpath ${wl}$libdir'
+-    hardcode_libdir_flag_spec='${wl}-rpath ${wl}$libdir'
 +    hardcode_libdir_flag_spec='${wl}-R ${wl}$libdir'
      export_dynamic_flag_spec='${wl}--export-dynamic'
      # ancient GNU ld didn't support --whole-archive et. al.
-     if $LD --help 2>&1 | grep 'no-whole-archive' > /dev/null; then
-@@ -8032,7 +8032,7 @@
+     if $LD --help 2>&1 | $GREP 'no-whole-archive' > /dev/null; then
+@@ -8541,7 +8541,7 @@
      interix[3-9]*)
        hardcode_direct=no
        hardcode_shlibpath_var=no
@@ -29,28 +18,34 @@
        export_dynamic_flag_spec='${wl}-E'
        # Hack: On Interix 3.x, we cannot compile PIC because of a broken gcc.
        # Instead, shared libraries are loaded at an image base (0x10000000 by
-@@ -8133,7 +8133,7 @@
- 	;;
- 	*)
- 	  if $LD --help 2>&1 | grep ': supported targets:.* elf' > /dev/null; then
--	    hardcode_libdir_flag_spec='`test -z "$SCOABSPATH" && echo ${wl}-rpath,$libdir`'
-+	    hardcode_libdir_flag_spec='`test -z "$SCOABSPATH" && echo ${wl}-R,$libdir`'
- 	    archive_cmds='$CC -shared $libobjs $deplibs $compiler_flags ${wl}-soname,\${SCOABSPATH:+${install_libdir}/}$soname -o $lib'
- 	    archive_expsym_cmds='$CC -shared $libobjs $deplibs $compiler_flags ${wl}-soname,\${SCOABSPATH:+${install_libdir}/}$soname,-retain-symbols-file,$export_symbols -o $lib'
+@@ -8608,7 +8608,7 @@
+ 	  # IBM XL Fortran 10.1 on PPC cannot create shared libs itself
+ 	  whole_archive_flag_spec='--whole-archive$convenience --no-whole-archive'
+ 	  hardcode_libdir_flag_spec=
+-	  hardcode_libdir_flag_spec_ld='-rpath $libdir'
++	  hardcode_libdir_flag_spec_ld='-R $libdir'
+ 	  archive_cmds='$LD -shared $libobjs $deplibs $compiler_flags -soname $soname -o $lib'
+ 	  if test "x$supports_anon_versioning" = xyes; then
+ 	    archive_expsym_cmds='echo "{ global:" > $output_objdir/$libname.ver~
+@@ -8675,7 +8675,7 @@
+ 	  # DT_RUNPATH tag from executables and libraries.  But doing so
+ 	  # requires that you compile everything twice, which is a pain.
+ 	  if $LD --help 2>&1 | $GREP ': supported targets:.* elf' > /dev/null; then
+-	    hardcode_libdir_flag_spec='${wl}-rpath ${wl}$libdir'
++	    hardcode_libdir_flag_spec='${wl}-R ${wl}$libdir'
+ 	    archive_cmds='$CC -shared $libobjs $deplibs $compiler_flags ${wl}-soname $wl$soname -o $lib'
+ 	    archive_expsym_cmds='$CC -shared $libobjs $deplibs $compiler_flags ${wl}-soname $wl$soname ${wl}-retain-symbols-file $wl$export_symbols -o $lib'
  	  else
-@@ -8622,9 +8622,9 @@
- 	archive_cmds='$CC -shared $libobjs $deplibs $compiler_flags ${wl}-soname ${wl}$soname `test -n "$verstring" && echo ${wl}-set_version ${wl}$verstring` ${wl}-update_registry ${wl}${output_objdir}/so_locations -o $lib'
-       else
- 	archive_cmds='$LD -shared $libobjs $deplibs $linker_flags -soname $soname `test -n "$verstring" && echo -set_version $verstring` -update_registry ${output_objdir}/so_locations -o $lib'
--	hardcode_libdir_flag_spec_ld='-rpath $libdir'
-+	hardcode_libdir_flag_spec_ld='-R $libdir'
+@@ -9206,7 +9206,7 @@
+ 	archive_expsym_cmds='$CC -shared $libobjs $deplibs $compiler_flags -soname $soname `test -n "$verstring" && $ECHO "X-set_version $verstring" | $Xsed` -update_registry ${output_objdir}/so_locations -exports_file $export_symbols -o $lib'
        fi
+       archive_cmds_need_lc='no'
 -      hardcode_libdir_flag_spec='${wl}-rpath ${wl}$libdir'
 +      hardcode_libdir_flag_spec='${wl}-R ${wl}$libdir'
        hardcode_libdir_separator=:
+       inherit_rpath=yes
        link_all_deplibs=yes
-       ;;
-@@ -8643,7 +8643,7 @@
+@@ -9226,7 +9226,7 @@
      newsos6)
        archive_cmds='$LD -G -h $soname -o $lib $libobjs $deplibs $linker_flags'
        hardcode_direct=yes
@@ -59,8 +54,8 @@
        hardcode_libdir_separator=:
        hardcode_shlibpath_var=no
        ;;
-@@ -8655,7 +8655,7 @@
- 	if test -z "`echo __ELF__ | $CC -E - | grep __ELF__`" || test "$host_os-$host_cpu" = "openbsd2.8-powerpc"; then
+@@ -9242,7 +9242,7 @@
+ 	if test -z "`echo __ELF__ | $CC -E - | $GREP __ELF__`" || test "$host_os-$host_cpu" = "openbsd2.8-powerpc"; then
  	  archive_cmds='$CC -shared $pic_flag -o $lib $libobjs $deplibs $compiler_flags'
  	  archive_expsym_cmds='$CC -shared $pic_flag -o $lib $libobjs $deplibs $compiler_flags ${wl}-retain-symbols-file,$export_symbols'
 -	  hardcode_libdir_flag_spec='${wl}-rpath,$libdir'
@@ -68,7 +63,7 @@
  	  export_dynamic_flag_spec='${wl}-E'
  	else
  	  case $host_os in
-@@ -8665,7 +8665,7 @@
+@@ -9252,7 +9252,7 @@
  	     ;;
  	   *)
  	     archive_cmds='$CC -shared $pic_flag -o $lib $libobjs $deplibs $compiler_flags'
@@ -76,481 +71,42 @@
 +	     hardcode_libdir_flag_spec='${wl}-R,$libdir'
  	     ;;
  	  esac
-         fi
-@@ -8690,7 +8690,7 @@
- 	allow_undefined_flag=' -expect_unresolved \*'
- 	archive_cmds='$LD -shared${allow_undefined_flag} $libobjs $deplibs $linker_flags -soname $soname `test -n "$verstring" && echo -set_version $verstring` -update_registry ${output_objdir}/so_locations -o $lib'
+ 	fi
+@@ -9278,7 +9278,7 @@
+ 	archive_cmds='$CC -shared${allow_undefined_flag} $libobjs $deplibs $compiler_flags -soname $soname `test -n "$verstring" && $ECHO "X-set_version $verstring" | $Xsed` -update_registry ${output_objdir}/so_locations -o $lib'
        fi
+       archive_cmds_need_lc='no'
 -      hardcode_libdir_flag_spec='${wl}-rpath ${wl}$libdir'
 +      hardcode_libdir_flag_spec='${wl}-R ${wl}$libdir'
        hardcode_libdir_separator=:
        ;;
  
-@@ -8698,15 +8698,15 @@
+@@ -9286,7 +9286,7 @@
        if test "$GCC" = yes; then
  	allow_undefined_flag=' ${wl}-expect_unresolved ${wl}\*'
- 	archive_cmds='$CC -shared${allow_undefined_flag} $libobjs $deplibs $compiler_flags ${wl}-msym ${wl}-soname ${wl}$soname `test -n "$verstring" && echo ${wl}-set_version ${wl}$verstring` ${wl}-update_registry ${wl}${output_objdir}/so_locations -o $lib'
+ 	archive_cmds='$CC -shared${allow_undefined_flag} $libobjs $deplibs $compiler_flags ${wl}-msym ${wl}-soname ${wl}$soname `test -n "$verstring" && $ECHO "X${wl}-set_version ${wl}$verstring" | $Xsed` ${wl}-update_registry ${wl}${output_objdir}/so_locations -o $lib'
 -	hardcode_libdir_flag_spec='${wl}-rpath ${wl}$libdir'
 +	hardcode_libdir_flag_spec='${wl}-R ${wl}$libdir'
        else
  	allow_undefined_flag=' -expect_unresolved \*'
- 	archive_cmds='$LD -shared${allow_undefined_flag} $libobjs $deplibs $linker_flags -msym -soname $soname `test -n "$verstring" && echo -set_version $verstring` -update_registry ${output_objdir}/so_locations -o $lib'
- 	archive_expsym_cmds='for i in `cat $export_symbols`; do printf "%s %s\\n" -exported_symbol "\$i" >> $lib.exp; done; echo "-hidden">> $lib.exp~
- 	$LD -shared${allow_undefined_flag} -input $lib.exp $linker_flags $libobjs $deplibs -soname $soname `test -n "$verstring" && echo -set_version $verstring` -update_registry ${output_objdir}/so_locations -o $lib~$rm $lib.exp'
+ 	archive_cmds='$CC -shared${allow_undefined_flag} $libobjs $deplibs $compiler_flags -msym -soname $soname `test -n "$verstring" && $ECHO "X-set_version $verstring" | $Xsed` -update_registry ${output_objdir}/so_locations -o $lib'
+@@ -9293,8 +9293,8 @@
+ 	archive_expsym_cmds='for i in `cat $export_symbols`; do printf "%s %s\\n" -exported_symbol "\$i" >> $lib.exp; done; printf "%s\\n" "-hidden">> $lib.exp~
+ 	$CC -shared${allow_undefined_flag} ${wl}-input ${wl}$lib.exp $compiler_flags $libobjs $deplibs -soname $soname `test -n "$verstring" && $ECHO "X-set_version $verstring" | $Xsed` -update_registry ${output_objdir}/so_locations -o $lib~$RM $lib.exp'
  
 -	# Both c and cxx compiler support -rpath directly
 -	hardcode_libdir_flag_spec='-rpath $libdir'
 +	# Both c and cxx compiler support -R directly
 +	hardcode_libdir_flag_spec='-R $libdir'
        fi
+       archive_cmds_need_lc='no'
        hardcode_libdir_separator=:
-       ;;
-@@ -10811,7 +10811,7 @@
- # not exist.
+@@ -21619,7 +21619,7 @@
+ # during linking.  This must work even if \$libdir does not exist.
  hardcode_libdir_flag_spec_ld=$lt_hardcode_libdir_flag_spec_ld
  
--# Whether we need a single -rpath flag with a separated argument.
-+# Whether we need a single -R flag with a separated argument.
+-# Whether we need a single "-rpath" flag with a separated argument.
++# Whether we need a single "-R" flag with a separated argument.
  hardcode_libdir_separator=$lt_hardcode_libdir_separator
  
- # Set to yes if using DIR/libNAME${shared_ext} during linking hardcodes DIR into the
-@@ -11201,7 +11201,7 @@
-     archive_cmds_CXX='$CC -shared -nostdlib $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags ${wl}-soname $wl$soname -o $lib'
-     archive_expsym_cmds_CXX='$CC -shared -nostdlib $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags ${wl}-soname $wl$soname ${wl}-retain-symbols-file $wl$export_symbols -o $lib'
- 
--    hardcode_libdir_flag_spec_CXX='${wl}--rpath ${wl}$libdir'
-+    hardcode_libdir_flag_spec_CXX='${wl}-R ${wl}$libdir'
-     export_dynamic_flag_spec_CXX='${wl}--export-dynamic'
- 
-     # If archive_cmds runs LD, not CC, wlarc should be empty
-@@ -11725,7 +11725,7 @@
-   interix[3-9]*)
-     hardcode_direct_CXX=no
-     hardcode_shlibpath_var_CXX=no
--    hardcode_libdir_flag_spec_CXX='${wl}-rpath,$libdir'
-+    hardcode_libdir_flag_spec_CXX='${wl}-R,$libdir'
-     export_dynamic_flag_spec_CXX='${wl}-E'
-     # Hack: On Interix 3.x, we cannot compile PIC because of a broken gcc.
-     # Instead, shared libraries are loaded at an image base (0x10000000 by
-@@ -11759,7 +11759,7 @@
- 	link_all_deplibs_CXX=yes
- 	;;
-     esac
--    hardcode_libdir_flag_spec_CXX='${wl}-rpath ${wl}$libdir'
-+    hardcode_libdir_flag_spec_CXX='${wl}-R ${wl}$libdir'
-     hardcode_libdir_separator_CXX=:
-     ;;
-   linux* | k*bsd*-gnu)
-@@ -11782,7 +11782,7 @@
- 	# dependencies.
- 	output_verbose_link_cmd='templist=`$CC $CFLAGS -v conftest.$objext -o libconftest$shared_ext 2>&1 | grep "ld"`; rm -f libconftest$shared_ext; list=""; for z in $templist; do case $z in conftest.$objext) list="$list $z";; *.$objext);; *) list="$list $z";;esac; done; echo $list'
- 
--	hardcode_libdir_flag_spec_CXX='${wl}--rpath,$libdir'
-+	hardcode_libdir_flag_spec_CXX='${wl}-R,$libdir'
- 	export_dynamic_flag_spec_CXX='${wl}--export-dynamic'
- 
- 	# Archives containing C++ object files must be created using
-@@ -11810,7 +11810,7 @@
- 	  ;;
- 	esac
- 	archive_cmds_need_lc_CXX=no
--	hardcode_libdir_flag_spec_CXX='${wl}-rpath,$libdir'
-+	hardcode_libdir_flag_spec_CXX='${wl}-R,$libdir'
- 	export_dynamic_flag_spec_CXX='${wl}--export-dynamic'
- 	whole_archive_flag_spec_CXX='${wl}--whole-archive$convenience ${wl}--no-whole-archive'
- 	;;
-@@ -11819,7 +11819,7 @@
- 	archive_cmds_CXX='$CC -shared $pic_flag $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags ${wl}-soname ${wl}$soname -o $lib'
-   	archive_expsym_cmds_CXX='$CC -shared $pic_flag $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags ${wl}-soname ${wl}$soname ${wl}-retain-symbols-file ${wl}$export_symbols -o $lib'
- 
--	hardcode_libdir_flag_spec_CXX='${wl}--rpath ${wl}$libdir'
-+	hardcode_libdir_flag_spec_CXX='${wl}-R ${wl}$libdir'
- 	export_dynamic_flag_spec_CXX='${wl}--export-dynamic'
- 	whole_archive_flag_spec_CXX='${wl}--whole-archive`for conv in $convenience\"\"; do test  -n \"$conv\" && new_convenience=\"$new_convenience,$conv\"; done; $echo \"$new_convenience\"` ${wl}--no-whole-archive'
-         ;;
-@@ -11829,7 +11829,7 @@
- 	archive_expsym_cmds_CXX='$CC -shared $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags ${wl}-soname $wl$soname  -o $lib ${wl}-retain-symbols-file $wl$export_symbols'
- 
- 	runpath_var=LD_RUN_PATH
--	hardcode_libdir_flag_spec_CXX='-rpath $libdir'
-+	hardcode_libdir_flag_spec_CXX='-R $libdir'
- 	hardcode_libdir_separator_CXX=:
- 
- 	# Commands to make compiler produce verbose output that lists
-@@ -11907,7 +11907,7 @@
-       hardcode_direct_CXX=yes
-       hardcode_shlibpath_var_CXX=no
-       archive_cmds_CXX='$CC -shared $pic_flag $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags -o $lib'
--      hardcode_libdir_flag_spec_CXX='${wl}-rpath,$libdir'
-+      hardcode_libdir_flag_spec_CXX='${wl}-R,$libdir'
-       if test -z "`echo __ELF__ | $CC -E - | grep __ELF__`" || test "$host_os-$host_cpu" = "openbsd2.8-powerpc"; then
- 	archive_expsym_cmds_CXX='$CC -shared $pic_flag $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags ${wl}-retain-symbols-file,$export_symbols -o $lib'
- 	export_dynamic_flag_spec_CXX='${wl}-E'
-@@ -11928,7 +11928,7 @@
- 	# to its proper name (with version) after linking.
- 	archive_cmds_CXX='tempext=`echo $shared_ext | $SED -e '\''s/\([^()0-9A-Za-z{}]\)/\\\\\1/g'\''`; templib=`echo $lib | $SED -e "s/\${tempext}\..*/.so/"`; $CC $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags --soname $soname -o \$templib; mv \$templib $lib'
- 
--	hardcode_libdir_flag_spec_CXX='${wl}-rpath,$libdir'
-+	hardcode_libdir_flag_spec_CXX='${wl}-R,$libdir'
- 	hardcode_libdir_separator_CXX=:
- 
- 	# Archives containing C++ object files must be created using
-@@ -11945,7 +11945,7 @@
- 	allow_undefined_flag_CXX=' ${wl}-expect_unresolved ${wl}\*'
- 	archive_cmds_CXX='$CC -shared${allow_undefined_flag} $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags ${wl}-soname $soname `test -n "$verstring" && echo ${wl}-set_version $verstring` -update_registry ${output_objdir}/so_locations -o $lib'
- 
--	hardcode_libdir_flag_spec_CXX='${wl}-rpath ${wl}$libdir'
-+	hardcode_libdir_flag_spec_CXX='${wl}-R ${wl}$libdir'
- 	hardcode_libdir_separator_CXX=:
- 
- 	# Commands to make compiler produce verbose output that lists
-@@ -11963,7 +11963,7 @@
- 	  allow_undefined_flag_CXX=' ${wl}-expect_unresolved ${wl}\*'
- 	  archive_cmds_CXX='$CC -shared -nostdlib ${allow_undefined_flag} $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags ${wl}-soname ${wl}$soname `test -n "$verstring" && echo ${wl}-set_version ${wl}$verstring` ${wl}-update_registry ${wl}${output_objdir}/so_locations -o $lib'
- 
--	  hardcode_libdir_flag_spec_CXX='${wl}-rpath ${wl}$libdir'
-+	  hardcode_libdir_flag_spec_CXX='${wl}-R ${wl}$libdir'
- 	  hardcode_libdir_separator_CXX=:
- 
- 	  # Commands to make compiler produce verbose output that lists
-@@ -11988,7 +11988,7 @@
- 	# to its proper name (with version) after linking.
- 	archive_cmds_CXX='tempext=`echo $shared_ext | $SED -e '\''s/\([^()0-9A-Za-z{}]\)/\\\\\1/g'\''`; templib=`echo $lib | $SED -e "s/\${tempext}\..*/.so/"`; $CC $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags --soname $soname -o \$templib; mv \$templib $lib'
- 
--	hardcode_libdir_flag_spec_CXX='${wl}-rpath,$libdir'
-+	hardcode_libdir_flag_spec_CXX='${wl}-R,$libdir'
- 	hardcode_libdir_separator_CXX=:
- 
- 	# Archives containing C++ object files must be created using
-@@ -12008,7 +12008,7 @@
- 	  $CC -shared$allow_undefined_flag $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags -msym -soname $soname -Wl,-input -Wl,$lib.exp  `test -n "$verstring" && echo -set_version	$verstring` -update_registry ${output_objdir}/so_locations -o $lib~
- 	  $rm $lib.exp'
- 
--	hardcode_libdir_flag_spec_CXX='-rpath $libdir'
-+	hardcode_libdir_flag_spec_CXX='-R $libdir'
- 	hardcode_libdir_separator_CXX=:
- 
- 	# Commands to make compiler produce verbose output that lists
-@@ -12026,7 +12026,7 @@
- 	  allow_undefined_flag_CXX=' ${wl}-expect_unresolved ${wl}\*'
- 	 archive_cmds_CXX='$CC -shared -nostdlib ${allow_undefined_flag} $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags ${wl}-msym ${wl}-soname ${wl}$soname `test -n "$verstring" && echo ${wl}-set_version ${wl}$verstring` ${wl}-update_registry ${wl}${output_objdir}/so_locations -o $lib'
- 
--	  hardcode_libdir_flag_spec_CXX='${wl}-rpath ${wl}$libdir'
-+	  hardcode_libdir_flag_spec_CXX='${wl}-R ${wl}$libdir'
- 	  hardcode_libdir_separator_CXX=:
- 
- 	  # Commands to make compiler produce verbose output that lists
-@@ -13900,7 +13900,7 @@
- # not exist.
- hardcode_libdir_flag_spec_ld=$lt_hardcode_libdir_flag_spec_ld_CXX
- 
--# Whether we need a single -rpath flag with a separated argument.
-+# Whether we need a single -R flag with a separated argument.
- hardcode_libdir_separator=$lt_hardcode_libdir_separator_CXX
- 
- # Set to yes if using DIR/libNAME${shared_ext} during linking hardcodes DIR into the
-@@ -14611,7 +14611,7 @@
-     # are reset later if shared libraries are not supported. Putting them
-     # here allows them to be overridden if necessary.
-     runpath_var=LD_RUN_PATH
--    hardcode_libdir_flag_spec_F77='${wl}--rpath ${wl}$libdir'
-+    hardcode_libdir_flag_spec_F77='${wl}-R ${wl}$libdir'
-     export_dynamic_flag_spec_F77='${wl}--export-dynamic'
-     # ancient GNU ld didn't support --whole-archive et. al.
-     if $LD --help 2>&1 | grep 'no-whole-archive' > /dev/null; then
-@@ -14699,7 +14699,7 @@
-     interix[3-9]*)
-       hardcode_direct_F77=no
-       hardcode_shlibpath_var_F77=no
--      hardcode_libdir_flag_spec_F77='${wl}-rpath,$libdir'
-+      hardcode_libdir_flag_spec_F77='${wl}-R,$libdir'
-       export_dynamic_flag_spec_F77='${wl}-E'
-       # Hack: On Interix 3.x, we cannot compile PIC because of a broken gcc.
-       # Instead, shared libraries are loaded at an image base (0x10000000 by
-@@ -14800,7 +14800,7 @@
- 	;;
- 	*)
- 	  if $LD --help 2>&1 | grep ': supported targets:.* elf' > /dev/null; then
--	    hardcode_libdir_flag_spec_F77='`test -z "$SCOABSPATH" && echo ${wl}-rpath,$libdir`'
-+	    hardcode_libdir_flag_spec_F77='`test -z "$SCOABSPATH" && echo ${wl}-R,$libdir`'
- 	    archive_cmds_F77='$CC -shared $libobjs $deplibs $compiler_flags ${wl}-soname,\${SCOABSPATH:+${install_libdir}/}$soname -o $lib'
- 	    archive_expsym_cmds_F77='$CC -shared $libobjs $deplibs $compiler_flags ${wl}-soname,\${SCOABSPATH:+${install_libdir}/}$soname,-retain-symbols-file,$export_symbols -o $lib'
- 	  else
-@@ -15269,9 +15269,9 @@
- 	archive_cmds_F77='$CC -shared $libobjs $deplibs $compiler_flags ${wl}-soname ${wl}$soname `test -n "$verstring" && echo ${wl}-set_version ${wl}$verstring` ${wl}-update_registry ${wl}${output_objdir}/so_locations -o $lib'
-       else
- 	archive_cmds_F77='$LD -shared $libobjs $deplibs $linker_flags -soname $soname `test -n "$verstring" && echo -set_version $verstring` -update_registry ${output_objdir}/so_locations -o $lib'
--	hardcode_libdir_flag_spec_ld_F77='-rpath $libdir'
-+	hardcode_libdir_flag_spec_ld_F77='-R $libdir'
-       fi
--      hardcode_libdir_flag_spec_F77='${wl}-rpath ${wl}$libdir'
-+      hardcode_libdir_flag_spec_F77='${wl}-R ${wl}$libdir'
-       hardcode_libdir_separator_F77=:
-       link_all_deplibs_F77=yes
-       ;;
-@@ -15290,7 +15290,7 @@
-     newsos6)
-       archive_cmds_F77='$LD -G -h $soname -o $lib $libobjs $deplibs $linker_flags'
-       hardcode_direct_F77=yes
--      hardcode_libdir_flag_spec_F77='${wl}-rpath ${wl}$libdir'
-+      hardcode_libdir_flag_spec_F77='${wl}-R ${wl}$libdir'
-       hardcode_libdir_separator_F77=:
-       hardcode_shlibpath_var_F77=no
-       ;;
-@@ -15302,7 +15302,7 @@
- 	if test -z "`echo __ELF__ | $CC -E - | grep __ELF__`" || test "$host_os-$host_cpu" = "openbsd2.8-powerpc"; then
- 	  archive_cmds_F77='$CC -shared $pic_flag -o $lib $libobjs $deplibs $compiler_flags'
- 	  archive_expsym_cmds_F77='$CC -shared $pic_flag -o $lib $libobjs $deplibs $compiler_flags ${wl}-retain-symbols-file,$export_symbols'
--	  hardcode_libdir_flag_spec_F77='${wl}-rpath,$libdir'
-+	  hardcode_libdir_flag_spec_F77='${wl}-R,$libdir'
- 	  export_dynamic_flag_spec_F77='${wl}-E'
- 	else
- 	  case $host_os in
-@@ -15312,7 +15312,7 @@
- 	     ;;
- 	   *)
- 	     archive_cmds_F77='$CC -shared $pic_flag -o $lib $libobjs $deplibs $compiler_flags'
--	     hardcode_libdir_flag_spec_F77='${wl}-rpath,$libdir'
-+	     hardcode_libdir_flag_spec_F77='${wl}-R,$libdir'
- 	     ;;
- 	  esac
-         fi
-@@ -15337,7 +15337,7 @@
- 	allow_undefined_flag_F77=' -expect_unresolved \*'
- 	archive_cmds_F77='$LD -shared${allow_undefined_flag} $libobjs $deplibs $linker_flags -soname $soname `test -n "$verstring" && echo -set_version $verstring` -update_registry ${output_objdir}/so_locations -o $lib'
-       fi
--      hardcode_libdir_flag_spec_F77='${wl}-rpath ${wl}$libdir'
-+      hardcode_libdir_flag_spec_F77='${wl}-R ${wl}$libdir'
-       hardcode_libdir_separator_F77=:
-       ;;
- 
-@@ -15345,15 +15345,15 @@
-       if test "$GCC" = yes; then
- 	allow_undefined_flag_F77=' ${wl}-expect_unresolved ${wl}\*'
- 	archive_cmds_F77='$CC -shared${allow_undefined_flag} $libobjs $deplibs $compiler_flags ${wl}-msym ${wl}-soname ${wl}$soname `test -n "$verstring" && echo ${wl}-set_version ${wl}$verstring` ${wl}-update_registry ${wl}${output_objdir}/so_locations -o $lib'
--	hardcode_libdir_flag_spec_F77='${wl}-rpath ${wl}$libdir'
-+	hardcode_libdir_flag_spec_F77='${wl}-R ${wl}$libdir'
-       else
- 	allow_undefined_flag_F77=' -expect_unresolved \*'
- 	archive_cmds_F77='$LD -shared${allow_undefined_flag} $libobjs $deplibs $linker_flags -msym -soname $soname `test -n "$verstring" && echo -set_version $verstring` -update_registry ${output_objdir}/so_locations -o $lib'
- 	archive_expsym_cmds_F77='for i in `cat $export_symbols`; do printf "%s %s\\n" -exported_symbol "\$i" >> $lib.exp; done; echo "-hidden">> $lib.exp~
- 	$LD -shared${allow_undefined_flag} -input $lib.exp $linker_flags $libobjs $deplibs -soname $soname `test -n "$verstring" && echo -set_version $verstring` -update_registry ${output_objdir}/so_locations -o $lib~$rm $lib.exp'
- 
--	# Both c and cxx compiler support -rpath directly
--	hardcode_libdir_flag_spec_F77='-rpath $libdir'
-+	# Both c and cxx compiler support -R directly
-+	hardcode_libdir_flag_spec_F77='-R $libdir'
-       fi
-       hardcode_libdir_separator_F77=:
-       ;;
-@@ -16514,7 +16514,7 @@
- # not exist.
- hardcode_libdir_flag_spec_ld=$lt_hardcode_libdir_flag_spec_ld_F77
- 
--# Whether we need a single -rpath flag with a separated argument.
-+# Whether we need a single -R flag with a separated argument.
- hardcode_libdir_separator=$lt_hardcode_libdir_separator_F77
- 
- # Set to yes if using DIR/libNAME${shared_ext} during linking hardcodes DIR into the
-@@ -17205,7 +17205,7 @@
-     # are reset later if shared libraries are not supported. Putting them
-     # here allows them to be overridden if necessary.
-     runpath_var=LD_RUN_PATH
--    hardcode_libdir_flag_spec_GCJ='${wl}--rpath ${wl}$libdir'
-+    hardcode_libdir_flag_spec_GCJ='${wl}-R ${wl}$libdir'
-     export_dynamic_flag_spec_GCJ='${wl}--export-dynamic'
-     # ancient GNU ld didn't support --whole-archive et. al.
-     if $LD --help 2>&1 | grep 'no-whole-archive' > /dev/null; then
-@@ -17293,7 +17293,7 @@
-     interix[3-9]*)
-       hardcode_direct_GCJ=no
-       hardcode_shlibpath_var_GCJ=no
--      hardcode_libdir_flag_spec_GCJ='${wl}-rpath,$libdir'
-+      hardcode_libdir_flag_spec_GCJ='${wl}-R,$libdir'
-       export_dynamic_flag_spec_GCJ='${wl}-E'
-       # Hack: On Interix 3.x, we cannot compile PIC because of a broken gcc.
-       # Instead, shared libraries are loaded at an image base (0x10000000 by
-@@ -17394,7 +17394,7 @@
- 	;;
- 	*)
- 	  if $LD --help 2>&1 | grep ': supported targets:.* elf' > /dev/null; then
--	    hardcode_libdir_flag_spec_GCJ='`test -z "$SCOABSPATH" && echo ${wl}-rpath,$libdir`'
-+	    hardcode_libdir_flag_spec_GCJ='`test -z "$SCOABSPATH" && echo ${wl}-R,$libdir`'
- 	    archive_cmds_GCJ='$CC -shared $libobjs $deplibs $compiler_flags ${wl}-soname,\${SCOABSPATH:+${install_libdir}/}$soname -o $lib'
- 	    archive_expsym_cmds_GCJ='$CC -shared $libobjs $deplibs $compiler_flags ${wl}-soname,\${SCOABSPATH:+${install_libdir}/}$soname,-retain-symbols-file,$export_symbols -o $lib'
- 	  else
-@@ -17883,9 +17883,9 @@
- 	archive_cmds_GCJ='$CC -shared $libobjs $deplibs $compiler_flags ${wl}-soname ${wl}$soname `test -n "$verstring" && echo ${wl}-set_version ${wl}$verstring` ${wl}-update_registry ${wl}${output_objdir}/so_locations -o $lib'
-       else
- 	archive_cmds_GCJ='$LD -shared $libobjs $deplibs $linker_flags -soname $soname `test -n "$verstring" && echo -set_version $verstring` -update_registry ${output_objdir}/so_locations -o $lib'
--	hardcode_libdir_flag_spec_ld_GCJ='-rpath $libdir'
-+	hardcode_libdir_flag_spec_ld_GCJ='-R $libdir'
-       fi
--      hardcode_libdir_flag_spec_GCJ='${wl}-rpath ${wl}$libdir'
-+      hardcode_libdir_flag_spec_GCJ='${wl}-R ${wl}$libdir'
-       hardcode_libdir_separator_GCJ=:
-       link_all_deplibs_GCJ=yes
-       ;;
-@@ -17904,7 +17904,7 @@
-     newsos6)
-       archive_cmds_GCJ='$LD -G -h $soname -o $lib $libobjs $deplibs $linker_flags'
-       hardcode_direct_GCJ=yes
--      hardcode_libdir_flag_spec_GCJ='${wl}-rpath ${wl}$libdir'
-+      hardcode_libdir_flag_spec_GCJ='${wl}-R ${wl}$libdir'
-       hardcode_libdir_separator_GCJ=:
-       hardcode_shlibpath_var_GCJ=no
-       ;;
-@@ -17916,7 +17916,7 @@
- 	if test -z "`echo __ELF__ | $CC -E - | grep __ELF__`" || test "$host_os-$host_cpu" = "openbsd2.8-powerpc"; then
- 	  archive_cmds_GCJ='$CC -shared $pic_flag -o $lib $libobjs $deplibs $compiler_flags'
- 	  archive_expsym_cmds_GCJ='$CC -shared $pic_flag -o $lib $libobjs $deplibs $compiler_flags ${wl}-retain-symbols-file,$export_symbols'
--	  hardcode_libdir_flag_spec_GCJ='${wl}-rpath,$libdir'
-+	  hardcode_libdir_flag_spec_GCJ='${wl}-R,$libdir'
- 	  export_dynamic_flag_spec_GCJ='${wl}-E'
- 	else
- 	  case $host_os in
-@@ -17926,7 +17926,7 @@
- 	     ;;
- 	   *)
- 	     archive_cmds_GCJ='$CC -shared $pic_flag -o $lib $libobjs $deplibs $compiler_flags'
--	     hardcode_libdir_flag_spec_GCJ='${wl}-rpath,$libdir'
-+	     hardcode_libdir_flag_spec_GCJ='${wl}-R,$libdir'
- 	     ;;
- 	  esac
-         fi
-@@ -17951,7 +17951,7 @@
- 	allow_undefined_flag_GCJ=' -expect_unresolved \*'
- 	archive_cmds_GCJ='$LD -shared${allow_undefined_flag} $libobjs $deplibs $linker_flags -soname $soname `test -n "$verstring" && echo -set_version $verstring` -update_registry ${output_objdir}/so_locations -o $lib'
-       fi
--      hardcode_libdir_flag_spec_GCJ='${wl}-rpath ${wl}$libdir'
-+      hardcode_libdir_flag_spec_GCJ='${wl}-R ${wl}$libdir'
-       hardcode_libdir_separator_GCJ=:
-       ;;
- 
-@@ -17959,15 +17959,15 @@
-       if test "$GCC" = yes; then
- 	allow_undefined_flag_GCJ=' ${wl}-expect_unresolved ${wl}\*'
- 	archive_cmds_GCJ='$CC -shared${allow_undefined_flag} $libobjs $deplibs $compiler_flags ${wl}-msym ${wl}-soname ${wl}$soname `test -n "$verstring" && echo ${wl}-set_version ${wl}$verstring` ${wl}-update_registry ${wl}${output_objdir}/so_locations -o $lib'
--	hardcode_libdir_flag_spec_GCJ='${wl}-rpath ${wl}$libdir'
-+	hardcode_libdir_flag_spec_GCJ='${wl}-R ${wl}$libdir'
-       else
- 	allow_undefined_flag_GCJ=' -expect_unresolved \*'
- 	archive_cmds_GCJ='$LD -shared${allow_undefined_flag} $libobjs $deplibs $linker_flags -msym -soname $soname `test -n "$verstring" && echo -set_version $verstring` -update_registry ${output_objdir}/so_locations -o $lib'
- 	archive_expsym_cmds_GCJ='for i in `cat $export_symbols`; do printf "%s %s\\n" -exported_symbol "\$i" >> $lib.exp; done; echo "-hidden">> $lib.exp~
- 	$LD -shared${allow_undefined_flag} -input $lib.exp $linker_flags $libobjs $deplibs -soname $soname `test -n "$verstring" && echo -set_version $verstring` -update_registry ${output_objdir}/so_locations -o $lib~$rm $lib.exp'
- 
--	# Both c and cxx compiler support -rpath directly
--	hardcode_libdir_flag_spec_GCJ='-rpath $libdir'
-+	# Both c and cxx compiler support -R directly
-+	hardcode_libdir_flag_spec_GCJ='-R $libdir'
-       fi
-       hardcode_libdir_separator_GCJ=:
-       ;;
-@@ -19128,7 +19128,7 @@
- # not exist.
- hardcode_libdir_flag_spec_ld=$lt_hardcode_libdir_flag_spec_ld_GCJ
- 
--# Whether we need a single -rpath flag with a separated argument.
-+# Whether we need a single -R flag with a separated argument.
- hardcode_libdir_separator=$lt_hardcode_libdir_separator_GCJ
- 
- # Set to yes if using DIR/libNAME${shared_ext} during linking hardcodes DIR into the
-@@ -19609,7 +19609,7 @@
- # not exist.
- hardcode_libdir_flag_spec_ld=$lt_hardcode_libdir_flag_spec_ld_RC
- 
--# Whether we need a single -rpath flag with a separated argument.
-+# Whether we need a single -R flag with a separated argument.
- hardcode_libdir_separator=$lt_hardcode_libdir_separator_RC
- 
- # Set to yes if using DIR/libNAME${shared_ext} during linking hardcodes DIR into the
-@@ -24504,7 +24504,7 @@
- _SAVE_LIBS="$LIBS"
- CPPFLAGS="$CPPFLAGS $_GECKO_EXTRA_CPPFLAGS -I$_GECKO_INCLUDE_ROOT $($PKG_CONFIG --cflags-only-I ${gecko_cv_gecko}-xpcom)"
- CXXFLAGS="$CXXFLAGS $_GECKO_EXTRA_CXXFLAGS $($PKG_CONFIG --cflags-only-other ${gecko_cv_gecko}-xpcom)"
--LDFLAGS="$LDFLAGS $_GECKO_EXTRA_LDFLAGS -Wl,--rpath=$_GECKO_HOME"
-+LDFLAGS="$LDFLAGS $_GECKO_EXTRA_LDFLAGS -Wl,-R$_GECKO_HOME"
- LIBS="$LIBS $($PKG_CONFIG --libs ${gecko_cv_gecko}-xpcom)"
- 
- _GECKO_DISPATCH_INCLUDEDIRS=""
-@@ -24673,7 +24673,7 @@
- _SAVE_LIBS="$LIBS"
- CPPFLAGS="$CPPFLAGS $_GECKO_EXTRA_CPPFLAGS -I$_GECKO_INCLUDE_ROOT $($PKG_CONFIG --cflags-only-I ${gecko_cv_gecko}-xpcom)"
- CXXFLAGS="$CXXFLAGS $_GECKO_EXTRA_CXXFLAGS $($PKG_CONFIG --cflags-only-other ${gecko_cv_gecko}-xpcom)"
--LDFLAGS="$LDFLAGS $_GECKO_EXTRA_LDFLAGS -Wl,--rpath=$_GECKO_HOME"
-+LDFLAGS="$LDFLAGS $_GECKO_EXTRA_LDFLAGS -Wl,-R$_GECKO_HOME"
- LIBS="$LIBS $($PKG_CONFIG --libs ${gecko_cv_gecko}-xpcom)"
- 
- _GECKO_DISPATCH_INCLUDEDIRS=""
-@@ -24849,7 +24849,7 @@
- _SAVE_LIBS="$LIBS"
- CPPFLAGS="$CPPFLAGS $_GECKO_EXTRA_CPPFLAGS -I$_GECKO_INCLUDE_ROOT $($PKG_CONFIG --cflags-only-I ${gecko_cv_gecko}-xpcom)"
- CXXFLAGS="$CXXFLAGS $_GECKO_EXTRA_CXXFLAGS $($PKG_CONFIG --cflags-only-other ${gecko_cv_gecko}-xpcom)"
--LDFLAGS="$LDFLAGS $_GECKO_EXTRA_LDFLAGS -Wl,--rpath=$_GECKO_HOME"
-+LDFLAGS="$LDFLAGS $_GECKO_EXTRA_LDFLAGS -Wl,-R$_GECKO_HOME"
- LIBS="$LIBS $($PKG_CONFIG --libs ${gecko_cv_gecko}-xpcom)"
- 
- _GECKO_DISPATCH_INCLUDEDIRS="pipnss"
-@@ -25105,7 +25105,7 @@
- _SAVE_LIBS="$LIBS"
- CPPFLAGS="$CPPFLAGS $_GECKO_EXTRA_CPPFLAGS -I$_GECKO_INCLUDE_ROOT $($PKG_CONFIG --cflags-only-I ${gecko_cv_gecko}-xpcom)"
- CXXFLAGS="$CXXFLAGS $_GECKO_EXTRA_CXXFLAGS $($PKG_CONFIG --cflags-only-other ${gecko_cv_gecko}-xpcom)"
--LDFLAGS="$LDFLAGS $_GECKO_EXTRA_LDFLAGS -Wl,--rpath=$_GECKO_HOME"
-+LDFLAGS="$LDFLAGS $_GECKO_EXTRA_LDFLAGS -Wl,-R$_GECKO_HOME"
- LIBS="$LIBS $($PKG_CONFIG --libs ${gecko_cv_gecko}-xpcom)"
- 
- _GECKO_DISPATCH_INCLUDEDIRS="windowwatcher"
-@@ -25306,7 +25306,7 @@
- _SAVE_LIBS="$LIBS"
- CPPFLAGS="$CPPFLAGS $_GECKO_EXTRA_CPPFLAGS -I$_GECKO_INCLUDE_ROOT $($PKG_CONFIG --cflags-only-I ${gecko_cv_gecko}-xpcom)"
- CXXFLAGS="$CXXFLAGS $_GECKO_EXTRA_CXXFLAGS $($PKG_CONFIG --cflags-only-other ${gecko_cv_gecko}-xpcom)"
--LDFLAGS="$LDFLAGS $_GECKO_EXTRA_LDFLAGS -Wl,--rpath=$_GECKO_HOME"
-+LDFLAGS="$LDFLAGS $_GECKO_EXTRA_LDFLAGS -Wl,-R$_GECKO_HOME"
- LIBS="$LIBS $($PKG_CONFIG --libs ${gecko_cv_gecko}-xpcom)"
- 
- _GECKO_DISPATCH_INCLUDEDIRS="docshell"
-@@ -25507,7 +25507,7 @@
- _SAVE_LIBS="$LIBS"
- CPPFLAGS="$CPPFLAGS $_GECKO_EXTRA_CPPFLAGS -I$_GECKO_INCLUDE_ROOT $($PKG_CONFIG --cflags-only-I ${gecko_cv_gecko}-xpcom)"
- CXXFLAGS="$CXXFLAGS $_GECKO_EXTRA_CXXFLAGS $($PKG_CONFIG --cflags-only-other ${gecko_cv_gecko}-xpcom)"
--LDFLAGS="$LDFLAGS $_GECKO_EXTRA_LDFLAGS -Wl,--rpath=$_GECKO_HOME"
-+LDFLAGS="$LDFLAGS $_GECKO_EXTRA_LDFLAGS -Wl,-R$_GECKO_HOME"
- LIBS="$LIBS $($PKG_CONFIG --libs ${gecko_cv_gecko}-xpcom)"
- 
- _GECKO_DISPATCH_INCLUDEDIRS="necko"
-@@ -25708,7 +25708,7 @@
- _SAVE_LIBS="$LIBS"
- CPPFLAGS="$CPPFLAGS $_GECKO_EXTRA_CPPFLAGS -I$_GECKO_INCLUDE_ROOT $($PKG_CONFIG --cflags-only-I ${gecko_cv_gecko}-xpcom)"
- CXXFLAGS="$CXXFLAGS $_GECKO_EXTRA_CXXFLAGS $($PKG_CONFIG --cflags-only-other ${gecko_cv_gecko}-xpcom)"
--LDFLAGS="$LDFLAGS $_GECKO_EXTRA_LDFLAGS -Wl,--rpath=$_GECKO_HOME"
-+LDFLAGS="$LDFLAGS $_GECKO_EXTRA_LDFLAGS -Wl,-R$_GECKO_HOME"
- LIBS="$LIBS $($PKG_CONFIG --libs ${gecko_cv_gecko}-xpcom)"
- 
- _GECKO_DISPATCH_INCLUDEDIRS="xpcom"
-@@ -25908,7 +25908,7 @@
- _SAVE_LIBS="$LIBS"
- CPPFLAGS="$CPPFLAGS $_GECKO_EXTRA_CPPFLAGS -I$_GECKO_INCLUDE_ROOT $($PKG_CONFIG --cflags-only-I ${gecko_cv_gecko}-xpcom)"
- CXXFLAGS="$CXXFLAGS $_GECKO_EXTRA_CXXFLAGS $($PKG_CONFIG --cflags-only-other ${gecko_cv_gecko}-xpcom)"
--LDFLAGS="$LDFLAGS $_GECKO_EXTRA_LDFLAGS -Wl,--rpath=$_GECKO_HOME"
-+LDFLAGS="$LDFLAGS $_GECKO_EXTRA_LDFLAGS -Wl,-R$_GECKO_HOME"
- LIBS="$LIBS $($PKG_CONFIG --libs ${gecko_cv_gecko}-xpcom)"
- 
- _GECKO_DISPATCH_INCLUDEDIRS="spellchecker"
-@@ -26131,7 +26131,7 @@
- _SAVE_LIBS="$LIBS"
- CPPFLAGS="$CPPFLAGS $_GECKO_EXTRA_CPPFLAGS -I$_GECKO_INCLUDE_ROOT $($PKG_CONFIG --cflags-only-I ${gecko_cv_gecko}-xpcom)"
- CXXFLAGS="$CXXFLAGS $_GECKO_EXTRA_CXXFLAGS $($PKG_CONFIG --cflags-only-other ${gecko_cv_gecko}-xpcom)"
--LDFLAGS="$LDFLAGS $_GECKO_EXTRA_LDFLAGS -Wl,--rpath=$_GECKO_HOME"
-+LDFLAGS="$LDFLAGS $_GECKO_EXTRA_LDFLAGS -Wl,-R$_GECKO_HOME"
- LIBS="$LIBS $($PKG_CONFIG --libs ${gecko_cv_gecko}-xpcom)"
- 
- _GECKO_DISPATCH_INCLUDEDIRS=""
-@@ -26904,7 +26904,7 @@
- EOF
- 
- 	if /bin/sh ../libtool --mode=compile ${CC} $PYTHON_CFLAGS -c testpython.c >/dev/null 2>&1 && \
--		/bin/sh ../libtool --mode=link ${CC} -o testpython.la -rpath `pwd` -module -avoid-version $PYTHON_LIB_LOC testpython.lo $PYTHON_LIBS $PYTHON_EXTRA_LIBS >/dev/null 2>&1 && \
-+		/bin/sh ../libtool --mode=link ${CC} -o testpython.la -R `pwd` -module -avoid-version $PYTHON_LIB_LOC testpython.lo $PYTHON_LIBS $PYTHON_EXTRA_LIBS >/dev/null 2>&1 && \
- 		grep 'dlname.*testpython' testpython.la >/dev/null 2>&1; then
- 		result=yes
- 	else
+ # Set to "yes" if using DIR/libNAME\${shared_ext} during linking hardcodes
