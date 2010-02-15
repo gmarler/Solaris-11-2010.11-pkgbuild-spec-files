@@ -7,14 +7,19 @@
 
 %include Solaris.inc
 
+%define cc_is_gcc 1
+%include base.inc
+
+
 Name:                SFEe2fsprogs
 License:             GPL
 Summary:             Ext2 Filesystems Utilities
-Version:             1.41.8
+Version:             1.41.10
 URL:                 http://e2fsprogs.sourceforge.net/
 Source:              %{sf_download}/e2fsprogs/e2fsprogs-%{version}.tar.gz
 Source1:             ext2fs.pc
 Patch1:              e2fsprogs-01-rpathlink.diff
+Patch2:              e2fsprogs-02-siocgifhwaddr.diff
 
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
@@ -39,6 +44,7 @@ Requires:                %{name}
 %prep
 %setup -q -n e2fsprogs-%version
 %patch1 -p1
+%patch2 -p1
 
 if [ "x`basename $CC`" != xgcc ]
 then
@@ -59,8 +65,7 @@ CFLAGS=-std=gnu99 ./configure --prefix=%{_prefix}	\
             --libdir=%{_libdir}/ext2fs \
             --sysconfdir=%{_sysconfdir} \
             --enable-elf-shlibs \
-            --enable-htree \
-            --with-ldopts="${LDFLAGS}"
+            --enable-htree
 
 gmake
 
@@ -161,7 +166,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/*
 %dir %attr (0755, root, bin) %{_sbindir}
 %{_sbindir}/*
-%dir %attr (0755, root, sys) %{_datadir}
+%dir %attr (0755, root, bin) %{_datadir}
 %dir %attr (0755, root, bin) %{_mandir}
 %{_mandir}/*
 %dir %attr (0755, root, bin) %{_infodir}
@@ -179,7 +184,7 @@ rm -rf $RPM_BUILD_ROOT
 %if %build_l10n
 %files l10n
 %defattr (-, root, other)
-%dir %attr (0755, root, sys) %{_datadir}
+%dir %attr (0755, root, bin) %{_datadir}
 %dir %attr (0755, root, other) %{_datadir}/locale
 %{_datadir}/locale/*
 %endif
@@ -193,6 +198,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*
 
 %changelog
+* Mon Feb 15 2010 - Milan Jurik
+- update for 1.41.10
+- fix problem with intro of PF_PACKET
 * Sun Aug 16 2009 - Milan Jurik
 - update for 1.41.8
 * Sun Apr 11 2009 - Milan Jurik

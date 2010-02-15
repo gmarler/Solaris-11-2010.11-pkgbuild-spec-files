@@ -1,3 +1,7 @@
+2010-02-15  Milan Jurik <sfnet@xylab.cz>
+
+	* SFEe2fsprogs.spec: update for 1.41.10, fix problem with intro of PF_PACKET
+
 2010-02-12  James Choi  <jchoi42@pha.jhu.edu>
 
         * base-specs/gio.spec: add patch, glib version check
