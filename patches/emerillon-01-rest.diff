@@ -1,0 +1,11 @@
+--- emerillon-0.1.1/configure.ac-orig	2010-02-16 03:42:08.279912845 -0600
++++ emerillon-0.1.1/configure.ac	2010-02-16 03:42:18.400086322 -0600
+@@ -103,7 +103,7 @@ if test x$enable_search = xyes; then
+   AC_SUBST(SEARCH_DEPS_LIBS)
+   PKG_CHECK_MODULES(SEARCH_DEPS,
+     [
+-      rest-0.6 >= 0.6
++      rest >= 0.6
+     ]
+   )
+ 

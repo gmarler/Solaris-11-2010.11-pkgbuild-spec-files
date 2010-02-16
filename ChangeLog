@@ -1,5 +1,11 @@
 2010-02-15  Brian Cameron  <brian.cameron@sun.com>
 
+	* SFEemerillon.spec: Bump to 0.1.1.
+	* patches/emerillon-01-Wl.diff: Remove upstream patch.
+	* patches/emerillon-01-rest.diff: Add patch needed to build.
+
+2010-02-15  Brian Cameron  <brian.cameron@sun.com>
+
 	* SFEmenu-cache.spec, patches/menu-cache-02-fixcrash.diff:  Add
 	  patch needed to fix crashing problem.
 

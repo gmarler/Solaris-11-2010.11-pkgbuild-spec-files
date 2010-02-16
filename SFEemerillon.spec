@@ -10,13 +10,12 @@
 Name:                    SFEemerillon
 License:                 GPL v3
 Group:                   Libraries/Multimedia
-Version:                 0.1.0
+Version:                 0.1.1
 Source:                  http://download.gnome.org/sources/emerillon/0.1/emerillon-%{version}.tar.bz2
+Patch1:                  emerillon-01-rest.diff
 Distribution:            Java Desktop System
 Vendor:                  Sun Microsystems, Inc.
 Summary:                 Map Viewer
-# date:2009-02-13 owner:yippi type:bug bugzilla:24058
-Patch1:                  emerillon-01-Wl.diff
 URL:                     http://www.novopia.com/emerillon/
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 SUNW_BaseDir:            %{_basedir}
@@ -26,7 +25,7 @@ Requires:                SUNWglib2
 Requires:                SUNWgtk2
 Requires:                SUNWdbus-glib
 Requires:                SUNWgnome-config
-Requires:                SFElibchamplain
+Requires:                SUNWlibchamplain
 Requires:                SFEgeoclue
 Requires:                SFElibrest
 Requires:                SFEethos
@@ -34,7 +33,7 @@ BuildRequires:           SUNWglib2-devel
 BuildRequires:           SUNWgtk2-devel
 BuildRequires:           SUNWdbus-glib-devel
 BuildRequires:           SUNWgnome-config-devel
-BuildRequires:           SFElibchamplain-devel
+BuildRequires:           SUNWlibchamplain-devel
 BuildRequires:           SFEgeoclue-devel
 BuildRequires:           SFElibrest-devel
 BuildRequires:           SFEethos-devel
@@ -111,5 +110,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*
 
 %changelog
+* Tue Feb 16 2010 - Brian Cameron  <brian.cameron@sun.com>
+- Bump to 0.1.1.  Remove upstream patch emerillon-01-Wl.diff
 * Sun Oct 11 2009 - Brian Cameron  <brian.cameron@sun.com>
 - Created.
