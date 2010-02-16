@@ -9,16 +9,9 @@
 
 Name:                    SFEopenbox
 Summary:                 a free window manager for the X Window System
-Version:                 3.4.7.2
+Version:                 3.4.11
 Source:                  http://icculus.org/openbox/releases/openbox-%{version}.tar.gz
 URL:                     http://icculus.org/openbox/index.php/Main_Page
-
-# Refer to Sun Studio compiler bugs 4614572 and 6525110
-# owner:alfred date:2009-06-02 type:bug
-# reported as bug 3869.
-Patch1:                  openbox-01-union.diff
-# reported as bug 4253.
-Patch2:                  openbox-02-session.diff
 
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -39,9 +32,6 @@ SUNW_BaseDir:            /
 
 %prep
 %setup -q -n openbox-%version
-
-%patch1 -p1
-%patch2 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -83,6 +73,8 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, bin) %{_includedir}
 %{_includedir}/*
 %dir %attr (0755, root, sys) %{_datadir}
+%dir %attr (0755, root, other) %{_datadir}/applications
+%{_datadir}/applications/*
 %dir %attr (0755, root, other) %{_datadir}/pixmaps
 %{_datadir}/pixmaps/*
 %dir %attr (0755, root, other) %{_datadir}/gnome
@@ -109,6 +101,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Mon Feb 15 2010 - brian.cameron@sun.com
+- Bump to 3.4.11.
 * Tue Aug 04 2009 - brian.cameron@sun.com
 - Add patch openbox-02-session.diff so that the script works
   with Nevada bourne-shell.

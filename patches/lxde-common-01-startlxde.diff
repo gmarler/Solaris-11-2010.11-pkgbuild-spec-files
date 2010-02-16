@@ -1,8 +1,11 @@
 --- lxde-common-0.4.2/startlxde.in-orig	2009-08-06 20:47:38.642288000 -0500
 +++ lxde-common-0.4.2/startlxde.in	2009-08-06 20:47:57.090355000 -0500
-@@ -1,7 +1,8 @@
+@@ -1,7 +1,11 @@
  #!/bin/sh
  
++PATH=$PATH:/usr/X11/bin
++export PATH
++
  if [ -z "$XDG_CONFIG_HOME" ]; then
 -    export XDG_CONFIG_HOME="$HOME/.config"
 +    XDG_CONFIG_HOME="$HOME/.config"
@@ -10,7 +13,7 @@
  fi
  
  # Ensure the existance of pcmanfm config file
-@@ -22,7 +23,8 @@ fi
+@@ -22,7 +26,8 @@ fi
  xprop -root -remove _NET_NUMBER_OF_DESKTOPS -remove _NET_DESKTOP_NAMES -remove _NET_CURRENT_DESKTOP 2> /dev/null
  
  # Enable GTK+2 integration for OpenOffice.org, if available.

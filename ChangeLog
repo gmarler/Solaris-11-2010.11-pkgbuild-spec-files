@@ -1,5 +1,13 @@
 2010-02-15  Brian Cameron  <brian.cameron@sun.com>
 
+	* SFEopenbox.spec, patches/openbox-01-union.diff,
+	  patches/openbox-02-session.diff: Bump to 3.4.11.  Remove upstream
+	  patches.
+	* patches/lxde-common-01-startlxde.diff: Fix script so it runs.
+	* patches/lxsession-02-fixcrash.diff: Fix crashing problem.
+
+2010-02-15  Brian Cameron  <brian.cameron@sun.com>
+
 	* SFEmenu-cache.spec: Bump to 0.3.0.
 	* SFElxsession.spec, patches/lxsession-01-Werror.diff:  Bump to 0.4.1.
 	  Add patch needed to build.
