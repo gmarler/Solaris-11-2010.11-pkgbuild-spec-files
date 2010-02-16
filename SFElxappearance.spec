@@ -7,8 +7,9 @@
 
 Name:                    SFElxappearance
 Summary:                 LXDE theme switcher
-Version:                 0.2.1
+Version:                 0.4.0
 Source:                  http://downloads.sourceforge.net/lxde/lxappearance-%{version}.tar.gz
+Patch1:                  lxappearance-01-makefile.diff
 URL:                     http://sourceforge.net/projects/lxde/
 
 SUNW_BaseDir:            %{_basedir}
@@ -25,6 +26,7 @@ Requires:                %{name}
 
 %prep
 %setup -q -n lxappearance-%version
+%patch1 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -78,7 +80,9 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Mon Feb 15 2010 - brian.cameron@sun.co
+- Bump to 0.4.0.
 * Tue Aug 04 2009 - brian.cameron@sun.com
-- Bump to 0.2.1
+- Bump to 0.2.1.
 * Sun Mar 16 2009 - alfred.peng@sun.com
-- Initial version
+- Initial version.

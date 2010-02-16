@@ -1,0 +1,10 @@
+--- lxsession-0.4.1/lxsession/Makefile.am-orig	2010-02-15 23:26:57.634540736 -0600
++++ lxsession-0.4.1/lxsession/Makefile.am	2010-02-15 23:27:03.994614878 -0600
+@@ -4,7 +4,6 @@ bin_PROGRAMS = lxsession
+ 
+ lxsession_CFLAGS = $(GLIB_CFLAGS) \
+ 				-DPACKAGE_LOCALE_DIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
+-				-Werror-implicit-function-declaration
+ 				$(NULL)
+ 
+ lxsession_LDADD = $(GLIB_LIBS) -lX11

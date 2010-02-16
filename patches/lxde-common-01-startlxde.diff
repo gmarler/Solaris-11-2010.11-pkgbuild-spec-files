@@ -10,8 +10,8 @@
  fi
  
  # Ensure the existance of pcmanfm config file
-@@ -19,7 +20,8 @@ if [ ! -f "$OPENBOX_CONF_DIR/lxde-rc.xml
- fi
+@@ -22,7 +23,8 @@ fi
+ xprop -root -remove _NET_NUMBER_OF_DESKTOPS -remove _NET_DESKTOP_NAMES -remove _NET_CURRENT_DESKTOP 2> /dev/null
  
  # Enable GTK+2 integration for OpenOffice.org, if available.
 -export SAL_USE_VCLPLUGIN=gtk

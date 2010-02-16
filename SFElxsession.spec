@@ -9,8 +9,9 @@
 
 Name:                    SFElxsession
 Summary:                 LXDE session manager
-Version:                 0.3.8
+Version:                 0.4.1
 Source:                  http://nchc.dl.sourceforge.net/sourceforge/lxde/lxsession-%{version}.tar.gz
+Patch1:                  lxsession-01-Werror.diff
 URL:                     http://sourceforge.net/projects/lxde/
 
 SUNW_BaseDir:            %{_basedir}
@@ -27,6 +28,7 @@ Requires:                %{name}
 
 %prep
 %setup -q -n lxsession-%version
+%patch1 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -36,6 +38,9 @@ fi
 
 export LDFLAGS="-lsocket"
 
+libtoolize --force
+aclocal $ACLOCAL_FLAGS
+automake -a -c -f
 autoconf
 ./configure --prefix=%{_prefix} --libdir=%{_libdir}
 make -j$CPUS 
@@ -71,8 +76,10 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Mon Feb 15 2010 - brian.cameron@sun.com
+- Bump to 0.4.1.
 * Wed May 27 2009 - alfred.peng@sun.com
 - Bump to 0.3.8.
   Remove upstreamed patch docbook2man.diff for bug 2688183.
 * Mon Mar 16 2009 - alfred.peng@sun.com
-- Initial version
+- Initial version.

@@ -9,7 +9,7 @@
 
 Name:                    SFElxpanel
 Summary:                 LXDE desktop panel
-Version:                 0.5.2
+Version:                 0.5.4.1
 Source:                  http://downloads.sourceforge.net/lxde/lxpanel-%{version}.tar.gz
 URL:                     http://sourceforge.net/projects/lxde/
 Requires: SFEmenu-cache
@@ -17,6 +17,7 @@ BuildRequires: SFEmenu-cache
 
 # owner:alfred date:2009-03-16 type:bug
 Patch1:                  lxpanel-01-solaris.diff
+Patch2:                  lxpanel-02-ifhwaddr.diff
 
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -33,6 +34,7 @@ Requires:                %{name}
 %prep
 %setup -q -n lxpanel-%version
 %patch1 -p1
+%patch2 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -43,6 +45,9 @@ fi
 export CC=gcc
 export CFLAGS="-DHAVE_SYS_SOCKIO_H"
 
+libtoolize --force
+aclocal $ACLOCAL_FLAGS
+automake -a -c -f
 autoconf
 ./configure --prefix=%{_prefix} --libdir=%{_libdir}
 make -j$CPUS 
@@ -84,6 +89,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Mon Feb 15 2010 - brian.cameron@sun.com
+- Bump to 0.5.4.1
 * Thu Aug 06 2009 - alfred.peng@sun.com
 - Bump to 0.5.2.
 * Tue Aug 04 2009 - brian.cameron@sun.com

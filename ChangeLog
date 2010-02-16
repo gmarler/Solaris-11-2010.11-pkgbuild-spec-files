@@ -1,6 +1,21 @@
+2010-02-15  Brian Cameron  <brian.cameron@sun.com>
+
+	* SFEmenu-cache.spec: Bump to 0.3.0.
+	* SFElxsession.spec, patches/lxsession-01-Werror.diff:  Bump to 0.4.1.
+	  Add patch needed to build.
+	* SFElxde-common.spec: Bump to 0.5.0.
+	* patches/lxde-common-01-startlxde.diff: Rework and renumber from 02.
+	* patches/lxde-common-01-gnu-cp.diff: Remove patch no longer needed.
+	* SFElxpanel.spec, patches/lxpanel-02-ifhwaddr.diff: Bump to 0.5.4.1.
+	* SFElxappearance.spec, patches/lxappearance-01-makefile.diff:  Bump
+	  to 0.4.0 and add patch needed to build.
+	* SFElxde-setting-deamon.spec: Remove spec file for module that no
+	  longer exists.
+
 2010-02-15  Milan Jurik <sfnet@xylab.cz>
 
-	* SFEe2fsprogs.spec: update for 1.41.10, fix problem with intro of PF_PACKET
+	* SFEe2fsprogs.spec: update for 1.41.10, fix problem with intro of
+	  PF_PACKET
 
 2010-02-12  James Choi  <jchoi42@pha.jhu.edu>
 
@@ -11,7 +26,8 @@
         * SFEgnome-gvfs.spec: update %files
         * base-specs/epiphany.spec: bump to 2.28.2, remove depreciated patches
         * SFEepiphany.spec: add devel pkg, clean up spec file, add dependencies
-        * patches/epiphany-01-grep-q.diff, patches/epiphany-02-grep-q.diff: update for 2.28.2
+        * patches/epiphany-01-grep-q.diff, patches/epiphany-02-grep-q.diff:
+	  update for 2.28.2
 
 2010-02-05  Albert Lee  <trisk@opensolaris.org>
 

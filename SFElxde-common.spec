@@ -7,13 +7,10 @@
 
 Name:                    SFElxde-common
 Summary:                 the default settings configuration file for LXDE
-Version:                 0.4.2
-Source:                  http://downloads.sourceforge.net/lxde/lxde-common-%{version}.tar.bz2
+Version:                 0.5.0
+Source:                  http://downloads.sourceforge.net/lxde/lxde-common-%{version}.tar.gz
+Patch1:                  lxde-common-01-startlxde.diff
 URL:                     http://sourceforge.net/projects/lxde/
-
-# owner:alfred date:2009-08-06 type:bug
-Patch1:                  lxde-common-01-gnu-cp.diff
-Patch2:                  lxde-common-02-startlxde.diff
 
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -27,7 +24,6 @@ SUNW_BaseDir:            /
 %prep
 %setup -q -n lxde-common-%version
 %patch1 -p1
-%patch2 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -56,8 +52,6 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, bin) %{_bindir}
 %{_bindir}/*
 %dir %attr (0755, root, sys) %{_datadir}
-%dir %attr (0755, root, other) %{_datadir}/icons
-%{_datadir}/icons/*
 %dir %attr (0755, root, other) %{_datadir}/lxde
 %{_datadir}/lxde/*
 %dir %attr (0755, root, other) %{_datadir}/lxpanel
@@ -73,6 +67,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_sysconfdir}/xdg/*
 
 %changelog
+* Mon Feb 15 2010 - brian.cameron@sun.com
+- Bump to 0.5.0.
 * Thu Aug 06 2009 - brian.cameron@sun.com
 - Add lxde-common-02-startlxde.diff patch so that the script works with 
   Nevada bourne shell.
@@ -81,4 +77,4 @@ rm -rf $RPM_BUILD_ROOT
 * Tue Aug 04 2009 - brian.cameron@sun.com
 - Bump to 0.4.2.
 * Sun Mar 16 2009 - alfred.peng@sun.com
-- Initial version
+- Initial version.

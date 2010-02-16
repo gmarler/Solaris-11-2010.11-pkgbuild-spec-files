@@ -1,0 +1,11 @@
+--- lxappearance-0.4.0/src/Makefile.am-orig	2010-02-15 23:07:25.410239641 -0600
++++ lxappearance-0.4.0/src/Makefile.am	2010-02-15 23:07:41.092076490 -0600
+@@ -15,8 +15,6 @@ lxappearance_SOURCES = \
+ 	$(NULL)
+ 
+ lxappearance_CFLAGS = \
+-	-Wl,--export-dynamic \
+-	-Werror-implicit-function-declaration \
+ 	$(NULL)
+ 
+ lxappearance_LDADD = $(PACKAGE_LIBS) $(INTLLIBS)

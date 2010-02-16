@@ -1,0 +1,23 @@
+--- lxpanel-0.5.4.1/src/plugins/netstatus/netstatus-iface.c-orig	2010-02-15 23:28:55.369300946 -0600
++++ lxpanel-0.5.4.1/src/plugins/netstatus/netstatus-iface.c	2010-02-15 23:30:57.900835109 -0600
+@@ -1017,6 +1017,7 @@ netstatus_iface_get_hw_details (Netstatu
+ 				char           **hw_addr)
+ 				
+ {
++/*
+ #ifdef SIOCGIFHWADDR
+   static struct HwType *hw_type = NULL;
+   struct ifreq          if_req;
+@@ -1067,9 +1068,11 @@ netstatus_iface_get_hw_details (Netstatu
+ 
+   return hw_type;
+ 
+-#else /* !defined(SIOCGIFHWADDR) */
++#else * !defined(SIOCGIFHWADDR) */
+   return NULL;
++/*
+ #endif 
++*/
+ }
+ 
+ gboolean
