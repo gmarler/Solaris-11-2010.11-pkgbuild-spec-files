@@ -1,5 +1,10 @@
 2010-02-15  Brian Cameron  <brian.cameron@sun.com>
 
+	* SFEmenu-cache.spec, patches/menu-cache-02-fixcrash.diff:  Add
+	  patch needed to fix crashing problem.
+
+2010-02-15  Brian Cameron  <brian.cameron@sun.com>
+
 	* SFEopenbox.spec, patches/openbox-01-union.diff,
 	  patches/openbox-02-session.diff: Bump to 3.4.11.  Remove upstream
 	  patches.

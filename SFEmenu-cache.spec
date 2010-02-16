@@ -13,6 +13,7 @@ URL:                     http://sourceforge.net/projects/lxde/
 
 # owner:alfred date:2009-03-13 type:bug
 Patch1:                  menu-cache-01-Werror.diff
+Patch2:                  menu-cache-02-fixcrash.diff
 
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -21,6 +22,7 @@ BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %prep
 %setup -q -n menu-cache-%version
 %patch1 -p1
+%patch2 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`

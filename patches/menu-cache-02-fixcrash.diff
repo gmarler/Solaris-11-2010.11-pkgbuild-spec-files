@@ -1,0 +1,14 @@
+--- menu-cache-0.3.0/libmenu-cache/menu-cache.c-orig	2010-02-16 00:06:11.433346118 -0600
++++ menu-cache-0.3.0/libmenu-cache/menu-cache.c	2010-02-16 00:06:31.385812513 -0600
+@@ -542,7 +542,10 @@ MenuCacheDir* menu_cache_item_get_parent
+ 
+ GSList* menu_cache_dir_get_children( MenuCacheDir* dir )
+ {
+-    return dir->children;
++    if (dir != NULL)
++       return dir->children;
++    else
++       return NULL;
+ }
+ 
+ 
