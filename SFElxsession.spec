@@ -12,6 +12,7 @@ Summary:                 LXDE session manager
 Version:                 0.4.1
 Source:                  http://nchc.dl.sourceforge.net/sourceforge/lxde/lxsession-%{version}.tar.gz
 Patch1:                  lxsession-01-Werror.diff
+Patch2:                  lxsession-02-fixcrash.diff
 URL:                     http://sourceforge.net/projects/lxde/
 
 SUNW_BaseDir:            %{_basedir}
@@ -29,6 +30,7 @@ Requires:                %{name}
 %prep
 %setup -q -n lxsession-%version
 %patch1 -p1
+%patch2 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
