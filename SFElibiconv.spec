@@ -8,9 +8,8 @@
 
 Name:                SFElibiconv
 Summary:             GNU iconv -- Code set conversion
-Version:             1.13
+Version:             1.13.1
 Source:              http://ftp.gnu.org/pub/gnu/libiconv/libiconv-%{version}.tar.gz
-Patch1:              libiconv-01-fix-runpath.diff
 Patch2:              libiconv-02-646.diff
 Patch3:              libiconv-03-intmax.diff
 SUNW_BaseDir:        %{_basedir}
@@ -33,7 +32,6 @@ Requires:                %{name}
 
 %prep
 %setup -q -n libiconv-%version
-%patch1 -p1
 %patch2 -p1
 %patch3 -p1
 
@@ -101,6 +99,9 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Wed Feb 24 2010 - Milan Jurik
+- update to 1.13.1
+- remove runpath patch as not needed
 * Fri Oct 09 2009 - Milan Jurik
 - update to 1.13
 - fix /usr/gnu/share/doc group
