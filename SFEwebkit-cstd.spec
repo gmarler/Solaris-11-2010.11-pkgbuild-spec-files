@@ -37,6 +37,8 @@ Patch19:                 webkit-19-ss12-ternary-operator.diff
 Patch20:                 webkit-20-visibility.diff
 Patch21:                 webkit-21-vector-not-const.diff
 Patch22:                 webkit-22-not-reinterpretcast.diff
+Patch23:                 webkit-23-a11y-34463.diff
+Patch24:                 webkit-24-a11y-35169.diff
 
 SUNW_BaseDir:            %{_basedir}
 # copyright place holder.
@@ -100,6 +102,8 @@ cd webkit-%version
 %patch20 -p1
 %patch21 -p1
 %patch22 -p1
+%patch23 -p1
+%patch24 -p1
 
 %build
 #export LD=CC
@@ -170,6 +174,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Feb 25 2010 - yuntong.jin@sun.com
+- Add patch for 34463 35169 in webkit community
 * Wen Feb 03 2010 - yuntong.jin@sun.com
 - Drop off aclocal and automake step case aclocal regenerate GNUmakefile.in and
   automake doesn,t make any different here

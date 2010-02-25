@@ -1,3 +1,10 @@
+2010-02-25  Simon Jin  <yuntong.jin@sun.com>
+
+	* SFEwebkit-cstd.spec:
+	* patches/webkit-23-a11y-34463.diff:
+	* patches/webkit-24-a11y-35169.diff:
+          Add patch for 34463 35169 in webkit community	
+
 2010-02-24  Milan Jurik <sfnet@xylab.cz>
 
 	* SFElibiconv.spec: update to 1.13.1
