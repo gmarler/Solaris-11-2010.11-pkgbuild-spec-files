@@ -1,3 +1,7 @@
+2010-03-02  Milan Jurik <sfnet@xylab.cz>
+
+	* SFEvorbis-tools.spec: Initial spec
+
 2010-03-02  Matt Lewandowsky  <matt@greenviolet.net>
 
 	* SFEmksh.spec, copyright/SFEmksh.copyright: Initial spec file
