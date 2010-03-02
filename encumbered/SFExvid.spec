@@ -3,8 +3,18 @@
 #
 # includes module(s): xvid
 #
+
+# want this? compile with: pkgtool --with-gcc4 build <specfile>
+%define use_gcc4 %{?_with_gcc4:1}%{?!_with_gcc4:0}
+
 %include Solaris.inc
 %define cc_is_gcc 1
+%if %use_gcc4
+%define _gpp /usr/gnu/bin/g++
+%else
+%define _gpp /usr/sfw/bin/g++
+%endif
+
 
 %ifarch amd64 sparcv9
 %include arch64.inc
@@ -26,8 +36,13 @@ BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 BuildRequires: SFEnasm
 %endif
 
+%if %use_gcc4
 BuildRequires: SFEgcc
 Requires: SFEgccruntime
+%else
+BuildRequires: SUNWgcc
+Requires: SUNWgccruntime
+%endif
 
 
 %description
@@ -81,6 +96,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}
 
 %changelog
+* Wed Mar 03 2010 - Milan Jurik
+- use_gcc4 support
 * Sat Aug 22 2009 - Milan Jurik
 - multiarch support
 * Sun Aug 09 2009 - Thomas Wagner
