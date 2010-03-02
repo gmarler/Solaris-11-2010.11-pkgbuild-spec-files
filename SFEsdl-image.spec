@@ -101,8 +101,19 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,bin)
 %dir %attr (0755, root, bin) %{_includedir}
 %{_includedir}/SDL/
+%dir %attr (0755, root, bin) %{_libdir}
+%dir %attr (0755, root, other) %{_libdir}/pkgconfig
+%{_libdir}/pkgconfig/SDL_image.pc
+%dir %attr (0755, root, bin) %{_libdir}/amd64
+%dir %attr (0755, root, other) %{_libdir}/amd64/pkgconfig
+%{_libdir}/amd64/pkgconfig/SDL_image.pc
+%dir %attr (0755, root, bin) %{_libdir}/pentium_pro+mmx
+%dir %attr (0755, root, other) %{_libdir}/pentium_pro+mmx/pkgconfig
+%{_libdir}/pentium_pro+mmx/pkgconfig/SDL_image.pc
 
 %changelog
+* Tue Mar 02 2010 - matt@greenviolet.net
+- Update packaging
 * Tue Jun  5 2007 - Doug Scott
 - Change to isabuild
 * Sun Apr 01 2007 Jeff Cai

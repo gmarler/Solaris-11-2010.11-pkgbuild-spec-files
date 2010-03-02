@@ -19,13 +19,13 @@ Name:                    SFEperl-%{module_package_name}
 Summary:                 %{module_name}-%{module_version} PERL module
 Version:                 %{perl_version}.%{module_version}
 Source:                  http://www.cpan.org/modules/by-module/%{module_name_major}/%{module_name}-%{module_version}.tar.gz
-Patch1:			perl-dbfile-01-config.in-include_gnu.diff
+Patch1:                  perl-dbfile-01-config.in-include_gnu.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 Requires:                SUNWperl584core
 BuildRequires:           SUNWperl584core
-BuildRequires:           SUNWsfwhea
 Requires:                SFEbdb
+BuildRequires:           SFEbdb
 
 %description
 Provides vendor_perl modules:
@@ -102,5 +102,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man3/*
 
 %changelog
+* Tue Mar 02 2010 - matt@greenviolet.net
+- Updated dependencies
 * Mon, 28 Apr 2009  - Thomas Wagner
 - initial spec

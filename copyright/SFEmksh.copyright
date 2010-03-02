@@ -1,0 +1,100 @@
+The MirBSD Korn Shell is covered by the MirOS Licence, which
+is OSI approved, as reproduced below.
+
+The MirBSD Korn Shell is
+Copyright (c) 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009
+	Thorsten Glaser <tg@mirbsd.org>
+
+Provided that these terms and disclaimer and all copyright notices
+are retained or reproduced in an accompanying document, permission
+is granted to deal in this work without restriction, including un‐
+limited rights to use, publicly perform, distribute, sell, modify,
+merge, give away, or sublicence.
+
+This work is provided "AS IS" and WITHOUT WARRANTY of any kind, to
+the utmost extent permitted by applicable law, neither express nor
+implied; without malicious intent or gross negligence. In no event
+may a licensor, author or contributor be held liable for indirect,
+direct, other damage, loss, or other issues arising in any way out
+of dealing in the work, even if advised of the possibility of such
+damage or existence of a defect, except proven that it results out
+of said person's immediate fault when using the work as intended.
+
+strlcpy.c is
+Copyright (c) 2006, 2008
+	Thorsten Glaser <tg@mirbsd.org>
+Copyright (c) 1998 Todd C. Miller <Todd.Miller@courtesan.com>
+
+Permission to use, copy, modify, and distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
+mksh16.xpm is
+Copyright (c) 2009
+	Thorsten Glaser <tg@mirbsd.org>
+
+mksh16lg.xpm and mksh32.xpm are
+Copyright (c) 2008, 2009
+	Lukas U. <smultron@midnightbsd.org>
+
+All of them are distributed under the same terms as mksh itself.
+
+arc4random.c is
+/*-
+ * Arc4 random number generator for OpenBSD.
+ * Copyright 1996 David Mazieres <dm@lcs.mit.edu>.
+ *
+ * Modification and redistribution in source and binary forms is
+ * permitted provided that due credit is given to the author and the
+ * OpenBSD project by leaving this copyright notice intact.
+ */
+
+/*-
+ * This code is derived from section 17.1 of Applied Cryptography,
+ * second edition, which describes a stream cipher allegedly
+ * compatible with RSA Labs "RC4" cipher (the actual description of
+ * which is a trade secret).  The same algorithm is used as a stream
+ * cipher called "arcfour" in Tatu Ylonen's ssh package.
+ *
+ * Here the stream cipher has been modified always to include the time
+ * when initializing the state.  That makes it impossible to
+ * regenerate the same random sequence twice, so this can't be used
+ * for encryption, but will generate good random numbers.
+ *
+ * RC4 is a registered trademark of RSA Laboratories.
+ */
+
+/*-
+ * Modified by Robert Connolly from OpenBSD lib/libc/crypt/arc4random.c v1.11.
+ * This is arc4random(3) using urandom.
+ */
+
+/*-
+ * Copyright (c) 2008, 2009
+ *      Thorsten Glaser <tg@mirbsd.org>
+ * This is arc4random(3) made more portable,
+ * as well as arc4random_pushb(3) for Cygwin.
+ *
+ * Provided that these terms and disclaimer and all copyright notices
+ * are retained or reproduced in an accompanying document, permission
+ * is granted to deal in this work without restriction, including un-
+ * limited rights to use, publicly perform, distribute, sell, modify,
+ * merge, give away, or sublicence.
+ *
+ * This work is provided "AS IS" and WITHOUT WARRANTY of any kind, to
+ * the utmost extent permitted by applicable law, neither express nor
+ * implied; without malicious intent or gross negligence. In no event
+ * may a licensor, author or contributor be held liable for indirect,
+ * direct, other damage, loss, or other issues arising in any way out
+ * of dealing in the work, even if advised of the possibility of such
+ * damage or existence of a defect, except proven that it results out
+ * of said person's immediate fault when using the work as intended.
+ */

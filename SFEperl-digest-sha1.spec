@@ -4,7 +4,7 @@
 # includes module(s): Digest-SHA1
 #
 
-%define module_version 2.11
+%define module_version 2.12
 %define module_name Digest-SHA1
 %define module_name_major Digest
 %define module_package_name digest-sha1
@@ -16,12 +16,11 @@
 Name:                    SFEperl-%{module_package_name}
 Summary:                 %{module_name}-%{module_version} PERL module
 Version:                 %{perl_version}.%{module_version}
-Source:                  http://www.cpan.org/modules/by-module/%{module_name_major}/%{module_name}-%{module_version}.tar.gz
+Source:                  http://www.cpan.org/modules/by-module/%{module_name_major}/GAAS/%{module_name}-%{module_version}.tar.gz
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 Requires:                SUNWperl584core
 BuildRequires:           SUNWperl584core
-BuildRequires:           SUNWsfwhea
 
 %ifarch sparc
 %define perl_dir sun4-solaris-64int
@@ -73,6 +72,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man3/*
 
 %changelog
+* Tue Mar 02 2010 - matt@greenviolet.net
+- Bump version to 2.12
+- Removed dependency on obsolete SUNSsfwhea
 * Wed Nov 28 2007 - Thomas Wagner
 - renamed package and if necessary (Build-)Requires
 * Sat Nov 24 2007 - Thomas Wagner

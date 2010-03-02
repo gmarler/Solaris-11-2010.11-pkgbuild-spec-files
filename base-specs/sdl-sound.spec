@@ -9,7 +9,7 @@
 
 Name:			sdl-image
 Summary: 		Sound decoding library for SDL
-Version:		1.0.1
+Version:		1.0.3
 Source: 		%{src_url}/%{src_name}-%{version}.tar.gz
 URL:                    http://icculus.org/SDL_sound/
 BuildRoot:		%{_tmppath}/%{name}-%{version}-build
@@ -47,5 +47,7 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/*.a
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Tue Mar 02 2010 - matt@greenviolet.net
+- Bump version to 1.0.3
 * Mon Feb 25 2008 - Albert Lee
 - Initial spec

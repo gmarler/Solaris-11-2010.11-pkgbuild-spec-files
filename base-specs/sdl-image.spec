@@ -9,7 +9,7 @@
 
 Name:			sdl-image
 Summary: 		Simple DirectMedia Layer - Sample Image Loading Library
-Version:		1.2.7
+Version:		1.2.10
 Source: 		%{src_url}/%{src_name}-%{version}.tar.gz
 BuildRoot:		%{_tmppath}/%{name}-%{version}-build
 
@@ -38,6 +38,8 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/*.a
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Tue Mar 02 2010 - matt@greenviolet.net
+- Bump version to 1.2.10
 * Sun Aug 16 2009 - Milan Jurik
 - update to 1.2.7
 * Wed Aug 15 2007 - trisk@acm.jhu.edu

@@ -88,7 +88,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,root,bin)
 %dir %attr (0755, root, bin) %{_bindir}
-%{_bindir}/playsound
+%{_bindir}/playsound*
 %dir %attr (0755, root, bin) %{_libdir}
 %{_libdir}/lib*.so*
 %ifarch amd64 sparcv9
@@ -113,6 +113,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/SDL/
 
 %changelog
+* Tue Mar 02 2010 - matt@greenviolet.net
+- Update packaging
 * Tue Dec 30 2008 - brian.cameron@sun.com
 - Fix packaging.
 * Mon May 05 2008 - brian.cameron@sun.com

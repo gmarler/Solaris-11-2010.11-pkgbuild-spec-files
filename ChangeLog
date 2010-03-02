@@ -1,3 +1,22 @@
+2010-03-02  Matt Lewandowsky  <matt@greenviolet.net>
+
+	* SFEmksh.spec, copyright/SFEmksh.copyright: Initial spec file
+	* SFEmsmtp.spec: Initial spec file
+	* SFEperl-crypt-des.spec: Initial spec file
+	* SFEperl-dbfile.spec: Updated dependencies
+	* SFEperl-digest-md5.spec: Bump version to 2.39
+	* SFEperl-digest-sha1.spec: Bump version to 2.12. Removed dependency
+	  on obsolete SUNSsfwhea
+	* SFEperl-gd.spec: Initial spec file
+	* SFEperl-socket6.spec: Initial spec file
+	* SFEsdl-image.spec: Update packaging
+	* SFEsdl-sound.spec: Update packaging
+	* base-specs/libsdl.spec: Bump version to 1.2.14
+	* base-specs/sdl-gfx.spec, patches/sdl-gfx-01-shell.diff: Bump version
+	  to 2.0.20. Update configure script to cooperate with Solaris sh
+	* base-specs/sdl-image.spec: Bump version to 1.2.10
+	* base-specs/sdl-sound.spec: Bump version to 1.0.3
+
 2010-02-25  James Choi  <jchoi42@pha.jhu.edu>
 
         * SFElibelf.spec: Initial spec

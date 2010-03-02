@@ -10,7 +10,7 @@
 Name:         libsdl
 License:      LGPL
 Group:        System/Libraries
-Version:      1.2.12
+Version:      1.2.14
 Release:      1
 Distribution: Java Desktop System
 Vendor:       Sun Microsystems, Inc.
@@ -102,6 +102,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/*.so
 
 %changelog
+* Tue Mar  2 2010 - matt@greenviolet.net
+- Bump version to 1.2.14
 * Wed Aug 15 2007 - trisk@acm.jhu.edu
 - Bump to 1.2.12
 - Drop libsdl-02-rpath.diff: applied upstream 

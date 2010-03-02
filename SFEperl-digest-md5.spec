@@ -4,7 +4,7 @@
 # includes module(s): Digest-MD5
 #
 
-%define module_version 2.36
+%define module_version 2.39
 %define module_name Digest-MD5
 %define module_name_major Digest
 %define module_package_name digest-md5
@@ -16,14 +16,14 @@
 Name:                    SFEperl-%{module_package_name}
 Summary:                 %{module_name}-%{module_version} PERL module
 Version:                 %{perl_version}.%{module_version}
-Source:                  http://www.cpan.org/modules/by-module/%{module_name_major}/%{module_name}-%{module_version}.tar.gz
+#Source:                  http://www.cpan.org/modules/by-module/%{module_name_major}/%{module_name}-%{module_version}.tar.gz
+Source:                  http://search.cpan.org/CPAN/authors/id/G/GA/GAAS/%{module_name}-%{module_version}.tar.gz
 SUNW_BaseDir:            %{_basedir}
 SUNW_Copyright:          %{name}.copyright
 Group:                   Development
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 Requires:                SUNWperl584core
 BuildRequires:           SUNWperl584core
-BuildRequires:           SUNWsfwhea
 
 %ifarch sparc
 %define perl_dir sun4-solaris-64int
@@ -75,6 +75,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man3/*
 
 %changelog
+* Tue Mar 02 2010 - matt@greenviolet.net
+- Bump version to 2.39
 * Sat Aug 17 2008 - rafael.alfaro@gmail.com
 - Add license and group
 * Sat, 19 July 2008  - Rafael Alfaro
