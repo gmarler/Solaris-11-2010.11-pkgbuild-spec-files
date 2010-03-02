@@ -3,6 +3,7 @@
 	* encumbered/SFElame.spec: update for 3.98.3
 	* base-specs/libgsm.spec: original homepage disapeared, Debian source used now
 	* encumbered/SFExvid.spec: use_gcc4 support
+	* base-specs/ffmpeg.spec: update to 0.5.1
 
 2010-03-02  Milan Jurik <sfnet@xylab.cz>
 

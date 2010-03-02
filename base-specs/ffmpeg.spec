@@ -4,22 +4,19 @@
 # includes module(s): FFmpeg
 #
 
-%define src_version 0.5
+%define src_version 0.5.1
 
 Summary:                 FFmpeg - a very fast video and audio converter
 
-Version:                 0.5.0.0.20090705
+Version:                 0.5.1
 #Source:                  http://pkgbuild.sf.net/spec-files-extra/tarballs/ffmpeg-export-%{year}-%{month}-%{day}.tar.bz2
 #Source:                  http://electricsheep.org/ffmpeg-0.4.9-p%{year}%{month}%{day}.tar.bz2
 Source:                  http://ffmpeg.mplayerhq.hu/releases/ffmpeg-%{src_version}.tar.bz2
 URL:                     http://ffmpeg.mplayerhq.hu/index.html
-Patch1:                  ffmpeg-01-svn05.diff
 Patch2:                  ffmpeg-02-configure.diff
 #Patch3:                  ffmpeg-03-v4l2.diff
 Patch4:                  ffmpeg-04-options.diff
 Patch5:                  ffmpeg-05-mlib.diff
-# Security: CVE-2008-3162
-#Patch6:                  ffmpeg-06-cve-2008-3162.diff
 Patch7:                  ffmpeg-07-new-v4l2.diff
 Patch8:                  ffmpeg-08-versionsh.diff
 SUNW_BaseDir:            %{_basedir}
@@ -29,12 +26,10 @@ Autoreqprov:             on
 %prep
 #%setup -q -n ffmpeg-export-%{year}-%{month}-%{day}
 %setup -q -n ffmpeg-%{src_version}
-%patch1 -p1
 %patch2 -p1
 #%patch3 -p1
 %patch4 -p1
 %patch5 -p1
-#%patch6 -p1
 %patch7 -p1
 %patch8 -p1
 
@@ -114,6 +109,8 @@ EOM
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Wed Mar 03 2010 - Milan Jurik
+- update to 0.5.1
 * Sat Oct 17 2009 - Milan Jurik
 - svn branch 0.5 patch added (2009-07-05)
 * Tue Sep 08 2009 - Milan Jurik
