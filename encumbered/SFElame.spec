@@ -32,7 +32,7 @@
 
 Name:                    SFElame
 Summary:                 MP3 Encoders - lame and toolame
-Version:                 3.98.2
+Version:                 3.98.3
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -154,6 +154,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/doc/*
 
 %changelog
+* Wed Mar 03 2010 - Milan Jurik
+- update for 3.98.3
 * Tue Sep 15 2009 - Thomas Wagner
 - make (Build)Requires a build-time --with-gcc4 switch defaulting to off (which is then: use SUNWgcc, gcc3)
 - %define cc_is_gcc 1  to use gcc include settings to avoid -Kpic unknown switch error of gcc3 and gcc4 compiler 

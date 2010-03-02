@@ -6,7 +6,7 @@
 
 Name:                    SFElame
 Summary:                 lame  - Ain't an MP3 Encoder
-Version:                 398-2
+Version:                 3.98.3
 Source:                  %{sf_download}/lame/lame-%{version}.tar.gz
 # date:2008-08-17 owner:halton type:bug bugid:2054873
 Patch1:                  lame-01-configure-gtk.diff
