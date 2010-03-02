@@ -5,14 +5,15 @@
 #
 
 %define	src_ver 1.0.13
-%define	src_name gsm
-%define	src_url	http://kbs.cs.tu-berlin.de/~jutta/gsm/
+%define	src_name libgsm
+#%define	src_url	http://kbs.cs.tu-berlin.de/~jutta/gsm/
+%define src_url http://ftp.de.debian.org/debian/pool/main/libg/libgsm
 
 Name:		SFElibgsm
 Summary:	GSM audio encoding/decoding library
 Version:	%{src_ver}
 License:	Free (Copyright (C) Technische Universitaet Berlin)
-Source:		%{src_url}/%{src_name}-%{version}.tar.gz
+Source:		%{src_url}/%{src_name}_%{version}.orig.tar.gz
 Patch1:		libgsm-01-makefile.diff
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 
@@ -51,5 +52,7 @@ fi
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
-* Tue 8 2009 - Milan Jurik
+* Wed Mar 03 2010 - Milan Jurik
+- original homepage disapeared, Debian source used now
+* Tue Sep 8 2009 - Milan Jurik
 - Initial base spec file

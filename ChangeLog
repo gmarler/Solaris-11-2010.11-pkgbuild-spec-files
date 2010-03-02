@@ -1,6 +1,7 @@
 2010-03-03  Milan Jurik <sfnet@xylab.cz>
 
 	* encumbered/SFElame.spec: update for 3.98.3
+	* base-specs/libgsm.spec: original homepage disapeared, Debian source used now
 
 2010-03-02  Milan Jurik <sfnet@xylab.cz>
 
