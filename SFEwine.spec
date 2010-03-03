@@ -16,7 +16,7 @@
 # In case of an unstable wine version, temporarily set this to the
 # last-known-good version. This should be reverted the next stable version.
 # %if %{!?version:1}
-# 	%define version 1.1.27
+# 	%define version 1.1.38
 # %endif
 
 %if %{!?version:1}
@@ -31,27 +31,20 @@ Source:                 %{src_url}/%{sname}-%{version}.tar.bz2
 # See: http://lists.freedesktop.org/archives/tango-artists/2009-July/001973.html
 # Also: http://www.airwebreathe.org.uk/wine-icon/
 Source1:                http://winezeug.googlecode.com/svn/trunk/winetricks
-Source10:               winetricks.desktop
-Source101:              wine-appwiz.desktop
-Source102:              wine-cmd.desktop
-Source103:              wine-notepad.desktop
-Source104:              wine-regedit.desktop
-Source105:              wine-taskmgr.desktop
-Source106:              wine-winecfg.desktop
-Source107:              wine-winefile.desktop
-Source108:              wine-winemine.desktop
-Source109:              wine-wordpad.desktop
-Source1000:             http://www.airwebreathe.org.uk/wine-icon/oic_winlogo-svg.zip
-Source1001:             http://www.airwebreathe.org.uk/wine-icon/appwiz.svg.zip
-Source1002:             http://www.airwebreathe.org.uk/wine-icon/wcmd.svg.zip
-Source1003:             http://www.airwebreathe.org.uk/wine-icon/notepad-svg.zip
-Source1004:             http://www.airwebreathe.org.uk/wine-icon/regedit.zip
-Source1005:             http://www.airwebreathe.org.uk/wine-icon/taskmgr.svg.zip
-# Source1006:             no replacement icon available
-Source1007:             http://www.airwebreathe.org.uk/wine-icon/winefile.svg.zip
-Source1008:             http://www.airwebreathe.org.uk/wine-icon/winemine.svg.zip
-Source1009:             http://www.airwebreathe.org.uk/wine-icon/wordpad-svg.zip
+Source100:              wine.directory
+Source101:              winetricks.desktop
+Source102:              wine-appwiz.desktop
+Source103:              wine-cmd.desktop
+Source104:              wine-notepad.desktop
+Source105:              wine-regedit.desktop
+Source106:              wine-taskmgr.desktop
+Source107:              wine-winecfg.desktop
+Source108:              wine-winefile.desktop
+Source109:              wine-winemine.desktop
+Source110:              wine-wordpad.desktop
+Source1000:             wine-svg-icons.tar.bz2
 NoSource:		1
+Patch:                  wine-01-SIOCGIFHWADDR.diff
 Group:			System/Virtualization
 License:		LGPL
 SUNW_HotLine:		http://www.winehq.org/help
@@ -90,9 +83,11 @@ BuildRequires:  SFEgcc
 Requires:       SFEgccruntime
 BuildRequires:	SFElibaudioio-devel
 Requires:	SFElibaudioio
+BuildRequires:  SFElibgsm-devel
+Requires:       SFElibgsm
 Requires:       SFEmpg123
-# Make sure all the package components get installed.
-Requires:       %{name}-devel
+BuildRequires:  SFEopenal-devel
+Requires:       SFEopenal
 # Following are for winetricks, not wine directly.
 Requires:       SFEcabextract
 
@@ -104,16 +99,8 @@ Requires: %name
 
 %prep
 %setup -q -n %{sname}-%{version}
-unzip %{SOURCE1000}
-unzip %{SOURCE1001}
-unzip %{SOURCE1002}
-unzip %{SOURCE1003}
-unzip %{SOURCE1004}
-unzip %{SOURCE1005}
-#unzip %{SOURCE1006}
-unzip %{SOURCE1007}
-unzip %{SOURCE1008}
-unzip %{SOURCE1009}
+%setup -n %{sname}-%{version} -D -T -a 1000
+%patch -p0
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -128,8 +115,6 @@ export CFLAGS="-g -Os -march=i586 -mtune=prescott -pipe -fno-omit-frame-pointer 
 export LDFLAGS="-L/lib -R/lib -L/usr/lib -R/usr/lib %{xorg_lib_path} %{gnu_lib_path} %{sfw_lib_path}"
 export LD=/usr/ccs/bin/ld
 
-autoconf -f
-autoheader
 ./configure --prefix=%{_prefix}		\
 	    --bindir=%{_bindir}		\
 	    --mandir=%{_mandir}		\
@@ -140,14 +125,45 @@ autoheader
 	    --with-cups=/usr            \
 	    --with-openssl=/usr/sfw     \
 	    --without-alsa		\
+	    --with-audioio		\
 	    --without-capi		\
+	    --with-cms			\
 	    --without-coreaudio		\
+	    --with-cups			\
+	    --with-curses		\
 	    --without-esd		\
+	    --with-fontconfig		\
+	    --with-freetype		\
+	    --with-gphoto		\
+	    --with-glu			\
+	    --with-gnutls		\
+	    --with-gsm			\
+	    --with-hal			\
 	    --without-jack		\
+	    --with-jpeg			\
 	    --without-ldap              \
-	    --without-nas               \
-            --without-shm
-
+	    --with-mpg123		\
+	    --without-nas		\
+	    --with-openal		\
+	    --with-opengl		\
+	    --with-openssl		\
+	    --with-oss			\
+	    --with-png			\
+	    --with-pthread		\
+	    --with-sane			\
+	    --without-v4l		\
+	    --with-xcomposite		\
+	    --with-xcursor		\
+	    --with-xinerama		\
+	    --with-xinput		\
+	    --with-xml			\
+	    --with-xrandr		\
+	    --with-xrender		\
+	    --with-xshape		\
+	    --with-xshm			\
+	    --with-xslt			\
+	    --with-xxf86vm		\
+	    --with-x
 make -j$CPUS || make
 
 %install
@@ -166,44 +182,51 @@ mkdir -p $RPM_BUILD_ROOT%{_datadir}/pixmaps
 # When it gets updated, this should be about the right thing to do, instead.
 # install -m 0644 programs/winemenubuilder/wine.xpm $RPM_BUILD_ROOT%{_datadir}/pixmaps/wine.xpm
 # And, since the program icons are also ugly, fix them up too. None for winecfg; using wine.svg
-install -m 0644 oic_winlogo-svg/oic_winlogo-48.svg $RPM_BUILD_ROOT%{_datadir}/pixmaps/wine.svg
-install -m 0644 appwiz.svg $RPM_BUILD_ROOT%{_datadir}/pixmaps/wine-appwiz.svg
-install -m 0644 wcmd.svg $RPM_BUILD_ROOT%{_datadir}/pixmaps/wine-cmd.svg
-install -m 0644 notepad-svg/notepad.svg $RPM_BUILD_ROOT%{_datadir}/pixmaps/wine-notepad.svg
-install -m 0644 regedit/regedit-48.svg $RPM_BUILD_ROOT%{_datadir}/pixmaps/wine-regedit.svg
-install -m 0644 taskmgr.svg $RPM_BUILD_ROOT%{_datadir}/pixmaps/wine-taskmgr.svg
-install -m 0644 winefile.svg $RPM_BUILD_ROOT%{_datadir}/pixmaps/wine-winefile.svg
-install -m 0644 winemine.svg $RPM_BUILD_ROOT%{_datadir}/pixmaps/wine-winemine.svg
-install -m 0644 wordpad-svg/wordpad-48.svg $RPM_BUILD_ROOT%{_datadir}/pixmaps/wine-wordpad.svg
+install -m 0644 wine-svg-icons/oic_winlogo-svg/oic_winlogo-48.svg $RPM_BUILD_ROOT%{_datadir}/pixmaps/wine.svg
+install -m 0644 wine-svg-icons/wcmd.svg $RPM_BUILD_ROOT%{_datadir}/pixmaps/wine-cmd.svg
+install -m 0644 wine-svg-icons/notepad-svg/notepad.svg $RPM_BUILD_ROOT%{_datadir}/pixmaps/wine-notepad.svg
+install -m 0644 wine-svg-icons/regedit/regedit-48.svg $RPM_BUILD_ROOT%{_datadir}/pixmaps/wine-regedit.svg
+install -m 0644 wine-svg-icons/taskmgr.svg $RPM_BUILD_ROOT%{_datadir}/pixmaps/wine-taskmgr.svg
+install -m 0644 wine-svg-icons/winefile.svg $RPM_BUILD_ROOT%{_datadir}/pixmaps/wine-winefile.svg
+install -m 0644 wine-svg-icons/winemine.svg $RPM_BUILD_ROOT%{_datadir}/pixmaps/wine-winemine.svg
+install -m 0644 wine-svg-icons/wordpad-svg/wordpad-48.svg $RPM_BUILD_ROOT%{_datadir}/pixmaps/wine-wordpad.svg
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/scalable/apps 2>&1
-install -m 0644 appwiz.svg $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/scalable/apps/wine-appwiz.svg
-install -m 0644 wcmd.svg $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/scalable/apps/wine-cmd.svg
-install -m 0644 notepad-svg/notepad.svg $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/scalable/apps/wine-notepad.svg
-install -m 0644 taskmgr.svg $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/scalable/apps/wine-taskmgr.svg
-install -m 0644 winefile.svg $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/scalable/apps/wine-winefile.svg
-install -m 0644 winemine.svg $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/scalable/apps/wine-winemine.svg
+install -m 0644 wine-svg-icons/wcmd.svg $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/scalable/apps/wine-cmd.svg
+install -m 0644 wine-svg-icons/notepad-svg/notepad.svg $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/scalable/apps/wine-notepad.svg
+install -m 0644 wine-svg-icons/taskmgr.svg $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/scalable/apps/wine-taskmgr.svg
+install -m 0644 wine-svg-icons/winefile.svg $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/scalable/apps/wine-winefile.svg
+install -m 0644 wine-svg-icons/winemine.svg $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/scalable/apps/wine-winemine.svg
 for size in 16 22 32 48; do
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/${size}x${size}/apps 2>&1
-install -m 0644 oic_winlogo-svg/oic_winlogo-${size}.svg $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/${size}x${size}/apps/wine.svg
-install -m 0644 regedit/regedit-${size}.svg $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/${size}x${size}/apps/wine-regedit.svg
-install -m 0644 wordpad-svg/wordpad-${size}.svg $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/${size}x${size}/apps/wine-wordpad.svg
+install -m 0644 wine-svg-icons/oic_winlogo-svg/oic_winlogo-${size}.svg $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/${size}x${size}/apps/wine.svg
+install -m 0644 wine-svg-icons/regedit/regedit-${size}.svg $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/${size}x${size}/apps/wine-regedit.svg
+install -m 0644 wine-svg-icons/wordpad-svg/wordpad-${size}.svg $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/${size}x${size}/apps/wine-wordpad.svg
+done
+for size in 16 24 32 48; do
+mkdir -p $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/${size}x${size}/apps 2>&1
+install -m 0644 wine-svg-icons/humanity-folder/humanity-folder-${size}.svg $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/${size}x${size}/apps/wine-humanity-folder.svg
 done
 for size in 16 22 32; do
-install -m 0644 notepad-svg/notepad-${size}.svg $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/${size}x${size}/apps/wine-notepad.svg
+install -m 0644 wine-svg-icons/notepad-svg/notepad-${size}.svg $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/${size}x${size}/apps/wine-notepad.svg
+done
+for size in 32 48; do
+install -m 0644 wine-svg-icons/appwiz/appwiz-${size}.svg $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/${size}x${size}/apps/wine-appwiz.svg
 done
 
 # Finally, the menu items.
+mkdir -p $RPM_BUILD_ROOT%{_datadir}/desktop-directories
+install -m 0644 %{SOURCE100} $RPM_BUILD_ROOT%{_datadir}/desktop-directories # wine.directory
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/applications
-install -m 0644 %{SOURCE10} $RPM_BUILD_ROOT%{_datadir}/applications # winetricks.desktop
-install -m 0644 %{SOURCE101} $RPM_BUILD_ROOT%{_datadir}/applications # wine-appwiz.desktop
-install -m 0644 %{SOURCE102} $RPM_BUILD_ROOT%{_datadir}/applications # wine-cmd.desktop
-install -m 0644 %{SOURCE103} $RPM_BUILD_ROOT%{_datadir}/applications # wine-notepad.desktop
-install -m 0644 %{SOURCE104} $RPM_BUILD_ROOT%{_datadir}/applications # wine-regedit.desktop
-install -m 0644 %{SOURCE105} $RPM_BUILD_ROOT%{_datadir}/applications # wine-taskmgr.desktop
-install -m 0644 %{SOURCE106} $RPM_BUILD_ROOT%{_datadir}/applications # wine-winecfg.desktop
-install -m 0644 %{SOURCE107} $RPM_BUILD_ROOT%{_datadir}/applications # wine-winefile.desktop
-install -m 0644 %{SOURCE108} $RPM_BUILD_ROOT%{_datadir}/applications # wine-winemine.desktop
-install -m 0644 %{SOURCE109} $RPM_BUILD_ROOT%{_datadir}/applications # wine-wordpad.desktop
+install -m 0644 %{SOURCE101} $RPM_BUILD_ROOT%{_datadir}/applications # winetricks.desktop
+install -m 0644 %{SOURCE102} $RPM_BUILD_ROOT%{_datadir}/applications # wine-appwiz.desktop
+install -m 0644 %{SOURCE103} $RPM_BUILD_ROOT%{_datadir}/applications # wine-cmd.desktop
+install -m 0644 %{SOURCE104} $RPM_BUILD_ROOT%{_datadir}/applications # wine-notepad.desktop
+install -m 0644 %{SOURCE105} $RPM_BUILD_ROOT%{_datadir}/applications # wine-regedit.desktop
+install -m 0644 %{SOURCE106} $RPM_BUILD_ROOT%{_datadir}/applications # wine-taskmgr.desktop
+install -m 0644 %{SOURCE107} $RPM_BUILD_ROOT%{_datadir}/applications # wine-winecfg.desktop
+install -m 0644 %{SOURCE108} $RPM_BUILD_ROOT%{_datadir}/applications # wine-winefile.desktop
+install -m 0644 %{SOURCE109} $RPM_BUILD_ROOT%{_datadir}/applications # wine-winemine.desktop
+install -m 0644 %{SOURCE110} $RPM_BUILD_ROOT%{_datadir}/applications # wine-wordpad.desktop
 
 %post
 %restart_fmri desktop-mime-cache
@@ -219,6 +242,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}
 %{_libdir}
 %{_mandir}
+%{_datadir}/desktop-directories
 %dir %attr (0755, root, sys) %{_datadir}
 %{_datadir}/wine
 %defattr (-, root, other)
@@ -232,9 +256,19 @@ rm -rf $RPM_BUILD_ROOT
 %defattr (-, root, bin)
 %{_includedir}
 %dir %attr (0755, root, sys) %{_datadir}
-%dir %attr (0755, root, other) %{_datadir}/aclocal
+#%dir %attr (0755, root, other) %{_datadir}/aclocal
 
 %changelog
+* Wed Mar 03 2010 - matt@greenviolet.net
+- Package SVG icons locally.
+- Add new icon for wine folders.
+- Attempted patch for http://bugs.winehq.org/show_bug.cgi?id=20714
+- Add dependency on SFElibgsm.
+- Add dependency on SFEopenal.
+- Remove autoheader/autoconf invocation.
+- Comment out aclocal from packaging.
+- Explicitly declare which modules to configure with.
+
 * Tue Aug 25 2009 - matt@greenviolet.net
 - Add dependency on SFEmpg123, as it will no longer
   be included with wine as of 1.1.29, and is required for

@@ -1,0 +1,136 @@
+--- dlls/iphlpapi/ifenum.c.orig	2010-03-03 03:09:08.782656836 -0800
++++ dlls/iphlpapi/ifenum.c	2010-03-03 03:10:13.961076590 -0800
+@@ -298,7 +298,66 @@
+   return ret;
+ }
+ 
+-#if defined (SIOCGIFHWADDR)
++#if defined (SIOCGARP)
++static DWORD getInterfacePhysicalByName(const char *name, PDWORD len, PBYTE addr,
++ PDWORD type)
++{
++  DWORD ret;
++  int fd;
++
++  if (!name || !len || !addr || !type)
++    return ERROR_INVALID_PARAMETER;
++
++  fd = socket(PF_INET, SOCK_DGRAM, 0);
++  if (fd != -1) {
++    if (isLoopbackInterface(fd, name)) {
++      *type = MIB_IF_TYPE_LOOPBACK;
++      memset(addr, 0, *len);
++      *len = 0;
++      ret=NOERROR;
++    }
++    else {
++      struct arpreq arp;
++      struct sockaddr_in *saddr;
++      struct ifreq ifr;
++
++      /* get IP addr */
++      lstrcpynA(ifr.ifr_name, name, IFNAMSIZ);
++      ioctl(fd, SIOCGIFADDR, &ifr);
++      memset(&arp, 0, sizeof(struct arpreq));
++      arp.arp_pa.sa_family = AF_INET;
++      saddr = (struct sockaddr_in *)&arp; /* proto addr is first member */
++      saddr->sin_family = AF_INET;
++      memcpy(&saddr->sin_addr.s_addr, ifr.ifr_addr.sa_data + 2, sizeof(DWORD));
++      if ((ioctl(fd, SIOCGARP, &arp)))
++        ret = ERROR_INVALID_DATA;
++      else {
++        /* FIXME:  heh:  who said it was ethernet? */
++        int addrLen = ETH_ALEN;
++
++        if (addrLen > *len) {
++          ret = ERROR_INSUFFICIENT_BUFFER;
++          *len = addrLen;
++        }
++        else {
++          if (addrLen > 0)
++            memcpy(addr, &arp.arp_ha.sa_data[0], addrLen);
++          /* zero out remaining bytes for broken implementations */
++          memset(addr + addrLen, 0, *len - addrLen);
++          *len = addrLen;
++          *type = MIB_IF_TYPE_ETHERNET;
++          ret = NO_ERROR;
++        }
++      }
++    }
++    close(fd);
++  }
++    else
++      ret = ERROR_NO_MORE_FILES;
++
++  return ret;
++}
++#elif defined (SIOCGIFHWADDR)
+ static DWORD getInterfacePhysicalByName(const char *name, PDWORD len, PBYTE addr,
+  PDWORD type)
+ {
+@@ -386,65 +445,6 @@
+     ret = ERROR_NO_MORE_FILES;
+   return ret;
+ }
+-#elif defined (SIOCGARP)
+-static DWORD getInterfacePhysicalByName(const char *name, PDWORD len, PBYTE addr,
+- PDWORD type)
+-{
+-  DWORD ret;
+-  int fd;
+-
+-  if (!name || !len || !addr || !type)
+-    return ERROR_INVALID_PARAMETER;
+-
+-  fd = socket(PF_INET, SOCK_DGRAM, 0);
+-  if (fd != -1) {
+-    if (isLoopbackInterface(fd, name)) {
+-      *type = MIB_IF_TYPE_LOOPBACK;
+-      memset(addr, 0, *len);
+-      *len = 0;
+-      ret=NOERROR;
+-    }
+-    else {
+-      struct arpreq arp;
+-      struct sockaddr_in *saddr;
+-      struct ifreq ifr;
+-
+-      /* get IP addr */
+-      lstrcpynA(ifr.ifr_name, name, IFNAMSIZ);
+-      ioctl(fd, SIOCGIFADDR, &ifr);
+-      memset(&arp, 0, sizeof(struct arpreq));
+-      arp.arp_pa.sa_family = AF_INET;
+-      saddr = (struct sockaddr_in *)&arp; /* proto addr is first member */
+-      saddr->sin_family = AF_INET;
+-      memcpy(&saddr->sin_addr.s_addr, ifr.ifr_addr.sa_data + 2, sizeof(DWORD));
+-      if ((ioctl(fd, SIOCGARP, &arp)))
+-        ret = ERROR_INVALID_DATA;
+-      else {
+-        /* FIXME:  heh:  who said it was ethernet? */
+-        int addrLen = ETH_ALEN;
+-
+-        if (addrLen > *len) {
+-          ret = ERROR_INSUFFICIENT_BUFFER;
+-          *len = addrLen;
+-        }
+-        else {
+-          if (addrLen > 0)
+-            memcpy(addr, &arp.arp_ha.sa_data[0], addrLen);
+-          /* zero out remaining bytes for broken implementations */
+-          memset(addr + addrLen, 0, *len - addrLen);
+-          *len = addrLen;
+-          *type = MIB_IF_TYPE_ETHERNET;
+-          ret = NO_ERROR;
+-        }
+-      }
+-    }
+-    close(fd);
+-  }
+-    else
+-      ret = ERROR_NO_MORE_FILES;
+-
+-  return ret;
+-}
+ #elif defined (HAVE_SYS_SYSCTL_H) && defined (HAVE_NET_IF_DL_H)
+ static DWORD getInterfacePhysicalByName(const char *name, PDWORD len, PBYTE addr,
+  PDWORD type)

@@ -1,3 +1,16 @@
+2010-03-03  Matt Lewandowsky  <matt@greenviolet.net>
+
+	* SFEwine.spec, ext-sources/wine-svg-icons.tar.bz2,
+	  ext-sources/wine.directory, patches/wine-01-SIOCGIFHWADDR.diff:
+	  Package SVG icons locally. Add new icon for wine folders. Attempted
+	  patch for http://bugs.winehq.org/show_bug.cgi?id=20714 . Add
+	  dependency on SFElibgsm. Add dependency on SFEopenal. Remove
+	  autoheader/autoconf invocation. Comment out aclocal from packaging.
+	  Explicitly declare which modules to configure with.
+	* patches/winetricks-01-sh.diff, patches/wine-04-mmap-wrapper.diff,
+	  patches/wine-01-shell.diff, patches/wine-07-sun-ld.diff,
+	  patches/wine-02-acceptex.diff: Remove old patches.
+
 2010-03-03  Milan Jurik <sfnet@xylab.cz>
 
 	* encumbered/SFElame.spec: update for 3.98.3
