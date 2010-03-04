@@ -1,0 +1,5 @@
+--- configure	Thu Jul  9 15:28:56 2009
++++ configure	Sat Jul 11 15:41:15 2009
+@@ -1,1 +1,1 @@
+-#! /bin/sh
++#! /bin/ksh

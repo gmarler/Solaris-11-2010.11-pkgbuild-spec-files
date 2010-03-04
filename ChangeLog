@@ -1,4 +1,8 @@
 2010-03-03  Matt Lewandowsky  <matt@greenviolet.net>
+	* SFEfreetds.spec, patches/freetds-01-shell.diff: Update man page
+          packaging, fix configure to work with old Solaris /bin/sh
+
+2010-03-03  Matt Lewandowsky  <matt@greenviolet.net>
 
 	* SFEwine.spec, ext-sources/wine-svg-icons.tar.bz2,
 	  ext-sources/wine.directory, patches/wine-01-SIOCGIFHWADDR.diff:

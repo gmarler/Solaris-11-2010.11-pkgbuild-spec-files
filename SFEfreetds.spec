@@ -9,6 +9,7 @@ Name:                SFEfreetds
 Summary:             Implementation of the TDS (SQL Server/Sybase) protocol
 Version:             0.82
 Source:              http://ibiblio.org/pub/Linux/ALPHA/freetds/stable/freetds-%{version}.tar.gz
+Patch:               freetds-01-shell.diff
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -34,6 +35,7 @@ Requires: %name
 
 %prep
 %setup -q -n freetds-%version
+%patch -p0
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -73,6 +75,8 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, bin) %{_mandir}
 %dir %attr (0755, root, bin) %{_mandir}/man1
 %{_mandir}/man1/*.1
+%dir %attr (0755, root, bin) %{_mandir}/man5
+%{_mandir}/man5/*.5
 
 %files root
 %defattr (-, root, sys)
@@ -88,6 +92,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/doc/*
 
 %changelog
+* Wed Mar 03 2010 - matt@greenviolet.net
+- Update man page packaging
+- Fix configure to work with old Solaris /bin/sh
 * Tue Oct 22 2008  - Pradhap Devarajan <pradhap (at) gmail.com>
 - Bump to 0.82
 * Mon Mar 19 2007 - dougs@truemail.co.th
