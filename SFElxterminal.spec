@@ -9,7 +9,7 @@
 
 Name:                    SFElxterminal
 Summary:                 LXDE terminal emulator
-Version:                 0.1.6
+Version:                 0.1.7
 Source:                  http://downloads.sourceforge.net/lxde/lxterminal-%{version}.tar.gz
 URL:                     http://sourceforge.net/projects/lxde/
 
@@ -79,6 +79,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Fri Mar 05 2010 - brian.cameron@sun.com
+- Bump to 0.1.7.
 * Tue Aug 04 2009 - brian.cameron@sun.com
 - Bump to 0.1.6.
 * Thr Mar 19 2009 - alfred.peng@sun.com

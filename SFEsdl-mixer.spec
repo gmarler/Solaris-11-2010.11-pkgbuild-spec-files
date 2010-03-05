@@ -99,13 +99,27 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr(-,root,bin)
+%dir %attr (0755, root, bin) %{_libdir}
+%dir %attr (0755, root, other) %{_libdir}/pkgconfig
+%{_libdir}/pkgconfig/*
 %dir %attr (0755, root, bin) %{_includedir}
 %{_includedir}/SDL/
+%ifarch amd64 sparcv9
+%dir %attr (0755, root, bin) %{_libdir}/%{_arch64}
+%dir %attr (0755, root, other) %{_libdir}/%{_arch64}/pkgconfig
+%{_libdir}/%{_arch64}/pkgconfig/*
+%endif
+%if %arch_sse2
+%dir %attr (0755, root, other) %{_libdir}/%{sse2_arch}/pkgconfig
+%{_libdir}/%{sse2_arch}/pkgconfig/*.pc
+%endif
 
 %changelog
-* Sun Dec  7 2008 - Gilles Dauphin
+* Fri Mar 05 2010 - Brian Cameron  <brian.cameron@sun.com>
+- Add pkgconfig files.
+* Sun Dec 07 2008 - Gilles Dauphin
 - Can't find DOC README CHANGE etc...
-* Tue Jun  5 2007 - Doug Scott
+* Tue Jun 05 2007 - Doug Scott
 - Change to isabuild
 * Sun Apr 22 2007 - Doug Scott
 - Initial version

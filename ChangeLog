@@ -1,3 +1,25 @@
+2010-03-05  Brian Cameron  <brian.cameron@sun.com>
+
+	* SFEsdl-mixer.spec, base-specs/sdl-mixer.spec,
+	  patches/sdl-mixer-01-cflags.diff: Bump to 1.2.11, rework patch.
+	* SFEsdl-image.spec: Add %ifarch around install of arch specific
+	  pkgconfig files.
+	* SFEmenu-cache.spec: Bump to 0.3.2.
+	* SFElxterminal.spec: Bump to 0.1.7.
+	* SFElxpanel.spec: Bump to 0.5.5.
+	* patches/lxsession-02-fixcrash.diff: Fix additional crashing issue.
+	* base-specs/abiword.spec:
+	* SFEaspell.spec: Add -xannotate=no to CXXFLAGS and CFLAGS to address
+	  doo bug #9720 & bugster #6823945/#6865312.
+	* base-specs/aspell.spec:  Add "-I ./m4" to aclocal call, and do not
+	  reset CFLAGS.
+	* base-specs/boost.spec: Add "-d+2 -q" to the call to bjam for better
+	  debug output.  With this option the specific compile/link commands
+	  are echoed to the log which makes debugging build problems more
+	  simple.  The -q option makes the build stop immediately if the build
+	  fails rather than continuing the build and finding out about the
+	  failure at the end.
+
 2010-03-05  Milan Jurik <sfnet@xylab.cz>
 
 	* SFEgnochm.spec: add missing intl in build process

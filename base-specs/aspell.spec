@@ -73,7 +73,7 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
 fi
 
 libtoolize --force
-aclocal $ACLOCAL_FLAGS
+aclocal $ACLOCAL_FLAGS -I ./m4
 autoconf
 automake -a -c -f
 
@@ -84,7 +84,7 @@ automake -a -c -f
 %endif
 
 # For some reason, wide curses fails on Solaris, so disabling for now.
-CFLAGS="$RPM_OPT_FLAGS" ./configure \
+./configure \
     --prefix=%{_prefix} \
     --sysconfdir=/etc \
     --mandir=%{_mandir} \

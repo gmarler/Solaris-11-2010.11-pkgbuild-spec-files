@@ -104,17 +104,23 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, bin) %{_libdir}
 %dir %attr (0755, root, other) %{_libdir}/pkgconfig
 %{_libdir}/pkgconfig/SDL_image.pc
+%ifarch amd64 sparcv9
 %dir %attr (0755, root, bin) %{_libdir}/amd64
 %dir %attr (0755, root, other) %{_libdir}/amd64/pkgconfig
 %{_libdir}/amd64/pkgconfig/SDL_image.pc
+%endif
+%if %arch_sse2
 %dir %attr (0755, root, bin) %{_libdir}/pentium_pro+mmx
 %dir %attr (0755, root, other) %{_libdir}/pentium_pro+mmx/pkgconfig
 %{_libdir}/pentium_pro+mmx/pkgconfig/SDL_image.pc
+%endif
 
 %changelog
+* Fri Mar 05 2010 - Brian Cameron  <brian.cameron@sun.com>
+- Add %ifarch around the packaging of architecture specific pkgconfig files.
 * Tue Mar 02 2010 - matt@greenviolet.net
 - Update packaging
-* Tue Jun  5 2007 - Doug Scott
+* Tue Jun 05 2007 - Doug Scott
 - Change to isabuild
 * Sun Apr 01 2007 Jeff Cai
 - Initial version

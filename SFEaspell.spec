@@ -36,14 +36,24 @@ mkdir -p %name-%version
 %aspell.prep -d %name-%version
 
 %build
+# Need to set LD_NOEXEC_64 and add -xannotate=no to deal with doo bug #9720.
+# and bugster #6823945/#6865312.
+export LD_NOEXEC_64=1
+export CFLAGS="%optflags -xannotate=no"
+export CXXFLAGS="%cxx_optflags -staticlib=stlport4 -xannotate=no"
 export CXX="$CXX -norunpath"
-export CFLAGS="%optflags"
 export LDFLAGS="%_ldflags -lCrun -lm"
-export CXXFLAGS="%cxx_optflags -staticlib=stlport4"
 export MSGFMT="/usr/bin/msgfmt"
 %aspell.build -d %name-%version
 
 %install
+
+# Need to set LD_NOEXEC_64 and add -xannotate=no to deal with doo bug #9720.
+# and bugster #6823945/#6865312.
+export LD_NOEXEC_64=1
+export CFLAGS="%optflags -xannotate=no"
+export CXXFLAGS="%cxx_optflags -staticlib=stlport4 -xannotate=no"
+
 %aspell.install -d %name-%version
 mv $RPM_BUILD_ROOT%{_bindir}/* $RPM_BUILD_ROOT%{_libdir}/aspell/
 rm -rf $RPM_BUILD_ROOT%{_bindir}
@@ -70,6 +80,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/*
 
 %changelog
+* Fri Mar 05 2010 - Brian Cameron <brian.cameron>
+- Need to set LD_NOEXEC_64 and add -xannotate=no to deal with doo bug #9720.
+  and bugster #6823945/#6865312.
 * Sat Apr 21 2007 - dougs@truemail.co.th
 - Added BuildConflicts: SUNWaspell
 * Tue Mar 13 2007 - jeff.cai@sun.com

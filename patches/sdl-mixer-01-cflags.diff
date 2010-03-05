@@ -1,8 +1,11 @@
-diff -ur SDL_mixer-1.2.7-orig/Makefile.in SDL_mixer-1.2.7/Makefile.in
---- SDL_mixer-1.2.7-orig/Makefile.in	2006-05-17 13:08:04.000000000 +0700
-+++ SDL_mixer-1.2.7/Makefile.in	2007-05-27 13:20:23.008533882 +0700
-@@ -57,10 +57,10 @@
- 	$(SHELL) $(auxdir)/mkinstalldirs $@
+--- SDL_mixer-1.2.11/Makefile.in-orig	2010-03-05 06:45:22.451925678 -0600
++++ SLD_mixer-1.2.11/Makefile.in	2010-03-05 06:45:44.741189765 -0600
+@@ -72,13 +72,13 @@ $(objects):
+ @PLAYMUS_DEPENDS@
+ 
+ $(objects)/$(TARGET): $(OBJECTS) $(VERSION_OBJECTS)
+-	$(LIBTOOL) --mode=link $(CC) -o $@ $(OBJECTS) $(VERSION_OBJECTS) $(LDFLAGS) $(EXTRA_LDFLAGS) $(LT_LDFLAGS)
++	$(LIBTOOL) --mode=link $(CC) $(CFLAGS) -o $@ $(OBJECTS) $(VERSION_OBJECTS) $(LDFLAGS) $(EXTRA_LDFLAGS) $(LT_LDFLAGS)
  
  $(objects)/playwave$(EXE): $(objects)/playwave.lo $(objects)/$(TARGET)
 -	$(LIBTOOL) --mode=link $(CC) -o $@ $(objects)/playwave.lo $(SDL_CFLAGS) $(SDL_LIBS) $(objects)/$(TARGET)
@@ -12,5 +15,5 @@ diff -ur SDL_mixer-1.2.7-orig/Makefile.in SDL_mixer-1.2.7/Makefile.in
 -	$(LIBTOOL) --mode=link $(CC) -o $@ $(objects)/playmus.lo $(SDL_CFLAGS) $(SDL_LIBS) $(objects)/$(TARGET)
 +	$(LIBTOOL) --mode=link $(CC) $(CFLAGS) -o $@ $(objects)/playmus.lo $(SDL_CFLAGS) $(SDL_LIBS) $(objects)/$(TARGET)
  
- .PHONY: all depend install install-hdrs install-lib install-bin uninstall uninstall-hdrs uninstall-lib uninstall-bin clean distclean dist
- depend:
+ install: all install-hdrs install-lib #install-bin
+ install-hdrs:

@@ -95,7 +95,7 @@ BOOST_BJAM_ICU_PATH="-sICU_PATH=/usr"
 
 # Build Boost
 BJAM=`find tools/jam/src -name bjam -a -type f`
-$BJAM --v2 -j$CPUS -sBUILD="release <threading>single/multi" \
+$BJAM --v2 -d+2 -q -j$CPUS -sBUILD="release <threading>single/multi" \
   $BOOST_BJAM_ICU_PATH $BOOST_BJAM_LAYOUT --user-config=user-config.jam \
   release stage
 

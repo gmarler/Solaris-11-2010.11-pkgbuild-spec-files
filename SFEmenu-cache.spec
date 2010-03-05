@@ -7,7 +7,7 @@
 
 Name:                    SFEmenu-cache
 Summary:                 LXDE menu cache
-Version:                 0.3.0
+Version:                 0.3.2
 Source:                  http://downloads.sourceforge.net/lxde/menu-cache-%{version}.tar.gz
 URL:                     http://sourceforge.net/projects/lxde/
 
@@ -61,6 +61,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/*
 
 %changelog
+* Fri Mar 05 2010 - brian.cameron@sun.com
+- Bump to 0.3.2.
 * Mon Feb 15 2010 - brian.cameron@sun.com
 - Bump to 0.3.0.
 * Tue Aug 04 2009 - brian.cameron@sun.com
