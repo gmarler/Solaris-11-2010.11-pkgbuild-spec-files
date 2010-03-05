@@ -7,7 +7,7 @@
 
 Name:                SFEchmlib
 Summary:             A library for reading Microsoft .CHM files.
-Version:             0.38
+Version:             0.40
 Source:              http://www.jedrea.com/chmlib/chmlib-%{version}.tar.gz
 
 SUNW_BaseDir:        %{_basedir}
@@ -51,6 +51,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/lib*.so*
 
 %changelog
-* 
+* Fri Mar 05 2010 - Milan Jurik
+- update to 0.40 
 * Wed Dec 13 2006 - Eric Boutilier
 - Initial spec

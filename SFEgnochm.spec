@@ -36,8 +36,9 @@ fi
 export CFLAGS="%optflags"
 export LDFLAGS="%_ldflags"
 
-aclocal
 libtoolize --copy --force 
+intltoolize  --force
+aclocal
 automake -a -f
 autoconf -f 
 ./configure --prefix=%{_prefix}			\
@@ -142,6 +143,8 @@ test -x $BASEDIR/lib/postrun || exit 0
 %{_sysconfdir}
 
 %changelog
+* Fri Mar 05 2010 - Milan Jurik
+- add missing intl in build process, but still broken for missing nls.m4 - CR 6785384
 * Wed Oct 1 2008 - markwright@internode.on.net
 - Bump to 0.9.11
 * Mon Apr 07 2008 - brian.cameron@sun.com

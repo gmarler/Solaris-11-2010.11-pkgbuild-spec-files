@@ -1,3 +1,8 @@
+2010-03-05  Milan Jurik <sfnet@xylab.cz>
+
+	* SFEgnochm.spec: add missing intl in build process
+	* SFEchmlib.spec: update to 0.40
+
 2010-03-03  Matt Lewandowsky  <matt@greenviolet.net>
 	* SFEfreetds.spec, patches/freetds-01-shell.diff: Update man page
           packaging, fix configure to work with old Solaris /bin/sh
