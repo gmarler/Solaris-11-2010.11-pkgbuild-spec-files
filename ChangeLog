@@ -1,5 +1,9 @@
 2010-03-05  Brian Cameron  <brian.cameron@sun.com>
 
+	* base-specs/abiword.spec: Bump to 2.8.2.
+
+2010-03-05  Brian Cameron  <brian.cameron@sun.com>
+
 	* SFEsdl-mixer.spec, base-specs/sdl-mixer.spec,
 	  patches/sdl-mixer-01-cflags.diff: Bump to 1.2.11, rework patch.
 	* SFEsdl-image.spec: Add %ifarch around install of arch specific

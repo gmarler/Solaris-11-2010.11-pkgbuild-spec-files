@@ -106,6 +106,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/applications/*
 %dir %attr (-, root, other) %{_datadir}/icons
 %{_datadir}/icons/*.png
+%dir %attr(0755, root, bin) %{_mandir}
+%dir %attr(0755, root, bin) %{_mandir}/man1
+%{_mandir}/man1/*
 
 %files devel
 %defattr (-, root, bin)
