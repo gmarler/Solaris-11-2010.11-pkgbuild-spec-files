@@ -31,6 +31,8 @@ Source:                 %{src_url}/%{sname}-%{version}.tar.bz2
 # See: http://lists.freedesktop.org/archives/tango-artists/2009-July/001973.html
 # Also: http://www.airwebreathe.org.uk/wine-icon/
 Source1:                http://winezeug.googlecode.com/svn/trunk/winetricks
+# See http://wiki.winehq.org/Gecko for which version to use.
+Source2:                %{src_url}/%{sname}_gecko-1.0.0-x86.cab
 Source100:              wine.directory
 Source101:              winetricks.desktop
 Source102:              wine-appwiz.desktop
@@ -176,6 +178,10 @@ mkdir -p $RPM_BUILD_ROOT%{_bindir}
 install %{SOURCE1} $RPM_BUILD_ROOT%{_bindir} # winetricks
 rm %{SOURCE1} # So it's freshly downloaded next time, as it's straight from svn
 
+# Now we deal with Gecko.
+mkdir $RPM_BUILD_ROOT%{_datadir}/%{sname}/gecko
+install %{SOURCE2} $RPM_BUILD_ROOT%{_datadir}/%{sname}/gecko/ # gecko
+
 # Next, deal with the icons.
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/pixmaps
 # The default wine icon is... ugly.
@@ -242,8 +248,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}
 %{_libdir}
 %{_mandir}
-%{_datadir}/desktop-directories
 %dir %attr (0755, root, sys) %{_datadir}
+%{_datadir}/desktop-directories
 %{_datadir}/wine
 %defattr (-, root, other)
 %{_datadir}/applications
@@ -259,6 +265,9 @@ rm -rf $RPM_BUILD_ROOT
 #%dir %attr (0755, root, other) %{_datadir}/aclocal
 
 %changelog
+* Fri Mar 05 2010 - matt@greenviolet.net
+- Add wine-gecko.
+
 * Wed Mar 03 2010 - matt@greenviolet.net
 - Package SVG icons locally.
 - Add new icon for wine folders.
