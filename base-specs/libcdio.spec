@@ -13,11 +13,12 @@
 Name:         libcdio
 License:      LGPL
 Group:        System Environment/Libraries
-Version:      0.80
+Version:      0.82
 Release:      1
 Distribution: Java Desktop System
 Vendor:       Sun Microsystems, Inc.
 Summary:      Utilities for CD interaction
+URL:          http://www.gnu.org/software/libcdio/
 Source:       http://ftp.gnu.org/gnu/libcdio/%{name}-%{version}.tar.gz
 Patch1:       libcdio-01-usehal.diff
 Patch2:       libcdio-02-stdint.diff
@@ -101,6 +102,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/*.so
 
 %changelog
+* Sun Mar 07 2010 - Milan Jurik
+- update for 0.82
 * Mon Dec 22 2008 - Thomas Wagner
 - changed ACLOCAL_FLAGS to conditionally use m4 files from CBEgettext location (/opt/dtbld or /opt/jdsbld, ..) bcs. missing AM_GNU_GETTEXT_VERSION|AM_ICONV when using jds cbe 1.7.0(-rc1)
 * Sun Aug 17 2008 - nonsea@users.sourceforge.net

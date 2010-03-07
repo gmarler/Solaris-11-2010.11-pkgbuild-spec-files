@@ -2,6 +2,7 @@
 
 	* encumbered/SFEffmpeg.spec: replace amrXX for opencore implementation
 	* SFElibcddb.spec: update for 1.3.2
+	* base-specs/libcdio.spec: update for 0.82
 
 2010-03-05  Matt Lewandowsky  <matt@greenviolet.net>
 

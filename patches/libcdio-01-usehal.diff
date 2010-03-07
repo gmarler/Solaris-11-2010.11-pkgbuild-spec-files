@@ -1,14 +1,8 @@
---- libcdio-0.77/lib/driver/Makefile.am-orig	2006-07-19 15:08:37.988032000 -0500
-+++ libcdio-0.77/lib/driver/Makefile.am	2006-07-19 15:14:25.765631000 -0500
-@@ -101,7 +101,7 @@ lib_LTLIBRARIES    = libcdio.la
- libcdio_la_SOURCES = $(libcdio_sources)
- libcdio_la_ldflags = -version-info $(libcdio_la_CURRENT):$(libcdio_la_REVISION):$(libcdio_la_AGE)
- 
+--- libcdio-0.82/lib/driver/Makefile.am	Sun Mar  7 16:09:20 2010
++++ libcdio-0.82-patch/lib/driver/Makefile.am	Sun Mar  7 16:12:10 2010
+@@ -107,1 +107,1 @@
 -INCLUDES = $(LIBCDIO_CFLAGS)
 +INCLUDES = $(LIBCDIO_CFLAGS) -I/usr/include/dbus-1.0 -I/usr/lib/dbus-1.0/include -DDBUS_API_SUBJECT_TO_CHANGE
- 
- ########################################################
- # Things to version the symbols in the libraries
 --- libcdio-0.77/lib/driver/solaris.c-orig	2006-07-19 15:13:22.665583000 -0500
 +++ libcdio-0.77/lib/driver/solaris.c	2006-07-19 15:12:30.327643000 -0500
 @@ -50,6 +50,7 @@ static const char _rcsid[] = "$Id: solar
