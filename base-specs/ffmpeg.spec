@@ -53,6 +53,7 @@ if $( echo "%{_libdir}" | /usr/xpg4/bin/grep -q %{_arch64} ) ; then
 fi
 bash ./configure	\
     --prefix=%{_prefix} \
+    --bindir=%{_bindir} \
     --libdir=%{_libdir}	\
     --shlibdir=%{_libdir}	\
     --mandir=%{_mandir}	\
@@ -75,9 +76,12 @@ bash ./configure	\
     --enable-libvorbis	\
     --disable-libamr-nb	\
     --disable-libamr-wb	\
+    --enable-version3   \
     --enable-x11grab	\
     --enable-libspeex   \
     --enable-pthreads	\
+    --enable-libopencore-amrnb \
+    --enable-libopencore-amrwb \
     --disable-static	\
     --extra-ldflags=-mimpure-text \
     --enable-shared
@@ -109,6 +113,8 @@ EOM
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Sun Mar 07 2010 - Milan Jurik
+- replace amrXX for opencore implementation
 * Wed Mar 03 2010 - Milan Jurik
 - update to 0.5.1
 * Sat Oct 17 2009 - Milan Jurik

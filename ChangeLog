@@ -1,3 +1,7 @@
+2010-03-07  Milan Jurik <sfnet@xylab.cz>
+
+	* encumbered/SFEffmpeg.spec: replace amrXX for opencore implementation
+
 2010-03-05  Matt Lewandowsky  <matt@greenviolet.net>
 
 	* SFEenscript.spec: Initial spec file.

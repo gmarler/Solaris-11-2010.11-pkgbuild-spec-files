@@ -7,8 +7,6 @@
 %include Solaris.inc
 
 %define SUNWlibsdl %(/usr/bin/pkginfo -q SUNWlibsdl && echo 1 || echo 0)
-%define with_amrnb %(/usr/bin/pkginfo -q SFEamrnb && echo 1 || echo 0)
-%define with_amrwb %(/usr/bin/pkginfo -q SFEamrwb && echo 1 || echo 0)
 
 %define cc_is_gcc 1
 
@@ -61,14 +59,6 @@ Requires: SFExvid
 BuildRequires: SFElibx264-devel
 Requires: SFElibx264
 BuildRequires: SFEfaad2-devel
-%if %with_amrnb
-Requires: SFEamrnb
-BuildRequires: SFEamrnb-devel
-%endif
-%if %with_amrwb
-Requires: SFEamrwb
-BuildRequires: SFEamrwb-devel
-%endif
 BuildRequires: SFElame-devel
 Requires: SFElame
 BuildRequires: SUNWogg-vorbis-devel
@@ -77,6 +67,8 @@ BuildRequires: SUNWlibtheora-devel
 Requires: SUNWlibtheora
 BuildRequires: SUNWspeex-devel
 Requires: SUNWspeex
+BuildRequires: SFEopencore-amr-devel
+Requires: SFEopencore-amr
 
 %package devel
 Summary:                 %{summary} - development files
@@ -173,7 +165,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/libswscale
 
 %changelog
-* Tue Sep 8 2009 - Milan Jurik
+* Sun Mar 07 2010 - Milan Jurik
+- replace amrXX for opencore implementation
+* Tue Sep 08 2009 - Milan Jurik
 - amrXX optional
 - improved multiarch support (64-bit not done because of missing SUNW libraries)
 * Mon Mar 16 2009 - Milan Jurik
