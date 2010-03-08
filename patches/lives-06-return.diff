@@ -1,0 +1,12 @@
+--- lives-1.2.1/src/utils.c	Thu Feb 18 08:52:51 2010
++++ lives-1.2.1-patch/src/utils.c	Mon Mar  8 22:33:55 2010
+@@ -3236,7 +3236,8 @@
+ 		     gdouble page_size) {
+ 
+ #ifdef HAVE_GTK_NICE_VERSION
+-  return gtk_adjustment_configure(adjustment,value,lower,upper,step_increment,page_increment,page_size);
++  gtk_adjustment_configure(adjustment,value,lower,upper,step_increment,page_increment,page_size);
++  return;
+ #endif
+ 
+   g_object_freeze_notify (G_OBJECT(adjustment));

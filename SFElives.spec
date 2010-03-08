@@ -11,10 +11,10 @@
 Name:                   SFElives
 License:		GPL v3
 Summary:                Video Editing System
-Version:                1.1.8
+Version:                1.2.1
+URL:			http://lives.sourceforge.net/
 Source:                 %{src_url}/%{src_name}-%{version}.tar.bz2
-Patch4:			lives-04-inline.diff
-Patch5:			lives-05-jackdoss.diff
+Patch6:			lives-06-return.diff
 SUNW_BaseDir:           %{_basedir}
 BuildRoot:              %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -31,8 +31,7 @@ Requires:	SFEmjpegtools
 
 %prep
 %setup -q -n lives-%{version}
-%patch4 -p1
-%patch5 -p1
+%patch6 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -81,6 +80,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/*
 
 %changelog
+* Mon Mar 08 2010 - Milan Jurik
+- update to 1.2.1, removed patches applied by upstream
 * Sat Jan 16 2010 - Milan Jurik
 - update to 1.1.8
 * Fri Sep 18 2009 - Milan Jurik
