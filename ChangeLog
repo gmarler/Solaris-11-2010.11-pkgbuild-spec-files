@@ -1,3 +1,7 @@
+2010-03-09  Milan Jurik <sfnet@xylab.cz>
+
+	* SFEunbound.spec: update to 1.4.2
+
 2010-03-08  Milan Jurik <sfnet@xylab.cz>
 
 	* SFElives.spec: update to 1.2.1, removed patches applied by upstream
