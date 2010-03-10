@@ -39,6 +39,7 @@ BuildRequires: SFEladspa-devel
 Requires: SFEladspa
 BuildRequires: SFEsoundtouch-devel
 Requires: SFEsoundtouch
+BuildRequires: SUNWaudh
 
 # Check whether the user has installed the Sun Studio or GCC
 # version of wxWidgets, and build with GCC if using the GCC

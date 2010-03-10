@@ -17,8 +17,8 @@
 %include Solaris.inc
 Name:                    SFEgjs
 Summary:                 GNOME JavaScript bindings
-Version:                 0.4
-Source:                  http://ftp.gnome.org/pub/GNOME/sources/gjs/0.4/gjs-%{version}.tar.bz2
+Version:                 0.5
+Source:                  http://ftp.gnome.org/pub/GNOME/sources/gjs/0.5/gjs-%{version}.tar.bz2
 Patch1:                  gjs-01-solaris.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -26,6 +26,8 @@ BuildRequires:           SUNWfirefox-devel
 BuildRequires:           SUNWgobject-introspection-devel
 Requires:                SUNWfirefox
 Requires:                SUNWgobject-introspection
+# Need nspr.pc file in SUNWprd
+BuildRequires:           SUNWprd
 %include default-depend.inc
 
 %package devel
@@ -73,6 +75,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/*
 
 %changelog
+* Wed Mar 10 2010 - Brian Cameron  <brian.cameron@sun.com>
+- Bump to 0.5.  Add BuildRequires SUNWprd.
 * Sat Aug 29 2009 - Brian Cameron  <brian.cameron@sun.com>
 - Bump to 0.4.
 * Mon Aug 03 2009 - Brian.Cameron  <brian.cameron@sun.com>

@@ -1,5 +1,17 @@
 2010-03-10  Brian Cameron  <brian.cameron@sun.com>
 
+	* SFEgjs.spec: Bump to 0.5.  Add BuildRequires SUNWprd.
+	* SFEmutter.spec, patches/mutter-02-wait.diff: Bump to 2.29.0.  Add
+	  patch needed to build.
+	* SFEgnome-shell.spec, patches/gnome-shell-01-function.diff: Bump to
+	  2.29.0.  Rework patch.
+	* SFEsoundtouch.spec, patches/soundtouch-01-nomsse.diff: Renumber
+	  patch from 03 to 01.
+	* SFEenlightenment.spec: Bump to 1.0.2.
+	* SFEaudacity.spec: Add BuildRequires SuNWaudh.
+
+2010-03-10  Brian Cameron  <brian.cameron@sun.com>
+
 	* SFEsugar.spec: Add needed Requires.
 
 2010-03-10  Brian Cameron  <brian.cameron@sun.com>

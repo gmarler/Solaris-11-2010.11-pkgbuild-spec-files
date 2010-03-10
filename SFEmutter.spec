@@ -9,9 +9,11 @@
 
 Name:                    SFEmutter
 Summary:                 Clutter enabled metacity window manager
-Version:                 2.28.0
-Source:	                 http://ftp.gnome.org/pub/GNOME/sources/mutter/2.28/mutter-%{version}.tar.bz2
+Version:                 2.29.0
+Source:	                 http://ftp.gnome.org/pub/GNOME/sources/mutter/2.29/mutter-%{version}.tar.bz2
 Patch1:                  mutter-01-suncc-xc99.diff
+# Bug #612506.
+Patch2:                  mutter-02-wait.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 BuildRequires:           SUNWPython26-devel
@@ -49,6 +51,7 @@ Requires:                %{name}
 %prep
 %setup -q -n mutter-%version
 %patch1 -p1
+%patch2 -p1
 
 %build
 export CFLAGS="%optflags"
@@ -84,24 +87,11 @@ rm -rf $RPM_BUILD_ROOT%{_datadir}/locale
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post root
-%include gconf-install.script
+%post
+%restart_fmri desktop-mime-cache icon-cache gconf-cache
 
-%preun root
-test -x $BASEDIR/var/lib/postrun/postrun || exit 0
-( echo 'test -x $PKG_INSTALL_ROOT/usr/bin/gconftool-2 || {';
-  echo '  echo "WARNING: gconftool-2 not found; not uninstalling gconf schemas"';
-  echo '  exit 0';
-  echo '}';
-  echo 'umask 0022';
-  echo 'GCONF_CONFIG_SOURCE=xml:merged:$BASEDIR/etc/gconf/gconf.xml.defaults';
-  echo 'GCONF_BACKEND_DIR=$PKG_INSTALL_ROOT/usr/lib/GConf/2';
-  echo 'LD_LIBRARY_PATH=$PKG_INSTALL_ROOT/usr/lib';
-  echo 'export GCONF_CONFIG_SOURCE GCONF_BACKEND_DIR LD_LIBRARY_PATH';
-  echo 'SDIR=$BASEDIR%{_sysconfdir}/gconf/schemas';
-  echo 'schemas="$SDIR/mutter.schemas"';
-  echo '$PKG_INSTALL_ROOT/usr/bin/gconftool-2 --makefile-uninstall-rule $schemas'
-) | $BASEDIR/var/lib/postrun/postrun -i -c JDS -a
+%post root
+cat >> $BASEDIR/var/svc/profile/upgrade <<\EOF
 
 %files
 %defattr (-, root, bin)
@@ -141,6 +131,8 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 %endif
 
 %changelog
+* Wed Mar 10 2010 - Brian Cameron  <brian.cameron@sun.com>
+- Bump to 2.29.0.
 * Sun Oct 11 2009 - Brian Cameron  <brian.cameron@sun.com>
 - Bump to 2.28.0.
 * Wed Sep 16 2009 - Halton Huo <halton.huo@sun.com>

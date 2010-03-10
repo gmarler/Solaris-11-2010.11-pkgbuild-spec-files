@@ -10,7 +10,7 @@ Summary:                 Audio Processing Library
 URL:                     http://www.surina.net/soundtouch
 Version:                 1.5.0
 Source:                  http://www.surina.net/soundtouch/soundtouch-%{version}.tar.gz
-Patch3:                  soundtouch-03-nomsse.diff
+Patch1:                  soundtouch-01-nomsse.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 
@@ -24,7 +24,7 @@ SUNW_BaseDir: %{_basedir}
 %prep
 %setup -q -n soundtouch
 
-%patch3 -p1
+%patch1 -p1
 
 touch NEWS README AUTHORS ChangeLog COPYING
 

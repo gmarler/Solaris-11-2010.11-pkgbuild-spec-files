@@ -11,7 +11,7 @@
 # Software specific variable definitions
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 %define src_name	e16-1
-%define src_version	0.1
+%define src_version	0.2
 %define pkg_release	1
 # %{_topdir} is by default set to RPM_BUILD_ROOT
 # Default path for RPM_BUILD_ROOT is /var/tmp/pkgbuild-{username}
@@ -118,8 +118,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/xsessions/*
 %dir %attr(0755, root, bin) %{_mandir}
 %dir %attr(0755, root, bin) %{_mandir}/*
+%{_mandir}/man1/*
 
 %changelog
+* Wed Mar 10 2010 - brian.cameron@sun.com
+- Bump to 1.0.2.
 * Thu Sep 24 2009 - brian.cameron@sun.com
 - Bump to 1.0.1.
 * Thu Jan 15 2008 - brian.cameron@sun.com

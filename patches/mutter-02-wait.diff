@@ -1,0 +1,10 @@
+--- mutter-2.29.0/src/core/delete.c-orig	2010-03-10 16:14:26.427614693 -0600
++++ mutter-2.29.0/src/core/delete.c	2010-03-10 16:14:39.578427914 -0600
+@@ -38,6 +38,7 @@
+ #include <string.h>
+ #include <stdlib.h>
+ #include <stdio.h>
++#include <sys/wait.h>
+ 
+ static void meta_window_present_delete_dialog (MetaWindow *window,
+                                                guint32     timestamp);
