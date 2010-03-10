@@ -21,6 +21,7 @@ BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 Requires:                SFEsugar
 BuildRequires:           SFEsugar
+BuildRequires:           SUNWswig
 
 %if %build_l10n
 %package l10n

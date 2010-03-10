@@ -1,0 +1,30 @@
+--- boost_1_42_0/tools/jam/src/build.sh-orig	2010-03-05 07:57:50.288338562 -0600
++++ boost_1_42_0/tools/jam/src/build.sh	2010-03-05 07:58:26.131276099 -0600
+@@ -201,7 +201,7 @@ case $BOOST_JAM_TOOLSET in
+         PATH=${BOOST_JAM_TOOLSET_ROOT}bin:${PATH}
+         export PATH
+     fi
+-    BOOST_JAM_CC=cc
++    BOOST_JAM_CC=$CC
+     ;;
+ 
+     tru64cxx)
+--- boost_1_42_0/tools/jam/src/build.jam-orig	2010-03-05 08:06:47.524686318 -0600
++++ boost_1_42_0/tools/jam/src/build.jam	2010-03-05 08:07:19.188281913 -0600
+@@ -288,14 +288,14 @@ toolset pgi pgcc : "-o " : -D
+     -I$(--python-include) -I$(--extra-include)
+     : -L$(--python-lib[1]) -l$(--python-lib[2]) ;
+ ## Sun Workshop 6 C++
+-toolset sun cc : "-o " : -D
++toolset sun $(CC) : "-o " : -D
+     :
+     [ opt --release : -s -fast -xO4 ]
+     [ opt --debug : -g ]
+     -I$(--python-include) -I$(--extra-include)
+     : -L$(--python-lib[1]) -l$(--python-lib[2]) ;
+ ## Sun Workshop 6 C++ (old alias)
+-toolset sunpro cc : "-o " : -D
++toolset sunpro $(CC) : "-o " : -D
+     :
+     [ opt --release : -s -fast -xO4 ]
+     [ opt --debug : -g ]

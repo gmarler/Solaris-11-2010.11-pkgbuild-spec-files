@@ -9,7 +9,7 @@
 #
 
 %define        major      1
-%define        minor      40
+%define        minor      42
 %define        patchlevel 0
 %define        ver_boost  %{major}_%{minor}_%{patchlevel}
 
@@ -29,7 +29,8 @@ Patch1:       boost-01-studio.diff
 # date:2007-08-13 owner:laca
 Patch2:       boost-02-gcc34.diff
 # date:2009-11-04 owner:sobi
-Patch4:	      boost-04-fixthread.diff
+Patch3:       boost-03-xmlparser.diff
+Patch4:       boost-04-compiler.diff
 
 URL:          http://www.boost.org/
 BuildRoot:    %{_tmppath}/%{name}-%{version}-build
@@ -38,6 +39,7 @@ BuildRoot:    %{_tmppath}/%{name}-%{version}-build
 %setup -q -n %{name}_%{major}_%{minor}_%{patchlevel}
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 %patch4 -p1
 
 %build
@@ -105,6 +107,8 @@ $BJAM --v2 -d+2 -q -j$CPUS -sBUILD="release <threading>single/multi" \
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Fri Mar 05 2010 - Brian Cameron <brian.cameron@sun.com>
+- Bump to 1.42.
 * Fri Jan 29 2010 - Brian Cameron <brian.cameron@sun.com>
 - Add boost-with-mt option to build the mt version of the libraries.
   Do not build with ICU support if building the GCC version, otherwise the

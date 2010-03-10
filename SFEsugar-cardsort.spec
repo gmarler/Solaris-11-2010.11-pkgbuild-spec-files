@@ -10,7 +10,7 @@
 Name:                    SFEsugar-cardsort
 Summary:                 Sugar CardSort
 URL:                     http://www.sugarlabs.org/
-Version:                 4 
+Version:                 5 
 Source:                  http://download.sugarlabs.org/sources/honey/Cardsort/CardSort-%{version}.tar.bz2
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -74,5 +74,7 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Wed Mar 10 2010 - Brian Cameron  <brian.cameron@sun.com>
+- Bump to 5.
 * Tue Feb 02 2010 - Brian Cameron  <brian.cameron@sun.com>
 - Created with 4.

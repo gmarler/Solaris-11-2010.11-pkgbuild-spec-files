@@ -10,7 +10,7 @@
 Name:                    SFEsugar-artwork
 Summary:                 Sugar Artwork
 URL:                     http://www.sugarlabs.org/
-Version:                 0.87.1
+Version:                 0.87.3
 Source:                  http://download.sugarlabs.org/sources/sucrose/glucose/sugar-artwork/sugar-artwork-%{version}.tar.bz2
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -52,5 +52,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/themes/sugar-72
 
 %changelog
+* Wed Mar 10 2010 - Brian Cameron  <brian.cameron@sun.com>
+- Bump to 0.87.3.
 * Tue Feb 02 2010 - Brian Cameron  <brian.cameron@sun.com>
 - Created with 0.87.1.

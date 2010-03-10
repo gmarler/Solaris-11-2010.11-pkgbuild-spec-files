@@ -10,12 +10,12 @@
 %include base.inc
 
 %define	src_name xapian-bindings
-%define	src_url	http://www.oligarchy.co.uk/xapian/1.0.17
+%define	src_url	http://www.oligarchy.co.uk/xapian/1.0.18
 
 Name:                SFExapian-bindings
 Summary:             Xapian bindings
 Group:               System/Libraries
-Version:             1.0.17
+Version:             1.0.18
 Source:              %{src_url}/%{src_name}-%{version}.tar.gz
 SUNW_BaseDir:        %{_basedir}
 SUNW_Copyright:       %{name}.copyright
@@ -78,6 +78,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_prefix}/ruby
 
 %changelog
+* Wed Mar 10 2010 - brian.cameron@sun.com
+- Bump to 1.0.18.
 * Tue Feb 02 2010 - brian.cameron@sun.com
 - Bump to 1.0.17.
 * Tue Oct 21 2008  - Pradhap Devarajan <pradhap (at) gmail.com>

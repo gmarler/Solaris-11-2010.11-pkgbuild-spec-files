@@ -10,7 +10,7 @@
 Name:                    SFEsugar-datastore
 Summary:                 Sugar Datastore
 URL:                     http://www.sugarlabs.org/
-Version:                 0.87.2
+Version:                 0.87.4
 Source:                  http://download.sugarlabs.org/sources/sucrose/glucose/sugar-datastore/sugar-datastore-%{version}.tar.bz2
 Patch1:                  sugar-datastore-01-python.diff
 SUNW_BaseDir:            %{_basedir}
@@ -65,5 +65,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/dbus-1/services
 
 %changelog
+* Wed Mar 10 2010 - Brian Cameron  <brian.cameron@sun.com>
+- Bump to 0.87.4.
 * Tue Feb 02 2010 - Brian Cameron  <brian.cameron@sun.com>
 - Created with 0.87.2

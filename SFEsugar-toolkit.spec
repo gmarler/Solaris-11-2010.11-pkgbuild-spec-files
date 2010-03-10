@@ -10,7 +10,7 @@
 Name:                    SFEsugar-toolkit
 Summary:                 Sugar Learning Platform Toolkit
 URL:                     http://www.sugarlabs.org/
-Version:                 0.87.3
+Version:                 0.87.8
 Source:                  http://download.sugarlabs.org/sources/sucrose/glucose/sugar-toolkit/sugar-toolkit-%{version}.tar.bz2
 Patch1:                  sugar-toolkit-01-noalsa.diff
 SUNW_BaseDir:            %{_basedir}
@@ -95,6 +95,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Wed Mar 10 2010 - Brian Cameron  <brian.cameron@sun.com>
+- Bump to 0.87.8.
 * Tue Feb 02 2010 - Brian Cameron  <brian.cameron@sun.com>
 - Bump to 0.87.3.
 * Sun Jul 08 2009 - Brian Cameron  <brian.cameron@sun.com>

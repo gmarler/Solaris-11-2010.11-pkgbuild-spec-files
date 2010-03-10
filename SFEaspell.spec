@@ -36,11 +36,7 @@ mkdir -p %name-%version
 %aspell.prep -d %name-%version
 
 %build
-# Need to set LD_NOEXEC_64 and add -xannotate=no to deal with doo bug #9720.
-# and bugster #6823945/#6865312.
-export LD_NOEXEC_64=1
-export CFLAGS="%optflags -xannotate=no"
-export CXXFLAGS="%cxx_optflags -staticlib=stlport4 -xannotate=no"
+export CXXFLAGS="%cxx_optflags -staticlib=stlport4"
 export CXX="$CXX -norunpath"
 export LDFLAGS="%_ldflags -lCrun -lm"
 export MSGFMT="/usr/bin/msgfmt"
@@ -48,11 +44,7 @@ export MSGFMT="/usr/bin/msgfmt"
 
 %install
 
-# Need to set LD_NOEXEC_64 and add -xannotate=no to deal with doo bug #9720.
-# and bugster #6823945/#6865312.
-export LD_NOEXEC_64=1
-export CFLAGS="%optflags -xannotate=no"
-export CXXFLAGS="%cxx_optflags -staticlib=stlport4 -xannotate=no"
+export CXXFLAGS="%cxx_optflags -staticlib=stlport4"
 
 %aspell.install -d %name-%version
 mv $RPM_BUILD_ROOT%{_bindir}/* $RPM_BUILD_ROOT%{_libdir}/aspell/

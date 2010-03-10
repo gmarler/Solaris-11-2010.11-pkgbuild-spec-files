@@ -23,6 +23,7 @@ Requires: SFEboost-gpp
 Requires: SFEqt
 BuildRequires: SFEboost-gpp-devel
 BuildRequires: SFEqt-devel
+BuildRequires: SUNWdoxygen
 
 %package devel
 Summary:        %{summary} - development files
@@ -48,6 +49,7 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
      CPUS=1
 fi
 
+aclocal $ACLOCAL_FLAGS -I config/m4
 autoheader
 automake -a -c -f
 autoconf

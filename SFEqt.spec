@@ -23,7 +23,6 @@ Requires: SUNWgccruntime
 BuildRequires: SUNWgcc
 #FIXME: Requires: SUNWxorg-mesa
 # Guarantee X/freetype environment concisely (hopefully):
-Requires: SUNWGtku
 Requires: SUNWxwplt
 # The above bring in many things, including SUNWxwice and SUNWzlib
 Requires: SUNWxwxft
@@ -62,6 +61,7 @@ echo yes | ./configure -prefix %{_prefix} \
            -demosdir %{_datadir}/qt/demos \
            -sysconfdir %{_sysconfdir} \
            -no-exceptions \
+           -no-webkit \
            -L /usr/gnu/lib \
            -R /usr/gnu/lib 
 
@@ -104,6 +104,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/doc/*
 
 %changelog
+* Wed Mar 10 2010 - Brian Cameron
+- Add -no-webkit to configure, otherwise the linker crashes.
+  Looks like this will go away when binutils is updated to 2.21 (which is not
+  yet released).  Refer:
+  http://bugs.gentoo.org/show_bug.cgi?id=295765
 * Tue Feb 02 2010 - Brian Cameron
 - Fix spec-file so it builds.  Now use define cc_is_gcc, for example.
 * Mar 07 2009 - Thomas Wagner

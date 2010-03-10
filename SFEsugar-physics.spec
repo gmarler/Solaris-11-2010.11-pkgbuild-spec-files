@@ -10,7 +10,7 @@
 Name:                    SFEsugar-physics
 Summary:                 Sugar Physics
 URL:                     http://www.sugarlabs.org/
-Version:                 2 
+Version:                 4 
 Source:                  http://download.sugarlabs.org/sources/honey/Physics/Physics-%{version}.tar.bz2
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -78,5 +78,7 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Wed Mar 10 2010 - Brian Cameron  <brian.cameron@sun.com>
+- Bump to 4.
 * Tue Feb 02 2010 - Brian Cameron  <brian.cameron@sun.com>
 - Created with 2.

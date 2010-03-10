@@ -1,3 +1,34 @@
+2010-03-10  Brian Cameron  <brian.cameron@sun.com>
+
+	* SFEsugar-artwork.spec: Bump to 0.87.3.
+	* SFEsugar-turtleart.spec: Bump to 83.
+	* SFEsugar-bounce.spec, SFEsugar-colors.spec: Add BuildRequires
+	  SUNWswig
+	* SFEsugar-datastore.spec: Bump to 0.87.4.
+	* SFEsugar-cardsort.spec: Bump to 5.
+	* SFEsugar.spec, patches/sugar-01-python.diff: Bump to 0.87.8 and
+	  rework patch.
+	* SFEsugar-base.spec: Bump to 0.87.3.
+	* SFEsugar-erikos.spec: Bump to 3.
+	* SFEsugar-toolkit.spec: Bump to 0.87.8.
+	* SFEsugar-visualmatch.spec: Bump to 21.
+	* SFEsugar-sliderule.spec: Bump to 9.
+	* SFEsugar-physics.spec: bump to 4.
+	* SFEsugar-jukebox.spec: Bump to 18.
+	* SFEhippodraw.spec: Add call to aclocal and
+	  BuildRequires: SUNWdoxygen.
+	* base-specs/boost.spec, patches/boost-04-compiler.diff: bump to
+	  1.42.0.  Add new patch needed for building.
+	* patches/boost-04-fixthread.diff: Remove upstream patch.
+	* SFEaspell.spec: OpenSolaris build 134 fixes the compiler so that
+	  the hacks to add LD_NOEXEC and to use -xannotate=no is no longer
+	  needed.
+	* SFEpython26-abiword.spec: Build with gcc since abiword is built with	
+	  gcc.
+	* SFExapian-core.spec, SFExapian-bindings.spec: Bump to 1.0.18.
+	* SFEqt.spec: Do not build webkit module since it crashes the build.
+	  Remove Requires: SUNWGtku since it is no longer needed.
+
 2010-03-09  Milan Jurik <sfnet@xylab.cz>
 
 	* SFEunbound.spec: update to 1.4.2

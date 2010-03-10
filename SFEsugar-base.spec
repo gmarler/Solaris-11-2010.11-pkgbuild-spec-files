@@ -10,7 +10,7 @@
 Name:                    SFEsugar-base
 Summary:                 Sugar Learning Platform Base
 URL:                     http://www.sugarlabs.org/
-Version:                 0.87.2
+Version:                 0.87.3
 Source:                  http://download.sugarlabs.org/sources/sucrose/glucose/sugar-base/sugar-base-%{version}.tar.bz2
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -87,6 +87,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Wed Mar 10 2010 - Brian Cameron  <brian.cameron@sun.com>
+- Bump to 0.87.3.
 * Tue Feb 02 2010 - Brian Cameron  <brian.cameron@sun.com>
 - Bump to 0.87.2.
 * Sun Jul 08 2009 - Brian Cameron  <brian.cameron@sun.com>

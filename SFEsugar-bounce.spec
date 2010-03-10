@@ -21,6 +21,7 @@ Requires:                SFEsugar
 BuildRequires:           SFEsugar
 Requires:                SFEpygame
 BuildRequires:           SFEpygame
+BuildRequires:           SUNWswig
 
 %if %build_l10n
 %package l10n

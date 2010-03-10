@@ -23,6 +23,7 @@ BuildRequires:           SFEabiword-devel
 
 %include default-depend.inc
 
+%define cc_is_gcc 1
 %define python_version 2.6
 
 %prep
@@ -30,9 +31,13 @@ BuildRequires:           SFEabiword-devel
 %patch1 -p1
 
 %build
+export CC=gcc
+export CXX=g++
+export CFLAGS="$CFLAGS -I/usr/include/python%{python_version}"
+export CXXFLAGS="%gcc_cxx_optflags -I/usr/include/python%{python_version}"
+export LDFLAGS="%{_ldflags} -L%{_cxx_libdir} -R%{_cxx_libdir}"
+
 export PYTHON=/usr/bin/python%{python_version}
-export CFLAGS="-I/usr/include/python2.6 $CFLAGS"
-export CXXFLAGS="-I/usr/include/python2.6 $CXXFLAGS"
 export PYGTK_DEFSDIR="/usr/share/pygtk/2.0/defs"
 aclocal $ACLOCAL_FLAGS
 automake -a -c -f
@@ -62,5 +67,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/pygtk
 
 %changelog
+* Wed Mar 10 2010 - brian.cameron@sun.com
+- We build abiword with gcc, also build the bindings with them.
 * Tue Feb 03 2010 - brian.cameron@sun.com
 - Created with version 0.8.0
