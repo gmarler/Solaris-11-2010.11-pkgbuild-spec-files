@@ -96,6 +96,7 @@
 	* SFEchmlib.spec: update to 0.40
 
 2010-03-03  Matt Lewandowsky  <matt@greenviolet.net>
+
 	* SFEfreetds.spec, patches/freetds-01-shell.diff: Update man page
           packaging, fix configure to work with old Solaris /bin/sh
 
@@ -115,7 +116,8 @@
 2010-03-03  Milan Jurik <sfnet@xylab.cz>
 
 	* encumbered/SFElame.spec: update for 3.98.3
-	* base-specs/libgsm.spec: original homepage disapeared, Debian source used now
+	* base-specs/libgsm.spec: original homepage disapeared, Debian source
+	  used now
 	* encumbered/SFExvid.spec: use_gcc4 support
 	* base-specs/ffmpeg.spec: update to 0.5.1
 
