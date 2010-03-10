@@ -1,5 +1,9 @@
 2010-03-10  Brian Cameron  <brian.cameron@sun.com>
 
+	* SFEsugar.spec: Add needed Requires.
+
+2010-03-10  Brian Cameron  <brian.cameron@sun.com>
+
 	* SFEsugar-artwork.spec: Bump to 0.87.3.
 	* SFEsugar-turtleart.spec: Bump to 83.
 	* SFEsugar-bounce.spec, SFEsugar-colors.spec: Add BuildRequires

@@ -25,11 +25,15 @@ Requires:                SUNWgnome-python26-libs
 Requires:                SFEsugar-base
 Requires:                SFEsugar-toolkit
 Requires:                SFEhippodraw
+Requires:                SFEhippo-canvas
+Requires:                SFEpython26-dateutil
 Requires:                SFEpython26-telepathy
 BuildRequires:           SUNWgtk2-devel
 BuildRequires:           SUNWgnome-config-devel
 BuildRequires:           SUNWgnome-python26-libs-devel
 BuildRequires:           SFEhippodraw-devel
+BuildRequires:           SFEhippo-canvas-devel
+BuildRequires:           SFEpython26-dateutil
 BuildRequires:           SFEpython26-telepathy
 
 %package root
