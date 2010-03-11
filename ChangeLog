@@ -13,6 +13,7 @@
 	* SFEflightgear, includedir is maybe in /usr/SFE
 	* SFEcairo-dock, update TODO
 	* SFEfreealut , basedir is maybe in /use/SFE
+	* archive/SFEgraphviz.spec, SUNWsfwhea is obsolete in b133
 
 2010-03-11  Brian Lu  <brian.lu@sun.com>
 

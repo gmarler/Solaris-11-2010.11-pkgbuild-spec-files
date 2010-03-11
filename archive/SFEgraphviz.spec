@@ -37,7 +37,8 @@ BuildRequires: SFEfreetype-devel
 BuildRequires: SUNWfreetype2
 %endif
 BuildRequires: SUNWgnome-base-libs-devel
-BuildRequires: SUNWsfwhea
+# obsolete in b133
+#BuildRequires: SUNWsfwhea
 BuildRequires: SUNWlibtool
 BuildRequires: SUNWPython-devel
 BuildRequires: SUNWTcl
@@ -88,6 +89,11 @@ autoconf
             --disable-lua \
             --disable-ocaml \
             --disable-php \
+            --disable-swig \
+            --disable-r \
+            --disable-python23 \
+            --disable-python24 \
+            --disable-python25 \
             $TCL_OPTS
 
 make -j$CPUS
@@ -137,6 +143,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/graphviz/*
 
 %changelog
+* Fri Nov 14 2008 - Gilles Dauphin
+- SUNWfsweha is obsolete in b133
 * Fri Nov 14 2008 - Gilles Dauphin
 - build required  SUNWswig in B101 now
 * Thu Jan 24 2008 - nonsea@users.sourceforge.net
