@@ -7,7 +7,7 @@
 
 Summary:	Validating, recursive, and caching DNS resolver
 Name:		SFEunbound
-Version:	1.4.2
+Version:	1.4.3
 License:	BSD
 URL:		http://www.nlnetlabs.nl/unbound/
 Source:		http://www.unbound.net/downloads/unbound-%{version}.tar.gz
@@ -43,6 +43,8 @@ LDFLAGS="-lsocket -lnsl" \
 	--libdir=%{_libdir} \
 	--enable-static=no \
 	--enable-sha2 \
+	--with-solaris-threads \
+	--without-pthreads \
 	--with-conf-file=%{_sysconfdir}/unbound/unbound.conf \
 	--with-pidfile=%{_localstatedir}/run/unbound.pid
 
@@ -118,6 +120,10 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 %{_libdir}/libunbound*
 
 %changelog
+* Wed Mar 11 2010 - Milan Jurik
+- update to 1.4.3
+* Wed Mar 10 2010 - Milan Jurik
+- use Solaris native threads
 * Tue Mar 09 2010 - Milan Jurik
 - update to 1.4.2
 * Thu Dec 17 2009 - Milan Jurik

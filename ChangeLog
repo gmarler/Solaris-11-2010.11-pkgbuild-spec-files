@@ -1,3 +1,7 @@
+2010-03-11  Milan Jurik <sfnet@xylab.cz>
+
+	* SFEunbound.spec: update to 1.4.3
+
 2010-03-11  Gilles Dauphin <dauphin@enst.fr>
 	* SFEbullet, starting to provide a install base in /usr/SFE.
 	  like pkgtool --define "_basedir /usr/SFE" ...
