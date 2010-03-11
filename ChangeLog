@@ -1,3 +1,7 @@
+2010-03-11  Gilles Dauphin <dauphin@enst.fr>
+	* SFEbullet, starting to provide a install base in /usr/SFE.
+	  like pkgtool --define "_basedir /usr/SFE" ...
+
 2010-03-11  Brian Lu  <brian.lu@sun.com>
 
 	* SFElibmapi.spec:

@@ -39,9 +39,9 @@ chmod 755 ./configure
 export CPPFLAGS="-I/usr/X11/include"
 export CC=/usr/sfw/bin/gcc
 export CXX=/usr/sfw/bin/g++
-export CFLAGS="-O3 -fno-omit-frame-pointer"
-export CXXFLAGS="-O3 -fno-omit-frame-pointer"
-export LDFLAGS="%_ldflags -lX11"
+export CFLAGS="-O3 -fno-omit-frame-pointer -I%_prefix/X11/include "
+export CXXFLAGS="-O3 -fno-omit-frame-pointer -I%_prefix/X11/include "
+export LDFLAGS="%_ldflags -R%_libdir -L%_libdir -lX11 "
 export LD_OPTIONS="-i"
 
 ./configure --prefix=%{_prefix}		\
@@ -50,10 +50,12 @@ export LD_OPTIONS="-i"
             --libdir=%{_libdir}		\
             --datadir=%{_datadir}	\
             --libexecdir=%{_libexecdir} \
-            --sysconfdir=%{_sysconfdir} \
-            --enable-shared		\
-	    --disable-static
-jam
+            --sysconfdir=%{_sysconfdir}
+
+#            --enable-shared		\
+#	    --disable-static
+
+%_bindir/jam
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -70,7 +72,8 @@ s:%{_libdir}:$RPM_BUILD_ROOT%{_libdir}:
 wq!
 EOM
 
-jam install
+%_bindir/jam install
+#jam install
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -83,6 +86,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*
 
 %changelog
+* Mar 2010 - Gilles Dauphin
+- shared is the default
+- jam is in _bindir
 * Jul 2009 - Gilles Dauphin
 - version is b
 * April 2008 - Gilles Dauphin
