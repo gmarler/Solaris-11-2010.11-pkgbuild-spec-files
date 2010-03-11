@@ -32,12 +32,13 @@ Requires:	SUNWlibsndfile
 Requires: 	SUNWgsed
 Requires: 	SUNWgmake
 Requires: 	SUNWgnu-gperf
-Requires: 	SFEgnuplot
+# gnuplot is delivered in b133
+#Requires: 	SFEgnuplot
+Requires: 	gnuplot
 Requires:	SUNWncurses
 Requires:	SUNWfftw2
 Requires:	SUNWfftw3
 Requires:	SFEblas
-Requires:	SFEgnuplot
 Requires:	SFElapack
 Requires:	SUNWzlib
 Requires:	SUNWgnu-readline
@@ -99,8 +100,8 @@ cd octave-%{version}
 
 #because of bug in SunStudio12u1
 #http://defect.opensolaris.org/bz/show_bug.cgi?id=9720
-#make
-make SH_LDFLAGS="-G -xannotate=no"
+#make SH_LDFLAGS="-G -xannotate=no"
+make
 
 
 #libtoolize --copy --force
@@ -160,6 +161,8 @@ rm -rf $RPM_BUILD_ROOT
 #%endif
 
 %changelog
+* Feb 28 2010 - Gilles Dauphin
+- gnuplot is in b133
 * Jul 01 2009 - Gilles Dauphin
 - readline is in B117
 * April 01 2009 - Gilles Dauphin
