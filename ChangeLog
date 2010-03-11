@@ -15,6 +15,8 @@
 	* SFEfreealut , basedir is maybe in /use/SFE
 	* archive/SFEgraphviz.spec, SUNWsfwhea is obsolete in b133
 	* SFElibdvdnav, SFEnasm, would install in /usr/SFE
+	* SFEgnuplot workaround for bug http://defect.opensolaris.org/bz/show_bug.cgi?id=3644
+	  bump to 4.2.5
 
 2010-03-11  Brian Lu  <brian.lu@sun.com>
 

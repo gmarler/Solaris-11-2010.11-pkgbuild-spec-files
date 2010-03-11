@@ -7,7 +7,7 @@
 
 Name:                    SFEgnuplot
 Summary:                 gnuplot
-Version:                 4.2.4
+Version:                 4.2.5
 Source:			 http://downloads.sourceforge.net/%{summary}/%{summary}-%{version}.tar.gz
 Patch1:			gnuplot-01.diff
 URL:                     http://www.gnuplot.info
@@ -21,7 +21,7 @@ Requires: SUNWxwplt
 Requires: SUNWzlib
 Requires: SUNWtexi
 Requires: SUNWgd2
-Requires: SUNWwxwidgets
+#Requires: SUNWwxwidgets
 BuildRequires: SUNWpng-devel
 
 %prep
@@ -34,25 +34,33 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
     CPUS=1
 fi
 
-export CFLAGS="%optflags -I/usr/include/gd2"
-export LDFLAGS="%_ldflags"
+export LDFLAGS=""
+export CFLAGS="-I/usr/include/gd2 -I/usr/gnu/include"
+export CPPFLAGS=" -I/usr/include/gd2 -I/usr/gnu/include"
+export CXXFLAGS=""
+export CXX="${CXX}"
+
 ./configure --prefix=%{_prefix}			\
 	    --libexecdir=%{_libexecdir}         \
 	    --mandir=%{_mandir}                 \
 	    --datadir=%{_datadir}               \
+	    --disable-wxwidgets			\
 	    --infodir=%{_datadir}/info
 	    
-make -j$CPUS
+make 
 
 %install
+# workaround for bug http://defect.opensolaris.org/bz/show_bug.cgi?id=3644
 rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/usr/lib
+mkdir -p $RPM_BUILD_ROOT/usr/lib/X11/app-defaults
 mkdir -p $RPM_BUILD_ROOT/usr/X11/lib/app-defaults
-pushd $RPM_BUILD_ROOT/usr/lib
-ln -s ../X11/lib X11
-popd
+#pushd $RPM_BUILD_ROOT/usr/lib
+#ln -s ../X11/lib X11
+#popd
 make install DESTDIR=$RPM_BUILD_ROOT
 rm -f $RPM_BUILD_ROOT%{_datadir}/info/dir
+mv "${RPM_BUILD_ROOT}/usr/lib/X11/app-defaults/Gnuplot" "${RPM_BUILD_ROOT}/usr/X11/lib/app-defaults/"
+rm -rf ${RPM_BUILD_ROOT}/usr/lib/X11
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -102,6 +110,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Jan 28 2010 - Gilles dauphin
+- bump to 4.2.5
+- workaround /usr/lib/X11 and /usr/X11/lib
 * Thu Dec 11 2008 - Gilles dauphin
 - bump to 4.2.4
 * Jeudi Nov 13 2008 - Gilles dauphin
