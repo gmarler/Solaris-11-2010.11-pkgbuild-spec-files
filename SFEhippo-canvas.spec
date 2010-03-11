@@ -65,8 +65,6 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, bin) %{_libdir}
 %{_libdir}/lib*.so*
 %{_libdir}/python%{python_version}/vendor-packages/*
-%dir %attr (0755, root, sys) %{_datadir}
-%{_datadir}/gtk-doc
 
 %files devel
 %defattr (-, root, bin)
@@ -75,6 +73,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*
 %dir %attr (0755, root, bin) %dir %{_includedir}
 %{_includedir}/*
+%dir %attr (0755, root, sys) %{_datadir}
+%{_datadir}/gtk-doc
 
 %changelog
 * Tue Feb 02 2010 - brian.cameron@sun.com

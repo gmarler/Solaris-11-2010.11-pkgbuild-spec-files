@@ -11,7 +11,7 @@
 Name:                    SFEpitivi
 Summary:                 Non-Linear video editor
 URL:                     http://ftp.gnome.org/pub/GNOME/sources/pitivi
-Version:                 0.13.3
+Version:                 0.13.4
 Source:                  http://ftp.gnome.org/pub/GNOME/sources/pitivi/0.13/pitivi-%{version}.tar.bz2
 Patch1:                  pitivi-01-solaris.diff
 SUNW_BaseDir:            %{_basedir}
@@ -105,6 +105,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Wed Mar 10 2010 - brian.cameron@sun.com
+- Bump to 0.13.4.
 * Wed Sep 23 2009 - brian.cameron@sun.com
 - Bump to 0.13.3.
 * Mon Jun 08 2009 - brian.cameron@sun.com

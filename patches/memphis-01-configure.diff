@@ -1,0 +1,11 @@
+--- memphis-0.2.0/configure.ac-orig	2010-03-10 19:36:17.041844630 -0600
++++ memphis-0.2.0/configure.ac	2010-03-10 19:36:23.016102633 -0600
+@@ -27,8 +27,6 @@ AC_PROG_CC
+ AM_PROG_CC_C_O
+ AM_PROG_LIBTOOL
+ 
+-CPPFLAGS+="-Wall -Werror"
+-
+ # API_VERSION is used to generate pc file only
+ API_VERSION=api_version
+ AC_SUBST(API_VERSION)

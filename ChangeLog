@@ -1,5 +1,13 @@
 2010-03-10  Brian Cameron  <brian.cameron@sun.com>
 
+	* SFEmemphis.spec, patches/memphis-01-configure.diff:  Add new spec
+	  file.
+	* SFEhippo-canvas.spec: Move gtk-docs to devel package.
+	* SFEpitivi.spec: Bump to 0.13.4.
+	* SFEvala.spec: Bump to 0.7.10.
+
+2010-03-10  Brian Cameron  <brian.cameron@sun.com>
+
 	* SFEgjs.spec: Bump to 0.5.  Add BuildRequires SUNWprd.
 	* SFEmutter.spec, patches/mutter-02-wait.diff: Bump to 2.29.0.  Add
 	  patch needed to build.
