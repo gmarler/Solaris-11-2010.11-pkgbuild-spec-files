@@ -14,7 +14,11 @@ SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 
-
+#####################################
+##  Package Requirements Section   ##
+#####################################
+BuildRequires: SUNWgcc
+    
 %prep
 %setup -q -n openchange-%{version}-COCHRANE
 
@@ -55,7 +59,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr (0755, root, other) %{_libdir}/pkgconfig
 %{_libdir}/*.so*
 %{_libdir}/mapistore_backends/*
-%{_libdir}/python2.4
+%{_libdir}/python2.6
 %{_libdir}/nagios
 %dir %attr (0755, root, bin) %{_includedir}
 %{_includedir}/*
