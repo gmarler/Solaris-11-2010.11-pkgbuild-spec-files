@@ -57,9 +57,12 @@ fi
 cd %{src_name}-%{version}
 export CC=cc
 export CXX=CC
+export CFLAGS="-I%_prefix/X11/include"
+export CXXFLAGS="-I%_prefix/X11/include"
 #CC=cc CXX=CC ./configure --without-logging --prefix==%{_prefix}
 /bin/bash ./configure CONFIG_SHELL=/bin/bash --prefix=%{_prefix}
 make # -j$CPUS 
+
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -84,5 +87,8 @@ rm -rf $RPM_BUILD_ROOT
 #%{_libdir}/pkgconfig/*
 
 %changelog
+* Mar 2010 - Gilles Dauphin
+- search includedir in /usr/SFE (exemple)
+- that's where I install freeglut
 * Mon Nov 20 2008 - dauphin@enst.fr
 - Initial version
