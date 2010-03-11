@@ -20,7 +20,7 @@ SUNW_BaseDir:   %{_basedir}
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %include	default-depend.inc
 #Requires:	%name-root
-Requires: 	SFEfreeglut
+#Requires: 	SFEfreeglut
 Requires: 	SUNWxorg-mesa
 Requires: 	SUNWxwice
 
@@ -62,7 +62,7 @@ export CXX
 #export PKG_CONFIG_PATH="$PROTO_PKG"
 
 cd plib-%{version}
-./configure
+./configure --prefix=%_basedir
 gmake
 
 %install
@@ -73,6 +73,7 @@ export CXX
 
 rm -rf $RPM_BUILD_ROOT
 cd plib-%{version}
+#gmake install DESTDIR=$RPM_BUILD_ROOT/%_basedir
 gmake install DESTDIR=$RPM_BUILD_ROOT
 
 #%if %build_l10n
@@ -99,5 +100,7 @@ rm -rf $RPM_BUILD_ROOT
 #%endif
 
 %changelog
+* Mars 02 2010 - Gilles Dauphin ( Gilles DOT Dauphin AT enst DOT fr)
+- no need of freeglut
 * Nov 1 2008 - Gilles Dauphin ( Gilles DOT Dauphin AT enst DOT fr)
 * Initial spec, more funny tools for OpenSolaris ;)

@@ -4,6 +4,7 @@
 	* SFElibmatroska, enable built even if some package is in /usr/SFE
 	* compat ips versioning for SFElivemedia
 	* SFEBillardGL, SFEsimgear, search in /usr/SFE (exemple)
+	* SFEplib don't need freeglut
 
 2010-03-11  Brian Lu  <brian.lu@sun.com>
 
