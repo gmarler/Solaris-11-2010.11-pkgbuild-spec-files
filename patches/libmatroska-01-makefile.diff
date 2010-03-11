@@ -51,7 +51,7 @@
  
  $(LIBRARY_SO): $(objects_so)
 -	$(CXX) -shared -Wl,-soname,$(LIBRARY_SO_VER) -o $(LIBRARY_SO_VER) $(objects_so) -lebml
-+	$(CXX) -G -h $(LIBRARY_SO_VER) -o $(LIBRARY_SO_VER) $(objects_so) -lebml
++	$(CXX) -G -h $(LIBRARY_SO_VER) -o $(LIBRARY_SO_VER) $(objects_so) $(LDFLAGS) -lebml
  	rm -f $(LIBRARY_SO)
  	ln -s $(LIBRARY_SO_VER) $(LIBRARY_SO)
  
