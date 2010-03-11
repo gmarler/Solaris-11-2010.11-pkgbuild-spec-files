@@ -50,6 +50,7 @@ export CFLAGS="-O4 -fno-omit-frame-pointer"
 export CXXFLAGS="$CFLAGS"
 export LDFLAGS="%arch_ldadd %ldadd ${EXTRA_LDFLAGS}"
 export LD=`which ld-wrapper`
+export PKG_CONFIG_PATH="/usr/lib/pkgconfig:/usr/share/pkgconfig:%{_libdir}/pkgconfig"
 
 #libtoolize --copy --force
 #aclocal -I .

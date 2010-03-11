@@ -59,17 +59,19 @@ cd %{src_name}-%{version}
 CC=cc
 export CC
 mkdir build && cd build
-cmake -DHAVE_GCC_VISIBILITY:INTERNAL=0 -DCMAKE_INSTALL_PREFIX:PATH=/usr -DHAVE_VISIBILITY_SWITCH:INTERNAL=0 ..
+#cmake -DHAVE_GCC_VISIBILITY:INTERNAL=0 -DCMAKE_INSTALL_PREFIX:PATH=/usr -DHAVE_VISIBILITY_SWITCH:INTERNAL=0 ..
+cmake -DHAVE_GCC_VISIBILITY:INTERNAL=0 -DCMAKE_INSTALL_PREFIX:PATH=%_prefix -DHAVE_VISIBILITY_SWITCH:INTERNAL=0 ..
 make
 
 %install
 rm -rf $RPM_BUILD_ROOT
 cd %{src_name}-%{version}
 cd build
-mkdir $RPM_BUILD_ROOT
+mkdir -p $RPM_BUILD_ROOT/%_prefix
 #make install DESTDIR=$RPM_BUILD_ROOT
+export DESTDIR=$RPM_BUILD_ROOT
 make install
-mv ./sfw_stage $RPM_BUILD_ROOT/%{_prefix}
+#mv ./sfw_stage $RPM_BUILD_ROOT/%{_prefix}
 #rm $RPM_BUILD_ROOT/%{_libdir}/lib*.*a
 
 %clean
@@ -89,6 +91,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*
 
 %changelog
+* Mar 03 2010 - Gilles Dauphin
+- DESTDIR work for me in b133 and install perfectly well
+- work with last CBE and last pkgbuild 1.3.101 in 2009.06 and b133.
 * Sun Aug 09 2009 - Thomas Wagner
 - (Build)Requires: SUNWlibms
 - install with DESTDIR is broken, revert back to version wich works with standard make (CBE)

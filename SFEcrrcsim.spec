@@ -10,7 +10,7 @@ Name:           SFEcrrcsim
 Summary:        crrcsim flight simulator
 Version:        0.9.9
 Source:		http://surfnet.dl.sourceforge.net/sourceforge/crrcsim/crrcsim-%{version}.tar.gz
-License:i	GPLv2
+License:	GPLv2
 URL:            http://crrcsim.berlios.de/wiki/
 #Source1:	plib-01.sh
 Patch1:		crrcsim-01.diff
@@ -20,6 +20,7 @@ Patch4:		crrcsim-04.diff
 Patch5:		crrcsim-05.diff
 Patch6:		crrcsim-06.diff
 Patch7:		crrcsim-07.diff
+Patch8:		crrcsim-08.diff
 SUNW_BaseDir:   %{_basedir}
 SUNW_Copyright:	%{name}.copyright
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
@@ -31,16 +32,16 @@ Requires: 	SUNWxwice
 Requires: 	SFEplib
 Requires: 	SUNWlibsdl
 
-%package root
-Summary:         %summary - platform dependent files, / filesystem
-SUNW_BaseDir:            /
-%include default-depend.inc
-
-%package devel
-Summary:		 %summary - developer files
-SUNW_BaseDir:            %{_basedir}
-%include default-depend.inc
-Requires:		 %name
+#%package root
+#Summary:         %summary - platform dependent files, / filesystem
+#SUNW_BaseDir:            /
+#%include default-depend.inc
+#
+#%package devel
+#Summary:		 %summary - developer files
+#SUNW_BaseDir:            %{_basedir}
+#%include default-depend.inc
+#Requires:		 %name
 
 %if %build_l10n
 %package l10n
@@ -60,13 +61,18 @@ Requires:        %{name}
 %patch5 -p0
 %patch6 -p0
 %patch7 -p0
+%patch8 -p0
 
 %build
 
 CC=cc
 CXX=CC
 LIBS="-lsocket -lnsl"
-export CXX CC LIBS
+CPPFLAGS="-I%_includedir"
+CFLAGS="-I%_includedir"
+CXXFLAGS="-I%_includedir"
+LDFLAGS="-L%_libdir -R%_libdir"
+export CXX CC LIBS CFLAGS CXXFLAGS CPPFLAGS LDFLAGS
 #PROTO_PKG=$RPM_BUILD_DIR/%{name}/usr/X11/lib/pkgconfig
 #export PKG_CONFIG_PATH="$PROTO_PKG"
 
@@ -77,8 +83,12 @@ gmake
 %install
 CC=cc
 CXX=CC
+CFLAGS="-I%_includedir"
+CXXFLAGS="-I%_includedir"
+CPPFLAGS="-I%_includedir"
 LIBS="-lsocket -lnsl"
-export CXX CC LIBS
+LDFLAGS="-L%_libdir -R%_libdir"
+export CXX CC LIBS CFLAGS CXXFLAGS CPPFLAGS LDFLAGS
 
 rm -rf $RPM_BUILD_ROOT
 cd crrcsim-%{version}
@@ -96,8 +106,8 @@ rm -rf $RPM_BUILD_ROOT
 %defattr (-, root, bin)
 %dir %attr (0755, root, sys) %{_datadir}
 %dir %attr (0755, root, other) %{_datadir}/doc
-%dir %attr (0755, root, bin) /usr/bin
-/usr/bin/*
+%dir %attr (0755, root, bin) %{_bindir}
+%{_bindir}/*
 %dir %attr (0755, root, bin) %{_datadir}/games/
 %{_datadir}/games/*
 %dir %attr (0755, root, bin) %{_datadir}/doc/crrcsim
@@ -113,5 +123,7 @@ rm -rf $RPM_BUILD_ROOT
 #%endif
 
 %changelog
+* Mar 2010
+- try to move it in /usr/SFE
 * Nov 2 2008 - Gilles Dauphin ( Gilles DOT Dauphin AT enst DOT fr)
 * Initial spec, fly simulator for OpenSolaris
