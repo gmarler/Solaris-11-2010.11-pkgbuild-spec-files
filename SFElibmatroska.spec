@@ -46,9 +46,11 @@ CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
 if test "x$CPUS" = "x" -o $CPUS = 0; then
     CPUS=1
 fi
-export CFLAGS="%optflags"
-export ACLOCAL_FLAGS="-I %{_datadir}/aclocal"
+export CFLAGS="%optflags -I%{_includedir}"
+export CXXFLAGS="%optflags -I%{_includedir}"
+export ACLOCAL_FLAGS="-I/usr/share/aclocal -I %{_datadir}/aclocal"
 export MSGFMT="/usr/bin/msgfmt"
+export LDFLAGS="-R%{_libdir} -L%{_libdir}"
 
 cd make/solaris
 make -j$CPUS PREFIX=%{_prefix}
@@ -73,5 +75,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/*
 
 %changelog
+* Mar 2010  - Gilles Dauphin
+- look at install dir. Exemple search for /usr/SFE/include
+- idem for _libdir
 * Fri Jul 13 2007 - dougs@truemail.co.th
 - Initial version
