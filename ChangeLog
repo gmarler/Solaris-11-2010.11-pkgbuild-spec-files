@@ -1,5 +1,9 @@
 2010-03-10  Brian Cameron  <brian.cameron@sun.com>
 
+	* SFElibchamplain.spec, base-specs/libchamplain.spec: Bump to 0.4.4.
+
+2010-03-10  Brian Cameron  <brian.cameron@sun.com>
+
 	* SFEmemphis.spec, patches/memphis-01-configure.diff:  Add new spec
 	  file.
 	* SFEhippo-canvas.spec: Move gtk-docs to devel package.

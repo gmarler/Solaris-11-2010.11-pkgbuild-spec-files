@@ -3,7 +3,7 @@
 #
 # includes module(s): libchamplain
 #
-# Copyright (c) 2009 Sun Microsystems, Inc.
+# Copyright (c) 2010 Sun Microsystems, Inc.
 # This file and all modifications and additions to the pristine
 # package are under the same license as the package itself.
 #
@@ -16,7 +16,7 @@
 
 Name:               SFElibchamplain
 Summary:            libchamplain - a Clutter based widget to display rich, eye-candy and interactive maps
-SUNW_Copyright:     %{name}.copyright
+#SUNW_Copyright:     %{name}.copyright
 License:            LGPLv2
 Version:            %{libchamplain.version}
 SUNW_BaseDir:       %{_basedir}
@@ -59,17 +59,15 @@ find $RPM_BUILD_ROOT -type f -name "*.a" -exec rm -f {} ';'
 rm -rf $RPM_BUILD_ROOT
 
 %files
+%doc -d libchamplain-%{libchamplain.version} README AUTHORS INSTALL NEWS
+%doc(bzip2) -d libchamplain-%{libchamplain.version} ChangeLog COPYING  
+%dir %attr (0755, root, other) %{_datadir}/doc
 %defattr (-, root, bin)
-
 %dir %attr (0755, root, bin) %{_libdir}
 %{_libdir}/lib*.so*
 %{_libdir}/gir*
 %dir %attr (0755, root, sys) %{_datadir}
 %{_datadir}/gir*
-
-%doc -d libchamplain-%{libchamplain.version} README AUTHORS INSTALL NEWS
-%doc(bzip2) -d libchamplain-%{libchamplain.version} ChangeLog COPYING  
-
 
 %files devel
 %defattr (-, root, bin)

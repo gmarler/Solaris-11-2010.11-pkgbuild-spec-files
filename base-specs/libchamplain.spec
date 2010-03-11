@@ -1,7 +1,7 @@
 #
 # spec file for package libchamplain
 #
-# Copyright 2009 Sun Microsystems, Inc.
+# Copyright 2010 Sun Microsystems, Inc.
 # This file and all modifications and additions to the pristine
 # package are under the same license as the package itself.
 #
@@ -11,7 +11,7 @@
 Name:		libchamplain
 License:	GPL
 Group:		Development/Libraries
-Version:	0.4.3
+Version:	0.4.4
 Release:	1
 Distribution:   Java Desktop System
 Vendor:         Sun Microsystems, Inc.
@@ -117,6 +117,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_prefix}/lib/pkgconfig/*
 
 %changelog
+* Wed Mar 10 2010 - brian.cameron@sun.com
+- Bump to 0.4.4.
 * Wed Oct 28 2009 - brian.cameron@sun.com
 - Bump to 0.4.2.
 * Fri Sep 18 2009 - halton.huo@sun.com
