@@ -37,6 +37,10 @@ BuildRequires: 	SUNWgnome-wm-devel
 BuildRequires: 	SUNWcompiz
 BuildRequires: 	CBEgettext
 # TODO require at least a 3D desktop
+## TODO bug in /usr/share/aclocal/dirlist must be :
+#/opt/dtbld/share/aclocal
+#/usr/sfw/share/aclocal
+
 
 #%package root
 #Summary:         %summary - platform dependent files, / filesystem
