@@ -59,7 +59,8 @@ rm -rf $RPM_BUILD_ROOT
 find $RPM_BUILD_ROOT%{_libdir} -name \*.la -exec rm {} \;
 mkdir $RPM_BUILD_ROOT%{_bindir}/%{base_isa}
 mv $RPM_BUILD_ROOT%{_bindir}/x264  $RPM_BUILD_ROOT%{_bindir}/%{base_isa}/
-cd $RPM_BUILD_ROOT%{_bindir} && ln -s ../lib/isaexec x264
+cd $RPM_BUILD_ROOT%{_bindir} && cp -p /usr/lib/isaexec x264
+#cd $RPM_BUILD_ROOT%{_bindir} && ln -s ../lib/isaexec x264
 
 
 %clean
@@ -73,7 +74,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/%{_arch64}/*
 %endif
 %{_bindir}/%{base_isa}/*
-%hard %{_bindir}/x264
+%{_bindir}/x264
+#%hard %{_bindir}/x264
 %else
 %{_bindir}/*
 %endif
@@ -98,6 +100,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mar 2010 - Gilles Dauphin
+- because of install could be in /usr/SFE/bin we cp isaexec
+- instead of hardlink it
 * Sat Nov 28 2009 - Albert Lee <trisk@opensolaris.org>
 - Remove GPAC dependency
 * Tue Sep 8 2009 - Milan Jurik
