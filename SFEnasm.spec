@@ -34,7 +34,7 @@ make everything
 rm -rf "$RPM_BUILD_ROOT"
 
 mkdir -p "$RPM_BUILD_ROOT"
-mkdir -p "$RPM_BUILD_ROOT"/usr/bin
+mkdir -p "$RPM_BUILD_ROOT"%{_bindir}
 mkdir -p "$RPM_BUILD_ROOT"%{_mandir}/man1
 mkdir -p "$RPM_BUILD_ROOT"/%{_infodir}
 DOC="$RPM_BUILD_ROOT"%{_docdir}/nasm
@@ -65,6 +65,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/doc/nasm/*
 
 %changelog
+* Mar 22 2010 - Gilles Dauphin
+- _bindir instead of /usr/bin
 * Sat Aug 22 2009 - Milan Jurik
 - update to 2.07
 * Sat Jun 13 2009 - Milan Jurik

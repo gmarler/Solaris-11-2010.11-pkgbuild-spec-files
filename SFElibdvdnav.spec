@@ -35,6 +35,9 @@ fi
 export CFLAGS="%optflags"
 export LDFLAGS="%_ldflags"
 export ACLOCAL_FLAGS="-I %{_datadir}/aclocal -I ."
+export PKG_CONFIG_PATH="/usr/lib/pkgconfig:/usr/share/pkgconfig:%{_libdir}/pkgconfig"
+export PATH="$PATH:%{_bindir}"
+
 
 libtoolize --copy --force
 aclocal $ACLOCAL_FLAGS
@@ -74,6 +77,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*
 
 %changelog
+* Mar 2010 - Gilles Dauphin
+- want an install in /usr/SFE (_basedir)
 * Sat Jun 13 2009 - Milan Jurik
 - upgrade to 4.1.3
 * Tue Sep 02 2008 - halton.huo@sun.com
