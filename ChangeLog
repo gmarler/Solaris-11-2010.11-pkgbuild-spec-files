@@ -1,6 +1,7 @@
 2010-03-10  Brian Cameron  <brian.cameron@sun.com>
 
 	* SFElibchamplain.spec, base-specs/libchamplain.spec: Bump to 0.4.4.
+	* SFEemerillon.spec: use SFElibchamplain for now.
 
 2010-03-10  Brian Cameron  <brian.cameron@sun.com>
 

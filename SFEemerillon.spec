@@ -25,7 +25,7 @@ Requires:                SUNWglib2
 Requires:                SUNWgtk2
 Requires:                SUNWdbus-glib
 Requires:                SUNWgnome-config
-Requires:                SUNWlibchamplain
+Requires:                SFElibchamplain
 Requires:                SFEgeoclue
 Requires:                SFElibrest
 Requires:                SFEethos
@@ -33,7 +33,7 @@ BuildRequires:           SUNWglib2-devel
 BuildRequires:           SUNWgtk2-devel
 BuildRequires:           SUNWdbus-glib-devel
 BuildRequires:           SUNWgnome-config-devel
-BuildRequires:           SUNWlibchamplain-devel
+BuildRequires:           SFElibchamplain-devel
 BuildRequires:           SFEgeoclue-devel
 BuildRequires:           SFElibrest-devel
 BuildRequires:           SFEethos-devel
