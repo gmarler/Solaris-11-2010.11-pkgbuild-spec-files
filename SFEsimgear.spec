@@ -17,6 +17,7 @@ Version:                1.0.0
 Source:                 %{src_url}/%{src_name}-%{version}.tar.gz
 Source1:		SimGear_Props.cxx
 Patch1:			SimGear-01.diff
+Patch2:			SimGear-02.diff
 SUNW_BaseDir:           %{_basedir}
 BuildRoot:              %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -35,6 +36,7 @@ SUNW_BaseDir:            %{_prefix}
 #%setup -q -n -c %{src_name}-%{version}
 %setup -q -c -n  %{name}
 %patch1 -p0
+%patch2 -p0
 # It does not compile if filename is props.cxx
 # Maybe a bug in Studio12 or maybe, maybe, in openat(2)/readdir(3C)
 # TODO: find the bug or what I don't understand...
@@ -50,6 +52,8 @@ fi
 cd %{src_name}-%{version}
 export CC=cc
 export CXX=CC
+export CFLAGS="-I%_prefix/X11/include"
+export CXXFLAGS="-I%_prefix/X11/include"
 #CC=cc CXX=CC ./configure --without-logging --prefix==%{_prefix}
 /bin/bash ./configure CONFIG_SHELL=/bin/bash --prefix=%{_prefix}
 make # -j$CPUS 
@@ -78,5 +82,7 @@ rm -rf $RPM_BUILD_ROOT
 #%{_libdir}/pkgconfig/*
 
 %changelog
+* Mar 2010 - Gilles dauphin
+- search includedir event if it is in /usr/SFE (exemple)
 * Mon Nov 17 2008 - dauphin@enst.fr
 - Initial version
