@@ -2,6 +2,7 @@
 	* SFEbullet, starting to provide a install base in /usr/SFE.
 	  like pkgtool --define "_basedir /usr/SFE" ...
 	* SFElibmatroska, enable built even if some package is in /usr/SFE
+	* compat ips versioning for SFElivemedia
 
 2010-03-11  Brian Lu  <brian.lu@sun.com>
 

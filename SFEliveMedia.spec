@@ -13,7 +13,7 @@
 
 #remove leading zero(s) from version-string for IPS compat
 #version example: 2009.7.9
-%define version %( /bin/echo %{src_version} | sed -e 's,\.0*,.,' )
+%define version %( /bin/echo %{src_version} | sed -e 's,\.0,.,' | sed -e 's,\.0,.,' )
 ##TODO## eventually build fallback solution like this: if three wget retries fail, look at SOURCES/live*tar.gz and use these numbers, volunteers welcome. To refresh one would have to just enable internet connection. To eliminate version jumps, create switch --disable-livemedia-download.
 
 
@@ -59,6 +59,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/*
 
 %changelog
+* Mar 2010 - Gilles Dauphin
+- sed 2 times for version for ips compat versioning.
 * Thr Sep 17 2009 - Thomas Wagner
 - use /usr/xpg4/bin/egrep and set BuildRequire SUNWxcu4
 * Sat Aug 08 2009 - Thomas Wagner
