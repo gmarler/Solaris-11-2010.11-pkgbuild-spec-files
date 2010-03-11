@@ -60,7 +60,8 @@ do
   mv $RPM_BUILD_ROOT%{_bindir}/$i $RPM_BUILD_ROOT%{_bindir}/%{base_isa}
   ( 
     cd $RPM_BUILD_ROOT%{_bindir}
-    ln -s ../lib/isaexec $i
+#    ln -s ../lib/isaexec $i
+    cp -p /usr/lib/isaexec $i
   )
 done
 %endif
