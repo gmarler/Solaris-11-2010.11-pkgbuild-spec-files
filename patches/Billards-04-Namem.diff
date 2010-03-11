@@ -1,0 +1,13 @@
+--- BillardGL-1.75/src/Namen.h.orig	2010-03-02 17:24:08.574585000 +0100
++++ BillardGL-1.75/src/Namen.h	2010-03-03 10:08:31.712469000 +0100
+@@ -23,8 +23,10 @@
+ #define TUTORIAL 105
+ 
+ #ifndef _WIN32
++#ifndef PFAD
+ #define PFAD "/usr/share/BillardGL/"
+ #endif
++#endif
+ 
+ #ifndef PFAD
+ #define PFAD ""
