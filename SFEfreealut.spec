@@ -34,7 +34,7 @@ fi
 
 
 export PATH=%{_bindir}:$PATH
-export CFLAGS="%optflags"
+export CFLAGS="%optflags -I%_includedir"
 export LDFLAGS="%_ldflags"
 export LD_OPTIONS="-i -L%{_libdir} -R\$ORIGIN:\$ORIGIN/../lib"
 ./autogen.sh
@@ -72,6 +72,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*
 
 %changelog
+* Mar 2010 - Gilles Dauphin
+- look in right basedir i.e. includedir event if it is in /usr/SFE by exemple.
 * Wed Aug 15 2007 - dougs@truemail.co.th
 - Moved to SFE
 * Mon May 14 2007 - dougs@truemail.co.th

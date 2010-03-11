@@ -11,6 +11,8 @@
 	* SFEplib don't need freeglut
 	* patches/libmatroska-01-makefile.diff , add -LDFLAGS search lib in /usr/SFE/lib
 	* SFEflightgear, includedir is maybe in /usr/SFE
+	* SFEcairo-dock, update TODO
+	* SFEfreealut , basedir is maybe in /use/SFE
 
 2010-03-11  Brian Lu  <brian.lu@sun.com>
 
