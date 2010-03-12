@@ -1,0 +1,20 @@
+--- crrcsim-0.9.9/SimpleXMLTransfer.h.orig	2006-10-08 21:43:36.000000000 +0200
++++ crrcsim-0.9.9/SimpleXMLTransfer.h	2010-03-03 17:25:29.893095000 +0100
+@@ -390,7 +390,7 @@
+      * The last item of the path is taken as the name of the attribute. Non-existing elements
+      * in the path are automatically created.
+      */
+-    void setAttributeOverwrite(std::string attribute, const std::string value);
++    void setAttributeOverwrite(std::string attribute, std::string value);
+ 
+     /**
+      * Adds an attribute. If there already is an attribute
+@@ -399,7 +399,7 @@
+      * The last item of the path is taken as the name of the attribute. Non-existing elements
+      * in the path are automatically created.
+      */
+-    void setAttributeOverwrite(std::string attribute, const long int attributeVal);
++    void setAttributeOverwrite(std::string attribute, long int attributeVal);
+ 
+    /**
+     * Makes sure that an attribute exists. If it does not, it is created with <code>defaultVal</code>.
