@@ -80,7 +80,7 @@ fi
 make 
 
 %install
-mkdir -p $RPM_BUILD_ROOT/%{_libdir}/amd64
+mkdir -p $RPM_BUILD_ROOT/%{_libdir}/gpac
 make install DESTDIR=$RPM_BUILD_ROOT
 make install-lib DESTDIR=$RPM_BUILD_ROOT
 rm -f $RPM_BUILD_ROOT%{_libdir}/lib*.*a
