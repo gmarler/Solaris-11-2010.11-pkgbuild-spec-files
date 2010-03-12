@@ -47,8 +47,8 @@ make -j$CPUS
 
 %install
 rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/usr/lib/live
-gtar fcp - liveMedia/include groupsock/include UsageEnvironment/include BasicUsageEnvironment/include liveMedia/libliveMedia.so groupsock/libgroupsock.so UsageEnvironment/libUsageEnvironment.so BasicUsageEnvironment/libBasicUsageEnvironment.so  | gtar -x -v -C $RPM_BUILD_ROOT/usr/lib/live -f -
+mkdir -p $RPM_BUILD_ROOT/%{_prefix}/lib/live
+gtar fcp - liveMedia/include groupsock/include UsageEnvironment/include BasicUsageEnvironment/include liveMedia/libliveMedia.so groupsock/libgroupsock.so UsageEnvironment/libUsageEnvironment.so BasicUsageEnvironment/libBasicUsageEnvironment.so  | gtar -x -v -C $RPM_BUILD_ROOT/%{_prefix}/lib/live -f -
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -61,6 +61,7 @@ rm -rf $RPM_BUILD_ROOT
 %changelog
 * Mar 2010 - Gilles Dauphin
 - sed 2 times for version for ips compat versioning.
+- install possible in /usr/SFE
 * Thr Sep 17 2009 - Thomas Wagner
 - use /usr/xpg4/bin/egrep and set BuildRequire SUNWxcu4
 * Sat Aug 08 2009 - Thomas Wagner
