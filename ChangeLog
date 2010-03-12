@@ -1,6 +1,9 @@
 2010-03-12  Gilles Dauphin <dauphin@enst.fr>
 
 	* SFEmplayer may go in /usr/SFE
+	* SFEliveMedia , install in /usr/SFE
+	* add gpac patch
+	* SFEgpac, install possible in /usr/SFE
 
 2010-03-11  Milan Jurik <sfnet@xylab.cz>
 
