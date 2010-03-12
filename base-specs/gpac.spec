@@ -14,6 +14,8 @@ Source:              http://%{sf_mirror}/%{src_name}/%{src_name}-%{version}.tar.
 Patch1:		     gpac-01-configure.diff
 Patch2:              gpac-02-stringcat.diff 
 Patch3:              gpac-03-ldflags.diff
+Patch4:              gpac-04_wxT.diff
+Patch5:              gpac-05-Playlist_wxT.diff
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 
 %prep
@@ -22,6 +24,8 @@ unset P4PORT
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
+%patch5 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -29,9 +33,10 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
      CPUS=1
 fi
 
-export CFLAGS="%optflags"
-export CXXFLAGS="%cxx_optflags"
-export LDFLAGS="%_ldflags $CFLAGS"
+export CFLAGS="%optflags -I%{_includedir}"
+export CXXFLAGS="%cxx_optflags -I%{_includedir}"
+# search for freeglut in /usr/SFE
+export LDFLAGS="%_ldflags $CFLAGS -L%{_libdir} -R%{_libdir}"
 
 %if %with_jack
 	JACK_OPTS="--enable-jack=yes"
@@ -75,6 +80,7 @@ fi
 make 
 
 %install
+mkdir -p $RPM_BUILD_ROOT/%{_libdir}/amd64
 make install DESTDIR=$RPM_BUILD_ROOT
 make install-lib DESTDIR=$RPM_BUILD_ROOT
 rm -f $RPM_BUILD_ROOT%{_libdir}/lib*.*a
@@ -83,6 +89,9 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/lib*.*a
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Mar 12 2010 - Gilles dauphin
+- misssing lib/amd64
+- minor patch for _T macro and new wxWidget
 * Wed Sep 16 2009 - trisk@forkgnu.org
 - Add patch3
 - Support jack and pulseaudio
