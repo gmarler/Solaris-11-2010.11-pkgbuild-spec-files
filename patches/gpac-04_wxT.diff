@@ -1,0 +1,22 @@
+--- gpac/applications/osmo4_wx/fileprops.cpp.orig	2006-10-13 19:22:29.000000000 +0200
++++ gpac/applications/osmo4_wx/fileprops.cpp	2010-03-12 15:34:53.814123000 +0100
+@@ -35,7 +35,7 @@
+ 
+ 
+ wxFileProps::wxFileProps(wxWindow *parent)
+-             : wxDialog(parent, -1, wxString(_T("File Properties")))
++             : wxDialog(parent, -1, wxString(wxT("File Properties")))
+ {
+ 
+ 	m_pApp = (wxOsmo4Frame *)parent;
+@@ -44,8 +44,8 @@
+ 
+ 	m_pTreeView = new wxTreeCtrl(this, ID_TREE_VIEW, wxPoint(4, 2), wxSize(200, 180), wxTR_DEFAULT_STYLE | wxSUNKEN_BORDER);
+ 	
+-	new wxStaticText(this, 0, _T("Information"), wxPoint(210, 2), wxSize(60, 20));
+-    m_pViewSel = new wxComboBox(this, ID_VIEW_SEL, _T(""), wxPoint(280, 2), wxSize(120, 24), 0, NULL, wxCB_READONLY);
++	new wxStaticText(this, 0, wxT("Information"), wxPoint(210, 2), wxSize(60, 20));
++    m_pViewSel = new wxComboBox(this, ID_VIEW_SEL, wxT(""), wxPoint(280, 2), wxSize(120, 24), 0, NULL, wxCB_READONLY);
+ 	m_pViewSel->Append(wxT("General"));
+ 	m_pViewSel->Append(wxT("Streams"));
+ 	m_pViewSel->Append(wxT("Playback"));

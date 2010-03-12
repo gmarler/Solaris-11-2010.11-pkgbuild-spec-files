@@ -1,0 +1,11 @@
+--- gpac/applications/osmo4_wx/Playlist.cpp.orig	2008-11-24 09:50:59.000000000 +0100
++++ gpac/applications/osmo4_wx/Playlist.cpp	2010-03-12 15:55:39.498519000 +0100
+@@ -65,7 +65,7 @@
+ }
+ 
+ wxPlaylist::wxPlaylist(wxWindow *parent)
+-             : wxFrame(parent, -1, wxString(_T("Osmo4 Playlist")), wxDefaultPosition, wxDefaultSize, 
++             : wxFrame(parent, -1, wxString(wxT("Osmo4 Playlist")), wxDefaultPosition, wxDefaultSize, 
+ 			 wxCLOSE_BOX | wxSYSTEM_MENU | wxCAPTION | wxRESIZE_BORDER)
+ {
+ 
