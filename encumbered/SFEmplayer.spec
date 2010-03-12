@@ -179,13 +179,15 @@ fi
 
 %if %debug_build
 dbgflag=--enable-debug
+#export CFLAGS="-g -D__hidden=\"\" -I%{_includedir}"
 export CFLAGS="-g -D__hidden=\"\""
 %else
 dbgflag=--disable-debug
+#export CFLAGS="-O2 -D__hidden=\"\" -I%{_includedir}"
 export CFLAGS="-O2 -D__hidden=\"\""
 %endif
 
-export LDFLAGS="-L%{x11}/lib -L/usr/gnu/lib -R/usr/gnu/lib -L/usr/sfw/lib -R/usr/sfw/lib -liconv" 
+export LDFLAGS="-L%{x11}/lib -L/usr/gnu/lib -R/usr/gnu/lib -L/usr/sfw/lib -R/usr/sfw/lib -L%{_libdir} -R%{_libdir} -liconv" 
 %if %use_gcc4
 export CC=/usr/gnu/bin/gcc
 export CXX=/usr/gnu/bin/g++
@@ -205,8 +207,8 @@ bash ./configure				\
             --confdir=%{_sysconfdir}		\
             --enable-gui			\
             --enable-menu			\
-            --with-extraincdir=/usr/lib/live/liveMedia/include:/usr/lib/live/groupsock/include:/usr/lib/live/UsageEnvironment/include:/usr/lib/live/BasicUsageEnvironment/include:%{x11}/include:/usr/sfw/include \
-            --with-extralibdir=/usr/lib/live/liveMedia:/usr/lib/live/groupsock:/usr/lib/live/UsageEnvironment:/usr/lib/live/BasicUsageEnvironment:%{x11}/lib:/usr/gnu/lib:/usr/sfw/lib \
+            --with-extraincdir=%{_libdir}/live/liveMedia/include:%{_libdir}/live/groupsock/include:%{_libdir}/live/UsageEnvironment/include:%{_libdir}/live/BasicUsageEnvironment/include:%{x11}/include:/usr/sfw/include:%{_prefix}/X11/include \
+            --with-extralibdir=%{_libdir}/live/liveMedia:%{_libdir}/live/groupsock:%{_libdir}/live/UsageEnvironment:%{_libdir}/live/BasicUsageEnvironment:%{x11}/lib:/usr/gnu/lib:/usr/sfw/lib \
             --extra-libs='-lBasicUsageEnvironment -lUsageEnvironment -lgroupsock -lliveMedia -lstdc++ -liconv' \
             --codecsdir=%{_libdir}/mplayer/codecs \
 %if %with_faad
@@ -222,7 +224,7 @@ bash ./configure				\
             --disable-x264			\
 	    $dbgflag
 
-make -j$CPUS 
+make # -j$CPUS 
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -262,6 +264,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/pixmaps/*
 
 %changelog
+* Mars 12 2010 - Gilles Dauphin
+- includedir search path in /usr/SFE
 * Tue Sep 14 2009 - Thomas Wagner
 - make (Build)Requires a build-time --with_gcc4 switch defaulting to off (which is then: use SUNWgcc, gcc3)
 * Sun Aug 09 2009 - Thomas Wagner
