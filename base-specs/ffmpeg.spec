@@ -43,11 +43,11 @@ export PATH=/usr/perl5/bin:$PATH
 export CC=gcc
 # All this is necessary to free up enough registers on x86
 %ifarch i386
-export CFLAGS="%optflags -fno-rename-registers -fomit-frame-pointer -fno-PIC -UPIC -mpreferred-stack-boundary=4 -I%{xorg_inc}"
+export CFLAGS="%optflags -fno-rename-registers -fomit-frame-pointer -fno-PIC -UPIC -mpreferred-stack-boundary=4 -I%{xorg_inc} -I%{_includedir}"
 %else
-export CFLAGS="%optflags -I%{xorg_inc}"
+export CFLAGS="%optflags -I%{xorg_inc} -I%{_includedir}"
 %endif
-export LDFLAGS="%_ldflags %{xorg_lib_path} -L/usr/sfw/lib -R/usr/sfw/lib"
+export LDFLAGS="%_ldflags %{xorg_lib_path} -L/usr/sfw/lib -R/usr/sfw/lib -L%{_libdir} -R%{_libdir}"
 if $( echo "%{_libdir}" | /usr/xpg4/bin/grep -q %{_arch64} ) ; then
         export LDFLAGS="$LDFLAGS -m64"
 fi
@@ -113,6 +113,8 @@ EOM
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Mar 12 2010 - Gilles Dauphin
+- in case of prefix=/usr/SFE
 * Sun Mar 07 2010 - Milan Jurik
 - replace amrXX for opencore implementation
 * Wed Mar 03 2010 - Milan Jurik

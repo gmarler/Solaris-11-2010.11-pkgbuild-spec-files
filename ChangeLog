@@ -23,6 +23,7 @@
 	* SFElibx264, copy isaexec instead of hardlink
 	  hardlink is needed by isaexec and is not possible if
 	  install is in an other basedir. 
+	* SFEffmpeg,  would install in /usr/SFE
 
 2010-03-11  Brian Lu  <brian.lu@sun.com>
 
