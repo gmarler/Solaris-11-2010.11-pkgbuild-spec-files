@@ -19,20 +19,19 @@ BuildRequires: SUNWswig
 Requires:SUNWswig
 
 %prep
-rm -rf  %{source_name} 
-%setup -q -n %{source_name}/lib/talloc
+rm -rf  %name-%version
+%setup -q -c -n  %name-%version 
 
 %build
-
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
 if test "x$CPUS" = "x" -o $CPUS = 0; then
      CPUS=1
 fi
 
-#export CFLAGS="%optflags"
-export CFLAGS="-g -mt"
-export LDFLAGS="%_ldflags"
+export CFLAGS="-g -mt %optflags"
+export LDFLAGS="-z ignore %_ldflags"
 
+cd %{source_name}/lib/talloc
 ./autogen.sh
 ./configure --prefix=%{_prefix}  \
             --enable-static=no
@@ -41,6 +40,7 @@ make -j$CPUS
 
 %install
 rm -rf $RPM_BUILD_ROOT
+cd %{source_name}/lib/talloc
 
 make install DESTDIR=$RPM_BUILD_ROOT
 
@@ -65,6 +65,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/*/*
 
 %changelog
+* Sat Mar 13 2010 - brian.lu@sun.com
+- Build talloc under SFEtalloc-2.0.1 direcotory
 * Wed Dec 02 2009 - brian.lu@sun.com
 - Bump to samba4 alpha9
 * Thu Aug 27 2009 - brian.lu@sun.com

@@ -1,3 +1,11 @@
+2010-03-13  Brian Lu  <brian.lu@sun.com>
+
+	* SFEsamba4.spec:
+	* SFEtalloc.spec:
+	* SFEtdb.spec:
+	* SFEtevent.spec:
+	  Build each component in its own directory
+
 2012-03-10  Brian Cameron  <brian.cameron@sun.com>
 
 	* SFEgst-plugins-bad.spec, base-specs/gst-plugins-bad.spec: Bump to

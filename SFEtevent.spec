@@ -18,7 +18,10 @@ BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 Requires: SUNWPython26
 %prep
 rm -rf %{source_name} 
-%setup -q -n %{source_name}/lib/tevent
+rm -rf %name-%version
+mkdir %name-%version
+
+%setup -q -c -n %name-%version  
 
 %build
 
@@ -27,9 +30,10 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
      CPUS=1
 fi
 
-#export CFLAGS="%optflags"
-export CFLAGS="-g -mt"
-export LDFLAGS="%_ldflags"
+export CFLAGS="-g -mt %optflags"
+export LDFLAGS="-z ignore %_ldflags"
+
+cd %{source_name}/lib/tevent
 
 ./autogen.sh
 ./configure --prefix=%{_prefix}  \
@@ -39,6 +43,7 @@ make -j$CPUS
 
 %install
 rm -rf $RPM_BUILD_ROOT
+cd %{source_name}/lib/tevent
 
 make install DESTDIR=$RPM_BUILD_ROOT
 

@@ -27,9 +27,9 @@ SUNW_BaseDir:            /
 
 
 %prep
-%setup -q -n %{source_name} 
-#%patch1 -p1
-#%patch2 -p1
+rm -rf %name-%version
+mkdir %name-%version
+%setup -q -c -n %name-%version 
 
 %build
 
@@ -38,11 +38,10 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
      CPUS=1
 fi
 
-#export CFLAGS="%optflags"
-export CFLAGS="-g -mt"
-export LDFLAGS="%_ldflags"
+export CFLAGS="-g -mt %optflags"
+export LDFLAGS="-z ignore %_ldflags"
 
-cd source4/
+cd %{source_name}/source4
 ./autogen.sh
 ./configure.developer \
             --prefix=%{_prefix}  \
@@ -59,7 +58,8 @@ gmake idl_full && gmake
 %install
 rm -rf $RPM_BUILD_ROOT
 
-cd source4/
+cd %{source_name}/source4
+
 gmake install DESTDIR=$RPM_BUILD_ROOT
 
 rmdir $RPM_BUILD_ROOT/var/run/samba
@@ -110,6 +110,8 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0775, root, sys) /var/log/samba
 
 %changelog
+* Sat Mar 13 2010 - brian.lu@sun.com
+- Build samba4 under SUNWsamba4-4.0.0 directory
 * Wed Dec 02 2009 - brian.lu@sun.com
 - Bump to Samba4 alpha9
 * Thu Nov 19 2009 - brian.lu@sun.com

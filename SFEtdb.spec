@@ -18,8 +18,9 @@ BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 Requires:SUNWPython26
 
 %prep
-rm -rf %{source_name}
-%setup -q -n %{source_name}/lib/tdb
+rm -rf %name-%version
+mkdir %name-%version
+%setup -q -c -n %name-%version
 
 %build
 
@@ -28,10 +29,10 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
      CPUS=1
 fi
 
-#export CFLAGS="%optflags"
-export CFLAGS="-g -mt"
-export LDFLAGS="%_ldflags"
+export CFLAGS="-g -mt %optflags"
+export LDFLAGS="-z ignore %_ldflags"
 
+cd %{source_name}/lib/tdb
 ./autogen.sh
 ./configure --prefix=%{_prefix}  \
             --enable-static=no
@@ -40,6 +41,7 @@ make -j$CPUS
 
 %install
 rm -rf $RPM_BUILD_ROOT
+cd %{source_name}/lib/tdb
 
 make install DESTDIR=$RPM_BUILD_ROOT
 
@@ -65,6 +67,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man8/*
 
 %changelog
+* Sat Mar 13 2010 - brian.lu@sunc.om
+- Build tdb under SFEtdb-1.2.0 directory
 * Wed Dec 02 2009 - brian.lu@sun.com
 - Bump to Samba4 alpha9
 * Wed Jun 03 2009 - brian.lu@sun.com
