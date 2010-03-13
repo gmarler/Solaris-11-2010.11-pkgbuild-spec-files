@@ -7,7 +7,7 @@
 
 Name:                    SFEgst-plugins-bad
 Summary:                 GStreamer bad plugins
-Version:                 0.10.17
+Version:                 0.10.18
 URL:                     http://gstreamer.freedesktop.org/
 Source:                  http://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-%{version}.tar.bz2
 Patch1:                  gst-plugins-bad-01-gettext.diff
@@ -15,7 +15,7 @@ Patch2:                  gst-plugins-bad-02-gstapexraop.diff
 Patch3:                  gst-plugins-bad-03-xvidmain.diff
 Patch4:                  gst-plugins-bad-04-equal.diff
 Patch5:                  gst-plugins-bad-05-xsi_shell.diff
-Patch6:                  gst-plugins-bad-06-apexsink.diff
+Patch6:                  gst-plugins-bad-06-gstqt.diff
 Patch7:                  gst-plugins-bad-07-videomeasure.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -114,8 +114,8 @@ unset GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL
 
 # Clean out files that should not be part of the rpm.
 # This is the recommended way of dealing with it for RH8
-rm $RPM_BUILD_ROOT%{_libdir}/gstreamer-%{gst_minmaj}/*.la
-rm $RPM_BUILD_ROOT%{_libdir}/gstreamer-%{gst_minmaj}/*.a
+find $RPM_BUILD_ROOT -type f -name "*.la" -exec rm -f {} ';'
+find $RPM_BUILD_ROOT -type f -name "*.a" -exec rm -f {} ';'
 
 %if %{!?_without_gtk_doc:0}%{?_without_gtk_doc:1}
 rm -rf $RPM_BUILD_ROOT%{_datadir}/gtk-doc
@@ -129,10 +129,14 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, bin) %{_bindir}
 %{_bindir}/*
 %dir %attr (0755, root, bin) %{_libdir}
-%{_libdir}/*
+%{_libdir}/lib*.so*
+%{_libdir}/gstreamer-0.10/*
 
 %files devel
 %defattr (-, root, bin)
+%dir %attr (0755, root, bin) %{_libdir}
+%dir %attr (0755, root, other) %{_libdir}/pkgconfig
+%{_libdir}/pkgconfig/*
 %dir %attr (0755, root, bin) %{_includedir}
 %{_includedir}/gstreamer-%{gst_minmaj}/gst
 %dir %attr (0755, root, sys) %{_datadir}
@@ -144,6 +148,9 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Fri Mar 12 2010 - Brian.Cameron@sun.com
+- Bump to 0.10.18.  Remove gst-plugins-bad-06-apexsink.diff and add
+  gst-plugins-bad-gstqt.diff needed to build.
 * Tue Dec 22 2009 - Brian.Cameron@sun.com
 - Bump to 0.10.17.
 * Thu May 21 2009 - Brian.Cameron@sun.com

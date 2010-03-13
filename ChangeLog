@@ -1,3 +1,10 @@
+2012-03-10  Brian Cameron  <brian.cameron@sun.com>
+
+	* SFEgst-plugins-bad.spec, base-specs/gst-plugins-bad.spec: Bump to
+	  0.10.18.
+	* patches/gst-plugins-bad-06-apexsink.diff: Removed.
+	* patches/gst-plugins-bad-06-gstqt.diff: Add new patch needed to build.
+
 2010-03-12  Gilles Dauphin <dauphin@enst.fr>
 
 	* SFEmplayer may go in /usr/SFE

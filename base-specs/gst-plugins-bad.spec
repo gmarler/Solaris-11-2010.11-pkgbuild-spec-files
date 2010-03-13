@@ -7,7 +7,7 @@
 #
 Name:           gst-plugins-bad
 License:        GPL
-Version:        0.10.17
+Version:        0.10.18
 Release:        1
 Distribution:   Java Desktop System
 Vendor:         Sun Microsystems, Inc.
@@ -20,7 +20,7 @@ Patch2:         gst-plugins-bad-02-gstapexraop.diff
 Patch3:         gst-plugins-bad-03-xvidmain.diff
 Patch4:         gst-plugins-bad-04-equal.diff
 Patch5:         gst-plugins-bad-05-xsi_shell.diff
-Patch6:         gst-plugins-bad-06-apexsink.diff
+Patch6:         gst-plugins-bad-06-gstqt.diff
 Patch7:         gst-plugins-bad-07-videomeasure.diff
 BuildRoot:      %{_tmppath}/%{name}-%{version}-root
 Docdir:         %{_defaultdocdir}/doc
@@ -176,6 +176,9 @@ GStreamer support libraries header files.
 %{_datadir}/gtk-doc
 
 %changelog
+* Fri Mar 12 2010 - Brian Cameron <brian.cameron@sun.com>
+- Bump to 0.10.18.  Remove gst-plugins-bad-06-apexsink.diff and add
+  gst-plugins-bad-gstqt.diff needed to build.
 * Sun Dec 20 2009 - Milan Jurik
 - upgrade to 0.10.17
 - videosignal added
