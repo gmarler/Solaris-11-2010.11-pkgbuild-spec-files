@@ -63,7 +63,7 @@ fi
 #export CXX=/usr/gnu/bin/g++
 export CC=/usr/gcc/4.3/bin/gcc
 export CXX=/usr/gcc/4.3/bin/g++
-export CFLAGS="-O4 -fPIC -DPIC -Xlinker -fno-omit-frame-pointer"
+export CFLAGS="-O4 -fPIC -DPIC -fno-omit-frame-pointer"
 export LD="/usr/bin/ld"
 #export LDFLAGS="%_ldflags"
 
@@ -127,6 +127,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/doc/*
 
 %changelog
+* Mar 15 2010 - Gilles Dauphin
+- try gcc 4.3.3 in the b134 distrib.
 * Sat Aug 15 2009 - Thomas Wagner
 - add (Build)Conflicts: SFEqt-devel/SFEqt, SFEqt3-devel/SFEqt3, SFEqt4-devel/SFEq4
 * Sun Aug 09 2009 - Thomas Wagner
