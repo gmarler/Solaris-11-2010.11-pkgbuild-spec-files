@@ -1,0 +1,23 @@
+--- ogmtools-1.5.orig/avilib/Makefile.am	2004-03-29 15:00:28.000000000 -0500
++++ ogmtools-1.5/avilib/Makefile.am	2010-03-15 15:43:47.998993322 -0400
+@@ -7,7 +7,7 @@
+ 
+ INCLUDES = -I./
+ 
+-CFLAGS=-O3 -funroll-loops -ffast-math -DLINUX -Wall @CFLAGS@
++CFLAGS=-DLINUX @CFLAGS@
+ libavi_a_SOURCES = avilib.c avidump.c avimisc.c xio.c
+ 
+ EXTRA_DIST = avilib.h README.avilib
+--- ogmtools-1.5.orig/configure.in	2004-11-07 05:01:34.000000000 -0500
++++ ogmtools-1.5/configure.in	2010-03-15 15:43:16.355048781 -0400
+@@ -31,7 +31,7 @@
+ dnl Check for headers
+ AC_HEADER_STDC()
+ 
+-CFLAGS="-Wall -Wno-sign-compare @OGG_CFLAGS@ @VORBIS_CFLAGS@ @AVILIB_CFLAGS@ @DEBUG_CFLAGS@ @PROFILING_CFLAGS@"
+-CXXFLAGS="-Wall -Wno-sign-compare @OGG_CFLAGS@ @VORBIS_CFLAGS@ @AVILIB_CFLAGS@ @DEBUG_CFLAGS@ @PROFILING_CFLAGS@"
++CFLAGS="$CFLAGS $OGG_CFLAGS $VORBIS_CFLAGS $AVILIB_CFLAGS $DEBUG_CFLAGS $PROFILING_CFLAGS"
++CXXFLAGS="$CXXFLAGS $OGG_CFLAGS $VORBIS_CFLAGS $AVILIB_CFLAGS $DEBUG_CFLAGS $PROFILING_CFLAGS"
+ 
+ AC_OUTPUT(Makefile avilib/Makefile)

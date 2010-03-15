@@ -6,22 +6,20 @@
 %include Solaris.inc
 
 Name:                    SFElibdvdread
-Summary:                 libdvdread  - libdvdread provides a simple foundation for reading DVD video disks
+Summary:                 libdvdread - Library for reading DVD video disks
 Version:                 4.1.3
-Source:                  http://www1.mplayerhq.hu/MPlayer/releases/dvdnav/libdvdread-%{version}.tar.bz2
+Source:                  http://www3.mplayerhq.hu/MPlayer/releases/dvdnav/libdvdread-%{version}.tar.bz2
 Patch1:			 libdvdread-01-dvdfilestat.diff
 Patch2:			 libdvdread-02-wall.diff
 SUNW_BaseDir:            %{_basedir}
 buildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
-Requires: SFElibdvdcss
 
 %package devel
 Summary:                 %{summary} - development files
 SUNW_BaseDir:            %{_basedir}
 %include default-depend.inc
 Requires: %name
-BuildRequires: SFElibdvdcss-devel
 
 %prep
 %setup -q -n libdvdread-%version
@@ -76,6 +74,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Mar 15 2010 - Albert Lee <trisk@opensolaris.org>
+- Remove SFElibdvdcss dependencies
+- Update source URL
 * Tue Sep 15 2009 - Thomas Wagner
 - fix permissions for /usr/share aka %dir %attr (0755, root, sys) %{_datadir}
 * Fri Sep 11 2009 - drdoug007@gmail.com

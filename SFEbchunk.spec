@@ -10,7 +10,9 @@
 Name:                SFEbchunk
 Summary:             bchunk - Convert ".bin/.cue" files into ISO 9660 images
 Version:             1.2.0
+License:             GPLv2+
 Source:              http://he.fi/bchunk/%{src_name}-%{version}.tar.gz
+URL:                 http://he.fi/bchunk/
 
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
@@ -25,10 +27,10 @@ make CC="$CC" LD="$CC" CFLAGS="%optflags" LDFLAGS="%{_ldflags}"
 %install
 rm -rf $RPM_BUILD_ROOT
 
-/usr/ucb/install -d -m 0755 $RPM_BUILD_ROOT/%{_prefix}/bin
-/usr/ucb/install -o root -g sys -m 0755 bchunk $RPM_BUILD_ROOT/%{_prefix}/bin
-/usr/ucb/install -d -m 0755 $RPM_BUILD_ROOT/%{_mandir}/man1
-/usr/ucb/install -o root -g bin -m 0755 bchunk.1 $RPM_BUILD_ROOT/%{_mandir}/man1
+mkdir -p $RPM_BUILD_ROOT/%{_prefix}/bin
+cp -p bchunk $RPM_BUILD_ROOT/%{_prefix}/bin
+mkdir -p $RPM_BUILD_ROOT/%{_mandir}/man1
+cp -p bchunk.1 $RPM_BUILD_ROOT/%{_mandir}/man1
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -43,5 +45,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/*/*
 
 %changelog
+* Mon Mar 15 2010 - Albert Lee <trisk@opensolaris.org>
+- Update to not require /usr/ucb install
+- Add URL and License
 * Mon Jun 01 2009 - Albert Lee <trisk@forkgnu.org>
 - Initial spec

@@ -6,10 +6,9 @@
 %include Solaris.inc
 
 Name:                    SFElibdvdnav
-Summary:                 libdvdnav  - DVD navigation library
+Summary:                 libdvdnav - DVD navigation library
 Version:                 4.1.3
-#Source:                  %{sf_download}/dvd/libdvdnav-%{version}.tar.gz
-Source:                  http://www1.mplayerhq.hu/MPlayer/releases/dvdnav/libdvdnav-%{version}.tar.bz2
+Source:                  http://www3.mplayerhq.hu/MPlayer/releases/dvdnav/libdvdnav-%{version}.tar.bz2
 Patch1:                  libdvdnav-01-Wall.diff
 SUNW_BaseDir:            %{_basedir}
 buildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -77,6 +76,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*
 
 %changelog
+* Mon Mar 15 2010 - Albert Lee <trisk@opensolaris.org>
+- Update source URL
 * Mar 2010 - Gilles Dauphin
 - want an install in /usr/SFE (_basedir)
 * Sat Jun 13 2009 - Milan Jurik

@@ -1,0 +1,345 @@
+diff -ur ogmtools-1.5.orig/common.c ogmtools-1.5/common.c
+--- ogmtools-1.5.orig/common.c	2003-11-20 17:48:35.000000000 -0500
++++ ogmtools-1.5/common.c	2010-03-15 15:58:28.531022915 -0400
+@@ -63,8 +63,8 @@
+   }
+ }
+ 
+-u_int16_t get_uint16(const void *buf) {
+-  u_int16_t      ret;
++uint16_t get_uint16(const void *buf) {
++  uint16_t      ret;
+   unsigned char *tmp;
+ 
+   tmp = (unsigned char *)buf;
+@@ -75,8 +75,8 @@
+   return ret;
+ }
+ 
+-u_int32_t get_uint32(const void *buf) {
+-  u_int32_t      ret;
++uint32_t get_uint32(const void *buf) {
++  uint32_t      ret;
+   unsigned char *tmp;
+ 
+   tmp = (unsigned char *)buf;
+@@ -89,8 +89,8 @@
+   return ret;
+ }
+ 
+-u_int64_t get_uint64(const void *buf) {
+-  u_int64_t      ret;
++uint64_t get_uint64(const void *buf) {
++  uint64_t      ret;
+   unsigned char *tmp;
+ 
+   tmp = (unsigned char *) buf;
+@@ -107,7 +107,7 @@
+   return ret;
+ }
+ 
+-void put_uint16(void *buf, u_int16_t val) {
++void put_uint16(void *buf, uint16_t val) {
+   unsigned char *tmp;
+ 
+   tmp = (unsigned char *) buf;
+@@ -116,7 +116,7 @@
+   tmp[1] = (val >>= 8) & 0xff;
+ }
+ 
+-void put_uint32(void *buf, u_int32_t val) {
++void put_uint32(void *buf, uint32_t val) {
+   unsigned char *tmp;
+ 
+   tmp = (unsigned char *) buf;
+@@ -127,7 +127,7 @@
+   tmp[3] = (val >>= 8) & 0xff;
+ }
+ 
+-void put_uint64(void *buf, u_int64_t val) {
++void put_uint64(void *buf, uint64_t val) {
+   unsigned char *tmp;
+ 
+   tmp = (unsigned char *) buf;
+diff -ur ogmtools-1.5.orig/common.h ogmtools-1.5/common.h
+--- ogmtools-1.5.orig/common.h	2003-11-20 17:21:36.000000000 -0500
++++ ogmtools-1.5/common.h	2010-03-15 15:58:28.543529758 -0400
+@@ -61,12 +61,12 @@
+ void         free_comments(char **comments);
+ ogg_packet  *duplicate_ogg_packet(ogg_packet *src);
+ 
+-u_int16_t get_uint16(const void *buf);
+-u_int32_t get_uint32(const void *buf);
+-u_int64_t get_uint64(const void *buf);
+-void put_uint16(void *buf, u_int16_t);
+-void put_uint32(void *buf, u_int32_t);
+-void put_uint64(void *buf, u_int64_t);
++uint16_t get_uint16(const void *buf);
++uint32_t get_uint32(const void *buf);
++uint64_t get_uint64(const void *buf);
++void put_uint16(void *buf, uint16_t);
++void put_uint32(void *buf, uint32_t);
++void put_uint64(void *buf, uint64_t);
+ void copy_headers(stream_header *dst, old_stream_header *src, int size);
+ 
+ #ifdef NEED_FSEEKO
+diff -ur ogmtools-1.5.orig/ogminfo.c ogmtools-1.5/ogminfo.c
+--- ogmtools-1.5.orig/ogminfo.c	2003-11-20 17:21:36.000000000 -0500
++++ ogmtools-1.5/ogminfo.c	2010-03-15 15:58:28.534174397 -0400
+@@ -39,7 +39,7 @@
+   ogg_stream_state  state;
+   ogg_int64_t       last_granulepos, this_granulepos, biggest_granulepos;
+   ogg_int64_t       num_packets;
+-  u_int64_t         size;
++  uint64_t         size;
+   struct stream_t  *next;
+ } stream_t;
+ 
+@@ -152,7 +152,7 @@
+   if (ogg_page_granulepos(page) > stream->biggest_granulepos)
+     stream->biggest_granulepos = ogg_page_granulepos(page);
+   stream->num_packets++;
+-  stream->size += (u_int64_t)pack->bytes;
++  stream->size += (uint64_t)pack->bytes;
+   if (verbose == 0)
+     return;
+   if ((*pack->packet & 3) == PACKET_TYPE_HEADER) {
+diff -ur ogmtools-1.5.orig/p_ac3.cpp ogmtools-1.5/p_ac3.cpp
+--- ogmtools-1.5.orig/p_ac3.cpp	2003-05-04 05:41:26.000000000 -0400
++++ ogmtools-1.5/p_ac3.cpp	2010-03-15 15:58:28.542029707 -0400
+@@ -240,18 +240,18 @@
+       produce_header_packets();
+     }
+     
+-    tempbuf = (unsigned char *)malloc(ac3header.bytes + 1 + sizeof(u_int16_t));
++    tempbuf = (unsigned char *)malloc(ac3header.bytes + 1 + sizeof(uint16_t));
+     if (tempbuf == NULL)
+       die("malloc");
+-    tempbuf[0] = (((sizeof(u_int16_t) & 3) << 6) +
+-                  ((sizeof(u_int16_t) & 4) >> 1)) | PACKET_IS_SYNCPOINT;
+-    op.bytes = ac3header.bytes + 1 + sizeof(u_int16_t);
++    tempbuf[0] = (((sizeof(uint16_t) & 3) << 6) +
++                  ((sizeof(uint16_t) & 4) >> 1)) | PACKET_IS_SYNCPOINT;
++    op.bytes = ac3header.bytes + 1 + sizeof(uint16_t);
+     bptr = (unsigned char *)&tempbuf[1];
+-    for (i = 0, tmpsize = 1536; i < sizeof(u_int16_t); i++) {
++    for (i = 0, tmpsize = 1536; i < sizeof(uint16_t); i++) {
+       *(bptr + i) = (unsigned char)(tmpsize & 0xFF);
+       tmpsize = tmpsize >> 8;
+     }
+-    memcpy(&tempbuf[1 + sizeof(u_int16_t)], packet, ac3header.bytes);
++    memcpy(&tempbuf[1 + sizeof(uint16_t)], packet, ac3header.bytes);
+     op.packet = (unsigned char *)&tempbuf[0];
+     op.b_o_s = 0;
+     if (last_frame && !ac3_packet_available()) {
+@@ -259,7 +259,7 @@
+       eos = 1;
+     } else
+       op.e_o_s = 0;
+-    op.granulepos = (u_int64_t)((packetno - 2) * 1536 * async.linear);
++    op.granulepos = (uint64_t)((packetno - 2) * 1536 * async.linear);
+     op.packetno = packetno++;
+     ogg_stream_packetin(&os, &op);
+     if (force_flushing)
+@@ -291,7 +291,7 @@
+   op.bytes = 1;
+   op.b_o_s = 0;
+   op.e_o_s = 1;
+-  op.granulepos = (u_int64_t)((packetno - 2) * 1536);
++  op.granulepos = (uint64_t)((packetno - 2) * 1536);
+   op.packetno = packetno++;
+   ogg_stream_packetin(&os, &op);
+   flush_pages();
+diff -ur ogmtools-1.5.orig/p_ac3.h ogmtools-1.5/p_ac3.h
+--- ogmtools-1.5.orig/p_ac3.h	2003-01-03 15:27:52.000000000 -0500
++++ ogmtools-1.5/p_ac3.h	2010-03-15 15:58:28.534940017 -0400
+@@ -25,7 +25,7 @@
+ class ac3_packetizer_c: public q_c {
+   private:
+     int                 bps, eos;
+-    u_int64_t           bytes_output, packetno;
++    uint64_t           bytes_output, packetno;
+     unsigned long       samples_per_sec;
+     int                 channels;
+     int                 bitrate;
+diff -ur ogmtools-1.5.orig/p_mp3.cpp ogmtools-1.5/p_mp3.cpp
+--- ogmtools-1.5.orig/p_mp3.cpp	2003-05-20 03:08:37.000000000 -0400
++++ ogmtools-1.5/p_mp3.cpp	2010-03-15 15:58:28.529398236 -0400
+@@ -238,18 +238,18 @@
+     }  
+ 
+     tempbuf = (unsigned char *)malloc(mp3header.framesize + 5 +
+-                                      sizeof(u_int16_t));
++                                      sizeof(uint16_t));
+     if (tempbuf == NULL)
+       die("malloc");
+-    tempbuf[0] = (((sizeof(u_int16_t) & 3) << 6) +
+-                  ((sizeof(u_int16_t) & 4) >> 1)) | PACKET_IS_SYNCPOINT;
+-    op.bytes = mp3header.framesize + 5 + sizeof(u_int16_t);
++    tempbuf[0] = (((sizeof(uint16_t) & 3) << 6) +
++                  ((sizeof(uint16_t) & 4) >> 1)) | PACKET_IS_SYNCPOINT;
++    op.bytes = mp3header.framesize + 5 + sizeof(uint16_t);
+     bptr = (unsigned char *)&tempbuf[1];
+-    for (i = 0, tmpsize = 1152; i < sizeof(u_int16_t); i++) {
++    for (i = 0, tmpsize = 1152; i < sizeof(uint16_t); i++) {
+       *(bptr + i) = (unsigned char)(tmpsize & 0xFF);
+       tmpsize = tmpsize >> 8;
+     }
+-    memcpy(&tempbuf[1 + sizeof(u_int16_t)], packet, mp3header.framesize + 4);
++    memcpy(&tempbuf[1 + sizeof(uint16_t)], packet, mp3header.framesize + 4);
+     op.packet = (unsigned char *)&tempbuf[0];
+     op.b_o_s = 0;
+     if (last_frame && !mp3_packet_available()) {
+@@ -257,7 +257,7 @@
+       eos = 1;
+     } else
+       op.e_o_s = 0;
+-    op.granulepos = (u_int64_t)((packetno - 2) * 1152 * async.linear);
++    op.granulepos = (uint64_t)((packetno - 2) * 1152 * async.linear);
+     op.packetno = packetno++;
+     ogg_stream_packetin(&os, &op);
+     bytes_output += mp3header.framesize + 4;
+@@ -286,7 +286,7 @@
+   op.bytes = 1;
+   op.b_o_s = 0;
+   op.e_o_s = 1;
+-  op.granulepos = (u_int64_t)((packetno - 2) * 1152);
++  op.granulepos = (uint64_t)((packetno - 2) * 1152);
+   op.packetno = packetno++;
+   ogg_stream_packetin(&os, &op);
+   flush_pages();
+diff -ur ogmtools-1.5.orig/p_mp3.h ogmtools-1.5/p_mp3.h
+--- ogmtools-1.5.orig/p_mp3.h	2003-01-03 15:27:52.000000000 -0500
++++ ogmtools-1.5/p_mp3.h	2010-03-15 15:58:28.527396860 -0400
+@@ -25,7 +25,7 @@
+ class mp3_packetizer_c: public q_c {
+   private:
+     int                 bps, eos;
+-    u_int64_t           bytes_output, packetno;
++    uint64_t           bytes_output, packetno;
+     unsigned long       samples_per_sec;
+     int                 channels;
+     int                 mp3rate;
+diff -ur ogmtools-1.5.orig/p_pcm.cpp ogmtools-1.5/p_pcm.cpp
+--- ogmtools-1.5.orig/p_pcm.cpp	2003-05-04 05:41:26.000000000 -0400
++++ ogmtools-1.5/p_pcm.cpp	2010-03-15 15:58:28.539164558 -0400
+@@ -114,7 +114,7 @@
+   int           i;
+ 
+   int start, j;
+-  u_int16_t samp_in_subpacket;
++  uint16_t samp_in_subpacket;
+   unsigned char *bptr;
+   int bytes_per_subpacket;
+   int remaining_bytes;
+@@ -153,7 +153,7 @@
+     op.packet = (unsigned char *)&tempbuf[start];
+     op.b_o_s = 0;
+     op.e_o_s = last_packet;
+-    op.granulepos = (u_int64_t)(bytes_output * 8 / bits_per_sample /
++    op.granulepos = (uint64_t)(bytes_output * 8 / bits_per_sample /
+                                 channels);
+     op.packetno = packetno++;
+     ogg_stream_packetin(&os, &op);
+@@ -175,7 +175,7 @@
+     op.packet = (unsigned char *)&tempbuf[start];
+     op.b_o_s = 0;
+     op.e_o_s = last_packet;
+-    op.granulepos = (u_int64_t)(bytes_output * 8 / bits_per_sample /
++    op.granulepos = (uint64_t)(bytes_output * 8 / bits_per_sample /
+                                 channels);
+     op.packetno = packetno++;
+     ogg_stream_packetin(&os, &op);
+diff -ur ogmtools-1.5.orig/p_pcm.h ogmtools-1.5/p_pcm.h
+--- ogmtools-1.5.orig/p_pcm.h	2003-01-03 15:27:52.000000000 -0500
++++ ogmtools-1.5/p_pcm.h	2010-03-15 15:58:28.526572163 -0400
+@@ -25,7 +25,7 @@
+   private:
+     int                 packetno;
+     int                 bps;
+-    u_int64_t           bytes_output;
++    uint64_t           bytes_output;
+     unsigned long       samples_per_sec;
+     int                 channels;
+     int                 bits_per_sample;
+diff -ur ogmtools-1.5.orig/p_vorbis.cpp ogmtools-1.5/p_vorbis.cpp
+--- ogmtools-1.5.orig/p_vorbis.cpp	2003-10-23 15:46:32.000000000 -0400
++++ ogmtools-1.5/p_vorbis.cpp	2010-03-15 15:58:28.537670267 -0400
+@@ -284,7 +284,7 @@
+     else if ((packetno > 2) && (async.displacement < 0))
+       op->granulepos += vi.rate * async.displacement / 1000;
+     // Handle the linear sync - simply multiply with the given factor.
+-    op->granulepos = (u_int64_t)((double)op->granulepos * async.linear);
++    op->granulepos = (uint64_t)((double)op->granulepos * async.linear);
+ 
+     this_granulepos = op->granulepos;
+ 
+@@ -303,7 +303,7 @@
+              (last_granulepos_seen >= range.start) &&
+              ((range.end == 0) || (op->granulepos <= range.end))) {
+       // Adjust the granulepos
+-      op->granulepos = (u_int64_t)(op->granulepos - range.start);
++      op->granulepos = (uint64_t)(op->granulepos - range.start);
+       // If no or a positive displacement is set the packet has to be output.
+       if (async.displacement >= 0) {
+         ogg_stream_packetin(&os, op);
+@@ -359,19 +359,19 @@
+ 
+ #ifndef INCORRECT_INTERLEAVING
+   if (granulepos == -1)
+-    stamp = (u_int64_t)((double)old_granulepos * (double)1000000 /
++    stamp = (uint64_t)((double)old_granulepos * (double)1000000 /
+                         (double)vi.rate);
+   else {
+-    stamp = (u_int64_t)((double)old_granulepos * (double)1000000 /
++    stamp = (uint64_t)((double)old_granulepos * (double)1000000 /
+                         (double)vi.rate);
+     old_granulepos = granulepos;
+   }
+ #else
+   if (granulepos == -1)
+-    stamp = (u_int64_t)((double)granulepos * (double)1000000 /
++    stamp = (uint64_t)((double)granulepos * (double)1000000 /
+                         (double)vi.rate);
+   else
+-    stamp = (u_int64_t)((double)granulepos * (double)1000000 /
++    stamp = (uint64_t)((double)granulepos * (double)1000000 /
+                         (double)vi.rate);
+ #endif
+   
+diff -ur ogmtools-1.5.orig/r_ac3.h ogmtools-1.5/r_ac3.h
+--- ogmtools-1.5.orig/r_ac3.h	2003-05-04 05:41:26.000000000 -0400
++++ ogmtools-1.5/r_ac3.h	2010-03-15 15:58:28.542754965 -0400
+@@ -31,7 +31,7 @@
+     unsigned char          *chunk;
+     FILE                   *file;
+     class ac3_packetizer_c *ac3packetizer;
+-    u_int64_t               bytes_processed;
++    uint64_t               bytes_processed;
+     off_t                   size;
+      
+   public:
+diff -ur ogmtools-1.5.orig/r_mp3.h ogmtools-1.5/r_mp3.h
+--- ogmtools-1.5.orig/r_mp3.h	2003-05-04 05:41:26.000000000 -0400
++++ ogmtools-1.5/r_mp3.h	2010-03-15 15:58:28.525844492 -0400
+@@ -35,7 +35,7 @@
+     unsigned char          *chunk;
+     FILE                   *file;
+     class mp3_packetizer_c *mp3packetizer;
+-    u_int64_t               bytes_processed;
++    uint64_t               bytes_processed;
+     off_t                   size;
+      
+   public:
+diff -ur ogmtools-1.5.orig/r_wav.h ogmtools-1.5/r_wav.h
+--- ogmtools-1.5.orig/r_wav.h	2003-05-04 05:41:26.000000000 -0400
++++ ogmtools-1.5/r_wav.h	2010-03-15 15:58:28.539909094 -0400
+@@ -37,7 +37,7 @@
+     class pcm_packetizer_c *pcmpacketizer;
+     int                     bps;
+     struct wave_header      wheader;
+-    u_int64_t               bytes_processed;
++    uint64_t               bytes_processed;
+      
+   public:
+     wav_reader_c(char *fname, audio_sync_t *nasync, range_t *nrange,

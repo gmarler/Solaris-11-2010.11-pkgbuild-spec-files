@@ -1,3 +1,15 @@
+2010-03-15  Albert Lee  <trisk@opensolaris.org>
+
+	* SFEbchunk.spec: Update to not require /usr/ucb/install. Add URL and
+	  License.
+	* SFElibdvdnav.spec: Update source URL.
+	* SFElibdvdread.spec: Remove SFElibdvdcss dependencies. Update source
+	  URL.
+	* SFEogmtools.spec: *NEW* ogmtools - Tools for manipulating Ogg media
+	  streams
+	* patches/ogmtools-01-nogcc.diff: Remove GCCisms.
+	* patches/ogmtools-02-inttypes.diff: Use C99 uint*_t types.
+
 2010-03-13  Brian Lu  <brian.lu@sun.com>
 
 	* SFEsamba4.spec:
