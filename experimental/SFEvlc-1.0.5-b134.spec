@@ -76,6 +76,8 @@ Patch14:               vlc-14-modules-access-file.c-disable_have_fstatfs.diff
 ##TODO## need rework to test for already existing dirfd else define 
 Patch17:               vlc-17-dirfd-is-in-b133.diff
 Patch18:               vlc-18-empty-struct.diff-1.0.1
+Patch19:               vlc-19-105-GLIBCXX_CONCEPT_CHECKS.diff
+Patch20:               vlc-20-105-GLIBCXX_CONCEPT_CHECKS_var_tree.diff
 
 
 
@@ -169,6 +171,8 @@ Requires:                %{name}
 %patch14 -p1
 #%patch16 -p1
 %patch18 -p1
+%patch19 -p1
+%patch20 -p1
 #seems only relevant to older SunOS releases (5.10, eventuall older builds of 5.11)
 ##TODO## need rework to test for already existing dirfd else define 
 %patch17 -p1
@@ -276,7 +280,7 @@ perl -w -pi.bakspatializer -e "s, spatializer , ," vlc-config
 
 #/bin/false
 
-make -j$CPUS 
+make #-j$CPUS 
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -371,6 +375,8 @@ test -x $BASEDIR/lib/postrun || exit 0
 %{_libdir}/pkgconfig/*
 
 %changelog
+* Mar 15 2010 - Gilles Dauphin
+- make install anywhere and compile with b134 distrib'gcc
 * Aug 26 2009 - Gilles dauphin
 - add patch , avoid empty struct for SS12
 * Fri Aug 14 2009 - Thomas Wagner

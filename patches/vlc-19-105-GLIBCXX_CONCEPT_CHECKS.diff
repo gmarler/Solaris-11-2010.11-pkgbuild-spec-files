@@ -1,0 +1,19 @@
+--- vlc-1.0.5/include/vlc_fixups.h.orig	2009-12-20 18:43:39.000000000 +0100
++++ vlc-1.0.5/include/vlc_fixups.h	2010-03-15 13:00:54.738717000 +0100
+@@ -175,4 +175,16 @@
+ void swab (const void *, void *, ssize_t);
+ #endif
+ 
++#ifdef __cplusplus
++// TODO : patch me
++// maybe a bug in vlc and/or the libc++ of gcc433
++// that is just to undef the symbol _GLIBCXX_CONCEPT_CHECKS, because the Solaris gcc433
++// is compiled with --enable-concept-checks
++
++#include <bits/c++config.h>
++#undef _GLIBCXX_CONCEPT_CHECKS
++#endif
++
++
++
+ #endif /* !LIBVLC_FIXUPS_H */
