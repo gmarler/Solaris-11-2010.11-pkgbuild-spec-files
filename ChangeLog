@@ -1,3 +1,19 @@
+2010-03-16  Brian Lu  <brian.lu@sun.com>
+
+	* SFEevolution-mapi.spec:
+          Build evolution-mapi under %name-%version directory
+          Add dependencies: SFEtdb, SFEtalloc, SFEtevent and SFEsamba4
+	* SFElibmapi.spec:
+	  Build it unde %name-%version directory
+	  Add dependencies: SFEtdb,SFEtalloc, SFEtevent and SFEsamba4
+	* SFEtevent.spec:
+	  Add dependencies: SFEtalloc
+	* SFEsamba4.spec:
+	* patches/samba4-01-create-symbol-link.diff:
+	* patches/samba4-02-remove-HAVE_IMMEDIATE_STRUCT.diff:
+	  Add patches: samba4-01-create-symbol-link.diff
+    	  and samba4-02-remove-HAVE_IMMEDIATE_STRUCT.diff
+
 2010-03-15  Albert Lee  <trisk@opensolaris.org>
 
 	* SFEbchunk.spec: Update to not require /usr/ucb/install. Add URL and

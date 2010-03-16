@@ -18,9 +18,18 @@ BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 ##  Package Requirements Section   ##
 #####################################
 BuildRequires: SUNWgcc
+BuildRequires: SFEtdb
+Requires: SFEtdb
+BuildRequires: SFEtalloc
+Requires: SFEtalloc
+BuildRequires: SFEtevent
+Requires: SFEtevent
+BuildRequires: SFEsamba4
+Requires: SFEsamba4
     
 %prep
-%setup -q -n openchange-%{version}-COCHRANE
+rm -rf %name-%version
+%setup -q -c -n %name-%version
 
 %build
 
@@ -29,7 +38,7 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
      CPUS=1
 fi
 
-#export CFLAGS="%optflags"
+cd openchange-%{version}-COCHRANE
 export CFLAGS="-g -D__FUNCTION__=__func__"
 export LDFLAGS="%_ldflags -ltevent"
 
@@ -41,6 +50,7 @@ make -j$CPUS
 
 %install
 rm -rf $RPM_BUILD_ROOT
+cd openchange-%{version}-COCHRANE
 
 make install DESTDIR=$RPM_BUILD_ROOT
 
@@ -68,6 +78,9 @@ rm -rf $RPM_BUILD_ROOT
 /usr/modules/*
 
 %changelog
+* Tue Mar 16 2010 - brian.lu@sun.com
+- Build it unde %name-%version directory
+- Add dependencies: SFEtdb,SFEtalloc, SFEtevent and SFEsamba4
 * Wed Dec 02 2009 - brian.lu@sun.com
 - Add a new patch libmapi-03-remove-gcc-options.diff
   Add a new patch libmapi-05-samba4alpha9.diff for Samba4 alpha9

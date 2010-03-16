@@ -16,11 +16,11 @@ BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 
 Requires: SUNWPython26
-%prep
-rm -rf %{source_name} 
-rm -rf %name-%version
-mkdir %name-%version
+Requires: SFEtalloc
+BuildRequires: SFEtalloc
 
+%prep
+rm -rf %name-%version
 %setup -q -c -n %name-%version  
 
 %build
@@ -63,6 +63,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/*
 
 %changelog
+* Tue Mar 16 2010 - brian.lu@sun.com
+- Add dependencies: SFEtalloc
 * Thu Aug 27 2009 - brian.lu@sun.com
 - add "-mt" to CFLAGS to set errno correctly in MT environment
 * Wed Jun 03 2009 - brian.lu@sun.com

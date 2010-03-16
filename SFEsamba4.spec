@@ -11,10 +11,9 @@ Summary:             samba - CIFS Server and Domain Controller v4
 Version:             4.0.0
 Source:              http://us5.samba.org/samba/ftp/samba4/%{source_name}.tar.gz
 
-# bugzilla 6945
-#Patch1:              samba4-01-solaris.diff
-# bugzilla 6931
-#Patch2:              samba4-02-gpg-error.diff
+Patch1: samba4-01-create-symbol-link.diff
+Patch2: samba4-02-remove-HAVE_IMMEDIATE_STRUCT.diff
+
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -28,8 +27,10 @@ SUNW_BaseDir:            /
 
 %prep
 rm -rf %name-%version
-mkdir %name-%version
-%setup -q -c -n %name-%version 
+%setup -q -c -n %name-%version
+%patch1 -p0
+%patch2 -p0
+
 
 %build
 
@@ -110,6 +111,9 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0775, root, sys) /var/log/samba
 
 %changelog
+* Tue Mar 16 2010 - brian.lu@sun.com
+- Add patches: samba4-01-create-symbol-link.diff
+  and samba4-02-remove-HAVE_IMMEDIATE_STRUCT.diff 
 * Sat Mar 13 2010 - brian.lu@sun.com
 - Build samba4 under SUNWsamba4-4.0.0 directory
 * Wed Dec 02 2009 - brian.lu@sun.com

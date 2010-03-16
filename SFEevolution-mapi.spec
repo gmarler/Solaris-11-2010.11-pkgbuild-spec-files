@@ -14,9 +14,16 @@ SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 
+BuildRequires: SFElibmapi
+Requires: SFElibmapi
+
+BuildRequires: SUNWevolution
+Requires: SUNWevolution
 
 %prep
-%setup -q -n evolution-mapi-%{version}
+rm -rf %name-%version
+%setup -q -c -n %name-%version 
+cd evolution-mapi-%{version}
 %patch1 -p1
 
 %build
@@ -26,7 +33,7 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
      CPUS=1
 fi
 
-#export CFLAGS="%optflags -features=extensions"
+cd evolution-mapi-%{version}
 export CFLAGS="-g -features=extensions"
 export LDFLAGS="%_ldflags"
 
@@ -40,6 +47,7 @@ make -j$CPUS
 
 %install
 rm -rf $RPM_BUILD_ROOT
+cd evolution-mapi-%{version}
 
 make install DESTDIR=$RPM_BUILD_ROOT
 cd $RPM_BUILD_ROOT/%{_libdir}
@@ -70,6 +78,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr (0755, root, other) %{_datadir}/locale
 
 %changelog
+* Tue Mar 16 2010 - brian.lu@sun.com
+- Build evolution-mapi under %name-%version directory
+  Add dependencies: SFEtdb, SFEtalloc, SFEtevent and SFEsamba4
 * Thu Jan 14 2010 - brian.lu@sun.com
 - Bump to 0.28.2
 * Wed Feb 18 2009 - jedy.wang@sun.com

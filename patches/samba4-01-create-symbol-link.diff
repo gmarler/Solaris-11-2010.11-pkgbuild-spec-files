@@ -1,0 +1,20 @@
+--- samba-4.0.0alpha11/source4/script/installlib.sh.orig	2010-03-12 13:06:17.350844798 +0800
++++ samba-4.0.0alpha11/source4/script/installlib.sh	2010-03-12 13:05:26.062347068 +0800
+@@ -9,6 +9,7 @@
+ for p in $*; do
+  p2=`basename $p`
+  lnname=`echo $p2 | sed -e "s/\.$SHLIBEXT.*/.$SHLIBEXT/"`
++ soname=`dump -Lv $p | grep SONAME | awk '{ print $3 }'`
+  echo Installing $p as $LIBDIR/$p2
+  if [ -f $LIBDIR/$p2 ]; then
+    rm -f $LIBDIR/$p2.old
+@@ -18,6 +19,9 @@
+  if [ $p2 != $lnname ]; then
+   ln -sf $p2 $LIBDIR/$lnname
+  fi
++ if [ $lnname != $soname ]; then
++  ln -sf $p2 $LIBDIR/$soname
++ fi
+ done
+ 
+ cat << EOF

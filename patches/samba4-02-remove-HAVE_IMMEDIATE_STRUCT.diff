@@ -1,0 +1,64 @@
+--- samba-4.0.0alpha11/source4/auth/gensec/gensec.pc.in.old	2010-03-16 14:27:16.070912344 +0800
++++ samba-4.0.0alpha11/source4/auth/gensec/gensec.pc.in	2010-03-16 14:27:25.477988992 +0800
+@@ -8,4 +8,4 @@
+ Description: Generic Security Library
+ Version: 0.0.1
+ Libs: -L${libdir} -lgensec 
+-Cflags: -I${includedir}  -DHAVE_IMMEDIATE_STRUCTURES=1
++Cflags: -I${includedir}  
+--- samba-4.0.0alpha11/source4/param/samba-hostconfig.pc.in.old	2010-03-16 14:26:29.568651988 +0800
++++ samba-4.0.0alpha11/source4/param/samba-hostconfig.pc.in	2010-03-16 14:26:46.291304499 +0800
+@@ -7,4 +7,4 @@
+ Description: Host-wide Samba configuration
+ Version: 0.0.1
+ Libs: -L${libdir} -lsamba-hostconfig 
+-Cflags: -I${includedir}  -DHAVE_IMMEDIATE_STRUCTURES=1
++Cflags: -I${includedir}  
+--- samba-4.0.0alpha11/source4/lib/registry/registry.pc.in.old	2010-03-16 14:29:34.669565937 +0800
++++ samba-4.0.0alpha11/source4/lib/registry/registry.pc.in	2010-03-16 14:29:43.462899223 +0800
+@@ -9,4 +9,4 @@
+ Requires.private: ldb
+ Version: 0.0.1
+ Libs: -L${libdir} -lregistry 
+-Cflags: -I${includedir}  -DHAVE_IMMEDIATE_STRUCTURES=1
++Cflags: -I${includedir}  
+--- samba-4.0.0alpha11/source4/librpc/dcerpc_samr.pc.in.old	2010-03-16 14:27:49.180654385 +0800
++++ samba-4.0.0alpha11/source4/librpc/dcerpc_samr.pc.in	2010-03-16 14:28:01.736939570 +0800
+@@ -8,4 +8,4 @@
+ Requires.private: dcerpc ndr
+ Version: 0.0.1
+ Libs: -L${libdir} -ldcerpc_samr 
+-Cflags: -I${includedir}  -DHAVE_IMMEDIATE_STRUCTURES=1
++Cflags: -I${includedir}  
+--- samba-4.0.0alpha11/source4/librpc/dcerpc_atsvc.pc.in.old	2010-03-16 14:28:29.892939420 +0800
++++ samba-4.0.0alpha11/source4/librpc/dcerpc_atsvc.pc.in	2010-03-16 14:28:38.741438240 +0800
+@@ -8,4 +8,4 @@
+ Requires.private: dcerpc ndr
+ Version: 0.0.1
+ Libs: -L${libdir} -ldcerpc_atsvc
+-Cflags: -I${includedir}  -DHAVE_IMMEDIATE_STRUCTURES=1
++Cflags: -I${includedir}  
+--- samba-4.0.0alpha11/source4/librpc/dcerpc.pc.in.old	2010-03-16 14:28:56.449921109 +0800
++++ samba-4.0.0alpha11/source4/librpc/dcerpc.pc.in	2010-03-16 14:29:06.586995117 +0800
+@@ -8,4 +8,4 @@
+ Requires: ndr
+ Version: 0.0.1
+ Libs: -L${libdir} -ldcerpc 
+-Cflags: -I${includedir} -DHAVE_IMMEDIATE_STRUCTURES=1
++Cflags: -I${includedir} 
+--- samba-4.0.0alpha11/librpc/ndr.pc.in.old	2010-03-16 14:30:18.211188795 +0800
++++ samba-4.0.0alpha11/librpc/ndr.pc.in	2010-03-16 14:30:33.945781432 +0800
+@@ -8,4 +8,4 @@
+ Requires: samba-hostconfig talloc
+ Version: 0.0.1
+ Libs: -L${libdir} -lndr 
+-Cflags: -I${includedir}  -DHAVE_IMMEDIATE_STRUCTURES=1 -D_GNU_SOURCE=1
++Cflags: -I${includedir}  
+--- samba-4.0.0alpha11/lib/torture/torture.pc.in.old	2010-03-16 14:25:50.255464448 +0800
++++ samba-4.0.0alpha11/lib/torture/torture.pc.in	2010-03-16 14:26:03.386375241 +0800
+@@ -9,4 +9,4 @@
+ Requires: talloc
+ Version: 0.0.1
+ Libs: -L${libdir} -ltorture 
+-Cflags: -I${includedir}  -DHAVE_IMMEDIATE_STRUCTURES=1
++Cflags: -I${includedir}  
