@@ -1,0 +1,19 @@
+--- qt-x11-opensource-src-4.5.2/src/corelib/global/qglobal.h.orig	2009-06-20 06:57:57.000000000 +0200
++++ qt-x11-opensource-src-4.5.2/src/corelib/global/qglobal.h	2010-03-16 14:27:37.032103000 +0100
+@@ -42,6 +42,16 @@
+ #ifndef QGLOBAL_H
+ #define QGLOBAL_H
+ 
++#ifdef __cplusplus
++// TODO : patch me GD 20100316
++// maybe a bug in vlc and/or the libc++ of gcc433 in OPensolaris b134
++// that is just to undef the symbol _GLIBCXX_CONCEPT_CHECKS, because the Solaris gcc433
++// is compiled with --enable-concept-checks
++
++#include <bits/c++config.h>
++#undef _GLIBCXX_CONCEPT_CHECKS
++#endif
++
+ #include <stddef.h>
+ 
+ #define QT_VERSION_STR "4.5.2"

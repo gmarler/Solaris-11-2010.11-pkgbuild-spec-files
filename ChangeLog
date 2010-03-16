@@ -1,3 +1,11 @@
+2010-03-15  Gilles Dauphin
+
+	* patches vlc for gcc43 provide by b134
+	* g++ --enable-concept-check is the problem, it is enable in the b134 distrib.
+	* experimental/SFEvlc-1.0.5-b134.spec
+	* experimental/SFEqt45-gcc-usr-sfe.spec install in a possible /usr/SFE rep.
+	* qt45 patch for gcc433 of b134 distrib
+
 2010-03-16  Brian Lu  <brian.lu@sun.com>
 
 	* SFEevolution-mapi.spec:

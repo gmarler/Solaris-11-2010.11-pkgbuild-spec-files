@@ -15,6 +15,7 @@ Version:             4.5.2
 Source:              ftp://ftp.trolltech.com/qt/source/qt-x11-opensource-src-%{version}.tar.bz2
 Patch1:              qt-01-use_bash.diff
 #Patch2:              qt-02-temp-removal-of-getresuid.diff
+Patch3:              qt45-01-GLIBCXX_CONCEPT_CHECKS.diff
 
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
@@ -52,6 +53,7 @@ Requires: %name
 %setup -q -n qt-x11-opensource-src-%version
 #%patch1 -p10
 #%patch2 -p1
+%patch3 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -59,12 +61,14 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
      CPUS=1
 fi
 
+
 #export CC=/usr/gnu/bin/gcc
 #export CXX=/usr/gnu/bin/g++
 export CC=/usr/gcc/4.3/bin/gcc
 export CXX=/usr/gcc/4.3/bin/g++
 export CFLAGS="-O4 -fPIC -DPIC -fno-omit-frame-pointer"
 export LD="/usr/bin/ld"
+export PATH="/usr/gcc/4.3/bin:$PATH"
 #export LDFLAGS="%_ldflags"
 
 #echo yes | ./configure -prefix %{_prefix} \
@@ -80,8 +84,8 @@ export LD="/usr/bin/ld"
            -demosdir %{_datadir}/qt/demos \
            -sysconfdir %{_sysconfdir} \
            -no-exceptions \
-           -L /usr/SFE/lib \
-           -R /usr/SFE/lib   <<EOF
+           -L /usr/gcc/4.3/lib \
+           -R /usr/gcc/4.3/lib   <<EOF
 o
 yes
 EOF

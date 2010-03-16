@@ -26,6 +26,11 @@ BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 
 ##TODO## all Requirements
 BuildRequires: CBEenv
+# if your are < b134
+#Requires:	SUNWGtk
+#Requires:	SUNWGlib
+Requires:	library/desktop/gtk1
+Requires:	library/glib1
 
 
 %prep
