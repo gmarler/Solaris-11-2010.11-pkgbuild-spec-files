@@ -7,8 +7,8 @@
 %include Solaris.inc
 
 Name:          SFEseamonkey
-Summary:       seamonkey - all-in-one internet application suite
-Version:       1.1.17
+Summary:       Mozilla Seamonkey - All-in-one internet application suite
+Version:       1.1.19
 Source:        http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/seamonkey-%{version}.source.tar.bz2
 URL:           http://www.mozilla.org/projects/seamonkey/
 SUNW_BaseDir:  %{_basedir}
@@ -16,6 +16,20 @@ BuildRoot:     %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 BuildRequires: SUNWzip
 BuildRequires: SUNWgtar
+Requires:      SUNWdtbas
+Requires:      SUNWfreetype2
+Requires:      SUNWfontconfig
+Requires:      SUNWglib2
+Requires:      SUNWgnome-component
+Requires:      SUNWgnome-libs
+Requires:      SUNWgnome-vfs
+Requires:      SUNWgtk2
+Requires:      SUNWlibC
+Requires:      SUNWlibms
+Requires:      SUNWlibmsr
+Requires:      SUNWpango
+Requires:      SUNWsqlite3
+Requires:      SUNWxwplt
 
 %description
 Web-browser, advanced e-mail and newsgroup client, IRC chat client,
@@ -129,7 +143,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/*
 
 %changelog
-* Sat Jul 18 2008 - matt@greenviolet.net
+* Thu Mar 18 2010 - matt@greenviolet.net
+- bump to 1.1.19
+- first attempt to fix dependencies
+* Sat Jul 18 2009 - matt@greenviolet.net
 - bump to 1.1.17
 * Fri Dec 09 2008 - alfred.peng@sun.com
 - bump to 1.1.14
