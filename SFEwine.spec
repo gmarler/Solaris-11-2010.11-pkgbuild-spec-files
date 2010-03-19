@@ -46,7 +46,6 @@ Source109:              wine-winemine.desktop
 Source110:              wine-wordpad.desktop
 Source1000:             wine-svg-icons.tar.bz2
 NoSource:		1
-Patch:                  wine-01-SIOCGIFHWADDR.diff
 Group:			System/Virtualization
 License:		LGPL
 SUNW_HotLine:		http://www.winehq.org/help
@@ -102,7 +101,6 @@ Requires: %name
 %prep
 %setup -q -n %{sname}-%{version}
 %setup -n %{sname}-%{version} -D -T -a 1000
-%patch -p0
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -265,6 +263,9 @@ rm -rf $RPM_BUILD_ROOT
 #%dir %attr (0755, root, other) %{_datadir}/aclocal
 
 %changelog
+* Fri Mar 19 2010 - matt@greenviolet.net
+- Remove patch for Wine bug 20714. 1.1.41 has a fix.
+ 
 * Fri Mar 05 2010 - matt@greenviolet.net
 - Add wine-gecko.
 

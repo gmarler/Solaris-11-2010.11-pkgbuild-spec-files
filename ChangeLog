@@ -1,7 +1,10 @@
+2010-03-19  Matt Lewandowsky  <matt@greenviolet.net>
+
+	* SFEwine.spec: Remove patch for Wine bug 20714. 1.1.41 has a fix.
+
 2010-03-18  Matt Lewandowsky  <matt@greenviolet.net>
 
-	* bump to 1.1.19
-	* first attempt to fix dependencies
+	* SFEseamonkey.spec: bump to 1.1.19. first attempt to fix dependencies
 
 2010-03-15  Gilles Dauphin
 
