@@ -9,16 +9,18 @@
 2010-03-15  Gilles Dauphin
 
 	* patches vlc for gcc43 provide by b134
-	* g++ --enable-concept-check is the problem, it is enable in the b134 distrib.
+	* g++ --enable-concept-check is the problem, it is enable in the b134
+	  distrib.
 	* experimental/SFEvlc-1.0.5-b134.spec
-	* experimental/SFEqt45-gcc-usr-sfe.spec install in a possible /usr/SFE rep.
+	* experimental/SFEqt45-gcc-usr-sfe.spec install in a possible /usr/SFE
+	  rep.
 	* qt45 patch for gcc433 of b134 distrib
 
 2010-03-16  Brian Lu  <brian.lu@sun.com>
 
 	* SFEevolution-mapi.spec:
-          Build evolution-mapi under %name-%version directory
-          Add dependencies: SFEtdb, SFEtalloc, SFEtevent and SFEsamba4
+	  Build evolution-mapi under %name-%version directory
+	  Add dependencies: SFEtdb, SFEtalloc, SFEtevent and SFEsamba4
 	* SFElibmapi.spec:
 	  Build it unde %name-%version directory
 	  Add dependencies: SFEtdb,SFEtalloc, SFEtevent and SFEsamba4
@@ -28,7 +30,7 @@
 	* patches/samba4-01-create-symbol-link.diff:
 	* patches/samba4-02-remove-HAVE_IMMEDIATE_STRUCT.diff:
 	  Add patches: samba4-01-create-symbol-link.diff
-    	  and samba4-02-remove-HAVE_IMMEDIATE_STRUCT.diff
+	  and samba4-02-remove-HAVE_IMMEDIATE_STRUCT.diff
 
 2010-03-15  Albert Lee  <trisk@opensolaris.org>
 
@@ -214,7 +216,7 @@
 2010-03-03  Matt Lewandowsky  <matt@greenviolet.net>
 
 	* SFEfreetds.spec, patches/freetds-01-shell.diff: Update man page
-          packaging, fix configure to work with old Solaris /bin/sh
+	  packaging, fix configure to work with old Solaris /bin/sh
 
 2010-03-03  Matt Lewandowsky  <matt@greenviolet.net>
 
@@ -262,15 +264,15 @@
 
 2010-02-25  James Choi  <jchoi42@pha.jhu.edu>
 
-        * SFElibelf.spec: Initial spec
-        * base-specs/libelf.spec: Initial spec
+	* SFElibelf.spec: Initial spec
+	* base-specs/libelf.spec: Initial spec
 
 2010-02-25  Simon Jin  <yuntong.jin@sun.com>
 
 	* SFEwebkit-cstd.spec:
 	* patches/webkit-23-a11y-34463.diff:
 	* patches/webkit-24-a11y-35169.diff:
-          Add patch for 34463 35169 in webkit community	
+	  Add patch for 34463 35169 in webkit community	
 
 2010-02-24  Milan Jurik <sfnet@xylab.cz>
 
@@ -316,14 +318,14 @@
 
 2010-02-12  James Choi  <jchoi42@pha.jhu.edu>
 
-        * base-specs/gio.spec: add patch, glib version check
-        * SFEgio.spec: Remove files already provided by SUNWglib2-devel
-        * patches/gio-01-strfunc.diff: fix G_GNUC_PRETTY_FUNCTION
-        * base-specs/gvfs.spec: bump to 1.5.1
-        * SFEgnome-gvfs.spec: update %files
-        * base-specs/epiphany.spec: bump to 2.28.2, remove depreciated patches
-        * SFEepiphany.spec: add devel pkg, clean up spec file, add dependencies
-        * patches/epiphany-01-grep-q.diff, patches/epiphany-02-grep-q.diff:
+	* base-specs/gio.spec: add patch, glib version check
+	* SFEgio.spec: Remove files already provided by SUNWglib2-devel
+	* patches/gio-01-strfunc.diff: fix G_GNUC_PRETTY_FUNCTION
+	* base-specs/gvfs.spec: bump to 1.5.1
+	* SFEgnome-gvfs.spec: update %files
+	* base-specs/epiphany.spec: bump to 2.28.2, remove depreciated patches
+	* SFEepiphany.spec: add devel pkg, clean up spec file, add dependencies
+	* patches/epiphany-01-grep-q.diff, patches/epiphany-02-grep-q.diff:
 	  update for 2.28.2
 
 2010-02-05  Albert Lee  <trisk@opensolaris.org>
@@ -449,7 +451,7 @@
 
 2010-02-02  Thomas Wagner  <tom68@users.sourceforge.net>
 
-        * SFEtypolight.spec: *new* - slim CMS using mysql (and other DB) -
+	* SFEtypolight.spec: *new* - slim CMS using mysql (and other DB) -
 	  nothing in common with typo3
 
 2010-02-01  Brian Cameron  <brian.cameron@sun.com>
@@ -480,7 +482,7 @@
 
 	* SFEgnome-eog-plugins.spec:
 	* base-specs/eog-plugins.spec:
-          Remove .la .a file from package, disable postr plugins	
+	  Remove .la .a file from package, disable postr plugins	
 
 2010-01-28  Milan Jurik <sfnet@xylab.cz>
 
@@ -515,7 +517,7 @@
 	* patches/webkit-20-visibility.diff:
 	* patches/webkit-21-vector-not-const.diff:
 	* patches/webkit-22-not-reinterpretcast.diff:
-          Bump to 1.1.19 and repatched 	
+	  Bump to 1.1.19 and repatched 	
 
 2010-01-25  Jedy Wang  <jedy.wang@sun.com>
 
@@ -560,18 +562,18 @@
 	* SFEgedit-plugins.spec:
 	* SFEgnome-eog-plugins.spec:
 	* base-specs/eog-plugins.spec:
-          Rename SFEgedit-plugins to SFEgnome-gedit-plugins, update dependency	
+	  Rename SFEgedit-plugins to SFEgnome-gedit-plugins, update dependency	
 
 2010-01-22  Simon Jin <yuntong.jin@sun.com>
 
 	* SFEgedit-plugins.spec:
-         Update dependecy 	
+	  Update dependecy 	
 
 2010-01-22  Simon Jin <yuntong.jin@sun.com>
 
 	* SFEgnome-eog-plugins.spec:
 	* base-specs/eog-plugins.spec:
-          Update license and dependency 	
+	  Update license and dependency 	
 
 2010-01-21  Milan Jurik <sfnet@xylab.cz>
 
@@ -581,25 +583,25 @@
 
 	* SFEwebkit-cstd.spec:
 	* patches/webkit-06-17-noapache.diff:
-          Init spec file of webkit which build with Cstd instead of stdcxx4
+	  Init spec file of webkit which build with Cstd instead of stdcxx4
 
 2010-01-21  Simon Jin <yuntong.jin@sun.com>
 
 	* SFEgedit-plugins.spec:
 	* copyright/gedit-plugins.copyright:
-          Init spec for gedit-plugins	
+	  Init spec for gedit-plugins	
 
 2010-01-19  Simon Jin <yuntong.jin@sun.com>
 
 	* SFElibchamplain.spec:
 	* base-specs/libchamplain.spec:
-          Bump to 0.4.3	
+	  Bump to 0.4.3	
 
 2010-01-19  Simon Jin  <yuntong.jin@sun.com>
 
 	* SFEgnome-eog-plugins.spec:
 	* base-specs/eog-plugins.spec:
-         Init SFEgnome-eog-plugins.spec, that plugins of eog	
+	  Init SFEgnome-eog-plugins.spec, that plugins of eog	
 
 2010-01-18  Simon Jin  <yuntong.jin@sun.com>
 
@@ -614,13 +616,13 @@
 	* patches/enchant-04-ordering.diff:
 	* patches/enchant-05-build-ispell.diff:
 	* patches/enchant-06-zemberek-dict-only-if-installed.diff:
-          Init SFEgnome-spell-apachestd.spec	
+	  Init SFEgnome-spell-apachestd.spec	
 
 2010-01-18  Simon  <yuntong.jin@sun.com>
 
 	* SFElibchamplain.spec:
 	* base-specs/libchamplain.spec:
-          Add doc like copyright file etc and licence info	
+	  Add doc like copyright file etc and licence info	
 
 2010-01-17  Milan Jurik <sfnet@xylab.cz>
 
