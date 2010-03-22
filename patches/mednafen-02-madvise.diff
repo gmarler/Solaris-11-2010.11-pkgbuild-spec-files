@@ -1,0 +1,23 @@
+--- src/file.cpp.orig	2010-03-22 03:40:46.260186521 -0700
++++ src/file.cpp	2010-03-22 03:56:43.183184618 -0700
+@@ -39,6 +39,11 @@
+ #include "memory.h"
+ #include "general.h"
+ 
++#if defined(sun)
++// Nasty fix for http://bugs.opensolaris.org/bugdatabase/view_bug.do?bug_id=6514594
++extern "C" int madvise(caddr_t, size_t, int);
++#endif
++
+ static const int64 MaxROMImageSize = (int64)1 << 26; // 2 ^ 26 = 64MiB
+ 
+ enum
+@@ -190,7 +195,7 @@
+    //puts("mmap'ed");
+    tmp->is_mmap = TRUE;
+    #ifdef HAVE_MADVISE
+-   if(0 == madvise(tmp->data, tmp->size, MADV_SEQUENTIAL | MADV_WILLNEED))
++   if(0 == madvise((caddr_t)tmp->data, tmp->size, MADV_SEQUENTIAL | MADV_WILLNEED))
+    {
+     //puts("madvised");
+    }

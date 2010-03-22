@@ -1,0 +1,20 @@
+--- src/tremor/misc.h.orig	2010-03-22 02:24:16.027216728 -0700
++++ src/tremor/misc.h	2010-03-22 02:24:51.994485305 -0700
+@@ -33,7 +33,7 @@
+ #include <sys/types.h>
+ #endif
+ 
+-#if BYTE_ORDER==LITTLE_ENDIAN
++#if defined(_LITTLE_ENDIAN)
+ union magic {
+   struct {
+     ogg_int32_t lo;
+@@ -43,7 +43,7 @@
+ };
+ #endif 
+ 
+-#if BYTE_ORDER==BIG_ENDIAN
++#if defined(_BIG_ENDIAN)
+ union magic {
+   struct {
+     ogg_int32_t hi;

@@ -1,3 +1,9 @@
+2010-03-22  Matt Lewandowsky  <matt@greenviolet.net>
+
+	* SFEmednafen.spec, patches/mednafen-01-tremor.diff,
+	  patches/mednafen-02-madvise.diff, copyright/SFEmednafen.copyright:
+	  Initial spec file.
+
 2010-03-19  Matt Lewandowsky  <matt@greenviolet.net>
 
 	* SFEwine.spec: Remove patch for Wine bug 20714. 1.1.41 has a fix.
