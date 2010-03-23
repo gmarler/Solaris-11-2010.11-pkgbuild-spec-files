@@ -1,0 +1,24 @@
+--- src/wswan/debug.h.orig	2010-03-23 01:13:42.937300232 -0700
++++ src/wswan/debug.h	2010-03-23 01:13:51.540767144 -0700
+@@ -1,3 +1,4 @@
++#undef CS
+ #ifndef __WSWAN_DEBUG_H
+ #define __WSWAN_DEBUG_H
+ 
+--- src/wswan/v30mz-private.h.orig	2010-03-23 01:18:11.759862651 -0700
++++ src/wswan/v30mz-private.h	2010-03-23 01:19:34.111661444 -0700
+@@ -1,3 +1,4 @@
++#undef SS
+ #define cpu_readop cpu_readmem20	
+ #define cpu_readop_arg cpu_readmem20	
+ 
+--- src/wswan/dis/disasm.h.orig	2010-03-23 01:20:27.356416193 -0700
++++ src/wswan/dis/disasm.h	2010-03-23 01:21:08.043617348 -0700
+@@ -1,3 +1,7 @@
++#undef CS
++#undef DS
++#undef ES
++#undef SS
+ #ifndef _BX_DISASM_H_
+ #define _BX_DISASM_H_
+ 

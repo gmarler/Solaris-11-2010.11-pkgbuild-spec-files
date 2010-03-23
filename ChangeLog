@@ -1,3 +1,7 @@
+2010-03-23  Matt Lewandowsky  <matt@greenviolet.net>
+	* SFEmednafen.spec, patches/mednafen-03-wswan.diff:
+	  Enable WonderSwan. Clean up description.
+
 2010-03-22  Matt Lewandowsky  <matt@greenviolet.net>
 
 	* SFEmednafen.spec, patches/mednafen-01-tremor.diff,
