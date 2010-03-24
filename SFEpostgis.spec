@@ -24,17 +24,22 @@ Patch1:			postgis-Makefile.diff
 Patch2:			postgis-isinf.diff
 Patch3:			postgis-Makefile2.diff
 BuildRoot:		%{_tmppath}/%{name}-%{version}-build
-Requires:		SPROcc
-Requires:		SPROcmpl
-Requires:		SPROcpl
+#Requires:		SPROcc
+#Requires:		SPROcmpl
+#Requires:		SPROcpl
+Requires:		sunstudioexpress
+Requires:		SUNWpmdbdpg
 Requires:		SUNWgmake
 Requires:		SUNWbtool
 Requires:		SUNWcsu
-Requires:		SUNWpmdbdpg
 Requires:		SUNWpng
 Requires:		SUNWjpg
 Requires:		SUNWgnu-readline
 Requires:		SUNWpcre
+Requires:		SUNWzlib
+Requires:		postgres-83/developer
+Requires:		postgres-83/library
+Requires:		SUNWzlib
 Requires:		SUNWzlib
 
 Meta(info.upstream):		postgis.refractions.net
