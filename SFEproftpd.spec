@@ -14,7 +14,7 @@
 
 Name:                SFEproftpd
 Summary:             Highly configurable FTP server
-Version:             1.3.1rc2
+Version:             1.3.3
 License:             GPL
 Group:               Applications/Internet
 URL:                 http://www.proftpd.org/
@@ -65,7 +65,7 @@ rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
 
 rmdir ${RPM_BUILD_ROOT}%{_prefix}/libexec
-rmdir ${RPM_BUILD_ROOT}%{_prefix}/var/proftpd
+#rmdir ${RPM_BUILD_ROOT}%{_prefix}/var/proftpd
 rmdir ${RPM_BUILD_ROOT}%{_prefix}/var
 rmdir ${RPM_BUILD_ROOT}%{_datadir}/locale
 
@@ -76,6 +76,8 @@ rm -rf $RPM_BUILD_ROOT
 %defattr (-, root, bin)
 %dir %attr (0755, root, bin) %{_bindir}
 %{_bindir}/*
+%dir %attr (0755, root, bin) %{_libdir}
+%{_libdir}/*
 %dir %attr (0755, root, bin) %{_sbindir}
 %{_sbindir}/*
 %dir %attr (0755, root, sys) %{_datadir}
@@ -95,6 +97,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mars 24 2010 - Gilles dauphin
+- bump to 1.3.3
 * Mon Feb 12 2007 - Damien Carbery <daymobrew@users.sourceforge.net>
 - Remove patch, 01-no-chown, and use current user's name and group in call to
   configure.
