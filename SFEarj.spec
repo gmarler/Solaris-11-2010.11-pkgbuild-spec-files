@@ -3,10 +3,11 @@
 #
 # includes module(s): arj
 #
+
 %include Solaris.inc
 
 %define src_name	arj
-%define src_url		http://testcase.newmail.ru
+%define src_url		http://downloads.sourceforge.net
 %define src_version 3.10.22
 # =========================================================================== 
 #                    SVR4 required definitions
@@ -21,7 +22,7 @@ SUNW_BaseDir:	%{_basedir}
 Name:                   SFEarj
 Summary:                ARJ - File archiving utlitity
 Version:                %{src_version}
-Source:                 %{src_url}/files/%{src_name}-%{version}.tar.gz
+Source:                 http://downloads.sourceforge.net/%{src_name}/%{src_name}-%{version}.tar.gz
 SUNW_BaseDir:           %{_basedir}
 BuildRoot:              %{_tmppath}/%{name}-%{version}-build
 Patch0:                 %{src_name}-01-%{version}.gcc.diff
@@ -29,6 +30,13 @@ Patch0:                 %{src_name}-01-%{version}.gcc.diff
 Requires: SUNWcsl
 Requires: SUNWlibms
 BuildRequires: SUNWgcc
+
+# OpenSolaris IPS Manifest Fields
+Meta(info.upstream): Andrew Belov <andrew_belov@users.sourceforge.net>
+Meta(info.maintainer): pkgbuild-sfe-devel@lists.sourceforge.net
+Meta(info.classification): org.opensolaris.category.2008:Applications/System Utilities
+
+
 
 %prep
 %setup -q -n %{src_name}-%{version}
