@@ -13,7 +13,8 @@
 
 Name:                   SFEtremulous
 Summary:                Tremulous - Team-based first-person shooter game with RTS elements
-Version:                1.1.0-r971
+#Version:                1.1.0-r971
+Version:                1.1.0.971
 URL:                    http://tremulous.net/
 Source:                 %{src_url}/%{src_name}-%{src_version}.zip
 Source1:                http://dl.trem-servers.com/tremulous-gentoopatches-1.1.0-r5.zip
@@ -116,6 +117,7 @@ rm -rf $RPM_BUILD_ROOT
 %changelog
 * Mars 24 2010 - Gilles Dauphin
 - adjust FLAGS for includedir
+- compatible IPS version
 * Sun Dec 07 2008 - dauphin@enst.fr
 - SUNWcurl is in B101
 * Thu Sep 20 2007 - trisk@acm.jhu.edu
