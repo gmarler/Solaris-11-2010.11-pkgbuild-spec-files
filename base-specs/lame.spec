@@ -6,7 +6,7 @@
 
 Name:                    SFElame
 Summary:                 lame  - Ain't an MP3 Encoder
-Version:                 3.98.3
+Version:                 3.98.4
 Source:                  %{sf_download}/lame/lame-%{version}.tar.gz
 # date:2008-08-17 owner:halton type:bug bugid:2054873
 Patch1:                  lame-01-configure-gtk.diff
@@ -55,6 +55,8 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/lib*a
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Wed Mar 24 2010 - Milan Jurik
+- update for 3.98.4
 * Tue Oct 06 2009 - Milan Jurik
 - LDFLAGS for gcc are not valid, removed
 - xmmintrin.h hack removed, configure script detects it correctly now

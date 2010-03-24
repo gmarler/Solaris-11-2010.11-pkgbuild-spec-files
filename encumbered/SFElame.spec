@@ -32,7 +32,7 @@
 
 Name:                    SFElame
 Summary:                 MP3 Encoders - lame and toolame
-Version:                 3.98.3
+Version:                 %{lame.version}
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -154,6 +154,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/doc/*
 
 %changelog
+* Wed Mar 24 2010 - Milan Jurik
+- update for 3.98.4
 * Wed Mar 03 2010 - Milan Jurik
 - update for 3.98.3
 * Tue Sep 15 2009 - Thomas Wagner
