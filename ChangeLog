@@ -11,6 +11,8 @@
 	* SFEarj, SFEpth minor patch
 	* SFEgnupg2 , look at _bindir in PATH
 	* SFEfvwm-theme, look at _bindir
+	* SFEisaexec-opt-sfe, because some package need isaexec
+	  and is not in the file system you install i.e /opt/SFE
 
 2010-03-24  Milan Jurik <sfnet@xylab.cz>
 
