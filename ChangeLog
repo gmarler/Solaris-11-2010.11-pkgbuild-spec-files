@@ -16,7 +16,8 @@
 
 2010-03-24  Milan Jurik <sfnet@xylab.cz>
 
-        * encumbered/SFElame.spec: update for 3.98.4
+	* encumbered/SFElame.spec: update for 3.98.4
+	* SFEopenttd.spec: move to freetype in main
 
 2010-03-23  Matt Lewandowsky  <matt@greenviolet.net>
 	* SFEmednafen.spec, patches/mednafen-03-wswan.diff:

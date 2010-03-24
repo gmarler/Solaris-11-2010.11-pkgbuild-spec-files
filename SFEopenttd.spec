@@ -26,8 +26,8 @@ BuildRequires:  SUNWfontconfig
 Requires:  SUNWfontconfig
 BuildRequires:  SUNWicu
 Requires:  SUNWicu
-BuildRequires:  SFEfreetype-devel
-Requires:  SFEfreetype
+BuildRequires:  SUNWfreetype2
+Requires:  SUNWfreetype2
 BuildRequires:  SUNWdoxygen
 
 %description
@@ -124,6 +124,8 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 %{_datadir}/openttd/*
 
 %changelog
+* Wed Mar 24 2010 - Milan Jurik
+- freetype from main as build dependency
 * Sat jan 16 2010 - Milan Jurik
 - update to 0.7.5
 - disable makepend because of CR 6917536
