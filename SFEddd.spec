@@ -5,15 +5,18 @@
 
 %include Solaris.inc
 
+#%define src_version 3.3.12-test6
+%define src_version 3.3.12
+
 Name:                SFEddd
 Summary:             graphical front-end for CLI debuggers
-Version:             3.3.12-test6
-Source:               http://www.mirrorservice.org/sites/download.sourceforge.net/pub/sourceforge/b/project/ba/bashdb/ddd/3.3.12-test6/ddd-%{version}.tar.gz
-#Source:              http://ftp.gnu.org/gnu/ddd/ddd-%{version}.tar.gz
+Version:             3.3.12
+#Source:               http://www.mirrorservice.org/sites/download.sourceforge.net/pub/sourceforge/b/project/ba/bashdb/ddd/3.3.12-test6/ddd-%{src_version}.tar.gz
+Source:              http://ftp.gnu.org/gnu/ddd/ddd-%{version}.tar.gz
 
 SUNW_BaseDir:        %{_basedir}
-BuildRoot:           %{_tmppath}/%{name}-%{version}-build
-SUNW_Copyright:      SUNWgftp.copyright
+BuildRoot:           %{_tmppath}/%{name}-%{src_version}-build
+SUNW_Copyright:      SFEddd.copyright
 %include default-depend.inc
 
 # Guarantee X environment, concisely (hopefully)
@@ -28,7 +31,7 @@ Requires: SUNWtexi
 %endif
 
 %prep
-%setup -q -n ddd-%version
+%setup -q -n ddd-%src_version
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -36,6 +39,7 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
      CPUS=1
 fi
 
+#export PATH=/usr/gcc/4.3/bi:$PATH
 export CFLAGS="%optflags"
 %if %option_with_fox
 export CFLAGS="$CFLAGS -I/usr/X11/include"
@@ -84,8 +88,10 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, bin) %{_bindir}
 %{_bindir}/*
 %dir %attr (0755, root, sys) %{_datadir}
-%dir %attr (0755, root, other) %{_datadir}/ddd-3.3.12-test6
-%{_datadir}/ddd-3.3.12-test6/*
+%dir %attr (0755, root, other) %{_datadir}/applications
+%{_datadir}/applications/*
+%dir %attr (0755, root, other) %{_datadir}/ddd-%{src_version}
+%{_datadir}/ddd-%{src_version}/*
 %dir %attr(0755, root, bin) %{_datadir}/info
 %{_datadir}/info/*
 %dir %attr (0755, root, bin) %{_mandir}
@@ -93,6 +99,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/*
 
 %changelog
+* Mar 16 2010 - Gilles Dauphin
+- official release of ddd
 * Thu Nov 15 2007 - daymobrew@users.sourceforge.net
 - Enable building with either SUNWlibsdl or SFEsdl.
 * Mon Jan 15 2007 - daymobrew@users.sourceforge.net
