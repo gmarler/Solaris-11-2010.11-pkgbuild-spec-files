@@ -2,6 +2,7 @@
 
 	* SFEproftpd to 1.3.3
 	* update ddd to official release
+	* CFLAGS for tremulous
 
 2010-03-24  Milan Jurik <sfnet@xylab.cz>
 

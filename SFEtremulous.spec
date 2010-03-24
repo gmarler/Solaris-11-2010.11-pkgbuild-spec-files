@@ -59,6 +59,7 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
 fi
 
 export CC=/usr/sfw/bin/gcc
+export CFLAGS="-I%{_includedir}"
 make USE_CURL_DLOPEN=0 USE_OPENAL_DLOPEN=0 USE_LOCAL_HEADERS=0
 
 %install
@@ -113,6 +114,8 @@ rm -rf $RPM_BUILD_ROOT
 #%{_datadir}/pixmaps/*
 
 %changelog
+* Mars 24 2010 - Gilles Dauphin
+- adjust FLAGS for includedir
 * Sun Dec 07 2008 - dauphin@enst.fr
 - SUNWcurl is in B101
 * Thu Sep 20 2007 - trisk@acm.jhu.edu
