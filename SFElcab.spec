@@ -21,16 +21,16 @@ SUNW_BaseDir:	%{_basedir}
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 Name:                   SFElcab
 Summary:                lcab - Microsoft cabinet file creator
-Version:                %{src_version}
-Source:                 %{src_url}/%{src_name}-%{version}.tar.gz
+Version:                1.0.12
+Source:                 %{src_url}/%{src_name}-%{src_version}.tar.gz
 SUNW_BaseDir:           %{_basedir}
-BuildRoot:              %{_tmppath}/%{name}-%{version}-build
+BuildRoot:              %{_tmppath}/%{name}-%{src_version}-build
 
 Requires: SUNWcsl
 Requires: SUNWlibms
 
 %prep
-%setup -q -n %{src_name}-%{version}
+%setup -q -n %{src_name}-%{src_version}
 autoreconf
 ./configure --prefix=%{_prefix} \
             --bindir=%{_bindir} 
@@ -51,6 +51,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/*
 
 %changelog
+* Mars 24 2010 - Gilles Dauphin
+- IPS versionning
 * Tue Feb 12 2008 <pradhap (at) gmail.com>
 - Fixed links
 * Sat Aug 11 2007 - ananth@sun.com
