@@ -4,7 +4,7 @@
 %include Solaris.inc
 
 Name:            SFEjhead
-Version:         2.82
+Version:         2.90
 Summary:         Tool for handling EXIF metadata in JPEG image files
 License:         Public Domain
 Group:           System Environment/Libraries
@@ -31,7 +31,7 @@ make
 
 %install
 install -Dp -m0755 jhead ${RPM_BUILD_ROOT}%{_bindir}/jhead
-install -Dp -m0755 jhead.1.gz ${RPM_BUILD_ROOT}%{_mandir}/man1/jhead.1.gz
+install -Dp -m0755 jhead.1 ${RPM_BUILD_ROOT}%{_mandir}/man1/jhead.1
 
 
 %clean
@@ -45,15 +45,19 @@ rm -rf ${RPM_BUILD_ROOT}
 
 %files
 %defattr (-, root, other)
-%doc changes.txt readme.txt usage.html
+%dir %attr (0755, root, other) %{_docdir}
+%{_docdir}/*
+#%doc changes.txt readme.txt usage.html
 %dir %attr (0755, root, bin) %{_bindir}
 %{_bindir}/jhead
 %dir %attr (0755, root, sys) %{_datadir}
 %dir %attr (0755, root, bin) %{_mandir}
 %dir %attr (0755, root, bin) %{_mandir}/man1
-%{_mandir}/man1/jhead.1.gz
+%{_mandir}/man1/jhead.1
 
 %changelog
+* Mar 16 2010 - Gilles Dauphin
+- bump release
 * Wed Sep 10 2008 - pradhap (at) gmail.com
 - doc file attribute set to root,other
 * Wed Sep 10 2008 - pradhap (at) gmail.com
