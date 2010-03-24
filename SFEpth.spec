@@ -35,7 +35,7 @@ make
 %install
 rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
-rm -rf $RPM_BUILD_ROOT/usr/lib/libpth.*a
+rm -rf $RPM_BUILD_ROOT%{_prefix}/lib/libpth.*a
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -79,5 +79,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man3/*
 
 %changelog
+* Mar 16 2010 - Gilles dauphin
+- install in /opt/SFE
 * Sat Dec 29 2007 - jijun.yu@sun.com
 - Initial spec
