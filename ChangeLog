@@ -8,6 +8,8 @@
 	* SFElibksba, patch
 	* SFElcab, Ips versioning
 	* SFEpostgis, update for b134
+	* SFEarj, SFEpth minor patch
+	* SFEgnupg2 , look at _bindir in PATH
 
 2010-03-24  Milan Jurik <sfnet@xylab.cz>
 

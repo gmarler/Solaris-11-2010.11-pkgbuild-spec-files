@@ -56,6 +56,7 @@ cd %name-%version
 cd ..
 
 %build
+export PATH="$PATH:%{_bindir}"
 export CFLAGS="%optflags"
 export MSGFMT="/usr/bin/msgfmt"
 export LDFLAGS="%_ldflags -lsocket"
@@ -111,6 +112,9 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Mars 24 2010 - Gilles dauphin
+- look at _bindir in PATH , (where it install)
+- some software is here...
 * Sat Jul 11 2009 - Thomas Wagner
 - add (Build-)Requires: SFElibksba, SFEpth, SFElibassuan
 - switch (Build-)Requires: from SFEreadline(-devel) to SUNWgnu-readline
