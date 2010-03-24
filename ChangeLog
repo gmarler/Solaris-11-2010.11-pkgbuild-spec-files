@@ -10,6 +10,7 @@
 	* SFEpostgis, update for b134
 	* SFEarj, SFEpth minor patch
 	* SFEgnupg2 , look at _bindir in PATH
+	* SFEfvwm-theme, look at _bindir
 
 2010-03-24  Milan Jurik <sfnet@xylab.cz>
 

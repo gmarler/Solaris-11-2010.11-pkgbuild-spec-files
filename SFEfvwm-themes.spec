@@ -24,6 +24,7 @@ mkdir %name-%version/%{base_arch}
 %themes.prep -d %name-%version/%{base_arch}
 
 %build
+PATH="%{_bindir}:$PATH"
 %themes.build -d %name-%version/%{base_arch}
 
 %install
@@ -49,6 +50,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/fvwm
 
 %changelog
+* Mar 16 2010 - Gilles Dauphin
+- maybe install in /opt/SFE
 * Aug 2009 - Gilles Dauphin
 - /usr/share/fvwm attribute is same as SFEfvwm.spec
 * Fri Apr 27 2006 - dougs@truemail.co.th
