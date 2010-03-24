@@ -10,7 +10,7 @@ Summary:                 xosd - simple library to display shaped text on X Displ
 Group:                   Utility
 URL:                     http://freshmeat.net/redir/xosd/12072/url_homepage/libxosd
 Version:                 2.2.14
-Source:                  http://freshmeat.net/redir/xosd/12072/url_tgz/xosd-%{version}.tar.gz
+Source:                  http://downloads.sourceforge.net/project/libxosd/libxosd/xosd-%{version}/xosd-%{version}.tar.gz
 Patch1:			 xosd-01-configure-with-bash.diff
 
 SUNW_Copyright:          %{name}.copyright
@@ -97,6 +97,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mars 24 2010 - Gilles Dauphin
+- download URL
 * Sat Feb 21 2009 - Thomas Wagner
 - add patch1 configure with bash otherwise shell syntax error around BMP_GENERAL_PLUGIN_DIR=$
 - fix %{_docdir} attributes in %files
