@@ -6,7 +6,7 @@
 %include Solaris.inc
 
 Name:                SFEnrg2iso
-Summary:             Convert Nero "nrg" files into ISO 9660 images
+Summary:             Convert Nero nrg files into ISO 9660 images
 Version:             0.4
 Source:              http://gregory.kokanosky.free.fr/v4/linux/nrg2iso-%{version}.tar.gz
 
