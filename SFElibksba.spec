@@ -39,8 +39,8 @@ make -j$CPUS
 %install
 rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
-rm -rf $RPM_BUILD_ROOT/usr/lib/libksba.*a
-rm -rf $RPM_BUILD_ROOT/usr/share/info/dir
+rm -rf $RPM_BUILD_ROOT%{_prefix}/lib/libksba.*a
+rm -rf $RPM_BUILD_ROOT%{_prefix}/share/info/dir
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -81,6 +81,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/info/*
 
 %changelog
+* Mars 24 2010 - rm in _prefix
 * Sat Jul 11 2009 - Thomas Wagner
 - bump to 1.0.7
 * Sat Dec 29 2007 - jijun.yu@sun.com
