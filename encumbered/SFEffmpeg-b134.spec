@@ -28,7 +28,7 @@
 %endif
 
 %include base.inc
-%use ffmpeg = ffmpeg.spec
+%use ffmpeg = ffmpeg-b134.spec
 
 Name:                    SFEffmpeg
 Summary:                 %{ffmpeg.summary}

@@ -33,6 +33,7 @@ export LDFLAGS="%_ldflags -lsocket -lnsl"
 ./configure --prefix=%{_prefix}  \
 	    --with-pth=yes    \
             --mandir=%{_mandir} \
+	    --with-pth-prefix=%{_prefix}
             --infodir=%{_datadir}/info
 
 make -j$CPUS
@@ -82,6 +83,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/info/*
 
 %changelog
+* Mars 25 2010 - Gilles Dauphin
+- build with pth, add --with-pth-prefix
 * Sat Jul 11 2009 - Thomas Wagner
 - bump to 1.0.5
 * Sat Dec 29 2007 - jijun.yu@sun.com

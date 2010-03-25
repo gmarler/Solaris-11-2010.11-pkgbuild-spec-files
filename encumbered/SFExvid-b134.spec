@@ -8,11 +8,11 @@
 
 %ifarch amd64 sparcv9
 %include arch64.inc
-%use xvid_64 = xvid.spec
+%use xvid_64 = xvid-b134.spec
 %endif
 
 %include base.inc
-%use xvid = xvid.spec
+%use xvid = xvid-b134.spec
 
 Name:		SFExvid
 Summary:	%{xvid.summary}
