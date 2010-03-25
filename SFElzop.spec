@@ -8,7 +8,7 @@
 
 Name:                SFElzop
 Summary:             File compressor -- similar to, but faster than gzip
-Version:             1.02
+Version:             1.2
 Source:              http://www.lzop.org/download/lzop-%{tarball_version}.tar.gz
 
 SUNW_BaseDir:        %{_basedir}
@@ -28,8 +28,8 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
 fi
 
 
-export CFLAGS="%optflags"
-export LDFLAGS="%{_ldflags}"
+export CFLAGS="%optflags -I%{_includedir}"
+export LDFLAGS="%{_ldflags} -L%{_libdir} -R%{_libdir}"
 
 ./configure --prefix=%{_prefix}  \
             --mandir=%{_mandir}
@@ -52,6 +52,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/*
 
 %changelog
-* 
+* Mars 25 2010 - Gilles dauphin
+- compat IPS versioning
 * Wed Sep 27 2006 - Eric Boutilier
 - Initial spec

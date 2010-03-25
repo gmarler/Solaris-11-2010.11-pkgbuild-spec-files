@@ -5,17 +5,19 @@
 
 %include Solaris.inc
 
+%define src_version  2.02
+
 Name:                SFElzo
 Summary:             Lossless data compression library
-Version:             2.02
-Source:              http://www.oberhumer.com/opensource/lzo/download/lzo-%{version}.tar.gz
+Version:             2.2
+Source:              http://www.oberhumer.com/opensource/lzo/download/lzo-%{src_version}.tar.gz
 
 SUNW_BaseDir:        %{_basedir}
-BuildRoot:           %{_tmppath}/%{name}-%{version}-build
+BuildRoot:           %{_tmppath}/%{name}-%{src_version}-build
 %include default-depend.inc
 
 %prep
-%setup -q -n lzo-%version
+%setup -q -n lzo-%src_version
 
 %build
 
@@ -53,6 +55,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/*
 
 %changelog
-* 
+*  Mars 25 2010 - Gilles Dauphin
+- IPS compat versioning
 * Wed Wep 27 2006 - Eric Boutilier
 - Initial spec
