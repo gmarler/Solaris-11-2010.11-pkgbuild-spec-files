@@ -14,6 +14,7 @@ Source:          http://www.sentex.net/~mwandel/jhead/jhead-%{version}.tar.gz
 
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
+
 %include default-depend.inc
 
 %description
@@ -30,27 +31,26 @@ export CC=gcc
 make
 
 %install
-install -Dp -m0755 jhead ${RPM_BUILD_ROOT}%{_bindir}/jhead
-install -Dp -m0755 jhead.1 ${RPM_BUILD_ROOT}%{_mandir}/man1/jhead.1
-
+install -Dp -m0755 jhead $RPM_BUILD_ROOT%{_bindir}/jhead
+install -Dp -m0755 jhead.1 $RPM_BUILD_ROOT%{_mandir}/man1/jhead.1
+#in case old pkgbuild does not automaticly place %doc files there
+#test -d $RPM_BUILD_ROOT%{_docdir} || mkdir $RPM_BUILD_ROOT%{_docdir}
+#mkdir $RPM_BUILD_ROOT%{_docdir}
+#chmod 755 $RPM_BUILD_ROOT%{_docdir}
+#chown root:other $RPM_BUILD_ROOT%{_docdir}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-
-
-%clean
-rm -rf ${RPM_BUILD_ROOT}
-
-
 %files
-%defattr (-, root, other)
-%dir %attr (0755, root, other) %{_docdir}
-%{_docdir}/*
+%defattr (-, root, bin)
+%dir %attr (0755, root, sys) %{_datadir}
+#%dir %attr (0755, root, other) %{_datadir}/doc
 #%doc changes.txt readme.txt usage.html
+#%dir %attr (0755, root, other) %{_docdir}
+#%{_docdir}/*
 %dir %attr (0755, root, bin) %{_bindir}
 %{_bindir}/jhead
-%dir %attr (0755, root, sys) %{_datadir}
 %dir %attr (0755, root, bin) %{_mandir}
 %dir %attr (0755, root, bin) %{_mandir}/man1
 %{_mandir}/man1/jhead.1
