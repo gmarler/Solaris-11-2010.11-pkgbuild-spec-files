@@ -33,7 +33,7 @@ export LDFLAGS="%_ldflags -lsocket -lnsl"
 ./configure --prefix=%{_prefix}  \
 	    --with-pth=yes    \
             --mandir=%{_mandir} \
-	    --with-pth-prefix=%{_prefix}
+	    --with-pth-prefix=%{_prefix} \
             --infodir=%{_datadir}/info
 
 make -j$CPUS
