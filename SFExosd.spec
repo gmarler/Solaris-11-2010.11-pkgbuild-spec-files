@@ -56,9 +56,9 @@ rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
 
 #empty directories (xmms):
-test -d $RPM_BUILD_ROOT/opt && rm -r $RPM_BUILD_ROOT/opt
+#test -d $RPM_BUILD_ROOT/opt && rm -r $RPM_BUILD_ROOT/opt
 
-rm -r $RPM_BUILD_ROOT/%{_libdir}/*la
+rm -rf $RPM_BUILD_ROOT/%{_libdir}/lib*la
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -76,7 +76,6 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, other) %{_datadir}/xosd
 %{_datadir}/xosd/*
 %dir %attr (0755, root, other) %{_docdir}
-
 %dir %attr(0755, root, bin) %{_mandir}
 %dir %attr(0755, root, bin) %{_mandir}/*
 %{_mandir}/*/*
@@ -99,6 +98,7 @@ rm -rf $RPM_BUILD_ROOT
 %changelog
 * Mars 24 2010 - Gilles Dauphin
 - download URL
+- misc fix
 * Sat Feb 21 2009 - Thomas Wagner
 - add patch1 configure with bash otherwise shell syntax error around BMP_GENERAL_PLUGIN_DIR=$
 - fix %{_docdir} attributes in %files

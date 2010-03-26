@@ -61,7 +61,8 @@ fi
 
 export CC=/usr/sfw/bin/gcc
 export CFLAGS="-I%{_includedir}"
-make USE_CURL_DLOPEN=0 USE_OPENAL_DLOPEN=0 USE_LOCAL_HEADERS=0
+export LDFLAGS="-L%{_libdir} -R%{_libdir}"
+make USE_CURL_DLOPEN=0 USE_OPENAL_DLOPEN=0 USE_LOCAL_HEADERS=0 LDFLAGS="-L%{_libdir} -R%{_libdir} -lm -lnsl -lsocket"
 
 %install
 rm -rf $RPM_BUILD_ROOT
