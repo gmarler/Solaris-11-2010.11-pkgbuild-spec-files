@@ -1,3 +1,7 @@
+2010-03-26  Albert Lee  <trisk@opensolaris.org>
+
+	* SFEntfs-3g.spec: Bump 2010.3.6. Update URL, License. Add mount helper.
+
 2010-03-24  Gilles Dauphin
 
 	* SFEproftpd to 1.3.3
