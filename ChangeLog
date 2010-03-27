@@ -84,7 +84,7 @@
 	* SFEtevent.spec:
 	  Build each component in its own directory
 
-2012-03-10  Brian Cameron  <brian.cameron@sun.com>
+2012-03-12  Brian Cameron  <brian.cameron@sun.com>
 
 	* SFEgst-plugins-bad.spec, base-specs/gst-plugins-bad.spec: Bump to
 	  0.10.18.
