@@ -2,6 +2,7 @@
 
 	* SFEe2fsprogs.spec: update to 1.41.11, fixing some missing build
 	      dependecies
+	* SFElzo.spec: update to 2.03
 
 2010-03-27  Matt Lewandowsky  <matt@greenviolet.net>
 
