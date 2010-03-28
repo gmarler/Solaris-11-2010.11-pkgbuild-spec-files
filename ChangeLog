@@ -1,6 +1,7 @@
 2010-03-28  Milan Jurik <sfnet@xylab.cz>
 
-	* SFEe2fsprogs.spec: update to 1.41.11
+	* SFEe2fsprogs.spec: update to 1.41.11, fixing some missing build
+	      dependecies
 
 2010-03-27  Matt Lewandowsky  <matt@greenviolet.net>
 

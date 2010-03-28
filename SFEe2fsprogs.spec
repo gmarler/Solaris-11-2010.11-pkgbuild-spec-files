@@ -27,6 +27,7 @@ BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 BuildRequires:       SFElibiconv-devel
 Requires:            SFElibiconv
 BuildRequires:       SUNWgcc
+BuildRequires:       SUNWtexi
 
 %package devel
 Summary:                 %{summary} - development files
@@ -197,6 +198,7 @@ rm -rf $RPM_BUILD_ROOT
 %changelog
 * Sun Mar 28 2010 - Milan Jurik
 - update to 1.41.11
+- fixing some missing build dependecies
 * Mon Feb 15 2010 - Milan Jurik
 - update for 1.41.10
 - fix problem with intro of PF_PACKET
