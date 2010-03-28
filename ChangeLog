@@ -1,7 +1,8 @@
 2010-03-27  Matt Lewandowsky  <matt@greenviolet.net>
 
-	* SFEgxmessage: Version bump to 2.12.4, Some spec cleanup,
-	  Additional (gmessage) alias for Debian compatibility
+	* SFEgxmessage.spec, copyright/SFEgxmessage.copyright: Version bump
+	  to 2.12.4, Some spec cleanup, Additional (gmessage) alias for Debian
+	  compatibility, Copyright/license info.
 
 2010-03-26  Albert Lee  <trisk@opensolaris.org>
 

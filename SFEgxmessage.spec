@@ -10,6 +10,8 @@ URL:          http://homepages.ihug.co.nz/~trmusson/programs.html#gxmessage
 Source:       http://homepages.ihug.co.nz/~trmusson/stuff/gxmessage-%{version}.tar.gz
 SUNW_BaseDir: %{_basedir}
 BuildRoot:    %{_tmppath}/%{name}-%{version}-build
+License:      GPLv3
+Copyright:    SFEgxmessage.copyright
 
 %include default-depend.inc
 Requires:      SUNWgnome-libs
@@ -97,6 +99,7 @@ rm -rf $RPM_BUILD_ROOT
 - Version bump to 2.12.4
 - Some spec cleanup
 - Additional (gmessage) alias for Debian compatibility
+- Copyright/license info
 * Wed Aug 12 2009 - matt@greenviolet.net
 - Cleaned up packaging
 * Mon Aug 10 2009 - matt@greenviolet.net
