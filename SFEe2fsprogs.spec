@@ -14,7 +14,7 @@
 Name:                SFEe2fsprogs
 License:             GPL
 Summary:             Ext2 Filesystems Utilities
-Version:             1.41.10
+Version:             1.41.11
 URL:                 http://e2fsprogs.sourceforge.net/
 Source:              %{sf_download}/e2fsprogs/e2fsprogs-%{version}.tar.gz
 Source1:             ext2fs.pc
@@ -26,6 +26,7 @@ BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 BuildRequires:       SFElibiconv-devel
 Requires:            SFElibiconv
+BuildRequires:       SUNWgcc
 
 %package devel
 Summary:                 %{summary} - development files
@@ -46,14 +47,10 @@ Requires:                %{name}
 %patch1 -p1
 %patch2 -p1
 
-if [ "x`basename $CC`" != xgcc ]
-then
-        %error This spec file requires Gcc, set the CC and CXX env variables
-fi
-
-
 %build
 
+export CC=gcc
+export CXX=g++
 export CFLAGS="%optflags -I%{gnu_inc} -DINSTALLPREFIX=\\\"%{_prefix}\\\" -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64"
 export LDFLAGS="%_ldflags %{gnu_lib_path} -lintl -lsocket -lnsl -R%{_libdir}/ext2fs"
 export PATH=/usr/bin:${PATH}
@@ -198,6 +195,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*
 
 %changelog
+* Sun Mar 28 2010 - Milan Jurik
+- update to 1.41.11
 * Mon Feb 15 2010 - Milan Jurik
 - update for 1.41.10
 - fix problem with intro of PF_PACKET

@@ -1,3 +1,7 @@
+2010-03-28  Milan Jurik <sfnet@xylab.cz>
+
+	* SFEe2fsprogs.spec: update to 1.41.11
+
 2010-03-27  Matt Lewandowsky  <matt@greenviolet.net>
 
 	* SFEgxmessage.spec, copyright/SFEgxmessage.copyright: Version bump
