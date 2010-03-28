@@ -4,11 +4,15 @@
 %include Solaris.inc
 
 %define src_name openttd
+%define src_version 1.0.0-RC3
 
 Name:           SFEopenttd
-Version:        0.7.5
+Version:        1.0.0.3
 Summary:        Transport system simulation game
-Source:         http://binaries.openttd.org/releases/%{version}/%{src_name}-%{version}-source.tar.bz2
+Source:         http://binaries.openttd.org/releases/%{src_version}/%{src_name}-%{src_version}-source.tar.bz2
+Source1:	http://bundles.openttdcoop.org/opengfx/releases/opengfx-0.2.2.zip
+Source2:	http://bundles.openttdcoop.org/opensfx/releases/opensfx-0.2.2.zip
+Source3:	http://bundles.openttdcoop.org/openmsx/releases/openmsx-0.2.1.zip
 Patch1:         openttd-01-makedependlimit.diff
 URL:            http://www.openttd.org/
 SUNW_BaseDir:   %{_basedir}
@@ -29,6 +33,7 @@ Requires:  SUNWicu
 BuildRequires:  SUNWfreetype2
 Requires:  SUNWfreetype2
 BuildRequires:  SUNWdoxygen
+Requires:  SFElzo
 
 %description
 OpenTTD is modeled after a popular transportation business simulation game
@@ -37,7 +42,7 @@ were inspired by TTDPatch while others are original.
 
 
 %prep
-%setup -q -n openttd-%{version}%{?prever:-%{prever}}
+%setup -q -n openttd-%{src_version}
 
 
 %build
@@ -84,6 +89,7 @@ desktop-file-install --dir=$RPM_BUILD_ROOT%{_datadir}/applications \
         --add-category=StrategyGame \
         media/openttd.desktop
 
+cd $RPM_BUILD_ROOT%{_datadir}/openttd/data && unzip %SOURCE1 && unzip %SOURCE2 && unzip %SOURCE3
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -124,6 +130,8 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 %{_datadir}/openttd/*
 
 %changelog
+* Mon Mar 29 2010 - Milan Jurik
+- update to 1.0.0-RC3, support for OpenTTD data files
 * Wed Mar 24 2010 - Milan Jurik
 - freetype from main as build dependency
 * Sat jan 16 2010 - Milan Jurik
