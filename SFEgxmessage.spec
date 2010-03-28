@@ -5,16 +5,23 @@
 
 Name:         SFEgxmessage
 Summary:      gxmessage - xmessage clone for GNOME
-Version:      2.12.1
+Version:      2.12.4
 URL:          http://homepages.ihug.co.nz/~trmusson/programs.html#gxmessage
 Source:       http://homepages.ihug.co.nz/~trmusson/stuff/gxmessage-%{version}.tar.gz
 SUNW_BaseDir: %{_basedir}
 BuildRoot:    %{_tmppath}/%{name}-%{version}-build
-%include default-depend.inc
 
-Requires: SUNWgnome-libs
-Requires: SUNWxwrtl
+%include default-depend.inc
+Requires:      SUNWgnome-libs
+Requires:      SUNWxwrtl
 BuildRequires: SUNWxwinc
+
+%description
+Gxmessage is an xmessage clone for GTK based desktops. Gxmessage pops up
+a dialog window, displays a given message or question, then waits for the
+user's response. That response is returned as the program's exit code.
+Because gxmessage is a drop-in alternative to xmessage, gxmessage accepts
+any option xmessage would, and returns the same exit codes.
 
 %prep
 %setup -q -n gxmessage-%version
@@ -25,10 +32,8 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
     CPUS=1
 fi
 
-export CFLAGS="%optflags"
+export CFLAGS="%{optflags}"
 export LDFLAGS="%{_ldflags}"
-
-pwd
 
 ./configure --prefix=%{_prefix}         \
             --bindir=%{_bindir}         \
@@ -43,6 +48,7 @@ make -j$CPUS
 %install
 rm -rf $RPM_BUILD_ROOT
 make DESTDIR=$RPM_BUILD_ROOT install
+ln -s gxmessage $RPM_BUILD_ROOT%{_bindir}/gmessage
 ln -s gxmessage $RPM_BUILD_ROOT%{_bindir}/xmessage
 rm -f $RPM_BUILD_ROOT%{_datadir}/info/dir
 
@@ -82,12 +88,15 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, other) %{_datadir}/icons/hicolor/48x48/apps
 %{_datadir}/icons/hicolor/48x48/apps/*
 %{_datadir}/info/gxmessage.info
-%dir %attr(0755, root, bin) %{_datadir}/locale
-%{_datadir}/locale/*
+%attr(0755, root, other) %{_datadir}/locale
 %{_datadir}/man/man1/gxmessage.1
 
 
 %changelog
+* Sat Mar 27 2010 - Matt Lewandowsky <matt@greenviolet.net>
+- Version bump to 2.12.4
+- Some spec cleanup
+- Additional (gmessage) alias for Debian compatibility
 * Wed Aug 12 2009 - matt@greenviolet.net
 - Cleaned up packaging
 * Mon Aug 10 2009 - matt@greenviolet.net
