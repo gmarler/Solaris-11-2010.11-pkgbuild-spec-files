@@ -3,20 +3,20 @@
 #
 %include Solaris.inc
 
-Name:         SFEgxmessage
-Summary:      gxmessage - xmessage clone for GNOME
-Version:      2.12.4
-URL:          http://homepages.ihug.co.nz/~trmusson/programs.html#gxmessage
-Source:       http://homepages.ihug.co.nz/~trmusson/stuff/gxmessage-%{version}.tar.gz
-SUNW_BaseDir: %{_basedir}
-BuildRoot:    %{_tmppath}/%{name}-%{version}-build
-License:      GPLv3
-Copyright:    SFEgxmessage.copyright
+Name:              SFEgxmessage
+Summary:           gxmessage - xmessage clone for GNOME
+Version:           2.12.4
+URL:               http://homepages.ihug.co.nz/~trmusson/programs.html#gxmessage
+Source:            http://homepages.ihug.co.nz/~trmusson/stuff/gxmessage-%{version}.tar.gz
+SUNW_BaseDir:      %{_basedir}
+BuildRoot:         %{_tmppath}/%{name}-%{version}-build
+License:           GPLv3
+SUNW_Copyright:    SFEgxmessage.copyright
 
 %include default-depend.inc
-Requires:      SUNWgnome-libs
-Requires:      SUNWxwrtl
-BuildRequires: SUNWxwinc
+Requires:          SUNWgnome-libs
+Requires:          SUNWxwrtl
+BuildRequires:     SUNWxwinc
 
 %description
 Gxmessage is an xmessage clone for GTK based desktops. Gxmessage pops up
