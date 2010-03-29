@@ -1,3 +1,8 @@
+2012-03-29  Brian Cameron  <brian.cameron@sun.com>
+
+	* SFEsugar-datastore.spec, SFEsugar-base.spec, SFEsugar-toolkit.spec,
+	  SFEpython26-abiword.spec: Do not install .la files.
+
 2010-03-29  Milan Jurik <sfnet@xylab.cz>
 
 	* SFEopenttd.spec: update to 1.0.0-RC3, support for OpenTTD data files
@@ -41,6 +46,7 @@
 	* SFEopenttd.spec: move to freetype in main
 
 2010-03-23  Matt Lewandowsky  <matt@greenviolet.net>
+
 	* SFEmednafen.spec, patches/mednafen-03-wswan.diff:
 	  Enable WonderSwan. Clean up description.
 
@@ -123,19 +129,22 @@
 	* SFEunbound.spec: update to 1.4.3
 
 2010-03-11  Gilles Dauphin <dauphin@enst.fr>
+
 	* SFEbullet, starting to provide a install base in /usr/SFE.
 	  like pkgtool --define "_basedir /usr/SFE" ...
 	* SFElibmatroska, enable built even if some package is in /usr/SFE
 	* compat ips versioning for SFElivemedia
 	* SFEBillardGL, SFEsimgear, search in /usr/SFE (exemple)
 	* SFEplib don't need freeglut
-	* patches/libmatroska-01-makefile.diff , add -LDFLAGS search lib in /usr/SFE/lib
+	* patches/libmatroska-01-makefile.diff , add -LDFLAGS search lib in
+	  /usr/SFE/lib
 	* SFEflightgear, includedir is maybe in /usr/SFE
 	* SFEcairo-dock, update TODO
 	* SFEfreealut , basedir is maybe in /use/SFE
 	* archive/SFEgraphviz.spec, SUNWsfwhea is obsolete in b133
 	* SFElibdvdnav, SFEnasm, would install in /usr/SFE
-	* SFEgnuplot workaround for bug http://defect.opensolaris.org/bz/show_bug.cgi?id=3644
+	* SFEgnuplot workaround for bug
+	  http://defect.opensolaris.org/bz/show_bug.cgi?id=3644
 	  bump to 4.2.5
 	* SFEcrrcsim.spec SFEvcdimager.spec SFEopenal.spec
 	  want to install somewhere in /usr/SFE (example)
@@ -389,7 +398,8 @@
 2010-02-04  Albert Lee  <trisk@opensolaris.org>
 
 	* SFEjson-glib: Bump to 0.10.0.
-	* SFEmaildrop.spec: *NEW* maildrop - mail delivery agent with filtering 	  capabilities
+	* SFEmaildrop.spec: *NEW* maildrop - mail delivery agent with filtering
+ 	  capabilities
 	* SFEpidgin-facebookchat.spec: Bump to 0.64.
 	* experimental/SFEdovecot.spec: Set CFLAGS. Fix /var/run permissions.
 	* experimental/SFEdovecot-plugin-sieve.spec,
@@ -578,7 +588,6 @@
 2010-01-25  Jedy Wang  <jedy.wang@sun.com>
 
 	Removes pentium_pro+mmx.
-
 	* encumbered/SFElame.spec:
 	* encumbered/SFElibx264.spec:
 
@@ -597,7 +606,6 @@
 2010-01-24  Jedy Wang  <jedy.wang@sun.com>
 
 	Bump to 20100123.
-
 	* base-specs/libx264.spec:
 	* patches/libx264-03-ld.diff:
 	* patches/libx264-06-gpac.diff:
@@ -605,7 +613,6 @@
 2010-01-22  Jedy Wang  <jedy.wang@sun.com>
 
 	Add 64-bit support.
-
 	* SFEgtkimageview.spec:
 	* base-specs/gtkimageview.spec: New spec.
 
@@ -724,7 +731,6 @@
 2010-01-12  Jedy Wang  <jedy.wang@sun.com>
 
 	New spec files for eggdbus.
-
 	* SFEeggdbus.spec:
 	* base-specs/eggdbus.spec:
 
@@ -741,7 +747,6 @@
 2010-01-12  Jedy Wang  <jedy.wang@sun.com>
 
 	New spec files for dconf.
-
 	* SFEdconf.spec:
 	* base-specs/dconf.spec:
 	* patches/dconf-01-build.diff:
@@ -758,27 +763,32 @@
 
 2010-01-08  Thomas Wagner  <tom68@users.sourceforge.net>
 
-	* experimental/SFEpostfix.spec: pause "Requires: %name" for package %name-root to test dependency order
+	* experimental/SFEpostfix.spec: pause "Requires: %name" for package
+	  %name-root to test dependency order
 
 2010-01-08  Jeff Cai  <jeff.cai@sun.com>
 
 	* SFEgnome-screensaver.spec: Ship pam-helper
 	* base-specs/gnome-screensaver.spec: Add -05-pam-helper patch
 	* patches/gnome-screensaver-04-tjds.diff: Disable trusted jds building
-	* patches/gnome-screensaver-05-pam-helper.diff: Add the external pam helper
+	* patches/gnome-screensaver-05-pam-helper.diff: Add the external pam
+	  helper
 
 2010-01-08  Thomas Wagner  <tom68@users.sourceforge.net>
 
-	* experimental/SFEdovecot.spec:  *copy* for testing 1.2.9 and with cleaned up pathlayout
-	* experimental/SFEdovecot-plugin-sieve.spec: *new* - plugin for sieve scripting on serverside
+	* experimental/SFEdovecot.spec:  *copy* for testing 1.2.9 and with
+	  cleaned up pathlayout
+	* experimental/SFEdovecot-plugin-sieve.spec: *new* - plugin for sieve
+	  scripting on serverside
 
 2010-01-07  Jeff Cai  <set EMAIL_ADDRESS environment variable>
 
 	* base-specs/gnome-screensaver.spec:
 	* patches/gnome-screensaver-04-tjds.diff:
-	Add patch to support trusted JDS.
+	  Add patch to support trusted JDS.
 
 2010-01-06  Thomas Wagner  <tom68@users.sourceforge.net>
+
 	* SFEtypo3.spec: bump to 4.2.10, adjust detection for existing 
 	  symlink, pause Requires SFEphp
 	* SFEtypo3demo: bump to 4.2.10
@@ -787,6 +797,8 @@
 
 2010-01-06  Jeff Cai  <jeff.cai@sun.com>
 
+	Change the file name SUNW to SFE.
+	Add two patches.
 	* SFEgnome-screensaver.spec:
 	* SUNWgnome-screensaver.spec:
 	* base-specs/gnome-screensaver.spec:
@@ -794,9 +806,6 @@
 	  dialog once the lock is enabled
 	* patches/gnome-screensaver-03-gs-debug.diff: Make the debug msgs
 	  be printed on Solaris
-
-	Change the file name SUNW to SFE.
-	Add two patches.
 
 2010-01-06  Brian Lu  <brian.lu@sun.com>
 
@@ -809,9 +818,10 @@
 	  Bump to openchange 0.9
 
 2010-01-06  Thomas Wagner  <tom68@users.sourceforge.net>
+
 	* experimental/SFEpostfix.spec: add patch3 for build130+ (nisplus 
-	  removed), add sasl, smtp auth login (using dovecot for smtp authentication), 
-	  prepared for sasl2 (unfinished), see changelog
+	  removed), add sasl, smtp auth login (using dovecot for smtp
+	  authentication), prepared for sasl2 (unfinished), see changelog
 
 2009-12-28  Simon Jin  <yuntong.jin@sun.com>
 
