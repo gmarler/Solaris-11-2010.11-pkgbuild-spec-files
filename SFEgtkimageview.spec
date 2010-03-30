@@ -15,6 +15,7 @@ SUNW_BaseDir:	%{_basedir}
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 
 %include default-depend.inc
+BuildRequires:	SUNWgnome-common-devel
 
 %prep
 rm -rf %name-%version
@@ -77,6 +78,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Mar 30 2010 - Milan Jurik
+- add missing build dependency
 * Fri Jan 22 2010 - jedy.wang@sun.com
 - Add 64-bit support.
 * Mon Dec 14 2009 - jedy.wang@sun.com
