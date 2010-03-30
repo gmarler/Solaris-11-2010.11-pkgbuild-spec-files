@@ -33,11 +33,9 @@
 
 Name:                    SFEufraw
 Summary:                 Ufraw - Raw Photo Converter
-Version:                 0.15
+Version:                 0.16
 Source:                  %{sf_download}/ufraw/ufraw-%{version}.tar.gz
 URL:                     http://ufraw.sourceforge.net/
-#Patch1:			 ufraw-01-ctime_r-fix.diff
-Patch2:			 ufraw-02-ctime_r_args.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -82,8 +80,6 @@ Requires:                %{name}
 
 %prep
 %setup -q -n ufraw-%version
-#%patch1 -p1
-%patch2 -p0
 touch NEWS
 touch AUTHORS
 for f in *.[ch]; do dos2unix -ascii $f $f; done
@@ -154,6 +150,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Tue Mar 30 2010 - Milan Jurik
+- update to 0.16
 * Sun Oct 11 2009 - Milan Jurik
 - add external dcraw dependency
 * Mon Feb 09 2009 - Thomas Wagner
