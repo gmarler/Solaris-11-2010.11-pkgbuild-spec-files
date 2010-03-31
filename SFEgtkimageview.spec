@@ -16,6 +16,7 @@ BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 
 %include default-depend.inc
 BuildRequires:	SUNWgnome-common-devel
+BuildRequires:	SUNWgtk-doc
 
 %prep
 rm -rf %name-%version
