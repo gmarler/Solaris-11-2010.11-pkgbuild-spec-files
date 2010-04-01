@@ -1,6 +1,8 @@
 2010-04-01  Milan Jurik <sfnet@xylab.cz>
 
 	* SFEnasm.spec: update to 2.08.01, build dependency fix
+	* SFEclamav.spec: update to 0.96
+
 2010-03-30  Milan Jurik <sfnet@xylab.cz>
 
 	* SFEufraw.spec: update to 0.16

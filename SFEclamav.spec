@@ -9,7 +9,7 @@
 
 Name:                SFEclamav
 Summary:             Unix Anti-virus scanner
-Version:             0.95.2
+Version:             0.96
 Source:              %{sf_download}/%{src_name}/%{src_name}-%{version}.tar.gz
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
@@ -101,6 +101,8 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 
 
 %changelog
+* Thu Apr 01 2010 - Milan Jurik
+- update to 0.96
 * Sat Sep 19 2009 - Milan Jurik
 - update to 0.95.2
 * Fri Jul 27 2007 - dougs@truemail.co.th
