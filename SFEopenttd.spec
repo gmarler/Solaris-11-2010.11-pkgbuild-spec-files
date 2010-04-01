@@ -34,6 +34,8 @@ BuildRequires:  SUNWfreetype2
 Requires:  SUNWfreetype2
 BuildRequires:  SUNWdoxygen
 Requires:  SFElzo
+BuildRequires:	SUNWgsed
+BuildRequires:	SUNWgnome-desktop-prefs
 
 %description
 OpenTTD is modeled after a popular transportation business simulation game
