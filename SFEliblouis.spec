@@ -3,6 +3,8 @@
 # package are under the same license as the package itself.
 
 %include Solaris.inc
+
+%define pythonver 2.6
 %use liblouis = liblouis.spec
 
 Summary:	   %liblouis.summary
@@ -29,11 +31,11 @@ ls ../../SOURCES
 gzcat ../../SOURCES/%{liblouis.name}-%{liblouis.version}.tar.gz | tar xf -
 
 %build
-export PYTHON="/usr/bin/python2.6"
+export PYTHON="/usr/bin/python%{pythonver}"
 %liblouis.build -d %name-%liblouis.version
 
 %install
-export PYTHON="/usr/bin/python2.6"
+export PYTHON="/usr/bin/python%{pythonver}"
 %liblouis.install -d %name-%liblouis.version
 rm $RPM_BUILD_ROOT/%{_infodir}/dir
 
@@ -84,7 +86,10 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, bin) %{_libdir}/python?.?
 %dir %attr (0755, root, bin) %{_libdir}/python?.?/vendor-packages
 %dir %attr (0755, root, bin) %{_libdir}/python?.?/vendor-packages/louis
+%dir %attr (0755, root, bin) %{_libdir}/python?.?/vendor-packages/louis-%{version}-py%{pythonver}.egg-info
 %{_libdir}/python?.?/vendor-packages/louis/*
+%dir %attr(0755, root, bin) %{_mandir}
+%dir %attr(0755, root, bin) %{_mandir}/man1
 
 %files devel
 %defattr (-, root, bin)
@@ -93,7 +98,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %changelog
 * Mon Jan 11 2010 - Willie Walker
-- Update to use python 2.6
+- Update to use python 2.6 and use %{pythonver}.
 * Tue Aug 25 2009 - Willie Walker
 - Get this working again on b121. Also use the liblouis version number
   instead of the default version number.  Bump to 1.7.0.

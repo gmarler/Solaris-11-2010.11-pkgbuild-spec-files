@@ -3,7 +3,7 @@
 # package are under the same license as the package itself.
 Summary:	Support for contracted braille
 Name:		liblouis
-Version:	1.7.0
+Version:	1.8.0
 License:	GPL V3
 Group:		Libraries
 Source: 	http://liblouis.googlecode.com/files/%{name}-%{version}.tar.gz
@@ -17,7 +17,7 @@ Library and tools for supporting contracted braille
 %setup -q
 
 %build
-./configure --prefix=%{_prefix} --infodir=%{_infodir} --enable-ucs4
+./configure --prefix=%{_prefix} --infodir=%{_infodir} --mandir=%{_mandir} --enable-ucs4
 make
 
 %install
@@ -48,11 +48,13 @@ cd ..
 %{_libdir}/python?.?/vendor-packages/louis/*
 
 %changelog
+* Thu Apr 01 2010 - Brian Cameron
+- Update to 1.8.0.
 * Mon Jan 11 2010 - Willie Walker
-- Update to use python 2.6
+- Update to use python 2.6.
 * Tue Aug 25 2009 - Willie Walker
-- Upgrade to liblouis 1.7.0
+- Upgrade to liblouis 1.7.0.
 * Tue Jun 16 2009 - Willie Walker
-- Upgrade to liblouis 1.6.2 to get us the 'louis' python module
+- Upgrade to liblouis 1.6.2 to get us the 'louis' python module.
 * Fri Feb 13 2009 - Willie Walker
-- Initial spec
+- Initial spec.
