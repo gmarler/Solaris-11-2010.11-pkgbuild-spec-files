@@ -17,6 +17,7 @@ BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 
 BuildRequires:       SUNWtexi
+BuildRequires:       SUNWghostscript
 
 %prep
 %setup -q -n nasm-%src_version
