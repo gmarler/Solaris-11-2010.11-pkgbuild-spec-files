@@ -5,16 +5,18 @@
 
 %include Solaris.inc
 
-%define src_version 2.07
+%define src_version 2.08.01
 
 Name:                SFEnasm
 Summary:             Portable, modular 80x86 assembler
-Version:             2.7.0
+Version:             2.8.1
 Source:              http://www.nasm.us/pub/nasm/releasebuilds/%{src_version}/nasm-%{src_version}.tar.bz2
 License:             2-BSD
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
+
+BuildRequires:       SUNWtexi
 
 %prep
 %setup -q -n nasm-%src_version
@@ -65,6 +67,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/doc/nasm/*
 
 %changelog
+* Apr 01 2010 - Milan Jurik
+- update to 2.08.01
+- build dependency fix
 * Mar 22 2010 - Gilles Dauphin
 - _bindir instead of /usr/bin
 * Sat Aug 22 2009 - Milan Jurik
