@@ -26,11 +26,11 @@ export MSGFMT="/usr/bin/msgfmt"
 
 %define fp_arch	 default
 %ifarch sparc
-%define fp_arch	sparc
+%define fp_arch	default
 %endif
 
 %ifarch i386
-%define fp_arch intel
+%define fp_arch default
 %endif
 
 %ifarch amd64
@@ -70,5 +70,7 @@ EOF
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Fri Apr 02 2010 - Milan Jurik
+- fix problem with OpenSolaris assembler (2874859)
 * Fri Aug 21 2009 - Milan Jurik
 - Initial base spec file

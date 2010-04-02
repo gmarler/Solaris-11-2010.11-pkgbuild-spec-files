@@ -1,15 +1,19 @@
-2012-03-29  Brian Cameron  <brian.cameron@sun.com>
+2010-04-02  Milan Jurik <sfnet@xylab.cz>
 
-	* SFEsugar-datastore.spec: Bump to 0.88.0.
-	* SFEsugar-toolkit.spec: Bump to 0.87.9.
-	* SFEliblouis.spec, base-specs/liblouis.spec: Bump to 1.8.0.
- 
+	* base-specs/libmad.spec: fix problem with OpenSolaris assembler (2874859)
+
 2010-04-01  Milan Jurik <sfnet@xylab.cz>
 
 	* SFEnasm.spec: update to 2.08.01, build dependency fix
 	* SFEclamav.spec: update to 0.96
 	* SFEopenttd.spec: update to 1.0.0
 
+2012-03-29  Brian Cameron  <brian.cameron@sun.com>
+
+	* SFEsugar-datastore.spec: Bump to 0.88.0.
+	* SFEsugar-toolkit.spec: Bump to 0.87.9.
+	* SFEliblouis.spec, base-specs/liblouis.spec: Bump to 1.8.0.
+ 
 2010-03-30  Milan Jurik <sfnet@xylab.cz>
 
 	* SFEufraw.spec: update to 0.16
