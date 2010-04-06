@@ -38,6 +38,7 @@ Autoreqprov:             on
 
 %include default-depend.inc
 BuildRequires: SUNWtexi
+BuildRequires: SUNWperl584usr
 %ifarch sparc
 BuildRequires: SUNWmlibh
 Requires: SUNWmlib
@@ -165,6 +166,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/libswscale
 
 %changelog
+* Tue Apr 06 2010 - Milan Jurik
+- missing perl build dependency (pod2man)
 * Sun Mar 07 2010 - Milan Jurik
 - replace amrXX for opencore implementation
 * Tue Sep 08 2009 - Milan Jurik

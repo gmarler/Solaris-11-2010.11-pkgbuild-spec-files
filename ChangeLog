@@ -1,3 +1,7 @@
+2010-04-06  Milan Jurik <sfnet@xylab.cz>
+
+	* encumbered/SFEffmpeg.spec: missing perl build dependency (pod2man)
+
 2010-04-06  Halton Huo  <halton.huo@sun.com>
 
 	* SFEgdl.spec: Change copyright to Oracle
