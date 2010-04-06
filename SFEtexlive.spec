@@ -70,9 +70,11 @@ export TL_TARGET
 	--with-system-pnglib \
 	--with-system-gd \
 	--with-system-freetype2 \
-	--with-freetype2-include=%{_includedir}/freetype2 \
+	--with-freetype2-include=/usr/include/freetype2 \
 	--with-system-t1lib
 
+# because freetype2 is in /usr/include , hard code the path
+#	--with-freetype2-include=%{_includedir}/freetype2 \
 #	--without-omega \
 #	--without-aleph 
 #	--with_dialog=no \
@@ -124,6 +126,9 @@ exit 0		# johny be good
 %{_texmf_dir}/*
 
 %changelog
+* April 2010 - Gilles Dauphin
+- hardcode the path of freetype2
+# because freetype2 is in /usr/include , hard code the path
 * 17 Aug 2009 - Gilles Dauphin
 - check with texmf files.
 * Aug 2009 - Gilles Dauphin

@@ -118,23 +118,28 @@ fi
 
 glib-gettextize --force
 
-%if %use_gcc3
-	export CXX=/usr/sfw/bin/g++
-	export CC=/usr/sfw/bin/gcc
-	export LDFLAGS="%arch_ldadd %ldadd ${EXTRA_LDFLAGS} -L/usr/X11/lib -R/usr/X11/lib -L/usr/gnu/lib -R/usr/gnu/lib"
-%else
-	export CXX=/usr/gnu/bin/gcc
-	export CC=/usr/gnu/bin/gcc
-	export LD=/usr/gnu/bin/ld
-	export LDFLAGS="%arch_ldadd %ldadd ${EXTRA_LDFLAGS} -Wl,-export-dynamic -L/usr/X11/lib -R/usr/X11/lib -L/usr/gnu/lib -R/usr/gnu/lib"
-%endif
+#%if %use_gcc3
+#	export CXX=/usr/sfw/bin/g++
+#	export CC=/usr/sfw/bin/gcc
+#	export LDFLAGS="%arch_ldadd %ldadd ${EXTRA_LDFLAGS} -L/usr/X11/lib -R/usr/X11/lib -L/usr/gnu/lib -R/usr/gnu/lib"
+#%else
+#	export CXX=/usr/gnu/bin/gcc
+#	export CC=/usr/gnu/bin/gcc
+#	export LD=/usr/gnu/bin/ld
+#	export LDFLAGS="%arch_ldadd %ldadd ${EXTRA_LDFLAGS} -Wl,-export-dynamic -L/usr/X11/lib -R/usr/X11/lib -L/usr/gnu/lib -R/usr/gnu/lib"
+#%endif
+
+export CXX=/usr/sfw/bin/g++
+export CC=/usr/sfw/bin/gcc
+export LDFLAGS="%arch_ldadd %ldadd ${EXTRA_LDFLAGS} -L/usr/X11/lib -R/usr/X11/lib -L/usr/sfw/lib -R/usr/sfw/lib -L/usr/gnu/lib -R/usr/gnu/lib -L%{_libdir} -R%{_libdir}"
+export PATH="$PATH:%{_bindir}"
 
 libtoolize --copy --force
 aclocal $ACLOCAL_FLAGS -I m4
 autoheader
 automake -a -c -f 
 autoconf
-export CFLAGS="-O4 -fPIC -DPIC -I/usr/X11/include -I/usr/openwin/include -D_LARGEFILE64_SOURCE -I/usr/gnu/include -I/usr/include/libmng -mcpu=pentiumpro -mtune=pentiumpro -msse2 -mfpmath=sse "
+export CFLAGS="-O4 -fPIC -DPIC -I/usr/X11/include -I/usr/openwin/include -I%{_includedir} -D_LARGEFILE64_SOURCE -I/usr/gnu/include -I/usr/include/libmng -mcpu=pentiumpro -mtune=pentiumpro -msse2 -mfpmath=sse "
 %if %option_with_gnu_iconv
 export CFLAGS="$CFLAGS -I/usr/gnu/include -L/usr/gnu/lib -R/usr/gnu/lib -lintl -liconv"
 export CXXFLAGS="$CXXFLAGS -I/usr/gnu/include -L/usr/gnu/lib -R/usr/gnu/lib -lintl -liconv"
@@ -144,7 +149,7 @@ export CXXFLAGS="$CXXFLAGS -I/usr/gnu/include -L/usr/gnu/lib -R/usr/gnu/lib -lin
             --with-external-libmad \
             --with-external-dvdnav \
             --disable-opengl
-gmake -j $CPUS
+gmake #-j $CPUS
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -245,8 +250,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/xine/plugins/%{plugin_version}/xineplug_inp_stdin_fifo.so
 %{_libdir}/xine/plugins/%{plugin_version}/xineplug_vo_out_aa.so
 %{_libdir}/xine/plugins/%{plugin_version}/xineplug_vo_out_none.so
-%{_libdir}/xine/plugins/%{plugin_version}/xineplug_vo_out_pgx32.so
-%{_libdir}/xine/plugins/%{plugin_version}/xineplug_vo_out_pgx64.so
+#%{_libdir}/xine/plugins/%{plugin_version}/xineplug_vo_out_pgx32.so
+#%{_libdir}/xine/plugins/%{plugin_version}/xineplug_vo_out_pgx64.so
 %{_libdir}/xine/plugins/%{plugin_version}/xineplug_vo_out_raw.so
 %{_libdir}/xine/plugins/%{plugin_version}/xineplug_vo_out_sdl.so
 %{_libdir}/xine/plugins/%{plugin_version}/xineplug_vo_out_xshm.so
@@ -317,6 +322,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* April 2010 - Gilles Dauphin
+- do not compile with gcc4.3.1 , optimization problem
 * Aug 01 2009 - Gilles Dauphin
 - SUNWlibmng is in B117
 - bump to 1.1.16.1
