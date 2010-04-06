@@ -5,18 +5,22 @@
 #
 %include Solaris.inc
 
+%define cc_is_gcc 1
+%include base.inc
+
 Name:                    SFEconky
 Summary:                 Light-weight system monitor for X  
 Version:                 1.5.1
 Source:                  http://prdownloads.sourceforge.net/conky/conky-1.5.1.tar.gz
 Patch1:                  conky-01.diff
 URL:                     http://conky.sourceforge.net/
-#SUNW_BaseDir:            %{_basedir}
+SUNW_BaseDir:            /
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 
 %include default-depend.inc
 
 Requires: SUNWcsu
+BuildRequires: SUNWgcc
 
 %prep
 %setup -q -n conky-%version
@@ -32,7 +36,7 @@ CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
 if test "x$CPUS" = "x" -o $CPUS = 0; then                                                                     
     CPUS=1                                                                                                    
 fi                                                                                                            
-                                                                                                                  
+export CC=/usr/sfw/bin/gcc
 
 ./configure --prefix=%{_prefix} \
             --mandir=%{_mandir} \
@@ -53,11 +57,10 @@ make install DESTDIR=$RPM_BUILD_ROOT
 rm -rf $RPM_BUILD_ROOT
 
 %files
-%defattr (-, root, sys)
-%dir %attr (0755, root, sys) /usr
-%dir %attr (0755, root, sys) /usr/share
-
 %defattr (-, root, bin)
+%dir %attr (0755, root, sys) %{_prefix}
+%dir %attr (0755, root, sys) %{_datadir}
+
 %dir %attr (0755, root, bin) %{_bindir}
 %{_bindir}/*
 
@@ -65,12 +68,13 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr(0755, root, bin) %{_mandir}/man1
 %{_mandir}/man1/*
 
-%defattr (-, root, sys)
 %dir %attr (0755, root, sys) %{_sysconfdir}
 %dir %attr (0755, root, sys) %{_sysconfdir}/conky
 %{_sysconfdir}/conky/*
 
 
 %changelog
+* Tue Apr 06 2010 - Milan Jurik
+- small cleanup
 * Thu Apr 9 2009 - Alexander R. Eremin eremin@milax.org
 - Initial spec file.

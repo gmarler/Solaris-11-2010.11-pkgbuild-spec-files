@@ -5,6 +5,7 @@
 2010-04-06  Milan Jurik <sfnet@xylab.cz>
 
 	* encumbered/SFEffmpeg.spec: missing perl build dependency (pod2man)
+	* SFEconky.spec: small cleanup
 
 2010-04-06  Halton Huo  <halton.huo@sun.com>
 
