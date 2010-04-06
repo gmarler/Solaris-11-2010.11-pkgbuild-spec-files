@@ -3,7 +3,7 @@
 #
 # includes module(s): gdl
 #
-# Copyright (c) 2004 Sun Microsystems, Inc.
+# Copyright (c) 2010, Oracle and/or its affiliates. All rights reserved.
 # This file and all modifications and additions to the pristine
 # package are under the same license as the package itself.
 #
@@ -17,6 +17,8 @@
 Name:               SFEgdl
 Summary:            gdl - Components and library for GNOME development tools.
 Version:            %{gdl.version}
+SUNW_Pkg:           SFEgdl
+IPS_package_name:   library/desktop/gdl
 SUNW_BaseDir:       %{_basedir}
 BuildRoot:          %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc

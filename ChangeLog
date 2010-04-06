@@ -1,3 +1,14 @@
+2010-04-06  Halton Huo  <halton.huo@sun.com>
+
+	* SFEgdl.spec: Change copyright to Oracle
+	* SFElibgda.spec: Change copyright to Oracle
+	* base-specs/gdl.spec: Bump to 2.30.0
+	* base-specs/libgda.spec: Bump to 4.14.4
+	* patches/libgda-01-different-def.diff: Added to fix bugzilla #614922
+	  and #614923
+	* patches/libgda-01-zero-array.diff: Remove upsreamed patch
+	* patches/libgda-02-zero-array.diff: Added to fix bugzilla #614924
+
 2010-04-02  Milan Jurik <sfnet@xylab.cz>
 
 	* base-specs/libmad.spec: fix problem with OpenSolaris assembler

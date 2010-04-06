@@ -1,7 +1,7 @@
 #
 # spec file for package libgda
 #
-# Copyright 2009 Sun Microsystems, Inc.
+# Copyright (c) 2010, Oracle and/or its affiliates. All rights reserved.
 # This file and all modifications and additions to the pristine
 # package are under the same license as the package itself.
 #
@@ -12,15 +12,17 @@
 Name:		libgda
 License:        LGPLv2
 Group:		Development/Libraries
-Version:	4.1.0
+Version:	4.1.4
 Release:	1
 Distribution:   Java Desktop System
 Vendor:         Sun Microsystems, Inc.
 URL:		http://www.gnome-db.org/
 Summary:	Library for writing gnome database programs
 Source:		http://download.gnome.org/sources/%{name}/4.1/%{name}-%{version}.tar.bz2
-# date:2009-05-05 owner:halton type:bug bugzilla:581408
-Patch1:         %{name}-01-zero-array.diff
+# date:2010-04-06 type:bug owner:halton bugzilla:614922,614923
+Patch1:         libgda-01-different-def.diff
+# date:2010-04-06 type:bug owner:halton bugzilla:614924
+Patch2:         libgda-02-zero-array.diff
 Source1:        libgda-jdbc-MANIFEST.MF
 BuildRoot:      %{_tmppath}/%{name}-%{version}-root
 
@@ -56,6 +58,7 @@ or compile programs that use libgda.
 %prep
 %setup -q
 %patch1 -p1
+%patch2 -p1
 
 %build
 %ifos linux
@@ -71,6 +74,7 @@ fi
 
 libtoolize --force
 aclocal $ACLOCAL_FLAGS -I .
+gtkdocize
 automake -a -c -f
 autoconf
 
@@ -83,6 +87,7 @@ autoconf
             --sysconfdir=%{_sysconfdir} \
             --enable-binreloc=yes \
             --without-mysql \
+            --enable-introspection=no \
             %gtk_doc_option \
 %if %debug_build
             --enable-debug=yes \
@@ -91,7 +96,7 @@ autoconf
 %endif
 
 
-make -j $CPUS
+make
 
 %install
 export GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1
@@ -127,6 +132,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*
 
 %changelog
+* Tue Apr 06 2010 - halton.huo@sun.com
+- Bump to 4.1.4
+- Add patch libgda-01-different-def.diff to fix bugzilla #614922 and #614923.
+- Add patch libgda-02-zero-array.diff to fix bugzilla #614922 and #614923.
+- Remove upstreamed patch libgda-01-zero-array.diff
 * Tue May 05 2009 - halton.huo@sun.com
 - Bump to 4.1.0
 - Add patch zero-array.diff to fix bugzilla #581408

@@ -1,0 +1,32 @@
+commit 1cf5b69af8d1ef4cc4f42b8d6d76b9c08024748c
+Author: Halton Huo <halton.huo@sun.com>
+Date:   Tue Apr 6 12:31:39 2010 +0800
+
+    Do not assign zero sized array.
+    
+    Fixes https://bugzilla.gnome.org/show_bug.cgi?id=614924
+
+diff --git a/tools/browser/query-exec/query-console.c b/tools/browser/query-exec/query-console.c
+index 7ad14c7..9d4f93c 100644
+--- a/tools/browser/query-exec/query-console.c
++++ b/tools/browser/query-exec/query-console.c
+@@ -137,6 +137,7 @@ static const gchar         *query_console_page_get_actions_ui (BrowserPage *page
+ static GtkWidget           *query_console_page_get_tab_label (BrowserPage *page, GtkWidget **out_close_button);
+ 
+ enum {
++	DUMMY,
+ 	LAST_SIGNAL
+ };
+ 
+diff --git a/tools/browser/schema-browser/table-preferences.c b/tools/browser/schema-browser/table-preferences.c
+index bbb461d..53d81d4 100644
+--- a/tools/browser/schema-browser/table-preferences.c
++++ b/tools/browser/schema-browser/table-preferences.c
+@@ -68,6 +68,7 @@ static void meta_changed_cb (BrowserConnection *bcnc, GdaMetaStruct *mstruct, Ta
+ static void plugins_combo_changed_cb (GtkComboBox *combo, TablePreferences *tpref);
+ 
+ enum {
++	DUMMY,
+ 	LAST_SIGNAL
+ };
+ 

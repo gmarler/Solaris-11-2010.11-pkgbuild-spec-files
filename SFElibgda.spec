@@ -3,7 +3,7 @@
 #
 # includes module(s): libgda
 #
-# Copyright 2009 Sun Microsystems, Inc.
+# Copyright (c) 2010, Oracle and/or its affiliates. All rights reserved.
 # This file and all modifications and additions to the pristine
 # package are under the same license as the package itself.
 #
@@ -17,6 +17,8 @@
 Name:               SFElibgda
 Summary:            libgda - Library for writing gnome database programs
 Version:            %{libgda.version}
+SUNW_Pkg:           SFElibgda
+IPS_package_name:   library/desktop/libgda
 SUNW_BaseDir:       %{_basedir}
 BuildRoot:          %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -81,8 +83,18 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, bin) %{_libdir}
 %{_libdir}/lib*.so*
 %{_libdir}/libgda-4.0
+%{_libdir}/girepository-1.0
 %dir %attr (0755, root, sys) %{_datadir}
 %{_datadir}/libgda*
+%dir %attr (0755, root, other) %{_datadir}/applications
+%{_datadir}/applications/*
+%dir %attr (0755, root, other) %{_datadir}/icons
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/*
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/*/apps
+%{_datadir}/icons/hicolor/*/apps/*
+%dir %attr (0755, root, other) %{_datadir}/pixmaps
+%{_datadir}/pixmaps/*
 %dir %attr(0755, root, bin) %{_mandir}
 %dir %attr(0755, root, bin) %{_mandir}/*
 %{_mandir}/*/*

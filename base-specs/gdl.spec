@@ -1,7 +1,7 @@
 #
 # spec file for package gdl
 #
-# Copyright 2009 Sun Microsystems, Inc.
+# Copyright (c) 2010, Oracle and/or its affiliates. All rights reserved.
 # This file and all modifications and additions to the pristine
 # package are under the same license as the package itself.
 #
@@ -11,13 +11,13 @@
 Name:		gdl
 License:	GPL
 Group:		Development/Libraries
-Version:	2.27.3
+Version:	2.30.0
 Release:	1
 Distribution:   Java Desktop System
 Vendor:         Sun Microsystems, Inc.
 URL:		http://www.gnome.org
 Summary:	Components and library for GNOME development tools.
-Source:		http://download.gnome.org/sources/%{name}/2.27/%{name}-%{version}.tar.bz2
+Source:		http://download.gnome.org/sources/%{name}/2.30/%{name}-%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-root
 
 Requires: 	gtk2 >= 2.4.0
@@ -67,6 +67,7 @@ fi
 
 libtoolize --force
 aclocal $ACLOCAL_FLAGS -I .
+gtkdocize
 autoheader
 automake -a -c -f
 autoconf
@@ -109,6 +110,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_prefix}/lib/pkgconfig/*
 
 %changelog
+* Tue Apr 06 2010 - halton.huo@sun.com
+- Bump to 2.30.0
 * Mon Jun 15 2009 - halton.huo@sun.com
 - Bump to 2.27.3
 * Tue May 05 2009 - halton.huo@sun.com
