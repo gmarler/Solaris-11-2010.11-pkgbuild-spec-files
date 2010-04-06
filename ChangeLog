@@ -6,6 +6,7 @@
 
 	* encumbered/SFEffmpeg.spec: missing perl build dependency (pod2man)
 	* SFEconky.spec: small cleanup
+	* SFEopencore-amr.spec: moved to encumbered because of possible patents
 
 2010-04-06  Halton Huo  <halton.huo@sun.com>
 
