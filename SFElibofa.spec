@@ -11,7 +11,7 @@ Name:		SFElibofa
 Summary:	library for accesing MusicBrainz servers
 Version:	0.9.3
 License:	LGPL
-Source:		http://www.musicip.com/dns/files/libofa-%{version}.tar.gz
+Source:		http://musicip-libofa.googlecode.com/files/libofa-%{version}.tar.gz
 Patch1:         libofa-01-libadd.diff
 Patch2:         libofa-02-libadd2.diff
 Patch3:         libofa-03-missinghdrs.diff 
@@ -66,6 +66,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/*
 
 %changelog
+* Wed Apr  7 2010 - Miroslav Osladil <mira@osladil.cz>
+- updated source url to Google Code
 * Sat Jun 13 2009 - Milan Jurik
 - support for SUNWfftw3
 * Sun Jun 29 2008 - river@wikimedia.org
