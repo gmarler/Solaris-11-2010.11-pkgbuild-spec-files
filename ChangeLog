@@ -1,3 +1,8 @@
+2010-06-08  Milan Jurik <sfnet@xylab.cz>
+
+	* SFElibcdio.spec: adding missing dependency and dbus-1.0 header files
+	  path
+
 2010-04-07  Miroslav Osladil <mira@osladil.cz>
 
 	* SFElibofa.spec: updated source url to Google Code

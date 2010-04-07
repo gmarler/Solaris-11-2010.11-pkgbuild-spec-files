@@ -52,6 +52,7 @@ Requires: SUNWhal
 BuildRequires: SUNWlexpt
 BuildRequires: SUNWgcc
 BuildRequires: SUNWdbus-devel
+BuildRequires: SUNWgnome-common-devel
 BuildRequires: SFElibcddb-devel
 BuildRequires: SFElibiconv-devel
 
@@ -74,6 +75,7 @@ export CFLAGS="%gcc_optflags -I/usr/gnu/include -I/usr/gnu/include/ncurses"
 export CC=/usr/sfw/bin/gcc
 export CXX=/usr/sfw/bin/g++
 %if %with_hal
+export CFLAGS="$CFLAGS -I/usr/include/dbus-1.0 -I/usr/lib/dbus-1.0/include"
 export LDFLAGS="%_ldflags -lhal -ldbus-1 -R/usr/gnu/lib -L/usr/gnu/lib"
 %else
 export LDFLAGS="%_ldflags -R/usr/gnu/lib -L/usr/gnu/lib"
@@ -119,6 +121,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/cdio
 
 %changelog
+* Thu Apr 08 2010 - Milan Jurik
+- adding missing dependency and dbus-1.0 header files path
 * Sat Aug 15 2009 - Thomas Wagner
 - add (Build)Requires: SUNWgcc/SUNWgccruntime SUNWlibms/SUNWlibms
 * Wed Mar 18 2009 - Thomas Wagner
