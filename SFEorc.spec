@@ -4,16 +4,30 @@
 
 %include Solaris.inc
 
+%ifarch amd64 sparcv9
+%include arch64.inc
+%use orc_64 = orc.spec
+%endif
+
+%if %arch_sse2
+%define arch_opt --cpu=i686 --enable-mmx --enable-mmx2
+%include x86_sse2.inc
+%use orc_sse2 = orc.spec
+%endif
+
+%include base.inc
+
+%use orc = orc.spec
+
 %define src_name orc
 
-Name:		SFEorc
-Version:	0.4.4
-Summary:	The Oil Run-time Compiler
+Name:		%{orc.name}
+Version:	%{orc.version}
+Summary:	%{orc.summary}
 
-Group:		System Environment/Libraries
-License:	BSD
-URL:		http://code.entropywave.com/projects/orc/
-Source:		http://code.entropywave.com/download/orc/orc-%{version}.tar.gz
+Group:		%{orc.group}
+License:	%{orc.license}
+URL:		%{orc.url}
 SUNW_BaseDir:	%{_basedir}
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 
@@ -40,20 +54,46 @@ Group:		Development/Libraries
 Requires:	%{name}
 
 %prep
-%setup -q -n orc-%{version}
+rm -rf %name-%version
+mkdir %name-%version
+
+%ifarch amd64 sparcv9
+mkdir %name-%version/%_arch64
+%orc_64.prep -d %name-%version/%_arch64
+%endif
+
+%if %arch_sse2
+mkdir %name-%version/%sse2_arch
+%orc_sse2.prep -d %name-%version/%sse2_arch
+%endif
+
+mkdir %name-%version/%base_arch
+%orc.prep -d %name-%version/%base_arch
 
 %build
-LDFLAGS=-lm ./configure --prefix=%{_prefix} --disable-static --enable-gtk-doc
+%ifarch amd64 sparcv9
+%orc_64.build -d %name-%version/%_arch64
+%endif
 
-make
+%if %arch_sse2
+%orc_sse2.build -d %name-%version/%sse2_arch
+%endif
+
+%orc.build -d %name-%version/%base_arch
+
 
 %install
 rm -rf $RPM_BUILD_ROOT
-make install DESTDIR=$RPM_BUILD_ROOT
 
-# Remove unneeded files.
-find $RPM_BUILD_ROOT/%{_libdir} -name \*.a -or -name \*.la -delete
-rm -rf $RPM_BUILD_ROOT/%{_libdir}/orc
+%ifarch amd64 sparcv9
+%orc_64.install -d %name-%version/%_arch64
+%endif
+
+%if %arch_sse2
+%orc_sse2.install -d %name-%version/%sse2_arch
+%endif
+
+%orc.install -d %name-%version/%base_arch
 
 
 %clean
@@ -63,6 +103,14 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,root,bin)
 %{_libdir}/liborc-*.so.*
+%if %arch_sse2
+%{_libdir}/%{sse2_arch}/liborc-*.so.*
+%endif
+%ifarch amd64 sparcv9
+%dir %attr (0755, root, bin) %{_libdir}/%{_arch64}
+%{_libdir}/%{_arch64}/liborc-*.so.*
+%endif
+
 
 %files doc
 %defattr(-,root,bin)
@@ -71,14 +119,31 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr(-,root,bin)
-%{_includedir}/%{src_name}-0.4/
+%{_includedir}/*
 %{_libdir}/liborc-*.so
+%if %arch_sse2
+%{_libdir}/%{sse2_arch}/liborc-*.so
+%endif
+%ifarch amd64 sparcv9
+%dir %attr (0755, root, bin) %{_libdir}/%{_arch64}
+%{_libdir}/%{_arch64}/liborc-*.so
+%endif
 %dir %attr (0755, root, other) %{_libdir}/pkgconfig
-%{_libdir}/pkgconfig/orc-0.4.pc
+%{_libdir}/pkgconfig/orc-*.pc
+%if %arch_sse2
+%dir %attr (0755, root, other) %{_libdir}/%{sse2_arch}/pkgconfig
+%{_libdir}/%{sse2_arch}/pkgconfig/*.pc
+%endif
+%ifarch amd64 sparcv9
+%dir %attr (0755, root, other) %{_libdir}/%{_arch64}/pkgconfig
+%{_libdir}/%{_arch64}/pkgconfig/*.pc
+%endif
 %{_bindir}/orcc
 
 
 %changelog
+* Fri Apr 09 2010 - Milan Jurik
+- multiarch support
 * Thu Apr 08 2010 - Milan Jurik
 - update to 0.4.4 and integration to SFE
 * Thu Mar 04 2010 Fabian Deutsch <fabian.deutsch@gmx.de> - 0.4.3-1

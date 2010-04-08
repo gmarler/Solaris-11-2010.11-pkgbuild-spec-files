@@ -1,3 +1,8 @@
+2010-04-09  Milan Jurik <sfnet@xylab.cz>
+
+	* SFEorc.spec, base-specs/orc.spec: multiarch support
+	* SFEschroedinger.spec, base-specs/schroedinger.spec: initial import
+
 2010-04-08 Mark Wright <markwright@internode.on.net>
 	* SFEghc: Bump to 6.12.1
 
@@ -28,7 +33,7 @@
 	* patches/ghc-haskel-platform-02-install.diff - tweaks to build it
 	* patches/ghc-unix-compat-01-solaris.diff - Solaris tweaks
 
-2010-06-08  Milan Jurik <sfnet@xylab.cz>
+2010-04-08  Milan Jurik <sfnet@xylab.cz>
 
 	* SFElibcdio.spec: adding missing dependency and dbus-1.0 header files
 	  path
