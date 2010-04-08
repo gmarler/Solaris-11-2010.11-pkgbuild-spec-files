@@ -33,7 +33,11 @@ make
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT%{_bindir}
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/doc/jam
+%ifarch i386
+cp ./bin.solarisx86/jam $RPM_BUILD_ROOT%{_bindir}
+%else
 cp ./bin.solaris/jam $RPM_BUILD_ROOT%{_bindir}
+%endif
 cp README *.html $RPM_BUILD_ROOT%{_datadir}/doc/jam
 
 
@@ -48,6 +52,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/doc/jam
 
 %changelog
+* Thu Apr 08 2010 - Milan Jurik
+- corrected path for x86 build
 * Fri May 23 2008 - michal.bielicki <at> voiceworks.pl
 - fix source url
 * Sun May  6 2007 - dougs@truemail.co.th
