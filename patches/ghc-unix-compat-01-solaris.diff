@@ -1,0 +1,11 @@
+--- unix-compat-0.1.2.1-orig/include/HsUnixCompat.h	2007-11-08 01:35:09.000000000 +1100
++++ unix-compat-0.1.2.1/include/HsUnixCompat.h	2010-04-05 10:05:22.159630384 +1000
+@@ -1,5 +1,8 @@
+ #include "HsUnix.h"
+ #include <sys/types.h>
++#if defined(__sun) && defined(__SVR4)
++#include <sys/mkdev.h>
++#endif
+ 
+ unsigned int unix_major(dev_t dev);
+ unsigned int unix_minor(dev_t dev);

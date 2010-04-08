@@ -1,0 +1,30 @@
+--- haskell-platform-2010.1.0.0-orig/scripts/install.sh	2010-03-21 01:41:57.000000000 +1100
++++ haskell-platform-2010.1.0.0/scripts/install.sh	2010-03-28 12:08:24.231790639 +1100
+@@ -21,20 +21,22 @@
+ 
+   [ -x Setup ] || die "The ${PKG}/Setup script does not exist or cannot be run"
+ 
+-  ./Setup copy ${VERBOSE} \
+-    || die "Installing the ${PKG} component failed"
+-
+   ./Setup register ${VERBOSE} --gen-pkg-config="${PKG}.conf" \
+     || die "Generating the registration information for the package ${PKG} failed"
+ 
++  ./Setup copy --destdir=${RPM_BUILD_ROOT} ${VERBOSE} \
++    || die "Installing the ${PKG} component failed"
++
+   if [ -f ${PKG}.conf ]; then
+     if test "${USER_INSTALL}" = "YES"; then
+       GHC_PKG_DB="--user"
+     else
+       GHC_PKG_DB="--global"
+     fi
+-    ${GHC_PKG} update ${GHC_PKG_DB} "${PKG}.conf" \
+-      || die "Registering the package ${PKG} failed"
++    echo "${GHC_PKG} update ${GHC_PKG_DB} ${PKG}/${PKG}.conf \\"  >> ../../register-haskell-platform.sh
++    echo "  || die \"Registering the package ${PKG}/${PKG} failed\""  >> ../../register-haskell-platform.sh
++    echo "${GHC_PKG} unregister ${GHC_PKG_DB} --force ${PKG} \\"  >> ../../unregister-haskell-platform.sh
++    echo "  || die \"Un-registering the package ${PKG} failed\""  >> ../../unregister-haskell-platform.sh
+   fi
+ 
+   cd ../..

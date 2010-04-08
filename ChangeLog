@@ -1,3 +1,31 @@
+2010-04-08 Mark Wright <markwright@internode.on.net>
+	* SFEghc: Bump to 6.12.1
+	* SFEghc-haskell-platform.spec: *NEW* - Haskell Platform
+	* SFEghc-yi.spec: *NEW* - Yi Haskell editor
+	* SFEghc-darcs.spec: *NEW* - distributed source code control system
+	* SFEghc-hxt.spec, SFEghc-regex-tdfa.spec, SFEghc-curl.spec,
+	SFEghc-dyre.spec, SFEghc-xdg-basedir.spec, SFEghc-dataenc.spec,
+	SFEghc-hscolour.spec, SFEghc-uniplate.spec, SFEghc-split.spec,
+	SFEghc-Diff.spec, SFEghc-utility-ht.spec, SFEghc-Boolean.spec,
+	SFEghc-pureMD5.spec, SFEghc-fingertree.spec, SFEghc-pointedlist.spec,
+	SFEghc-data-accessor-monads-fd.spec, SFEghc-terminfo.spec,
+	SFEghc-unix-compat.spec, SFEghc-haskeline.spec, SFEghc-monads-fd.spec,
+	SFEghc-vty.spec, SFEghc-ghc-paths.spec, SFEghc-encoding.spec,
+	SFEghc-vector-space.spec, SFEghc-tagsoup.spec, SFEghc-parallel.spec,
+	SFEghc-io-storage.spec, SFEghc-mmap.spec, SFEghc-dlist.spec,
+	SFEghc-hashed-storage.spec, SFEghc-rosezipper.spec, SFEghc-cpphs.spec,
+	SFEghc-haskell-src-exts.spec, SFEghc-executable-path.spec,
+	SFEghc-cereal.spec, SFEghc-data-accessor.spec, SFEghc-HaXml.spec,
+	SFEghc-derive.spec, SFEghc-polyparse.spec,
+	SFEghc-data-accessor-template.spec, SFEghc-binary.spec,
+	SFEghc-MemoTrie.spec, SFEghc-transformers.spec,
+	SFEghc-cautious-file.spec: *NEW* Haskell packages
+	* patches/ghc-yi-01-cabal.diff - some issues with building Yi docs
+	* patches/ghc-haskel-platform-01-build.diff - tweaks to build it
+	* patches/ghc-vty-01-cbits.diff - Solaris tweaks
+	* patches/ghc-haskel-platform-02-install.diff - tweaks to build it
+	* patches/ghc-unix-compat-01-solaris.diff - Solaris tweaks
+
 2010-06-08  Milan Jurik <sfnet@xylab.cz>
 
 	* SFElibcdio.spec: adding missing dependency and dbus-1.0 header files
