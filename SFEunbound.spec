@@ -98,6 +98,11 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
   echo '/usr/sbin/groupdel unbound';
 ) | $BASEDIR/var/lib/postrun/postrun -i -a
 
+%actions
+group groupname="unbound"
+user ftpuser=false gcos-field="Unbound Reserved UID" username="unbound" password=NP group="unbound"
+
+
 %files
 %defattr(-,root,bin)
 %dir %attr (0755, root, sys) %{_prefix}
@@ -120,6 +125,8 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 %{_libdir}/libunbound*
 
 %changelog
+* Thu Apr 08 2010 - Milan Jurik
+- added IPS support
 * Wed Mar 11 2010 - Milan Jurik
 - update to 1.4.3
 * Wed Mar 10 2010 - Milan Jurik

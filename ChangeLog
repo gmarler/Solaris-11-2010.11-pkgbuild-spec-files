@@ -2,6 +2,7 @@
 
 	* SFElibcdio.spec: adding missing dependency and dbus-1.0 header files
 	  path
+	* SFEunbound.spec: added IPS support
 
 2010-04-07  Miroslav Osladil <mira@osladil.cz>
 
