@@ -7,7 +7,7 @@
 
 Name:                SFElibao
 Summary:             Cross-platform audio library
-Version:             0.8.8
+Version:             1.0.0
 Source:              http://downloads.xiph.org/releases/ao/libao-%{version}.tar.gz
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
@@ -73,6 +73,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/aclocal/*
 
 %changelog
+* Thu Apr 08 2010 - Milan Jurik
+- update to 1.0.0
 * Mon Nov 26 2007 - Thomas Wagner
 - bump to 8.8.8
 * Sat Oct 14 2006 - laca@sun.com
