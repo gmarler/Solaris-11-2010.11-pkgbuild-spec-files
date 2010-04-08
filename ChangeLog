@@ -1,5 +1,7 @@
 2010-04-08 Mark Wright <markwright@internode.on.net>
 	* SFEghc: Bump to 6.12.1
+
+2010-04-08 Mark Wright <markwright@internode.on.net>
 	* SFEghc-haskell-platform.spec: *NEW* - Haskell Platform
 	* SFEghc-yi.spec: *NEW* - Yi Haskell editor
 	* SFEghc-darcs.spec: *NEW* - distributed source code control system
