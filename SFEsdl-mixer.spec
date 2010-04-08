@@ -17,20 +17,22 @@
 %include base.inc
 %use sdl = sdl-mixer.spec
 
-%define SUNWlibsdl	%(/usr/bin/pkginfo -q SUNWlibsdl && echo 1 || echo 0)
+%define SFEsdl	%(/usr/bin/pkginfo -q SFEsdl && echo 1 || echo 0)
 
-Name:			SFEsdl-mixer
+Name:			%{sdl.name}
 Summary: 		%{sdl.summary}
 Version:		%{sdl.version}
+URL:			%{sdl.url}
+License:		%{sdl.license}
 SUNW_BaseDir:		%{_basedir}
 BuildRoot:		%{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
-%if %SUNWlibsdl
-BuildRequires: SUNWlibsdl-devel
-Requires: SUNWlibsdl
-%else
+%if %SFEsdl
 BuildRequires: SFEsdl-devel
 Requires: SFEsdl
+%else
+BuildRequires: SUNWlibsdl-devel
+Requires: SUNWlibsdl
 %endif
 
 %package devel
@@ -115,6 +117,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Thu Apr 08 2010 - Milan Jurik
+- cleanup
 * Fri Mar 05 2010 - Brian Cameron  <brian.cameron@sun.com>
 - Add pkgconfig files.
 * Sun Dec 07 2008 - Gilles Dauphin

@@ -35,6 +35,7 @@
 	* SFEunbound.spec: added IPS support
 	* SFEjam.spec: corrected path for x86 build
 	* SFElibao.spec: update to 1.0.0
+	* base-specs/sdl-mixer.spec, SFEsdl-mixer.spec: cleanup
 
 2010-04-07  Miroslav Osladil <mira@osladil.cz>
 

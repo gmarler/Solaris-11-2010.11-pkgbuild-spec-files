@@ -7,9 +7,11 @@
 %define src_name	SDL_mixer
 %define src_url		http://www.libsdl.org/projects/%{src_name}/release
 
-Name:			sdl-image
+Name:			SFEsdl-mixer
 Summary: 		Sound Mixer library for SDL
 Version:		1.2.11
+URL:			http://www.libsdl.org/projects/SDL_mixer/
+License:		LGPLv2.1
 Source: 		%{src_url}/%{src_name}-%{version}.tar.gz
 Patch1:			sdl-mixer-01-cflags.diff
 BuildRoot:		%{_tmppath}/%{name}-%{version}-build
@@ -40,6 +42,8 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/*.a
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Thu Apr 08 2010 - Milan Jurik
+- cleanup
 * Fri Mar 05 2010 - brian.cameron@sun.com
 - Bump to 1.2.11.
 * Wed Aug 15 2007 - trisk@acm.jhu.edu
