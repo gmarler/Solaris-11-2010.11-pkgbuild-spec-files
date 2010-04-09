@@ -41,6 +41,7 @@ Fluendo.
 
 %include default-depend.inc
 
+Requires: SFEorc
 BuildRequires:  SFEorc
 BuildRequires:  SUNWgtk-doc
 BuildRequires:  SUNWliboil
