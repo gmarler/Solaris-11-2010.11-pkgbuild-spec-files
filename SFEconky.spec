@@ -11,9 +11,10 @@
 Name:                    SFEconky
 Summary:                 Light-weight system monitor for X  
 Version:                 1.5.1
-Source:                  http://prdownloads.sourceforge.net/conky/conky-1.5.1.tar.gz
+Source:                  %{sf_download}/conky/conky-%{version}.tar.gz
 Patch1:                  conky-01.diff
 URL:                     http://conky.sourceforge.net/
+License:                 GPLv3,BSD
 SUNW_BaseDir:            /
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 
@@ -21,21 +22,20 @@ BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 
 Requires: SUNWcsu
 BuildRequires: SUNWgcc
+BuildRequires: SUNWgnome-common-devel
 
 %prep
 %setup -q -n conky-%version
 %patch1 -p1
 
-
-
 export CFLAGS="%optflags -I/usr/X11/include"
 export LDFLAGS="%_ldflags -L/usr/X11/lib -R/usr/X11/lib -lX11"
 
 %build
-CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`                                                   
-if test "x$CPUS" = "x" -o $CPUS = 0; then                                                                     
-    CPUS=1                                                                                                    
-fi                                                                                                            
+CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
+if test "x$CPUS" = "x" -o $CPUS = 0; then
+    CPUS=1
+fi
 export CC=/usr/sfw/bin/gcc
 
 ./configure --prefix=%{_prefix} \
@@ -48,7 +48,7 @@ export CC=/usr/sfw/bin/gcc
             --x-includes=/usr/X11/include \
             --x-libraries=/usr/X11/lib
 
-make -j $CPUS                      
+make -j $CPUS
 
 %install
 make install DESTDIR=$RPM_BUILD_ROOT
@@ -74,6 +74,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Apr  9 2010 - Miroslav Osladil <mira@osladil.cz>
+- added dependency on SUNWgnome-common-devel
+- use %{sf_download} in source url
 * Tue Apr 06 2010 - Milan Jurik
 - small cleanup
 * Thu Apr 9 2009 - Alexander R. Eremin eremin@milax.org

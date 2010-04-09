@@ -1,3 +1,7 @@
+2010-04-09  Miroslav Osladil <mira@osladil.cz>
+
+	* SFEconky.spec: added dependency on SUNWgnome-common-devel,
+	  use %{sf_download} in source url
 2010-04-09  Milan Jurik <sfnet@xylab.cz>
 
 	* SFEorc.spec, base-specs/orc.spec: multiarch support
