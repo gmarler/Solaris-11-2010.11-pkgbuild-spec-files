@@ -21,7 +21,9 @@ Version:                 %{libx264.version}
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
+%ifarch i386 amd64
 BuildRequires: SFEyasm
+%endif
 
 %package devel
 Summary:                 %{summary} - development files
@@ -100,6 +102,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Apr 09 - Milan Jurik
+- yasm is only for x86, not SPARC
 * Mar 2010 - Gilles Dauphin
 - because of install could be in /usr/SFE/bin we cp isaexec
 - instead of hardlink it
