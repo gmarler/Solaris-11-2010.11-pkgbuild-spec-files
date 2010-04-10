@@ -2,6 +2,7 @@
 
 	* SFEconky.spec: added dependency on SUNWgnome-common-devel,
 	  use %{sf_download} in source url
+
 2010-04-09  Milan Jurik <sfnet@xylab.cz>
 
 	* SFEorc.spec, base-specs/orc.spec: multiarch support
@@ -9,6 +10,7 @@
 	* encumbered/SFElibx264.spec: yasm is only for x86, not SPARC
 
 2010-04-08 Mark Wright <markwright@internode.on.net>
+
 	* SFEghc: Bump to 6.12.1
 
 2010-04-08 Mark Wright <markwright@internode.on.net>
@@ -16,22 +18,22 @@
 	* SFEghc-yi.spec: *NEW* - Yi Haskell editor
 	* SFEghc-darcs.spec: *NEW* - distributed source code control system
 	* SFEghc-hxt.spec, SFEghc-regex-tdfa.spec, SFEghc-curl.spec,
-	SFEghc-dyre.spec, SFEghc-xdg-basedir.spec, SFEghc-dataenc.spec,
-	SFEghc-hscolour.spec, SFEghc-uniplate.spec, SFEghc-split.spec,
-	SFEghc-Diff.spec, SFEghc-utility-ht.spec, SFEghc-Boolean.spec,
-	SFEghc-pureMD5.spec, SFEghc-fingertree.spec, SFEghc-pointedlist.spec,
-	SFEghc-data-accessor-monads-fd.spec, SFEghc-terminfo.spec,
-	SFEghc-unix-compat.spec, SFEghc-haskeline.spec, SFEghc-monads-fd.spec,
-	SFEghc-vty.spec, SFEghc-ghc-paths.spec, SFEghc-encoding.spec,
-	SFEghc-vector-space.spec, SFEghc-tagsoup.spec, SFEghc-parallel.spec,
-	SFEghc-io-storage.spec, SFEghc-mmap.spec, SFEghc-dlist.spec,
-	SFEghc-hashed-storage.spec, SFEghc-rosezipper.spec, SFEghc-cpphs.spec,
-	SFEghc-haskell-src-exts.spec, SFEghc-executable-path.spec,
-	SFEghc-cereal.spec, SFEghc-data-accessor.spec, SFEghc-HaXml.spec,
-	SFEghc-derive.spec, SFEghc-polyparse.spec,
-	SFEghc-data-accessor-template.spec, SFEghc-binary.spec,
-	SFEghc-MemoTrie.spec, SFEghc-transformers.spec,
-	SFEghc-cautious-file.spec: *NEW* Haskell packages
+	  SFEghc-dyre.spec, SFEghc-xdg-basedir.spec, SFEghc-dataenc.spec,
+	  SFEghc-hscolour.spec, SFEghc-uniplate.spec, SFEghc-split.spec,
+	  SFEghc-Diff.spec, SFEghc-utility-ht.spec, SFEghc-Boolean.spec,
+	  SFEghc-pureMD5.spec, SFEghc-fingertree.spec, SFEghc-pointedlist.spec,
+	  SFEghc-data-accessor-monads-fd.spec, SFEghc-terminfo.spec,
+	  SFEghc-unix-compat.spec, SFEghc-haskeline.spec, SFEghc-monads-fd.spec,
+	  SFEghc-vty.spec, SFEghc-ghc-paths.spec, SFEghc-encoding.spec,
+	  SFEghc-vector-space.spec, SFEghc-tagsoup.spec, SFEghc-parallel.spec,
+	  SFEghc-io-storage.spec, SFEghc-mmap.spec, SFEghc-dlist.spec,
+	  SFEghc-hashed-storage.spec, SFEghc-rosezipper.spec, SFEghc-cpphs.spec,
+	  SFEghc-haskell-src-exts.spec, SFEghc-executable-path.spec,
+	  SFEghc-cereal.spec, SFEghc-data-accessor.spec, SFEghc-HaXml.spec,
+	  SFEghc-derive.spec, SFEghc-polyparse.spec,
+	  SFEghc-data-accessor-template.spec, SFEghc-binary.spec,
+	  SFEghc-MemoTrie.spec, SFEghc-transformers.spec,
+	  SFEghc-cautious-file.spec: *NEW* Haskell packages
 	* patches/ghc-yi-01-cabal.diff - some issues with building Yi docs
 	* patches/ghc-haskel-platform-01-build.diff - tweaks to build it
 	* patches/ghc-vty-01-cbits.diff - Solaris tweaks
@@ -89,7 +91,7 @@
 	* SFEsugar-datastore.spec: Bump to 0.88.0.
 	* SFEsugar-toolkit.spec: Bump to 0.87.9.
 	* SFEliblouis.spec, base-specs/liblouis.spec: Bump to 1.8.0.
- 
+
 2010-03-30  Milan Jurik <sfnet@xylab.cz>
 
 	* SFEufraw.spec: update to 0.16
@@ -496,7 +498,7 @@
 
 	* SFEjson-glib: Bump to 0.10.0.
 	* SFEmaildrop.spec: *NEW* maildrop - mail delivery agent with filtering
- 	  capabilities
+	  capabilities
 	* SFEpidgin-facebookchat.spec: Bump to 0.64.
 	* experimental/SFEdovecot.spec: Set CFLAGS. Fix /var/run permissions.
 	* experimental/SFEdovecot-plugin-sieve.spec,
