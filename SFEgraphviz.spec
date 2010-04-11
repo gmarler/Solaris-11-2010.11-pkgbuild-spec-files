@@ -5,12 +5,13 @@
 
 %include Solaris.inc
 
+%define python_version 2.6
+
 %define SFEfreetype %(/usr/bin/pkginfo -q SFEfreetype && echo 1 || echo 0)
-%define tcl_8_3 %(pkgchk -l SUNWTcl 2>/dev/null | grep /usr/sfw/bin/tclsh8.3 >/dev/null && echo 1 || echo 0)
 
 Name:                SFEgraphviz
 Summary:             Graph drawing tools and libraries
-Version:             2.16.1
+Version:             2.26.3
 Source:              http://www.graphviz.org/pub/graphviz/ARCHIVE/graphviz-%{version}.tar.gz
 URL:                 http://www.graphviz.org
 SUNW_BaseDir:        %{_basedir}
@@ -37,14 +38,13 @@ BuildRequires: SFEfreetype-devel
 BuildRequires: SUNWfreetype2
 %endif
 BuildRequires: SUNWgnome-base-libs-devel
-# obsolete in b133
-#BuildRequires: SUNWsfwhea
 BuildRequires: SUNWlibtool
 BuildRequires: SUNWPython-devel
 BuildRequires: SUNWTcl
 BuildRequires: SUNWperl584core
 BuildRequires: SUNWruby18u
 BuildRequires: SUNWswig
+BuildRequires: SUNWgnome-common-devel
 
 %package devel
 Summary:                 %{summary} - development files
@@ -62,16 +62,6 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
      CPUS=1
 fi
 
-export CPPFLAGS="-I/usr/sfw/include -D_SYS_MODE_H"
-export CFLAGS="%optflags -I/usr/X11/include -I/usr/include/gd2"
-export LDFLAGS="%_ldflags -L/usr/X11/lib -R/usr/X11/lib -lgd"
-%if %tcl_8_3
-TCL_OPTS="--with-tclsh=/usr/sfw/bin/tclsh8.3 \
-          --with-wish=/usr/sfw/bin/wish8.3"
-%else
-TCL_OPTS=
-%endif
-
 libtoolize --copy --force
 aclocal $ACLOCAL_FLAGS
 autoheader
@@ -81,20 +71,7 @@ autoconf
             --mandir=%{_mandir} \
             --enable-static=no \
             --enable-ltdl \
-            --disable-rpath \
-            --disable-sharp \
-            --disable-guile \
-            --disable-io \
-            --disable-java \
-            --disable-lua \
-            --disable-ocaml \
-            --disable-php \
-            --disable-swig \
-            --disable-r \
-            --disable-python23 \
-            --disable-python24 \
-            --disable-python25 \
-            $TCL_OPTS
+            --with-gdincludedir=/usr/include/gd2
 
 make -j$CPUS
 
@@ -127,9 +104,15 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, bin) %{_mandir}/man1
 %{_mandir}/man1/*.1
 %dir %attr (0755, root, bin) %{_mandir}/man3
-%{_mandir}/man3/*.3
+%{_mandir}/man3/*.3*
 %dir %attr (0755, root, bin) %{_mandir}/man7
 %{_mandir}/man7/*.7
+%{_prefix}/ruby
+%dir %attr (0755, root, bin) %{_libdir}/python%{python_version}
+%{_libdir}/python%{python_version}/*
+%dir %attr (0755, root, bin) %{_libdir}/tcl8.4
+%{_libdir}/tcl8.4/*
+
 
 %files devel
 %defattr (-, root, bin)
@@ -143,6 +126,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/graphviz/*
 
 %changelog
+* Sun Apr 11 2010 - Milan Jurik
+- resurrect it from archive because it was not integrated
+- update to 2.26.3
 * Fri Nov 14 2008 - Gilles Dauphin
 - SUNWfsweha is obsolete in b133
 * Fri Nov 14 2008 - Gilles Dauphin

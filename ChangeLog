@@ -13,6 +13,8 @@
 	* SFEperl-gettext.spec: added missing build dependency
 	* SFEfrozen-bubble.spec: adding missing build deps
 	* SFEfreeglut.spec: adding missing build dep
+	* SFEgraphviz.spec: resurrect it from archive because it was not
+	  integrated, update to 2.26.3
 
 2010-04-09  Miroslav Osladil <mira@osladil.cz>
 
