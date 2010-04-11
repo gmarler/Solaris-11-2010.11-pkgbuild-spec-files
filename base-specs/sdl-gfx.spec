@@ -9,6 +9,8 @@
 Name:			SFEsdl-gfx
 Summary: 		Graphics library for SDL
 Version:		2.0.20
+URL:			http://www.ferzkopp.net/Software/SDL_gfx-2.0/
+License:		LGPL
 Source: 		http://www.ferzkopp.net/Software/%{src_name}-2.0/%{src_name}-%{version}.tar.gz
 BuildRoot:		%{_tmppath}/%{name}-%{version}-build
 Patch1:			sdl-gfx-01-shell.diff
@@ -40,6 +42,8 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/*.a
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Sun Apr 11 2010 - Milan Jurik
+- minor cleanup
 * Tue Mar 02 2010 - matt@greenviolet.net
 - Bump version to 2.0.20
 - Update configure script to cooperate with Solaris sh

@@ -21,20 +21,22 @@
 %define mmx_option --disable-mmx
 %use sdl = sdl-gfx.spec
 
-%define SUNWlibsdl	%(/usr/bin/pkginfo -q SUNWlibsdl && echo 1 || echo 0)
+%define SFEsdl	%(/usr/bin/pkginfo -q SFEsdl && echo 1 || echo 0)
 
 Name:			SFEsdl-gfx
 Summary: 		%{sdl.summary}
 Version:		%{sdl.version}
+URL:			%{sdl.url}
+License:		%{sdl.license}
 SUNW_BaseDir:		%{_basedir}
 BuildRoot:		%{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
-%if %SUNWlibsdl
-BuildRequires: SUNWlibsdl-devel
-Requires: SUNWlibsdl
-%else
+%if %SFEsdl
 BuildRequires: SFEsdl-devel
 Requires: SFEsdl
+%else
+BuildRequires: SUNWlibsdl-devel
+Requires: SUNWlibsdl
 %endif
 
 %package devel
@@ -113,6 +115,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sun Apr 11 2010 - Milan Jurik
+- minor cleanup
 * Fri Aug 21 2009 - Milan Jurik
 - update to 2.0.19, pkgconfig added
 * Tue Jun  5 2007 - Doug Scott
