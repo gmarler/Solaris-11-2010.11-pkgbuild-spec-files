@@ -7,6 +7,7 @@
 	* SFElibcdio.spec: adding missing build dependency
 	* SFElibfribidi.spec: cleanup for the latest pkgtool
 	* SFEsdl-gfx.spec: minor cleanup
+	* SFEorc.spec: do not depend on GNU find
 
 2010-04-09  Miroslav Osladil <mira@osladil.cz>
 

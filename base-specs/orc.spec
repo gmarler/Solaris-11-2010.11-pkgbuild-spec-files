@@ -32,7 +32,8 @@ make
 make install DESTDIR=$RPM_BUILD_ROOT
 
 # Remove unneeded files.
-find $RPM_BUILD_ROOT/%{_libdir} -name \*.a -or -name \*.la -delete
+rm -rf $RPM_BUILD_ROOT/%{_libdir}/*.a
+rm -rf $RPM_BUILD_ROOT/%{_libdir}/*.la
 rm -rf $RPM_BUILD_ROOT/%{_libdir}/orc
 
 
@@ -41,5 +42,7 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sun Apr 11 2010 - Milan Jurik
+- do not depend on GNU find
 * Fri Apr 09 2010 - Milan Jurik
 - initial multiarch support
