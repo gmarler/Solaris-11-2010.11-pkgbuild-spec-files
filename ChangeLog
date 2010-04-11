@@ -8,6 +8,7 @@
 	* SFElibfribidi.spec: cleanup for the latest pkgtool
 	* SFEsdl-gfx.spec: minor cleanup
 	* SFEorc.spec: do not depend on GNU find
+	* SFEsdl-perl: adding missing build deps
 
 2010-04-09  Miroslav Osladil <mira@osladil.cz>
 

@@ -5,6 +5,8 @@
 #
 %include Solaris.inc
 
+%define SFEsdl  %(/usr/bin/pkginfo -q SFEsdl && echo 1 || echo 0)
+
 Name:                    SFEsdl-perl
 Summary:                 SDL Perl is a multimedia binding for Perl, using the Simple DirectMedia Layer and OpenGL.
 Version:                 1.20.0
@@ -18,6 +20,15 @@ Patch1:                  sdl-perl-01-solaris.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
+
+%if %SFEsdl
+BuildRequires: SFEsdl-devel
+Requires: SFEsdl
+%else
+BuildRequires: SUNWlibsdl-devel
+Requires: SUNWlibsdl
+%endif
+BuildRequires:	SUNWperl584usr
 
 %prep
 %setup -q -n SDL_perl-%{version}
@@ -40,5 +51,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_basedir}/perl5/*
 
 %changelog
+* Sun Apr 11 2010 - Milan Jurik
+- adding missing build deps
 * Mon Jan 12 2009 - alfred.peng@sun.com
 - Initial version
