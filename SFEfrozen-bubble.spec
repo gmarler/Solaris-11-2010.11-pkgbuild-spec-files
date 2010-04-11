@@ -27,9 +27,11 @@ Requires:                SFEsdl-pango
 Requires:                SFEsdl-perl
 Requires:                SFEperl-gettext
 
+BuildRequires:           SUNWperl584usr
 BuildRequires:           SFEsdl-image-devel
 BuildRequires:           SFEsdl-mixer-devel
 BuildRequires:           SFEsdl-pango-devel
+BuildRequires:           SUNWgnome-common-devel
 
 %ifarch sparc
 %define perl_dir sun4-solaris-64int
@@ -73,5 +75,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/frozen-bubble/*
 
 %changelog
+* Sun Apr 11 2010 - Milan Jurik
+- adding missing build deps
 * Mon Jan 12 2009 - alfred.peng@sun.com
 - Initial version

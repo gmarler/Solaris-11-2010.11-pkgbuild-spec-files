@@ -11,6 +11,7 @@
 	* SFEsdl-perl.spec: adding missing build deps
 	* SFEsdl-ttf.spec: prefer SUNWlibsdl
 	* SFEperl-gettext.spec: added missing build dependency
+	* SFEfrozen-bubble.spec: adding missing build deps
 
 2010-04-09  Miroslav Osladil <mira@osladil.cz>
 
