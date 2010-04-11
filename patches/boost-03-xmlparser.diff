@@ -1,0 +1,20 @@
+--- boost_1_42_0/boost/property_tree/detail/xml_parser_read_rapidxml.hpp-orig	2010-03-05 07:18:21.689666161 -0600
++++ boost_1_42_0/boost/property_tree/detail/xml_parser_read_rapidxml.hpp	2010-03-05 07:24:04.097744959 -0600
+@@ -96,6 +96,8 @@ namespace boost { namespace property_tre
+             using namespace rapidxml;
+             const int f_tws = parse_normalize_whitespace
+                             | parse_trim_whitespace;
++            const int f_twsc = parse_normalize_whitespace
++                            | parse_trim_whitespace | parse_comment_nodes; 
+             const int f_c = parse_comment_nodes;
+             xml_document<Ch> doc;
+             if (flags & no_comments) {
+@@ -105,7 +107,7 @@ namespace boost { namespace property_tre
+                     doc.BOOST_NESTED_TEMPLATE parse<0>(&v.front());
+             } else {
+                 if (flags & trim_whitespace)
+-                    doc.BOOST_NESTED_TEMPLATE parse<f_tws | f_c>(&v.front());
++                    doc.BOOST_NESTED_TEMPLATE parse<f_twsc>(&v.front());
+                 else
+                     doc.BOOST_NESTED_TEMPLATE parse<f_c>(&v.front());
+             }
