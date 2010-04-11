@@ -20,6 +20,7 @@ Source:                  http://www.cpan.org/modules/by-module/Locale/gettext-%{
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 Requires:                SUNWperl584core
+BuildRequires:           SUNWperl584usr
 
 %ifarch sparc
 %define perl_dir sun4-solaris-64int
@@ -76,6 +77,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/*/*
 
 %changelog
+* Sun Apr 11 2010 - Milan Jurik
+- added missing build dependency
 * Tue Mar 24 2009 - andras.barna@gmail.com
 - IPSize version
 * Wed Sep 12 2007 - nonsea@users.sourceforge.net
