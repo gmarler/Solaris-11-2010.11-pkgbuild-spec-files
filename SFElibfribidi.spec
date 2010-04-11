@@ -13,11 +13,19 @@
 %use fribidi = fribidi.spec
 
 Name:                   SFElibfribidi
-Summary:                fribidi - Library implementing the Unicode Bidirectional Algorithm
+Summary:                %{fribidi.summary}
+URL:			%{fribidi.url}
 Version:                %{fribidi.version}
+License:		%{fribidi.license}
+Group:			%{fribidi.group}
 SUNW_BaseDir:           %{_basedir}
 BuildRoot:              %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
+
+%description
+A library to handle bidirectional scripts (eg. hebrew, arabic), so that
+the display is done in the proper way; while the text data itself is
+always written in logical order.
 
 %package devel
 Summary:                 %{summary} - development files
@@ -60,6 +68,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*
 
 %changelog
+* Sun Apr 11 2010 - Milan Jurik
+- cleanup for the latest pkgtool
 * Sun Aug 17 2008 - nonsea@users.sourceofrge.net
 - Add man page to %files
 * Mon Oct 22 2007 - nonsea@users.sourceforge.net
