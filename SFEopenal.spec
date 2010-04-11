@@ -8,17 +8,17 @@
 %include Solaris.inc
 
 %define src_name	openal-soft
-%define src_url		http://www.openal.org/openal_webstf/downloads
-%define src_url		http://kcat.strangesoft.net/openal-releases
-#http://kcat.strangesoft.net/openal-releases/openal-soft-1.5.304.tar.bz2
+%define src_url		http://connect.creativelabs.com/openal/Downloads
 
 %define SUNWcmake      %(/usr/bin/pkginfo -q SUNWcmake && echo 1 || echo 0)
 
 Name:                   SFEopenal
 Summary:                OpenAL is a cross-platform 3D audio API
-Version:                1.7.411
-Source:                 %{src_url}/%{src_name}-%{version}.tar.bz2
+Version:                1.11.753
+Source:                 %{src_url}/%{src_name}-%{version}.bz2
+URL:			http://connect.creativelabs.com/openal/
 Patch1:			openal-new-01.diff
+Patch2:			openal-cmake-02.diff
 SUNW_BaseDir:           %{_basedir}
 # GPL now
 #SUNW_Copyright:		openal_license.txt
@@ -44,9 +44,11 @@ SUNW_BaseDir:            %{_prefix}
 %include default-depend.inc
 
 %prep
-%setup -q -c -n %{name}
+rm -rf openal-soft*
+bzcat %{SOURCE} | gtar xf -
 cd openal-soft*
 %patch1 -p1
+%patch2 -p1
 cd ..
 
 %build
@@ -58,8 +60,7 @@ fi
 cd %{src_name}-%{version}
 CC=cc
 export CC
-mkdir build && cd build
-#cmake -DHAVE_GCC_VISIBILITY:INTERNAL=0 -DCMAKE_INSTALL_PREFIX:PATH=/usr -DHAVE_VISIBILITY_SWITCH:INTERNAL=0 ..
+cd build
 cmake -DHAVE_GCC_VISIBILITY:INTERNAL=0 -DCMAKE_INSTALL_PREFIX:PATH=%_prefix -DHAVE_VISIBILITY_SWITCH:INTERNAL=0 ..
 make
 
@@ -67,11 +68,9 @@ make
 rm -rf $RPM_BUILD_ROOT
 cd %{src_name}-%{version}
 cd build
-mkdir -p $RPM_BUILD_ROOT/%_prefix
-#make install DESTDIR=$RPM_BUILD_ROOT
-export DESTDIR=$RPM_BUILD_ROOT
+mkdir -p $RPM_BUILD_ROOT/%{_prefix}
 make install
-#mv ./sfw_stage $RPM_BUILD_ROOT/%{_prefix}
+mv ./sfw_stage/* $RPM_BUILD_ROOT/%{_prefix}
 #rm $RPM_BUILD_ROOT/%{_libdir}/lib*.*a
 
 %clean
@@ -91,6 +90,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*
 
 %changelog
+* Sun Apr 11 2010 - Milan Jurik
+- update to 1.11.753
+- once again reverting install because it is not working for all make commands and across openal versions
 * Mar 03 2010 - Gilles Dauphin
 - DESTDIR work for me in b133 and install perfectly well
 - work with last CBE and last pkgbuild 1.3.101 in 2009.06 and b133.

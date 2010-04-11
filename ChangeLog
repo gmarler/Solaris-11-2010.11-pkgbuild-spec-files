@@ -1,3 +1,9 @@
+2010-04-11  Milan Jurik <sfnet@xylab.cz>
+
+	* SFEopenal.spec: update to 1.11.753, once again reverting install
+	  because it is not working for all make commands and across openal
+	  versions
+
 2010-04-09  Miroslav Osladil <mira@osladil.cz>
 
 	* SFEconky.spec: added dependency on SUNWgnome-common-devel,
