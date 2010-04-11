@@ -17,7 +17,7 @@
 %include base.inc
 %use sdl = sdl-image.spec
 
-%define SUNWlibsdl	%(/usr/bin/pkginfo -q SUNWlibsdl && echo 1 || echo 0)
+%define SFEsdl	%(/usr/bin/pkginfo -q SFEsdl && echo 1 || echo 0)
 
 Name:			SFEsdl-image
 Summary: 		%{sdl.summary}
@@ -25,12 +25,12 @@ Version:		%{sdl.version}
 SUNW_BaseDir:		%{_basedir}
 BuildRoot:		%{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
-%if %SUNWlibsdl
-BuildRequires: SUNWlibsdl-devel
-Requires: SUNWlibsdl
-%else
+%if %SFEsdl
 BuildRequires: SFEsdl-devel
 Requires: SFEsdl
+%else
+BuildRequires: SUNWlibsdl-devel
+Requires: SUNWlibsdl
 %endif
 
 %package devel
@@ -116,6 +116,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Sun Apr 11 2010 - Milan Jurik
+- prefer SUNWlibsdl
 * Fri Mar 05 2010 - Brian Cameron  <brian.cameron@sun.com>
 - Add %ifarch around the packaging of architecture specific pkgconfig files.
 * Tue Mar 02 2010 - matt@greenviolet.net
