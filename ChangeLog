@@ -4,6 +4,7 @@
 	  because it is not working for all make commands and across openal
 	  versions
 	* SFEimage-sdl.spec: prefer SUNWlibsdl
+	* SFElibcdio.spec: adding missing build dependency
 
 2010-04-09  Miroslav Osladil <mira@osladil.cz>
 

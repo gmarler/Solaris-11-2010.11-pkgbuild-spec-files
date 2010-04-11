@@ -36,6 +36,7 @@ BuildRequires: SUNWgcc
 Requires: SUNWgccruntime
 Requires: SUNWdbus
 Requires: SFElibcddb
+BuildRequires: SFElibcddb
 Requires: SFElibiconv
 
 %if %(expr %{osbuild} '>=' 100)
@@ -121,6 +122,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/cdio
 
 %changelog
+* Sun Apr 11 2010 - Milan Jurik
+- adding missing build dependency
 * Thu Apr 08 2010 - Milan Jurik
 - adding missing dependency and dbus-1.0 header files path
 * Sat Aug 15 2009 - Thomas Wagner
