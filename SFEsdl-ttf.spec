@@ -17,7 +17,7 @@
 %include base.inc
 %use sdl = sdl-ttf.spec
 
-%define SUNWlibsdl	%(/usr/bin/pkginfo -q SUNWlibsdl && echo 1 || echo 0)
+%define SFEsdl	%(/usr/bin/pkginfo -q SFEsdl && echo 1 || echo 0)
 %define SFEfreetype	%(/usr/bin/pkginfo -q SFEfreetype && echo 1 || echo 0)
 
 Name:			SFEsdl-ttf
@@ -33,12 +33,12 @@ Requires: SFEfreetype
 BuildRequires: SUNWfreetype2
 Requires: SUNWfreetype2
 %endif
-%if %SUNWlibsdl
-BuildRequires: SUNWlibsdl-devel
-Requires: SUNWlibsdl
-%else
+%if %SFEsdl
 BuildRequires: SFEsdl-devel
 Requires: SFEsdl
+%else
+BuildRequires: SUNWlibsdl-devel
+Requires: SUNWlibsdl
 %endif
 
 %package devel
@@ -113,6 +113,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/SDL/
 
 %changelog
+* Sun Apr 11 2010 - Milan Jurik
+- prefer SUNWlibsdl
 * Wed Aug 15 2007 - trisk@acm.jhu.edu
 - Add SUNWfreetype2/SFEfreetype dependency
 * Tue Jun  5 2007 - Doug Scott
