@@ -25,6 +25,9 @@ Summary:                 %{summary} - development files
 SUNW_BaseDir:            %{_prefix}
 %include default-depend.inc
 
+Requires:		SUNWxorg-mesa
+BuildRequires:		SUNWxorg-mesa
+
 %prep
 rm -rf %name-%version
 mkdir %name-%version
@@ -70,6 +73,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_prefix}/X11/include
 
 %changelog
+* Sun Apr 11 2010 - Milan Jurik
+- adding missing build dep
 * Fri Aug 21 2009 - Milan Jurik
 - multiarch support, the official tarball URL
 * Thu Nov 20 2008 - dauphin@enst.fr
