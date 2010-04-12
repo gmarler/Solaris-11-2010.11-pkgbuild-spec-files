@@ -29,6 +29,18 @@ BuildRequires: SUNWlibsdl-devel
 Requires: SUNWlibsdl
 %endif
 BuildRequires:	SUNWperl584usr
+BuildRequires:           SUNWlibsdl-devel
+Requires:                SUNWlibsdl
+BuildRequires:           SFEsdl-image-devel
+Requires:                SFEsdl-image
+BuildRequires:           SFEsdl-gfx-devel
+Requires:                SFEsdl-gfx
+BuildRequires:           SFEsdl-mixer-devel
+Reuqires:                SFEsdl-mixer
+BuildRequires:           SFEsdl-net-devel
+Requires:                SFEsdl-net
+BuildRequires:           SFEsdl-ttf-devel
+Requires:                SFEsdl-ttf
 
 %prep
 %setup -q -n SDL_perl-%{version}
@@ -51,6 +63,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_basedir}/perl5/*
 
 %changelog
+* Mon Apr 12 2010 - Milan Jurik
+- adding missing SDL build deps
 * Sun Apr 11 2010 - Milan Jurik
 - adding missing build deps
 * Mon Jan 12 2009 - alfred.peng@sun.com
