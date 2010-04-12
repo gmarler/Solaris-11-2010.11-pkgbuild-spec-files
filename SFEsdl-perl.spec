@@ -36,7 +36,7 @@ Requires:                SFEsdl-image
 BuildRequires:           SFEsdl-gfx-devel
 Requires:                SFEsdl-gfx
 BuildRequires:           SFEsdl-mixer-devel
-Reuqires:                SFEsdl-mixer
+Requires:                SFEsdl-mixer
 BuildRequires:           SFEsdl-net-devel
 Requires:                SFEsdl-net
 BuildRequires:           SFEsdl-ttf-devel
