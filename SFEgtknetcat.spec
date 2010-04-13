@@ -5,7 +5,7 @@
 #
 %include Solaris.inc
 
-%define pythonver 2.4
+%define pythonver 2.6
 
 Name:                    SFEgtknetcat
 Summary:                 LXDE GUI for netcat
