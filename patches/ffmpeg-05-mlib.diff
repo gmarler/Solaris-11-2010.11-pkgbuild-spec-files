@@ -11,3 +11,13 @@
  }
  
  void dsputil_init_mlib(DSPContext* c, AVCodecContext *avctx)
+--- ffmpeg-0.5.1/libswscale/yuv2rgb_mlib.c	2010-04-16 17:38:01.721924200 +0200
++++ ffmpeg-0.5.1-patch/libswscale/yuv2rgb_mlib.c	2010-04-16 17:38:28.293536200 +0200
+@@ -29,6 +29,7 @@
+ #include <assert.h>
+ 
+ #include "swscale.h"
++#include "swscale_internal.h"
+ 
+ static int mlib_YUV2ARGB420_32(SwsContext *c, uint8_t* src[], int srcStride[], int srcSliceY,
+                                int srcSliceH, uint8_t* dst[], int dstStride[]){

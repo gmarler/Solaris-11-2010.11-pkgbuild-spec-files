@@ -1,3 +1,7 @@
+2010-04-16  Milan Jurik <sfnet@xylab.cz>
+
+	* patches/ffmpeg-05-mlib.diff: minor fix for SPARC
+
 2010-04-13  Simon Jin  <yuntong.jin@sun.com>
 
 	* SFEgtknetcat.spec:using python26
