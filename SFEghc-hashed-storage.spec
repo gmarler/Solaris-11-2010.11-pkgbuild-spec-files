@@ -15,7 +15,7 @@
 
 Name:                    hashed-storage
 Summary:                 hashed-storage - Hashed file storage support code.
-Version:                 0.4.10
+Version:                 0.4.11
 Release:                 1
 License:                 BSD
 Group:                   Development/Languages/Haskell
@@ -161,5 +161,7 @@ fi
 %dir %attr (0755, root, bin) %{_docdir}/ghc/html/libraries/%{name}-%{version}
 
 %changelog
+* Sat Apr 17 2010 - markwright@internode.on.net
+- Bump to 0.4.11
 * Thu Apr 8 2010 - markwright@internode.on.net
 - Initial Solaris version

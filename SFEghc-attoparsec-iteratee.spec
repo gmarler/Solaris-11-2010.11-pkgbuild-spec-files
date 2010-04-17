@@ -1,5 +1,5 @@
 #
-# spec file for package SFEghc-darcs
+# spec file for package SFEghc-attoparsec-iteratee
 #
 # Copyright 2010 Sun Microsystems, Inc.
 # This file and all modifications and additions to the pristine
@@ -13,17 +13,17 @@
 
 %define ghc_version 6.12.1
 
-Name:                    darcs
-Summary:                 darcs - a distributed, interactive, smart revision control system
-Version:                 2.4.1
+Name:                    attoparsec-iteratee
+Summary:                 attoparsec-iteratee - An adapter to convert attoparsec Parsers into blazing-fast Iteratees
+Version:                 0.1
 Release:                 1
-License:                 GPL
+License:                 BSD
 Group:                   Development/Languages/Haskell
 Distribution:            Java Desktop System
 Vendor:                  Sun Microsystems, Inc.
 URL:                     http://hackage.haskell.org/platform/
 Source:                  http://hackage.haskell.org/packages/archive/%{name}/%{version}/%{name}-%{version}.tar.gz
-SUNW_Pkg:		 SFEghc-darcs
+SUNW_Pkg:		 SFEghc-attoparsec-iteratee
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 
@@ -31,39 +31,22 @@ BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 Requires: SFEgcc
 Requires: SFEghc
 Requires: SFEghc-haskell-platform
-Requires: SFEghc-hashed-storage
-Requires: SFEghc-haskeline
+Requires: SFEghc-attoparsec
 
 %description
-Darcs is a free, open source revision control system. It is:
+An adapter to convert attoparsec Parsers into blazing-fast Iteratees
 
-Distributed: Every user has access to the full command set, removing
-boundaries between server and client or committer and non-committers.
-
-Interactive: Darcs is easy to learn and efficient to use because it
-asks you questions in response to simple commands, giving you choices
-in your work flow. You can choose to record one change in a file,
-while ignoring another. As you update from upstream, you can review
-each patch name, even the full diff for interesting patches.
-
-Smart: Originally developed by physicist David Roundy, darcs is based
-on a unique algebra of patches.
-
-This smartness lets you respond to changing demands in ways that would
-otherwise not be possible. Learn more about spontaneous branches with
-darcs.
-
-%package -n SFEghc-darcs-prof
+%package -n SFEghc-attoparsec-iteratee-prof
 Summary:                 %{summary} - profiling libraries
 SUNW_BaseDir:            %{_basedir}
 %include default-depend.inc
-Requires: SFEghc-darcs
+Requires: SFEghc-attoparsec-iteratee
 
-%package -n SFEghc-darcs-doc
+%package -n SFEghc-attoparsec-iteratee-doc
 Summary:                 %{summary} - doc files
 SUNW_BaseDir:            %{_basedir}
 %include default-depend.inc
-Requires: SFEghc-darcs
+Requires: SFEghc-attoparsec-iteratee
 
 %prep
 %setup -q -n %{name}-%{version}
@@ -124,7 +107,7 @@ install -c -m 755 %{name}-%{version}.conf ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{
 cd %{_builddir}/%{name}-%{version}
 find $RPM_BUILD_ROOT -type f -name "*.p_hi" > pkg-prof.files
 find $RPM_BUILD_ROOT -type f -name "*_p.a" >> pkg-prof.files
-find $RPM_BUILD_ROOT/usr/bin $RPM_BUILD_ROOT/usr/lib -type f -name "*" > pkg-all.files
+find $RPM_BUILD_ROOT/usr/lib -type f -name "*" > pkg-all.files
 sort pkg-prof.files > pkg-prof-sort.files
 sort pkg-all.files > pkg-all-sort.files
 comm -23 pkg-all-sort.files pkg-prof-sort.files > pkg.files
@@ -143,14 +126,14 @@ rm -rf $RPM_BUILD_ROOT
 # We need to register the package with ghc-pkg for ghc to find it
 /usr/bin/ghc-pkg register --global --force %{_cxx_libdir}/ghc-%{ghc_version}/%{name}-%{version}/%{name}-%{version}.conf
 
-%post -n SFEghc-darcs-doc
+%post -n SFEghc-attoparsec-iteratee-doc
 cd %{_docdir}/ghc/html/libraries && [ -x "./gen_contents_index" ] && ./gen_contents_index
 
 %preun
 # Need to unregister the package with ghc-pkg for the rebuild of the spec file to work
 /usr/bin/ghc-pkg unregister --global --force %{name}-%{version}
 
-%postun -n SFEghc-darcs-doc
+%postun -n SFEghc-attoparsec-iteratee-doc
 if [ "$1" -eq 0 ] ; then
   cd %{_docdir}/ghc/html/libraries && [ -x "./gen_contents_index" ] && ./gen_contents_index
 fi
@@ -158,10 +141,10 @@ fi
 %files -f pkg.files
 %defattr (-, root, bin)
 
-%files -n SFEghc-darcs-prof -f pkg-prof.files
+%files -n SFEghc-attoparsec-iteratee-prof -f pkg-prof.files
 %defattr (-, root, bin)
 
-%files  -n SFEghc-darcs-doc -f pkg-doc.files
+%files  -n SFEghc-attoparsec-iteratee-doc -f pkg-doc.files
 %defattr(-,root,root,-)
 %dir %attr (0755, root, sys) %{_datadir}
 %dir %attr (0755, root, other) %{_docdir}
@@ -169,11 +152,7 @@ fi
 %dir %attr (0755, root, bin) %{_docdir}/ghc/html
 %dir %attr (0755, root, bin) %{_docdir}/ghc/html/libraries
 %dir %attr (0755, root, bin) %{_docdir}/ghc/html/libraries/%{name}-%{version}
-%dir %attr(0755, root, bin) %{_mandir}
-%dir %attr(0755, root, bin) %{_mandir}/man1
 
 %changelog
 * Sat Apr 17 2010 - markwright@internode.on.net
-- Bump to 2.4.1
-* Thu Apr 8 2010 - markwright@internode.on.net
 - Initial Solaris version

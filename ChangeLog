@@ -1,3 +1,10 @@
+2010-04-17 Mark Wright <markwright@internode.on.net>
+
+	* SFEghc-darcs.spec - Bump to 2.4.1
+	* SFEghc-hashed-storage.spec - Bump to 0.4.11
+	* SFEghc-attoparsec-iteratee.spec, SFEghc-attoparsec.spec,
+	  SFEghc-ListLike.spec, SFEghc-iteratee.spec:  *NEW* Haskell packages
+
 2010-04-16  Milan Jurik <sfnet@xylab.cz>
 
 	* patches/ffmpeg-05-mlib.diff: minor fix for SPARC
