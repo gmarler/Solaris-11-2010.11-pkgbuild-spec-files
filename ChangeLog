@@ -1,3 +1,7 @@
+2010-04-18  Milan Jurik <sfnet@xylab.cz>
+
+	* encumbered/SFElibquicktime.spec: update to 1.1.5
+
 2010-04-17 Mark Wright <markwright@internode.on.net>
 
 	* SFEghc-darcs.spec - Bump to 2.4.1

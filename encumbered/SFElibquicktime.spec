@@ -15,6 +15,8 @@
 Name:		SFElibquicktime
 Summary:	%{libquicktime.summary}
 Version:	%{libquicktime.version}
+URL:		http://libquicktime.sourceforge.net/
+License:	LGPL
 SUNW_BaseDir:	%{_basedir}
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -25,6 +27,12 @@ BuildRequires: SUNWgnome-base-libs-devel
 BuildRequires: SUNWogg-vorbis-devel
 Requires: SUNWogg-vorbis-devel
 %endif
+Requires: SFElibschroedinger
+BuildRequires: SFElibschroedinger-devel
+Requires: SFEfaad2
+BuildRequires: SFEfaad2-devel
+Requires: SFElibx264
+BuildRequires: SFElibx264-devel
 
 %package devel
 Summary:         %{summary} - development files
@@ -123,6 +131,9 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Sun Apr 18 2010 - Milan Jurik
+- update to 1.1.5
+- additional build dependencies
 * Tue Sep 08 2009 - Milan Jurik
 - update to 1.1.3
 * Fri Feb 22 2007 - trisk@acm.jhu.edu

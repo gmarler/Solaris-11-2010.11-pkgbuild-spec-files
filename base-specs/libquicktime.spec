@@ -4,7 +4,7 @@
 # includes module(s): libquicktime
 #
 
-%define src_ver 1.1.3
+%define src_ver 1.1.5
 %define src_name libquicktime
 %define src_url http://downloads.sourceforge.net/%{src_name}
 
@@ -38,6 +38,8 @@ else
         export LDFLAGS="-L%{_libdir} -L/usr/X11/lib -R%{_libdir}:/usr/X11/lib $LDFLAGS"
 fi
 
+libtoolize -f -c
+aclocal
 bash autogen.sh
 
 ./configure --prefix=%{_prefix}		\
@@ -63,6 +65,9 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/libquicktime/lib*.*a
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Sun Apr 18 2010 - Milan Jurik
+- update to 1.1.5
+- additional build dependencies
 * Tue Sep 08 2009 - Milan Jurik
 - update to 1.1.3
 * Fri Feb 22 2008 - trisk@acm.jhu.edu
