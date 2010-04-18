@@ -17,6 +17,7 @@ URL:            http://gstreamer.freedesktop.org/
 Source:         http://gstreamer.freedesktop.org/src/gst-plugins-ugly/gst-plugins-ugly-%{version}.tar.bz2
 Patch1:         gst-plugins-ugly-01-gettext.diff
 Patch4:         gst-plugins-ugly-04-xsi_shell.diff
+Patch5:		gst-plugins-ugly-05-x264.diff
 BuildRoot:      %{_tmppath}/%{name}-%{version}-root
 Docdir:         %{_defaultdocdir}/doc
 Autoreqprov:    on
@@ -36,6 +37,7 @@ plug-ins.
 %setup -n gst-plugins-ugly-%{version} -q
 %patch1 -p1
 %patch4 -p1
+%patch5 -p1
 
 %build
 CFLAGS="${CFLAGS:-%optflags}" ; export CFLAGS ; \

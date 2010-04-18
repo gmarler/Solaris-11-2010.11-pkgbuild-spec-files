@@ -2,6 +2,7 @@
 
 	* encumbered/SFElibquicktime.spec: update to 1.1.5
 	* patches/mplayer-snap-04-realplayer.diff: update for the latest
+	* patches/gst-plugins-ugly-05-x264.diff: compatibility with new libx264
 
 2010-04-17 Mark Wright <markwright@internode.on.net>
 
