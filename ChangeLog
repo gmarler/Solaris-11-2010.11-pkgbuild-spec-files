@@ -1,6 +1,7 @@
 2010-04-18  Milan Jurik <sfnet@xylab.cz>
 
 	* encumbered/SFElibquicktime.spec: update to 1.1.5
+	* patches/mplayer-snap-04-realplayer.diff: update for the latest
 
 2010-04-17 Mark Wright <markwright@internode.on.net>
 

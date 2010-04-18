@@ -1,5 +1,5 @@
 --- configure	Sat Jul 11 16:31:12 2009
 +++ configure	Sat Jul 11 16:32:51 2009
 @@ -6769,1 +6769,1 @@
--     (linux || freebsd || netbsd || openbsd || dragonfly || darwin || win32 || os2) ; then
-+     (linux || freebsd || netbsd || openbsd || dragonfly || darwin || win32 || os2 || sunos) ; then
+-     (linux || freebsd || netbsd || openbsd || dragonfly || darwin || win32) ; then
++     (linux || freebsd || netbsd || openbsd || dragonfly || darwin || win32 || sunos) ; then
