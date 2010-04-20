@@ -1,0 +1,41 @@
+--- xfig.3.2.5b-orig/xfig.3.2.5b/Fig.ad	2009-05-07 01:11:09.000000000 +0200
++++ xfig.3.2.5b/Fig.ad	2009-07-31 23:11:24.823232938 +0200
+@@ -3,6 +3,15 @@
+ ! Everyone has a color display so this is deprecated
+ !
+ 
++!
++! 
++Fig.inches:		false
++Fig.startgridmode:	1
++Fig.startpsFont:	helvetica
++Fig.startfontsize:	11
++Fig.paper_size:		a4
++Fig.specialtext:	true
++
+ !Don't change the following string - xfig uses it to determine
+ ! if you have the newest app-defaults files installed
+ 
+@@ -16,7 +25,7 @@
+ Fig*AllowShellResize: false
+ 
+ ! Image editor - can edit imported image
+-Fig.image_editor:		xv
++Fig.image_editor:		xdg-open
+ 
+ ! name of ghostscript (not ghostview)
+ Fig.ghostscript:		gs
+@@ -25,11 +34,11 @@
+ ! 		This is for viewing the xfig html reference.
+ ! For firefox, this command will open the help pages in a running firefox,
+ !     or start a new netscape if one isn't already running
+-Fig.browser:	firefox -remote 'openFile(%f)' || firefox %f
++Fig.browser:	xdg-open %f
+ 
+ ! pdfviewer - put your favorite pdf viewer here.  
+ !		This is for viewing the xfig how-to guide and man pages
+-Fig.pdfviewer:			xpdf %f
++Fig.pdfviewer:			xdg-open %f
+ 
+ ! Spell check program - put your favorite spelling check program here.
+ !		It must write the misspelled words to standard output.

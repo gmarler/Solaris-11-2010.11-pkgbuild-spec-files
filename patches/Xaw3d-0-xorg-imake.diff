@@ -1,0 +1,25 @@
+--- ../../../orig/xc/lib/Xaw3d/Imakefile	2003-03-08 15:55:18.000000000 +0100
++++ Imakefile	2009-07-25 11:16:37.838729298 +0200
+@@ -5,11 +5,11 @@
+ XCOMM Build options. Have you read the README.XAW3D file yet?
+ XCOMM
+ XCOMM For color pixmaps, define MULTIPLANE_PIXMAPS:
+-#undef MULTIPLANE_PIXMAPS
++#define MULTIPLANE_PIXMAPS
+ XCOMM For grayed stipple shadows, define GRAY_BLKWHT_STIPPLES:
+ #define GRAY_BLKWHT_STIPPLES
+ XCOMM For scrollbars with arrows, define ARROW_SCROLLBARS:
+-#undef ARROW_SCROLLBARS
++#define ARROW_SCROLLBARS
+ 
+ #define DoNormalLib NormalLibXaw
+ #define DoSharedLib SharedLibXaw
+@@ -22,7 +22,7 @@
+ #define IncSubSubdir Xaw3d
+ 
+ XCOMM When building outside an X11 source tree:
+-XCOMM EXTRA_INCLUDES = -I.
++EXTRA_INCLUDES = -I.
+ 
+ #ifdef SharedXawReqs
+ REQUIREDLIBS = SharedXawReqs

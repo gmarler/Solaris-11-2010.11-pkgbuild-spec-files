@@ -1,0 +1,13 @@
+--- xfig.3.2.5b-orig/xfig.3.2.5b/w_keyboard.c	2008-05-20 21:38:18.000000000 +0200
++++ xfig.3.2.5b/w_keyboard.c	2009-07-25 16:27:18.562583906 +0200
+@@ -45,6 +45,10 @@
+ #define REG_NOERROR 0
+ #endif
+ 
++#if defined(sun)
++#define REG_NOERROR REG_OK
++#endif
++
+ Boolean keyboard_input_available = False;
+ int keyboard_x;
+ int keyboard_y;

@@ -1,0 +1,31 @@
+--- xfig.3.2.5b-orig/xfig.3.2.5b/Imakefile	2009-03-30 17:53:05.000000000 +0200
++++ xfig.3.2.5b/Imakefile	2009-07-25 20:09:05.224568599 +0200
+@@ -32,7 +32,7 @@
+ XCOMM
+ XCOMM BINDIR = /usr/bin
+ XCOMM MKDIRHIER = /bin/sh /usr/bin/X11/mkdirhier -p
+-MKDIRHIER = mkdirhier 
++MKDIRHIER = /usr/X11/bin/mkdirhier 
+ 
+ XCOMM Uncomment and change XAPPLOADDIR to the directory where you want the
+ XCOMM app-defaults resource files to go.  You will have to use the environment
+@@ -60,7 +60,7 @@
+ XCOMM some new features, including "Tips", which replace xfig's "help balloons"
+ XCOMM NOTE: This is the default for many X systems now.
+ 
+-XCOMM #define XAW3D1_5E
++#define XAW3D1_5E
+ 
+ #ifdef XAW3D1_5E
+     DUSEXAW3D = -DXAW3D -DXAW3D1_5E
+@@ -119,8 +119,8 @@
+ #define USEXPM_ICON
+ 
+ #ifdef USEXPM
+-XPMLIBDIR = /usr/local/lib
+-XPMINC = -I/usr/local/include/X11
++XPMLIBDIR = /usr/lib
++XPMINC = -I/usr/X11/include/X11/
+ #endif
+ 
+ XCOMM Uncomment the following definiton if you want to use the small icons

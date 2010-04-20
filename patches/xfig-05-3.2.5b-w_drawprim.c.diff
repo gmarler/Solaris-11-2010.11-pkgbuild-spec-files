@@ -1,0 +1,36 @@
+--- xfig.3.2.5b-orig/xfig.3.2.5b/w_drawprim.c	2007-03-29 02:23:16.000000000 +0200
++++ xfig.3.2.5b/w_drawprim.c	2009-07-31 22:41:22.610182602 +0200
+@@ -128,12 +128,19 @@
+        server really has them by checking for font of 0-0 size */
+     openwinfonts = False;
+     if (appres.scalablefonts) {
++        // F. Beffa 31 July 2009
++        // 
++        // On OpenSolaris 2009.06 there are some rests from OpenWindows left and
++        // the following code fragmet thinks to be using OpenWindows. This is however
++        // not the case. The result is that fonts are not found.
++        // As a workaround we simply skip the test for OpenWindows.
++        //
+ 	/* first look for OpenWindow style font names (e.g. times-roman) */
+-	if ((fontlist = XListFonts(tool_d, ps_fontinfo[1].name, 1, &count))!=0) {
+-		openwinfonts = True;	/* yes, use them */
+-		for (f=0; f<NUM_FONTS; f++)	/* copy the OpenWindow font names */
+-		    x_fontinfo[f].template = ps_fontinfo[f+1].name;
+-	} else {
++	//if ((fontlist = XListFonts(tool_d, ps_fontinfo[1].name, 1, &count))!=0) {
++	//	openwinfonts = True;	/* yes, use them */
++	//	for (f=0; f<NUM_FONTS; f++)	/* copy the OpenWindow font names */
++	//	    x_fontinfo[f].template = ps_fontinfo[f+1].name;
++	//} else {
+ 	    strcpy(template,x_fontinfo[0].template);  /* nope, check for font size 0 */
+ 	    strcat(template,"0-0-*-*-*-*-");
+ 	    /* add ISO8859 (if not Symbol font or ZapfDingbats) to font name */
+@@ -143,7 +150,7 @@
+ 	    else
+ 		strcat(template,"*-*");
+ 	    fontlist = XListFonts(tool_d, template, 1, &count);
+-	}
++	//}
+ 	XFreeFontNames(fontlist); 
+     }
+ 
