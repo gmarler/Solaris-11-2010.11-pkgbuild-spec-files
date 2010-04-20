@@ -1,0 +1,11 @@
+--- redshift-1.2/src/redshift.c.orig	2010-04-20 14:39:21.398502191 +1200
++++ redshift-1.2/src/redshift.c	2010-04-20 14:39:29.638087272 +1200
+@@ -28,7 +28,7 @@
+ #include <time.h>
+ #include <math.h>
+ #include <locale.h>
+-#include <sys/signal.h>
++#include <signal.h>
+ 
+ #include <libintl.h>
+ #define _(s) gettext(s)
