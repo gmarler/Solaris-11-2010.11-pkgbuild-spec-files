@@ -5,6 +5,8 @@
 
 %include Solaris.inc
 
+%define osbuild %(uname -v | sed -e 's/[A-z_]//g')
+
 %define src_version 2.08.01
 
 Name:                SFEnasm
@@ -16,8 +18,13 @@ SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 
+%if %(expr %{osbuild} '>=' 134)
+BuildRequires:		text/texinfo
+BuildRequires:		print/filter/ghostscript
+%else
 BuildRequires:       SUNWtexi
 BuildRequires:       SUNWghostscript
+%endif
 
 %prep
 %setup -q -n nasm-%src_version
