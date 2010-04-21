@@ -1,3 +1,10 @@
+2010-04-20  Albert Lee  <trisk@opensolaris.org>
+
+	* SFEddrescue.spec: *NEW* GNU ddrescue - Data recovery tool
+	* SFEdircproxy.spec: *NEW* dircproxy - IRC proxy server
+	* SFEdspam.spec, ext-sources/dspam.xml: Bump to 3.9.0. Add SMF manifest
+	  for daemon mode. Add devel package.
+
 2010-04-20 Gilles Dauphin
 
 	* xfig from jr

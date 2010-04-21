@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<!DOCTYPE service_bundle SYSTEM "/usr/share/lib/xml/dtd/service_bundle.dtd.1">
+<service_bundle type='manifest' name='SFEdspam:dspam'>
+<service name='site/dspam' type='service' version='1'>
+	<create_default_instance enabled='false' />
+
+	<single_instance/>
+
+	<dependency name='net-loopback' grouping='require_any'
+			restart_on='none' type='service'>
+		<service_fmri value='svc:/network/loopback' />
+	</dependency>
+
+	<dependency name='net-service' grouping='require_all'
+			restart_on='none' type='service'>
+		<service_fmri value='svc:/network/service'/>
+	</dependency>
+
+	<dependency name='filesystem-local' grouping='require_all'
+			restart_on='none' type='service'>
+		<service_fmri value='svc:/system/filesystem/local' />
+	</dependency>
+
+	<dependent name='dspam_multi-user-server' grouping='optional_all'
+			restart_on='none'>
+		<service_fmri value='svc:/milestone/multi-user-server' />
+	</dependent>
+
+	<dependent name='dspam_postfix' grouping='optional_all'
+			restart_on='none'>
+		<service_fmri value='svc:/site/postfix' />
+	</dependent>
+
+
+	<exec_method type='method'
+			name='start'
+			exec='/usr/bin/dspam --daemon'
+			timeout_seconds='0'>
+		<method_context>
+			<method_credential user='dspam' group='dspam' />
+		</method_context>
+	</exec_method>
+
+	<exec_method type='method'
+			name='stop'
+			exec=':kill'
+			timeout_seconds='3'>
+		<method_context>
+		 	<method_credential user='dspam' group='dspam' />
+		</method_context>
+	</exec_method>
+
+	<property_group name='startd' type='framework'>
+		<propval name="duration" type="astring" value="child" />
+		<propval name='ignore_error' type='astring' value='core,signal' />
+	</property_group>
+
+	<template>
+		<common_name>
+			<loctext xml:lang='C'>
+				 DSPAM anti-spam agent
+			</loctext>	
+		</common_name>
+		<documentation>
+			<doc_link name='dspam.nuclearelephant.com'
+				uri='http://dspam.nuclearelephant.com/' />
+			<manpage title='dspam' section='1' />
+		</documentation>
+	</template>
+</service>
+</service_bundle>

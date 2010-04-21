@@ -7,8 +7,9 @@
 
 Name:                SFEdspam
 Summary:             Extremely scalable, statistical-hybrid anti-spam filter
-Version:             3.8.0
-Source:              http://dspam.nuclearelephant.com/sources/dspam-%{version}.tar.gz
+Version:             3.9.0
+Source:              %{sf_download}/dspam/dspam-%{version}.tar.gz
+Source1:             dspam.xml
 
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
@@ -19,8 +20,15 @@ Summary:                 %{summary} - / filesystem
 SUNW_BaseDir:            /
 %include default-depend.inc
 
+%package devel
+Summary:                 %{summary} - development files
+SUNW_BaseDir:            /
+%include default-depend.inc
+Requires: %name
+
 %prep
 %setup -q -n dspam-%version
+cp -p %{SOURCE1} dspam.xml
 
 %build
 
@@ -35,7 +43,8 @@ export LDFLAGS="%{_ldflags}"
 ./configure --prefix=%{_prefix}  \
             --sysconfdir=%{_sysconfdir} \
             --mandir=%{_mandir} \
-            --with-dspam-home=/var/dspam
+            --enable-daemon \
+            --with-dspam-home=%{_localstatedir}/dspam
 
 # Notes: 
 # I tried setting localstatedir instead of hard-coding
@@ -56,6 +65,10 @@ make install DESTDIR=$RPM_BUILD_ROOT
 rm ${RPM_BUILD_ROOT}%{_libdir}/libdspam.la
 rm ${RPM_BUILD_ROOT}%{_libdir}/libdspam.a
 
+mkdir -p ${RPM_BUILD_ROOT}/var/svc/manifest/site/
+cp dspam.xml ${RPM_BUILD_ROOT}/var/svc/manifest/site/
+
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -65,10 +78,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/*
 %dir %attr (0755, root, bin) %{_libdir}
 %{_libdir}/lib*.so*
-%dir %attr (0755, root, other) %{_libdir}/pkgconfig
-%{_libdir}/pkgconfig/*
-%dir %attr (0755, root, bin) %{_includedir}
-%{_includedir}/*
+%{_libdir}/dspam
 %dir %attr (0755, root, sys) %{_datadir}
 %{_datadir}/*
 
@@ -76,10 +86,25 @@ rm -rf $RPM_BUILD_ROOT
 %defattr (-, root, sys)
 %dir %attr (0755, root, sys) %{_sysconfdir}
 %{_sysconfdir}/*
-%dir %attr (0755, root, sys) /var/dspam
-/var/dspam/*
+%dir %attr (0755, root, sys) %{_localstatedir}
+%dir %attr (0770, root, sys) %{_localstatedir}/dspam
+%{_localstatedir}/dspam/*
+
+%dir %attr (0755, root, sys) %{_localstatedir}/svc
+%class(manifest) %attr(0444, root, sys) %{_localstatedir}/svc/manifest/site/dspam.xml
+
+%files devel
+%defattr (-, root, bin)
+%dir %attr (0755, root, other) %{_libdir}/pkgconfig
+%{_libdir}/pkgconfig/*.pc
+%dir %attr (0755, root, bin) %{_includedir}
+%attr(755, root, bin) %{_includedir}/*
 
 %changelog
+* Sun Feb 14 2010 - Albert Lee <trisk@opensolaris.org>
+- Bump to 3.9.0
+- Add SMF manifest for daemon mode
+- Add devel package
 * Mon Sep  08 2008 - michal.bielickihalokwadrat.de
 - bumped up version to 3.8.0
 * Wed Oct 11 2006 - laca@sun.com
