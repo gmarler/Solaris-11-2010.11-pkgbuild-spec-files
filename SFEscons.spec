@@ -7,7 +7,7 @@
 %include Solaris.inc
 Name:                    SFEscons
 Summary:                 SCons - a software construction tool
-Version:                 1.2.0
+Version:                 1.3.0
 URL:                     http://www.scons.org/
 Source:                  %{sf_download}/scons/scons-%{version}.tar.gz
 SUNW_BaseDir:            %{_basedir}
@@ -48,6 +48,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man*/*
 
 %changelog
+* Thu Apr 22 2010 - Milan Jurik
+- update to 1.3.0
 * Sat Feb 21 2009 - sobotkap@gmail.com
 - Bump to 1.2.0
 * Sat Sep 13 2008 - sobotkap@gmail.com
