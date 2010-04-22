@@ -1,3 +1,7 @@
+2010-04-22  Milan Jurik <sfnet@xylab.cz>
+
+	* SFEunbound.spec: update to 1.4.4
+
 2010-04-22  Jedy Wang  <jedy.wang@sun.com>
 
 	* base-specs/gnome-screensaver.spec: Bump to 2.30
