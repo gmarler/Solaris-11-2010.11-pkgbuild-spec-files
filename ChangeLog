@@ -1,3 +1,9 @@
+2010-04-22  Jedy Wang  <jedy.wang@sun.com>
+
+	* base-specs/gnome-screensaver.spec: Bump to 2.30
+	* patches/gnome-screensaver-02-unlock-first.diff: Updated to make it
+	work for 2.30.
+
 2010-04-20  Albert Lee  <trisk@opensolaris.org>
 
 	* SFEddrescue.spec: *NEW* GNU ddrescue - Data recovery tool

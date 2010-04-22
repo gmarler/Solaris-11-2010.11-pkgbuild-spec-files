@@ -238,7 +238,7 @@
          g_signal_connect (window->priv->lock_socket, "plug_removed",
                            G_CALLBACK (lock_plug_removed), window);
  
-@@ -1566,10 +1609,6 @@
+@@ -1685,10 +1728,6 @@ popup_dialog_idle (GSWindow *window)
  
          gtk_widget_hide (window->priv->drawing_area);
  
@@ -246,9 +246,9 @@
 -
 -        set_invisible_cursor (GTK_WIDGET (window)->window, FALSE);
 -
-         result = spawn_on_window (window,
-                                   command->str,
-                                   &window->priv->lock_pid,
+         window->priv->dialog_quit_requested = FALSE;
+         window->priv->dialog_shake_in_progress = FALSE;
+ 
 @@ -1889,11 +1928,11 @@
  
          handled = FALSE;
