@@ -1,3 +1,7 @@
+2010-04-24  Milan Jurik <sfnet@xylab.cz>
+
+	* include/stdcxx.inc: support bundled stdcxx by default
+
 2010-04-22  Milan Jurik <sfnet@xylab.cz>
 
 	* SFEunbound.spec: update to 1.4.4
