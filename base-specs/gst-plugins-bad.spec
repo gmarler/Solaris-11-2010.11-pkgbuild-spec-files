@@ -55,6 +55,7 @@ aclocal -I ./m4 -I ./common/m4 $ACLOCAL_FLAGS
 autoheader
 autoconf
 automake -a -c -f
+LDFLAGS="$LDFLAGS -lm" \
 CONFIG_SHELL=/bin/bash \
 bash ./configure \
   --prefix=%{_prefix}	\
@@ -100,7 +101,6 @@ bash ./configure \
   --disable-ivorbis \
   --disable-jack \
   --disable-jp2k \
-  --disable-ladspa \
   --disable-lv2 \
   --disable-libmms \
   --disable-mimic \
@@ -111,8 +111,6 @@ bash ./configure \
   --disable-nas \
   --disable-neon \
   --disable-timidity \
-  --disable-sdl \
-  --disable-soundtouch \
   --disable-spc \
   --disable-gme \
   --disable-swfdec \

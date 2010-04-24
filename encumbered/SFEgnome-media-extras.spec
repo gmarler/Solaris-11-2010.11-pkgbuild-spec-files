@@ -15,6 +15,7 @@
 %define SFElibsndfile   %(/usr/bin/pkginfo -q SFElibsndfile && echo 1 || echo 0)
 %define with_amrnb %(pkginfo -q SFEamrnb && echo 1 || echo 0)
 %define with_amrwb %(pkginfo -q SFEamrwb && echo 1 || echo 0)
+%define SFEsdl      %(/usr/bin/pkginfo -q SFEsdl && echo 1 || echo 0)
 
 %use gst_ffmpeg = gst-ffmpeg.spec
 %use gst_plugins_ugly = gst-plugins-ugly.spec
@@ -88,8 +89,13 @@ BuildRequires: SFElame-devel
 #BuildRequires: SUNWlibexif-devel
 Requires: SUNWmusicbrainz
 BuildRequires: SUNWmusicbrainz-devel
-#Requires: SUNWlibsdl
-#BuildRequires:  SUNWlibsdl-devel
+%if %SFEsdl
+Requires: SFEsdl
+BuildRequires: SFEsdl-devel
+%else
+Requires: SUNWlibsdl
+BuildRequires:  SUNWlibsdl-devel
+%endif
 #Requires: SUNWlibtheora
 #BuildRequires: SUNWlibtheora-devel
 #BuildRequires: SFEdirac-devel
@@ -108,6 +114,12 @@ Requires: SFExvid
 BuildRequires: SFExvid-devel
 Requires: SFElibx264
 BuildRequires: SFElibx264-devel
+Requires: SFEladspa
+BuildRequires: SFEladspa-devel
+Requires: SFEsoundtouch
+BuildRequires: SFEsoundtouch-devel
+Requires: SFElibschroedinger
+BuildRequires: SFElibschroedinger-devel
 
 %ifarch sparc
 %define arch_opt --enable-mlib
@@ -240,7 +252,10 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, sys) %{_datadir}
 %attr (-, root, other) %{_datadir}/locale
 %endif
+
 %changelog
+* Sat Apr 24 2010 Milan Jurik
+- enable SDL plugin, ladspa, soundtouch and libschroedinger
 * Sat Oct 17 2009 Milan Jurik
 - update for the latest bad plugins
 * Fri Sep 18 2009 Milan Jurik

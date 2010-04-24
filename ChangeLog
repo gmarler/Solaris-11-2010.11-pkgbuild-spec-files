@@ -1,6 +1,8 @@
 2010-04-24  Milan Jurik <sfnet@xylab.cz>
 
 	* include/stdcxx.inc: support bundled stdcxx by default
+	* encumbered/SFEgnome-media-extras.spec: enable SDL plugin, ladspa,
+	  soundtouch and libschroedinger
 
 2010-04-22  Milan Jurik <sfnet@xylab.cz>
 
