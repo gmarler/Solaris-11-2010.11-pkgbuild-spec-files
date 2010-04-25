@@ -9,15 +9,13 @@
 %include base.inc
 
 %define	src_name c_icap
-%define src_version 060708rc3
+%define src_version 0.1.1-pre2
 
 Name:                SFEc-icap
 Summary:             An implementation of an ICAP server
-Version:             0.060708.0.3
+Version:             0.1.1.0.2
 Source:              %{sf_download}/c-icap/%{src_name}-%{src_version}.tar.gz
 Source1:             c-icap.xml
-Patch1:              c-icap-01-chgrp.diff
-Patch2:              c-icap-02-conf.diff 
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -37,8 +35,6 @@ SUNW_BaseDir:            /
 
 %prep
 %setup -q -n %{src_name}-%{src_version}
-%patch1 -p1
-%patch2 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -72,6 +68,22 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/%{src_name}/*.*a
 install -d 0755 %{buildroot}%/var/svc/manifest/system/filesystem
 install -m 0644 %{SOURCE1} %{buildroot}%/var/svc/manifest/system/filesystem
 
+# no section 8
+install -d 0755 %{buildroot}%{_datadir}/man/man1m
+for i in %{buildroot}%{_datadir}/man/man8/*.8
+do
+  base=`basename $i 8`
+  name1m=${base}1m
+  mv $i %{buildroot}%{_datadir}/man/man1m/${name1m}
+done
+rmdir %{buildroot}%{_datadir}/man/man8
+for i in %{buildroot}%{_datadir}/man/*/*
+do
+  sed 's/(8)/(1M)/g' $i | sed '/^\.TH/s/ \"8\" / \"1M\" /g' > $i.new
+  mv $i.new $i
+done
+
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -82,6 +94,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/lib*.so*
 %dir %attr (0755, root, bin) %{_libdir}/c_icap
 %{_libdir}/c_icap/*.so*
+%dir %attr (0755, root, sys) %{_datadir}
+%{_mandir}/man1m/*
 
 %files devel
 %defattr (-, root, bin)
@@ -95,5 +109,7 @@ rm -rf $RPM_BUILD_ROOT
 %class(manifest) %attr(0444, root, sys) %{_localstatedir}/svc/manifest/system/filesystem/c-icap.xml
 
 %changelog
+* Sun Apr 25 2010 - Milan Jurik
+- update to 0.1.1-pre2
 * Sat Sep 19 2009 - Milan Jurik
 - Initial spec

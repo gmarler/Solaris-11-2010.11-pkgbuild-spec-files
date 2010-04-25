@@ -4,7 +4,7 @@
 %define src_name pure-ftpd
 
 Name:		SFEpure-ftpd
-Version:	1.0.27
+Version:	1.0.29
 Summary:	Lightweight, fast and secure FTP server
 
 Group:		System Environment/Daemons
@@ -131,6 +131,9 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
   echo '/usr/sbin/groupdel pure-ftpd';
 ) | $BASEDIR/var/lib/postrun/postrun -i -a
 
+%actions
+group groupname="pure-ftpd"
+user ftpuser=false gcos-field="pure-ftpd Reserved UID" username="pure-ftpd" password=NP group="pure-ftpd"
 
 %files
 %defattr(-, root, bin, -)
@@ -158,6 +161,9 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 
 
 %changelog
+* Sun Apr 25 2010 - Milan Jurik
+- added IPS support
+- update to 1.0.29
 * Thu Jan 28 2010 Milan Jurik
 - initial import to SFE
 

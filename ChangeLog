@@ -5,6 +5,8 @@
 2010-04-25  Milan Jurik <sfnet@xylab.cz>
 
 	* SFEclamav.spec: added IPS support
+	* SFEpure-ftpd.spec: added IPS support, update to 1.0.29
+	* SFEc-icap.spec: update to 0.1.1-pre2
 
 2010-04-24  Milan Jurik <sfnet@xylab.cz>
 
