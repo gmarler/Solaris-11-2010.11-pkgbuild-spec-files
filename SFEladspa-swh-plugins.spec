@@ -22,6 +22,9 @@ BuildRequires: SFEladspa-devel
 Requires: SFEladspa
 BuildRequires: SUNWfftw3
 Requires: SUNWfftw3
+BuildRequires: SUNWfftw2
+Requires: SUNWfftw2
+BuildRequires: SUNWgnome-common-devel
 
 %prep
 %setup -q -n swh-plugins-%version

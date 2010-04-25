@@ -20,6 +20,8 @@ BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 SUNW_BaseDir:     /
 
+BuildRequires:	SUNWxwopt
+
 %prep
 %setup -q -n koules%{src_version}
 %patch1 -p0
