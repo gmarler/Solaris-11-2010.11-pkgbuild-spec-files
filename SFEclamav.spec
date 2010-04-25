@@ -77,6 +77,10 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
   echo '/usr/sbin/groupdel clamav';
 ) | $BASEDIR/var/lib/postrun/postrun -i -a
 
+%actions
+group groupname="clamav"
+user ftpuser=false gcos-field="ClamAV Reserved UID" username="clamav" password=NP group="clamav"
+
 %files
 %defattr (-, root, bin)
 %{_bindir}
@@ -101,6 +105,8 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 
 
 %changelog
+* Sun Apr 25 2010 - Milan Jurik
+- added IPS support
 * Thu Apr 01 2010 - Milan Jurik
 - update to 0.96
 * Sat Sep 19 2009 - Milan Jurik

@@ -1,3 +1,7 @@
+2010-04-25  Milan Jurik <sfnet@xylab.cz>
+
+	* SFEclamav.spec: added IPS support
+
 2010-04-24  Milan Jurik <sfnet@xylab.cz>
 
 	* include/stdcxx.inc: support bundled stdcxx by default
