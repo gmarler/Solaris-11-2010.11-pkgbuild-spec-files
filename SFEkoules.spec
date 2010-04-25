@@ -5,16 +5,17 @@
 
 %define src_version 1.4
 
-Name:                    	SFEkoules
-Summary:                 	Battle for Earth - koules
-Version:                 	%{src_version}
-License:			GPLv2
-URL:				http://www.ucw.cz/~hubicka/koules/
-Source:                  	http://www.ucw.cz/~hubicka/koules/packages/koules%{src_version}-src.tar.gz
-Patch1:				koules-01-Iconfig.diff
-Patch2:				koules-02-sock.diff
-Patch3:				koules-03-koulestcl.diff
-Patch4:				koules-04-deb.diff
+Name:		SFEkoules
+Summary:	Battle for Earth - koules
+Version:	%{src_version}
+License:	GPLv2
+URL:		http://www.ucw.cz/~hubicka/koules/
+Source:		http://www.ucw.cz/~hubicka/koules/packages/koules%{src_version}-src.tar.gz
+Patch1:		koules-01-Iconfig.diff
+Patch2:		koules-02-sock.diff
+Patch3:		koules-03-koulestcl.diff
+Patch4:		koules-04-deb.diff
+Patch5:		koules-05-imakefile.diff
 
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -28,6 +29,7 @@ BuildRequires:	SUNWxwopt
 %patch2 -p0
 %patch3 -p0
 %patch4 -p0
+%patch5 -p0
 # new xmkmf stuff does strange things with the manpage
 # this is a workaround from Debian
 if [ ! -s xkoules.man ]; then ln -sf xkoules.6 xkoules.man; fi
@@ -38,6 +40,7 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
     CPUS=1
 fi
 
+export PATH=/opt/SUNWspro/bin:$PATH
 PATH=$PATH:/usr/X11/bin xmkmf -a
 make
 
@@ -62,5 +65,7 @@ rm -Rf $RPM_BUILD_ROOT
 %{_mandir}/*
 
 %changelog
+* Sun Apr 25 2010 - Milan Jurik
+- minor fixes
 * Sun Aug 16 2009 - Milan Jurik
 - Initial version
