@@ -1,3 +1,7 @@
+2010-04-25 Mark Wright <markwright@internode.on.net>
+
+	* SFEghc-binary-strict:  *NEW* Haskell package
+
 2010-04-25  Milan Jurik <sfnet@xylab.cz>
 
 	* SFEclamav.spec: added IPS support
