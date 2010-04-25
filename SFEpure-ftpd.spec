@@ -21,6 +21,8 @@ BuildRequires:	SUNWopenldapu
 Requires:	SUNWopenldapu
 BuildRequires:	SUNWopenssl-include
 Requires:	SUNWopenssl-libraries
+BuildRequires:	SUNWmysql51
+Requires:	SUNWmysql51lib
 
 %description
 Pure-FTPd is a fast, production-quality, standard-comformant FTP server,
@@ -37,7 +39,8 @@ Apache log files and more.
 %patch1 -p1
 
 %build
-export CFLAGS="%optflags -I/usr/include/openldap"
+export CFLAGS="%optflags -I/usr/include/openldap -I/usr/mysql/5.1/include/mysql"
+export LDFLAGS="%_ldflags -L/usr/mysql/5.1/lib/mysql -R /usr/mysql/5.1/lib/mysql"
 
 ./configure --prefix=%{_prefix} \
             --sysconfdir=%{_sysconfdir}/%{src_name} \
@@ -164,6 +167,7 @@ user ftpuser=false gcos-field="pure-ftpd Reserved UID" username="pure-ftpd" pass
 * Sun Apr 25 2010 - Milan Jurik
 - added IPS support
 - update to 1.0.29
+- use Mysql 5.1 because 4.0 was removed
 * Thu Jan 28 2010 Milan Jurik
 - initial import to SFE
 
