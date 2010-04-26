@@ -38,6 +38,7 @@ Requires:     %{name}
 
 %build
 export PYTHON=/usr/bin/python%{pythonver}
+export PATH=/usr/gnu/bin/:$PATH
 ./configure --prefix=%{_prefix}
 make
 
