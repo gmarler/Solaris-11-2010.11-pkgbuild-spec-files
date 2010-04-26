@@ -1,5 +1,9 @@
 2010-04-26  Simon Jin <yuntong.jin@sun.com>
 
+	* SFEgedit-developer-plugins.spec:Init spec
+
+2010-04-26  Simon Jin <yuntong.jin@sun.com>
+
 	* base-specs/geeqie.spec:Bump to 1.0
 
 2010-04-26  Simon Jin <yuntong.jin@sun.com>
