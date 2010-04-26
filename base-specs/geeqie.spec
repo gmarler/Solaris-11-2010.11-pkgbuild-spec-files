@@ -10,7 +10,7 @@
 
 Summary: Graphics file browser utility.
 Name: geeqie 
-Version: 1.0beta2 
+Version: 1.0 
 Release: 0
 License: GPL
 Group: Applications/Multimedia
