@@ -1,3 +1,8 @@
+2010-04-26 Mark Wright <markwright@internode.on.net>
+
+	* SFEghc-bindings-DSL:  *NEW* Haskell package
+	* SFElibantlr3c:  *NEW* ANTLR 3.2 C runtime
+
 2010-04-26  Simon Jin <yuntong.jin@sun.com>
 
 	* SFEsugar-base.spec: Using gnu gettext
