@@ -9,12 +9,12 @@
 %include base.inc
 
 %define	src_name xapian-omega
-%define	src_url	http://www.oligarchy.co.uk/xapian/1.0.17
+%define	src_url	http://www.oligarchy.co.uk/xapian/1.0.19
 
 Name:                SFExapian-omega
 Summary:             Search Engine built on Xapian
 Group:               System/Libraries
-Version:             1.0.17
+Version:             1.0.19
 Source:              %{src_url}/%{src_name}-%{version}.tar.gz
 SUNW_Copyright:      %{name}.copyright
 SUNW_BaseDir:        %{_basedir}
@@ -85,6 +85,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_sysconfdir}
 
 %changelog
+* Tue Arp 27 2010 - brian.cameron@sun.com
+- Bump to 1.0.19.
 * Tue Feb 02 2010 - brian.cameron@sun.com
 - Bump to 1.0.17.
 * Sun Jul 29 2007 - dougs@truemail.co.th

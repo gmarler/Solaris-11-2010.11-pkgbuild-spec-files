@@ -6,7 +6,7 @@
 #
 
 Name:        abiword
-Version:     2.8.2
+Version:     2.8.4
 Release:     1
 Summary:     Lean and fast full-featured word processor
 Copyright:   GPL
@@ -113,6 +113,8 @@ rm -rf ${RPM_BUILD_ROOT}
 /usr/X11R6/bin/abiword
 
 %changelog
+* Tue Apr 27 2010 - brian.cameron@sun.com
+- Bump to 2.8.4.
 * Fri Mar 05 2010 - brian.cameron@sun.com
 - Bump to 2.8.2.
 * Wed Feb 03 2010 - brian.cameron@sun.com

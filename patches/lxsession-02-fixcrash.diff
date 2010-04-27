@@ -1,6 +1,6 @@
---- lxsession-0.4.1/lxsession/autostart.c-orig	2010-03-05 07:10:32.825349483 -0600
-+++ lxsession-0.4.1/lxsession/autostart.c	2010-03-05 07:10:41.969033034 -0600
-@@ -189,7 +189,7 @@ static void launch_autostart_file( const
+--- lxsession-0.4.4/lxsession/xdg-autostart.c-orig	2010-04-27 04:32:08.726948258 -0500
++++ lxsession-0.4.4/lxsession/xdg-autostart.c	2010-04-27 04:32:31.039918120 -0500
+@@ -195,7 +195,7 @@ static void launch_autostart_file( const
              for( i = 0; i < n; ++i )
              {
                  /* Only start this program if we are in the "OnlyShowIn" list */
@@ -9,7 +9,7 @@
                      break;
              }
              if( i >= n )    /* our session name is not found in the list */
-@@ -210,7 +210,7 @@ static void launch_autostart_file( const
+@@ -216,7 +216,7 @@ static void launch_autostart_file( const
  				for( i = 0; i < n; ++i )
  				{
  					/* Only start this program if we are in the "OnlyShowIn" list */
@@ -18,16 +18,3 @@
  						break;
  				}
  				if( i < n )    /* our session name is found in the "NotShowIn" list */
---- lxsession-0.4.1/lxsession/lxsession.c-orig	2010-02-15 23:41:33.847859021 -0600
-+++ lxsession-0.4.1/lxsession/lxsession.c	2010-02-15 23:43:36.050621365 -0600
-@@ -311,7 +311,9 @@ int main(int argc, char** argv)
- 
-     if ( G_UNLIKELY(!de_name) )
-         session_name = session_name;
--    g_setenv( "XDG_CURRENT_DESKTOP", de_name, TRUE );
-+    if (de_name != NULL) {
-+        g_setenv( "XDG_CURRENT_DESKTOP", de_name, TRUE );
-+    }
- 
-     /* FIXME: load environment variables? */
- 

@@ -9,7 +9,7 @@
 
 Name:                    SFElxsession
 Summary:                 LXDE session manager
-Version:                 0.4.1
+Version:                 0.4.4
 Source:                  http://nchc.dl.sourceforge.net/sourceforge/lxde/lxsession-%{version}.tar.gz
 Patch1:                  lxsession-01-Werror.diff
 Patch2:                  lxsession-02-fixcrash.diff
@@ -78,6 +78,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Tue Apr 27 2010 - brian.cameron@sun.com
+- Bump to 0.4.4.
 * Mon Feb 15 2010 - brian.cameron@sun.com
 - Bump to 0.4.1.
 * Wed May 27 2009 - alfred.peng@sun.com

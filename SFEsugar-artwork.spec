@@ -10,8 +10,9 @@
 Name:                    SFEsugar-artwork
 Summary:                 Sugar Artwork
 URL:                     http://www.sugarlabs.org/
-Version:                 0.87.3
+Version:                 0.88.0
 Source:                  http://download.sugarlabs.org/sources/sucrose/glucose/sugar-artwork/sugar-artwork-%{version}.tar.bz2
+Patch1:                  sugar-artwork-01-makefile.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 
@@ -25,9 +26,14 @@ BuildRequires:           SUNWicon-naming-utils
 
 %prep
 %setup -q -n sugar-artwork-%version
+%patch1 -p1
 
 %build
 export PYTHON=/usr/bin/python%{pythonver}
+libtoolize -f
+aclocal $ACLOCAL_FLAGS
+automake -a -c -f
+autoconf
 ./configure --prefix=%{_prefix} \
             --sysconfdir=%{_sysconfdir}
 make
@@ -35,6 +41,8 @@ make
 %install
 rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
+
+find $RPM_BUILD_ROOT%{_libdir} -type f -name "*.la" -exec rm -f {} ';'
 
 %{?pkgbuild_postprocess: %pkgbuild_postprocess -v -c "%{version}:%{jds_version}:%{name}:$RPM_ARCH:%(date +%%Y-%%m-%%d):%{support_level}" $RPM_BUILD_ROOT}
 
@@ -52,6 +60,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/themes/sugar-72
 
 %changelog
+* Tue Apr 27 2010 - Brian Cameron  <brian.cameron@sun.com>
+- Bump to 0.88.0.
 * Wed Mar 10 2010 - Brian Cameron  <brian.cameron@sun.com>
 - Bump to 0.87.3.
 * Tue Feb 02 2010 - Brian Cameron  <brian.cameron@sun.com>

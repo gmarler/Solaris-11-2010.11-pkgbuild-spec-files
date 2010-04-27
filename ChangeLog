@@ -1,3 +1,26 @@
+2012-04-27  Brian Cameron  <brian.cameron@sun.com>
+
+	* base-specs/abiword.spec: Bump to 2.8.4.
+	* SFEsugar.spec, SFEsugar-artwork.spec, SFEsugar-presence-service.spec,
+	  SFEsugar-base.spec, SFEsugar-toolkit.spec: Bump to 0.88.0.
+	* patches/sugar-artwork-01-makefile.diff:  Add patch needed to build.
+	* SFEsugar-turtleart.spec: Bump to 86.
+	* SFEsugar-write.spec: Bump to 69.
+	* SFExapian-omega.spec, SFExapian-bindings.spec, SFExapian-core.spec:
+	  Bump to 1.0.19.
+	* SFEpython-dateutil.spec: Bump to 1.5.
+	* SFEtaglib.spec: Bump to 1.6.3.
+	* SFEaudacity.spec: Bump to 1.3.12.
+	* SFEgnome-shell.spec, SFEmutter.spec: Bump to 2.29.1.
+	* patches/gnome-shell-01-function.diff: Remove upstream patch.
+	* SFEgjs.spec: Bump to 0.6.
+	* patches/gjs-01-solaris.diff: Update patch so gjs builds.
+	* SFElxsession.spec, patches/lxsession-02-fixcrash.diff: Bump to 0.4.4.
+	  Rework patch and remove upstream hunk from patch.
+	* SFEgeoclue.spec: Bump to 0.12.0.
+	* patches/geoclue-01-Wall.diff: Rework.
+	* patches/geoclue-02-hostip.diff: Remove upstream patch.
+
 2010-04-26 Mark Wright <markwright@internode.on.net>
 
 	* SFEghc-bindings-DSL:  *NEW* Haskell package

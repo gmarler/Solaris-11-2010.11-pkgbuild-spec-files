@@ -1,13 +1,11 @@
 --- geoclue-0.11.1/configure.ac-orig	2009-10-11 09:26:11.466324972 -0500
 +++ geoclue-0.11.1/configure.ac	2009-10-11 09:26:21.816904435 -0500
-@@ -53,10 +53,6 @@ DBUS_SERVICES_DIR="${datadir}/dbus-1/ser
+@@ -53,8 +53,6 @@ DBUS_SERVICES_DIR="${datadir}/dbus-1/ser
  AC_SUBST(DBUS_SERVICES_DIR)
  AC_DEFINE_UNQUOTED(DBUS_SERVICES_DIR, "$DBUS_SERVICES_DIR", [Where services dir for D-Bus is])
  
 -CFLAGS="$CFLAGS -g -Wall -Werror -Wno-format"
 -
--
--
- PKG_CHECK_MODULES(GTK, [
- 		  gtk+-2.0
- ], HAVE_GTK=yes, HAVE_GTK=no)
+ # -----------------------------------------------------------
+ # gtk+
+ # -----------------------------------------------------------

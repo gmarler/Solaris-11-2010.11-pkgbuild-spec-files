@@ -10,14 +10,12 @@
 Name:                    SFEgeoclue
 License:                 LGPL v2
 Group:                   Libraries/Multimedia
-Version:                 0.11.1
+Version:                 0.12.0
 Distribution:            Java Desktop System
 Vendor:                  Sun Microsystems, Inc.
 Summary:                 Geoinformation Server
 Source:                  http://folks.o-hand.com/jku/geoclue-releases/geoclue-%{version}.tar.gz
 Patch1:                  geoclue-01-Wall.diff
-# date:2009-02-13 owner:yippi type:bug bugzilla:24058
-Patch2:                  geoclue-02-hostip.diff
 URL:                     http://www.freedesktop.org/wiki/Software/GeoClue
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 SUNW_BaseDir:            %{_basedir}
@@ -36,7 +34,6 @@ SUNW_BaseDir:            %{_basedir}
 %prep
 %setup -q -n geoclue-%version
 %patch1 -p1
-%patch2 -p1
 
 %build
 ./configure \
@@ -63,17 +60,18 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr (-, root, bin)
-%dir %attr (0755, root, bin) %{_bindir}
-%attr (0755, root, bin)%{_bindir}/*
 %dir %attr (0755, root, bin) %{_libdir}
 %dir %attr (0755, root, bin) %{_libdir}/lib*.so*
 %{_libexecdir}/geoclue-example
 %{_libexecdir}/geoclue-geonames
+%{_libexecdir}/geoclue-gsmloc
 %{_libexecdir}/geoclue-hostip
 %{_libexecdir}/geoclue-localnet
 %{_libexecdir}/geoclue-manual
 %{_libexecdir}/geoclue-master
+%{_libexecdir}/geoclue-nominatim
 %{_libexecdir}/geoclue-plazes
+%{_libexecdir}/geoclue-skyhook
 %{_libexecdir}/geoclue-yahoo
 %dir %attr (0755, root, sys) %{_datadir}
 %{_datadir}/dbus-1/services/*
@@ -90,5 +88,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-doc
 
 %changelog
+* Tue Apr 27 2010 - Brian Cameron  <brian.cameron@sun.com>
+- Bump to 0.12.0.
 * Sun Oct 11 2009 - Brian Cameron  <brian.cameron@sun.com>
 - Created with version 0.11.1.

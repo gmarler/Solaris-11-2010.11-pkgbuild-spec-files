@@ -93,3 +93,23 @@
  }
  
  void
+--- gjs-0.6/Makefile.am-orig	2010-04-27 05:04:19.043692872 -0500
++++ gjs-0.6/Makefile.am	2010-04-27 05:04:25.898641234 -0500
+@@ -60,7 +60,7 @@ libgjs_la_CFLAGS = 		\
+ 	$(AM_CFLAGS)
+ libgjs_la_LDFLAGS = 		\
+ 	-export-symbols-regex "^[^_]" -version-info 0:0:0	\
+-	-R $(FIREFOX_JS_LIBDIR) -rdynamic
++	-R $(FIREFOX_JS_LIBDIR)
+ libgjs_la_LIBADD = 		\
+ 	$(GJS_LIBS)
+ 
+@@ -101,7 +101,7 @@ gjs_console_CFLAGS = 		\
+ 	$(GJS_CFLAGS)
+ gjs_console_LDADD =		\
+          libgjs.la
+-gjs_console_LDFLAGS = -R $(FIREFOX_JS_LIBDIR) -rdynamic
++gjs_console_LDFLAGS = -R $(FIREFOX_JS_LIBDIR)
+ gjs_console_SOURCES = gjs/console.c
+ 
+ install-exec-hook:

@@ -3,22 +3,11 @@
 #
 # includes module(s): gjs
 #
-# Note that there are some issues that you need to address to avoid build
-# issues when building this module:
-#
-# 1) The link fails due to some errors about symbols in the Firefox JavaScript
-#    include files not being defined.  These include files are found in the
-#    /usr/include/firefox/js directory.  The gjs module does not actually use
-#    these symbols.  Simply comment them out in the Firefox header files and
-#    gjs will compile.  I am working to get this fixed upstream in the Firefox
-#    header files.
-#
-
 %include Solaris.inc
 Name:                    SFEgjs
 Summary:                 GNOME JavaScript bindings
-Version:                 0.5
-Source:                  http://ftp.gnome.org/pub/GNOME/sources/gjs/0.5/gjs-%{version}.tar.bz2
+Version:                 0.6
+Source:                  http://ftp.gnome.org/pub/GNOME/sources/gjs/0.6/gjs-%{version}.tar.bz2
 Patch1:                  gjs-01-solaris.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -42,6 +31,10 @@ SUNW_BaseDir: %{_basedir}
 %build
 export LDFLAGS="-L/usr/lib/firefox"
 export LD=cc
+libtoolize -f
+aclocal $ACLOCAL_FLAGS
+automake -a -c -f
+autoconf
 ./configure --prefix=%{_prefix}
 make
 
@@ -75,6 +68,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/*
 
 %changelog
+* Tue Apr 27 2010 - Brian Cameron  <brian.cameron@sun.com>
+- Bump to 0.6.
 * Wed Mar 10 2010 - Brian Cameron  <brian.cameron@sun.com>
 - Bump to 0.5.  Add BuildRequires SUNWprd.
 * Sat Aug 29 2009 - Brian Cameron  <brian.cameron@sun.com>

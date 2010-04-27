@@ -20,8 +20,8 @@
 
 Name:                SFEaudacity
 Summary:             Free, Cross-Platform Sound Editor
-Version:             1.3.11
-Source:              %{sf_download}/audacity/%{src_name}-minsrc-%{version}.tar.bz2
+Version:             1.3.12
+Source:              http://audacity.googlecode.com/files/%{src_name}-minsrc-%{version}-beta.tar.bz2
 # bug 1910685/
 Patch1:              audacity-01-fixsed.diff
 # bug 1910699
@@ -235,6 +235,27 @@ rm -rf $RPM_BUILD_ROOT
 %attr (-, root, root) %{_datadir}/mime/*
 %dir %attr (0755, root, other) %{_datadir}/pixmaps
 %{_datadir}/pixmaps/*
+%dir %attr (0755, root, other) %{_datadir}/icons
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/16x16
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/16x16/apps/
+%{_datadir}/icons/hicolor/16x16/apps/*
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/22x22/
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/22x22/apps/
+%{_datadir}/icons/hicolor/22x22/apps/*
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/24x24/
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/24x24/apps/
+%{_datadir}/icons/hicolor/24x24/apps/*
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/32x32/
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/32x32/apps/
+%{_datadir}/icons/hicolor/32x32/apps/*
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/48x48/
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/48x48/apps/
+%{_datadir}/icons/hicolor/48x48/apps/*
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/scalable/
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/scalable/apps/
+%{_datadir}/icons/hicolor/scalable/apps/*
+
 
 %if %build_l10n
 %files l10n
@@ -245,6 +266,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Tue Apr 27 2010 - Brian Cameron
+- Bump to 1.3.12.
 * Fri Jan 29 2010 - Brian Cameron
 - Bump to 1.3.11
 * Sun Jan 17 2010 - Milan Jurik

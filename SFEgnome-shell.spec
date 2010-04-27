@@ -9,9 +9,8 @@
 %include Solaris.inc
 Name:                    SFEgnome-shell
 Summary:                 GNOME Shell
-Version:                 2.29.0
+Version:                 2.29.1
 Source:                  http://ftp.gnome.org/pub/GNOME/sources/gnome-shell/2.29/gnome-shell-%{version}.tar.bz2
-Patch1:                  gnome-shell-01-function.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 BuildRequires:           SUNWPython26-devel
@@ -22,7 +21,7 @@ BuildRequires:           SUNWgnome-panel-devel
 BuildRequires:           SUNWlibrsvg-devel
 BuildRequires:           SUNWclutter-devel
 BuildRequires:           SUNWgir-repository
-BuildRequires:           SUNWgobject-introspection-devel
+#BuildRequires:           SUNWgobject-introspection-devel
 BuildRequires:           SFEgjs-devel
 BuildRequires:           SFEmutter-devel
 Requires:                SUNWPython26
@@ -33,7 +32,7 @@ Requires:                SUNWgnome-panel
 Requires:                SUNWlibrsvg
 Requires:                SUNWclutter
 Requires:                SUNWgir-repository
-Requires:                SUNWgobject-introspection
+#Requires:                SUNWgobject-introspection
 Requires:                SFEgjs
 Requires:                SFEmutter
 %include default-depend.inc
@@ -53,7 +52,6 @@ Requires:                %{name}
 
 %prep
 %setup -q -n gnome-shell-%version
-%patch1 -p1
 
 %build
 export PYTHON=/usr/bin/python%{pythonver}
@@ -116,6 +114,8 @@ cat >> $BASEDIR/var/svc/profile/upgrade <<\EOF
 %endif
 
 %changelog
+* Tue Apr 27 2010 - Brian Cameron  <brian.cameron@sun.com>
+- Bump to 2.29.1.
 * Wed Mar 10 2010 - Brian Cameron  <brian.cameron@sun.com>
 - Bump to 2.29.0.
 * Thu Nov 05 2009 - Brian Cameron  <brian.cameron@sun.com>

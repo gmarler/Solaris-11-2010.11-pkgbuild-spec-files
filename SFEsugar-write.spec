@@ -10,7 +10,7 @@
 Name:                    SFEsugar-write
 Summary:                 Sugar Write
 URL:                     http://www.sugarlabs.org/
-Version:                 68 
+Version:                 69 
 Source:                  http://download.sugarlabs.org/sources/sucrose/fructose/Write/Write-%{version}.tar.bz2
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -76,5 +76,7 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Tue Apr 27 2010 - Brian Cameron  <brian.cameron@sun.com>
+- Bump to 69.
 * Tue Feb 02 2010 - Brian Cameron  <brian.cameron@sun.com>
 - Created with 68.

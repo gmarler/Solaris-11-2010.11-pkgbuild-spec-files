@@ -1,0 +1,8 @@
+--- sugar-artwork-0.88.0/gtk/engine/Makefile.am-orig	2010-04-27 03:38:16.479673368 -0500
++++ sugar-artwork-0.88.0/gtk/engine/Makefile.am	2010-04-27 03:38:20.796508049 -0500
+@@ -1,5 +1,4 @@
+ INCLUDES = \
+-	-DGTK_DISABLE_DEPRECATED \
+ 	-DGDK_DISABLE_DEPRECATED \
+ 	-DG_DISABLE_DEPRECATED \
+ 	$(ENGINE_CFLAGS) $(WARN_CFLAGS)

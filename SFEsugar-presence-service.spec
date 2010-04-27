@@ -10,7 +10,7 @@
 Name:                    SFEsugar-presence-service
 Summary:                 Sugar Presence Service
 URL:                     http://www.sugarlabs.org/
-Version:                 0.87.1
+Version:                 0.88.0
 Source:                  http://download.sugarlabs.org/sources/sucrose/glucose/sugar-presence-service/sugar-presence-service-%{version}.tar.bz2
 Patch1:                  sugar-presence-service-01-python.diff
 SUNW_BaseDir:            %{_basedir}
@@ -54,5 +54,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/sugar-presence-service
 
 %changelog
+* Tue Apr 27 2010 - Brian Cameron  <brian.cameron@sun.com>
+- Bump to 0.88.0.
 * Tue Feb 02 2010 - Brian Cameron  <brian.cameron@sun.com>
 - Created with 0.87.1.
