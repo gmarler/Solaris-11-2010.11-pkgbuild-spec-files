@@ -21,7 +21,7 @@ BuildRequires:           SUNWgnome-panel-devel
 BuildRequires:           SUNWlibrsvg-devel
 BuildRequires:           SUNWclutter-devel
 BuildRequires:           SUNWgir-repository
-#BuildRequires:           SUNWgobject-introspection-devel
+BuildRequires:           SUNWgobject-introspection-devel
 BuildRequires:           SFEgjs-devel
 BuildRequires:           SFEmutter-devel
 Requires:                SUNWPython26
@@ -32,7 +32,7 @@ Requires:                SUNWgnome-panel
 Requires:                SUNWlibrsvg
 Requires:                SUNWclutter
 Requires:                SUNWgir-repository
-#Requires:                SUNWgobject-introspection
+Requires:                SUNWgobject-introspection
 Requires:                SFEgjs
 Requires:                SFEmutter
 %include default-depend.inc
