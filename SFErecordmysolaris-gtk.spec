@@ -28,7 +28,7 @@ Requires:                %{name}
 %endif
 
 
-%define pythonver 2.4
+%define pythonver 2.6
 
 %prep
 %setup -q -n recordmysolaris-gtk-%version
@@ -112,6 +112,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Apr 27 2010 - Milan Jurik
+- python 2.6
 * Sun Apr 05 2009 - (andras.barna@gmail.com)
 - bump version
 * Sat Mar 07 2009 - (andras.barna@gmail.com)

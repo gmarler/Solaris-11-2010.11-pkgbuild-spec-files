@@ -1,4 +1,10 @@
-2012-04-27  Brian Cameron  <brian.cameron@sun.com>
+2010-04-25  Milan Jurik <sfnet@xylab.cz>
+
+	* SFErecordmysolaris-gtk.spec: python 2.6
+	* SFErecordmysolaris.spec: missing Boomer header files dependency,
+	  disable JACK as not needed, shm headers change
+
+2010-04-27  Brian Cameron  <brian.cameron@sun.com>
 
 	* base-specs/abiword.spec: Bump to 2.8.4.
 	* SFEsugar.spec, SFEsugar-artwork.spec, SFEsugar-presence-service.spec,

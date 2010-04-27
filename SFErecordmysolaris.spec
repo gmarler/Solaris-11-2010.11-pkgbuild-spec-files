@@ -10,11 +10,13 @@ Summary:             Recordmysolaris - Desktop recording tool
 Version:             0.3
 Source:              http://recordmysolaris.googlecode.com/files/recordmysolaris-%{version}.tar.gz
 URL:                 http://code.google.com/p/recordmysolaris/
-
+Patch1:              recordmysolaris-01-shm.diff
+License:             GPLv2
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}_%{version}-build
 BuildRequires:       SUNWogg-vorbis
 BuildRequires:       SUNWlibtheora
+BuildRequires:       SUNWaudh
 
 Requires:            SUNWxwplt
 Requires:            SUNWogg-vorbis
@@ -24,6 +26,7 @@ Requires:            SUNWlibtheora
 
 %prep
 %setup -q -n recordmysolaris-%version
+%patch1 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -44,7 +47,8 @@ autoconf
             --mandir=%{_mandir}                 \
             --sysconfdir=%{_sysconfdir}         \
             --datadir=%{_datadir}               \
-            --infodir=%{_infodir}
+            --infodir=%{_infodir}		\
+            --disable-jack
 
 
 make -j$CPUS
@@ -67,6 +71,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/*
 
 %changelog
+* Tue Apr 27 2010 - Milan Jurik
+- missing Boomer header files dependency
+- disable JACK as not needed
+- shm headers changed
 * Sun Apr 05 2009 - (andras.barna@gmail.com)
 - bump version
 * Mon Mar 16 2009 - (andras.barna@gmail.com)
