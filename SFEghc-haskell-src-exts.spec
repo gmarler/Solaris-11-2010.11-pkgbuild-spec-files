@@ -15,7 +15,7 @@
 
 Name:                    haskell-src-exts
 Summary:                 haskell-src-exts - Manipulating Haskell source: abstract syntax, lexer, parser, and pretty-printer
-Version:                 1.6.1
+Version:                 1.9.0
 Release:                 1
 License:                 BSD
 Group:                   Development/Languages/Haskell
@@ -172,5 +172,7 @@ fi
 %dir %attr (0755, root, bin) %{_docdir}/ghc/html/libraries/%{name}-%{version}
 
 %changelog
+* Wed Apr 28 2010 - markwright@internode.on.net
+- Bump to 1.9.0
 * Thu Apr 8 2010 - markwright@internode.on.net
 - Initial Solaris version

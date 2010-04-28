@@ -1,5 +1,5 @@
 #
-# spec file for package SFEghc-derive
+# spec file for package SFEghc-c2hs
 #
 # Copyright 2010 Sun Microsystems, Inc.
 # This file and all modifications and additions to the pristine
@@ -13,48 +13,50 @@
 
 %define ghc_version 6.12.1
 
-Name:                    derive
-Summary:                 derive - A program and library to derive instances for data types
-Version:                 2.3.0.1
+Name:                    c2hs
+Summary:                 c2hs - C->Haskell FFI tool that gives some cross-language type safety
+Version:                 0.16.2
 Release:                 1
-License:                 BSD
+License:                 GPL
 Group:                   Development/Languages/Haskell
 Distribution:            Java Desktop System
 Vendor:                  Sun Microsystems, Inc.
 URL:                     http://hackage.haskell.org/platform/
 Source:                  http://hackage.haskell.org/packages/archive/%{name}/%{version}/%{name}-%{version}.tar.gz
-SUNW_Pkg:		 SFEghc-derive
+SUNW_Pkg:		 SFEghc-c2hs
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
+
+Patch1:                  ghc-c2hs-01-c2hs-cabal.diff
 
 %include default-depend.inc
 Requires: SFEgcc
 Requires: SFEghc
 Requires: SFEghc-haskell-platform
-Requires: SFEghc-uniplate
-Requires: SFEghc-haskell-src-exts
+Requires: SFEghc-language-c
 
 %description
-Data.Derive is a library and a tool for deriving instances for Haskell
-programs. It is designed to work with custom derivations, SYB and
-Template Haskell mechanisms. The tool requires GHC, but the generated
-code is portable to all compilers. We see this tool as a competitor to
-DrIFT.
+C->Haskell assists in the development of Haskell bindings to C
+libraries. It extracts interface information from C header files and
+generates Haskell code with foreign imports and marshaling. Unlike
+writing foreign imports by hand (or using hsch2s), this ensures that C
+functions are imported with the correct Haskell types.
 
-%package -n SFEghc-derive-prof
+%package -n SFEghc-c2hs-prof
 Summary:                 %{summary} - profiling libraries
 SUNW_BaseDir:            %{_basedir}
 %include default-depend.inc
-Requires: SFEghc-derive
+Requires: SFEghc-c2hs
 
-%package -n SFEghc-derive-doc
+%package -n SFEghc-c2hs-doc
 Summary:                 %{summary} - doc files
 SUNW_BaseDir:            %{_basedir}
 %include default-depend.inc
-Requires: SFEghc-derive
+Requires: SFEghc-c2hs
 
 %prep
 %setup -q -n %{name}-%{version}
+%patch1 -p1
 export LD_LIBRARY_PATH=/usr/gnu/lib:$LD_LIBRARY_PATH
 
 # Need to use same gcc as we used to build ghc (gcc 4.x)
@@ -76,8 +78,6 @@ GHC_PKG=/usr/bin/ghc-pkg
 HSC2HS=/usr/bin/hsc2hs
 VERBOSE=--verbose=3
 
-sed -i -e 's,haskell-src-exts == 1.8.,haskell-src-exts == 1.9.,' derive.cabal
-sed -i -e 's,uniplate == 1.4.,uniplate == 1.5.,' derive.cabal
 chmod a+x ./Setup.hs
 runghc ./Setup.hs configure --prefix=%{_prefix} \
     --libdir=%{_cxx_libdir} \
@@ -94,7 +94,10 @@ export LD_LIBRARY_PATH='/usr/gnu/lib'
 export LD_OPTIONS='-L/usr/gnu/lib -R/usr/gnu/lib'
 %endif
 runghc ./Setup.hs build ${VERBOSE}
-runghc ./Setup.hs haddock ${VERBOSE} --executables --hoogle --hyperlink-source
+runghc ./Setup.hs haddock ${VERBOSE} --hoogle --hyperlink-source
+
+# See INSTALL file for instructions on building the c2hs documentation
+make -C doc
 
 %install
 export LD_LIBRARY_PATH=/usr/gnu/lib:$LD_LIBRARY_PATH
@@ -109,6 +112,12 @@ runghc ./Setup.hs copy ${VERBOSE} --destdir=${RPM_BUILD_ROOT}
 
 install -d ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}/%{name}-%{version}/
 install -c -m 755 %{name}-%{version}.conf ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}/%{name}-%{version}/%{name}-%{version}.conf
+
+install -d ${RPM_BUILD_ROOT}%{_docdir}/c2hs/users_guide
+install -c -m 644 doc/users_guide/* ${RPM_BUILD_ROOT}%{_docdir}/c2hs/users_guide
+
+install -d ${RPM_BUILD_ROOT}%{_mandir}/man1
+install -c -m 644 doc/man1/* ${RPM_BUILD_ROOT}%{_mandir}/man1
 
 # Prepare lists of files for packaging
 cd %{_builddir}/%{name}-%{version}
@@ -133,14 +142,14 @@ rm -rf $RPM_BUILD_ROOT
 # We need to register the package with ghc-pkg for ghc to find it
 /usr/bin/ghc-pkg register --global --force %{_cxx_libdir}/ghc-%{ghc_version}/%{name}-%{version}/%{name}-%{version}.conf
 
-%post -n SFEghc-derive-doc
+%post -n SFEghc-c2hs-doc
 cd %{_docdir}/ghc/html/libraries && [ -x "./gen_contents_index" ] && ./gen_contents_index
 
 %preun
 # Need to unregister the package with ghc-pkg for the rebuild of the spec file to work
 /usr/bin/ghc-pkg unregister --global --force %{name}-%{version}
 
-%postun -n SFEghc-derive-doc
+%postun -n SFEghc-c2hs-doc
 if [ "$1" -eq 0 ] ; then
   cd %{_docdir}/ghc/html/libraries && [ -x "./gen_contents_index" ] && ./gen_contents_index
 fi
@@ -148,20 +157,22 @@ fi
 %files -f pkg.files
 %defattr (-, root, bin)
 
-%files -n SFEghc-derive-prof -f pkg-prof.files
+%files -n SFEghc-c2hs-prof -f pkg-prof.files
 %defattr (-, root, bin)
 
-%files  -n SFEghc-derive-doc -f pkg-doc.files
+%files  -n SFEghc-c2hs-doc -f pkg-doc.files
 %defattr(-,root,root,-)
 %dir %attr (0755, root, sys) %{_datadir}
 %dir %attr (0755, root, other) %{_docdir}
+%dir %attr (0755, root, other) %{_docdir}/c2hs/
+%dir %attr (0755, root, other) %{_docdir}/c2hs/users_guide
 %dir %attr (0755, root, bin) %{_docdir}/ghc
 %dir %attr (0755, root, bin) %{_docdir}/ghc/html
 %dir %attr (0755, root, bin) %{_docdir}/ghc/html/libraries
 %dir %attr (0755, root, bin) %{_docdir}/ghc/html/libraries/%{name}-%{version}
+%dir %attr (0755, root, bin) %{_mandir}
+%dir %attr (0755, root, bin) %{_mandir}/man1
 
 %changelog
 * Wed Apr 28 2010 - markwright@internode.on.net
-- Bump to 2.3.0.1, with uniplate == 1.5.1 and haskell-src-exts == 1.9.0
-* Thu Apr 8 2010 - markwright@internode.on.net
 - Initial Solaris version

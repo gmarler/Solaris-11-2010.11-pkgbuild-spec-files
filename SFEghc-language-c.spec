@@ -1,5 +1,5 @@
 #
-# spec file for package SFEghc-derive
+# spec file for package SFEghc-language-c
 #
 # Copyright 2010 Sun Microsystems, Inc.
 # This file and all modifications and additions to the pristine
@@ -13,9 +13,9 @@
 
 %define ghc_version 6.12.1
 
-Name:                    derive
-Summary:                 derive - A program and library to derive instances for data types
-Version:                 2.3.0.1
+Name:                    language-c
+Summary:                 language-c - Analysis and generation of C code
+Version:                 0.3.1.1
 Release:                 1
 License:                 BSD
 Group:                   Development/Languages/Haskell
@@ -23,7 +23,7 @@ Distribution:            Java Desktop System
 Vendor:                  Sun Microsystems, Inc.
 URL:                     http://hackage.haskell.org/platform/
 Source:                  http://hackage.haskell.org/packages/archive/%{name}/%{version}/%{name}-%{version}.tar.gz
-SUNW_Pkg:		 SFEghc-derive
+SUNW_Pkg:		 SFEghc-language-c
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 
@@ -31,27 +31,23 @@ BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 Requires: SFEgcc
 Requires: SFEghc
 Requires: SFEghc-haskell-platform
-Requires: SFEghc-uniplate
-Requires: SFEghc-haskell-src-exts
 
 %description
-Data.Derive is a library and a tool for deriving instances for Haskell
-programs. It is designed to work with custom derivations, SYB and
-Template Haskell mechanisms. The tool requires GHC, but the generated
-code is portable to all compilers. We see this tool as a competitor to
-DrIFT.
+Language C is a haskell library for the analysis and generation of C
+code. It features a complete, well tested parser and pretty printer
+for all of C99 and a large set of GNU extensions.
 
-%package -n SFEghc-derive-prof
+%package -n SFEghc-language-c-prof
 Summary:                 %{summary} - profiling libraries
 SUNW_BaseDir:            %{_basedir}
 %include default-depend.inc
-Requires: SFEghc-derive
+Requires: SFEghc-language-c
 
-%package -n SFEghc-derive-doc
+%package -n SFEghc-language-c-doc
 Summary:                 %{summary} - doc files
 SUNW_BaseDir:            %{_basedir}
 %include default-depend.inc
-Requires: SFEghc-derive
+Requires: SFEghc-language-c
 
 %prep
 %setup -q -n %{name}-%{version}
@@ -76,8 +72,6 @@ GHC_PKG=/usr/bin/ghc-pkg
 HSC2HS=/usr/bin/hsc2hs
 VERBOSE=--verbose=3
 
-sed -i -e 's,haskell-src-exts == 1.8.,haskell-src-exts == 1.9.,' derive.cabal
-sed -i -e 's,uniplate == 1.4.,uniplate == 1.5.,' derive.cabal
 chmod a+x ./Setup.hs
 runghc ./Setup.hs configure --prefix=%{_prefix} \
     --libdir=%{_cxx_libdir} \
@@ -114,7 +108,7 @@ install -c -m 755 %{name}-%{version}.conf ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{
 cd %{_builddir}/%{name}-%{version}
 find $RPM_BUILD_ROOT -type f -name "*.p_hi" > pkg-prof.files
 find $RPM_BUILD_ROOT -type f -name "*_p.a" >> pkg-prof.files
-find $RPM_BUILD_ROOT/usr/bin $RPM_BUILD_ROOT/usr/lib -type f -name "*" > pkg-all.files
+find $RPM_BUILD_ROOT/usr/lib -type f -name "*" > pkg-all.files
 sort pkg-prof.files > pkg-prof-sort.files
 sort pkg-all.files > pkg-all-sort.files
 comm -23 pkg-all-sort.files pkg-prof-sort.files > pkg.files
@@ -133,14 +127,14 @@ rm -rf $RPM_BUILD_ROOT
 # We need to register the package with ghc-pkg for ghc to find it
 /usr/bin/ghc-pkg register --global --force %{_cxx_libdir}/ghc-%{ghc_version}/%{name}-%{version}/%{name}-%{version}.conf
 
-%post -n SFEghc-derive-doc
+%post -n SFEghc-language-c-doc
 cd %{_docdir}/ghc/html/libraries && [ -x "./gen_contents_index" ] && ./gen_contents_index
 
 %preun
 # Need to unregister the package with ghc-pkg for the rebuild of the spec file to work
 /usr/bin/ghc-pkg unregister --global --force %{name}-%{version}
 
-%postun -n SFEghc-derive-doc
+%postun -n SFEghc-language-c-doc
 if [ "$1" -eq 0 ] ; then
   cd %{_docdir}/ghc/html/libraries && [ -x "./gen_contents_index" ] && ./gen_contents_index
 fi
@@ -148,10 +142,10 @@ fi
 %files -f pkg.files
 %defattr (-, root, bin)
 
-%files -n SFEghc-derive-prof -f pkg-prof.files
+%files -n SFEghc-language-c-prof -f pkg-prof.files
 %defattr (-, root, bin)
 
-%files  -n SFEghc-derive-doc -f pkg-doc.files
+%files  -n SFEghc-language-c-doc -f pkg-doc.files
 %defattr(-,root,root,-)
 %dir %attr (0755, root, sys) %{_datadir}
 %dir %attr (0755, root, other) %{_docdir}
@@ -162,6 +156,4 @@ fi
 
 %changelog
 * Wed Apr 28 2010 - markwright@internode.on.net
-- Bump to 2.3.0.1, with uniplate == 1.5.1 and haskell-src-exts == 1.9.0
-* Thu Apr 8 2010 - markwright@internode.on.net
 - Initial Solaris version

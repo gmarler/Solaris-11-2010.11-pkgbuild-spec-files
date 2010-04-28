@@ -15,7 +15,7 @@
 
 Name:                    uniplate
 Summary:                 uniplate - Help writing simple, consise and fast generic operations.
-Version:                 1.4
+Version:                 1.5.1
 Release:                 1
 License:                 BSD
 Group:                   Development/Languages/Haskell
@@ -178,5 +178,7 @@ fi
 %dir %attr (0755, root, bin) %{_docdir}/ghc/html/libraries/%{name}-%{version}
 
 %changelog
+* Wed Apr 28 2010 - markwright@internode.on.net
+- Bump to 1.5.1
 * Thu Apr 8 2010 - markwright@internode.on.net
 - Initial Solaris version

@@ -44,6 +44,7 @@ Requires: SFEghc-dyre
 Requires: SFEghc-executable-path
 Requires: SFEghc-fingertree
 Requires: SFEghc-ghc-paths
+Requires: SFEghc-haskell-src-exts
 Requires: SFEghc-monads-fd
 Requires: SFEghc-pointedlist
 Requires: SFEghc-pureMD5
