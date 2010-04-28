@@ -1,5 +1,5 @@
---- koules1.4/Imakefile	Wed Mar  4 19:59:19 1998
-+++ koules1.4-patch/Imakefile	Sun Apr 25 22:56:29 2010
+--- Imakefile	Wed Mar  4 19:59:19 1998
++++ Imakefile	Sun Apr 25 22:56:29 2010
 @@ -98,16 +98,16 @@
  	@echo "Koules directory is " $(KOULESDIR)
  	@:

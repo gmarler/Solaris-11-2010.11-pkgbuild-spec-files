@@ -47,7 +47,7 @@ make
 %install
 rm -Rf $RPM_BUILD_ROOT/*
 
-PATH=$PATH:/usr/X11/bin make install KOULESDIR=$RPM_BUILD_ROOT/usr/bin SOUNDDIR=$RPM_BUILD_ROOT/usr/share/koules MANDIR=$RPM_BUILD_ROOT/usr/share/man/man6
+PATH=$PATH:/usr/X11/bin make install KOULESDIR=$RPM_BUILD_ROOT%{_basedir}/bin SOUNDDIR=$RPM_BUILD_ROOT%{_basedir}/share/koules MANDIR=$RPM_BUILD_ROOT%{_basedir}/share/man/man6
 
 %clean
 rm -Rf $RPM_BUILD_ROOT
@@ -65,6 +65,8 @@ rm -Rf $RPM_BUILD_ROOT
 %{_mandir}/*
 
 %changelog
+* Sun Apr 28 2010 - Gilles Dauphin
+- install path fixe
 * Sun Apr 25 2010 - Milan Jurik
 - minor fixes
 * Sun Aug 16 2009 - Milan Jurik
