@@ -17,6 +17,9 @@ if $( echo "%{_libdir}" | /usr/xpg4/bin/grep -q %{_arch64} ) ; then
         export LDFLAGS="$LDFLAGS -m64"
 fi
 
+# found ORC if install in /opt/SFE
+export PKG_CONFIG_PATH="%{_prefix}/lib/pkgconfig"
+
 ./configure --prefix=%{_prefix}                 \
             --libdir=%{_libdir}                 \
             --datadir=%{_datadir}               \
@@ -35,6 +38,8 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/gstreamer-0.10/*.{a,la}
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Apr 2010 - Gilles Dauphin
+- find pkg-config for ORC if in /opt/SFE
 * Wed May 7 2008 Christian Schaller <christian.schaller@collabora.co.uk>
 - Added Schrovirtframe.h
 
