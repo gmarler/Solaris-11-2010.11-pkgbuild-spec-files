@@ -14,7 +14,7 @@ URL:                 http://code.google.com/p/recordmysolaris/
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}_%{version}-build
 BuildRequires:       SUNWgnome-common-devel
-BuildRequires:       SUNWgnome-python-libs
+BuildRequires:       SUNWgnome-python26-libs
 Requires:            SFErecordmysolaris
 
 %include default-depend.inc
