@@ -1,3 +1,7 @@
+2010-04-29 Matt Lewandowsky <matt@greenviolet.net>
+
+	* SFEgreasymouse, copyright/greasymouse.copyright: Initial spec file.
+
 2010-04-29  Halton Huo  <halton.huo@sun.com>
 
 	* SFEanjuta.spec: Bump to 2.30.1.0, Add IPS_package_name
