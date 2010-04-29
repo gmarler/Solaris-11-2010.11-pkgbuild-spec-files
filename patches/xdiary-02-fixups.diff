@@ -1,0 +1,26 @@
+--- ndbm/xdndbm.c.orig	1997-05-04 15:05:18.000000000 -0700
++++ ndbm/xdndbm.c	2010-04-28 22:02:54.933305614 -0700
+@@ -53,7 +53,7 @@
+ static  int additem();
+ 
+ extern  int errno;
+-extern  long lseek();
++extern  long long lseek();
+ 
+ #ifdef DEBUG
+ static chkblk(char buf[PBLKSIZ]);
+--- tools/SigHandler.c.orig	1995-02-18 05:32:44.000000000 -0800
++++ tools/SigHandler.c	2010-04-28 22:02:54.196015196 -0700
+@@ -222,11 +222,7 @@
+   int  index;
+   int  pid;
+ 
+-#if defined(_POSIX_SOURCE) || defined(_INCLUDE_POSIX_SOURCE)
+-  int  status;
+-#else
+-  union wait  status;
+-#endif
++  int status;
+ 
+ 
+   /* Code. */

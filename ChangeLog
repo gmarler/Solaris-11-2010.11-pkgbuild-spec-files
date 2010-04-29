@@ -1,5 +1,11 @@
 2010-04-28 Matt Lewandowsky <matt@greenviolet.net>
 
+	* SFExdiary, patches/xdiary-01-tmpl.diff,
+	  patches/xdiary-02-fixups.diff, copyright/SFExdiary.copyright:
+	  Initial spec file.
+
+2010-04-28 Matt Lewandowsky <matt@greenviolet.net>
+
 	* SFEgxmessage: Sync with jucr spec: Added IPS classification; added
 	  "includes module(s)" line; added BuildRequires dependency on
 	  SUNWbtool, SUNWgnome-common-devel (for gettext), SUNWgnu-gettext,

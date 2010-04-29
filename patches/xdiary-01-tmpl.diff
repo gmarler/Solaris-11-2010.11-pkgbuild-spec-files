@@ -1,0 +1,53 @@
+--- XDiary.tmpl.orig	2010-04-28 22:30:05.618482611 -0700
++++ XDiary.tmpl	2010-04-28 22:31:03.857862799 -0700
+@@ -61,10 +61,10 @@
+ INSTALL=/usr/ucb/install
+ EXTRA_DEFINES = -D_POSIX_SOURCE -Xc
+ XDEXTRALIBS = -lgen
+-XDXTINC = -I/usr/openwin/include
+-XDXMINC = -I/opt/SUNWmotif/include
+-XDXTLIB = -L/usr/openwin/lib
+-XDXMLIB = -L/opt/SUNWmotif/lib
++XDXTINC = -I/usr/X11/include
++XDXMINC = -I/usr/include
++XDXTLIB = -L/usr/X11/lib
++XDXMLIB = -L/usr/lib
+ #endif
+ #endif
+ 
+@@ -98,10 +98,10 @@
+ --
+ -----------------------------------------------------------------------------*/
+ 
+-XDEXEDIR  = /usr/local/bin
+-XDDATADIR = /usr/local/lib/xdiary
+-XDAPPDIR  = /usr/lib/X11/app-defaults
+-XDMANDIR  = /usr/local/man/man1  
++XDEXEDIR  = /usr/bin
++XDDATADIR = /usr/share/xdiary
++XDAPPDIR  = /usr/share/X11/app-defaults
++XDMANDIR  = /usr/share/man/man1  
+ 
+ 
+ /*----------------------------------------------------------------------------
+@@ -111,8 +111,7 @@
+ -----------------------------------------------------------------------------*/
+ 
+ #undef  CcCmd
+-#define CcCmd gcc
+-EXTRA_DEFINES =
++#define CcCmd cc
+ 
+ 
+ /*----------------------------------------------------------------------------
+@@ -155,8 +154,8 @@
+ --
+ -----------------------------------------------------------------------------*/
+ 
+-/* XDEXTRALIBS = -lXpm -lSM -lICE -lXext */
+-XDEXTRALIBS = -lXpm  -lXext
++XDEXTRALIBS = -lXpm -lSM -lICE -lXext
++/* XDEXTRALIBS = -lXpm  -lXext */
+ 
+ 
+ /*----------------------------------------------------------------------------
