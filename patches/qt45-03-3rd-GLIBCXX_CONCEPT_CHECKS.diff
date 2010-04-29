@@ -1,0 +1,19 @@
+--- qt-x11-opensource-src-4.5.2/src/3rdparty/webkit/WebCore/config.h.orig	2009-06-20 06:57:55.000000000 +0200
++++ qt-x11-opensource-src-4.5.2/src/3rdparty/webkit/WebCore/config.h	2010-04-29 19:23:25.449183000 +0200
+@@ -18,6 +18,16 @@
+  *
+  */
+ 
++#ifdef __cplusplus
++// TODO : patch me GD 20100316
++// maybe a bug in vlc and/or the libc++ of gcc433 in OPensolaris b134
++// that is just to undef the symbol _GLIBCXX_CONCEPT_CHECKS, because the Solaris gcc433
++// is compiled with --enable-concept-checks
++
++#include <bits/c++config.h>
++#undef _GLIBCXX_CONCEPT_CHECKS
++#endif
++
+ #if defined(HAVE_CONFIG_H) && HAVE_CONFIG_H
+ #include "autotoolsconfig.h"
+ #endif

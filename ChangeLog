@@ -1,3 +1,8 @@
+2010-04-29 Gilles Dauphin <dauphin@enst.fr>
+
+        * SFEscribus first try
+        * qt45 update for scribus
+
 2010-04-29  Milan Jurik <sfnet@xylab.cz>
 
 	* SFEscummvm.spec: update to 1.1.0
