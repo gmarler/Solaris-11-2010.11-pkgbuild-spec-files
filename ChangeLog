@@ -1,3 +1,12 @@
+2010-04-28 Matt Lewandowsky <matt@greenviolet.net>
+
+	* SFEgxmessage: Sync with jucr spec: Added IPS classification; added
+	  "includes module(s)" line; added BuildRequires dependency on
+	  SUNWbtool, SUNWgnome-common-devel (for gettext), SUNWgnu-gettext,
+	  SUNWperl-xml-parser (for gettext), SUNWxorg-headers (for xrandr.pc.
+	  This dependency will be unnecessary for 2010.0x), and SUNWggrp;
+	  updated meta data and other preamble data.
+
 2010-04-28 Mark Wright <markwright@internode.on.net>
 
 	* SFEghc-language-c, SFEghc-c2hs:  *NEW* Haskell packages

@@ -1,6 +1,11 @@
 #
-# spec file for package SFEgxmessage.spec
+# spec file for package: SFEgxmessage.spec
 #
+# This file and all modifications and additions to the pristine
+# package are under the same license as the package itself.
+#
+# includes module(s): gxmessage [xmessage gmessage]
+
 %include Solaris.inc
 
 Name:              SFEgxmessage
@@ -11,11 +16,24 @@ Source:            http://homepages.ihug.co.nz/~trmusson/stuff/gxmessage-%{versi
 SUNW_BaseDir:      %{_basedir}
 BuildRoot:         %{_tmppath}/%{name}-%{version}-build
 License:           GPLv3
-SUNW_Copyright:    SFEgxmessage.copyright
+SUNW_Copyright:    %{name}.copyright
+Distribution:      OpenSolaris
+Vendor:            OpenSolaris Community
+
+# OpenSolaris IPS Manifest Fields
+Meta(info.upstream):            Timothy Musson
+Meta(info.maintainer):          Matt Lewandowsky <matt@greenviolet.net>
+Meta(info.classification):      org.opensolaris.category.2008:System/X11
 
 %include default-depend.inc
 Requires:          SUNWgnome-libs
 Requires:          SUNWxwrtl
+BuildRequires:     SUNWbtool
+BuildRequires:     SUNWggrp
+BuildRequires:     SUNWgnome-common-devel
+BuildRequires:     SUNWgnu-gettext
+BuildRequires:     SUNWperl-xml-parser
+BuildRequires:     SUNWxorg-headers
 BuildRequires:     SUNWxwinc
 
 %description
@@ -95,6 +113,18 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Apr 28 2010 - Matt Lewandowsky <matt@greenviolet.net>
+- Sync with jucr spec:
+- Added IPS classification.
+- Added "includes module(s)" line.
+- Added BuildRequires dependency on SUNWbtool.
+- Added BuildRequires dependency on SUNWggrp.
+- Added BuildRequires dependency on SUNWgnome-common-devel for gettext.
+- Added BuildRequires dependency on SUNWgnu-gettext.
+- Added BuildRequires dependency on SUNWperl-xml-parser for gettext.
+- Added BuildRequires dependency on SUNWxorg-headers for xrandr.pc.
+  This dependency will be unnecessary for 2010.0x.
+- Updated meta data and other preamble data
 * Sat Mar 27 2010 - Matt Lewandowsky <matt@greenviolet.net>
 - Version bump to 2.12.4
 - Some spec cleanup
