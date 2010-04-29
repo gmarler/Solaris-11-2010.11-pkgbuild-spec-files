@@ -25,7 +25,7 @@ URL:		http://azureus.sourceforge.net/
 SUNW_BaseDir:	%{_basedir}
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
-Requires: SFEswt
+#Requires: SFEswt
 
 %prep
 %setup -q -c -n %{name}-%{version}
@@ -74,6 +74,8 @@ rm -rf $RPM_BUILD_ROOT
 #%{_datadir}/Azureus/plugins/azupnpav/*
 
 %changelog
+* Apr 2010 - Gilles Dauphin
+- swt is in B134
 * Mon Feb 02 2008 - alfred.peng@sun.com
 - Bump to version 4.1.0.0.
 * Sun Oct 12 2008 - sobotkap@gmail.com
