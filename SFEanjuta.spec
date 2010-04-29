@@ -1,5 +1,5 @@
 # 
-# Copyright 2009 Sun Microsystems, Inc.
+# Copyright (c) 2010, Oracle and/or its affiliates. All rights reserved.
 # This file and all modifications and additions to the pristine
 # package are under the same license as the package itself.
 #
@@ -8,13 +8,19 @@
 
 %include Solaris.inc
 
-Name:           SFEanjuta
-Version:        2.27.3.0
-Summary:        GNOME IDE for C and C++
-Group:          Development/Tools
-License:        GPL
-URL:            http://anjuta.org/
-Source:         http://download.gnome.org/sources/anjuta/2.27/anjuta-%{version}.tar.bz2
+Name:               SFEanjuta
+Version:            2.30.1.0
+IPS_package_name:   developer/gnome/anjuta
+Meta(info.classification): %{classification_prefix}:Development/GNOME and GTK+
+Summary:            GNOME IDE for C and C++
+Group:              Development/Tools
+License:            GPL
+URL:                http://anjuta.org/
+Source:             http://download.gnome.org/sources/anjuta/2.30/anjuta-%{version}.tar.bz2
+# date:2010-04-29 owner:halton type:bug bugzilla:614949
+Patch1:             anjuta-01-FIONREAD.diff
+# date:2010-04-29 owner:halton type:bug bugzilla:617149
+Patch2:             anjuta-02-svn-apr.diff
 
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
@@ -36,18 +42,14 @@ Requires: SUNWlxsl
 Requires: SUNWperl584core
 Requires: SUNWpcre
 Requires: SUNWapch22u
-Requires: SUNWgraphviz
 Requires: SUNWsvn
 Requires: SUNWneon
+Requires: SUNWautogen
 Requires: SFEgdl
 Requires: SFElibgda
-Requires: SFEautogen
 BuildRequires: SFEperl-gettext
 BuildRequires: SFEgdl-devel
 BuildRequires: SFElibgda-devel
-BuildRequires: SFEautogen-devel
-BuildRequires: SUNWgraphviz-devel
-
 
 %description
 Anjuta is a versatile Integrated Development Environment (IDE) for C and C++.
@@ -83,6 +85,8 @@ Requires:                %{name}
 
 %prep
 %setup -q -n anjuta-%{version}
+%patch1 -p1
+%patch2 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -93,8 +97,6 @@ fi
 export CFLAGS="%optflags"
 export LDFLAGS="%_ldflags"
 export ACLOCAL_FLAGS="-I ."
-# FIXME: subversion on snv_106 is 1.4.3, anjuta 2.25.x requires >= 1.5.0.
-# This cause anjuta does not have subversion support
 export PKG_CONFIG_PATH=%{_pkg_config_path}:/usr/apr/1.3/lib/pkgconfig:/usr/apr-util/1.3/lib/pkgconfig/
 
 #glib-gettextize -f
@@ -267,6 +269,10 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 %endif
 
 %changelog
+* Thu Apr 29 2010 - halton.huo@sun.com
+- Bump to 2.30.1.0
+- Add patch1 01-FIONREAD.diff to fix bugzilla #614949
+- Add patch2 02-svn-apr.diff to fix bugzilla #617149
 * Mon Jun 15 2009 - halton.huo@sun.com
 - Bump to 2.27.3.0
 - Remove upstreamed patches: void-return.diff, solaris-ld.diff

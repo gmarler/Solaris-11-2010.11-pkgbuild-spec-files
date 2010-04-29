@@ -3,7 +3,7 @@
 #
 # includes module(s): gob
 #
-# Copyright (c) 2009 Sun Microsystems, Inc.
+# Copyright (c) 2010, Oracle and/or its affiliates. All rights reserved.
 # This file and all modifications and additions to the pristine
 # package are under the same license as the package itself.
 #
@@ -17,6 +17,8 @@
 Name:               SFEgob
 Summary:            gob - The GObject Builder
 Version:            %{gob.version}
+IPS_package_name:   developer/build/gob2
+Meta(info.classification): %{classification_prefix}:Development/GNOME and GTK+
 SUNW_BaseDir:       %{_basedir}
 BuildRoot:          %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc

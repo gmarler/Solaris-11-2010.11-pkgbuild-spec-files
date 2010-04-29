@@ -1,0 +1,27 @@
+commit b63f50ed877eeb50334dc7fd1315c9ff8fec570a
+Author: Halton Huo <halton.huo@sun.com>
+Date:   Thu Apr 29 16:09:47 2010 +0800
+
+    Add APR_UTILS to subversion CFLAGS and LIBS
+    
+    https://bugzilla.gnome.org/show_bug.cgi?id=617149
+
+diff --git a/configure.in b/configure.in
+index 42ef0da..3ba82e9 100644
+--- a/configure.in
++++ b/configure.in
+@@ -717,11 +717,11 @@ dnl ------------------------------------------
+ if test -n "$SVN_INCLUDE" ; then
+ 	SVN_INCLUDE="-I$SVN_INCLUDE"
+ 	if test x != "x$SVN_LIB" ; then
+-	    SVN_LIB="-L$SVN_LIB $APR_LIBS $NEON_LIBS -lsvn_client-1 -lsvn_subr-1"
++	    SVN_LIB="-L$SVN_LIB $APR_LIBS $APR_UTILS_LIBS $NEON_LIBS -lsvn_client-1 -lsvn_subr-1"
+ 	else
+-	    SVN_LIB="$APR_LIBS $NEON_LIBS -lsvn_client-1 -lsvn_subr-1"
++	    SVN_LIB="$APR_LIBS $APR_UTILS_LIBS $NEON_LIBS -lsvn_client-1 -lsvn_subr-1"
+ 	fi
+-	SVN_CFLAGS="$APR_CFLAGS $NEON_CFLAGS"
++	SVN_CFLAGS="$APR_CFLAGS $APR_UTILS_CFLAGS $NEON_CFLAGS"
+ fi
+ 
+ AM_CONDITIONAL(BUILD_SVN, [test -n "$SVN_INCLUDE"])

@@ -17,6 +17,8 @@ Name:                    SFEperl-gettext
 Summary:                 Gettext-%{gettext_version} PERL module
 Version:                 105
 Source:                  http://www.cpan.org/modules/by-module/Locale/gettext-%{gettext_version}.tar.gz
+SUNW_Pkg:                SFEperl-gettext
+IPS_package_name:        library/perl-5/gettext
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 Requires:                SUNWperl584core

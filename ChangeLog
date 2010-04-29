@@ -1,3 +1,14 @@
+2010-04-29  Halton Huo  <halton.huo@sun.com>
+
+	* SFEanjuta.spec: Bump to 2.30.1.0, Add IPS_package_name
+	* SFEgob.spec: Add IPS_package_name
+	* SFEperl-gettext.spec: Add IPS_package_name
+	* base-specs/gob2.spec: Bump to 2.0.17
+	* base-specs/libgda.spec: Add patch3
+	* patches/anjuta-01-FIONREAD.diff: Added to fix bugzilla #614949
+	* patches/anjuta-02-svn-apr.diff: Added to fix bugzilla #617149
+	* patches/libgda-03-missing-libgda-h.diff: Added to fix bugzilla #607357
+
 2010-04-28 Matt Lewandowsky <matt@greenviolet.net>
 
 	* SFExdiary, patches/xdiary-01-tmpl.diff,
