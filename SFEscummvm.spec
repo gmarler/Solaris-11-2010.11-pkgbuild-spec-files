@@ -5,14 +5,36 @@
 #
 %include Solaris.inc
 
+%define with_libmad %(pkginfo -q SFElibmad && echo 1 || echo 0)
+%define with_libmpeg2 %(pkginfo -q SFElibmpeg2 && echo 1 || echo 0)
+
 Name:                    SFEscummvm
 Summary:                 ScummVM - emulator for classic graphical games
-Version:                 1.0.0
+Version:                 1.1.0
 Source:                  %{sf_download}/scummvm/scummvm-%{version}.tar.bz2
 URL:                     http://www.scummvm.org/
+License:                 GPLv2
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
+
+BuildRequires: SUNWlibsdl-devel
+Requires: SUNWlibsdl
+BuildRequires: SFEnasm
+BuildRequires: SUNWzlib
+Requires: SUNWzlib
+BuildRequires: SUNWflac-devel
+Requires: SUNWflac
+BuildRequires: SUNWogg-vorbis-devel
+Requires: SUNWogg-vorbis
+%if %with_libmad
+BuildRequires: SFElibmad-devel
+Requires: SFElibmad
+%endif
+%if %with_libmpeg2
+BuildRequires: SFElibmpeg2-devel
+Requires: SFElibmpeg2
+%endif
 
 %prep
 %setup -q -n scummvm-%version
@@ -33,8 +55,16 @@ export CXX=/usr/sfw/bin/gcc
 export CC=/usr/sfw/bin/gcc
 export PATH=$PATH:/usr/ccs/bin
 
-./configure --prefix=%{_prefix}                 \
-            --mandir=%{_mandir}
+%if %with_libmpeg2
+CONFIG_MPEG2=--enable-mpeg2
+%endif
+
+./configure --prefix=%{_prefix}		\
+            --mandir=%{_mandir}		\
+            --enable-all-engines	\
+            --enable-plugins		\
+            $CONFIG_MPEG2
+
 make -j$CPUS 
 
 %install
@@ -59,6 +89,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man6/*
 
 %changelog
+* Thu Apr 29 2010 - Milan Jurik
+- update to 1.1.0
 * Sat Jan 16 2009 - Milan Jurik
 - update to 1.0.0
 * Sat Nov 17 2007 - trisk@acm.jhu.edu

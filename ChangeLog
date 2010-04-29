@@ -1,3 +1,7 @@
+2010-04-29  Milan Jurik <sfnet@xylab.cz>
+
+	* SFEscummvm.spec: update to 1.1.0
+
 2010-04-29 Matt Lewandowsky <matt@greenviolet.net>
 
 	* SFEgreasymouse, copyright/greasymouse.copyright: Initial spec file.
