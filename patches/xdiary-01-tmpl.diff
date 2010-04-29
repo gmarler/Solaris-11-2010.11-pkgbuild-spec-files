@@ -23,10 +23,10 @@
 -XDDATADIR = /usr/local/lib/xdiary
 -XDAPPDIR  = /usr/lib/X11/app-defaults
 -XDMANDIR  = /usr/local/man/man1  
-+XDEXEDIR  = /usr/bin
-+XDDATADIR = /usr/share/xdiary
-+XDAPPDIR  = /usr/share/X11/app-defaults
-+XDMANDIR  = /usr/share/man/man1  
++XDEXEDIR  = $(BASEDIR)/bin
++XDDATADIR = $(BASEDIR)/share/xdiary
++XDAPPDIR  = $(BASEDIR)/share/X11/app-defaults
++XDMANDIR  = $(BASEDIR)/share/man/man1  
  
  
  /*----------------------------------------------------------------------------

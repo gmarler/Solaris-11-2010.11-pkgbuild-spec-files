@@ -60,6 +60,8 @@ to specific groups etc.
 %build
 export CFLAGS="%{optflags}"
 export LDFLAGS="%{_ldflags}"
+export BASEDIR="%{_basedir}"
+export USRLIBDIR="%{_libdir}"
 xmkmf -a
 make includes
 make depend
@@ -67,9 +69,14 @@ make
 
 %install
 rm -rf $RPM_BUILD_ROOT
-make DESTDIR=$RPM_BUILD_ROOT install
-make DESTDIR=$RPM_BUILD_ROOT install.man
-rmdir $RPM_BUILD_ROOT/usr/include
+#export BASEDIR="%{_basedir}"
+#export USRLIBDIR="%{_libdir}"
+make DESTDIR=$RPM_BUILD_ROOT%{_basedir} USRLIBDIR=/lib INCROOT=/include install
+make DESTDIR=$RPM_BUILD_ROOT%{_basedir} USRLIBDIR=/lib INCROOT=/include install.man
+rmdir $RPM_BUILD_ROOT%{_basedir}/include
+#TODO
+#export XUSERFILESEARCHPATH=/opt/SFE/lib/X11/app-defaults/%N%C%S:/opt/SFE/lib/X11/app-defaults/%N%S:/opt/SFE/share/X11/app-defaults/%N%C%S:/opt/SFE/share/X11/app-defaults/%N%S:
+# in env of user
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -107,5 +114,7 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Apr 2010 - Gilles Dauphin
+- install in _basedir, maybe /opt/SFE
 * Wed Apr 28 2010 - Matt Lewandowsky <matt@greenviolet.net>
 - Initial spec file.
