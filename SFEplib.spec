@@ -23,6 +23,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 #Requires: 	SFEfreeglut
 Requires: 	SUNWxorg-mesa
 Requires: 	SUNWxwice
+BuildRequires:	SUNWaudh
 
 %package root
 Summary:         %summary - platform dependent files, / filesystem
@@ -100,6 +101,8 @@ rm -rf $RPM_BUILD_ROOT
 #%endif
 
 %changelog
+* Fri Apr 30 2010 - Milan Jurik
+- added missing build dependency
 * Mars 02 2010 - Gilles Dauphin ( Gilles DOT Dauphin AT enst DOT fr)
 - no need of freeglut
 * Nov 1 2008 - Gilles Dauphin ( Gilles DOT Dauphin AT enst DOT fr)

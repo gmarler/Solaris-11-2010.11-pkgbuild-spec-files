@@ -2,6 +2,7 @@
 
 	* SFEscummvm.spec: fix SPARC build
 	* SFEgoocanvas.spec: added missing build dependencies
+	* SFEplib.spec: added missing build dependency
 
 2010-04-30 Mark Wright <markwright@internode.on.net>
 
