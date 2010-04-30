@@ -20,7 +20,6 @@ BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 
 BuildRequires: SUNWlibsdl-devel
 Requires: SUNWlibsdl
-BuildRequires: SFEnasm
 BuildRequires: SUNWzlib
 Requires: SUNWzlib
 BuildRequires: SUNWflac-devel
@@ -34,6 +33,9 @@ Requires: SFElibmad
 %if %with_libmpeg2
 BuildRequires: SFElibmpeg2-devel
 Requires: SFElibmpeg2
+%endif
+%ifarch i386 amd64
+BuildRequires: SFEnasm
 %endif
 
 %prep
@@ -89,6 +91,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man6/*
 
 %changelog
+* Fri Apr 30 2010 - Milan Jurik
+- fix SPARC build
 * Thu Apr 29 2010 - Milan Jurik
 - update to 1.1.0
 * Sat Jan 16 2009 - Milan Jurik

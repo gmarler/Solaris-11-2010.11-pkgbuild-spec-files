@@ -1,3 +1,7 @@
+2010-04-30  Milan Jurik <sfnet@xylab.cz>
+
+	* SFEscummvm.spec: fix SPARC build
+
 2010-04-30 Mark Wright <markwright@internode.on.net>
 
 	* SFEghc-HList, SFEghc-AspectAG:  *NEW* Haskell packages
