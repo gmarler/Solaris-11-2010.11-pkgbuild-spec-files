@@ -13,11 +13,15 @@
 Name:           SFEgoocanvas
 Summary:        %{goocanvas.summary}
 Version:        %{default_pkg_version}
+License:	LGPL
+URL:		http://live.gnome.org/GooCanvas
 SUNW_BaseDir:   %{_basedir}
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 Requires:       SUNWgnome-base-libs
 BuildRequires:  SUNWgnome-base-libs-devel
+BuildRequires:	SUNWgtk-doc
+BuildRequires:	SUNWgnome-xml
 
 %package devel
 Summary:        %{summary} - development files
@@ -84,5 +88,7 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Fri Apr 30 2010 - Milan Jurik
+- added missing build dependencies
 * Tue Dec 11 2007 - nonsea@users.sourceforge.net
 - Initial spec

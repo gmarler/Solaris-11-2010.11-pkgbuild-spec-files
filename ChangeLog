@@ -1,6 +1,7 @@
 2010-04-30  Milan Jurik <sfnet@xylab.cz>
 
 	* SFEscummvm.spec: fix SPARC build
+	* SFEgoocanvas.spec: added missing build dependencies
 
 2010-04-30 Mark Wright <markwright@internode.on.net>
 
