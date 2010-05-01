@@ -15,7 +15,7 @@
 
 Name:                    HList
 Summary:                 HList - strongly typed heterogenous lists, records, etc
-Version:                 0.2.1
+Version:                 0.2.2
 Release:                 1
 License:                 MIT
 Group:                   Development/Languages/Haskell
@@ -155,5 +155,7 @@ fi
 %dir %attr (0755, root, bin) %{_docdir}/ghc/html/libraries/%{name}-%{version}
 
 %changelog
+* Sat May 1 2010 - markwright@internode.on.net
+- Bump to 0.2.2
 * Fri Apr 30 2010 - markwright@internode.on.net
 - Initial Solaris version
