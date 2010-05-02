@@ -1,3 +1,7 @@
+2010-05-02 Milan Jurik <sfnet@xylab.cz>
+
+	* SFEfreeglut.spec: fix for new builds, new place for header files
+
 2010-05-02 Mark Wright <markwright@internode.on.net>
 
 	* SFElibantlr3c: compile with gcc

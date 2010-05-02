@@ -52,7 +52,6 @@ cd ../../..
 
 %freeglut.build -d %name-%version/%{base_arch}
 
-
 %install
 rm -rf $RPM_BUILD_ROOT
 %ifarch amd64 sparcv9
@@ -60,6 +59,11 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %freeglut.install -d %name-%version/%{base_arch}
+
+mkdir -p $RPM_BUILD_ROOT/%{_prefix}/include
+mv $RPM_BUILD_ROOT/%{_prefix}/X11/include/GL $RPM_BUILD_ROOT/%{_prefix}/include
+rmdir $RPM_BUILD_ROOT/%{_prefix}/X11/include
+rmdir $RPM_BUILD_ROOT/%{_prefix}/X11
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -70,9 +74,11 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr (-, root, bin)
-%{_prefix}/X11/include
+%{_prefix}/include/GL
 
 %changelog
+* Sun May 02 2010 - Milan Jurik
+- fix for new builds, new place for header files
 * Sun Apr 11 2010 - Milan Jurik
 - adding missing build dep
 * Fri Aug 21 2009 - Milan Jurik
