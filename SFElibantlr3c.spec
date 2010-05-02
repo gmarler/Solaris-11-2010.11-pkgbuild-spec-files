@@ -56,10 +56,12 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
     CPUS=1
 fi
 
-
+# It compiles fine with Sun Studio.  The only reason I compile it with
+# gcc is ghc does not understand the format of the Sun Studio C object files.
+export CC=gcc
+export CFLAGS="%gcc_optflags"
 export CPPFLAGS="-D_POSIX_SOURCE -D__EXTENSIONS__ -D_XPG4_2 -DHAVE_NETINET_TCP_H"
-export CFLAGS="%optflags"
-export LDFLAGS="%_ldflags"
+export LDFLAGS="-L%{_cxx_libdir} -R%{_cxx_libdir}"
 ./configure --prefix=%{_prefix}		\
 	    --bindir=%{_bindir}		\
 	    --mandir=%{_mandir}		\
@@ -151,5 +153,7 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Sun May 02 2010 - markwright@internode.on.net
+- Compile with gcc
 * Mon Apr 26 2010 - markwright@internode.on.net
 - Initial version
