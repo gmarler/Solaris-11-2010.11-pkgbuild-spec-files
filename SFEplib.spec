@@ -6,6 +6,8 @@
 
 %include Solaris.inc
 
+%define osbuild %(uname -v | sed -e 's/[A-z_]//g')
+
 Name:           SFEplib
 Summary:        plib
 Version:        1.8.5
@@ -19,7 +21,12 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 #Requires: 	SFEfreeglut
 Requires: 	SUNWxorg-mesa
 Requires: 	SUNWxwice
+
+%if %(expr %{osbuild} '>=' 134)
+BuildRequires:	system/header/header-audio
+%else
 BuildRequires:	SUNWaudh
+%endif
 
 %package devel
 Summary:		 %summary - developer files
@@ -89,6 +96,8 @@ rm -rf $RPM_BUILD_ROOT
 #%endif
 
 %changelog
+* May 03 2010 - Gilles Dauphin
+- get ready for next release
 * Mon May 03 2010 - Milan Jurik
 - fix packaging
 * Fri Apr 30 2010 - Milan Jurik
