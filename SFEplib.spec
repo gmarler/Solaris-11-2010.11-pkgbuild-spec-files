@@ -13,22 +13,13 @@ Source:		http://plib.sourceforge.net/dist/plib-%{version}.tar.gz
 URL:		http://plib.sourceforge.net/
 License:        GPLv2
 SUNW_Copyright: %{name}.copyright
-#Source1:	plib-01.sh
-#Patch1:	plib-01.diff
-#Patch2:	plib-install-02.diff
 SUNW_BaseDir:   %{_basedir}
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %include	default-depend.inc
-#Requires:	%name-root
 #Requires: 	SFEfreeglut
 Requires: 	SUNWxorg-mesa
 Requires: 	SUNWxwice
 BuildRequires:	SUNWaudh
-
-%package root
-Summary:         %summary - platform dependent files, / filesystem
-SUNW_BaseDir:            /
-%include default-depend.inc
 
 %package devel
 Summary:		 %summary - developer files
@@ -46,9 +37,6 @@ Requires:        %{name}
 
 %prep
 %setup -q -c -n %{name}
-#cd plib-%{version}
-#%patch1 -p0
-#%patch2 -p0
 
 %build
 
@@ -87,11 +75,11 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr (-, root, bin)
-%dir %attr (0755, root, bin) %{_includedir}
-%dir %attr (0755, root, bin) %{_includedir}/plib
-%{_includedir}/plib/*
-%dir %attr (0755, root, bin) %{_libdir}
-%{_libdir}/*
+%{_libdir}
+
+%files devel
+%defattr (-, root, bin)
+%{_includedir}/plib
 
 #%if %build_l10n
 #%files l10n
@@ -101,6 +89,8 @@ rm -rf $RPM_BUILD_ROOT
 #%endif
 
 %changelog
+* Mon May 03 2010 - Milan Jurik
+- fix packaging
 * Fri Apr 30 2010 - Milan Jurik
 - added missing build dependency
 * Mars 02 2010 - Gilles Dauphin ( Gilles DOT Dauphin AT enst DOT fr)
