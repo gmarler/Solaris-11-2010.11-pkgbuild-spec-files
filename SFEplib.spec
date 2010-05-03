@@ -7,11 +7,13 @@
 %include Solaris.inc
 
 %define osbuild %(uname -v | sed -e 's/[A-z_]//g')
+%define src_name plib
 
 Name:           SFEplib
 Summary:        plib
 Version:        1.8.5
-Source:		http://plib.sourceforge.net/dist/plib-%{version}.tar.gz
+Source:		http://plib.sourceforge.net/dist/%{src_name}-%{version}.tar.gz
+Patch1:		plib-01-sharelibs.diff
 URL:		http://plib.sourceforge.net/
 License:        GPLv2
 SUNW_Copyright: %{name}.copyright
@@ -43,34 +45,30 @@ Requires:        %{name}
 %endif
 
 %prep
-%setup -q -c -n %{name}
+%setup -q -n %{src_name}-%{version}
+%patch1 -p1
 
 %build
-
-CC=cc
-export CC
-CXX=CC
-export CXX
-
 #PROTO_LIB=$RPM_BUILD_DIR/%{name}/usr/X11/lib
 #PROTO_INC=$RPM_BUILD_DIR/%{name}/usr/X11/include
 #PROTO_PKG=$RPM_BUILD_DIR/%{name}/usr/X11/lib/pkgconfig
 #export PKG_CONFIG_PATH="$PROTO_PKG"
 
-cd plib-%{version}
+export CFLAGS="%optflags"
+export LDFLAGS="%_ldflags"
+
+libtoolize --copy --force
+./autogen.sh
 ./configure --prefix=%_basedir
 gmake
 
 %install
-CC=cc
-export CC
-CXX=CC
-export CXX
-
 rm -rf $RPM_BUILD_ROOT
-cd plib-%{version}
 #gmake install DESTDIR=$RPM_BUILD_ROOT/%_basedir
 gmake install DESTDIR=$RPM_BUILD_ROOT
+
+rm -f $RPM_BUILD_ROOT%{_libdir}/*.la
+rm -f $RPM_BUILD_ROOT%{_libdir}/*.a
 
 #%if %build_l10n
 #%else
@@ -96,6 +94,8 @@ rm -rf $RPM_BUILD_ROOT
 #%endif
 
 %changelog
+* Mon May 03 2010 - Milan Jurik
+- static libraries should be avoided, Debian patch makes dynamic libraries
 * May 03 2010 - Gilles Dauphin
 - get ready for next release
 * Mon May 03 2010 - Milan Jurik
