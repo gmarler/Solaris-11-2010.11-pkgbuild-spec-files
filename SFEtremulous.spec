@@ -18,7 +18,9 @@ Version:                1.1.0.971
 URL:                    http://tremulous.net/
 Source:                 %{src_url}/%{src_name}-%{src_version}.zip
 Source1:                http://dl.trem-servers.com/tremulous-gentoopatches-1.1.0-r5.zip
-Source2:                http://dl.trem-servers.com/vms-1.1.t971.pk3
+#Source2:                http://dl.trem-servers.com/vms-1.1.t971.pk3
+# TO FIND : an official site for this file
+Source2:                http://public.enst.fr/vms-1.1.t971.pk3
 Patch1:                 tremulous-01-solaris.diff
 SUNW_BaseDir:           %{_basedir}
 BuildRoot:              %{_tmppath}/%{name}-%{version}-build
@@ -116,6 +118,8 @@ rm -rf $RPM_BUILD_ROOT
 #%{_datadir}/pixmaps/*
 
 %changelog
+* APR 02 2010 - Gilles Dauphin
+- update dowload site
 * Mars 24 2010 - Gilles Dauphin
 - adjust FLAGS for includedir
 - compatible IPS version
