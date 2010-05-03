@@ -76,16 +76,22 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, bin) %{_libdir}
 %dir %attr(0755, root, sys) %{_datadir}
 %dir %attr(0755, root, bin) %{_includedir}
-%dir %attr(0755, root, other) %{_datadir}/applications
+# Todo
+#%dir %attr(0755, root, other) %{_datadir}/applications
 %{_bindir}/scribus
-%{_datadir}/gnome/apps/Applications/scribus.desktop
+#TODO
+#%{_datadir}/gnome/apps/Applications/scribus.desktop
 %{_datadir}/mime/packages/scribus.xml
-%{_datadir}/pixmaps/scribus.png
-%{_datadir}/pixmaps/scribusicon.png
+# TODO
+#%{_datadir}/pixmaps/scribus.png
+#%{_datadir}/pixmaps/scribusicon.png
 %{_datadir}/scribus
 %{_includedir}/scribus/
 %{_libdir}/scribus/
-
+%{_datadir}/doc
+#%{_datadir}/doc/scribus-%{version}./
+%{_datadir}/mimelnk
+%{_datadir}/man
 
 
 %changelog

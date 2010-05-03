@@ -13,7 +13,7 @@
 
 Name:                   SFESimGear
 Summary:                Simulator Construction Tools
-Version:                1.0.0
+Version:                2.0.0
 Source:                 %{src_url}/%{src_name}-%{version}.tar.gz
 Source1:		SimGear_Props.cxx
 Patch1:			SimGear-01.diff
