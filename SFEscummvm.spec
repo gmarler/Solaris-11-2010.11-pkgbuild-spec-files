@@ -46,12 +46,12 @@ CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
 if test "x$CPUS" = "x" -o $CPUS = 0; then
     CPUS=1
 fi
-export CFLAGS="%gcc_optflags -I/usr/sfw/include -DANSICPP"
+export CFLAGS="%gcc_optflags -I/usr/sfw/include -DANSICPP -I%{_includedir}"
 export RPM_OPT_FLAGS="$CFLAGS -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE"
 export ACLOCAL_FLAGS="-I %{_datadir}/aclocal"
 export PERL5LIB=%{_prefix}/perl5/site_perl/5.6.1/sun4-solaris-64int
-export CPPFLAGS="-I/usr/sfw/include"
-export LDFLAGS="%_ldflags -L/usr/sfw/lib -R/usr/sfw/lib"
+export CPPFLAGS="-I/usr/sfw/include -I%{_includedir}"
+export LDFLAGS="%_ldflags -L/usr/sfw/lib -R/usr/sfw/lib -L%{_libdir} -R%{_libdir}"
 export MSGFMT="/usr/bin/msgfmt"
 export CXX=/usr/sfw/bin/gcc
 export CC=/usr/sfw/bin/gcc
@@ -91,6 +91,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man6/*
 
 %changelog
+* May 02 2010 - Gilles Dauphin
+- search in %{_basedir} if in /opt/SFE (ligmpeg2 is in)
 * Fri Apr 30 2010 - Milan Jurik
 - fix SPARC build
 * Thu Apr 29 2010 - Milan Jurik
