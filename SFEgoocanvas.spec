@@ -8,6 +8,8 @@
 
 %include Solaris.inc
 
+%define osbuild %(uname -v | sed -e 's/[A-z_]//g')
+
 %use goocanvas = goocanvas.spec
 
 Name:           SFEgoocanvas
@@ -20,8 +22,14 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 Requires:       SUNWgnome-base-libs
 BuildRequires:  SUNWgnome-base-libs-devel
+
+%if %(expr %{osbuild} '>=' 134)
+Requires:	data/docbook
+BuildRequires:	developer/documentation-tool/gtk-doc
+%else
 BuildRequires:	SUNWgtk-doc
 BuildRequires:	SUNWgnome-xml
+%endif
 
 %package devel
 Summary:        %{summary} - development files
@@ -88,6 +96,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* May 02 2010 - Gilles Dauphin
+- get ready for next release
 * Fri Apr 30 2010 - Milan Jurik
 - added missing build dependencies
 * Tue Dec 11 2007 - nonsea@users.sourceforge.net
