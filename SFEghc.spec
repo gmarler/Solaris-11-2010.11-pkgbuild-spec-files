@@ -14,6 +14,8 @@
 %define bootstrap 6.10.4
 %include base.inc
 
+%define osbuild %(uname -v | sed -e 's/[A-z_]//g')
+
 # WARNING: you need a lot of diskspace to build this spec!
 
 Name:                    SFEghc 
@@ -36,7 +38,16 @@ BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %define SFEncurses      %(/usr/bin/pkginfo -q SUNWncurses && echo 0 || echo 1)
 
 %include default-depend.inc
-Requires: SFEgcc
+
+%if %(expr %{osbuild} '>=' 134)
+Requires:	developer/gcc/gcc-43
+Requires:	library/gmp
+Requires:	library/mpfr
+Requires:	library/readline 
+Requires:	library/ncurses
+Requires:	archiver/gnu-tar
+%else
+Requires: 	SFEgcc
 
 %if %SFEgmp
 BuildRequires: SFEgmp-devel
@@ -68,6 +79,8 @@ BuildRequires: SFEncurses
 %else
 BuildRequires: SUNWncurses
 %endif
+
+%endif       #osbuild
 
 %package prof
 Summary:                 %{summary} - profiling libraries
@@ -102,19 +115,37 @@ cd prebuilt
 %{gnu_tar} -xjf %SOURCE1
 cd ghc-%{bootstrap}
 mkdir %{_builddir}/%{name}-%{version}/postbuilt
+
+%if %(expr %{osbuild} '>=' 134)
+PATH="/usr/gcc/4.3/bin:$PATH"
+./configure CC=/usr/gcc/4.3/bin/gcc CXX=/usr/gcc/4.3/bin/g++ --prefix=%{_builddir}/%{name}-%{bootstrap}/postbuilt
+%else
 ./configure CC=gcc CXX=g++ --prefix=%{_builddir}/%{name}-%{bootstrap}/postbuilt
+%endif
 gmake install
 
 
 %build
 cd %{_builddir}/%{name}-%{version}
 %{gnu_tar} -xjf %SOURCE0
+%if %(expr %{osbuild} '>=' 134)
+PATH="/usr/gcc/4.3/bin:$PATH"
+export PATH=%{_builddir}/%{name}-%{bootstrap}/postbuilt/bin/:$PATH
+export LD_LIBRARY_PATH=%{_builddir}/%{name}-%{bootstrap}/postbuilt/lib/ghc-%{bootstrap}/:/usr/gcc/4.3/lib:$LD_LIBRARY_PATH
+%else
 export PATH=%{_builddir}/%{name}-%{bootstrap}/postbuilt/bin/:$PATH
 export LD_LIBRARY_PATH=%{_builddir}/%{name}-%{bootstrap}/postbuilt/lib/ghc-%{bootstrap}/:/usr/gnu/lib:$LD_LIBRARY_PATH
+%endif
 
 # use gcc 4.x
+%if %(expr %{osbuild} '>=' 134)
+export CC=/usr/gcc/4.3/bin/gcc
+export CXX=/usr/gcc/4.3/bin/g++
+%else
 export CC=/usr/gnu/bin/gcc
 export CXX=/usr/gnu/bin/g++
+%endif
+
 %if %{is_amd64}
 export CXXFLAGS="%{gcc_cxx_optflags} -mtune=opteron-sse3"
 export CFLAGS="%optflags -mtune=opteron-sse3"
@@ -123,12 +154,14 @@ export CXXFLAGS="%{gcc_cxx_optflags}"
 export CFLAGS="%optflags"
 %endif
 export PKG_CONFIG_PATH="%{_cxx_libdir}/pkgconfig"
+
 %if %{is_s10}
 export LD_OPTIONS='-L/usr/gnu/lib -R/usr/gnu/lib'
 export LDFLAGS='-L/usr/gnu/lib -R/usr/gnu/lib'
 %else
 export LDFLAGS="-L%{_cxx_libdir} -R%{_cxx_libdir}"
 %endif
+
 export PERL_PATH=/usr/perl5/bin/perl
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
 if test "x$CPUS" = "x" -o $CPUS = 0; then
@@ -174,7 +207,7 @@ touch ghc6.files ghc6-prof.files ghc6-all.files
 find $RPM_BUILD_ROOT -type f -name "*.p_hi" > ghc6-prof.files
 find $RPM_BUILD_ROOT -type f -name "*_p.a" >> ghc6-prof.files
 
-find $RPM_BUILD_ROOT/usr/lib -type f -name "*" > ghc6-all.files
+find $RPM_BUILD_ROOT%{_libdir} -type f -name "*" > ghc6-all.files
 
 sort ghc6-prof.files > ghc6-prof-sort.files
 sort ghc6-all.files > ghc6-all-sort.files
@@ -210,6 +243,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/doc/*
 
 %changelog
+* May 3 2010 - Gilles Dauphin
+- Get ready for next release
+- find in _libdir
 * Thu Apr 8 2010 - markwright@internode.on.net
 - Bump to 6.12.1
 * Sun Sep 6 2009 - jchoi42@pha.jhu.edu
