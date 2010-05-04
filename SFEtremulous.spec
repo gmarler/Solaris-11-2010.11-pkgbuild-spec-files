@@ -5,10 +5,14 @@
 #
 %include Solaris.inc
 
+%define cc_is_gcc       1
+
+%define SFEopenal       %(/usr/bin/pkg info openal-soft >/dev/null 2>&1 && echo 0 || echo 1)
 %define SUNWlibsdl      %(/usr/bin/pkginfo -q SUNWlibsdl && echo 1 || echo 0)
 
 %define src_name        tremulous
-%define src_url         http://%{sf_mirror}/sourceforge/tremulous/
+%define src_url         http://%{sf_mirror}/sourceforge/tremulous
+%define patch_url       http://gentoo.osuosl.org/distfiles
 %define src_version     1.1.0
 
 Name:                   SFEtremulous
@@ -17,10 +21,11 @@ Summary:                Tremulous - Team-based first-person shooter game with RT
 Version:                1.1.0.971
 URL:                    http://tremulous.net/
 Source:                 %{src_url}/%{src_name}-%{src_version}.zip
-Source1:                http://dl.trem-servers.com/tremulous-gentoopatches-1.1.0-r5.zip
+Source1:                %{patch_url}/tremulous-gentoopatches-1.1.0-r5.zip
+#Source1:                http://dl.trem-servers.com/tremulous-gentoopatches-1.1.0-r5.zip
 #Source2:                http://dl.trem-servers.com/vms-1.1.t971.pk3
 # TO FIND : an official site for this file
-Source2:                http://public.enst.fr/vms-1.1.t971.pk3
+Source2:                %{patch_url}/vms-1.1.t971.pk3
 Patch1:                 tremulous-01-solaris.diff
 SUNW_BaseDir:           %{_basedir}
 BuildRoot:              %{_tmppath}/%{name}-%{version}-build
@@ -37,10 +42,14 @@ BuildRequires: SUNWxorg-mesa
 %endif
 BuildRequires: SUNWogg-vorbis-devel
 #BuildRequires: SUNWcurl-devel
+%if %SFEopenal
 BuildRequires: SFEopenal-devel
+%endif
 Requires: SUNWogg-vorbis
 Requires: SUNWcurl
+%if %SFEopenal
 Requires: SFEopenal
+%endif
 
 %prep
 %setup -q -n %{src_name}
@@ -61,10 +70,10 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
     CPUS=1
 fi
 
-export CC=/usr/sfw/bin/gcc
 export CFLAGS="-I%{_includedir}"
 export LDFLAGS="-L%{_libdir} -R%{_libdir}"
-make USE_CURL_DLOPEN=0 USE_OPENAL_DLOPEN=0 USE_LOCAL_HEADERS=0 LDFLAGS="-L%{_libdir} -R%{_libdir} -lm -lnsl -lsocket"
+make BUILD_CLIENT_SMP=1 USE_CURL_DLOPEN=0 USE_OPENAL_DLOPEN=1 \
+    USE_LOCAL_HEADERS=0 LDFLAGS="-L%{_libdir} -R%{_libdir} -lm -lnsl -lsocket"
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -118,6 +127,9 @@ rm -rf $RPM_BUILD_ROOT
 #%{_datadir}/pixmaps/*
 
 %changelog
+* Mon May 03 2010 - Albert Lee <trisk@opensolaris.org>
+- Try openal-soft and make OpenAL optional
+- Update URLs
 * APR 02 2010 - Gilles Dauphin
 - update dowload site
 * Mars 24 2010 - Gilles Dauphin

@@ -5,16 +5,19 @@
 #
 %include Solaris.inc
 
+%define cc_is_gcc       1
+
+%define SFEopenal       %(/usr/bin/pkg info openal-soft >/dev/null 2>&1 && echo 0 || echo 1)
 %define SUNWlibsdl      %(/usr/bin/pkginfo -q SUNWlibsdl && echo 1 || echo 0)
 
 %define src_name        ioquake3
-%define src_url         http://trisk.acm.jhu.edu/
+%define src_url         http://www.ioquake3.org/files/
 
 Name:                   SFEioquake3
 Summary:                ioquake3 - icculus.org Quake3
-Version:                1.34-r1127
+Version:                1.36
 URL:                    http://www.ioquake3.org/
-Source:                 %{src_url}/%{src_name}-%{version}.tar.bz2
+Source:                 %{src_url}/%{version}/%{src_name}-%{version}.tar.bz2
 Patch1:                 ioquake3-01-solaris.diff
 SUNW_BaseDir:           %{_basedir}
 BuildRoot:              %{_tmppath}/%{name}-%{version}-build
@@ -30,11 +33,15 @@ Requires: SFEsdl
 BuildRequires: SUNWxorg-mesa
 %endif
 BuildRequires: SUNWogg-vorbis-devel
-BuildRequires: SFEcurl-devel
+# SUNWspeex is missing speex_preprocess_*
+#BuildRequires: SUNWspeex-devel
+%if %SFEopenal
 BuildRequires: SFEopenal-devel
+%endif
 Requires: SUNWogg-vorbis
-Requires: SFEcurl
-Requires: SFEopenal
+# SUNWspeex is missing speex_preprocess_*
+#Requires: SUNWspeex
+Requires: SUNWcurl
 
 %prep
 %setup -q -n %{src_name}-%version
@@ -46,8 +53,9 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
     CPUS=1
 fi
 
-export CC=/usr/sfw/bin/gcc
-make USE_CURL_DLOPEN=0 USE_OPENAL_DLOPEN=0 USE_LOCAL_HEADERS=0
+%define 
+make BUILD_CLIENT_SMP=1 USE_CURL_DLOPEN=0 USE_OPENAL_DLOPEN=1 \
+    USE_CODEC_VORBIS=1 USE_INTERNAL_SPEEX=1 USE_LOCAL_HEADERS=0
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -63,16 +71,16 @@ cp build/release-sunos-$Q3ARCH/ioq3ded.$Q3ARCH $RPM_BUILD_ROOT%{_libdir}/ioquake
 for prog in ioquake3 ioquake3-smp ioquake3-server; do
   cat > $RPM_BUILD_ROOT%{_bindir}/$prog <<EOF
 #!/bin/sh
-if [ ! -f %{_datadir}/ioquake3/baseq3/pak8.pk3 ]; then
+if [ ! -r %{_datadir}/ioquake3/baseq3/pak8.pk3 ]; then
   echo "MISSING GAME DATA: Required game data updates are not installed."
   echo ""
-  echo "Download quake3-latest-pk3s.zip from http://www.ioquake3.org/?page=getdata"
+  echo "Download quake3-latest-pk3s.zip from http://ioquake3.org/patch-data/"
   echo "To install the updates, run:"
   echo "  unzip quake3-latest-pk3s.zip"
   echo "  cp -r quake3-latest-pk3s/* %{_datadir}/ioquake3"
   exit 1
 fi
-if [ ! -f %{_datadir}/ioquake3/baseq3/pak0.pk3 ]; then
+if [ ! -r %{_datadir}/ioquake3/baseq3/pak0.pk3 ]; then
   echo "MISSING GAME DATA: Original game data (pak0.pk3) is not installed."
   echo ""
   echo "To install pak0.pk3 from your Quake III: Arena CD-ROM, run:"
@@ -96,9 +104,6 @@ done
 cp build/release-sunos-$Q3ARCH/baseq3/*.so $RPM_BUILD_ROOT%{_libdir}/ioquake3/baseq3
 cp build/release-sunos-$Q3ARCH/missionpack/*.so $RPM_BUILD_ROOT%{_libdir}/ioquake3/missionpack
 
-%post
-cd ${BASEDIR}/share/ioquake3
-
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -112,5 +117,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/ioquake3
 
 %changelog
+* Mon May 03 2010 - Albert Lee <trisk@opensolaris.org>
+- Bump to 1.36
+- Try openal-soft and make OpenAL optional, use SUNWcurl
+- Update wrapper script
+- Delete %post
 * Wed Sep 19 2007 - trisk@acm.jhu.edu
 - Initial spec

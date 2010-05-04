@@ -1,27 +1,15 @@
-diff -ru ioquake3-1.34-r1127.orig/Makefile ioquake3-1.34-r1127/Makefile
---- ioquake3-1.34-r1127.orig/Makefile	2007年  9月 18日 二 18:47:15
-+++ ioquake3-1.34-r1127/Makefile	2007年  9月 18日 二 21:37:06
-@@ -11,13 +11,17 @@
+--- ioquake3-1.36.orig/Makefile	2009-04-22 14:54:48.000000000 -0400
++++ ioquake3-1.36/Makefile	2010-05-03 20:48:27.390697149 -0400
+@@ -4,7 +4,7 @@
  # GNU Make required
  #
  
 -COMPILE_PLATFORM=$(shell uname|sed -e s/_.*//|tr '[:upper:]' '[:lower:]')
 +COMPILE_PLATFORM=$(shell uname|sed -e s/_.*//|tr '[A-Z]' '[a-z]')
  
- ifeq ($(COMPILE_PLATFORM),darwin)
-   # Apple does some things a little differently...
-   COMPILE_ARCH=$(shell uname -p | sed -e s/i.86/i386/)
- else
--  COMPILE_ARCH=$(shell uname -m | sed -e s/i.86/i386/)
-+  ifeq ($(COMPILE_PLATFORM),sunos)
-+    COMPILE_ARCH=$(shell uname -p)
-+  else
-+    COMPILE_ARCH=$(shell uname -m | sed -e s/i.86/i386/)
-+  endif 
- endif
+ COMPILE_ARCH=$(shell uname -m | sed -e s/i.86/i386/)
  
- ifeq ($(COMPILE_PLATFORM),mingw32)
-@@ -606,15 +610,9 @@
+@@ -704,15 +704,9 @@
  
    CC=gcc
    INSTALL=ginstall
@@ -38,55 +26,6 @@ diff -ru ioquake3-1.34-r1127.orig/Makefile ioquake3-1.34-r1127/Makefile
    ifneq ($(ARCH),i386)
      ifneq ($(ARCH),sparc)
        $(error arch $(ARCH) is currently not supported)
-@@ -624,6 +622,24 @@
- 
-   BASE_CFLAGS = -Wall -fno-strict-aliasing -Wimplicit -Wstrict-prototypes -pipe
- 
-+  ifeq ($(USE_OPENAL),1)
-+    BASE_CFLAGS += -DUSE_OPENAL=1
-+    ifeq ($(USE_OPENAL_DLOPEN),1)
-+      BASE_CFLAGS += -DUSE_OPENAL_DLOPEN=1
-+    endif
-+  endif
-+
-+  ifeq ($(USE_CURL),1)
-+    BASE_CFLAGS += -DUSE_CURL=1
-+    ifeq ($(USE_CURL_DLOPEN),1)
-+      BASE_CFLAGS += -DUSE_CURL_DLOPEN=1
-+    endif
-+  endif
-+
-+  ifeq ($(USE_CODEC_VORBIS),1)
-+    BASE_CFLAGS += -DUSE_CODEC_VORBIS=1
-+  endif
-+
-   ifeq ($(USE_SDL),1)
-     BASE_CFLAGS += -DUSE_SDL_SOUND=1 $(shell sdl-config --cflags)
-   else
-@@ -672,6 +688,22 @@
-     CLIENT_LDFLAGS=-L/usr/openwin/$(LIB) -L/usr/X11/lib -lGLU -lX11 -lXext
-   endif
- 
-+  ifeq ($(USE_OPENAL),1)
-+    ifneq ($(USE_OPENAL_DLOPEN),1)
-+      CLIENT_LDFLAGS += -lopenal
-+    endif
-+  endif
-+  
-+  ifeq ($(USE_CURL),1)
-+    ifneq ($(USE_CURL_DLOPEN),1)
-+      CLIENT_LDFLAGS += -lcurl
-+    endif
-+  endif
-+
-+  ifeq ($(USE_CODEC_VORBIS),1)
-+    CLIENT_LDFLAGS += -lvorbisfile -lvorbis -logg
-+  endif
-+
- else # ifeq sunos
- 
- #############################################################################
-diff -ru ioquake3-1.34-r1127.orig/code/renderer/tr_bsp.c ioquake3-1.34-r1127/code/renderer/tr_bsp.c
 --- ioquake3-1.34-r1127.orig/code/renderer/tr_bsp.c	2007年  9月 18日 二 18:47:11
 +++ ioquake3-1.34-r1127/code/renderer/tr_bsp.c	2007年  9月 18日 二 21:32:11
 @@ -1316,7 +1316,7 @@
@@ -94,83 +33,80 @@ diff -ru ioquake3-1.34-r1127.orig/code/renderer/tr_bsp.c ioquake3-1.34-r1127/cod
  
  	for ( i=0 ; i<count ; i++, in++, out++ ) {
 -		model_t *model;
-+		tr_model_t *model;
++		qmodel_t *model;
  
  		model = R_AllocModel();
  
-只有在 ioquake3-1.34-r1127.orig/code/renderer : tr_init.c.orig
-diff -ru ioquake3-1.34-r1127.orig/code/renderer/tr_local.h ioquake3-1.34-r1127/code/renderer/tr_local.h
---- ioquake3-1.34-r1127.orig/code/renderer/tr_local.h	2007年  9月 18日 二 18:46:52
-+++ ioquake3-1.34-r1127/code/renderer/tr_local.h	2007年  9月 18日 二 21:30:15
-@@ -757,13 +757,13 @@
+--- ioquake3-1.36.orig/code/renderer/tr_local.h	2008-08-12 15:34:43.000000000 -0400
++++ ioquake3-1.36/code/renderer/tr_local.h	2010-05-03 20:44:02.771736329 -0400
+@@ -762,13 +762,13 @@
  	void	*md4;				// only if type == (MOD_MD4 | MOD_MDR)
  
  	int			 numLods;
 -} model_t;
-+} tr_model_t;
++} qmodel_t;
  
  
  #define	MAX_MOD_KNOWN	1024
  
  void		R_ModelInit (void);
 -model_t		*R_GetModelByHandle( qhandle_t hModel );
-+tr_model_t		*R_GetModelByHandle( qhandle_t hModel );
++qmodel_t		*R_GetModelByHandle( qhandle_t hModel );
  int			R_LerpTag( orientation_t *tag, qhandle_t handle, int startFrame, int endFrame, 
  					 float frac, const char *tagName );
  void		R_ModelBounds( qhandle_t handle, vec3_t mins, vec3_t maxs );
-@@ -919,7 +919,7 @@
+@@ -922,7 +922,7 @@
  	trRefEntity_t			worldEntity;		// point currentEntity at this when rendering world
  	int						currentEntityNum;
  	int						shiftedEntityNum;	// currentEntityNum << QSORT_ENTITYNUM_SHIFT
 -	model_t					*currentModel;
-+	tr_model_t					*currentModel;
++	qmodel_t				*currentModel;
  
  	viewParms_t				viewParms;
  
-@@ -943,7 +943,7 @@
+@@ -946,7 +946,7 @@
  	// put large tables at the end, so most elements will be
  	// within the +/32K indexed range on risc processors
  	//
 -	model_t					*models[MAX_MOD_KNOWN];
-+	tr_model_t					*models[MAX_MOD_KNOWN];
++	qmodel_t					*models[MAX_MOD_KNOWN];
  	int						numModels;
  
  	int						numImages;
-@@ -1201,7 +1201,7 @@
+@@ -1210,7 +1210,7 @@
  
  qboolean	R_GetEntityToken( char *buffer, int size );
  
 -model_t		*R_AllocModel( void );
-+tr_model_t		*R_AllocModel( void );
++qmodel_t		*R_AllocModel( void );
  
  void    	R_Init( void );
  image_t		*R_FindImageFile( const char *name, qboolean mipmap, qboolean allowPicmip, int glWrapClampMode );
-diff -ru ioquake3-1.34-r1127.orig/code/renderer/tr_model.c ioquake3-1.34-r1127/code/renderer/tr_model.c
---- ioquake3-1.34-r1127.orig/code/renderer/tr_model.c	2007年  9月 18日 二 18:46:44
-+++ ioquake3-1.34-r1127/code/renderer/tr_model.c	2007年  9月 18日 二 21:31:59
+--- ioquake3-1.36.orig/code/renderer/tr_model.c	2008-11-10 18:55:22.000000000 -0500
++++ ioquake3-1.36/code/renderer/tr_model.c	2010-05-03 20:54:17.129659278 -0400
 @@ -25,19 +25,19 @@
  
  #define	LL(x) x=LittleLong(x)
  
 -static qboolean R_LoadMD3 (model_t *mod, int lod, void *buffer, const char *name );
 -static qboolean R_LoadMD4 (model_t *mod, void *buffer, const char *name );
-+static qboolean R_LoadMD3 (tr_model_t *mod, int lod, void *buffer, const char *name );
-+static qboolean R_LoadMD4 (tr_model_t *mod, void *buffer, const char *name );
++static qboolean R_LoadMD3 (qmodel_t *mod, int lod, void *buffer, const char *name );
++static qboolean R_LoadMD4 (qmodel_t *mod, void *buffer, const char *name );
  #ifdef RAVENMD4
 -static qboolean R_LoadMDR (model_t *mod, void *buffer, int filesize, const char *name );
-+static qboolean R_LoadMDR (tr_model_t *mod, void *buffer, int filesize, const char *name );
++static qboolean R_LoadMDR (qmodel_t *mod, void *buffer, int filesize, const char *name );
  #endif
  
 -model_t	*loadmodel;
-+tr_model_t	*loadmodel;
++qmodel_t	*loadmodel;
  
  /*
  ** R_GetModelByHandle
  */
 -model_t	*R_GetModelByHandle( qhandle_t index ) {
 -	model_t		*mod;
-+tr_model_t	*R_GetModelByHandle( qhandle_t index ) {
-+	tr_model_t		*mod;
++qmodel_t	*R_GetModelByHandle( qhandle_t index ) {
++	qmodel_t	*mod;
  
  	// out of range gets the defualt model
  	if ( index < 1 || index >= tr.numModels ) {
@@ -180,8 +116,8 @@ diff -ru ioquake3-1.34-r1127.orig/code/renderer/tr_model.c ioquake3-1.34-r1127/c
  */
 -model_t *R_AllocModel( void ) {
 -	model_t		*mod;
-+tr_model_t *R_AllocModel( void ) {
-+	tr_model_t		*mod;
++qmodel_t *R_AllocModel( void ) {
++	qmodel_t	*mod;
  
  	if ( tr.numModels == MAX_MOD_KNOWN ) {
  		return NULL;
@@ -190,74 +126,91 @@ diff -ru ioquake3-1.34-r1127.orig/code/renderer/tr_model.c ioquake3-1.34-r1127/c
  */
  qhandle_t RE_RegisterModel( const char *name ) {
 -	model_t		*mod;
-+	tr_model_t		*mod;
- 	unsigned	*buf;
- 	int			lod;
- 	int			ident;
-@@ -252,7 +252,7 @@
++	qmodel_t	*mod;
+ 	union {
+ 		unsigned *u;
+ 		void *v;
+@@ -117,7 +117,7 @@
+ 		}
+ 	}
+ 
+-	// allocate a new model_t
++	// allocate a new qmodel_t
+ 
+ 	if ( ( mod = R_AllocModel() ) == NULL ) {
+ 		ri.Printf( PRINT_WARNING, "RE_RegisterModel: R_AllocModel() failed for '%s'\n", name);
+@@ -243,7 +243,7 @@
+ #endif
+ 
+ fail:
+-	// we still keep the model_t around, so if the model name is asked for
++	// we still keep the qmodel_t around, so if the model name is asked for
+ 	// again, we won't bother scanning the filesystem
+ 	mod->type = MOD_BAD;
+ 	return 0;
+@@ -255,7 +255,7 @@
  R_LoadMD3
  =================
  */
 -static qboolean R_LoadMD3 (model_t *mod, int lod, void *buffer, const char *mod_name ) {
-+static qboolean R_LoadMD3 (tr_model_t *mod, int lod, void *buffer, const char *mod_name ) {
++static qboolean R_LoadMD3 (qmodel_t *mod, int lod, void *buffer, const char *mod_name ) {
  	int					i, j;
  	md3Header_t			*pinmodel;
      md3Frame_t			*frame;
-@@ -411,7 +411,7 @@
+@@ -414,7 +414,7 @@
+ R_LoadMDR
  =================
  */
- #ifdef RAVENMD4
 -static qboolean R_LoadMDR( model_t *mod, void *buffer, int filesize, const char *mod_name ) 
-+static qboolean R_LoadMDR( tr_model_t *mod, void *buffer, int filesize, const char *mod_name ) 
++static qboolean R_LoadMDR( qmodel_t *mod, void *buffer, int filesize, const char *mod_name ) 
  {
  	int					i, j, k, l;
  	mdrHeader_t			*pinmodel, *mdr;
-@@ -705,7 +705,7 @@
+@@ -754,7 +754,7 @@
  =================
  */
  
 -static qboolean R_LoadMD4( model_t *mod, void *buffer, const char *mod_name ) {
-+static qboolean R_LoadMD4( tr_model_t *mod, void *buffer, const char *mod_name ) {
++static qboolean R_LoadMD4( qmodel_t *mod, void *buffer, const char *mod_name ) {
  	int					i, j, k, lodindex;
  	md4Header_t			*pinmodel, *md4;
      md4Frame_t			*frame;
-@@ -886,7 +886,7 @@
+@@ -935,7 +935,7 @@
  ===============
  */
  void R_ModelInit( void ) {
 -	model_t		*mod;
-+	tr_model_t		*mod;
++	qmodel_t	*mod;
  
  	// leave a space for NULL model
  	tr.numModels = 0;
-@@ -903,7 +903,7 @@
+@@ -952,7 +952,7 @@
  */
  void R_Modellist_f( void ) {
  	int		i, j;
 -	model_t	*mod;
-+	tr_model_t	*mod;
++	qmodel_t	*mod;
  	int		total;
  	int		lods;
  
-@@ -1015,7 +1015,7 @@
+@@ -1064,7 +1064,7 @@
  #endif
  	int		i;
  	float		frontLerp, backLerp;
 -	model_t		*model;
-+	tr_model_t		*model;
++	qmodel_t	*model;
  
  	model = R_GetModelByHandle( handle );
  	if ( !model->md3[0] )
-@@ -1071,7 +1071,7 @@
+@@ -1120,7 +1120,7 @@
  ====================
  */
  void R_ModelBounds( qhandle_t handle, vec3_t mins, vec3_t maxs ) {
 -	model_t		*model;
-+	tr_model_t		*model;
++	qmodel_t	*model;
  	md3Header_t	*header;
  	md3Frame_t	*frame;
  
-diff -ru ioquake3-1.34-r1127.orig/code/renderer/tr_world.c ioquake3-1.34-r1127/code/renderer/tr_world.c
 --- ioquake3-1.34-r1127.orig/code/renderer/tr_world.c	2007年  9月 18日 二 18:46:52
 +++ ioquake3-1.34-r1127/code/renderer/tr_world.c	2007年  9月 18日 二 21:29:02
 @@ -319,7 +319,7 @@
@@ -265,7 +218,7 @@ diff -ru ioquake3-1.34-r1127.orig/code/renderer/tr_world.c ioquake3-1.34-r1127/c
  	bmodel_t	*bmodel;
  	int			clip;
 -	model_t		*pModel;
-+	tr_model_t		*pModel;
++	qmodel_t	*pModel;
  	int			i;
  
  	pModel = R_GetModelByHandle( ent->e.hModel );
