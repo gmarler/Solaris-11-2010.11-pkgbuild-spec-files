@@ -30,6 +30,7 @@ Requires:            SUNWbzip
 Requires:            SUNWcslr
 Requires:            SUNWlibgsf
 BuildRequires:       SUNWgnome-base-libs-devel
+BuildRequires:       SUNWgnome-common-devel
 BuildRequires:       SUNWlxml-devel
 BuildRequires:       SUNWlibgsf-devel
 
@@ -93,6 +94,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*
 
 %changelog
+* Tue May 04 2010 - Milan Jurik
+- added missing build dependency
 * Mon Apr 14 2008 - nonsea@users.sourceforge.net
 - s/SUNWdesktop-search-libs/SUNWlibgsf cause the pkg name change.
 * Tue Sep 18 2007 - nonsea@users.sourceforge.net
