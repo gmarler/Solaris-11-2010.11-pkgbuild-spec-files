@@ -25,6 +25,8 @@
 Name:                SFEfftw
 Summary:             %{fftw3.summary}
 Version:             %{fftw3.version}
+URL:                 http://www.fftw.org/
+License:             GPLv2
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
