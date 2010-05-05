@@ -35,8 +35,8 @@ Requires:       SUNWzlib
 Requires:       SUNWjpg
 Requires:       Xaw3d
 # wait for transfig and netpbm to be in /contrib
-#Requires:       transfig
-#Requires:       netpbm
+Requires:       transfig
+Requires:       netpbm
 
 Source1:        xfig.desktop
 Source2:        xfig.png

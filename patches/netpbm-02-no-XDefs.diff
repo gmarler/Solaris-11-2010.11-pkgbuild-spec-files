@@ -1,0 +1,10 @@
+--- netpbm-orig/other/pamx/window.c	2007-09-18 09:10:57.000000000 +0000
++++ netpbm/other/pamx/window.c	2007-09-18 09:23:18.643006932 +0000
+@@ -13,7 +13,6 @@
+ #include <sys/types.h>
+ #include <X11/cursorfont.h>
+ #include <X11/Xatom.h>
+-#include <X11/Xdefs.h>  /* Needed by Xutil.h */
+ #include <X11/X.h>      /* Needed by Xutil.h */
+ #include <X11/Xlib.h>   /* Needed by Xutil.h */
+ #include <X11/Xutil.h>

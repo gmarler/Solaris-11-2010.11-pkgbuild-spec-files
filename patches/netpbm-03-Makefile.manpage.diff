@@ -1,0 +1,53 @@
+--- netpbm-10.26.63/buildtools/Makefile.manpage.orig	2010-04-14 20:50:27.867657326 +0200
++++ netpbm-10.26.63/buildtools/Makefile.manpage	2010-04-14 21:56:42.289715439 +0200
+@@ -4,7 +4,7 @@
+ 
+ MAKEMAN = makeman
+ 
+-MANDIR = /usr/share/man/man1
++MANDIR = /usr/share/man
+ 
+ # These can convert to man pages cleanly
+ MAN1 = \
+@@ -332,7 +332,7 @@
+ 
+ # Make man pages -- reports bad lines to standard error
+ manpages:
+-	@python $(MAKEMAN) index.html $(HTMLMANUALS) 
++	@$(MAKEMAN) index.html $(HTMLMANUALS) 
+ 	mv index.1 netpbm.1
+ 
+ # Make XML pages, and validate them.
+@@ -343,23 +343,23 @@
+ # This will install the generated man pages
+ installman: manpages
+ 	for f in $(MAN1); do \
+-	  if [ -f $$f ]; then gzip <$$f >$(MANDIR)/man1/$$f.gz; fi; \
++	  if [ -f $$f ]; then mv $$f $(MANDIR)/man1/; fi; \
+ 	  done
+ 	for f in $(MAN3); do \
+-	  if [ -f $$f ]; then gzip <$$f >$(MANDIR)/man3/$$f.gz; fi; \
++	  if [ -f $$f ]; then mv $$f $(MANDIR)/man3/; fi; \
+ 	  done
+ 	for f in $(MAN5); do \
+-	  if [ -f $$f ]; then gzip <$$f >$(MANDIR)/man5/$$f.gz; fi; \
++	  if [ -f $$f ]; then mv $$f $(MANDIR)/man5/; fi; \
+ 	  done
+ 	# Clean up old locations on Fedora Core 2
+-	rm -f $(MANDIR)/man1/extendedopacity.1.gz 
+-	rm -f $(MANDIR)/man3/directory.3.gz
+-	rm -f $(MANDIR)/man3/libnetpbm_dir.3.gz
++	#rm -f $(MANDIR)/man1/extendedopacity.1.gz 
++	#rm -f $(MANDIR)/man3/directory.3.gz
++	#rm -f $(MANDIR)/man3/libnetpbm_dir.3.gz
+ 	# remove pointer man pages (that say, "The man page isn't here")
+ 	# which might have been installed previously
+-	for f in $(MAN1); do rm -f $(MANDIR)/man1/$$f; done
+-	for f in $(MAN3); do rm -f $(MANDIR)/man3/$$f; done
+-	for f in $(MAN5); do rm -f $(MANDIR)/man5/$$f; done
++	#for f in $(MAN1); do rm -f $(MANDIR)/man1/$$f; done
++	#for f in $(MAN3); do rm -f $(MANDIR)/man3/$$f; done
++	#for f in $(MAN5); do rm -f $(MANDIR)/man5/$$f; done
+ 
+ clean:
+ 	@rm -f *.[135] $(XML)

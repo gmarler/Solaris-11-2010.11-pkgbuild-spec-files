@@ -1,3 +1,14 @@
+2010-05-05 Gilles Dauphin <dauphin@enst.fr>
+
+	*         SFEtransfig.spec
+	*         copyright/netpbm.copyright
+	*         copyright/transfig.copyright
+	*         ext-sources/netpbm-Makefile.conf
+	*         patches/netpbm-02-no-XDefs.diff
+	*         patches/transfig-1-3.2.5a-transfig-Imakefile.diff
+	*         patches/transfig-0-3.2.5a-fig2dev-Imakefile.diff
+	*         patches/netpbm-03-Makefile.manpage.diff
+
 2010-05-05 Mark Wright <markwright@internode.on.net>
 
 	* SFEghc-data-accessor-monads-fd.spec: bump to 0.2.0.1

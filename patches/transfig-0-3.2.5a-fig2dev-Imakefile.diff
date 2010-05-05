@@ -1,0 +1,37 @@
+--- transfig.3.2.5a-orig/transfig.3.2.5a/fig2dev/Imakefile	2009-02-06 19:42:00.000000000 +0100
++++ transfig.3.2.5a/fig2dev/Imakefile	2009-07-26 11:29:11.852232129 +0200
+@@ -25,6 +25,7 @@
+ XCOMM
+ XCOMM BINDIR = /usr/bin/X11
+ XCOMM MKDIRHIER = /bin/sh /usr/bin/X11/mkdirhier -p
++MKDIRHIER = /usr/X11/bin/mkdirhier 
+ 
+ XCOMM MANDIR tells where the standard man pages should go (no need to change it
+ XCOMM if you want the man pages installed in the standard place on your system
+@@ -62,7 +63,7 @@
+ XCOMM the full name (rgb.txt) now.
+ XCOMM
+ 
+-RGB = $(LIBDIR)/rgb.txt
++RGB = /usr/X11/lib/X11/rgb.txt
+ 
+ XCOMM Comment out the following #define USEPNG if you don't want PNG support
+ XCOMM Uncomment the #define for USEPNG if you want to be able to import
+@@ -76,7 +77,7 @@
+ #ifdef USEPNG
+ PNGLIBDIR = $(USRLIBDIR)
+ ZLIBDIR = $(USRLIBDIR)
+-PNGINC = -I/usr/include/X11
++PNGINC = -I/usr/include
+ #endif
+ 
+ XCOMM ****************
+@@ -97,7 +98,7 @@
+ 
+ XCOMM ****************
+ XCOMM Uncomment the following to set default paper size to A4
+-XCOMM DDA4 = -DA4
++DDA4 = -DA4
+ 
+ XCOMM ****************
+ XCOMM Uncomment the following to set IBM Graphics Enhancement Cartridge
