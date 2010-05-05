@@ -1,3 +1,7 @@
+2010-05-05 Milan Jurik <sfnet@xylab.cz>
+
+	* SFEfftw.spec: added missing build dependency
+
 2010-05-04 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEwv.spec: added missing build dependency

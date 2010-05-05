@@ -31,6 +31,8 @@ SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 
+BuildRequires:       SUNWtexi
+
 %package devel
 Summary:       %{summary} - development files
 SUNW_BaseDir:  %{_basedir}
@@ -135,6 +137,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Wed May 05 2010 - Milan Jurik
+- added missing build dependency
 * Mon Jul 30 2007 - Doug Scott
 - Added build of libfftw3f
 * Mon Apr 23 2007 - Doug Scott
