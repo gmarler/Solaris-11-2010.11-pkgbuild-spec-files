@@ -86,6 +86,7 @@ export CXX=g++
 export CXXFLAGS="%gcc_cxx_optflags"
 export LDFLAGS="%{_ldflags}"
 export RPM_OPT_FLAGS="$CFLAGS"
+export PKG_CONFIG_PATH="%{_libdir}/pkgconfig"
 %abiword.build -d %name-%version
 
 %install
@@ -124,6 +125,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*
 
 %changelog
+* May 2010 - Gilles dauphin
+- set PKG_CONFIG_PATH in case of install in /opt/SFE
 * Wed May 05 2010 - Milan Jurik
 - added missing build dependencies
 * Wed Feb 03 2010 - brian.cameron@sun.com
