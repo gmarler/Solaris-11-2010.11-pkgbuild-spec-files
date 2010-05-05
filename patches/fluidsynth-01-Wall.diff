@@ -1,0 +1,7 @@
+--- fluidsynth-1.1.1/configure.ac	Fri Nov 27 23:57:07 2009
++++ fluidsynth-1.1.1-patch/configure.ac	Tue May  4 22:48:08 2010
+@@ -41,1 +41,0 @@
+-CFLAGS="$CFLAGS -Wall"
+@@ -151,1 +150,1 @@
+-  CFLAGS="${CFLAGS} ${FCCFLAGS} -O2 -fomit-frame-pointer -funroll-all-loops -finline-functions -Wall -W -Wpointer-arith -Wbad-function-cast -Wcast-qual -Wcast-align -Wstrict-prototypes -Winline -Wno-unused-parameter -Wno-cast-qual"
++  CFLAGS="${CFLAGS} ${FCCFLAGS}"

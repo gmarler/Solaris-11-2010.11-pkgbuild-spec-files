@@ -1,6 +1,7 @@
 2010-05-05 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEfftw.spec: added missing build dependency
+	* SFEfluidsynth.spec: Initial import to SFE
 
 2010-05-04 Milan Jurik <sfnet@xylab.cz>
 

@@ -1,0 +1,8 @@
+--- fluidsynth-1.1.1/src/fluid_oss.c	Fri Oct 30 22:28:41 2009
++++ fluidsynth-1.1.1-patch/src/fluid_oss.c	Tue May  4 22:58:21 2010
+@@ -204,1 +204,1 @@
+-  if (ioctl(dev->dspfd, SOUND_PCM_WRITE_CHANNELS, &channels) < 0){
++  if (ioctl(dev->dspfd, SNDCTL_DSP_CHANNELS, &channels) < 0){
+@@ -319,1 +319,1 @@
+-  if (ioctl(dev->dspfd, SOUND_PCM_WRITE_CHANNELS, &channels) < 0){
++  if (ioctl(dev->dspfd, SNDCTL_DSP_CHANNELS, &channels) < 0){
