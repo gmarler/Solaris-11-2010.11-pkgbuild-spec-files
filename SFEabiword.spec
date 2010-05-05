@@ -18,6 +18,8 @@
 Name:               SFEabiword
 Summary:            %abiword.summary
 Version:            %{default_pkg_version}
+URL:                http://www.abisource.com/
+License:            GPLv2
 SUNW_BaseDir:       %{_basedir}
 SUNW_Copyright:      %{name}.copyright
 Group:		    Office/Spreadsheet
@@ -36,6 +38,7 @@ Requires:           SUNWgnome-print
 Requires:           SUNWfontconfig
 Requires:           SUNWperl584core
 Requires:           SUNWlibgsf
+Requires:           SUNWlibrsvg
 Requires:           SFElibfribidi
 Requires:           SFEwv
 BuildRequires:      SUNWgnome-base-libs-devel
@@ -48,6 +51,8 @@ BuildRequires:      SUNWgnome-print-devel
 BuildRequires:      SUNWlibgsf-devel
 BuildRequires:      SFElibfribidi-devel
 BuildRequires:      SFEwv-devel
+BuildRequires:      SUNWgnome-common-devel
+BuildRequires:      SUNWlibrsvg-devel
 
 %if %SUNWaspell
 Requires:           SUNWaspell
@@ -119,6 +124,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*
 
 %changelog
+* Wed May 05 2010 - Milan Jurik
+- added missing build dependencies
 * Wed Feb 03 2010 - brian.cameron@sun.com
 - Now build with gcc since the new 2.8.1 version does not build with Sun
   Studio.
