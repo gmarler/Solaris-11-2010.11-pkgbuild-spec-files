@@ -61,11 +61,6 @@ Yi is a text editor written in Haskell and extensible in Haskell. The goal of
 the Yi project is to provide a flexible, powerful, and correct editor for
 haskell hacking.
 
-# The html documentation fails to build.  Can specify the pkgtool --with-html-doc
-# option to test and maybe fix the html documentation build failure.
-%define with_html_doc %{?_with_html_doc:1}%{?!_with_html_doc:0}
-%define without_html_doc %{?_with_html_doc:0}%{?!_with_html_doc:1}
-
 %package -n SFEghc-yi-prof
 Summary:                 %{summary} - profiling libraries
 SUNW_BaseDir:            %{_basedir}
@@ -80,9 +75,7 @@ Requires: SFEghc-yi
 
 %prep
 %setup -q -n %{name}-%{version}
-%if %{with_html_doc}
 %patch1 -p1
-%endif
 export LD_LIBRARY_PATH=/usr/gnu/lib:$LD_LIBRARY_PATH
 
 # Need to use same gcc as we used to build ghc (gcc 4.x)
@@ -111,12 +104,9 @@ runghc ./Setup.hs configure --prefix=%{_prefix} \
     --htmldir=%{_docdir}/ghc/html/libraries/%{name}-%{version} \
     --libsubdir='$compiler/$pkgid' \
     --with-compiler=${GHC} --with-hc-pkg=${GHC_PKG} --with-hsc2hs=${HSC2HS} \
-%if %{with_html_doc}
     --haddock-option="--html" \
-%endif
     -fvty \
     ${VERBOSE}
-
 
 %build
 export LD_LIBRARY_PATH='/usr/gnu/lib'
@@ -124,9 +114,8 @@ export LD_LIBRARY_PATH='/usr/gnu/lib'
 export LD_OPTIONS='-L/usr/gnu/lib -R/usr/gnu/lib'
 %endif
 runghc ./Setup.hs build ${VERBOSE}
-%if %{with_html_doc}
-runghc ./Setup.hs haddock ${VERBOSE} --executables --hoogle --hyperlink-source
-%endif
+# The html documentation fails to build with the haddock --executables option.
+runghc ./Setup.hs haddock ${VERBOSE} --hoogle --hyperlink-source
 
 %install
 export LD_LIBRARY_PATH=/usr/gnu/lib:$LD_LIBRARY_PATH
@@ -165,21 +154,17 @@ rm -rf $RPM_BUILD_ROOT
 # We need to register the package with ghc-pkg for ghc to find it
 /usr/bin/ghc-pkg register --global --force %{_cxx_libdir}/ghc-%{ghc_version}/%{name}-%{version}/%{name}-%{version}.conf
 
-%if %{with_html_doc}
 %post -n SFEghc-yi-doc
 cd %{_docdir}/ghc/html/libraries && [ -x "./gen_contents_index" ] && ./gen_contents_index
-%endif
 
 %preun
 # Need to unregister the package with ghc-pkg for the rebuild of the spec file to work
 /usr/bin/ghc-pkg unregister --global --force %{name}-%{version}
 
-%if %{with_html_doc}
 %postun -n SFEghc-yi-doc
 if [ "$1" -eq 0 ] ; then
   cd %{_docdir}/ghc/html/libraries && [ -x "./gen_contents_index" ] && ./gen_contents_index
 fi
-%endif
 
 %files -f pkg.files
 %defattr (-, root, bin)
@@ -191,13 +176,15 @@ fi
 %defattr(-,root,root,-)
 %dir %attr (0755, root, sys) %{_datadir}
 %dir %attr (0755, root, other) %{_docdir}
-%if %{with_html_doc}
 %dir %attr (0755, root, bin) %{_docdir}/ghc
 %dir %attr (0755, root, bin) %{_docdir}/ghc/html
 %dir %attr (0755, root, bin) %{_docdir}/ghc/html/libraries
 %dir %attr (0755, root, bin) %{_docdir}/ghc/html/libraries/%{name}-%{version}
-%endif
 
 %changelog
+* Wed May 05 2010 - markwright@internode.on.net
+- Build with SFEghc-transformers 0.2.1.0, build docs without
+  haddock --executables option (as the documentation build fails
+  with the --executables option).
 * Thu Apr 8 2010 - markwright@internode.on.net
 - Initial Solaris version

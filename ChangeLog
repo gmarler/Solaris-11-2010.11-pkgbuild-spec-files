@@ -1,3 +1,17 @@
+2010-05-05 Mark Wright <markwright@internode.on.net>
+
+	* SFEghc-data-accessor-monads-fd.spec: bump to 0.2.0.1
+	* SFEghc-monads-fd.spec: bump to 0.1.0.1
+	* patches/ghc-yi-01-cabal.diff: build with transformers 0.2.1.0
+	* SFEghc-data-accessor.spec: bump to 0.2.1.3
+	* SFEghc-yi.spec: build with transformers 0.2.1.0
+	* SFEghc-pointedlist.spec: correct SFEghc-utility-ht
+	  and SFEghc-binary dependencies
+	* SFEghc-data-accessor-template.spec: correct SFEghc-utility-ht
+	  dependency
+	* SFEghc-iteratee.spec: bump to 0.3.5
+	* SFEghc-transformers.spec: bump to 0.2.1.0
+
 2010-05-05 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEfftw.spec: added missing build dependency

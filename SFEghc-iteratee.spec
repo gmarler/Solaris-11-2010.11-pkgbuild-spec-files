@@ -15,7 +15,7 @@
 
 Name:                    iteratee
 Summary:                 iteratee - Iteratee-based I/O
-Version:                 0.3.4
+Version:                 0.3.5
 Release:                 1
 License:                 BSD
 Group:                   Development/Languages/Haskell
@@ -32,6 +32,7 @@ Requires: SFEgcc
 Requires: SFEghc
 Requires: SFEghc-haskell-platform
 Requires: SFEghc-ListLike
+Requires: SFEghc-transformers
 
 %description
 The IterateeGM monad provides strict, safe, and functional I/O. In addition
@@ -155,5 +156,7 @@ fi
 %dir %attr (0755, root, bin) %{_docdir}/ghc/html/libraries/%{name}-%{version}
 
 %changelog
+* Wed May 05 2010 - markwright@internode.on.net
+- Bump to 0.3.5
 * Sat Apr 17 2010 - markwright@internode.on.net
-- Initial Solaris version
+- Initial Solaris version 0.3.4

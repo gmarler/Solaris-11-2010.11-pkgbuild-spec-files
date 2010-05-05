@@ -31,8 +31,8 @@ BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 Requires: SFEgcc
 Requires: SFEghc
 Requires: SFEghc-haskell-platform
-Requires: SFEghc-binary.spec
-Requires: SFEghc-data-accessor.spec
+Requires: SFEghc-binary
+Requires: SFEghc-data-accessor
 
 %description
 A PointedList tracks the position in a non-empty list which works

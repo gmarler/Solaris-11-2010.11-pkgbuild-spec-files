@@ -15,7 +15,7 @@
 
 Name:                    transformers
 Summary:                 transformers - Concrete monad transformers
-Version:                 0.1.4.0
+Version:                 0.2.1.0
 Release:                 1
 License:                 BSD
 Group:                   Development/Languages/Haskell
@@ -163,5 +163,7 @@ fi
 %dir %attr (0755, root, bin) %{_docdir}/ghc/html/libraries/%{name}-%{version}
 
 %changelog
+* Wed May 05 2010 - markwright@internode.on.net
+- Bump to 0.2.1.0
 * Thu Apr 8 2010 - markwright@internode.on.net
-- Initial Solaris version
+- Initial Solaris version 0.1.4.0

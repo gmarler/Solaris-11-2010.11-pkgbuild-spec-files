@@ -1,6 +1,11 @@
 --- yi-0.6.2.2-orig/yi.cabal	2010-03-25 04:02:41.000000000 +1100
-+++ yi-0.6.2.2/yi.cabal	2010-04-05 10:52:57.714870402 +1000
-@@ -277,6 +277,9 @@
++++ yi-0.6.2.2/yi.cabal	2010-05-05 22:14:53.019853956 +1000
+@@ -273,10 +273,13 @@
+         build-depends: split == 0.1.*
+         build-depends: template-haskell >= 2.4 && < 2.5
+         build-depends: time == 1.1.*
+-        build-depends: transformers==0.1.*
++        build-depends: transformers >= 0.1.4.0 && < 0.3
          build-depends: utf8-string >= 0.3.1
          build-depends: uniplate
          build-depends: unix-compat >=0.1 && <0.2

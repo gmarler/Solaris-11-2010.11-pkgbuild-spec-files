@@ -32,7 +32,7 @@ Requires: SFEgcc
 Requires: SFEghc
 Requires: SFEghc-haskell-platform
 Requires: SFEghc-data-accessor
-Requires: SFEghc-utility-ht.spec
+Requires: SFEghc-utility-ht
 
 %description
 Automate generation of Accessors of the data-accessor package by Template Haskell functions.
