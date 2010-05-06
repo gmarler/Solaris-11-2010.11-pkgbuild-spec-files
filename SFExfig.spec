@@ -35,7 +35,7 @@ BuildRequires:  SUNWgmake
 Requires:       SUNWpng
 Requires:       SUNWzlib
 Requires:       SUNWjpg
-Requires:       Xaw3d
+Requires:       SFEXaw3d
 # wait for transfig and netpbm to be in /contrib
 Requires:       SFEtransfig
 Requires:       SFEnetpbm
