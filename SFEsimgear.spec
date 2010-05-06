@@ -13,7 +13,7 @@
 
 Name:                   SFESimGear
 Summary:                Simulator Construction Tools
-Version:                2.0.0
+Version:                1.0.0
 Source:                 %{src_url}/%{src_name}-%{version}.tar.gz
 Source1:		SimGear_Props.cxx
 Patch1:			SimGear-01.diff
@@ -82,6 +82,8 @@ rm -rf $RPM_BUILD_ROOT
 #%{_libdir}/pkgconfig/*
 
 %changelog
+* May 2010 - Gilles Dauphin
+- back to 1.0 will create a 2.0 spec file (Milan feedback)
 * Mar 2010 - Gilles dauphin
 - search includedir event if it is in /usr/SFE (exemple)
 * Mon Nov 17 2008 - dauphin@enst.fr
