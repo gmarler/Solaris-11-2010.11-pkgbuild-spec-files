@@ -1,0 +1,976 @@
+Only in .: BUILD
+diff -ru ../OpenSceneGraph-2.9.7.orig/examples/osgcompositeviewer/osgcompositeviewer.cpp ./examples/osgcompositeviewer/osgcompositeviewer.cpp
+--- ../OpenSceneGraph-2.9.7.orig/examples/osgcompositeviewer/osgcompositeviewer.cpp	2009-02-08 16:56:35.000000000 +0100
++++ ./examples/osgcompositeviewer/osgcompositeviewer.cpp	2010-05-06 18:27:12.031098000 +0200
+@@ -16,6 +16,16 @@
+ *  THE SOFTWARE.
+ */
+ 
++#ifdef __cplusplus
++// TODO : patch me
++// maybe a bug in vlc and/or the libc++ of gcc433
++// that is just to undef the symbol _GLIBCXX_CONCEPT_CHECKS, because the Solaris gcc433
++// is compiled with --enable-concept-checks
++
++#include <bits/c++config.h>
++#undef _GLIBCXX_CONCEPT_CHECKS
++#endif
++
+ #include <iostream>
+ 
+ #include <osgUtil/Optimizer>
+diff -ru ../OpenSceneGraph-2.9.7.orig/include/osg/io_utils ./include/osg/io_utils
+--- ../OpenSceneGraph-2.9.7.orig/include/osg/io_utils	2007-12-10 18:30:18.000000000 +0100
++++ ./include/osg/io_utils	2010-05-06 16:19:33.256675000 +0200
+@@ -14,6 +14,16 @@
+ #ifndef OSG_IO_UTILS
+ #define OSG_IO_UTILS 1
+ 
++#ifdef __cplusplus
++// TODO : patch me
++// maybe a bug in vlc and/or the libc++ of gcc433
++// that is just to undef the symbol _GLIBCXX_CONCEPT_CHECKS, because the Solaris gcc433
++// is compiled with --enable-concept-checks
++
++#include <bits/c++config.h>
++#undef _GLIBCXX_CONCEPT_CHECKS
++#endif
++
+ #include <ostream>
+ #include <istream>
+ 
+diff -ru ../OpenSceneGraph-2.9.7.orig/include/osgDB/Export ./include/osgDB/Export
+--- ../OpenSceneGraph-2.9.7.orig/include/osgDB/Export	2007-12-10 18:30:18.000000000 +0100
++++ ./include/osgDB/Export	2010-05-06 17:19:57.217798000 +0200
+@@ -14,6 +14,17 @@
+ #ifndef OSGDB_EXPORT_
+ #define OSGDB_EXPORT_ 1
+ 
++#ifdef __cplusplus
++// TODO : patch me
++// maybe a bug in vlc and/or the libc++ of gcc433
++// that is just to undef the symbol _GLIBCXX_CONCEPT_CHECKS, because the Solaris gcc433
++// is compiled with --enable-concept-checks
++
++#include <bits/c++config.h>
++#undef _GLIBCXX_CONCEPT_CHECKS
++#endif
++
++
+ #if defined(_MSC_VER)
+     #pragma warning( disable : 4244 )
+     #pragma warning( disable : 4251 )
+diff -ru ../OpenSceneGraph-2.9.7.orig/include/osgDB/ReadFile ./include/osgDB/ReadFile
+--- ../OpenSceneGraph-2.9.7.orig/include/osgDB/ReadFile	2009-11-20 15:51:43.000000000 +0100
++++ ./include/osgDB/ReadFile	2010-05-06 18:19:35.765134000 +0200
+@@ -14,6 +14,16 @@
+ #ifndef OSGDB_READFILE
+ #define OSGDB_READFILE 1
+ 
++#ifdef __cplusplus
++// TODO : patch me
++// maybe a bug in vlc and/or the libc++ of gcc433
++// that is just to undef the symbol _GLIBCXX_CONCEPT_CHECKS, because the Solaris gcc433
++// is compiled with --enable-concept-checks
++
++#include <bits/c++config.h>
++#undef _GLIBCXX_CONCEPT_CHECKS
++#endif
++
+ #include <string>
+ 
+ #include <osg/Node>
+diff -ru ../OpenSceneGraph-2.9.7.orig/include/osgText/Export ./include/osgText/Export
+--- ../OpenSceneGraph-2.9.7.orig/include/osgText/Export	2008-08-05 21:17:09.000000000 +0200
++++ ./include/osgText/Export	2010-05-06 17:47:55.721050000 +0200
+@@ -14,6 +14,17 @@
+ #ifndef OSGTEXT_EXPORT_
+ #define OSGTEXT_EXPORT_ 1
+ 
++#ifdef __cplusplus
++// TODO : patch me
++// maybe a bug in vlc and/or the libc++ of gcc433
++// that is just to undef the symbol _GLIBCXX_CONCEPT_CHECKS, because the Solaris gcc433
++// is compiled with --enable-concept-checks
++
++#include <bits/c++config.h>
++#undef _GLIBCXX_CONCEPT_CHECKS
++#endif
++
++
+ #if defined(_MSC_VER)
+     #pragma warning( disable : 4244 )
+     #pragma warning( disable : 4251 )
+diff -ru ../OpenSceneGraph-2.9.7.orig/include/osgText/Font ./include/osgText/Font
+--- ../OpenSceneGraph-2.9.7.orig/include/osgText/Font	2010-01-14 16:15:42.000000000 +0100
++++ ./include/osgText/Font	2010-05-06 17:44:25.539123000 +0200
+@@ -14,6 +14,17 @@
+ #ifndef OSGTEXT_FONT
+ #define OSGTEXT_FONT 1
+ 
++#ifdef __cplusplus
++// TODO : patch me
++// maybe a bug in vlc and/or the libc++ of gcc433
++// that is just to undef the symbol _GLIBCXX_CONCEPT_CHECKS, because the Solaris gcc433
++// is compiled with --enable-concept-checks
++
++#include <bits/c++config.h>
++#undef _GLIBCXX_CONCEPT_CHECKS
++#endif
++
++
+ #include <string>
+ #include <istream>
+ 
+diff -ru ../OpenSceneGraph-2.9.7.orig/include/osgText/Font3D ./include/osgText/Font3D
+--- ../OpenSceneGraph-2.9.7.orig/include/osgText/Font3D	2009-03-10 11:56:00.000000000 +0100
++++ ./include/osgText/Font3D	2010-05-06 17:48:32.816115000 +0200
+@@ -14,6 +14,17 @@
+ #ifndef OSGTEXT_FONT3D
+ #define OSGTEXT_FONT3D 1
+ 
++#ifdef __cplusplus
++// TODO : patch me
++// maybe a bug in vlc and/or the libc++ of gcc433
++// that is just to undef the symbol _GLIBCXX_CONCEPT_CHECKS, because the Solaris gcc433
++// is compiled with --enable-concept-checks
++
++#include <bits/c++config.h>
++#undef _GLIBCXX_CONCEPT_CHECKS
++#endif
++
++
+ #include <string>
+ #include <istream>
+ 
+diff -ru ../OpenSceneGraph-2.9.7.orig/include/osgText/String ./include/osgText/String
+--- ../OpenSceneGraph-2.9.7.orig/include/osgText/String	2007-12-10 18:30:18.000000000 +0100
++++ ./include/osgText/String	2010-05-06 17:49:10.358018000 +0200
+@@ -14,6 +14,16 @@
+ #ifndef OSGTEXT_STRING
+ #define OSGTEXT_STRING 1
+ 
++#ifdef __cplusplus
++// TODO : patch me
++// maybe a bug in vlc and/or the libc++ of gcc433
++// that is just to undef the symbol _GLIBCXX_CONCEPT_CHECKS, because the Solaris gcc433
++// is compiled with --enable-concept-checks
++
++#include <bits/c++config.h>
++#undef _GLIBCXX_CONCEPT_CHECKS
++#endif
++
+ #include <vector>
+ #include <set>
+ #include <string>
+diff -ru ../OpenSceneGraph-2.9.7.orig/src/osg/Config.in ./src/osg/Config.in
+--- ../OpenSceneGraph-2.9.7.orig/src/osg/Config.in	2010-02-12 12:45:00.000000000 +0100
++++ ./src/osg/Config.in	2010-05-06 13:21:40.476100000 +0200
+@@ -44,4 +44,14 @@
+ #cmakedefine OSG_GL_VERTEX_ARRAY_FUNCS_AVAILABLE
+ #cmakedefine OSG_GL_FIXED_FUNCTION_AVAILABLE
+ 
++#ifdef __cplusplus
++// TODO : patch me
++// maybe a bug in vlc and/or the libc++ of gcc433
++// that is just to undef the symbol _GLIBCXX_CONCEPT_CHECKS, because the Solaris gcc433
++// is compiled with --enable-concept-checks
++
++#include <bits/c++config.h>
++#undef _GLIBCXX_CONCEPT_CHECKS
++#endif
++
+ #endif
+diff -ru ../OpenSceneGraph-2.9.7.orig/src/osgDB/FileNameUtils.cpp ./src/osgDB/FileNameUtils.cpp
+--- ../OpenSceneGraph-2.9.7.orig/src/osgDB/FileNameUtils.cpp	2009-11-23 11:19:37.000000000 +0100
++++ ./src/osgDB/FileNameUtils.cpp	2010-05-06 14:18:20.856930000 +0200
+@@ -10,6 +10,17 @@
+  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+  * OpenSceneGraph Public License for more details.
+ */
++
++#ifdef __cplusplus
++// TODO : patch me
++// maybe a bug in vlc and/or the libc++ of gcc433
++// that is just to undef the symbol _GLIBCXX_CONCEPT_CHECKS, because the Solaris gcc433
++// is compiled with --enable-concept-checks
++
++#include <bits/c++config.h>
++#undef _GLIBCXX_CONCEPT_CHECKS
++#endif
++
+ #include <stdlib.h>
+ #include <string.h>
+ #include <limits.h>
+Only in ./src/osgDB: FileNameUtils.cpp.orig
+diff -ru ../OpenSceneGraph-2.9.7.orig/src/osgPlugins/OpenFlight/ReaderWriterFLT.cpp ./src/osgPlugins/OpenFlight/ReaderWriterFLT.cpp
+--- ../OpenSceneGraph-2.9.7.orig/src/osgPlugins/OpenFlight/ReaderWriterFLT.cpp	2009-05-28 15:29:20.000000000 +0200
++++ ./src/osgPlugins/OpenFlight/ReaderWriterFLT.cpp	2010-05-06 16:26:26.237205000 +0200
+@@ -17,6 +17,17 @@
+ //  Copyright (C) 2005-2007  Brede Johansen
+ //
+ 
++#ifdef __cplusplus
++// TODO : patch me
++// maybe a bug in vlc and/or the libc++ of gcc433
++// that is just to undef the symbol _GLIBCXX_CONCEPT_CHECKS, because the Solaris gcc433
++// is compiled with --enable-concept-checks
++
++#include <bits/c++config.h>
++#undef _GLIBCXX_CONCEPT_CHECKS
++#endif
++
++
+ #include <stdexcept>
+ #include <osg/Notify>
+ #include <osg/ProxyNode>
+diff -ru ../OpenSceneGraph-2.9.7.orig/src/osgPlugins/ac/ac3d.cpp ./src/osgPlugins/ac/ac3d.cpp
+--- ../OpenSceneGraph-2.9.7.orig/src/osgPlugins/ac/ac3d.cpp	2009-11-16 16:47:32.000000000 +0100
++++ ./src/osgPlugins/ac/ac3d.cpp	2010-05-06 17:16:18.988849000 +0200
+@@ -4,6 +4,16 @@
+ // eg the basic parsing of an AC3D file.
+ // Conversion from AC3D scenegraph to OSG by GW Michel.
+ 
++#ifdef __cplusplus
++// TODO : patch me
++// maybe a bug in vlc and/or the libc++ of gcc433
++// that is just to undef the symbol _GLIBCXX_CONCEPT_CHECKS, because the Solaris gcc433
++// is compiled with --enable-concept-checks
++
++#include <bits/c++config.h>
++#undef _GLIBCXX_CONCEPT_CHECKS
++#endif
++
+ #include <vector>
+ #include <iostream>
+ #include <stdlib.h>
+diff -ru ../OpenSceneGraph-2.9.7.orig/src/osgPlugins/geo/ReaderWriterGEO.cpp ./src/osgPlugins/geo/ReaderWriterGEO.cpp
+--- ../OpenSceneGraph-2.9.7.orig/src/osgPlugins/geo/ReaderWriterGEO.cpp	2009-01-21 19:23:55.000000000 +0100
++++ ./src/osgPlugins/geo/ReaderWriterGEO.cpp	2010-05-06 16:27:32.962700000 +0200
+@@ -7,6 +7,16 @@
+ // 2- animation (see geoActions.cpp).
+ // ver 1.2 GWM Nov 2003
+ 
++#ifdef __cplusplus
++// TODO : patch me
++// maybe a bug in vlc and/or the libc++ of gcc433
++// that is just to undef the symbol _GLIBCXX_CONCEPT_CHECKS, because the Solaris gcc433
++// is compiled with --enable-concept-checks
++
++#include <bits/c++config.h>
++#undef _GLIBCXX_CONCEPT_CHECKS
++#endif
++
+ #include <string>
+ 
+ #include <osg/Image>
+diff -ru ../OpenSceneGraph-2.9.7.orig/src/osgPlugins/ive/DataInputStream.cpp ./src/osgPlugins/ive/DataInputStream.cpp
+--- ../OpenSceneGraph-2.9.7.orig/src/osgPlugins/ive/DataInputStream.cpp	2010-02-10 13:44:59.000000000 +0100
++++ ./src/osgPlugins/ive/DataInputStream.cpp	2010-05-06 15:55:16.039764000 +0200
+@@ -15,6 +15,16 @@
+  *    Copyright 2003 VR-C
+  **********************************************************************/
+ 
++#ifdef __cplusplus
++// TODO : patch me
++// maybe a bug in vlc and/or the libc++ of gcc433
++// that is just to undef the symbol _GLIBCXX_CONCEPT_CHECKS, because the Solaris gcc433
++// is compiled with --enable-concept-checks
++
++#include <bits/c++config.h>
++#undef _GLIBCXX_CONCEPT_CHECKS
++#endif
++
+ #include "DataInputStream.h"
+ #include "StateSet.h"
+ #include "AlphaFunc.h"
+diff -ru ../OpenSceneGraph-2.9.7.orig/src/osgPlugins/ive/DataOutputStream.cpp ./src/osgPlugins/ive/DataOutputStream.cpp
+--- ../OpenSceneGraph-2.9.7.orig/src/osgPlugins/ive/DataOutputStream.cpp	2010-02-10 13:44:59.000000000 +0100
++++ ./src/osgPlugins/ive/DataOutputStream.cpp	2010-05-06 15:55:54.741841000 +0200
+@@ -14,6 +14,16 @@
+  *    Copyright 2003 VR-C
+  **********************************************************************/
+ 
++#ifdef __cplusplus
++// TODO : patch me
++// maybe a bug in vlc and/or the libc++ of gcc433
++// that is just to undef the symbol _GLIBCXX_CONCEPT_CHECKS, because the Solaris gcc433
++// is compiled with --enable-concept-checks
++
++#include <bits/c++config.h>
++#undef _GLIBCXX_CONCEPT_CHECKS
++#endif
++
+ #include "DataOutputStream.h"
+ #include "Exception.h"
+ 
+diff -ru ../OpenSceneGraph-2.9.7.orig/src/osgPlugins/ive/Exception.h ./src/osgPlugins/ive/Exception.h
+--- ../OpenSceneGraph-2.9.7.orig/src/osgPlugins/ive/Exception.h	2009-11-17 13:54:55.000000000 +0100
++++ ./src/osgPlugins/ive/Exception.h	2010-05-06 16:05:25.777700000 +0200
+@@ -1,6 +1,17 @@
+ #ifndef IVE_EXCEPTION
+ #define IVE_EXCEPTION 1
+ 
++#ifdef __cplusplus
++// TODO : patch me
++// maybe a bug in vlc and/or the libc++ of gcc433
++// that is just to undef the symbol _GLIBCXX_CONCEPT_CHECKS, because the Solaris gcc433
++// is compiled with --enable-concept-checks
++
++#include <bits/c++config.h>
++#undef _GLIBCXX_CONCEPT_CHECKS
++#endif
++
++
+ #include <string>
+ #include <osg/Referenced>
+ 
+diff -ru ../OpenSceneGraph-2.9.7.orig/src/osgPlugins/ive/FadeText.cpp ./src/osgPlugins/ive/FadeText.cpp
+--- ../OpenSceneGraph-2.9.7.orig/src/osgPlugins/ive/FadeText.cpp	2009-11-17 13:54:55.000000000 +0100
++++ ./src/osgPlugins/ive/FadeText.cpp	2010-05-06 15:57:10.721585000 +0200
+@@ -12,6 +12,16 @@
+  *    Copyright 2003 VR-C
+  **********************************************************************/
+ 
++#ifdef __cplusplus
++// TODO : patch me
++// maybe a bug in vlc and/or the libc++ of gcc433
++// that is just to undef the symbol _GLIBCXX_CONCEPT_CHECKS, because the Solaris gcc433
++// is compiled with --enable-concept-checks
++
++#include <bits/c++config.h>
++#undef _GLIBCXX_CONCEPT_CHECKS
++#endif
++
+ #include "Exception.h"
+ #include "FadeText.h"
+ #include "Text.h"
+diff -ru ../OpenSceneGraph-2.9.7.orig/src/osgPlugins/ive/HeightFieldLayer.cpp ./src/osgPlugins/ive/HeightFieldLayer.cpp
+--- ../OpenSceneGraph-2.9.7.orig/src/osgPlugins/ive/HeightFieldLayer.cpp	2009-11-17 13:54:55.000000000 +0100
++++ ./src/osgPlugins/ive/HeightFieldLayer.cpp	2010-05-06 15:57:59.279486000 +0200
+@@ -11,6 +11,16 @@
+  * OpenSceneGraph Public License for more details.
+ */
+ 
++#ifdef __cplusplus
++// TODO : patch me
++// maybe a bug in vlc and/or the libc++ of gcc433
++// that is just to undef the symbol _GLIBCXX_CONCEPT_CHECKS, because the Solaris gcc433
++// is compiled with --enable-concept-checks
++
++#include <bits/c++config.h>
++#undef _GLIBCXX_CONCEPT_CHECKS
++#endif
++
+ #include "Exception.h"
+ #include "HeightFieldLayer.h"
+ #include "Layer.h"
+diff -ru ../OpenSceneGraph-2.9.7.orig/src/osgPlugins/ive/ImageLayer.cpp ./src/osgPlugins/ive/ImageLayer.cpp
+--- ../OpenSceneGraph-2.9.7.orig/src/osgPlugins/ive/ImageLayer.cpp	2009-11-17 13:54:55.000000000 +0100
++++ ./src/osgPlugins/ive/ImageLayer.cpp	2010-05-06 15:58:35.781446000 +0200
+@@ -11,6 +11,18 @@
+  * OpenSceneGraph Public License for more details.
+ */
+ 
++#ifdef __cplusplus
++// TODO : patch me
++// maybe a bug in vlc and/or the libc++ of gcc433
++// that is just to undef the symbol _GLIBCXX_CONCEPT_CHECKS, because the Solaris gcc433
++// is compiled with --enable-concept-checks
++
++#include <bits/c++config.h>
++#undef _GLIBCXX_CONCEPT_CHECKS
++#endif
++
++
++
+ #include "Exception.h"
+ #include "ImageLayer.h"
+ #include "Layer.h"
+diff -ru ../OpenSceneGraph-2.9.7.orig/src/osgPlugins/ive/Layer.cpp ./src/osgPlugins/ive/Layer.cpp
+--- ../OpenSceneGraph-2.9.7.orig/src/osgPlugins/ive/Layer.cpp	2009-11-17 13:54:55.000000000 +0100
++++ ./src/osgPlugins/ive/Layer.cpp	2010-05-06 15:59:08.603830000 +0200
+@@ -11,6 +11,16 @@
+  * OpenSceneGraph Public License for more details.
+ */
+ 
++#ifdef __cplusplus
++// TODO : patch me
++// maybe a bug in vlc and/or the libc++ of gcc433
++// that is just to undef the symbol _GLIBCXX_CONCEPT_CHECKS, because the Solaris gcc433
++// is compiled with --enable-concept-checks
++
++#include <bits/c++config.h>
++#undef _GLIBCXX_CONCEPT_CHECKS
++#endif
++
+ #include "Exception.h"
+ #include "Layer.h"
+ #include "Locator.h"
+diff -ru ../OpenSceneGraph-2.9.7.orig/src/osgPlugins/ive/Text.cpp ./src/osgPlugins/ive/Text.cpp
+--- ../OpenSceneGraph-2.9.7.orig/src/osgPlugins/ive/Text.cpp	2009-11-17 13:54:55.000000000 +0100
++++ ./src/osgPlugins/ive/Text.cpp	2010-05-06 16:03:47.510285000 +0200
+@@ -12,6 +12,16 @@
+  *    Copyright 2003 VR-C
+  **********************************************************************/
+ 
++#ifdef __cplusplus
++// TODO : patch me
++// maybe a bug in vlc and/or the libc++ of gcc433
++// that is just to undef the symbol _GLIBCXX_CONCEPT_CHECKS, because the Solaris gcc433
++// is compiled with --enable-concept-checks
++
++#include <bits/c++config.h>
++#undef _GLIBCXX_CONCEPT_CHECKS
++#endif
++
+ #include "Exception.h"
+ #include "Text.h"
+ #include "Drawable.h"
+diff -ru ../OpenSceneGraph-2.9.7.orig/src/osgPlugins/ive/Text3D.cpp ./src/osgPlugins/ive/Text3D.cpp
+--- ../OpenSceneGraph-2.9.7.orig/src/osgPlugins/ive/Text3D.cpp	2009-11-17 13:54:55.000000000 +0100
++++ ./src/osgPlugins/ive/Text3D.cpp	2010-05-06 16:03:07.128558000 +0200
+@@ -12,6 +12,16 @@
+  *    Copyright 2003 VR-C
+  **********************************************************************/
+ 
++#ifdef __cplusplus
++// TODO : patch me
++// maybe a bug in vlc and/or the libc++ of gcc433
++// that is just to undef the symbol _GLIBCXX_CONCEPT_CHECKS, because the Solaris gcc433
++// is compiled with --enable-concept-checks
++
++#include <bits/c++config.h>
++#undef _GLIBCXX_CONCEPT_CHECKS
++#endif
++
+ #include "Exception.h"
+ #include "Text3D.h"
+ #include "Text.h"
+diff -ru ../OpenSceneGraph-2.9.7.orig/src/osgPlugins/ive/VolumeCompositeProperty.cpp ./src/osgPlugins/ive/VolumeCompositeProperty.cpp
+--- ../OpenSceneGraph-2.9.7.orig/src/osgPlugins/ive/VolumeCompositeProperty.cpp	2009-11-17 13:54:55.000000000 +0100
++++ ./src/osgPlugins/ive/VolumeCompositeProperty.cpp	2010-05-06 16:05:02.130721000 +0200
+@@ -11,6 +11,17 @@
+  * OpenSceneGraph Public License for more details.
+ */
+ 
++#ifdef __cplusplus
++// TODO : patch me
++// maybe a bug in vlc and/or the libc++ of gcc433
++// that is just to undef the symbol _GLIBCXX_CONCEPT_CHECKS, because the Solaris gcc433
++// is compiled with --enable-concept-checks
++
++#include <bits/c++config.h>
++#undef _GLIBCXX_CONCEPT_CHECKS
++#endif
++
++
+ #include "Exception.h"
+ #include "VolumeCompositeProperty.h"
+ #include "Object.h"
+diff -ru ../OpenSceneGraph-2.9.7.orig/src/osgPlugins/lwo/ReaderWriterLWO.cpp ./src/osgPlugins/lwo/ReaderWriterLWO.cpp
+--- ../OpenSceneGraph-2.9.7.orig/src/osgPlugins/lwo/ReaderWriterLWO.cpp	2009-01-21 19:23:55.000000000 +0100
++++ ./src/osgPlugins/lwo/ReaderWriterLWO.cpp	2010-05-06 16:15:40.684366000 +0200
+@@ -14,6 +14,15 @@
+ #if defined(_MSC_VER)
+     #pragma warning( disable : 4786 )
+ #endif
++#ifdef __cplusplus
++// TODO : patch me
++// maybe a bug in vlc and/or the libc++ of gcc433
++// that is just to undef the symbol _GLIBCXX_CONCEPT_CHECKS, because the Solaris gcc433
++// is compiled with --enable-concept-checks
++
++#include <bits/c++config.h>
++#undef _GLIBCXX_CONCEPT_CHECKS
++#endif
+ 
+ #include <string>
+ #include <memory>
+diff -ru ../OpenSceneGraph-2.9.7.orig/src/osgPlugins/lwo/lwo2chunks.h ./src/osgPlugins/lwo/lwo2chunks.h
+--- ../OpenSceneGraph-2.9.7.orig/src/osgPlugins/lwo/lwo2chunks.h	2004-01-03 16:20:33.000000000 +0100
++++ ./src/osgPlugins/lwo/lwo2chunks.h	2010-05-06 16:14:51.710427000 +0200
+@@ -14,6 +14,17 @@
+ #	pragma warning ( disable : 4786 )
+ #endif
+ 
++#ifdef __cplusplus
++// TODO : patch me
++// maybe a bug in vlc and/or the libc++ of gcc433
++// that is just to undef the symbol _GLIBCXX_CONCEPT_CHECKS, because the Solaris gcc433
++// is compiled with --enable-concept-checks
++
++#include <bits/c++config.h>
++#undef _GLIBCXX_CONCEPT_CHECKS
++#endif
++
++
+ #include <vector>
+ 
+ #include "iffparser.h"
+diff -ru ../OpenSceneGraph-2.9.7.orig/src/osgPlugins/lws/ReaderWriterLWS.cpp ./src/osgPlugins/lws/ReaderWriterLWS.cpp
+--- ../OpenSceneGraph-2.9.7.orig/src/osgPlugins/lws/ReaderWriterLWS.cpp	2008-07-14 00:18:59.000000000 +0200
++++ ./src/osgPlugins/lws/ReaderWriterLWS.cpp	2010-05-06 17:18:06.695190000 +0200
+@@ -9,6 +9,17 @@
+     #pragma warning( disable : 4786 )
+ #endif
+ 
++#ifdef __cplusplus
++// TODO : patch me
++// maybe a bug in vlc and/or the libc++ of gcc433
++// that is just to undef the symbol _GLIBCXX_CONCEPT_CHECKS, because the Solaris gcc433
++// is compiled with --enable-concept-checks
++
++#include <bits/c++config.h>
++#undef _GLIBCXX_CONCEPT_CHECKS
++#endif
++
++
+ #include <string>
+ #include <sstream>
+ 
+diff -ru ../OpenSceneGraph-2.9.7.orig/src/osgPlugins/mdl/Model.h ./src/osgPlugins/mdl/Model.h
+--- ../OpenSceneGraph-2.9.7.orig/src/osgPlugins/mdl/Model.h	2008-12-20 14:35:49.000000000 +0100
++++ ./src/osgPlugins/mdl/Model.h	2010-05-06 17:41:56.314219000 +0200
+@@ -2,6 +2,16 @@
+ #ifndef __MODEL_H_
+ #define __MODEL_H_
+ 
++#ifdef __cplusplus
++// TODO : patch me
++// maybe a bug in vlc and/or the libc++ of gcc433
++// that is just to undef the symbol _GLIBCXX_CONCEPT_CHECKS, because the Solaris gcc433
++// is compiled with --enable-concept-checks
++
++#include <bits/c++config.h>
++#undef _GLIBCXX_CONCEPT_CHECKS
++#endif
++
+ #include <vector>
+ 
+ #include "Mesh.h"
+diff -ru ../OpenSceneGraph-2.9.7.orig/src/osgPlugins/normals/ReaderWriterNormals.cpp ./src/osgPlugins/normals/ReaderWriterNormals.cpp
+--- ../OpenSceneGraph-2.9.7.orig/src/osgPlugins/normals/ReaderWriterNormals.cpp	2009-06-25 18:07:49.000000000 +0200
++++ ./src/osgPlugins/normals/ReaderWriterNormals.cpp	2010-05-06 15:47:41.917086000 +0200
+@@ -1,3 +1,13 @@
++#ifdef __cplusplus
++// TODO : patch me
++// maybe a bug in vlc and/or the libc++ of gcc433
++// that is just to undef the symbol _GLIBCXX_CONCEPT_CHECKS, because the Solaris gcc433
++// is compiled with --enable-concept-checks
++
++#include <bits/c++config.h>
++#undef _GLIBCXX_CONCEPT_CHECKS
++#endif
++
+ #include <iostream>
+ #include <sstream>
+ #include <math.h>
+diff -ru ../OpenSceneGraph-2.9.7.orig/src/osgPlugins/obj/ReaderWriterOBJ.cpp ./src/osgPlugins/obj/ReaderWriterOBJ.cpp
+--- ../OpenSceneGraph-2.9.7.orig/src/osgPlugins/obj/ReaderWriterOBJ.cpp	2009-11-19 13:54:52.000000000 +0100
++++ ./src/osgPlugins/obj/ReaderWriterOBJ.cpp	2010-05-06 16:28:23.439408000 +0200
+@@ -20,6 +20,16 @@
+     #pragma warning( disable : 4786 )
+ #endif
+ 
++#ifdef __cplusplus
++// TODO : patch me
++// maybe a bug in vlc and/or the libc++ of gcc433
++// that is just to undef the symbol _GLIBCXX_CONCEPT_CHECKS, because the Solaris gcc433
++// is compiled with --enable-concept-checks
++
++#include <bits/c++config.h>
++#undef _GLIBCXX_CONCEPT_CHECKS
++#endif
++
+ #include <stdlib.h>
+ #include <string>
+ 
+diff -ru ../OpenSceneGraph-2.9.7.orig/src/osgPlugins/obj/obj.cpp ./src/osgPlugins/obj/obj.cpp
+--- ../OpenSceneGraph-2.9.7.orig/src/osgPlugins/obj/obj.cpp	2009-11-19 13:54:52.000000000 +0100
++++ ./src/osgPlugins/obj/obj.cpp	2010-05-06 16:29:01.093856000 +0200
+@@ -11,6 +11,16 @@
+  * OpenSceneGraph Public License for more details.
+ */
+ 
++#ifdef __cplusplus
++// TODO : patch me
++// maybe a bug in vlc and/or the libc++ of gcc433
++// that is just to undef the symbol _GLIBCXX_CONCEPT_CHECKS, because the Solaris gcc433
++// is compiled with --enable-concept-checks
++
++#include <bits/c++config.h>
++#undef _GLIBCXX_CONCEPT_CHECKS
++#endif
++
+ #include <iostream>
+ #include <sstream>
+ #include <fstream>
+diff -ru ../OpenSceneGraph-2.9.7.orig/src/osgPlugins/osg/ReaderWriterOSG.cpp ./src/osgPlugins/osg/ReaderWriterOSG.cpp
+--- ../OpenSceneGraph-2.9.7.orig/src/osgPlugins/osg/ReaderWriterOSG.cpp	2010-02-10 13:44:59.000000000 +0100
++++ ./src/osgPlugins/osg/ReaderWriterOSG.cpp	2010-05-06 15:50:48.228229000 +0200
+@@ -1,3 +1,13 @@
++#ifdef __cplusplus
++// TODO : patch me
++// maybe a bug in vlc and/or the libc++ of gcc433
++// that is just to undef the symbol _GLIBCXX_CONCEPT_CHECKS, because the Solaris gcc433
++// is compiled with --enable-concept-checks
++
++#include <bits/c++config.h>
++#undef _GLIBCXX_CONCEPT_CHECKS
++#endif
++
+ #include <sstream>
+ 
+ #include <osg/Image>
+diff -ru ../OpenSceneGraph-2.9.7.orig/src/osgPlugins/osg/ReaderWriterOSG2.cpp ./src/osgPlugins/osg/ReaderWriterOSG2.cpp
+--- ../OpenSceneGraph-2.9.7.orig/src/osgPlugins/osg/ReaderWriterOSG2.cpp	2010-02-10 13:44:59.000000000 +0100
++++ ./src/osgPlugins/osg/ReaderWriterOSG2.cpp	2010-05-06 15:51:18.490815000 +0200
+@@ -12,6 +12,16 @@
+ */
+ // Written by Wang Rui, (C) 2010
+ 
++#ifdef __cplusplus
++// TODO : patch me
++// maybe a bug in vlc and/or the libc++ of gcc433
++// that is just to undef the symbol _GLIBCXX_CONCEPT_CHECKS, because the Solaris gcc433
++// is compiled with --enable-concept-checks
++
++#include <bits/c++config.h>
++#undef _GLIBCXX_CONCEPT_CHECKS
++#endif
++
+ #include <osgDB/FileNameUtils>
+ #include <osgDB/FileUtils>
+ #include <osgDB/Registry>
+diff -ru ../OpenSceneGraph-2.9.7.orig/src/osgPlugins/revisions/ReaderWriterRevisions.cpp ./src/osgPlugins/revisions/ReaderWriterRevisions.cpp
+--- ../OpenSceneGraph-2.9.7.orig/src/osgPlugins/revisions/ReaderWriterRevisions.cpp	2009-06-17 12:39:39.000000000 +0200
++++ ./src/osgPlugins/revisions/ReaderWriterRevisions.cpp	2010-05-06 15:48:21.499075000 +0200
+@@ -1,3 +1,13 @@
++#ifdef __cplusplus
++// TODO : patch me
++// maybe a bug in vlc and/or the libc++ of gcc433
++// that is just to undef the symbol _GLIBCXX_CONCEPT_CHECKS, because the Solaris gcc433
++// is compiled with --enable-concept-checks
++
++#include <bits/c++config.h>
++#undef _GLIBCXX_CONCEPT_CHECKS
++#endif
++
+ #include <osgDB/FileNameUtils>
+ #include <osgDB/FileUtils>
+ #include <osgDB/ReadFile>
+diff -ru ../OpenSceneGraph-2.9.7.orig/src/osgPlugins/svg/ReaderWriterSVG.cpp ./src/osgPlugins/svg/ReaderWriterSVG.cpp
+--- ../OpenSceneGraph-2.9.7.orig/src/osgPlugins/svg/ReaderWriterSVG.cpp	2009-11-20 11:56:54.000000000 +0100
++++ ./src/osgPlugins/svg/ReaderWriterSVG.cpp	2010-05-06 17:54:24.029771000 +0200
+@@ -11,6 +11,17 @@
+  * OpenSceneGraph Public License for more details.
+ */
+ 
++#ifdef __cplusplus
++// TODO : patch me
++// maybe a bug in vlc and/or the libc++ of gcc433
++// that is just to undef the symbol _GLIBCXX_CONCEPT_CHECKS, because the Solaris gcc433
++// is compiled with --enable-concept-checks
++
++#include <bits/c++config.h>
++#undef _GLIBCXX_CONCEPT_CHECKS
++#endif
++
++
+ #include <iostream>
+ #include <sstream>
+ #include <osg/Image>
+diff -ru ../OpenSceneGraph-2.9.7.orig/src/osgPlugins/terrain/ReaderWriterOsgTerrain.cpp ./src/osgPlugins/terrain/ReaderWriterOsgTerrain.cpp
+--- ../OpenSceneGraph-2.9.7.orig/src/osgPlugins/terrain/ReaderWriterOsgTerrain.cpp	2008-11-07 16:08:08.000000000 +0100
++++ ./src/osgPlugins/terrain/ReaderWriterOsgTerrain.cpp	2010-05-06 15:49:56.822548000 +0200
+@@ -1,3 +1,13 @@
++#ifdef __cplusplus
++// TODO : patch me
++// maybe a bug in vlc and/or the libc++ of gcc433
++// that is just to undef the symbol _GLIBCXX_CONCEPT_CHECKS, because the Solaris gcc433
++// is compiled with --enable-concept-checks
++
++#include <bits/c++config.h>
++#undef _GLIBCXX_CONCEPT_CHECKS
++#endif
++
+ #include <sstream>
+ 
+ #include <osg/Image>
+diff -ru ../OpenSceneGraph-2.9.7.orig/src/osgPlugins/view/ReaderWriterOsgViewer.cpp ./src/osgPlugins/view/ReaderWriterOsgViewer.cpp
+--- ../OpenSceneGraph-2.9.7.orig/src/osgPlugins/view/ReaderWriterOsgViewer.cpp	2008-11-07 16:08:08.000000000 +0100
++++ ./src/osgPlugins/view/ReaderWriterOsgViewer.cpp	2010-05-06 15:49:19.368376000 +0200
+@@ -10,6 +10,16 @@
+  *
+ */
+ 
++#ifdef __cplusplus
++// TODO : patch me
++// maybe a bug in vlc and/or the libc++ of gcc433
++// that is just to undef the symbol _GLIBCXX_CONCEPT_CHECKS, because the Solaris gcc433
++// is compiled with --enable-concept-checks
++
++#include <bits/c++config.h>
++#undef _GLIBCXX_CONCEPT_CHECKS
++#endif
++
+ #include <sstream>
+ 
+ #include <osgViewer/View>
+diff -ru ../OpenSceneGraph-2.9.7.orig/src/osgPlugins/x/directx.h ./src/osgPlugins/x/directx.h
+--- ../OpenSceneGraph-2.9.7.orig/src/osgPlugins/x/directx.h	2009-05-26 13:00:26.000000000 +0200
++++ ./src/osgPlugins/x/directx.h	2010-05-06 16:17:03.727864000 +0200
+@@ -24,6 +24,16 @@
+ #ifndef _DIRECTX_H_
+ #define _DIRECTX_H_
+ 
++#ifdef __cplusplus
++// TODO : patch me
++// maybe a bug in vlc and/or the libc++ of gcc433
++// that is just to undef the symbol _GLIBCXX_CONCEPT_CHECKS, because the Solaris gcc433
++// is compiled with --enable-concept-checks
++
++#include <bits/c++config.h>
++#undef _GLIBCXX_CONCEPT_CHECKS
++#endif
++
+ #include <string>
+ #include <vector>
+ #include <fstream>
+diff -ru ../OpenSceneGraph-2.9.7.orig/src/osgText/Font.cpp ./src/osgText/Font.cpp
+--- ../OpenSceneGraph-2.9.7.orig/src/osgText/Font.cpp	2010-01-14 16:15:42.000000000 +0100
++++ ./src/osgText/Font.cpp	2010-05-06 15:18:56.873089000 +0200
+@@ -11,6 +11,16 @@
+  * OpenSceneGraph Public License for more details.
+ */
+ 
++#ifdef __cplusplus
++// TODO : patch me
++// maybe a bug in vlc and/or the libc++ of gcc433
++// that is just to undef the symbol _GLIBCXX_CONCEPT_CHECKS, because the Solaris gcc433
++// is compiled with --enable-concept-checks
++
++#include <bits/c++config.h>
++#undef _GLIBCXX_CONCEPT_CHECKS
++#endif
++
+ #include <osgText/Font>
+ #include <osgText/Text>
+ 
+Only in ./src/osgText: Font.cpp.orig
+diff -ru ../OpenSceneGraph-2.9.7.orig/src/osgText/Font3D.cpp ./src/osgText/Font3D.cpp
+--- ../OpenSceneGraph-2.9.7.orig/src/osgText/Font3D.cpp	2009-03-10 11:56:00.000000000 +0100
++++ ./src/osgText/Font3D.cpp	2010-05-06 15:21:19.689393000 +0200
+@@ -11,7 +11,15 @@
+  * OpenSceneGraph Public License for more details.
+ */
+ 
+-
++#ifdef __cplusplus
++// TODO : patch me
++// maybe a bug in vlc and/or the libc++ of gcc433
++// that is just to undef the symbol _GLIBCXX_CONCEPT_CHECKS, because the Solaris gcc433
++// is compiled with --enable-concept-checks
++
++#include <bits/c++config.h>
++#undef _GLIBCXX_CONCEPT_CHECKS
++#endif
+ 
+ #include <osgText/Font3D>
+ #include <osgText/Text>
+Only in ./src/osgText: Font3D.cpp.orig
+diff -ru ../OpenSceneGraph-2.9.7.orig/src/osgUtil/tristripper/src/connectivity_graph.cpp ./src/osgUtil/tristripper/src/connectivity_graph.cpp
+--- ../OpenSceneGraph-2.9.7.orig/src/osgUtil/tristripper/src/connectivity_graph.cpp	2009-12-15 13:37:49.000000000 +0100
++++ ./src/osgUtil/tristripper/src/connectivity_graph.cpp	2010-05-06 14:28:38.785399000 +0200
+@@ -7,6 +7,16 @@
+ // SVN: $Id: connectivity_graph.cpp 86 2005-06-08 17:47:27Z gpsnoopy $
+ //////////////////////////////////////////////////////////////////////
+ 
++#ifdef __cplusplus
++// TODO : patch me
++// maybe a bug in vlc and/or the libc++ of gcc433
++// that is just to undef the symbol _GLIBCXX_CONCEPT_CHECKS, because the Solaris gcc433
++// is compiled with --enable-concept-checks
++
++#include <bits/c++config.h>
++#undef _GLIBCXX_CONCEPT_CHECKS
++#endif
++
+ #include "detail/connectivity_graph.h"
+ 
+ #include <algorithm>
+Only in ./src/osgUtil/tristripper/src: connectivity_graph.cpp.orig
+diff -ru ../OpenSceneGraph-2.9.7.orig/src/osgUtil/tristripper/src/tri_stripper.cpp ./src/osgUtil/tristripper/src/tri_stripper.cpp
+--- ../OpenSceneGraph-2.9.7.orig/src/osgUtil/tristripper/src/tri_stripper.cpp	2009-12-15 13:37:49.000000000 +0100
++++ ./src/osgUtil/tristripper/src/tri_stripper.cpp	2010-05-06 14:27:24.653401000 +0200
+@@ -7,6 +7,16 @@
+ // SVN: $Id: tri_stripper.cpp 86 2005-06-08 17:47:27Z gpsnoopy $
+ //////////////////////////////////////////////////////////////////////
+ 
++#ifdef __cplusplus
++// TODO : patch me
++// maybe a bug in vlc and/or the libc++ of gcc433
++// that is just to undef the symbol _GLIBCXX_CONCEPT_CHECKS, because the Solaris gcc433
++// is compiled with --enable-concept-checks
++
++#include <bits/c++config.h>
++#undef _GLIBCXX_CONCEPT_CHECKS
++#endif
++
+ #include "tri_stripper.h"
+ 
+ #include "detail/connectivity_graph.h"
+Only in ./src/osgUtil/tristripper/src: tri_stripper.cpp.orig
+diff -ru ../OpenSceneGraph-2.9.7.orig/src/osgViewer/ScreenCaptureHandler.cpp ./src/osgViewer/ScreenCaptureHandler.cpp
+--- ../OpenSceneGraph-2.9.7.orig/src/osgViewer/ScreenCaptureHandler.cpp	2009-11-21 17:41:02.000000000 +0100
++++ ./src/osgViewer/ScreenCaptureHandler.cpp	2010-05-06 15:25:24.953084000 +0200
+@@ -11,6 +11,16 @@
+ * OpenSceneGraph Public License for more details.
+ */
+ 
++#ifdef __cplusplus
++// TODO : patch me
++// maybe a bug in vlc and/or the libc++ of gcc433
++// that is just to undef the symbol _GLIBCXX_CONCEPT_CHECKS, because the Solaris gcc433
++// is compiled with --enable-concept-checks
++
++#include <bits/c++config.h>
++#undef _GLIBCXX_CONCEPT_CHECKS
++#endif
++
+ #include <sstream>
+ 
+ #include <osgDB/WriteFile>
+Only in ./src/osgViewer: ScreenCaptureHandler.cpp.orig
+diff -ru ../OpenSceneGraph-2.9.7.orig/src/osgWidget/Frame.cpp ./src/osgWidget/Frame.cpp
+--- ../OpenSceneGraph-2.9.7.orig/src/osgWidget/Frame.cpp	2010-01-08 12:40:43.000000000 +0100
++++ ./src/osgWidget/Frame.cpp	2010-05-06 15:30:30.911048000 +0200
+@@ -1,5 +1,15 @@
+ // -*-c++-*- osgWidget - Code by: Jeremy Moles (cubicool) 2007-2008
+ 
++#ifdef __cplusplus
++// TODO : patch me
++// maybe a bug in vlc and/or the libc++ of gcc433
++// that is just to undef the symbol _GLIBCXX_CONCEPT_CHECKS, because the Solaris gcc433
++// is compiled with --enable-concept-checks
++
++#include <bits/c++config.h>
++#undef _GLIBCXX_CONCEPT_CHECKS
++#endif
++
+ #include <osg/io_utils>
+ #include <osgDB/ReadFile>
+ #include <osgWidget/WindowManager>
+diff -ru ../OpenSceneGraph-2.9.7.orig/src/osgWidget/Util.cpp ./src/osgWidget/Util.cpp
+--- ../OpenSceneGraph-2.9.7.orig/src/osgWidget/Util.cpp	2009-01-09 13:17:40.000000000 +0100
++++ ./src/osgWidget/Util.cpp	2010-05-06 15:31:13.796594000 +0200
+@@ -1,5 +1,15 @@
+ // -*-c++-*- osgWidget - Code by: Jeremy Moles (cubicool) 2007-2008
+ 
++#ifdef __cplusplus
++// TODO : patch me
++// maybe a bug in vlc and/or the libc++ of gcc433
++// that is just to undef the symbol _GLIBCXX_CONCEPT_CHECKS, because the Solaris gcc433
++// is compiled with --enable-concept-checks
++
++#include <bits/c++config.h>
++#undef _GLIBCXX_CONCEPT_CHECKS
++#endif
++
+ #include <stdlib.h>
+ 
+ #include <osg/io_utils>
+diff -ru ../OpenSceneGraph-2.9.7.orig/src/osgWidget/VncClient.cpp ./src/osgWidget/VncClient.cpp
+--- ../OpenSceneGraph-2.9.7.orig/src/osgWidget/VncClient.cpp	2008-12-09 12:05:04.000000000 +0100
++++ ./src/osgWidget/VncClient.cpp	2010-05-06 15:29:52.736517000 +0200
+@@ -11,6 +11,16 @@
+  * OpenSceneGraph Public License for more details.
+ */
+ 
++#ifdef __cplusplus
++// TODO : patch me
++// maybe a bug in vlc and/or the libc++ of gcc433
++// that is just to undef the symbol _GLIBCXX_CONCEPT_CHECKS, because the Solaris gcc433
++// is compiled with --enable-concept-checks
++
++#include <bits/c++config.h>
++#undef _GLIBCXX_CONCEPT_CHECKS
++#endif
++
+ #include <osgDB/ReadFile>
+ #include <osgViewer/ViewerEventHandlers>
+ #include <osgWidget/VncClient>
+diff -ru ../OpenSceneGraph-2.9.7.orig/src/osgWidget/Widget.cpp ./src/osgWidget/Widget.cpp
+--- ../OpenSceneGraph-2.9.7.orig/src/osgWidget/Widget.cpp	2008-11-28 15:35:33.000000000 +0100
++++ ./src/osgWidget/Widget.cpp	2010-05-06 15:31:46.099484000 +0200
+@@ -1,6 +1,16 @@
+ // -*-c++-*- osgWidget - Code by: Jeremy Moles (cubicool) 2007-2008
+ // $Id: Widget.cpp 64 2008-06-30 21:32:00Z cubicool $
+ 
++#ifdef __cplusplus
++// TODO : patch me
++// maybe a bug in vlc and/or the libc++ of gcc433
++// that is just to undef the symbol _GLIBCXX_CONCEPT_CHECKS, because the Solaris gcc433
++// is compiled with --enable-concept-checks
++
++#include <bits/c++config.h>
++#undef _GLIBCXX_CONCEPT_CHECKS
++#endif
++
+ #include <osg/io_utils>
+ #include <osg/Math>
+ #include <osg/TextureRectangle>
+diff -ru ../OpenSceneGraph-2.9.7.orig/src/osgWrappers/deprecated-dotosg/osg/Program.cpp ./src/osgWrappers/deprecated-dotosg/osg/Program.cpp
+--- ../OpenSceneGraph-2.9.7.orig/src/osgWrappers/deprecated-dotosg/osg/Program.cpp	2010-01-19 11:31:38.000000000 +0100
++++ ./src/osgWrappers/deprecated-dotosg/osg/Program.cpp	2010-05-06 15:41:09.456146000 +0200
+@@ -1,3 +1,13 @@
++#ifdef __cplusplus
++// TODO : patch me
++// maybe a bug in vlc and/or the libc++ of gcc433
++// that is just to undef the symbol _GLIBCXX_CONCEPT_CHECKS, because the Solaris gcc433
++// is compiled with --enable-concept-checks
++
++#include <bits/c++config.h>
++#undef _GLIBCXX_CONCEPT_CHECKS
++#endif
++
+ #include "osg/Program"
+ #include "osg/Shader"
+ 
+diff -ru ../OpenSceneGraph-2.9.7.orig/src/osgWrappers/deprecated-dotosg/osgAnimation/ReaderWriter.cpp ./src/osgWrappers/deprecated-dotosg/osgAnimation/ReaderWriter.cpp
+--- ../OpenSceneGraph-2.9.7.orig/src/osgWrappers/deprecated-dotosg/osgAnimation/ReaderWriter.cpp	2010-01-27 13:24:55.000000000 +0100
++++ ./src/osgWrappers/deprecated-dotosg/osgAnimation/ReaderWriter.cpp	2010-05-06 15:43:51.720333000 +0200
+@@ -12,6 +12,15 @@
+  * OpenSceneGraph Public License for more details.
+  */
+ 
++#ifdef __cplusplus
++// TODO : patch me
++// maybe a bug in vlc and/or the libc++ of gcc433
++// that is just to undef the symbol _GLIBCXX_CONCEPT_CHECKS, because the Solaris gcc433
++// is compiled with --enable-concept-checks
++
++#include <bits/c++config.h>
++#undef _GLIBCXX_CONCEPT_CHECKS
++#endif
+ 
+ #include <osgDB/FileNameUtils>
+ #include <osgDB/FileUtils>
+diff -ru ../OpenSceneGraph-2.9.7.orig/src/osgWrappers/deprecated-dotosg/osgSim/IO_ShapeAttribute.cpp ./src/osgWrappers/deprecated-dotosg/osgSim/IO_ShapeAttribute.cpp
+--- ../OpenSceneGraph-2.9.7.orig/src/osgWrappers/deprecated-dotosg/osgSim/IO_ShapeAttribute.cpp	2010-01-19 14:31:06.000000000 +0100
++++ ./src/osgWrappers/deprecated-dotosg/osgSim/IO_ShapeAttribute.cpp	2010-05-06 15:45:00.436670000 +0200
+@@ -1,3 +1,13 @@
++#ifdef __cplusplus
++// TODO : patch me
++// maybe a bug in vlc and/or the libc++ of gcc433
++// that is just to undef the symbol _GLIBCXX_CONCEPT_CHECKS, because the Solaris gcc433
++// is compiled with --enable-concept-checks
++
++#include <bits/c++config.h>
++#undef _GLIBCXX_CONCEPT_CHECKS
++#endif
++
+ #include <osgSim/ShapeAttribute>
+ 
+ #include <iostream>
