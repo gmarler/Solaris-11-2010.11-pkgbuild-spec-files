@@ -1,3 +1,8 @@
+2010-05-06  Simon  <yuntong.jin@sun.com>
+
+	* SFErox-lib2.spec:
+	* SFErox.spec:
+
 2010-05-06  Simon Jin <yuntong.jin@sun.com>
 
 	* SFEwaf.spec:init spec file of waf build system
