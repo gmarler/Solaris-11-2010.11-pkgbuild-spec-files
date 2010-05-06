@@ -11,7 +11,9 @@
 # use the --with-svn-code option to use svn co instead of the stable tarball
 %define svn_url https://netpbm.svn.sourceforge.net/svnroot/netpbm/advanced
 
-Name:                    netpbm
+%define src_name	netpbm
+
+Name:                    SFEnetpbm
 Summary:                 netpbm - network portable bitmap tools
 License:                 BSD, GPLv2, IJG, Public Domain
 URL:                     http://netpbm.sourceforge.net/
@@ -20,7 +22,7 @@ Vendor:                  OpenSolaris Community
 %if %{?_with_svn_code:0}%{?!_with_svn_code:1}
 # stable tarball build
 Version:                 10.26.63
-Source:                  http://downloads.sourceforge.net/netpbm/%{name}-%{version}.tgz
+Source:                  http://downloads.sourceforge.net/netpbm/%{src_name}-%{version}.tgz
 %else
 # svn code
 Version:                 10.35
@@ -34,7 +36,7 @@ Patch3:                  netpbm-03-Makefile.manpage.diff
 
 SUNW_Basedir:            /
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
-SUNW_Copyright:          %{name}.copyright
+SUNW_Copyright:          %{src_name}.copyright
 
 %include default-depend.inc
 
@@ -176,8 +178,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/*
 %dir %attr (0755, root, bin) %{_mandir}
 %attr (0444, root, bin) %{_mandir}/man?/*
-%dir %attr (0755, root, bin) %{_datadir}/%{name}
-%{_datadir}/%{name}/*
+%dir %attr (0755, root, bin) %{_datadir}/%{src_name}
+%{_datadir}/%{src_name}/*
 %attr (0644, root, root) /etc/manweb.conf
 
 #%files devel
@@ -186,6 +188,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %changelog
 * May 2010 - Gilles dauphin
+- Name is SFE...
 - import from jucr
 - install in /opt/SFE instead of /usr (optional)
 * Wed Apr 14 2010 - beffa@ieee.org

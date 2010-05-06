@@ -10,12 +10,14 @@
 %include Solaris.inc
 %define X11_DIR %{_prefix}/X11
 
-Name:           Xaw3d
+%define src_name	Xaw3d
+
+Name:           SFEXaw3d
 Summary:        X Window toolkit with 3D appearance
 Version:        1.5
 Release:        E
 License:        X11
-Source:         ftp://ftp.visi.com/users/hawkeyd/X/%{name}-%{version}%{release}.tar.gz
+Source:         ftp://ftp.visi.com/users/hawkeyd/X/%{src_name}-%{version}%{release}.tar.gz
 URL:            http://freshmeat.net/projects/xaw3d/
 Group:          System/Libraries
 Distribution:	OpenSolaris
@@ -29,7 +31,7 @@ BuildRequires:  SUNWgnu-coreutils
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}%{release}-build
 SUNW_Basedir:   %{_basedir}
-SUNW_Copyright: %{name}.copyright
+SUNW_Copyright: %{src_name}.copyright
 
 
 # OpenSolaris IPS Manifest Fields
@@ -40,7 +42,7 @@ Meta(info.detailed_url):        http://freshmeat.net/projects/xaw3d
 Meta(info.classification):      org.opensolaris.category.2008:System/Libraries
 
 
-Patch: %{name}-0-xorg-imake.diff
+Patch: %{src_name}-0-xorg-imake.diff
 
 %description 
 Xaw3d is a general-purpose replacement for the Athena toolkit which
@@ -51,8 +53,8 @@ Summary: Header files and static libraries for development using Xaw3d
 Group: Development/X11
 
 %prep
-rm -rf %{name}-%{version}%{release}
-%setup -q -c -n %{name}-%{version}%{release}
+rm -rf %{src_name}-%{version}%{release}
+%setup -q -c -n %{src_name}-%{version}%{release}
 pushd xc/lib/Xaw3d
 ln -s .. X11
 %patch -p0 -b .config
@@ -95,6 +97,9 @@ rm -rf $RPM_BUILD_ROOT
 %{X11_DIR}/include/X11/Xaw3d
 
 %changelog
+* May 2010  - Gilles DAuphin
+- import in SFE
+- Name is SFE
 * Sat Aug 29 2009 - bld
 - touch file to initiate build
 * Sat Aug 29 2009 - beffa at ieee dot org

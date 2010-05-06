@@ -9,7 +9,9 @@
 
 %include Solaris.inc
 
-Name:		xfig
+define src_name xfig
+
+Name:		SFExfig
 Summary:      	Xfig is an interactive drawing tool for X
 Version:       	3.2.5
 Release:        b
@@ -20,7 +22,7 @@ Distribution:   OpenSolaris
 Vendor:		OpenSolaris Community
 BuildRoot:      %{_tmppath}/%{name}-%{version}%{release}-build
 SUNW_Basedir:   /
-SUNW_Copyright: %{name}.copyright
+SUNW_Copyright: %{src_name}.copyright
 
 %include default-depend.inc
 
@@ -35,8 +37,8 @@ Requires:       SUNWzlib
 Requires:       SUNWjpg
 Requires:       Xaw3d
 # wait for transfig and netpbm to be in /contrib
-Requires:       transfig
-Requires:       netpbm
+Requires:       SFEtransfig
+Requires:       SFEnetpbm
 
 Source1:        xfig.desktop
 Source2:        xfig.png
@@ -62,8 +64,8 @@ a variety of other formats (e.g. to allow inclusion in LaTeX documents
 or web pages) using the transfig program.
 
 %prep
-rm -rf %{name}.%{version}%{release}
-%setup -q -n %{name}.%{version}%{release}
+rm -rf %{src_name}.%{version}%{release}
+%setup -q -n %{src_name}.%{version}%{release}
 %patch0 -p1 -b .imake
 %patch1 -p1 -b .w_keyboard
 %patch2 -p1 -b .Fig.ad
@@ -77,13 +79,13 @@ export CFLAGS="-g -I%{_basedir}/X11/include -DUSE_JPEG -DUSE_XPM -DUSE_XPM_ICON 
 export LDFLAGS=" -g -R%{_basedir}/X11/lib -L%{_basedir}/X11/lib -lXaw3d"
 export PATH=${PATH}:/usr/X11/bin
 xmkmf
-make DESTDIR=$RPM_BUILD_ROOT BINDIR=%{_bindir} XFIGLIBDIR=%{_datadir}/%{name} XFIGDOCDIR=%{_docdir}/%{name}-%{version}%{release} MANDIR=%{_mandir}/man1 INSTALL=/opt/dtbld/bin/install MAKE=/usr/gnu/bin/make XAWLIB="-R%{_basedir}/X11/lib -L%{_basedir}/X11/lib -lXaw3d" CFLAGS="$CFLAGS"
+make DESTDIR=$RPM_BUILD_ROOT BINDIR=%{_bindir} XFIGLIBDIR=%{_datadir}/%{src_name} XFIGDOCDIR=%{_docdir}/%{src_name}-%{version}%{release} MANDIR=%{_mandir}/man1 INSTALL=/opt/dtbld/bin/install MAKE=/usr/gnu/bin/make XAWLIB="-R%{_basedir}/X11/lib -L%{_basedir}/X11/lib -lXaw3d" CFLAGS="$CFLAGS"
 
 %install
 rm -rf $RPM_BUILD_ROOT
-make DESTDIR=$RPM_BUILD_ROOT BINDIR=%{_bindir} XFIGLIBDIR=%{_datadir}/%{name} XFIGDOCDIR=%{_docdir}/%{name}-%{version}%{release} MANDIR=%{_mandir}/man1 INSTALL=/usr/bin/ginstall MAKE=/usr/gnu/bin/make install.all MKDIRHIER="mkdir -p" XAPPLOADDIR=/usr/X11/lib/X11/app-defaults
+make DESTDIR=$RPM_BUILD_ROOT BINDIR=%{_bindir} XFIGLIBDIR=%{_datadir}/%{src_name} XFIGDOCDIR=%{_docdir}/%{src_name}-%{version}%{release} MANDIR=%{_mandir}/man1 INSTALL=/usr/bin/ginstall MAKE=/usr/gnu/bin/make install.all MKDIRHIER="mkdir -p" XAPPLOADDIR=/usr/X11/lib/X11/app-defaults
 
-make DESTDIR=$RPM_BUILD_ROOT BINDIR=%{_bindir} XFIGLIBDIR=%{_datadir}/%{name} XFIGDOCDIR=%{_docdir}/%{name}-%{version}%{release} MANDIR=%{_mandir}/man1 INSTALL=/usr/bin/ginstall MAKE=/usr/gnu/bin/make install.man MKDIRHIER="mkdir -p" XAPPLOADDIR=/usr/X11/lib/X11/app-defaults
+make DESTDIR=$RPM_BUILD_ROOT BINDIR=%{_bindir} XFIGLIBDIR=%{_datadir}/%{src_name} XFIGDOCDIR=%{_docdir}/%{src_name}-%{version}%{release} MANDIR=%{_mandir}/man1 INSTALL=/usr/bin/ginstall MAKE=/usr/gnu/bin/make install.man MKDIRHIER="mkdir -p" XAPPLOADDIR=/usr/X11/lib/X11/app-defaults
 
 rm -rf $RPM_BUILD_ROOT/usr/X11/man
 
@@ -124,8 +126,8 @@ fi
 %doc /%{_pkg_docdir}-%{version}%{release}/*
 %dir %attr (0755, root, bin) %{_mandir}
 %{_mandir}/man*/*
-%dir %attr (0755, root, bin) %{_datadir}/%{name}
-%{_datadir}/%{name}/*
+%dir %attr (0755, root, bin) %{_datadir}/%{src_name}
+%{_datadir}/%{src_name}/*
 %dir %attr (0755, root, bin) /usr/X11/lib/X11/app-defaults/
 /usr/X11/lib/X11/app-defaults/Fig
 %dir %attr (0755, root, other) %{_datadir}/applications
@@ -136,6 +138,8 @@ fi
 %attr (-, root, root) /etc/X11/fontpath.d/ghostscript:pri=60
 
 %changelog
+* May 2010 - Gilles dauphin
+- Name is SFE...
 * April 2010 - Gilles dauphin
 - use SFE
 * Fri Jul 24 - beffa@ieee.org
