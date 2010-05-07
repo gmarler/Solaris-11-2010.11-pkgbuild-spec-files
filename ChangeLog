@@ -1,3 +1,7 @@
+2010-05-07 Milan Jurik <sfnet@xylab.cz>
+
+	* SFEopenttd.spec: update to 1.0.1
+
 2010-05-07  Halton Huo  <halton.huo@sun.com>
 
 	* ext-sources/libgda-jdbc-MANIFEST.MF: Add missing file
