@@ -1,3 +1,7 @@
+2010-05-07  Halton Huo  <halton.huo@sun.com>
+
+	* ext-sources/libgda-jdbc-MANIFEST.MF: Add missing file
+
 2010-05-06 Gilles Dauphin <dauphin@enst.fr>
 
 	* SFEosg.spec , init spec
