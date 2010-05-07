@@ -9,7 +9,7 @@
 
 %include Solaris.inc
 
-define src_name xfig
+%define src_name xfig
 
 Name:		SFExfig
 Summary:      	Xfig is an interactive drawing tool for X
@@ -123,7 +123,7 @@ fi
 %defattr(-,root, bin)
 %{_bindir}/*
 %dir %attr (0755, root, bin) %{_docdir}
-%doc /%{_pkg_docdir}-%{version}%{release}/*
+%doc /%{_docdir}/%{src_name}-%{version}%{release}/*
 %dir %attr (0755, root, bin) %{_mandir}
 %{_mandir}/man*/*
 %dir %attr (0755, root, bin) %{_datadir}/%{src_name}
