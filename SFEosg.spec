@@ -22,7 +22,7 @@ URL:			http:///www.openscenegraph.org/
 #Patch5:			OpenSceneGraph-05-boost-concept-check.diff
 #Patch6:			OpenSceneGraph-06-boost-concept-check.diff
 #Patch7:			OpenSceneGraph-07-boost-concept-check.diff
-Patch8:			OpenSceneGraph-08-boost-concept-check.diff
+Patch9:			OpenSceneGraph-09-boost-concept-check.diff
 SUNW_BaseDir:           %{_basedir}
 BuildRoot:              %{_tmppath}/%{name}-%{version}-build
 
@@ -68,7 +68,7 @@ for rapid development of graphics applications.
 
 %prep
 %setup -q -c -n %{src_name}-%{version}
-cd %{src_name}-%{version}
+#cd %{src_name}-%{version}
 #%patch1 -p0
 #%patch2 -p0
 #%patch3 -p0
@@ -76,7 +76,7 @@ cd %{src_name}-%{version}
 #%patch5 -p0
 #%patch6 -p0
 #%patch7 -p0
-%patch8 -p0
+%patch9 -p0
 
 %build
 
@@ -93,7 +93,7 @@ export CXXFLAGS="-I%_prefix/X11/include"
 export LDFLAGS="-L%{_libdir} -R%{_libdir}"
 #export SDLMAIN_LIBRARY="/usr/lib/libSDL.so"
 export SDLMAIN_LIBRARY="/usr/lib"
-export SDL_LIBRARY="SDLmain"
+export SDL_LIBRARY="SDL"
 export CMAKE_LIBRARY_PATH="/opt/SFE/lib:/usr/lib"
 export CMAKE_INCLUDE_PATH="/opt/SFE/include:/usr/include"
 #SDLIMAGE_INCLUDE_DIR, SDLIMAGE_LIBRARY, SDL_INCLUDE_DIR, SDLMAIN_LIBRARY
@@ -101,30 +101,27 @@ export CMAKE_INCLUDE_PATH="/opt/SFE/include:/usr/include"
 mkdir -p BUILD
 pushd BUILD
 
-cmake -DSDL_LIBRARY="SDLmain" -DSDLMAIN_LIBRARY="/usr/lib" -DCMAKE_LIBRARY_PATH="/opt/SFE/lib:/usr/lib" -DCMAKE_INCLUDE_PATH="/opt/SFE/include:/usr/include" -DHAVE_GCC_VISIBILITY:INTERNAL=0 -DCMAKE_INSTALL_PREFIX:PATH=%{_prefix} -DHAVE_VISIBILITY_SWITCH:INTERNAL=0 -DBUILD_OSG_EXAMPLES=ON -DBUILD_OSG_WRAPPERS=ON -DBUILD_DOCUMENTATION=ON ..
+cmake -DSDL_LIBRARY="SDL" -DSDLMAIN_LIBRARY="/usr/lib" -DCMAKE_LIBRARY_PATH="/opt/SFE/lib:/usr/lib" -DCMAKE_INCLUDE_PATH="/opt/SFE/include:/usr/include" -DHAVE_GCC_VISIBILITY:INTERNAL=0 -DCMAKE_INSTALL_PREFIX:PATH=%{_prefix} -DHAVE_VISIBILITY_SWITCH:INTERNAL=0 -DBUILD_OSG_EXAMPLES=ON -DBUILD_OSG_WRAPPERS=ON -DBUILD_DOCUMENTATION=ON ..
 
 make VERBOSE=1 
 
-make doc_openscenegraph doc_openthreads
+#TODO
+#make doc_openscenegraph doc_openthreads
 popd
 
 %install
+cd %{src_name}-%{version}
 rm -rf $RPM_BUILD_ROOT
+mkdir -p $RPM_BUILD_ROOT/%{_prefix}
 pushd BUILD
-make install DESTDIR=${RPM_BUILD_ROOT}
+#make install DESTDIR=${RPM_BUILD_ROOT}
+make install
+mv ./sfw_stage/* $RPM_BUILD_ROOT/%{_prefix}
 
 # Supposed to take OpenSceneGraph data
 mkdir -p ${RPM_BUILD_ROOT}%{_datadir}/OpenSceneGraph
 popd
 
-#%install
-#rm -rf $RPM_BUILD_ROOT
-#cd %{src_name}-%{version}
-#cd build
-#mkdir -p $RPM_BUILD_ROOT/%{_prefix}
-#make install
-#mv ./sfw_stage/* $RPM_BUILD_ROOT/%{_prefix}
-##rm $RPM_BUILD_ROOT/%{_libdir}/lib*.*a
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -134,6 +131,18 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}
 %dir %attr(0755,root,bin) %{_libdir}
 %{_libdir}/lib*.so*
+%dir %attr(0755,root,bin) %{_libdir}osgPlugins-%{version}
+%{_libdir}osgPlugins-%{version}
+%dir %attr(0755,root,other) %{_libdir}/pkgconfig
+%{_libdir}/pkgconfig
+%dir %attr(0755,root,bin) %{_prefix}/doc/OpenThreadsReferenceDocs
+%{_prefix}/doc/OpenThreadsReferenceDocs
+%dir %attr(0755,root,bin) %{_prefix}/doc/OpenSceneGraphReferenceDocs
+%{_prefix}/doc/OpenSceneGraphReferenceDocs
+%dir %attr (0755, root, sys) %{_datadir}
+%{_datadir}/OpenSceneGraph
+%dir %attr (0755, root, bin) %{_includedir}
+%{_includedir}/*
 
 %changelog
 * May 2010 - Gilles Dauphin

@@ -4,6 +4,8 @@
 
 %include Solaris.inc
 
+%define osbuild %(uname -v | sed -e 's/[A-z_]//g')
+
 %ifarch x86_64
 %define java_arch amd64
 %else
@@ -22,32 +24,31 @@ SUNW_Copyright: 	%{name}.copyright
 Group:			Applications/Math
 Source:			ftp://cran.r-project.org/pub/R/src/base/R-2/R-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{src_version}-build
-Requires: SPROcc
-Requires: SPROcmpl
-Requires: SPROf90
-Requires: SPROftool
+
+Requires: library/readline
+Requires: SFEblas
+Requires: SFElapack
 Requires: SUNWpng
 Requires: SUNWjpg
-Requires: SFEreadline
-Requires: SFEblas
 Requires: SUNWTcl
 Requires: SUNWncurses
 Requires: SUNWpcre
 Requires: SUNWzlib
 Requires: SUNWTk
-Requires: SFElapack
 Requires: SUNWxwrtl
 Requires: SUNWbzip
 Requires: SUNWgnome-base-libs
 Requires: SUNWTiff
-Requires: SUNWj5rt
+%if %(expr %{osbuild} '>=' 134)
+Requires: developer/sunstudioexpress
+%else
+Requires: SPROcc
+Requires: SPROcmpl
+Requires: SPROf90
+Requires: SPROftool
 # TODO
 #BuildRequires: tetex-latex, texinfo-tex 
-BuildRequires: SUNWpng-devel
-BuildRequires: SUNWjpg-devel
-BuildRequires: SFEreadline-devel
-BuildRequires: SUNWncurses-devel
-BuildRequires: SUNWj5dev
+%endif
 
 Meta(info.upstream):		cran.r-projet.org
 Meta(info.maintainer):		Gilles Dauphin
@@ -104,6 +105,8 @@ export FCFLAGS="%{optflags}"
     --with-tk-config=%{_libdir}/tkConfig.sh \
     --enable-R-shlib \
     --with-iconv=no \
+    --with-tcl-config=/usr/lib/tclConfig.sh \
+    --with-tk-config=/usr/lib/tkConfig.sh \
     rdocdir=%{_docdir}/R-%{version} \
     rincludedir=%{_includedir}/R \
     rsharedir=%{_datadir}/R) \
@@ -126,6 +129,7 @@ rm -rf ${RPM_BUILD_ROOT}
 make DESTDIR=${RPM_BUILD_ROOT} install install-info install-pdf
 rm -f ${RPM_BUILD_ROOT}%{_infodir}/dir
 rm -f ${RPM_BUILD_ROOT}%{_infodir}/dir.old
+mkdir -p ${RPM_BUILD_ROOT}%{_docdir}/R-%{version}
 install -p CAPABILITIES ${RPM_BUILD_ROOT}%{_docdir}/R-%{version}
 
 #Install libRmath files

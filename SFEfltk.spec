@@ -36,8 +36,10 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
      CPUS=1
 fi
 
-export CFLAGS="%optflags"
-export LDFLAGS="%{_ldflags}"
+export CC=/usr/gcc/4.3/bin/gcc
+export CXX=/usr/gcc/4.3/bin/g++
+#export CFLAGS="%optflags"
+#export LDFLAGS="%{_ldflags}"
 
 ./configure --prefix=%{_prefix}  \
             --mandir=%{_mandir} \

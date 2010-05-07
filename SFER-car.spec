@@ -11,7 +11,7 @@
 %endif
 
 %define packname	car
-%define packrel		14
+%define packrel		16
 
 Name:			SFER-%{packname}
 Version:		1.2
@@ -22,33 +22,9 @@ SUNW_Copyright: 	%{name}.copyright
 Group:			Applications/Math
 Source:			ftp://cran.r-project.org/pub/R/contrib/main/%{packname}_%{version}-%{packrel}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-build
-Requires: SPROcc
-Requires: SPROcmpl
-Requires: SPROf90
-Requires: SPROftool
-Requires: SUNWpng
-Requires: SUNWjpg
-Requires: SFEreadline
-Requires: SFEblas
-Requires: SUNWTcl
-Requires: SUNWncurses
-Requires: SUNWpcre
-Requires: SUNWzlib
-Requires: SUNWTk
-Requires: SFElapack
-Requires: SUNWxwrtl
-Requires: SUNWbzip
-Requires: SUNWgnome-base-libs
-Requires: SUNWTiff
-Requires: SUNWj5rt
 Requires: SFER
 # TODO
 #BuildRequires: tetex-latex, texinfo-tex 
-BuildRequires: SUNWpng-devel
-BuildRequires: SUNWjpg-devel
-BuildRequires: SFEreadline-devel
-BuildRequires: SUNWncurses-devel
-BuildRequires: SUNWj5dev
 
 Meta(info.upstream):		cran.r-projet.org
 Meta(info.maintainer):		Gilles Dauphin
