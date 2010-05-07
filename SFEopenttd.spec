@@ -53,8 +53,12 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
     CPUS=1
 fi
 
-CC=/usr/sfw/bin/gcc \
-CXX=/usr/sfw/bin/g++ \
+sed -e '1,$s@/usr/local@%{_prefix}@g' <config.lib >config.lib.sed
+mv config.lib.sed config.lib
+export CC=/usr/sfw/bin/gcc 
+export CXX=/usr/sfw/bin/g++ 
+export CFLAGS="-I%{_includedir} -I%{_includedir}/lzo "
+export LDFLAGS="-L%{_libdir} -R%{_libdir}"
 bash ./configure \
         --disable-strip \
         --prefix-dir= \
