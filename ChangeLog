@@ -8,6 +8,7 @@
 	* patches/OpenSceneGraph-09-boost-concept-check.diff
 	* SFER-ctv.spec
 	* SFER-e1071.spec
+	* start FlightGear 2.0
 
 2010-05-07 Milan Jurik <sfnet@xylab.cz>
 
