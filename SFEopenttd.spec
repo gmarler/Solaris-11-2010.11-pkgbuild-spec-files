@@ -96,6 +96,8 @@ desktop-file-install --dir=$RPM_BUILD_ROOT%{_datadir}/applications \
         media/openttd.desktop
 
 cd $RPM_BUILD_ROOT%{_datadir}/openttd/data && unzip %SOURCE1 && unzip %SOURCE2 && unzip %SOURCE3
+chmod  555  $RPM_BUILD_ROOT%{_datadir}/openttd/data/open*-0.2*
+chmod og+r $RPM_BUILD_ROOT%{_datadir}/openttd/data/open*-0.2*/*
 
 %clean
 rm -rf $RPM_BUILD_ROOT
