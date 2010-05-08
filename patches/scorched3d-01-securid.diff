@@ -1,22 +1,21 @@
---- scorched/src/net/SecureID.cpp.orig	2008-02-10 19:32:09.798176874 +0530
-+++ scorched/src/net/SecureID.cpp	2008-02-10 19:49:01.902395952 +0530
-@@ -36,6 +36,11 @@
+--- scorched/src/client/client/SecureID.cpp	Sun Mar  2 19:47:36 2008
++++ scorched-patch/src/client/client/SecureID.cpp	Sat May  8 12:28:54 2010
+@@ -38,6 +38,11 @@
  
- #else
- 
-+#if defined(__sun) || defined (__sun__)
-+#include <sys/sockio.h>
-+#endif
-+
-+#include <unistd.h>
  #include <sys/ioctl.h>
  #include <net/if.h>
++#if defined(__sun) || defined (__sun__)
++#include <sys/sockio.h>
++#include <unistd.h>
++#include <stropts.h>
++#endif
  
-@@ -73,7 +78,12 @@
+ std::string SecureID::GetPrivateKey(void)
+ {
+@@ -73,7 +78,11 @@
  	if_freenameindex(NameList); //free the memory
  
  	strcpy (dev.ifr_name, InterfaceName.c_str()); //select from the name
-+
 +#if defined(__sun) || defined (__sun__)
 +	if (ioctl(sock, SIOCGENADDR, &dev) < 0) //get the interface data
 +#else
@@ -25,7 +24,7 @@
  	{
  		close(sock);
  		return ""; //cannot list the interfaces
-@@ -81,7 +91,11 @@
+@@ -81,7 +90,11 @@
  
      for (int i=0; i<6; i++)
      {

@@ -1,4 +1,8 @@
-2010-0507 Gilles Dauphin
+2010-05-08 Milan Jurik <sfnet@xylab.cz>
+
+	* SFEscorched3d.spec: update to 43.1c
+
+2010-05-07 Gilles Dauphin
 
 	* SFEosg.spec
 	* SFER-car.spec

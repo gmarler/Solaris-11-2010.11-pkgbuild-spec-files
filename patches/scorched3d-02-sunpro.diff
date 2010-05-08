@@ -1,5 +1,5 @@
---- scorched/src/wxdialogs/Display.cpp.orig	Thu Dec  6 10:43:53 2007
-+++ scorched/src/wxdialogs/Display.cpp	Fri Feb 22 16:45:17 2008
+--- scorched/src/launcher/wxdialogs/Display.cpp	Sat May  8 11:35:35 2010
++++ scorched-patch/src/launcher/wxdialogs/Display.cpp	Sat May  8 11:37:39 2010
 @@ -146,16 +146,13 @@
  	loadSizer->Add(new wxStaticText(parent, -1, wxT("Load the normal starting settings for Scorched3D. (FAST machines)")),
  		0, wxALL, 2);
