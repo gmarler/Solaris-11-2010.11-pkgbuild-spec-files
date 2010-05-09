@@ -7,8 +7,8 @@
 
 Name:                    SFEcrafty
 Summary:                 Crafty chess engine  
-Version:                 23.0
-Source:                  http://www.craftychess.com/crafty-23.0.zip
+Version:                 23.2
+Source:                  http://www.craftychess.com/crafty-%{version}.zip
 URL: 			 http://www.craftychess.com/
 #SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -36,11 +36,13 @@ mv $RPM_BUILD_DIR/crafty-%version/crafty $RPM_BUILD_ROOT/usr/bin/
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%files                                                                                                        
-%dir %attr (0755, root, bin) %{_bindir}                                                                       
-%{_bindir}/*                                                                                                  
+%files
+%defattr (-, root, bin)
+%dir %attr (0755, root, sys) %{_prefix}
+%{_bindir}
 
 %changelog
-%changelog                                                                                                    
-* Wed Apr 15 2009 - Alexander R. Eremin eremin@milax.org                                                       
+* Sun May 09 2010 - Milan Jurik
+- update to 23.2
+* Wed Apr 15 2009 - Alexander R. Eremin eremin@milax.org
 - Initial spec file.
