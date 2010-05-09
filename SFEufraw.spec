@@ -68,7 +68,7 @@ BuildRequires: SUNWlibexif-devel
 BuildRequires: SUNWesu
 # pod2man:
 BuildRequires: SUNWperl584usr
-
+BuildRequires: SUNWgnome-common-devel
 
 %if %build_l10n
 %package l10n
