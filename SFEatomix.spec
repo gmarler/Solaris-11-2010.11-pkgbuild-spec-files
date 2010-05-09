@@ -26,6 +26,8 @@ Requires: SUNWgnu-gettext
 BuildRequires: SUNWgnome-libs-devel
 BuildRequires: SUNWgnome-base-libs-devel
 BuildRequires: SUNWgnome-component-devel
+BuildRequires: SUNWperl-xml-parser
+BuildRequires: SUNWgnome-common-devel
 
 
 %prep
@@ -46,12 +48,6 @@ export ACLOCAL_FLAGS="-I %{_datadir}/aclocal"
 export LDFLAGS="%_ldflags"
 export MSGFMT="/usr/bin/msgfmt"
 
-libtoolize --force
-intltoolize -f
-glib-gettextize --force
-aclocal $ACLOCAL_FLAGS
-automake -a -c -f
-autoconf
 ./configure --prefix=%{_prefix}			\
 	    --mandir=%{_mandir}			\
             --libdir=%{_libdir}			\
@@ -83,6 +79,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/pixmaps/*
 
 %changelog
+* Sun May 09 2010 - Milan Jurik
+- added missing build dependency
 * Mon Jun 12 2006 - laca@sun.com
 - rename to SFEatomix
 - change to root:bin to follow other JDS pkgs.

@@ -4,6 +4,7 @@
 	* SFElibmikmod.spec: oss dependency cleanup
 	* SFEmikmod.spec: dependency cleanup
 	* SFEextremetuxracer.spec: cleanup build dependencies
+	* SFEatomix.spec: added missing build dependency
 
 2010-05-08 Milan Jurik <sfnet@xylab.cz>
 
