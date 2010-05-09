@@ -1,0 +1,85 @@
+--- supertuxkart-0.6.2a/configure.ac	Sun May  9 14:47:32 2010
++++ supertuxkart-0.6.2a-patch/configure.ac	Sun May  9 14:47:42 2010
+@@ -13,14 +13,6 @@
+ AM_INIT_AUTOMAKE([foreign tar-ustar])
+ 
+ 
+-dnl =====================================================
+-dnl Set the default CFLAGS/CXXFLAGS
+-dnl If these were not set, the AC_PROG_CC and AC_PROG_CXX
+-dnl scripts set them to "-g -O2".
+-dnl =====================================================
+-CFLAGS="$CFLAGS -Wall -Wstrict-prototypes -Wmissing-prototypes"
+-CXXFLAGS="$CXXFLAGS -Wall"
+-
+ dnl ===================
+ dnl Check for compilers
+ dnl ===================
+--- supertuxkart-0.6.2a/src/bullet/src/LinearMath/btAlignedAllocator.h	Fri Oct 16 02:43:56 2009
++++ supertuxkart-0.6.2a-patch/src/bullet/src/LinearMath/btAlignedAllocator.h	Sun May  9 14:55:23 2010
+@@ -16,6 +16,8 @@
+ #ifndef BT_ALIGNED_ALLOCATOR
+ #define BT_ALIGNED_ALLOCATOR
+ 
++#include <stdio.h>
++
+ ///we probably replace this with our own aligned memory allocator
+ ///so we replace _aligned_malloc and _aligned_free with our own
+ ///that is better portable and more predictable
+--- supertuxkart-0.6.2a/src/bullet/src/LinearMath/btAlignedAllocator.cpp	Fri Oct 16 02:43:56 2009
++++ supertuxkart-0.6.2a-patch/src/bullet/src/LinearMath/btAlignedAllocator.cpp	Sun May  9 14:56:10 2010
+@@ -13,6 +13,8 @@
+ 3. This notice may not be removed or altered from any source distribution.
+ */
+ 
++#include <stdlib.h>
++
+ #include "btAlignedAllocator.h"
+ 
+ int gNumAlignedAllocs = 0;
+--- supertuxkart-0.6.2a/src/utils/translation.cpp	Fri Oct 16 02:43:56 2009
++++ supertuxkart-0.6.2a-patch/src/utils/translation.cpp	Sun May  9 15:00:42 2010
+@@ -21,6 +21,8 @@
+ #include "translation.hpp"
+ #include "file_manager.hpp"
+ 
++#include <locale.h>
++
+ Translations* translations=NULL;
+ 
+ Translations::Translations() { 
+--- supertuxkart-0.6.2a/src/gui/widget_manager.hpp	Fri Oct 16 02:43:52 2009
++++ supertuxkart-0.6.2a-patch/src/gui/widget_manager.hpp	Sun May  9 15:27:46 2010
+@@ -367,8 +367,8 @@
+     int handleDown();
+ 
+ 	/* Scrolling modification. */
+-	void increaseScrollSpeed(bool = false);
+-	void decreaseScrollSpeed(bool = false);
++	void increaseScrollSpeed(const bool = false);
++	void decreaseScrollSpeed(const bool = false);
+ 	void setPosition(const int token, 
+ 		             WidgetDirection hori, float percentage_x, 
+ 		             WidgetDirection verti, float percentage_y);
+--- supertuxkart-0.6.2a/src/gui/widget.cpp	Fri Oct 16 02:43:52 2009
++++ supertuxkart-0.6.2a-patch/src/gui/widget.cpp	Sun May  9 15:37:02 2010
+@@ -325,7 +325,7 @@
+ }
+ 
+ //-----------------------------------------------------------------------------
+-void Widget::setTexture( const std::string& FILENAME, bool is_full_path )
++void Widget::setTexture( const std::string& FILENAME, const bool is_full_path )
+ {
+     Material *m = material_manager->getMaterial( FILENAME, is_full_path );
+     m_texture = m->getState()->getTextureHandle();
+--- supertuxkart-0.6.2a/src/highscores.cpp	Fri Oct 16 02:44:09 2009
++++ supertuxkart-0.6.2a-patch/src/highscores.cpp	Sun May  9 15:40:40 2010
+@@ -107,7 +107,7 @@
+ 
+ // -----------------------------------------------------------------------------
+ int HighscoreEntry::matches(HighscoreType highscore_type,
+-                            int num_karts, RaceManager::Difficulty difficulty,
++                            int num_karts, const RaceManager::Difficulty difficulty,
+                             const std::string track, const int number_of_laps)
+ {
+     return (m_highscore_type  == highscore_type   &&

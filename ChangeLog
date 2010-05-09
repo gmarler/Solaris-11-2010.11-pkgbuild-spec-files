@@ -7,6 +7,7 @@
 	* SFEatomix.spec: added missing build dependency
 	* SFEcrafty.spec: update to 23.2
 	* SFEgtkimageview.spec: added missing build dependency
+	* SFEsupertuxkart.spec: initial SFE import
 
 2010-05-08 Milan Jurik <sfnet@xylab.cz>
 
