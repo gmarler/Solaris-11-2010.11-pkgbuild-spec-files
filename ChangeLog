@@ -9,6 +9,7 @@
 	* SFEgtkimageview.spec: added missing build dependency
 	* SFEsupertuxkart.spec: initial SFE import
 	* SFEapsfilter.spec: added missing build dependency
+	* SFEfreemind.spec: update to 0.9.0_RC7
 
 2010-05-08 Milan Jurik <sfnet@xylab.cz>
 
