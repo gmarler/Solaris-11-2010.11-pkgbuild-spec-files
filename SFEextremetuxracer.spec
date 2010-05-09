@@ -4,24 +4,28 @@
 %include Solaris.inc
 
 %define src_name extremetuxracer
-%define SUNWlibsdl      %(/usr/bin/pkginfo -q SUNWlibsdl && echo 1 || echo 0)
+%define SFEsdl      %(/usr/bin/pkginfo -q SFEsdl && echo 1 || echo 0)
 
-Name:                    	SFEextremetuxracer
-Summary:                 	Fork from the original tux-racer
-Version:                 	0.4
-Source:                  	%{sf_download}/%{src_name}/%{src_name}-%{version}.tar.gz
-BuildRoot:               %{_tmppath}/%{name}-%{version}-build
+Name:		SFEextremetuxracer
+Summary:	Fork from the original tux-racer
+Version:	0.4
+Source:		%{sf_download}/%{src_name}/%{src_name}-%{version}.tar.gz
+URL:		http://extremetuxracer.com/
+License:	GPLv2
+BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
-%if %SUNWlibsdl
-BuildRequires: SUNWlibsdl-devel
-Requires: SUNWlibsdl
-%else
+%if %SFEsdl
 BuildRequires: SFEsdl-devel
 Requires: SFEsdl
+%else
+BuildRequires: SUNWlibsdl-devel
+Requires: SUNWlibsdl
 %endif
-BuildRequires:			SFEsdl-mixer-devel
-Requires:			SFEsdl-mixer
-Requires:			SUNWTcl
+BuildRequires:	SFEsdl-mixer-devel
+Requires:	SFEsdl-mixer
+Requires:	SUNWTcl
+BuildRequires:	SUNWxorg-mesa
+Requires:	SUNWxorg-mesa
 
 %prep
 %setup -q -n %{src_name}-%version
@@ -65,6 +69,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/etracer/*
 
 %changelog
+* Sun May 09 2010 - Milan Jurik
+- cleanup build dependencies
 * Thu Aug 20 2009 - Milan Jurik
 - update to 0.4
 * Thu Nov 15 2007 - daymobrew@users.sourceforge.net
