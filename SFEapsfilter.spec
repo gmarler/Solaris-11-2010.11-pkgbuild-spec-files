@@ -22,6 +22,8 @@ Source:              http://www.apsfilter.org/download/apsfilter-%{version}.tar.
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
+BuildRequires:       SUNWsndm
+Requires:            SUNWsndm
 
 %package root
 Summary:                 %{summary} - / filesystem
@@ -78,6 +80,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_sysconfdir}/*
 
 %changelog
+* Sun May 09 2010 - Milan Jurik
+- added missing build dependency
 * Fri Oct 13 2006 - laca@sun.com
 - fix datadir attributes
 * Wed Oct 11 2006 - laca@sun.com
