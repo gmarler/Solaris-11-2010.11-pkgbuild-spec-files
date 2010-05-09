@@ -67,6 +67,9 @@ BuildRequires: SFEfreealut-devel
 Requires: SFEsdl-net
 BuildRequires: SFEsdl-net-devel
 BuildRequires: SUNWgawk
+BuildRequires: SUNWgnome-common-devel
+BuildRequires: SUNWxorg-mesa
+Requires: SUNWxorg-mesa
 
 %prep
 %setup -q -n scorched
