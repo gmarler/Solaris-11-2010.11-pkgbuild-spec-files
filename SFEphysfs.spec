@@ -8,6 +8,8 @@
 %define src_name	physfs
 %define src_url		http://icculus.org/physfs/downloads
 
+%define SFEcmake      %(/usr/bin/pkginfo -q SFEcmake && echo 1 || echo 0)
+
 Name:                   SFEphysfs
 Summary:                Yet another assembler
 Version:                1.1.1
@@ -17,7 +19,11 @@ Patch2:                 physfs-02-inline.diff
 SUNW_BaseDir:           %{_basedir}
 BuildRoot:              %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
+%if %SFEcmake
 BuildRequires: SFEcmake
+%else
+BuildRequires: SUNWcmake
+%endif
 
 %package devel
 Summary:                 %{summary} - development files
