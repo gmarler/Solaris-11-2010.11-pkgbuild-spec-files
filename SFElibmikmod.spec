@@ -5,16 +5,24 @@
 #
 %include Solaris.inc
 
+%define oss      %(/usr/bin/pkginfo -q oss && echo 1 || echo 0)
+%define src_version 3.2.0-beta2
+
 Name:                    SFElibmikmod
 Summary:                 libmikmod  - a portable sound library for Unix and other systems.
-Version:                 3.2.0
-%define tarball_version 3.2.0-beta2
-Source:                  http://mikmod.raphnet.net/files/libmikmod-%{tarball_version}.tar.bz2
+Version:                 3.2.0.0.2
+Source:                  http://mikmod.raphnet.net/files/libmikmod-%{src_version}.tar.bz2
+URL:                     http://mikmod.raphnet.net/
+License:                 LGPL
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 Requires: SUNWlibms
+%if %oss
 BuildRequires: oss
+%else
+BuildRequires: SUNWaudh
+%endif
 
 %package devel
 Summary:                 %{summary} - development files
@@ -71,6 +79,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/aclocal/*
 
 %changelog
+* Sun May 09 2010 - Milan Jurik
+- oss dependency cleanup
 * Thu May 29 2008 - river@wikimedia.org
 - don't assume basedir is /usr
 * Wed Feb 06 2008 - moinak.ghosh@sun.com

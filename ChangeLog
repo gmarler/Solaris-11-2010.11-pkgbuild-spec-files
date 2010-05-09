@@ -1,6 +1,8 @@
 2010-05-09 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEscorched3d.spec: added missing build dependency
+	* SFElibmikmod.spec: oss dependency cleanup
+	* SFEmikmod.spec: dependency cleanup
 
 2010-05-08 Milan Jurik <sfnet@xylab.cz>
 

@@ -8,16 +8,24 @@
 #
 %include Solaris.inc
 
+%define oss      %(/usr/bin/pkginfo -q oss && echo 1 || echo 0)
+
 Name:                    SFEmikmod
 Summary:                 Mikmod  - A module player using the sound library libmikmod
 Version:                 3.2.2
 %define tarball_version 3.2.2-beta1
 Source:                  http://mikmod.raphnet.net/files/mikmod-%{tarball_version}.tar.gz
+URL:                     http://mikmod.raphnet.net/
+License:                 GPLv2
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 Requires: SUNWlibms
+%if %oss
 BuildRequires: oss
+%else
+BuildRequires: SUNWaudh
+%endif
 Requires: SFElibmikmod
 BuildRequires: SFElibmikmod-devel
 
@@ -31,7 +39,7 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
 fi
 export CPPFLAGS="-I%{_includedir}"
 export CFLAGS="%optflags"
-export LDFLAGS="-L%{_libdir} -R%{_libdir}"
+export LDFLAGS="-L%{_libdir} -R%{_libdir} -lm"
 export ACLOCAL_FLAGS="-I %{_datadir}/aclocal"
 export MSGFMT="/usr/bin/msgfmt"
 
@@ -65,6 +73,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/*
 
 %changelog
+* Sun May 09 2010 - Milan Jurik
+- dependency cleanup
 * Thu May 29 2008 - river@wikimedia.org
 - don't assume basedir is /usr
 * Wed Feb 06 2008 - moinak.ghosh@sun.com
