@@ -24,6 +24,10 @@ BuildRequires: SFEsdl-mixer-devel
 Requires: SFEsdl-mixer
 BuildRequires: SFEsdl-image-devel
 Requires: SFEsdl-image
+BuildRequires: SUNWxorg-mesa
+Requires: SUNWxorg-mesa
+BuildRequires: SFEopenal-devel
+Requires: SFEopenal
 
 %prep
 %setup -q -n %{src_name}_v%{src_ver}
@@ -65,6 +69,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/assaultcube
 
 %changelog
+* Sun May 09 2010 - Milan Jurik
+- added missing build dependency
 * Sun Sep 06 2009 - drdoug007@gmail.com
 - Bumped to 1.0.4
 
