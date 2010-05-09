@@ -23,6 +23,9 @@ BuildRequires: SFEsdl-image-devel
 Requires: SFEsdl-image
 BuildRequires: SFEopenal-devel
 Requires: SFEopenal
+BuildRequires: SFEjam
+BuildRequires: SUNWlibsdl-devel
+Requires: SUNWlibsdl
 
 %package devel
 Summary:                 %{summary} - development files
