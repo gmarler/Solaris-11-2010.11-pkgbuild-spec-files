@@ -31,7 +31,7 @@ SUNW_BaseDir:            %{_basedir}
 Requires: %name
 
 %prep
-%setup -q -n libmikmod-%tarball_version
+%setup -q -n libmikmod-%src_version
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`

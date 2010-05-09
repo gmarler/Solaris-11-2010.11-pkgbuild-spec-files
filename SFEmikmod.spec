@@ -9,12 +9,12 @@
 %include Solaris.inc
 
 %define oss      %(/usr/bin/pkginfo -q oss && echo 1 || echo 0)
+%define src_version 3.2.2-beta1
 
 Name:                    SFEmikmod
 Summary:                 Mikmod  - A module player using the sound library libmikmod
-Version:                 3.2.2
-%define tarball_version 3.2.2-beta1
-Source:                  http://mikmod.raphnet.net/files/mikmod-%{tarball_version}.tar.gz
+Version:                 3.2.2.0.1
+Source:                  http://mikmod.raphnet.net/files/mikmod-%{src_version}.tar.gz
 URL:                     http://mikmod.raphnet.net/
 License:                 GPLv2
 SUNW_BaseDir:            %{_basedir}
@@ -30,7 +30,7 @@ Requires: SFElibmikmod
 BuildRequires: SFElibmikmod-devel
 
 %prep
-%setup -q -n mikmod-%tarball_version
+%setup -q -n mikmod-%src_version
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
