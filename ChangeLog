@@ -1,3 +1,7 @@
+2010-05-09 Milan Jurik <sfnet@xylab.cz>
+
+	* SFEscorched3d.spec: added missing build dependency
+
 2010-05-08 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEscorched3d.spec: update to 43.1c

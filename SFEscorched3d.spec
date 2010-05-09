@@ -66,6 +66,7 @@ Requires: SFEfreealut
 BuildRequires: SFEfreealut-devel
 Requires: SFEsdl-net
 BuildRequires: SFEsdl-net-devel
+BuildRequires: SUNWgawk
 
 %prep
 %setup -q -n scorched
@@ -125,6 +126,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/*
 
 %changelog
+* Sun May 09 2010 - Milan Jurik
+- added missing build dependency
 * Sat May 08 2010 - Milan Jurik
 - update to 43.1c
 * Fri Feb 22 2008 - trisk@acm.jhu.edu
