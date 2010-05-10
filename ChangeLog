@@ -1,4 +1,7 @@
 2010-05-09  Albert Lee  <trisk@opensolaris.org>
+	* patches/opencv-03-sunpro.diff: Typo fix.
+
+2010-05-09  Albert Lee  <trisk@opensolaris.org>
 
 	* SFEgnash.spec: Add --with-bzr-code option.
 	* SFElibaudioio.spec: Add missing SUNWaudh dependency.

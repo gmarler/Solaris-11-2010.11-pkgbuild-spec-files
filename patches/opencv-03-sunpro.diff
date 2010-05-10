@@ -8,8 +8,8 @@
          size_t spinCount = mask.size() - count(mask.begin(), mask.end(), (uchar)0);
 +#else
 +        size_t spinCount = 0;
-+	count(mask.begin(), mask.end(), (uchar)0, spinCount);
-+	spinCount = mask.size() - spinCount;
++        count(mask.begin(), mask.end(), (uchar)0, spinCount);
++        spinCount = mask.size() - spinCount;
 +#endif
          Mat newImgs(spinCount, spinImages.cols, spinImages.type());    
  
@@ -90,11 +90,11 @@
          }
 -        noPair += (int)count_if( map.begin(), map.end(), isZero );
 +#ifndef __SUNPRO_CC
-+        noPair += (int)countf( map.begin(), map.end(), (uchar)0 );
++        noPair += (int)count( map.begin(), map.end(), (uchar)0 );
 +#else
-+	 int num = 0;
++        int num = 0;
 +        count( map.begin(), map.end(), (uchar)0, num );
-+	 noPair += num;
++        noPair += num;
 +#endif
          totalNoPair += noPair;
          if( noPair > valRects.size()*eps.noPair+1 )
