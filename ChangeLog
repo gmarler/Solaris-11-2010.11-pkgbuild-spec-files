@@ -2,6 +2,7 @@
 
 	* SFElibgda.spec: added missing build dependencies
 	* SFEassaultcube.spec: GCC is used
+	* SFEscorched3d.spec: use SUNWfftwX if possible
 
 2010-05-10  simon Jin <yuntong.jin@sun.com>
 

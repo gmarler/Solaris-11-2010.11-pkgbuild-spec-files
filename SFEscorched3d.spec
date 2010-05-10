@@ -10,7 +10,7 @@
 %define SFEfreetype %(/usr/bin/pkginfo -q SFEfreetype && echo 1 || echo 0)
 %define SFEsdl      %(/usr/bin/pkginfo -q SFEsdl && echo 1 || echo 0)
 %define SFEwxwidgets %(/usr/bin/pkginfo -q SFEwxwidgets && echo 1 || echo 0)
-
+%define SFEfftw     %(/usr/bin/pkginfo -q SFEfftw && echo 1 || echo 0)
 
 %define src_version 43.1c
 
@@ -53,8 +53,13 @@ Requires: SFEfreetype
 BuildRequires: SUNWfreetype2
 Requires: SUNWfreetype2
 %endif
+%if %SFEfftw
 Requires: SFEfftw
 BuildRequires: SFEfftw-devel
+%else
+BuildRequires:  SUNWfftw3
+Requires:       SUNWfftw3
+%endif
 %if %SFEwxwidgets
 Requires: SFEwxwidgets
 BuildRequires: SFEwxwidgets-devel
@@ -129,6 +134,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/*
 
 %changelog
+* Mon May 10 2010 - Milan Jurik
+- use SUNWfftwX if possible
 * Sun May 09 2010 - Milan Jurik
 - added missing build dependency
 * Sat May 08 2010 - Milan Jurik
