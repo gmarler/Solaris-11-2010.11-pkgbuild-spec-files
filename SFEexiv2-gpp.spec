@@ -13,7 +13,7 @@
 Name:                SFEexiv2-gpp
 License:             GPL
 Summary:             A C++ library and CLI utility to manage image metadata.
-Version:             0.17.1
+Version:             0.19
 URL:                 http://www.exiv2.org/
 Source:              http://www.exiv2.org/exiv2-%{version}.tar.gz
 Patch1:              exiv2-01-makefile.diff
@@ -127,6 +127,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Mon May 10 2010 - Milan Jurik
+- update to 0.19
 * Thu Oct 09, 2008 markgraf@med.ovgu.de
 - Initial spec based on SFEexiv2.spec
   reworked to put g++ libs into /usr/lib/g++/<g++-version>/
