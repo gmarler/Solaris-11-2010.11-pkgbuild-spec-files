@@ -1,3 +1,7 @@
+2010-05-10 Milan Jurik <sfnet@xylab.cz>
+
+	* SFElibgda.spec: added missing build dependencies
+
 2010-05-10  simon Jin <yuntong.jin@sun.com>
 
 	* SFErox-edit.spec: Init spec file

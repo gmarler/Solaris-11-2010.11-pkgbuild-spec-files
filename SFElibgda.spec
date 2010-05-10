@@ -26,6 +26,8 @@ Requires:           SUNWgnome-base-libs
 Requires:           SUNWgnome-libs
 Requires:           SUNWgnome-vfs
 Requires:           SUNWlxml
+BuildRequires:      SUNWgnome-common-devel
+BuildRequires:      SUNWgtk-doc
 
 %package devel
 Summary:       %{summary} - development files
@@ -129,6 +131,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_sysconfdir}/libgda*
 
 %changelog
+* Mon May 10 2010 - Milan Jurik
+- added missing build dependencies
 * Mon May 10 2010 - halton.huo@sun.com
 - Update %files reflect 4.1.5
 * Sun Jan 18 2009 - halton.huo@sun.com
