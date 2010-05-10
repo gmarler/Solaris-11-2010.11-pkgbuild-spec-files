@@ -5,22 +5,20 @@
 #
 %include Solaris.inc
 
-%define src_url         http://jaist.dl.sourceforge.net/sourceforge/python-xlib/python-xlib-0.14.tar.gz
 %define src_name        python-xlib
+%define python_version  2.6
 
 Name:                   SFEpython26-xlib
 Summary:                A complete X11R6 client-side implementation in pure-python
-URL:                    http://jaist.dl.sourceforge.net/sourceforge/python-xlib
+URL:                    http://python-xlib.sourceforge.net/
 Version:                0.14
-Source:                 %{src_url}/%{src_name}-%{version}.tar.gz
+Source:                 %{sf_download}/python-xlib/%{src_name}-%{version}.tar.gz
 SUNW_BaseDir:           %{_basedir}
 BuildRoot:              %{_tmppath}/%{name}-%{version}-build
 
 %include default-depend.inc
 Requires:               SUNWPython26
 BuildRequires:          SUNWPython26-devel
-
-%define python_version  2.6
 
 %prep
 %setup -q -n %{src_name}-%{version}
@@ -49,6 +47,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/python%{python_version}/vendor-packages
 
 %changelog
+* Sun May 09 2010 - Albert Lee <trisk@opensolaris.org>
+- Update download URL
 * Mon Aug 10 2009 - matt@greenviolet.net
 - Initial spec file based on SFEpython-xlib.spec
 * Tue Dec 25 2007 - Ananth Shrinivas <ananth@sun.com>

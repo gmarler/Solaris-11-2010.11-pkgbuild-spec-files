@@ -6,10 +6,15 @@
 #
 %include Solaris.inc
 
+# use the --with-opengl option to use opengl instead of agg
+# use the --with-bzr-code option to use bzr code instead of the stable tarball
+%define bzr_url      http://bzr.savannah.gnu.org/r/gnash/trunk
 %define SUNWglib2    %(/usr/bin/pkginfo -q SUNWglib2 && echo 1 || echo 0)
 
 Name:                SFEgnash
 Summary:             Gnash - GNU Flash movie player
+%if %{?_with_bzr_code:0}%{?!_with_bzr_code:1}
+# stable tarball
 Version:             0.8.6
 Source:              http://ftp.gnu.org/pub/gnu/gnash/%{version}/gnash-%{version}.tar.bz2
 Patch1:              gnash-01-stdc.diff
@@ -17,14 +22,19 @@ Patch2:              gnash-02-sunpro.diff
 Patch3:              gnash-03-gnashrc.diff
 Patch4:              gnash-04-plugin.diff
 Patch5:              gnash-04-macros.diff
+%else
+# bzr code
+Version:             0.8.6.999
+%endif
 Url:                 http://www.gnashdev.org/
 License:             GPLv3+
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 
 # cairo correctness/performance is poor
-#%define _with_opengl 1
+%if %{?_with_opengl:0}%{?!_with_opengl:1}
 %define _with_agg 1
+%endif
 
 %include default-depend.inc
 BuildRequires: SUNWgnome-common-devel
@@ -32,6 +42,7 @@ BuildRequires: SUNWgnu-gettext
 BuildRequires: SFEboost-devel
 Requires: SFEboost
 Requires: SUNWlxml
+Requires: SUNWlexpt
 Requires: SUNWbzip
 Requires: SUNWzlib
 BuildRequires: SUNWjpg-devel
@@ -44,6 +55,11 @@ Requires: SUNWfontconfig
 Requires: SUNWfreetype2
 Requires: SUNWspeex
 Requires: SUNWcurl
+
+%if %{?_with_bzr_code:1}%{?!_with_bzr_code:0}
+# bzr code
+BuildRequires: SFEbzr
+%endif
 
 %if %{?_with_opengl:1}%{?!_with_opengl:0}
 %define renderer ogl
@@ -60,7 +76,6 @@ Requires: SUNWcairo
 %endif
 %endif
 %endif
-
 
 %if %SUNWglib2
 BuildRequires: SUNWglib2-devel
@@ -100,14 +115,31 @@ Requires:                %{name}
 %endif
 
 %prep
+%if %{?_with_bzr_code:0}%{?!_with_bzr_code:1}
+# stable tarball
 %setup -q -n gnash-%{version}
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
+%else
+# bzr code
+if [ ! -d "../SOURCES/gnash/.bzr" ]; then
+	rm -rf gnash
+	bzr branch %{bzr_url} ../SOURCES/gnash
+else
+	bzr update ../SOURCES/gnash
+fi
+rm -rf gnash
+cp -rp ../SOURCES/gnash gnash
+%endif
 
 %build
+%if %{?_with_bzr_code:1}%{?!_with_bzr_code:0}
+# bzr code
+cd gnash
+%endif
 
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
 if test "x$CPUS" = "x" -o $CPUS = 0; then
@@ -128,9 +160,15 @@ export MSGFMT="/usr/bin/msgfmt"
 for dir in macros cygnal libltdl/m4; do
 	[ -d "$dir" ] && aclocalincludes="-I $dir $aclocalincludes"
 done
+%if %{?_with_bzr_code:1}%{?!_with_bzr_code:0}
+# bzr code
+bash ./autogen.sh
+%else
 aclocal $aclocalincludes $ACLOCAL_FLAGS
 automake -a -c -f
 autoconf
+%endif
+
 ./configure \
             --prefix=%{_prefix}		\
 	    --sysconfdir=%{_sysconfdir}	\
@@ -154,6 +192,11 @@ perl -pi -e 's,-xO[345],-xO2,g' backend/Makefile
 gmake -j $CPUS
 
 %install
+%if %{?_with_bzr_code:1}%{?!_with_bzr_code:0}
+# bzr code
+cd gnash
+%endif
+
 rm -rf $RPM_BUILD_ROOT
 
 gmake install DESTDIR=$RPM_BUILD_ROOT
@@ -212,6 +255,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Thu Jan 07 2009 - Albert Lee <trisk@opensolaris.org>
+- Add --with-bzr-code option.
 * Tue Dec 15 2009 - Albert Lee <trisk@opensolaris.org>
 - Add OpenGL renderer.
 - Add patch5.

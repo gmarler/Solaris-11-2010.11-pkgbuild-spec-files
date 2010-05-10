@@ -20,6 +20,7 @@ Docdir:	      %{_defaultdocdir}/doc
 SUNW_BaseDir: %{_basedir}
 Autoreqprov:  on
 %include default-depend.inc
+BuildRequires: SUNWaudh
 Requires: SUNWlibC
 Requires: SUNWlibms
 
@@ -73,6 +74,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/*
 
 %changelog
+* Wed May 05 2010 - Albert Lee  <trisk@opensolaris.org>
+- Add missing SUNWaudh dependency.
 * Tue Mar 24 2009 - andras.barna@gmail.com
 - IPSize version
 * Mon Mar 10 2008 - trisk@acm.jhu.edu

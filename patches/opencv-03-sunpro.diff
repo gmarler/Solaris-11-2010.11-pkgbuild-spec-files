@@ -1,0 +1,101 @@
+--- OpenCV-2.1.0.orig/src/cvaux/cvspinimages.cpp	2010-04-05 21:24:44.000000000 -0400
++++ OpenCV-2.1.0/src/cvaux/cvspinimages.cpp	2010-05-08 19:44:34.182852501 -0400
+@@ -820,7 +820,13 @@
+ {    
+     if (reAlloc)
+     {
++#ifndef __SUNPRO_CC
+         size_t spinCount = mask.size() - count(mask.begin(), mask.end(), (uchar)0);
++#else
++        size_t spinCount = 0;
++	count(mask.begin(), mask.end(), (uchar)0, spinCount);
++	spinCount = mask.size() - spinCount;
++#endif
+         Mat newImgs(spinCount, spinImages.cols, spinImages.type());    
+ 
+         int pos = 0;
+--- OpenCV-2.1.0.orig/include/opencv/cxmat.hpp	2010-04-05 21:24:40.000000000 -0400
++++ OpenCV-2.1.0/include/opencv/cxmat.hpp	2010-04-06 13:45:25.640331235 -0400
+@@ -835,8 +835,10 @@
+ template<typename _Tp> inline Mat_<_Tp>::operator MatExpr_<Mat, Mat>() const
+ { return MatExpr_<Mat, Mat>(*this); }
+ 
++#ifndef __SUNPRO_CC
+ inline Mat::operator MatExpr_<Mat, Mat>() const
+ { return MatExpr_<Mat, Mat>(*this); }
++#endif
+ 
+ template<typename M> class CV_EXPORTS MatOp_Sub_
+ {
+--- OpenCV-2.1.0.orig/include/opencv/cxmisc.h	2010-04-05 21:24:40.000000000 -0400
++++ OpenCV-2.1.0/include/opencv/cxmisc.h	2010-05-08 17:25:25.852393994 -0400
+@@ -50,6 +50,10 @@
+ 
+ #include <limits.h>
+ 
++#ifdef HAVE_CONFIG_H
++    #include <cvconfig.h>
++#endif
++
+ /****************************************************************************************\
+ *                              Compile-time tuning parameters                            *
+ \****************************************************************************************/
+--- OpenCV-2.1.0.orig/include/opencv/cvvidsurv.hpp	2010-04-05 21:24:40.000000000 -0400
++++ OpenCV-2.1.0/include/opencv/cvvidsurv.hpp	2010-05-08 18:25:55.472990275 -0400
+@@ -55,11 +55,10 @@
+ #define strdup _strdup
+ #define stricmp _stricmp
+ #endif
+-#elif defined __GNUC__
++#else
++#include <strings.h>
+ #define cv_stricmp strcasecmp
+ #define cv_strnicmp strncasecmp
+-#else
+-#error Do not know how to make case-insensitive string comparison on this platform
+ #endif
+ 
+ //struct DefParam;
+--- OpenCV-2.1.0.orig/tests/cv/src/affine3d_estimator.cpp	2010-04-05 21:24:45.000000000 -0400
++++ OpenCV-2.1.0/tests/cv/src/affine3d_estimator.cpp	2010-05-08 21:21:01.644777753 -0400
+@@ -167,7 +167,13 @@
+         return false;
+     }    
+ 
++#ifndef __SUNPRO_CC
+     bool outl_good = count(outl.begin(), outl.end(), 1) == m && 
++#else
++    bool outl_good;
++    count(outl.begin(), outl.end(), 1, outl_good);
++    outl_good == m && 
++#endif
+         m == accumulate(outl.begin(), outl.begin() + m, 0);
+ 
+     if (!outl_good)
+--- OpenCV-2.1.0.orig/tests/cv/src/acascadeandhog.cpp	2010-04-05 21:24:45.000000000 -0400
++++ OpenCV-2.1.0/tests/cv/src/acascadeandhog.cpp	2010-05-08 20:43:01.362231027 -0400
+@@ -275,9 +275,6 @@
+     return CvTS::OK;
+ }
+ 
+-
+-bool isZero( uchar i ) {return i == 0;}
+-
+ int CV_DetectorTest::validate( int detectorIdx, vector<vector<Rect> >& objects )
+ {
+     assert( imageFilenames.size() == objects.size() );
+@@ -345,7 +342,13 @@
+ 					map[minIdx] = 1;
+             }
+         }
+-        noPair += (int)count_if( map.begin(), map.end(), isZero );
++#ifndef __SUNPRO_CC
++        noPair += (int)countf( map.begin(), map.end(), (uchar)0 );
++#else
++	 int num = 0;
++        count( map.begin(), map.end(), (uchar)0, num );
++	 noPair += num;
++#endif
+         totalNoPair += noPair;
+         if( noPair > valRects.size()*eps.noPair+1 )
+             break;

@@ -1,3 +1,16 @@
+2010-05-09  Albert Lee  <trisk@opensolaris.org>
+
+	* SFEgnash.spec: Add --with-bzr-code option.
+	* SFElibaudioio.spec: Add missing SUNWaudh dependency.
+	* SFEmousetrap.spec: *NEW* MouseTrap - Webcam-based input system for
+	  GNOME
+	* SFEopencv.spec: *NEW* OpenCV - Open Computer Vision Library
+	* SFEpython26-xlib.spec: Update download URL
+	* patches/opencv-01-namespace.diff: Fix C++ namespace issues
+	* patches/opencv-02-stdc.diff: Fix C++ correctness
+	* patches/opencv-03-sunpro.diff: Add workarounds for Sun Studio
+	* patches/opencv-04-v4l2.diff: Overhaul V4L2 support
+
 2010-05-09 James Choi <jchoi42@pha.jhu.edu>
 
 	* SFEnaim.spec: initial spec
