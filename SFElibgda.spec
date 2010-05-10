@@ -86,6 +86,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/girepository-1.0
 %dir %attr (0755, root, sys) %{_datadir}
 %{_datadir}/libgda*
+%{_datadir}/gir-1.0
 %dir %attr (0755, root, other) %{_datadir}/applications
 %{_datadir}/applications/*
 %dir %attr (0755, root, other) %{_datadir}/icons
@@ -95,6 +96,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/icons/hicolor/*/apps/*
 %dir %attr (0755, root, other) %{_datadir}/pixmaps
 %{_datadir}/pixmaps/*
+%dir %attr (0755, root, other) %{_datadir}/gnome
+%dir %attr (0755, root, bin) %{_datadir}/gnome/help
+%dir %attr (0755, root, bin) %{_datadir}/gnome/help/gda-browser
+%{_datadir}/gnome/help/gda-browser/C
 %dir %attr(0755, root, bin) %{_mandir}
 %dir %attr(0755, root, bin) %{_mandir}/*
 %{_mandir}/*/*
@@ -124,5 +129,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_sysconfdir}/libgda*
 
 %changelog
+* Mon May 10 2010 - halton.huo@sun.com
+- Update %files reflect 4.1.5
 * Sun Jan 18 2009 - halton.huo@sun.com
 - Initial spec

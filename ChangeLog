@@ -1,3 +1,11 @@
+2010-05-10  Halton Huo  <halton.huo@sun.com>
+
+	* SFElibgda.spec: Update %files
+	* base-specs/libgda.spec: Bump to 4.1.5
+	* patches/libgda-01-different-def.diff: Remove upstreamed patch
+	* patches/libgda-02-zero-array.diff: Remove upstreamed patch
+	* patches/libgda-03-missing-libgda-h.diff: Remove upstreamed patch
+
 2010-05-09  Albert Lee  <trisk@opensolaris.org>
 	* patches/opencv-03-sunpro.diff: Typo fix.
 

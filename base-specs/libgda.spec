@@ -12,19 +12,13 @@
 Name:		libgda
 License:        LGPLv2
 Group:		Development/Libraries
-Version:	4.1.4
+Version:	4.1.5
 Release:	1
 Distribution:   Java Desktop System
 Vendor:         Sun Microsystems, Inc.
 URL:		http://www.gnome-db.org/
 Summary:	Library for writing gnome database programs
 Source:		http://download.gnome.org/sources/%{name}/4.1/%{name}-%{version}.tar.bz2
-# date:2010-04-06 type:bug owner:halton bugzilla:614922,614923
-Patch1:         libgda-01-different-def.diff
-# date:2010-04-06 type:bug owner:halton bugzilla:614924
-Patch2:         libgda-02-zero-array.diff
-# date:2010-04-06 type:bug owner:halton bugzilla:607357 state:upstreamed
-Patch3:         libgda-03-missing-libgda-h.diff
 Source1:        libgda-jdbc-MANIFEST.MF
 BuildRoot:      %{_tmppath}/%{name}-%{version}-root
 
@@ -59,9 +53,6 @@ or compile programs that use libgda.
 
 %prep
 %setup -q
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
 
 %build
 %ifos linux
@@ -135,6 +126,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*
 
 %changelog
+* Mon May 10 2010 - halton.huo@sun.com
+- Bump to 4.1.5
 * Tue Apr 06 2010 - halton.huo@sun.com
 - Bump to 4.1.4
 - Add patch libgda-01-different-def.diff to fix bugzilla #614922 and #614923.
