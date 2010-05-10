@@ -15,8 +15,7 @@ Release:	2
 License:	GPL v2
 Group:		X11/Applications
 Source0:	http://dl.sourceforge.net/rox/rox-filer-%{version}.tar.bz2
-# Source0-md5:	56e6a29f2dbdf11d6f4b74a3f03ff959
-#Source1:	          %{name}.desktop
+Source1:	          %{name}.desktop
 #Patch0:		%{name}-01-help.diff
 URL:		http://rox.sourceforge.net/
 URL:           http://roscidus.com/desktop/ROX-Filer
@@ -75,7 +74,7 @@ install rox.xml $RPM_BUILD_ROOT%{_datadir}/mime/packages
 
 install rox.1 $RPM_BUILD_ROOT%{_mandir}/man1
 
-#install %{SOURCE1} $RPM_BUILD_ROOT%{_desktopdir}
+install %{SOURCE1} $RPM_BUILD_ROOT%{_desktopdir}
 
 install ROX-Filer/.DirIcon $RPM_BUILD_ROOT%{_pixmapsdir}/rox.png
 
@@ -102,10 +101,10 @@ find $RPM_BUILD_ROOT \( -name \*.la -o -name \*.a \) -exec rm {} \;
 rm -rf $RPM_BUILD_ROOT
 
 %post
-%restart_fmri gconf-cache desktop-mime-cache icon-cache mime-types-cache
+#%restart_fmri gconf-cache desktop-mime-cache icon-cache mime-types-cache
 
 %postun
-%restart_fmri desktop-mime-cache mime-types-cache
+#%restart_fmri desktop-mime-cache mime-types-cache
 
 %files
 %defattr(644,root,root,755)
@@ -159,6 +158,8 @@ rm -rf $RPM_BUILD_ROOT
 
 %define date	%(echo `LC_ALL="C" date +"%a %b %d %Y"`)
 %changelog
-* Fri May 05 2010 yuntong.jin@sun.com
+* Mon May 07 2010 - yuntong.jin@sun.com
+- add rox.desktop file
+* Fri May 05 2010 - yuntong.jin@sun.com
 - Init spec file
 

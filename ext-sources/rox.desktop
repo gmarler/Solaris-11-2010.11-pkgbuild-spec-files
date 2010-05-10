@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=ROX-Filer
+Comment=File manager
+Comment[pl]=ZarzÄ…dca plikÃ³w
+Exec=rox
+Icon=rox
+Terminal=false
+Type=Application
+Categories=GTK;Utility;FileManager;
+
