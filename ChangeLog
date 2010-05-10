@@ -1,5 +1,9 @@
 2010-05-10  simon Jin <yuntong.jin@sun.com>
 
+	* SFErox-System.spec: Init spec file
+
+2010-05-10  simon Jin <yuntong.jin@sun.com>
+
 	* SFErox-session.spec: Init spec file
 
 2010-05-10  Halton Huo  <halton.huo@sun.com>
