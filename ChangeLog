@@ -1,6 +1,7 @@
 2010-05-10 Milan Jurik <sfnet@xylab.cz>
 
 	* SFElibgda.spec: added missing build dependencies
+	* SFEassaultcube.spec: GCC is used
 
 2010-05-10  simon Jin <yuntong.jin@sun.com>
 

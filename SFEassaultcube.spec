@@ -5,6 +5,8 @@
 #
 %include Solaris.inc
 
+%define cc_is_gcc 1
+
 %define src_name	AssaultCube
 %define src_url		http://switch.dl.sourceforge.net/sourceforge/actiongame
 %define src_ver		1.0.2
@@ -69,6 +71,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/assaultcube
 
 %changelog
+* Mon May 10 2010 - Milan Jurik
+- GCC is used
 * Sun May 09 2010 - Milan Jurik
 - added missing build dependency
 * Sun Sep 06 2009 - drdoug007@gmail.com
