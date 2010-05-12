@@ -22,6 +22,7 @@ Requires: SUNWlibpcap
 BuildRequires: SUNWlibpcap
 Requires: SUNWlibnet
 BuildRequires: SUNWlibnet
+BuildRequires: SUNWgnome-common-devel
 
 %description
 libnids is an implementation of an E-component of Network Intrusion
