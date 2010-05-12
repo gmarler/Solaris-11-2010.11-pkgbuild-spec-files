@@ -10,7 +10,7 @@
 
 Summary:	NIDS E-component.
 Name:		SFElibnids
-Version:	1.23
+Version:	1.24
 License:	GPL
 Group:		System Environment/Libraries
 URL:		http://libnids.sourceforge.net
@@ -76,6 +76,8 @@ rm -rf $RPM_BUILD_ROOT
 %_mandir/man3/*
 
 %changelog
+* Wed May 12 2010 - Milan Jurik
+- update to 1.24
 * Thu Sep 17 2009 - Milan Jurik
 - cleanup of linker problems
 * Sun Sep 13 2009 - Milan Jurik

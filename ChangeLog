@@ -1,3 +1,7 @@
+2010-05-12 Milan Jurik <sfnet@xylab.cz>
+
+	* SFElibnids.spec: update to 1.24
+
 2010-05-10 Milan Jurik <sfnet@xylab.cz>
 
 	* SFElibgda.spec: added missing build dependencies
