@@ -27,6 +27,8 @@ Requires: SUNWopenssl-libraries
 BuildRequires: SUNWopenssl-include
 Requires: SFEbdb
 BuildRequires: SFEbdb
+Requires: SFElibnids
+BuildRequires: SFElibnids-devel
 
 %description
 dsniff is a collection of tools for network auditing and penetration testing.
@@ -67,6 +69,8 @@ rm -rf $RPM_BUILD_ROOT
 %_mandir/man1m/*
 
 %changelog
+* Wed May 12 2010 - Milan Jurik
+- added SFElibnids to deps
 * Thu Sep 17 2009 - Milan Jurik
 - cleanup of linker problems
 * Mon Sep 14 2009 - Milan Jurik
