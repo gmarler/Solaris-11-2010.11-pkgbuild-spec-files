@@ -2,6 +2,7 @@
 
 	* SFElibnids.spec: update to 1.24
 	* SFEdsniff.spec: added SFElibnids to deps
+	* SFEtun.spec: update according the latest upstream, IPS support added
 
 2010-05-10 Milan Jurik <sfnet@xylab.cz>
 

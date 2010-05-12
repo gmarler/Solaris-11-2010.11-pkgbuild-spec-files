@@ -15,7 +15,6 @@ Name:		SFEtun
 Summary:	Virtual Point-to-Point network device
 Version:	1.1
 Source:		%{src_url}/%{src_name}.tar.gz
-Patch1:		tun-01-solaris.diff
 SUNW_BaseDir:	%{_basedir}
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -28,12 +27,18 @@ Requires:                %{name}
 
 %prep
 %setup -q -n %{src_name}
-%patch1 -p1
 
 %build
 autoconf -f
-./configure --prefix=%{_prefix}
+./configure
 make
+%ifarch sparcv9 amd64
+mv tun tun64
+mv tap tap64
+make clean
+./configure --disable-64bit
+make
+%endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -64,6 +69,10 @@ rm -rf $RPM_BUILD_ROOT
   exit 0
 )
 
+%actions
+driver name=tun
+driver name=tap
+
 %files
 %defattr (-, root, bin)
 %dir %attr (0755, root, bin) %{_includedir}
@@ -82,6 +91,9 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Wed May 12 2010 - Milan Jurik
+- update according the latest upstream
+- IPS support added
 * Wed Oct  3 2007 - Doug Scott
 - Added base spec
 - Updated to build tap from latest source
