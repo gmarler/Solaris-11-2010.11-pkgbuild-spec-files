@@ -25,6 +25,7 @@ BuildRequires: SFEgoocanvas-devel
 Requires: SUNWPython
 Requires: SUNWgnome-python-libs
 Requires: SFEgoocanvas
+BuildRequires: SUNWgnome-common-devel
 
 %package devel
 Summary:                 %{summary} - development files
@@ -81,6 +82,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu May 13 2010 - Milan Jurik
+- added build dependency
 * Mon Jun 15 2009 - halton.huo@sun.com
 - Bump to 0.14.1
 - Use GNOME download url
