@@ -18,13 +18,15 @@ Source:              %{sf_download}/opencvlibrary/files/%{src_name}-%{version}.t
 Patch1:              opencv-01-namespace.diff
 Patch2:              opencv-02-stdc.diff
 Patch3:              opencv-03-sunpro.diff
+Patch4:              opencv-04-v4l2.diff
+Patch5:              opencv-05-static.diff
 URL:                 http://www.opencv.org/
 
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 Requires: SUNWlibC
-Requires: SUNWzlib
+Requires: SUNWlibms
 Requires: SUNWpng
 BuildRequires: SUNWpng-devel
 Requires: SUNWjpg
@@ -58,6 +60,8 @@ Requires: %name
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
+%patch5 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -66,26 +70,47 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
 fi
 
 export CXX="$CXX -norunpath"
-export CFLAGS="%{optflags}"
-export CXXFLAGS="%{cxx_optflags}"
+export CFLAGS="%{optflags} -mt -xlibmil -xlibmopt"
+export CXXFLAGS="%{cxx_optflags} -mt -xlibmil -xlibmopt -features=tmplife"
 export LDFLAGS="%{_ldflags} -lCrun -lCstd"
+CMAKE_C_FLAGS_RELEASE="-xO4 -DNDEBUG" # override -xO2 from CMake
+CMAKE_CXX_FLAGS_RELEASE="-xO4 -DNDEBUG" # override -xO2 from CMake
+
+%ifarch i386 amd64
+# Intel Integrated Performance Primitives
+%if %{?_with_ipp:1}%{?!_with_ipp:0}
+export CXXFLAGS="$CXXFLAGS -features=tmplrefstatic"
+if [ -n "$IPP_PATH" ]; then
+  for dir in /opt/intel/ipp/*/{ia,lp}32/sharedlib ""; do
+    if [ -d "$dir" ]; then
+      IPP_PATH=$dir
+      break
+    fi
+done
+fi
+%endif
+%endif
 
 cmake	\
-	-DCMAKE_INSTALL_PREFIX=%{_prefix}		\
-	-DCMAKE_SKIP_RPATH=1				\
-	-DBUILD_SWIG_PYTHON_SUPPORT=1			\
-	-DBUILD_EXAMPLES=0				\
-	-DBUILD_TESTS=0				\
-	%{?_without_gstreamer:-DWITH_GSTREAMER=0}	\
-	%{!?_with_ffmpeg:-DWITH_FFMPEG=0}		\
-	-DWITH_1394=0					\
-	-DWITH_JASPER=0
-
-make VERBOSE=1 -j$CPUS
+	-DCMAKE_C_FLAGS_RELEASE="$CMAKE_C_FLAGS_RELEASE"	\
+	-DCMAKE_CXX_FLAGS_RELEASE="$CMAKE_CXX_FLAGS_RELEASE"	\
+	-DCMAKE_INSTALL_PREFIX=%{_prefix}			\
+	-DCMAKE_SKIP_RPATH=ON					\
+	-DBUILD_SWIG_PYTHON_SUPPORT=ON				\
+	-DBUILD_EXAMPLES=OFF					\
+	-DBUILD_TESTS=OFF					\
+	%{?_without_gstreamer:-DWITH_GSTREAMER=OFF}		\
+	%{!?_with_ffmpeg:-DWITH_FFMPEG=OFF}			\
+	-DWITH_1394=OFF						\
+	-DWITH_JASPER=OFF					\
+	%{?_with_ipp:-DUSE_IPP=ON}				\
+	%{?_with_ipp:-DIPP_PATH="$IPP_PATH"}
 
 # CR 6860429 cmake installs everything in ./sfw_stage - CMAKE_INSTALL_PREFIX is not used
 find . -name Makefile | \
     xargs perl -pi -e 's,-D CMAKE_INSTALL_PREFIX=./sfw_stage/,,g'
+
+make VERBOSE=1 -j$CPUS
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -136,5 +161,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_docdir}/opencv/*
 
 %changelog
+* Wed May 12 2010 - Albert Lee <trisk@opensolaris.org>
+- Update compiler options
+- Add support for Intel Integrated Performance Primitives
+- Apply patch4
+- Add patch5
 * Sun May 09 2010 - Albert Lee <trisk@opensolaris.org>
 - Initial spec

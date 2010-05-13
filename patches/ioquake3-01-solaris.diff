@@ -26,6 +26,14 @@
    ifneq ($(ARCH),i386)
      ifneq ($(ARCH),sparc)
        $(error arch $(ARCH) is currently not supported)
+@@ -732,7 +732,6 @@
+     HAVE_VM_COMPILED=true
+     BASE_CFLAGS += -m32
+     BASE_CFLAGS += -I/usr/X11/include/NVIDIA
+-    CLIENT_LDFLAGS += -L/usr/X11/lib/NVIDIA -R/usr/X11/lib/NVIDIA
+   endif
+   endif
+ 
 --- ioquake3-1.34-r1127.orig/code/renderer/tr_bsp.c	2007年  9月 18日 二 18:47:11
 +++ ioquake3-1.34-r1127/code/renderer/tr_bsp.c	2007年  9月 18日 二 21:32:11
 @@ -1316,7 +1316,7 @@

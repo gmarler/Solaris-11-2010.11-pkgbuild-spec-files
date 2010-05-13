@@ -1,3 +1,15 @@
+2010-05-13  Albert Lee  <trisk@opensolaris.org>
+
+	* SFEblender.spec: Bump to 2.49b. Update Python version to 2.6. Fix
+	  install on non-amd64. Create wrapper at build time.
+	* SFEopencv.spec: Update compiler options. Add support for Intel
+	  Integrated Performance Primitives. Apply patch4. Add patch5.
+	* ext-sources/blender-01.sh: Deleted.
+	* patches/ioquake3-01-solaris.diff: Don't force NVIDIA libGL.
+	* patches/opencv-04-v4l2.diff: Fix CMake tests. Clean up #ifdefs.
+	* patches/opencv-05-static.diff: Inline static functions used by
+	  templates.
+
 2010-05-12 Milan Jurik <sfnet@xylab.cz>
 
 	* SFElibnids.spec: update to 1.24

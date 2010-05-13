@@ -3,22 +3,26 @@
 
 %include Solaris.inc
 
+%define python_version 2.6
+%define src_version 2.49b
+%define src_url http://download.blender.org/source
+
 Name:           SFEblender
-Summary:        blender
-Version:        2.49
-Source:		http://download.blender.org/source/blender-%{version}.tar.gz
-Source1:	blender-01.sh
+Summary:        Blender - Open source 3D creation tools
+Version:        2.49.2
+Source:		%{src_url}/blender-%{src_version}.tar.gz
 Patch1:		blender-01-build.diff
 Patch2:		blender-02-install.diff
 Patch3:		blender-03-union.diff
 SUNW_BaseDir:   %{_basedir}
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %include	default-depend.inc
-#Requires:	%name-root
 Requires: 	SUNWlibsdl
 Requires: 	SUNWopenexr
 Requires: 	SUNWilmbase
+%ifarch i386 amd64
 Requires: 	SUNWxorg-mesa
+%endif
 Requires: 	SUNWfreetype2
 Requires: 	SUNWpng
 BuildRequires: 	SUNWTiff
@@ -47,7 +51,7 @@ Requires:        %{name}
 
 %prep
 %setup -q -c -n %{name}
-cd blender-%{version}
+cd blender-%{src_version}
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
@@ -58,7 +62,7 @@ NAN_NO_KETSJI=true
 export NAN_NO_KETSJI
 NAN_OPENEXR=/usr 
 export NAN_OPENEXR
-NAN_PYTHON_VERSION=2.4
+NAN_PYTHON_VERSION=%{python_version}
 export NAN_PYTHON_VERSION
 NAN_PYTHON=/usr
 export NAN_PYTHON
@@ -73,20 +77,13 @@ export NAN_ZLIB
 NOPLUGINS=true
 export NOPLUGINS
 
-
-#PROTO_LIB=$RPM_BUILD_DIR/%{name}/usr/X11/lib
-#PROTO_INC=$RPM_BUILD_DIR/%{name}/usr/X11/include
-#PROTO_PKG=$RPM_BUILD_DIR/%{name}/usr/X11/lib/pkgconfig
-
 export PKG_CONFIG_PATH="$PROTO_PKG"
-#export CC=/usr/sfw/bin/gcc
-#export LDFLAGS="-L$PROTO_LIB -L/usr/X11/lib -R/usr/X11/lib"
+export CFLAGS="%optflags"
+export CXXFLAGS="%cxx_optflags"
 
-cd blender-%{version}
+cd blender-%{src_version}
 
-#export LDFLAGS="-L$PROTO_LIB -L/usr/X11/lib -L/usr/openwin/lib -R/usr/X11/lib -R/usr/openwin/lib -lX11 -lXext"
-
-gmake
+gmake REL_CFLAGS="$CFLAGS -DNDEBUG" REL_CCFLAGS="$CXXFLAGS -DNDEBUG"
 
 %install
 
@@ -94,7 +91,7 @@ NAN_NO_KETSJI=true
 export NAN_NO_KETSJI
 NAN_OPENEXR=/usr 
 export NAN_OPENEXR
-NAN_PYTHON_VERSION=2.4
+NAN_PYTHON_VERSION=%{python_version}
 export NAN_PYTHON_VERSION
 NAN_PYTHON=/usr
 export NAN_PYTHON
@@ -111,33 +108,52 @@ export NOPLUGINS
 
 rm -rf $RPM_BUILD_ROOT
 #mkdir -p $RPM_BUILD_ROOT%{_libdir}/pkgconfig
-cd blender-%{version}
+cd blender-%{src_version}
 gmake release
-cd obj/blender-2.49.0-solaris-2.11-x86_64-py2.4
+# x86_64, i386, etc.
+cd obj/blender-%{version}-solaris-2.11-*-py%{python_version}
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/blender
-#chown root:bin $RPM_BUILD_ROOT%{_datadir}/blender
 
-for f in blender.html BlenderQuickStart.pdf copyright.txt GPL-license.txt Python-license.txt release_248.txt ; do
+for f in blender.html BlenderQuickStart.pdf copyright.txt GPL-license.txt Python-license.txt release_`echo '%{src_version}' | tr -d '[a-z.]'`.txt ; do
    install -m 0644 $f $RPM_BUILD_ROOT%{_datadir}/blender
 done
 
-install -d -m 0755 $RPM_BUILD_ROOT/%{_bindir}
-install -m 0755 blender $RPM_BUILD_ROOT%{_bindir}
-mv $RPM_BUILD_ROOT%{_bindir}/blender $RPM_BUILD_ROOT%{_bindir}/blender.exe
 cd .blender
 tar cf - . | (cd $RPM_BUILD_ROOT%{_datadir}/blender ; tar xfp -)
-
 cd ..
-cp %{SOURCE1} $RPM_BUILD_ROOT%{_bindir}/blender
-chmod 0755 $RPM_BUILD_ROOT%{_bindir}/blender
-#chown root:bin $RPM_BUILD_ROOT%{_bindir}/blender
 
+install -d -m 0755 $RPM_BUILD_ROOT/%{_bindir}
+install -m 0755 blender $RPM_BUILD_ROOT%{_bindir}/blender-bin
+cat > blender.sh <<EOF
+#!/bin/sh
+# Idea from pkgsrc GD 20080916
+
+BLENDER_DATA="%{_datadir}/blender"
+BLENDER_HOME="\${HOME}/.blender"
+
+if  [ ! -d "\${BLENDER_HOME}" ]; then
+	echo "Softlinking \$BLENDER_HOME to point to global \$BLENDER_DATA settings."
+	mkdir -p "\${BLENDER_HOME}"
+	mkdir -p "\${BLENDER_HOME}/scripts"
+	ln -s "\${BLENDER_DATA}/.Blanguages" "\${BLENDER_HOME}/.Blanguages"
+	ln -s "\${BLENDER_DATA}/.bfont.ttf" "\${BLENDER_HOME}/.bfont.ttf"
+fi
+
+# Check for new scripts
+(cd "\${BLENDER_DATA}" && for file in *; do
+	[ -r "\${BLENDER_HOME}/\${file}" ] || \
+		ln -s "\${BLENDER_DATA}/\${file}" "\${BLENDER_HOME}/\${file}"
+done)
+
+exec /usr/bin/blender-bin "\$@"
+EOF
+
+install -m 0755 blender.sh $RPM_BUILD_ROOT%{_bindir}/blender
 
 #%if %build_l10n
 #%else
 #rm -rf $RPM_BUILD_ROOT%{_datadir}/locale
 #%endif
-
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -145,8 +161,8 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr (-, root, bin)
 %dir %attr (0755, root, bin) %{_bindir}
-%{_bindir}/blender.exe
-%attr(0755, root, bin) %{_bindir}/blender
+%{_bindir}/blender-bin
+%{_bindir}/blender
 %dir %attr(0755, root, sys) %{_datadir}
 %dir %attr(0755, root, bin) %{_datadir}/blender
 %{_datadir}/blender/*
@@ -162,6 +178,11 @@ rm -rf $RPM_BUILD_ROOT
 #%endif
 
 %changelog
+* Wed May 12 2010 - Albert Lee <trisk@opensolaris.org>
+- Bump to 2.49b
+- Update Python version to 2.6
+- Fix install on non-amd64
+- Create wrapper at build time
 * Jue  17 2009 - Simonjin
 - Bump to 2.49, and update the patch blender-01-build.diff
 * April 2009 - Gilles dauphin

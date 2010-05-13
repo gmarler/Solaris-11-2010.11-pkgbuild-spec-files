@@ -1,0 +1,64 @@
+--- OpenCV-2.1.0.orig/src/cxcore/cxdxt.cpp	2010-04-05 21:24:44.000000000 -0400
++++ OpenCV-2.1.0/src/cxcore/cxdxt.cpp	2010-05-13 01:25:31.114860092 -0400
+@@ -455,53 +455,53 @@
+ #endif
+ 
+ #ifdef HAVE_IPP
+-static void ippsDFTFwd_CToC( const Complex<float>* src, Complex<float>* dst,
++static inline void ippsDFTFwd_CToC( const Complex<float>* src, Complex<float>* dst,
+                              const void* spec, uchar* buf)
+ {
+     ippsDFTFwd_CToC_32fc( (const Ipp32fc*)src, (Ipp32fc*)dst,
+                           (const IppsDFTSpec_C_32fc*)spec, buf); 
+ }
+ 
+-static void ippsDFTFwd_CToC( const Complex<double>* src, Complex<double>* dst,
++static inline void ippsDFTFwd_CToC( const Complex<double>* src, Complex<double>* dst,
+                              const void* spec, uchar* buf)
+ {
+     ippsDFTFwd_CToC_64fc( (const Ipp64fc*)src, (Ipp64fc*)dst,
+                           (const IppsDFTSpec_C_64fc*)spec, buf); 
+ }
+ 
+-static void ippsDFTInv_CToC( const Complex<float>* src, Complex<float>* dst,
++static inline void ippsDFTInv_CToC( const Complex<float>* src, Complex<float>* dst,
+                              const void* spec, uchar* buf)
+ {
+     ippsDFTInv_CToC_32fc( (const Ipp32fc*)src, (Ipp32fc*)dst,
+                           (const IppsDFTSpec_C_32fc*)spec, buf); 
+ }
+ 
+-static void ippsDFTInv_CToC( const Complex<double>* src, Complex<double>* dst,
++static inline void ippsDFTInv_CToC( const Complex<double>* src, Complex<double>* dst,
+                              const void* spec, uchar* buf)
+ {
+     ippsDFTInv_CToC_64fc( (const Ipp64fc*)src, (Ipp64fc*)dst,
+                           (const IppsDFTSpec_C_64fc*)spec, buf); 
+ }
+ 
+-static void ippsDFTFwd_RToPack( const float* src, float* dst,
++static inline void ippsDFTFwd_RToPack( const float* src, float* dst,
+                                 const void* spec, uchar* buf)
+ {
+     ippsDFTFwd_RToPack_32f( src, dst, (const IppsDFTSpec_R_32f*)spec, buf); 
+ }
+ 
+-static void ippsDFTFwd_RToPack( const double* src, double* dst,
++static inline void ippsDFTFwd_RToPack( const double* src, double* dst,
+                                 const void* spec, uchar* buf)
+ {
+     ippsDFTFwd_RToPack_64f( src, dst, (const IppsDFTSpec_R_64f*)spec, buf); 
+ }
+ 
+-static void ippsDFTInv_PackToR( const float* src, float* dst,
++static inline void ippsDFTInv_PackToR( const float* src, float* dst,
+                                 const void* spec, uchar* buf)
+ {
+     ippsDFTInv_PackToR_32f( src, dst, (const IppsDFTSpec_R_32f*)spec, buf); 
+ }
+ 
+-static void ippsDFTInv_PackToR( const double* src, double* dst,
++static inline void ippsDFTInv_PackToR( const double* src, double* dst,
+                                 const void* spec, uchar* buf)
+ {
+     ippsDFTInv_PackToR_64f( src, dst, (const IppsDFTSpec_R_64f*)spec, buf); 
