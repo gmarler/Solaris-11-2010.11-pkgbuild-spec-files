@@ -26,6 +26,8 @@ Requires: SUNWPython
 Requires: SUNWgnome-python-libs
 Requires: SFEgoocanvas
 BuildRequires: SUNWgnome-common-devel
+BuildRequires: SUNWgtk-doc
+BuildRequires: SUNWgnome-xml
 
 %package devel
 Summary:                 %{summary} - development files
