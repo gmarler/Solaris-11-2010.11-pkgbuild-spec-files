@@ -1,6 +1,7 @@
 2010-05-14 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEopenal.spec: use OSS/Boomer as main audio interface
+	* experimental/SFEllvm.spec: Initial SFE import, not buildable yet
 
 2010-05-13  Albert Lee  <trisk@opensolaris.org>
 
