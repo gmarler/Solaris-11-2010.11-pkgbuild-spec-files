@@ -10,7 +10,8 @@
 %define src_name	openal-soft
 %define src_url		http://connect.creativelabs.com/openal/Downloads
 
-%define SUNWcmake      %(/usr/bin/pkginfo -q SUNWcmake && echo 1 || echo 0)
+%define SFEcmake	%(/usr/bin/pkginfo -q SFEcmake && echo 1 || echo 0)
+%define with_libaudioio	%(pkginfo -q SFElibaudioio && echo 1 || echo 0)
 
 Name:                   SFEopenal
 Summary:                OpenAL is a cross-platform 3D audio API
@@ -27,11 +28,17 @@ BuildRoot:              %{_tmppath}/%{name}-%{version}-build
 
 BuildRequires: SUNWlibms
 Requires: SUNWlibms
+BuildRequires: SUNWaudh
 
-%if %SUNWcmake
-BuildRequires: SUNWcmake
-%else
+%if %with_libaudioio
+BuildRequires: SFElibaudioio-devel
+Requires: SFElibaudioio
+%endif
+
+%if %SFEcmake
 BuildRequires: SFEcmake
+%else
+BuildRequires: SUNWcmake
 %endif
 
 #%ifarch i386
@@ -90,6 +97,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*
 
 %changelog
+* Fri May 14 2010 - Milan Jurik
+- use OSS/Boomer as main audio interface
 * Sun Apr 11 2010 - Milan Jurik
 - update to 1.11.753
 - once again reverting install because it is not working for all make commands and across openal versions
