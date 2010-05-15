@@ -8,7 +8,7 @@
 %define src_name	supertux
 %define src_url		http://download.berlios.de/supertux
 
-Name:                   SFEsupertux
+Name:                   SFEsupertux2
 Summary:                Super Tux Game
 Version:                0.3.3
 Source:                 %{src_url}/%{src_name}-%{version}.tar.bz2
