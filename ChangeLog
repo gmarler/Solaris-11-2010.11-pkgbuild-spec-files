@@ -1,6 +1,7 @@
 2010-05-15 Milan Jurik <sfnet@xylab.cz>
 
 	* SFElibglew.spec: Initial package
+	* SFEsupertux2.spec: update to 0.3.3 and rename to supertux2 because it is unstable yet
 
 2010-05-14 Milan Jurik <sfnet@xylab.cz>
 
