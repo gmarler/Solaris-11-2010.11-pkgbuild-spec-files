@@ -1,0 +1,24 @@
+--- smpeg-0.4.4/video/video.h	2010-05-16 11:32:44.602804910 +0200
++++ smpeg-0.4.4-patch/video/video.h	2010-05-16 11:32:35.078565445 +0200
+@@ -370,6 +370,10 @@
+ extern unsigned int cacheMiss[8][8];
+ #endif
+ 
++#if !defined(__i386__) && defined(__i386)
++#define __i386__
++#endif
++
+ #if !defined(__MIPSEL__) && (defined(MIPSEL) || defined(__MIPSEL) || defined(__MIPSEL__) || defined(__mipsel) || defined(__mipsel__))
+ #define __MIPSEL__ 1
+ #endif
+--- smpeg-0.4.4/Makefile.in	Mon Jun 18 22:59:14 2001
++++ smpeg-0.4.4-patch/Makefile.in	Sun May 16 19:43:46 2010
+@@ -310,7 +310,7 @@
+ 
+ plaympeg: $(plaympeg_OBJECTS) $(plaympeg_DEPENDENCIES)
+ 	@rm -f plaympeg
+-	$(LINK) $(plaympeg_LDFLAGS) $(plaympeg_OBJECTS) $(plaympeg_LDADD) $(LIBS)
++	$(LINK) $(plaympeg_LDFLAGS) $(plaympeg_OBJECTS) $(plaympeg_LDADD) $(LIBS) -lCrun
+ 
+ gtv: $(gtv_OBJECTS) $(gtv_DEPENDENCIES)
+ 	@rm -f gtv
