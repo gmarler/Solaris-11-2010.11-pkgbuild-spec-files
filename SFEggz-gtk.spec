@@ -25,6 +25,7 @@ Requires: SUNWgnome-base-libs
 Requires: SUNWgnome-games
 BuildRequires: SUNWgnome-base-libs-devel
 BuildRequires: SUNWgnome-games-devel
+BuildRequires: SUNWgnome-common-devel
 
 %package devel
 Summary:       %{summary} - development files
