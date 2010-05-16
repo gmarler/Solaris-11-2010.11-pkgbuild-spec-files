@@ -34,6 +34,14 @@ Requires: SFEsdl
 %endif
 BuildRequires: SUNWogg-vorbis-devel
 Requires: SUNWogg-vorbis
+BuildRequires: SFElibmikmod-devel
+Requires: SFElibmikmod
+BuildRequires: SUNWflac-devel
+Requires: SUNWflac
+BuildRequires: SUNWspeex-devel
+Requires: SUNWspeex
+BuildRequires: SFEphysfs-devel
+Requires: SFEphysfs
 
 %package devel
 Summary:                 %{summary} - development files
@@ -113,6 +121,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/SDL/
 
 %changelog
+* Sun May 16 2010 - Milan Jurik
+- added missing build dependencies
 * Tue Mar 02 2010 - matt@greenviolet.net
 - Update packaging
 * Tue Dec 30 2008 - brian.cameron@sun.com

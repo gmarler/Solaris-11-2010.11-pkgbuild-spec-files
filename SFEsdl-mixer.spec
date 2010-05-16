@@ -36,7 +36,7 @@ Requires: SUNWlibsdl
 %endif
 BuildRequires: SFElibmikmod-devel
 Requires: SFElibmikmod
-BuildRequires: SUNWogg-vorbis
+BuildRequires: SUNWogg-vorbis-devel
 Requires: SUNWogg-vorbis
 BuildRequires: SUNWflac-devel
 Requires: SUNWflac

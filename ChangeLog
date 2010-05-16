@@ -2,6 +2,7 @@
 
 	* SFEsdl-mixer.spec: added libmikmod for MOD support
 	* SFEsupertux.spec: readded stable supertux version to SFE
+	* SFEsdl-sound.spec: added missing build dependencies
 
 2010-05-15 Milan Jurik <sfnet@xylab.cz>
 
