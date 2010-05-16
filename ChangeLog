@@ -4,6 +4,7 @@
 	* SFEsupertux.spec: readded stable supertux version to SFE
 	* SFEsdl-sound.spec: added missing build dependencies
 	* SFEggz-gtk.spec: added missing build dependency
+	* SFEfreeciv.spec: added missing build dependency
 
 2010-05-15 Milan Jurik <sfnet@xylab.cz>
 

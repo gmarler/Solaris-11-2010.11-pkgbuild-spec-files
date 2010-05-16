@@ -34,6 +34,7 @@ Requires:       SFEsdl-mixer
 Requires:       SFEggz-gtk
 BuildRequires:  SFEsdl-mixer-devel
 BuildRequires:  SFEggz-gtk-devel
+BuildRequires:	SUNWgnome-common-devel
 
 %package root
 Summary:       %{summary} - / filesystem
