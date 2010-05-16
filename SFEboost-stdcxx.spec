@@ -16,7 +16,7 @@
 %define _docdir %{_datadir}/doc
 
 %define        major      1
-%define        minor      40
+%define        minor      43
 %define        patchlevel 0
 %define src_url http://easynews.dl.sourceforge.net/sourceforge/boost
 
@@ -27,8 +27,8 @@ License:             Boost Software License
 Source:              %{src_url}/boost_%{major}_%{minor}_%{patchlevel}.tar.bz2
 Patch1:              boost-01-studio.diff
 Patch2:              boost-02-gcc34.diff
-Patch3:              boost-03-fixinclude.diff
-Patch4:              boost-04-fixthread.diff
+#Patch3:              boost-03-fixinclude.diff
+#Patch4:              boost-04-fixthread.diff
 URL:                 http://www.boost.org/
 
 SUNW_BaseDir:        %{_basedir}
@@ -38,7 +38,7 @@ BuildRequires: SUNWicu
 BuildRequires: SUNWicud
 BuildRequires: SUNWPython
 Requires: SUNWicu
-Requires: SFEstdcxx
+Requires: stdcxx
 
 %package devel
 Summary:        %{summary} - development files
@@ -49,8 +49,8 @@ SUNW_BaseDir:   %{_basedir}
 %setup -q -n boost_%{major}_%{minor}_%{patchlevel}
 %patch1 -p1
 %patch2 -p1
-%patch3 -p1
-%patch4 -p1
+#%patch3 -p1
+#%patch4 -p1
 
 %build
 
@@ -140,6 +140,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_docdir}/boost-%{version}/*
 
 %changelog
+* Sun May 16 2010 - sobotkap@gmail.com
+- Bump version to 1.43
 * Wed Nov 04 2009 - sobotkap@gmail.com
 - Bump version to 1.40.0
 * Tue Oct 06 2009 - sobotkap@gmail.com

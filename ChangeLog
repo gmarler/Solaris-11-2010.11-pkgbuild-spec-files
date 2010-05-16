@@ -1,3 +1,7 @@
+2010-05-16  Petr Sobotka  <sobotkap@gmail.com>
+
+	* SFEboost-stdcxx.spec: Bump to version 1.43
+
 2010-05-16 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEsdl-mixer.spec: added libmikmod for MOD support
