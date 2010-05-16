@@ -11,6 +11,7 @@
 	* SFEfreeciv.spec: added missing build dependency
 	* SFEnexuiz.spec: added to SFE and update to 2.52
 	* encumbered/SFEsmpeg.spec: initial import to SFE
+	* SFEquesoglc.spec: initial import to SFE, update to 0.7.2
 
 2010-05-15 Milan Jurik <sfnet@xylab.cz>
 
