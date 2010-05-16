@@ -85,7 +85,7 @@ if [ ! -r %{_datadir}/ioquake3/baseq3/pak0.pk3 ]; then
   echo ""
   echo "To install pak0.pk3 from your Quake III: Arena CD-ROM, run:"
   echo "  cd /media/Quake3 (or the location of your CD-ROM)"
-  echo "  cp Quake3/baseq3/pak0.pk3 %{_datadir}/ioquake3/baseq3/pak0.pak"
+  echo "  cp Quake3/baseq3/pak0.pk3 %{_datadir}/ioquake3/baseq3/pak0.pk3"
   echo "Alternatively, you can use pak0.pk3 from the Quake III: Arena Demo"
   exit 1
 fi
@@ -117,6 +117,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/ioquake3
 
 %changelog
+* Sun May 16 2010 - Milan Jurik
+- fix typo
 * Mon May 03 2010 - Albert Lee <trisk@opensolaris.org>
 - Bump to 1.36
 - Try openal-soft and make OpenAL optional, use SUNWcurl

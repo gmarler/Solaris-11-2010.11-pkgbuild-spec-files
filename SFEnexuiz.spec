@@ -35,6 +35,7 @@ BuildRequires:	SUNWxwinc
 BuildRequires:	SUNWxorg-headers
 BuildRequires:	NVDAgraphics
 BuildRequires:	SUNWxorg-mesa
+BuildRequires:	SUNWzip
 
 # OpenSolaris IPS Manifest Fields
 Meta(info.upstream):	 	Alientrap
