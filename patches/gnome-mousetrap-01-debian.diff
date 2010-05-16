@@ -1,0 +1,643 @@
+diff --git a/debian/changelog b/debian/changelog
+new file mode 100644
+--- /dev/null
++++ b/debian/changelog
+@@ -0,0 +1,50 @@
++gnome-mousetrap (0.3+zgit2872572a-2) unreleased; urgency=low
++
++  * debian/control: Bump Standards-Version to 3.8.4 (no change needed).
++  * src/mouseTrap/ocvfw.py: Apply upstream fix for OpenCV 2
++    (Closes: Bug#568858).
++
++ -- Samuel Thibault <sthibault@debian.org>  Tue, 09 Feb 2010 00:21:14 +0100
++
++gnome-mousetrap (0.3+zgit2872572a-1) unstable; urgency=low
++
++  * Git snapshot, equivalent to 0.3+svn17.
++  * debian/copyright: Fix copyright sign.
++  * debian/rules: Run ./autogen.sh at build time.
++  * debian/control:
++    - Add ${misc:Depends}.
++    - Add autoconf, automake, gnome-common, and libglib2.0-dev Build-Depends.
++
++ -- Samuel Thibault <sthibault@debian.org>  Tue, 12 Jan 2010 23:39:11 +0100
++
++gnome-mousetrap (0.3+svn17-4) unstable; urgency=low
++
++  * debian/control:
++    - Bump Standards-Version to 3.8.3 (no change needed).
++    - Set priority to extra since we depend on python-xlib which is extra.
++
++ -- Samuel Thibault <sthibault@debian.org>  Tue, 18 Aug 2009 23:41:49 +0200
++
++gnome-mousetrap (0.3+svn17-3) unstable; urgency=low
++
++  * debian/control:
++    - Change my email, remove DM-Upload-Allowed, add Vcs-Git and Vcs-Browser.
++    - Bump Standards-Version to 3.8.2 (no change needed).
++    - Build-Depend on python-all-dev instead of python2.5 and python-dev.
++  * debian/pyversions: Allow version greater than 2.5 (Closes: Bug#534802),
++    thanks Alessio Treglia!
++
++ -- Samuel Thibault <sthibault@debian.org>  Sat, 27 Jun 2009 22:26:00 +0200
++
++gnome-mousetrap (0.3+svn17-2) unstable; urgency=low
++
++  * Make mouseTrap.py create .mouseTrap/ as soon as possible, and create the
++    config file not only when .mouseTrap/ does not exist. (Closes: #526642)
++
++ -- Samuel Thibault <samuel.thibault@ens-lyon.org>  Sat, 02 May 2009 00:00:00 +0200
++
++gnome-mousetrap (0.3+svn17-1) unstable; urgency=low
++
++  * Initial release (Closes: #513757)
++
++ -- Samuel Thibault <samuel.thibault@ens-lyon.org>  Thu, 05 Feb 2009 20:12:30 +0100
+diff --git a/debian/compat b/debian/compat
+new file mode 100644
+--- /dev/null
++++ b/debian/compat
+@@ -0,0 +1,1 @@
++7
+diff --git a/debian/control b/debian/control
+new file mode 100644
+--- /dev/null
++++ b/debian/control
+@@ -0,0 +1,19 @@
++Source: gnome-mousetrap
++Section: gnome
++Priority: extra
++Maintainer: Debian Accessibility Team <debian-accessibility@lists.debian.org>
++Uploaders: Samuel Thibault <sthibault@debian.org>
++Build-Depends: debhelper (>= 7), autotools-dev, autoconf, automake, gettext, intltool, libtool, gnome-common, libglib2.0-dev, python-all-dev, python-support, python-xlib, python-pyatspi, python-opencv
++Standards-Version: 3.8.4
++Vcs-Git: git://git.debian.org/git/pkg-a11y/gnome-mousetrap
++Vcs-Browser: http://git.debian.org/?p=pkg-a11y/gnome-mousetrap.git
++Homepage: http://live.gnome.org/MouseTrap
++
++Package: gnome-mousetrap
++Architecture: all
++Depends: ${misc:Depends}, ${python:Depends}, python-xlib, python-pyatspi, python-opencv
++Description: Head tracked mouse control
++ MouseTrap permits people with movements impairments to access the computer.
++ It uses image processing to translate the user's head movements into
++ mouse events (movements, clicks) which allow users to interact with
++ the different desktops managers and applications.
+diff --git a/debian/copyright b/debian/copyright
+new file mode 100644
+--- /dev/null
++++ b/debian/copyright
+@@ -0,0 +1,404 @@
++This package was debianized by Samuel Thibault <sthibault@debian.org> on
++Sat, 31 Jan 2009 23:21:15 +0100.
++
++It was downloaded from http://live.gnome.org/MouseTrap
++
++Upstream Author:
++
++    Flavio Percoco Premoli <flaper87@flaper87.com>
++
++Copyright:
++
++    Copyright 2008 Flavio Percoco Premoli
++
++License:
++
++For the source code:
++
++    This package is free software; you can redistribute it and/or modify
++    it under the terms of the GNU General Public License as published by
++    the Free Software Foundation; either version 2 of the License, or
++    (at your option) any later version.
++
++    This package is distributed in the hope that it will be useful,
++    but WITHOUT ANY WARRANTY; without even the implied warranty of
++    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++    GNU General Public License for more details.
++
++    You should have received a copy of the GNU General Public License
++    along with this package; if not, write to the Free Software
++    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
++
++On Debian systems, the complete text of the GNU General
++Public License can be found in `/usr/share/common-licenses/GPL'.
++
++For the docbook documentation:
++
++    Permission is granted to copy, distribute and/or modify this
++    document under the terms of the GNU Free Documentation
++    License (GFDL), Version 1.1 or any later version published
++    by the Free Software Foundation with no Invariant Sections,
++    no Front-Cover Texts, and no Back-Cover Texts.  
++
++and there is no Acknowledgement or Dedication section, so this meets GR
++http://www.debian.org/vote/2006/vote_001 . A copy of this license is below
++
++		GNU Free Documentation License
++		   Version 1.1, March 2000
++
++ Copyright (C) 2000  Free Software Foundation, Inc.
++     51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
++ Everyone is permitted to copy and distribute verbatim copies
++ of this license document, but changing it is not allowed.
++
++
++0. PREAMBLE
++
++The purpose of this License is to make a manual, textbook, or other
++written document "free" in the sense of freedom: to assure everyone
++the effective freedom to copy and redistribute it, with or without
++modifying it, either commercially or noncommercially.  Secondarily,
++this License preserves for the author and publisher a way to get
++credit for their work, while not being considered responsible for
++modifications made by others.
++
++This License is a kind of "copyleft", which means that derivative
++works of the document must themselves be free in the same sense.  It
++complements the GNU General Public License, which is a copyleft
++license designed for free software.
++
++We have designed this License in order to use it for manuals for free
++software, because free software needs free documentation: a free
++program should come with manuals providing the same freedoms that the
++software does.  But this License is not limited to software manuals;
++it can be used for any textual work, regardless of subject matter or
++whether it is published as a printed book.  We recommend this License
++principally for works whose purpose is instruction or reference.
++
++
++1. APPLICABILITY AND DEFINITIONS
++
++This License applies to any manual or other work that contains a
++notice placed by the copyright holder saying it can be distributed
++under the terms of this License.  The "Document", below, refers to any
++such manual or work.  Any member of the public is a licensee, and is
++addressed as "you".
++
++A "Modified Version" of the Document means any work containing the
++Document or a portion of it, either copied verbatim, or with
++modifications and/or translated into another language.
++
++A "Secondary Section" is a named appendix or a front-matter section of
++the Document that deals exclusively with the relationship of the
++publishers or authors of the Document to the Document's overall subject
++(or to related matters) and contains nothing that could fall directly
++within that overall subject.  (For example, if the Document is in part a
++textbook of mathematics, a Secondary Section may not explain any
++mathematics.)  The relationship could be a matter of historical
++connection with the subject or with related matters, or of legal,
++commercial, philosophical, ethical or political position regarding
++them.
++
++The "Invariant Sections" are certain Secondary Sections whose titles
++are designated, as being those of Invariant Sections, in the notice
++that says that the Document is released under this License.
++
++The "Cover Texts" are certain short passages of text that are listed,
++as Front-Cover Texts or Back-Cover Texts, in the notice that says that
++the Document is released under this License.
++
++A "Transparent" copy of the Document means a machine-readable copy,
++represented in a format whose specification is available to the
++general public, whose contents can be viewed and edited directly and
++straightforwardly with generic text editors or (for images composed of
++pixels) generic paint programs or (for drawings) some widely available
++drawing editor, and that is suitable for input to text formatters or
++for automatic translation to a variety of formats suitable for input
++to text formatters.  A copy made in an otherwise Transparent file
++format whose markup has been designed to thwart or discourage
++subsequent modification by readers is not Transparent.  A copy that is
++not "Transparent" is called "Opaque".
++
++Examples of suitable formats for Transparent copies include plain
++ASCII without markup, Texinfo input format, LaTeX input format, SGML
++or XML using a publicly available DTD, and standard-conforming simple
++HTML designed for human modification.  Opaque formats include
++PostScript, PDF, proprietary formats that can be read and edited only
++by proprietary word processors, SGML or XML for which the DTD and/or
++processing tools are not generally available, and the
++machine-generated HTML produced by some word processors for output
++purposes only.
++
++The "Title Page" means, for a printed book, the title page itself,
++plus such following pages as are needed to hold, legibly, the material
++this License requires to appear in the title page.  For works in
++formats which do not have any title page as such, "Title Page" means
++the text near the most prominent appearance of the work's title,
++preceding the beginning of the body of the text.
++
++
++2. VERBATIM COPYING
++
++You may copy and distribute the Document in any medium, either
++commercially or noncommercially, provided that this License, the
++copyright notices, and the license notice saying this License applies
++to the Document are reproduced in all copies, and that you add no other
++conditions whatsoever to those of this License.  You may not use
++technical measures to obstruct or control the reading or further
++copying of the copies you make or distribute.  However, you may accept
++compensation in exchange for copies.  If you distribute a large enough
++number of copies you must also follow the conditions in section 3.
++
++You may also lend copies, under the same conditions stated above, and
++you may publicly display copies.
++
++
++3. COPYING IN QUANTITY
++
++If you publish printed copies of the Document numbering more than 100,
++and the Document's license notice requires Cover Texts, you must enclose
++the copies in covers that carry, clearly and legibly, all these Cover
++Texts: Front-Cover Texts on the front cover, and Back-Cover Texts on
++the back cover.  Both covers must also clearly and legibly identify
++you as the publisher of these copies.  The front cover must present
++the full title with all words of the title equally prominent and
++visible.  You may add other material on the covers in addition.
++Copying with changes limited to the covers, as long as they preserve
++the title of the Document and satisfy these conditions, can be treated
++as verbatim copying in other respects.
++
++If the required texts for either cover are too voluminous to fit
++legibly, you should put the first ones listed (as many as fit
++reasonably) on the actual cover, and continue the rest onto adjacent
++pages.
++
++If you publish or distribute Opaque copies of the Document numbering
++more than 100, you must either include a machine-readable Transparent
++copy along with each Opaque copy, or state in or with each Opaque copy
++a publicly-accessible computer-network location containing a complete
++Transparent copy of the Document, free of added material, which the
++general network-using public has access to download anonymously at no
++charge using public-standard network protocols.  If you use the latter
++option, you must take reasonably prudent steps, when you begin
++distribution of Opaque copies in quantity, to ensure that this
++Transparent copy will remain thus accessible at the stated location
++until at least one year after the last time you distribute an Opaque
++copy (directly or through your agents or retailers) of that edition to
++the public.
++
++It is requested, but not required, that you contact the authors of the
++Document well before redistributing any large number of copies, to give
++them a chance to provide you with an updated version of the Document.
++
++
++4. MODIFICATIONS
++
++You may copy and distribute a Modified Version of the Document under
++the conditions of sections 2 and 3 above, provided that you release
++the Modified Version under precisely this License, with the Modified
++Version filling the role of the Document, thus licensing distribution
++and modification of the Modified Version to whoever possesses a copy
++of it.  In addition, you must do these things in the Modified Version:
++
++A. Use in the Title Page (and on the covers, if any) a title distinct
++   from that of the Document, and from those of previous versions
++   (which should, if there were any, be listed in the History section
++   of the Document).  You may use the same title as a previous version
++   if the original publisher of that version gives permission.
++B. List on the Title Page, as authors, one or more persons or entities
++   responsible for authorship of the modifications in the Modified
++   Version, together with at least five of the principal authors of the
++   Document (all of its principal authors, if it has less than five).
++C. State on the Title page the name of the publisher of the
++   Modified Version, as the publisher.
++D. Preserve all the copyright notices of the Document.
++E. Add an appropriate copyright notice for your modifications
++   adjacent to the other copyright notices.
++F. Include, immediately after the copyright notices, a license notice
++   giving the public permission to use the Modified Version under the
++   terms of this License, in the form shown in the Addendum below.
++G. Preserve in that license notice the full lists of Invariant Sections
++   and required Cover Texts given in the Document's license notice.
++H. Include an unaltered copy of this License.
++I. Preserve the section entitled "History", and its title, and add to
++   it an item stating at least the title, year, new authors, and
++   publisher of the Modified Version as given on the Title Page.  If
++   there is no section entitled "History" in the Document, create one
++   stating the title, year, authors, and publisher of the Document as
++   given on its Title Page, then add an item describing the Modified
++   Version as stated in the previous sentence.
++J. Preserve the network location, if any, given in the Document for
++   public access to a Transparent copy of the Document, and likewise
++   the network locations given in the Document for previous versions
++   it was based on.  These may be placed in the "History" section.
++   You may omit a network location for a work that was published at
++   least four years before the Document itself, or if the original
++   publisher of the version it refers to gives permission.
++K. In any section entitled "Acknowledgements" or "Dedications",
++   preserve the section's title, and preserve in the section all the
++   substance and tone of each of the contributor acknowledgements
++   and/or dedications given therein.
++L. Preserve all the Invariant Sections of the Document,
++   unaltered in their text and in their titles.  Section numbers
++   or the equivalent are not considered part of the section titles.
++M. Delete any section entitled "Endorsements".  Such a section
++   may not be included in the Modified Version.
++N. Do not retitle any existing section as "Endorsements"
++   or to conflict in title with any Invariant Section.
++
++If the Modified Version includes new front-matter sections or
++appendices that qualify as Secondary Sections and contain no material
++copied from the Document, you may at your option designate some or all
++of these sections as invariant.  To do this, add their titles to the
++list of Invariant Sections in the Modified Version's license notice.
++These titles must be distinct from any other section titles.
++
++You may add a section entitled "Endorsements", provided it contains
++nothing but endorsements of your Modified Version by various
++parties--for example, statements of peer review or that the text has
++been approved by an organization as the authoritative definition of a
++standard.
++
++You may add a passage of up to five words as a Front-Cover Text, and a
++passage of up to 25 words as a Back-Cover Text, to the end of the list
++of Cover Texts in the Modified Version.  Only one passage of
++Front-Cover Text and one of Back-Cover Text may be added by (or
++through arrangements made by) any one entity.  If the Document already
++includes a cover text for the same cover, previously added by you or
++by arrangement made by the same entity you are acting on behalf of,
++you may not add another; but you may replace the old one, on explicit
++permission from the previous publisher that added the old one.
++
++The author(s) and publisher(s) of the Document do not by this License
++give permission to use their names for publicity for or to assert or
++imply endorsement of any Modified Version.
++
++
++5. COMBINING DOCUMENTS
++
++You may combine the Document with other documents released under this
++License, under the terms defined in section 4 above for modified
++versions, provided that you include in the combination all of the
++Invariant Sections of all of the original documents, unmodified, and
++list them all as Invariant Sections of your combined work in its
++license notice.
++
++The combined work need only contain one copy of this License, and
++multiple identical Invariant Sections may be replaced with a single
++copy.  If there are multiple Invariant Sections with the same name but
++different contents, make the title of each such section unique by
++adding at the end of it, in parentheses, the name of the original
++author or publisher of that section if known, or else a unique number.
++Make the same adjustment to the section titles in the list of
++Invariant Sections in the license notice of the combined work.
++
++In the combination, you must combine any sections entitled "History"
++in the various original documents, forming one section entitled
++"History"; likewise combine any sections entitled "Acknowledgements",
++and any sections entitled "Dedications".  You must delete all sections
++entitled "Endorsements."
++
++
++6. COLLECTIONS OF DOCUMENTS
++
++You may make a collection consisting of the Document and other documents
++released under this License, and replace the individual copies of this
++License in the various documents with a single copy that is included in
++the collection, provided that you follow the rules of this License for
++verbatim copying of each of the documents in all other respects.
++
++You may extract a single document from such a collection, and distribute
++it individually under this License, provided you insert a copy of this
++License into the extracted document, and follow this License in all
++other respects regarding verbatim copying of that document.
++
++
++7. AGGREGATION WITH INDEPENDENT WORKS
++
++A compilation of the Document or its derivatives with other separate
++and independent documents or works, in or on a volume of a storage or
++distribution medium, does not as a whole count as a Modified Version
++of the Document, provided no compilation copyright is claimed for the
++compilation.  Such a compilation is called an "aggregate", and this
++License does not apply to the other self-contained works thus compiled
++with the Document, on account of their being thus compiled, if they
++are not themselves derivative works of the Document.
++
++If the Cover Text requirement of section 3 is applicable to these
++copies of the Document, then if the Document is less than one quarter
++of the entire aggregate, the Document's Cover Texts may be placed on
++covers that surround only the Document within the aggregate.
++Otherwise they must appear on covers around the whole aggregate.
++
++
++8. TRANSLATION
++
++Translation is considered a kind of modification, so you may
++distribute translations of the Document under the terms of section 4.
++Replacing Invariant Sections with translations requires special
++permission from their copyright holders, but you may include
++translations of some or all Invariant Sections in addition to the
++original versions of these Invariant Sections.  You may include a
++translation of this License provided that you also include the
++original English version of this License.  In case of a disagreement
++between the translation and the original English version of this
++License, the original English version will prevail.
++
++
++9. TERMINATION
++
++You may not copy, modify, sublicense, or distribute the Document except
++as expressly provided for under this License.  Any other attempt to
++copy, modify, sublicense or distribute the Document is void, and will
++automatically terminate your rights under this License.  However,
++parties who have received copies, or rights, from you under this
++License will not have their licenses terminated so long as such
++parties remain in full compliance.
++
++
++10. FUTURE REVISIONS OF THIS LICENSE
++
++The Free Software Foundation may publish new, revised versions
++of the GNU Free Documentation License from time to time.  Such new
++versions will be similar in spirit to the present version, but may
++differ in detail to address new problems or concerns.  See
++http://www.gnu.org/copyleft/.
++
++Each version of the License is given a distinguishing version number.
++If the Document specifies that a particular numbered version of this
++License "or any later version" applies to it, you have the option of
++following the terms and conditions either of that specified version or
++of any later version that has been published (not as a draft) by the
++Free Software Foundation.  If the Document does not specify a version
++number of this License, you may choose any version ever published (not
++as a draft) by the Free Software Foundation.
++
++
++ADDENDUM: How to use this License for your documents
++
++To use this License in a document you have written, include a copy of
++the License in the document and put the following copyright and
++license notices just after the title page:
++
++      Copyright (c)  YEAR  YOUR NAME.
++      Permission is granted to copy, distribute and/or modify this document
++      under the terms of the GNU Free Documentation License, Version 1.1
++      or any later version published by the Free Software Foundation;
++      with the Invariant Sections being LIST THEIR TITLES, with the
++      Front-Cover Texts being LIST, and with the Back-Cover Texts being LIST.
++      A copy of the license is included in the section entitled "GNU
++      Free Documentation License".
++
++If you have no Invariant Sections, write "with no Invariant Sections"
++instead of saying which ones are invariant.  If you have no
++Front-Cover Texts, write "no Front-Cover Texts" instead of
++"Front-Cover Texts being LIST"; likewise for Back-Cover Texts.
++
++If your document contains nontrivial examples of program code, we
++recommend releasing these examples in parallel under your choice of
++free software license, such as the GNU General Public License,
++to permit their use in free software.
++
++
++The Debian packaging is © 2009, Samuel Thibault <sthibault@debian.org> and
++is licensed under the GPL, see above.
+diff --git a/debian/docs b/debian/docs
+new file mode 100644
+--- /dev/null
++++ b/debian/docs
+@@ -0,0 +1,2 @@
++NEWS
++README
+diff --git a/debian/menu b/debian/menu
+new file mode 100644
+--- /dev/null
++++ b/debian/menu
+@@ -0,0 +1,2 @@
++?package(gnome-mousetrap):needs="X11" section="Applications/Accessibility"\
++  title="mousetrap" command="/usr/bin/mousetrap"
+diff --git a/debian/pyversions b/debian/pyversions
+new file mode 100644
+--- /dev/null
++++ b/debian/pyversions
+@@ -0,0 +1,1 @@
++2.5-
+diff --git a/debian/rules b/debian/rules
+new file mode 100755
+--- /dev/null
++++ b/debian/rules
+@@ -0,0 +1,61 @@
++#!/usr/bin/make -f
++
++configure:
++	NOCONFIGURE=yes ./autogen.sh
++
++config.status: configure
++	dh_testdir
++	./configure --prefix=/usr --mandir=\$${prefix}/share/man --infodir=\$${prefix}/share/info CFLAGS="$(CFLAGS)" LDFLAGS="-Wl,-z,defs"
++
++
++build: build-stamp
++
++build-stamp:  config.status 
++	dh_testdir
++
++	$(MAKE)
++
++	touch $@
++
++clean: 
++	dh_testdir
++	dh_testroot
++	rm -f build-stamp 
++
++	[ ! -f Makefile ] || $(MAKE) maintainer-clean
++	rm -f $$(find -name Makefile.in)
++	rm -f aclocal.m4 config.guess config.h.in config.sub configure
++	rm -f install-sh intltool-extract.in intltool-merge.in intltool-update.in
++	rm -f ltmain.sh missing mkinstalldirs omf.make 
++	rm -f py-compile xmldocs.make
++
++	dh_clean 
++
++install: build
++	dh_testdir
++	dh_testroot
++	dh_prep
++	dh_installdirs
++
++	$(MAKE) DESTDIR=$(CURDIR)/debian/gnome-mousetrap install
++	mv $(CURDIR)/debian/gnome-mousetrap/usr/share/man/man1/mouseTrap.1 $(CURDIR)/debian/gnome-mousetrap/usr/share/man/man1/mousetrap.1
++
++
++binary-indep: build install
++	dh_testdir
++	dh_testroot
++	dh_installchangelogs ChangeLog
++	dh_installdocs
++	dh_install
++	dh_installmenu
++	dh_pysupport
++	dh_installman
++	dh_compress
++	dh_fixperms
++	dh_installdeb
++	dh_gencontrol
++	dh_md5sums
++	dh_builddeb
++
++binary: binary-indep binary-arch
++.PHONY: build clean binary-indep binary-arch binary install 
+diff --git a/src/mouseTrap/mouseTrap.py b/src/mouseTrap/mouseTrap.py
+--- a/src/mouseTrap/mouseTrap.py
++++ b/src/mouseTrap/mouseTrap.py
+@@ -41,6 +41,9 @@
+ 
+ import environment as env
+ 
++if not os.path.exists( env.configPath ):
++    os.mkdir( env.configPath )
++
+ from mTi18n import _
+ 
+ try:
+@@ -235,8 +238,7 @@
+     
+     if not settings:
+         try:
+-            if not os.path.exists( env.configPath ):
+-                os.mkdir( env.configPath )
++            if not os.path.exists( env.configFile ):
+                 mTPref.writeFirstConf()
+             
+             if not os.path.exists( env.scriptsPath ):
+diff --git a/src/mouseTrap/mousetrap.in b/src/mouseTrap/mousetrap.in
+--- a/src/mouseTrap/mousetrap.in
++++ b/src/mouseTrap/mousetrap.in
+@@ -144,14 +144,9 @@
+         cleanup
+     fi
+ 
+-    exec_prefix=@prefix@
+-    default_python=`ls -l /usr/bin/ | grep -e "python ->" | sed 's/.*> //'`
+-    PYTHONPATH=${PYTHONPATH}:${exec_prefix}/lib/${default_python}/site-packages:$PWD/mouseTrap
+-    export PYTHONPATH
+-    
+     getDesktop
+     
+-	/usr/bin/python -c "import mouseTrap.mouseTrap as mouseTrap; mouseTrap.start();" "$ARGS"
++	/usr/bin/python2.5 -c "import mouseTrap.mouseTrap as mouseTrap; mouseTrap.start();" "$ARGS"
+ }
+ 
+ getDesktop() {
+diff --git a/src/mouseTrap/ocvfw.py b/src/mouseTrap/ocvfw.py
+--- a/src/mouseTrap/ocvfw.py
++++ b/src/mouseTrap/ocvfw.py
+@@ -199,7 +199,7 @@
+         for point in self.imgLKPoints["current"]:
+             # go trough all the self.imgPoints
+ 
+-            if not status[counter]:
++            if not status or not status[counter]:
+                 # we will disable this point
+                 continue
+             
+@@ -270,7 +270,7 @@
+             self.storage        = cv.cvCreateMemStorage(0)
+             self.imgSize        = cv.cvGetSize (frame)
+             self.img            = cv.cvCreateImage ( self.imgSize, 8, 3 )
+-            self.img.origin     = frame.origin
++            #self.img.origin     = frame.origin
+             self.grey           = cv.cvCreateImage ( self.imgSize, 8, 1 )
+             self.yCrCb          = cv.cvCreateImage ( self.imgSize, 8, 3 )
+             self.prevGrey       = cv.cvCreateImage ( self.imgSize, 8, 1 )

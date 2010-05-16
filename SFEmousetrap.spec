@@ -8,17 +8,32 @@
 %include Solaris.inc
 
 %define python_version 2.6
-#%define src_name gnome-mousetrap
-#%define src_version 0.3+zgit2872572a
-#%define src_url http://ftp.us.debian.org/debian/pool/main/g/gnome-mousetrap
+%if %{?_without_debian:0}%{?!_without_debian:1}
+%define src_name gnome-mousetrap
+%define src_version 0.3+zgit2872572a
+%define src_url http://ftp.us.debian.org/debian/pool/main/g/gnome-mousetrap
+%else
 %define src_name mousetrap
+%define src_version 0.4
 %define src_url http://trisk.acm.jhu.edu/src
+%endif
 
 Name:                    SFEmousetrap
 Summary:                 MouseTrap - Webcam-based input system for GNOME
+%if %{?_without_debian:0}%{?!_without_debian:1}
+Version:                 0.3.1
+%else
 Version:                 0.4
+%endif
 License:                 GPLv2
+%if %{?_without_debian:0}%{?!_without_debian:1}
+Source:                  %{src_url}/%{src_name}_%{src_version}.orig.tar.gz
+Patch1:                  gnome-mousetrap-01-debian.diff
+Patch2:                  gnome-mousetrap-02-opencv2.diff
+Patch3:                  gnome-mousetrap-03-area.diff
+%else
 Source:                  %{src_url}/%{src_name}-%{version}.tar.bz2
+%endif
 URL:                     http://live.gnome.org/MouseTrap
 
 SUNW_BaseDir:            %{_basedir}
@@ -42,7 +57,17 @@ Requires:                %{name}
 %endif
 
 %prep
-%setup -q -n %{src_name}-%{version}
+%setup -q -n %{src_name}-%{src_version}
+%if %{?_without_debian:0}%{?!_without_debian:1}
+%patch1 -p1
+%patch2 -p1
+%patch3 -p1
+%endif
+for file in "src/mouseTrap/mousetrap.in" "src/mousetrap/app/mousetrap.in"; do
+    if [ -f "$file" ]; then
+        perl -pi -e 's,/bin/bash,/bin/sh,g; s,python2\.5,python,g' "$file"
+    fi
+done
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -55,6 +80,7 @@ export CFLAGS="%optflags"
 export LDFLAGS="%_ldflags"
 export MSGFMT="/usr/bin/msgfmt"
 
+intltoolize
 libtoolize --copy --force
 aclocal $ACLOCAL_FLAGS
 autoheader
@@ -75,6 +101,9 @@ mkdir -p $RPM_BUILD_ROOT%{_libdir}/python%{python_version}/vendor-packages
 mv $RPM_BUILD_ROOT%{_libdir}/python%{python_version}/site-packages/* \
    $RPM_BUILD_ROOT%{_libdir}/python%{python_version}/vendor-packages/
 rmdir $RPM_BUILD_ROOT%{_libdir}/python%{python_version}/site-packages
+
+# Delete optimized py code
+find $RPM_BUILD_ROOT%{_prefix} -type f -name "*.pyo" -exec rm -f {} ';'
 
 %if %build_l10n
 %else
@@ -138,5 +167,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Thu May 13 2010 - Albert Lee <trisk@opensolaris.org>
+- Use Debian a11y fork of 0.3 by default, --without-debian to disable
+- Add patch1, patch2, patch3
 * Sun May 09 2010 - Albert Lee <trisk@opensolaris.org>
 - Initial spec

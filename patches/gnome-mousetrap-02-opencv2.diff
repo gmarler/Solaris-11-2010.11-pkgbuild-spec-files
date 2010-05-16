@@ -1,0 +1,39 @@
+diff --git a/src/mouseTrap/ocvfw.py b/src/mouseTrap/ocvfw.py
+--- a/src/mouseTrap/ocvfw.py
++++ b/src/mouseTrap/ocvfw.py
+@@ -185,13 +185,18 @@
+         """
+         
+         # calculate the optical flow
+-        self.imgLKPoints["current"], status = cv.cvCalcOpticalFlowPyrLK (
++        optical_flow = cv.cvCalcOpticalFlowPyrLK (
+             self.prevGrey, self.grey, self.prevPyramid, self.pyramid,
+             self.imgLKPoints["last"], len( self.imgLKPoints["last"] ),
+             cv.cvSize (20, 20), 3, len( self.imgLKPoints["last"] ), None,
+             cv.cvTermCriteria (cv.CV_TERMCRIT_ITER|cv.CV_TERMCRIT_EPS,
+                                20, 0.03), 0)
+ 
++        if isinstance(optical_flow[0], tuple):
++            self.imgLKPoints["current"], status = optical_flow[0]
++        else:
++            self.imgLKPoints["current"], status = optical_flow
++
+         # initializations
+         counter = 0
+         new_points = []
+@@ -202,14 +207,13 @@
+             if not status or not status[counter]:
+                 # we will disable this point
+                 continue
+-            
+ 
+             # this point is a correct point
+             new_points.append( point )
+             setattr(self, self.imgLKPoints["labels"][counter], cv.cvPoint(int(point.x), int(point.y)))
+             
+             # draw the current point
+-            cv.cvCircle (self.img, [point.x, point.y], 3, cv.cvScalar (0, 255, 0, 0), -1, 8, 0)
++            cv.cvCircle (self.img, (int(point.x), int(point.y)), 3, cv.cvScalar (0, 255, 0, 0), -1, 8, 0)
+                          
+             # increment the counter
+             counter += 1

@@ -1,3 +1,11 @@
+2010-05-16  Albert Lee  <trisk@opensolaris.org>
+
+	* SFEmousetrap.spec: Use Debian a11y fork of 0.3 by default,
+	  --without-debian to disable. Add patch1, patch2, patch3.
+	* patches/gnome-mousetrap-01-debian.diff: Apply Debian a11y changes
+	* patches/gnome-mousetrap-02-opencv2.diff: Backport OpenCV 2 fixes
+	* patches/gnome-mousetrap-03-area.diff: Remove spurious warning
+
 2010-05-16  Petr Sobotka  <sobotkap@gmail.com>
 
 	* SFEboost-stdcxx.spec: Bump to version 1.43

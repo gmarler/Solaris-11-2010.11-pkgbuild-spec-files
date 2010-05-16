@@ -1,0 +1,13 @@
+diff --git a/src/mouseTrap/mainGui.py b/src/mouseTrap/mainGui.py
+--- a/src/mouseTrap/mainGui.py
++++ b/src/mouseTrap/mainGui.py
+@@ -552,9 +552,6 @@
+ 
+     def area( self, xInit, yInit, xEnd, yEnd, corners = False ):
+ 
+-        if not int(xInit) or not int(yInit) or not int(xEnd) or not int(yEnd):
+-            debug.error( "mainGui", "All arguments must be INT" )
+-
+         self.xInit = xInit
+         self.yInit = yInit
+         self.xEnd  = xEnd
