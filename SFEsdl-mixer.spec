@@ -34,6 +34,8 @@ Requires: SFEsdl
 BuildRequires: SUNWlibsdl-devel
 Requires: SUNWlibsdl
 %endif
+BuildRequires: SFElibmikmod-devel
+Requires: SFElibmikmod
 
 %package devel
 Summary:                 %{summary} - development files
@@ -117,6 +119,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Sun May 16 2010 - Milan Jurik
+- added libmikmod for MOD support
 * Thu Apr 08 2010 - Milan Jurik
 - cleanup
 * Fri Mar 05 2010 - Brian Cameron  <brian.cameron@sun.com>
