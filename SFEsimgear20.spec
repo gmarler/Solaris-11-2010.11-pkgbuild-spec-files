@@ -8,8 +8,6 @@
 
 %define src_name	SimGear
 %define src_url		ftp://ftp.de.simgear.org/pub/simgear/Source
-#ftp://ftp.de.simgear.org/pub/simgear/Source/SimGear-1.0.0.tar.gz
-#ftp://ftp.simgear.org/pub/simgear/Source/SimGear-1.0.0.tar.gz
 
 Name:                   SFESimGear20
 Summary:                Simulator Construction Tools
@@ -28,13 +26,22 @@ Requires:		SFEfreealut
 Requires:		SFEplib
 Requires:		SFEosg
 
+# that's a nightmare with g++
+#I patch the following file in the system:
+#/usr/gcc/4.3/include/c++/4.3.3/i386-pc-solaris2.11/bits/c++config.h
+#/usr/gcc/4.3/include/c++/4.3.3/i386-pc-solaris2.11/amd64/bits/c++config.h
+#with the ending: #undef _GLIBCXX_CONCEPT_CHECKS
+# if youy want to compile do it
+# don't forget to reverse.
+
+# Requires:		SFEgcc43-patch-WARNING
+
 %package devel
 Summary:                 %{summary} - development files
 SUNW_BaseDir:            %{_prefix}
 %include default-depend.inc
 
 %prep
-#%setup -q -n -c %{src_name}-%{version}
 %setup -q -c -n  %{name}
 #%patch1 -p0
 #%patch2 -p0
@@ -53,17 +60,21 @@ fi
 cd %{src_name}-%{version}
 export CC=/usr/gcc/4.3/bin/gcc
 export CXX=/usr/gcc/4.3/bin/g++
-export CFLAGS="-I%_prefix/X11/include"
-export CXXFLAGS="-I%_prefix/X11/include"
+export CFLAGS="-I%{_prefix}/X11/include -I%{_includedir}"
+export CXXFLAGS="-I%{_prefix}/X11/include -I%{_includedir}"
+#export LDFLAGS="-L%{_libdir} -R%{_libdir} -lsocket -lnsl"
 export LDFLAGS="-L%{_libdir} -R%{_libdir}"
-#export LIBS="-lopenal"
+#export LIBS="-lsocket -lnsl"
 #CC=cc CXX=CC ./configure --without-logging --prefix==%{_prefix}
 #/bin/bash ./autogen.sh --prefix=%{_prefix}
 /bin/bash ./configure CONFIG_SHELL=/bin/bash --prefix=%{_prefix} \
+	--with-osg=%{_prefix} \
 	--with-boost=%{_prefix} \
 	--with-boost-libdir=%{_libdir}
 
-make # -j$CPUS 
+#	LIBS="$LIBS"
+
+make  # -j$CPUS 
 
 %install
 rm -rf $RPM_BUILD_ROOT

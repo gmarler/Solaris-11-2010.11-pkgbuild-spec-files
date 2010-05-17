@@ -1,3 +1,11 @@
+2010-05-17 Gilles Dauphin
+
+	* SFEflightgear20
+	* SFEosg
+	* SFEsimgear20
+	* SFEplib
+	* update for flightgear 2.0
+
 2010-05-16 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEsdl-image.spec: fix SPARC packaging

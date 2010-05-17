@@ -21,7 +21,8 @@ Name:                   SFEFlightGear20
 Summary:                Flight Simulator for 'true' airplane
 Version:                2.0.0
 Source:                 %{src_url}/%{src_name}-%{version}.tar.gz
-Patch1:			FlightGear-01.diff
+Source1:		ftp://ftp.de.flightgear.org/pub/fgfs/Shared/FlightGear-data-%{version}.tar.bz2
+Patch1:			FlightGear20-04.diff
 SUNW_BaseDir:           %{_basedir}
 BuildRoot:              %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -40,8 +41,6 @@ Requires:		SFEboost
 Requires:		SFEosg
 
 #Requires:		SFEflightgear-data
-#ftp://ftp.de.flightgear.org/pub/fgfs/Shared/FlightGear-data-2.0.0.tar.bz2
-#http://www.openscenegraph.org/
 
 #%package root
 #Summary:                 %{summary} - root files
@@ -60,20 +59,29 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
 fi
 
 cd %{src_name}-%{version}
-export CC=cc
-export CXX=CC
-export CFLAGS="-I%_prefix/X11/include"
-export CXXFLAGS="-I%_prefix/X11/include"
+export CC=/usr/gcc/4.3/bin/gcc
+export CXX=/usr/gcc/4.3/bin/g++
+export CFLAGS="-I%{_prefix}/X11/include"
+export CXXFLAGS="-I%{_prefix}/X11/include"
 export LDFLAGS="-L%{_libdir} -R%{_libdir} -L/usr/X11/lib -R/usr/X11/lib"
 #CC=cc CXX=CC ./configure --without-logging --prefix==%{_prefix}
-/bin/bash ./configure CONFIG_SHELL=/bin/bash --prefix=%{_prefix}
-make # -j$CPUS 
+/bin/bash ./configure CONFIG_SHELL=/bin/bash --prefix=%{_prefix} \
+	--with-osg=%{_prefix} \
+	--with-boost=%{_prefix} \
+	--with-boost-libdir=%{_libdir} \
+	--with-plib=%{_prefix} \
+	--with-simgear=%{_prefix}
 
+make # -j$CPUS 
 
 %install
 rm -rf $RPM_BUILD_ROOT
 cd %{src_name}-%{version}
 make install DESTDIR=$RPM_BUILD_ROOT
+
+mkdir -p $RPM_BUILD_ROOT/%{_datadir}/FlightGear
+(cd $RPM_BUILD_ROOT/%{_datadir}/FlightGear ; gtar xfj %{SOURCE1} )
+
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -82,6 +90,8 @@ rm -rf $RPM_BUILD_ROOT
 %defattr (-, root, bin)
 %{_bindir}/*
 %dir %attr (0755, root, sys) %{_datadir}
+%dir %attr (0755, root, other) %{_datadir}/FlightGear
+%{_datadir}/FlightGear/*
 %dir %attr(0755,root,bin) %{_mandir}
 %{_mandir}/*
 

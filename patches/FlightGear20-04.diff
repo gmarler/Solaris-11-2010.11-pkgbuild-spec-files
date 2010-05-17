@@ -1,0 +1,958 @@
+Only in FlightGear-2.0.0: Makefile
+Only in FlightGear-2.0.0: config.log
+Only in FlightGear-2.0.0: config.status
+Only in FlightGear-2.0.0/man: Makefile
+Only in FlightGear-2.0.0/man: est-epsilon.1
+Only in FlightGear-2.0.0/man: fgfs.1
+Only in FlightGear-2.0.0/man: fgjs.1
+Only in FlightGear-2.0.0/man: gl-info.1
+Only in FlightGear-2.0.0/man: js_demo.1
+Only in FlightGear-2.0.0/man: pstest.1
+Only in FlightGear-2.0.0/scripts: Makefile
+Only in FlightGear-2.0.0/scripts/debug: Makefile
+Only in FlightGear-2.0.0/scripts/perl: Makefile
+Only in FlightGear-2.0.0/scripts/perl/examples: Makefile
+Only in FlightGear-2.0.0/scripts/python: Makefile
+Only in FlightGear-2.0.0/src/AIModel: .deps
+Only in FlightGear-2.0.0/src/AIModel: AIAircraft.o
+Only in FlightGear-2.0.0/src/AIModel: AIBallistic.o
+Only in FlightGear-2.0.0/src/AIModel: AIBase.o
+Only in FlightGear-2.0.0/src/AIModel: AICarrier.o
+Only in FlightGear-2.0.0/src/AIModel: AIEscort.o
+Only in FlightGear-2.0.0/src/AIModel: AIFlightPlan.o
+Only in FlightGear-2.0.0/src/AIModel: AIFlightPlanCreate.o
+Only in FlightGear-2.0.0/src/AIModel: AIFlightPlanCreateCruise.o
+Only in FlightGear-2.0.0/src/AIModel: AIFlightPlanCreatePushBack.o
+Only in FlightGear-2.0.0/src/AIModel: AIGroundVehicle.o
+Only in FlightGear-2.0.0/src/AIModel: AIManager.o
+Only in FlightGear-2.0.0/src/AIModel: AIMultiplayer.o
+Only in FlightGear-2.0.0/src/AIModel: AIShip.o
+Only in FlightGear-2.0.0/src/AIModel: AIStatic.o
+Only in FlightGear-2.0.0/src/AIModel: AIStorm.o
+Only in FlightGear-2.0.0/src/AIModel: AITanker.o
+Only in FlightGear-2.0.0/src/AIModel: AIThermal.o
+Only in FlightGear-2.0.0/src/AIModel: AIWingman.o
+Only in FlightGear-2.0.0/src/AIModel: Makefile
+Only in FlightGear-2.0.0/src/AIModel: libAIModel.a
+Only in FlightGear-2.0.0/src/AIModel: performancedata.o
+Only in FlightGear-2.0.0/src/AIModel: performancedb.o
+Only in FlightGear-2.0.0/src/AIModel: submodel.o
+Only in FlightGear-2.0.0/src/ATC: .deps
+Only in FlightGear-2.0.0/src/ATC: Makefile
+Only in FlightGear-2.0.0/src/ATC: libATC.a
+Only in FlightGear-2.0.0/src/ATC: trafficcontrol.o
+Only in FlightGear-2.0.0/src/ATCDCL: .deps
+Only in FlightGear-2.0.0/src/ATCDCL: AIEntity.o
+Only in FlightGear-2.0.0/src/ATCDCL: AIGAVFRTraffic.o
+Only in FlightGear-2.0.0/src/ATCDCL: AILocalTraffic.o
+Only in FlightGear-2.0.0/src/ATCDCL: AIMgr.o
+Only in FlightGear-2.0.0/src/ATCDCL: AIPlane.o
+Only in FlightGear-2.0.0/src/ATCDCL: ATC.o
+Only in FlightGear-2.0.0/src/ATCDCL: ATCDialog.o
+Only in FlightGear-2.0.0/src/ATCDCL: ATCProjection.o
+Only in FlightGear-2.0.0/src/ATCDCL: ATCVoice.o
+Only in FlightGear-2.0.0/src/ATCDCL: ATCmgr.o
+Only in FlightGear-2.0.0/src/ATCDCL: ATCutils.o
+Only in FlightGear-2.0.0/src/ATCDCL: Makefile
+Only in FlightGear-2.0.0/src/ATCDCL: approach.o
+Only in FlightGear-2.0.0/src/ATCDCL: atis.o
+Only in FlightGear-2.0.0/src/ATCDCL: commlist.o
+Only in FlightGear-2.0.0/src/ATCDCL: ground.o
+Only in FlightGear-2.0.0/src/ATCDCL: libATCDCL.a
+Only in FlightGear-2.0.0/src/ATCDCL: tower.o
+Only in FlightGear-2.0.0/src/ATCDCL: transmission.o
+Only in FlightGear-2.0.0/src/ATCDCL: transmissionlist.o
+Only in FlightGear-2.0.0/src/Aircraft: .deps
+Only in FlightGear-2.0.0/src/Aircraft: Makefile
+Only in FlightGear-2.0.0/src/Aircraft: aircraft.o
+Only in FlightGear-2.0.0/src/Aircraft: controls.o
+Only in FlightGear-2.0.0/src/Aircraft: libAircraft.a
+Only in FlightGear-2.0.0/src/Aircraft: replay.o
+Only in FlightGear-2.0.0/src/Airports: .deps
+Only in FlightGear-2.0.0/src/Airports: Makefile
+Only in FlightGear-2.0.0/src/Airports: apt_loader.o
+Only in FlightGear-2.0.0/src/Airports: calc_loc
+Only in FlightGear-2.0.0/src/Airports: calc_loc.o
+Only in FlightGear-2.0.0/src/Airports: dynamicloader.o
+Only in FlightGear-2.0.0/src/Airports: dynamics.o
+Only in FlightGear-2.0.0/src/Airports: gnnode.o
+Only in FlightGear-2.0.0/src/Airports: groundnetwork.o
+Only in FlightGear-2.0.0/src/Airports: libAirports.a
+Only in FlightGear-2.0.0/src/Airports: parking.o
+Only in FlightGear-2.0.0/src/Airports: pavement.o
+Only in FlightGear-2.0.0/src/Airports: runwaybase.o
+Only in FlightGear-2.0.0/src/Airports: runwayprefloader.o
+Only in FlightGear-2.0.0/src/Airports: runwayprefs.o
+Only in FlightGear-2.0.0/src/Airports: runways.o
+Only in FlightGear-2.0.0/src/Airports: sidstar.o
+Only in FlightGear-2.0.0/src/Airports: simple.o
+Only in FlightGear-2.0.0/src/Airports: xmlloader.o
+Only in FlightGear-2.0.0/src/Autopilot: .deps
+Only in FlightGear-2.0.0/src/Autopilot: Makefile
+Only in FlightGear-2.0.0/src/Autopilot: autobrake.o
+Only in FlightGear-2.0.0/src/Autopilot: libAutopilot.a
+Only in FlightGear-2.0.0/src/Autopilot: route_mgr.o
+Only in FlightGear-2.0.0/src/Autopilot: xmlauto.o
+Only in FlightGear-2.0.0/src/Cockpit: .deps
+Only in FlightGear-2.0.0/src/Cockpit: Makefile
+Only in FlightGear-2.0.0/src/Cockpit/built_in: .deps
+Only in FlightGear-2.0.0/src/Cockpit/built_in: FGMagRibbon.o
+Only in FlightGear-2.0.0/src/Cockpit/built_in: Makefile
+Only in FlightGear-2.0.0/src/Cockpit/built_in: libBuilt_in.a
+Only in FlightGear-2.0.0/src/Cockpit: cockpit.o
+Only in FlightGear-2.0.0/src/Cockpit: hud.o
+Only in FlightGear-2.0.0/src/Cockpit: hud_card.o
+Only in FlightGear-2.0.0/src/Cockpit: hud_dnst.o
+Only in FlightGear-2.0.0/src/Cockpit: hud_gaug.o
+Only in FlightGear-2.0.0/src/Cockpit: hud_inst.o
+Only in FlightGear-2.0.0/src/Cockpit: hud_labl.o
+Only in FlightGear-2.0.0/src/Cockpit: hud_ladr.o
+Only in FlightGear-2.0.0/src/Cockpit: hud_rwy.o
+Only in FlightGear-2.0.0/src/Cockpit: hud_scal.o
+Only in FlightGear-2.0.0/src/Cockpit: hud_tbi.o
+Only in FlightGear-2.0.0/src/Cockpit: libCockpit.a
+Only in FlightGear-2.0.0/src/Cockpit: panel.o
+Only in FlightGear-2.0.0/src/Cockpit: panel_io.o
+Only in FlightGear-2.0.0/src/Environment: .deps
+Only in FlightGear-2.0.0/src/Environment: Makefile
+Only in FlightGear-2.0.0/src/Environment: atmosphere.o
+Only in FlightGear-2.0.0/src/Environment: environment.o
+Only in FlightGear-2.0.0/src/Environment: environment_ctrl.o
+Only in FlightGear-2.0.0/src/Environment: environment_mgr.o
+Only in FlightGear-2.0.0/src/Environment: fgclouds.o
+Only in FlightGear-2.0.0/src/Environment: fgmetar.o
+Only in FlightGear-2.0.0/src/Environment: fgwind.o
+Only in FlightGear-2.0.0/src/Environment: libEnvironment.a
+Only in FlightGear-2.0.0/src/Environment: precipitation_mgr.o
+Only in FlightGear-2.0.0/src/Environment: ridge_lift.o
+Only in FlightGear-2.0.0/src/FDM: .deps
+Only in FlightGear-2.0.0/src/FDM/ExternalNet: .deps
+Only in FlightGear-2.0.0/src/FDM/ExternalNet: ExternalNet.o
+Only in FlightGear-2.0.0/src/FDM/ExternalNet: Makefile
+Only in FlightGear-2.0.0/src/FDM/ExternalNet: libExternalNet.a
+Only in FlightGear-2.0.0/src/FDM/ExternalPipe: .deps
+Only in FlightGear-2.0.0/src/FDM/ExternalPipe: ExternalPipe.o
+Only in FlightGear-2.0.0/src/FDM/ExternalPipe: Makefile
+Only in FlightGear-2.0.0/src/FDM/ExternalPipe: libExternalPipe.a
+Only in FlightGear-2.0.0/src/FDM/JSBSim: .deps
+Only in FlightGear-2.0.0/src/FDM/JSBSim: FGFDMExec.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim: FGJSBBase.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim: FGState.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim: JSBSim.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim: Makefile
+Only in FlightGear-2.0.0/src/FDM/JSBSim/initialization: .deps
+Only in FlightGear-2.0.0/src/FDM/JSBSim/initialization: FGInitialCondition.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/initialization: FGTrim.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/initialization: FGTrimAxis.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/initialization: Makefile
+Only in FlightGear-2.0.0/src/FDM/JSBSim/initialization: libInit.a
+Only in FlightGear-2.0.0/src/FDM/JSBSim/input_output: .deps
+Only in FlightGear-2.0.0/src/FDM/JSBSim/input_output: FGGroundCallback.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/input_output: FGPropertyManager.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/input_output: FGScript.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/input_output: FGXMLElement.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/input_output: FGXMLParse.o
+diff -ru FlightGear-2.0.0.orig/src/FDM/JSBSim/input_output/FGfdmSocket.cpp FlightGear-2.0.0/src/FDM/JSBSim/input_output/FGfdmSocket.cpp
+--- FlightGear-2.0.0.orig/src/FDM/JSBSim/input_output/FGfdmSocket.cpp	2010-02-17 17:11:56.000000000 +0100
++++ FlightGear-2.0.0/src/FDM/JSBSim/input_output/FGfdmSocket.cpp	2010-05-07 21:57:11.591694000 +0200
+@@ -42,6 +42,10 @@
+ #include <iomanip>
+ #include <cstring>
+ #include <cstdio>
++
++#include <sys/filio.h>
++#include <string.h>
++
+ #include "FGfdmSocket.h"
+ #include "string_utilities.h"
+ 
+Only in FlightGear-2.0.0/src/FDM/JSBSim/input_output: FGfdmSocket.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/input_output: Makefile
+Only in FlightGear-2.0.0/src/FDM/JSBSim/input_output: libInputOutput.a
+Only in FlightGear-2.0.0/src/FDM/JSBSim: libJSBSim.a
+Only in FlightGear-2.0.0/src/FDM/JSBSim/math: .deps
+Only in FlightGear-2.0.0/src/FDM/JSBSim/math: FGColumnVector3.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/math: FGCondition.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/math: FGFunction.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/math: FGLocation.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/math: FGMatrix33.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/math: FGPropertyValue.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/math: FGQuaternion.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/math: FGRealValue.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/math: FGTable.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/math: Makefile
+Only in FlightGear-2.0.0/src/FDM/JSBSim/math: libMath.a
+Only in FlightGear-2.0.0/src/FDM/JSBSim/models: .deps
+Only in FlightGear-2.0.0/src/FDM/JSBSim/models: FGAerodynamics.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/models: FGAircraft.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/models: FGAtmosphere.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/models: FGAuxiliary.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/models: FGBuoyantForces.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/models: FGExternalForce.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/models: FGExternalReactions.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/models: FGFCS.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/models: FGGasCell.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/models: FGGroundReactions.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/models: FGInertial.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/models: FGInput.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/models: FGLGear.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/models: FGMassBalance.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/models: FGModel.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/models: FGOutput.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/models: FGPropagate.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/models: FGPropulsion.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/models: Makefile
+Only in FlightGear-2.0.0/src/FDM/JSBSim/models/atmosphere: .deps
+Only in FlightGear-2.0.0/src/FDM/JSBSim/models/atmosphere: FGMSIS.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/models/atmosphere: FGMSISData.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/models/atmosphere: FGMars.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/models/atmosphere: Makefile
+Only in FlightGear-2.0.0/src/FDM/JSBSim/models/atmosphere: libAtmosphere.a
+Only in FlightGear-2.0.0/src/FDM/JSBSim/models/flight_control: .deps
+Only in FlightGear-2.0.0/src/FDM/JSBSim/models/flight_control: FGAccelerometer.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/models/flight_control: FGActuator.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/models/flight_control: FGDeadBand.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/models/flight_control: FGFCSComponent.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/models/flight_control: FGFCSFunction.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/models/flight_control: FGFilter.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/models/flight_control: FGGain.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/models/flight_control: FGGradient.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/models/flight_control: FGGyro.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/models/flight_control: FGKinemat.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/models/flight_control: FGMagnetometer.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/models/flight_control: FGPID.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/models/flight_control: FGSensor.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/models/flight_control: FGSummer.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/models/flight_control: FGSwitch.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/models/flight_control: Makefile
+Only in FlightGear-2.0.0/src/FDM/JSBSim/models/flight_control: libFlightControl.a
+Only in FlightGear-2.0.0/src/FDM/JSBSim/models: libModels.a
+Only in FlightGear-2.0.0/src/FDM/JSBSim/models/propulsion: .deps
+Only in FlightGear-2.0.0/src/FDM/JSBSim/models/propulsion: FGElectric.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/models/propulsion: FGEngine.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/models/propulsion: FGForce.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/models/propulsion: FGNozzle.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/models/propulsion: FGPiston.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/models/propulsion: FGPropeller.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/models/propulsion: FGRocket.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/models/propulsion: FGRotor.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/models/propulsion: FGTank.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/models/propulsion: FGThruster.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/models/propulsion: FGTurbine.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/models/propulsion: FGTurboProp.o
+Only in FlightGear-2.0.0/src/FDM/JSBSim/models/propulsion: Makefile
+Only in FlightGear-2.0.0/src/FDM/JSBSim/models/propulsion: libPropulsion.a
+Only in FlightGear-2.0.0/src/FDM/LaRCsim: .deps
+Only in FlightGear-2.0.0/src/FDM/LaRCsim: IO360.o
+Only in FlightGear-2.0.0/src/FDM/LaRCsim: LaRCsim.o
+Only in FlightGear-2.0.0/src/FDM/LaRCsim: LaRCsimIC.o
+Only in FlightGear-2.0.0/src/FDM/LaRCsim: Makefile
+Only in FlightGear-2.0.0/src/FDM/LaRCsim: atmos_62.o
+Only in FlightGear-2.0.0/src/FDM/LaRCsim: basic_aero.o
+Only in FlightGear-2.0.0/src/FDM/LaRCsim: basic_engine.o
+Only in FlightGear-2.0.0/src/FDM/LaRCsim: basic_gear.o
+Only in FlightGear-2.0.0/src/FDM/LaRCsim: basic_init.o
+Only in FlightGear-2.0.0/src/FDM/LaRCsim: c172_aero.o
+Only in FlightGear-2.0.0/src/FDM/LaRCsim: c172_engine.o
+Only in FlightGear-2.0.0/src/FDM/LaRCsim: c172_gear.o
+Only in FlightGear-2.0.0/src/FDM/LaRCsim: c172_init.o
+Only in FlightGear-2.0.0/src/FDM/LaRCsim: cherokee_aero.o
+Only in FlightGear-2.0.0/src/FDM/LaRCsim: cherokee_engine.o
+Only in FlightGear-2.0.0/src/FDM/LaRCsim: cherokee_gear.o
+Only in FlightGear-2.0.0/src/FDM/LaRCsim: cherokee_init.o
+Only in FlightGear-2.0.0/src/FDM/LaRCsim: default_model_routines.o
+Only in FlightGear-2.0.0/src/FDM/LaRCsim: libLaRCsim.a
+Only in FlightGear-2.0.0/src/FDM/LaRCsim: ls_accel.o
+Only in FlightGear-2.0.0/src/FDM/LaRCsim: ls_aux.o
+diff -ru FlightGear-2.0.0.orig/src/FDM/LaRCsim/ls_constants.h FlightGear-2.0.0/src/FDM/LaRCsim/ls_constants.h
+--- FlightGear-2.0.0.orig/src/FDM/LaRCsim/ls_constants.h	2010-02-17 17:11:56.000000000 +0100
++++ FlightGear-2.0.0/src/FDM/LaRCsim/ls_constants.h	2010-05-07 21:57:11.592389000 +0200
+@@ -93,11 +93,11 @@
+ /* Value of earth flattening parameter from ref [8] 			
+ 	
+ 	Note: FP = f
+-	      E  = 1-f
++	      ONEMINFPE  = 1-f
+ 	      EPS = sqrt(1-(1-f)^2)			*/
+ 	      
+ #define FP	.003352813178
+-#define E   .996647186
++#define ONEMINFPE   .996647186
+ #define EPS .081819221
+ #define INVG .031080997
+ 
+diff -ru FlightGear-2.0.0.orig/src/FDM/LaRCsim/ls_geodesy.c FlightGear-2.0.0/src/FDM/LaRCsim/ls_geodesy.c
+--- FlightGear-2.0.0.orig/src/FDM/LaRCsim/ls_geodesy.c	2010-02-17 17:11:56.000000000 +0100
++++ FlightGear-2.0.0/src/FDM/LaRCsim/ls_geodesy.c	2010-05-07 21:57:11.628144000 +0200
+@@ -275,14 +275,14 @@
+ 	   || ( (HALF_PI + lat_geoc) < ONE_SECOND ) )   /* near South pole */
+ 	  {
+ 	    *lat_geod = lat_geoc;
+-	    *sea_level_r = EQUATORIAL_RADIUS*E;
++	    *sea_level_r = EQUATORIAL_RADIUS*ONEMINFPE;
+ 	    *alt = radius - *sea_level_r;
+ 	  }
+ 	else
+ 	  {
+ 	    t_lat = tan(lat_geoc);
+-	    x_alpha = E*EQUATORIAL_RADIUS/sqrt(t_lat*t_lat + E*E);
+-	    mu_alpha = atan2(sqrt(RESQ - x_alpha*x_alpha),E*x_alpha);
++	    x_alpha = ONEMINFPE*EQUATORIAL_RADIUS/sqrt(t_lat*t_lat + ONEMINFPE*ONEMINFPE);
++	    mu_alpha = atan2(sqrt(RESQ - x_alpha*x_alpha),ONEMINFPE*x_alpha);
+ 	    if (lat_geoc < 0) mu_alpha = - mu_alpha;
+ 	    sin_mu_a = sin(mu_alpha);
+ 	    delt_lambda = mu_alpha - lat_geoc;
+@@ -294,10 +294,10 @@
+ 	      (denom*denom*denom);
+ 	    delt_mu = atan2(l_point*sin(delt_lambda),rho_alpha + *alt);
+ 	    *lat_geod = mu_alpha - delt_mu;
+-	    lambda_sl = atan( E*E * tan(*lat_geod) ); /* SL geoc. latitude */
++	    lambda_sl = atan( ONEMINFPE*ONEMINFPE * tan(*lat_geod) ); /* SL geoc. latitude */
+ 	    sin_lambda_sl = sin( lambda_sl );
+ 	    *sea_level_r = sqrt(RESQ
+-			   /(1 + ((1/(E*E))-1)*sin_lambda_sl*sin_lambda_sl));
++			   /(1 + ((1/(ONEMINFPE*ONEMINFPE))-1)*sin_lambda_sl*sin_lambda_sl));
+ 	  }
+ }
+ 
+@@ -307,13 +307,13 @@
+ {
+     SCALAR lambda_sl, sin_lambda_sl, cos_lambda_sl, sin_mu, cos_mu, px, py;
+     
+-    lambda_sl = atan( E*E * tan(lat_geod) ); /* sea level geocentric latitude */
++    lambda_sl = atan( ONEMINFPE*ONEMINFPE * tan(lat_geod) ); /* sea level geocentric latitude */
+     sin_lambda_sl = sin( lambda_sl );
+     cos_lambda_sl = cos( lambda_sl );
+     sin_mu = sin(lat_geod);	/* Geodetic (map makers') latitude */
+     cos_mu = cos(lat_geod);
+     *sl_radius = sqrt(RESQ
+-	/(1 + ((1/(E*E))-1)*sin_lambda_sl*sin_lambda_sl));
++	/(1 + ((1/(ONEMINFPE*ONEMINFPE))-1)*sin_lambda_sl*sin_lambda_sl));
+     py = *sl_radius*sin_lambda_sl + alt*sin_mu;
+     px = *sl_radius*cos_lambda_sl + alt*cos_mu;
+     *lat_geoc = atan2( py, px );
+Only in FlightGear-2.0.0/src/FDM/LaRCsim: ls_geodesy.o
+Only in FlightGear-2.0.0/src/FDM/LaRCsim: ls_gravity.o
+Only in FlightGear-2.0.0/src/FDM/LaRCsim: ls_init.o
+Only in FlightGear-2.0.0/src/FDM/LaRCsim: ls_interface.o
+Only in FlightGear-2.0.0/src/FDM/LaRCsim: ls_matrix.o
+Only in FlightGear-2.0.0/src/FDM/LaRCsim: ls_model.o
+Only in FlightGear-2.0.0/src/FDM/LaRCsim: ls_step.o
+Only in FlightGear-2.0.0/src/FDM/LaRCsim: navion_aero.o
+Only in FlightGear-2.0.0/src/FDM/LaRCsim: navion_engine.o
+Only in FlightGear-2.0.0/src/FDM/LaRCsim: navion_gear.o
+Only in FlightGear-2.0.0/src/FDM/LaRCsim: navion_init.o
+Only in FlightGear-2.0.0/src/FDM/LaRCsim: uiuc_aero.o
+Only in FlightGear-2.0.0/src/FDM: Makefile
+Only in FlightGear-2.0.0/src/FDM: NullFDM.o
+Only in FlightGear-2.0.0/src/FDM/SP: .deps
+Only in FlightGear-2.0.0/src/FDM/SP: ACMS.o
+Only in FlightGear-2.0.0/src/FDM/SP: ADA.o
+Only in FlightGear-2.0.0/src/FDM/SP: Balloon.o
+Only in FlightGear-2.0.0/src/FDM/SP: BalloonSim.o
+Only in FlightGear-2.0.0/src/FDM/SP: MagicCarpet.o
+Only in FlightGear-2.0.0/src/FDM/SP: Makefile
+Only in FlightGear-2.0.0/src/FDM/SP: libSPFDM.a
+Only in FlightGear-2.0.0/src/FDM: UFO.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: .deps
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: Makefile
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: libUIUCModel.a
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_1DdataFileReader.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_1Dinterpolation.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_2DdataFileReader.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_2Dinterpolation.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_3Dinterpolation.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_aerodeflections.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_alh_ap.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_auto_pilot.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_betaprobe.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_coef_drag.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_coef_lift.o
+diff -ru FlightGear-2.0.0.orig/src/FDM/UIUCModel/uiuc_coef_pitch.cpp FlightGear-2.0.0/src/FDM/UIUCModel/uiuc_coef_pitch.cpp
+--- FlightGear-2.0.0.orig/src/FDM/UIUCModel/uiuc_coef_pitch.cpp	2010-02-17 17:11:56.000000000 +0100
++++ FlightGear-2.0.0/src/FDM/UIUCModel/uiuc_coef_pitch.cpp	2010-05-07 21:57:11.647356000 +0200
+@@ -85,6 +85,7 @@
+ **********************************************************************/
+ 
+ #include "uiuc_coef_pitch.h"
++#include <math.h>
+ 
+ 
+ void uiuc_coef_pitch()
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_coef_pitch.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_coef_roll.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_coef_sideforce.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_coef_yaw.o
+diff -ru FlightGear-2.0.0.orig/src/FDM/UIUCModel/uiuc_coefficients.cpp FlightGear-2.0.0/src/FDM/UIUCModel/uiuc_coefficients.cpp
+--- FlightGear-2.0.0.orig/src/FDM/UIUCModel/uiuc_coefficients.cpp	2010-02-17 17:11:56.000000000 +0100
++++ FlightGear-2.0.0/src/FDM/UIUCModel/uiuc_coefficients.cpp	2010-05-07 21:57:11.648184000 +0200
+@@ -97,6 +97,7 @@
+ **********************************************************************/
+ 
+ #include "uiuc_coefficients.h"
++#include <math.h>
+ 
+ void uiuc_coefficients(double dt)
+ {
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_coefficients.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_controlInput.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_convert.o
+diff -ru FlightGear-2.0.0.orig/src/FDM/UIUCModel/uiuc_engine.cpp FlightGear-2.0.0/src/FDM/UIUCModel/uiuc_engine.cpp
+--- FlightGear-2.0.0.orig/src/FDM/UIUCModel/uiuc_engine.cpp	2010-02-17 17:11:56.000000000 +0100
++++ FlightGear-2.0.0/src/FDM/UIUCModel/uiuc_engine.cpp	2010-05-07 21:57:11.655561000 +0200
+@@ -69,6 +69,7 @@
+ 
+ **********************************************************************/
+ #include <simgear/compiler.h>
++#include <math.h>
+ 
+ #include "uiuc_engine.h"
+ 
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_engine.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_find_position.o
+diff -ru FlightGear-2.0.0.orig/src/FDM/UIUCModel/uiuc_flapdata.cpp FlightGear-2.0.0/src/FDM/UIUCModel/uiuc_flapdata.cpp
+--- FlightGear-2.0.0.orig/src/FDM/UIUCModel/uiuc_flapdata.cpp	2010-02-17 17:11:56.000000000 +0100
++++ FlightGear-2.0.0/src/FDM/UIUCModel/uiuc_flapdata.cpp	2010-05-07 21:57:11.657051000 +0200
+@@ -9,6 +9,7 @@
+ #include "uiuc_flapdata.h"
+ //#include <fstream>
+ #include <cassert>
++#include <stdio.h>
+ 
+ ///////////////////////////////////////////////////////////
+ //Implementation of FlapStruct public methods
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_flapdata.o
+diff -ru FlightGear-2.0.0.orig/src/FDM/UIUCModel/uiuc_fog.cpp FlightGear-2.0.0/src/FDM/UIUCModel/uiuc_fog.cpp
+--- FlightGear-2.0.0.orig/src/FDM/UIUCModel/uiuc_fog.cpp	2010-02-17 17:11:56.000000000 +0100
++++ FlightGear-2.0.0/src/FDM/UIUCModel/uiuc_fog.cpp	2010-05-07 21:57:11.657323000 +0200
+@@ -73,6 +73,7 @@
+ 
+ 
+ #include "uiuc_fog.h"
++#include <math.h>
+ 
+ void uiuc_fog()
+ {
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_fog.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_gear.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_get_flapper.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_getwind.o
+diff -ru FlightGear-2.0.0.orig/src/FDM/UIUCModel/uiuc_hh_ap.cpp FlightGear-2.0.0/src/FDM/UIUCModel/uiuc_hh_ap.cpp
+--- FlightGear-2.0.0.orig/src/FDM/UIUCModel/uiuc_hh_ap.cpp	2010-02-17 17:11:56.000000000 +0100
++++ FlightGear-2.0.0/src/FDM/UIUCModel/uiuc_hh_ap.cpp	2010-05-07 21:57:11.657794000 +0200
+@@ -52,6 +52,7 @@
+ // entire control deflection.
+ 
+ #include "uiuc_hh_ap.h"
++#include <math.h>
+ 
+ // (RD) changed float to double
+ 
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_hh_ap.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_ice.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_iceboot.o
+diff -ru FlightGear-2.0.0.orig/src/FDM/UIUCModel/uiuc_iced_nonlin.cpp FlightGear-2.0.0/src/FDM/UIUCModel/uiuc_iced_nonlin.cpp
+--- FlightGear-2.0.0.orig/src/FDM/UIUCModel/uiuc_iced_nonlin.cpp	2010-02-17 17:11:56.000000000 +0100
++++ FlightGear-2.0.0/src/FDM/UIUCModel/uiuc_iced_nonlin.cpp	2010-05-07 21:57:11.658251000 +0200
+@@ -6,6 +6,7 @@
+ //            high etas
+ 
+ #include "uiuc_iced_nonlin.h"
++#include <math.h>
+ 
+ void Calc_Iced_Forces()
+ 	{
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_iced_nonlin.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_icing_demo.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_initializemaps.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_map_CD.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_map_CL.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_map_CY.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_map_Cm.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_map_Cn.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_map_Croll.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_map_controlSurface.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_map_engine.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_map_fog.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_map_gear.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_map_geometry.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_map_ice.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_map_init.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_map_keyword.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_map_mass.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_map_misc.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_map_record1.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_map_record2.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_map_record3.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_map_record4.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_map_record5.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_map_record6.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_menu.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_menu_CD.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_menu_CL.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_menu_CY.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_menu_Cm.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_menu_Cn.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_menu_Croll.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_menu_controlSurface.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_menu_engine.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_menu_fog.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_menu_functions.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_menu_gear.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_menu_geometry.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_menu_ice.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_menu_init.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_menu_mass.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_menu_misc.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_menu_record.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_pah_ap.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_parsefile.o
+diff -ru FlightGear-2.0.0.orig/src/FDM/UIUCModel/uiuc_rah_ap.cpp FlightGear-2.0.0/src/FDM/UIUCModel/uiuc_rah_ap.cpp
+--- FlightGear-2.0.0.orig/src/FDM/UIUCModel/uiuc_rah_ap.cpp	2010-02-17 17:11:56.000000000 +0100
++++ FlightGear-2.0.0/src/FDM/UIUCModel/uiuc_rah_ap.cpp	2010-05-07 21:57:11.658782000 +0200
+@@ -52,6 +52,7 @@
+ // entire control deflection.
+ 
+ #include "uiuc_rah_ap.h"
++#include <math.h>
+ 
+ // (RD) changed float to double
+ 
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_rah_ap.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_recorder.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_warnings_errors.o
+Only in FlightGear-2.0.0/src/FDM/UIUCModel: uiuc_wrapper.o
+Only in FlightGear-2.0.0/src/FDM/YASim: .deps
+Only in FlightGear-2.0.0/src/FDM/YASim: Airplane.o
+Only in FlightGear-2.0.0/src/FDM/YASim: Atmosphere.o
+Only in FlightGear-2.0.0/src/FDM/YASim: ControlMap.o
+Only in FlightGear-2.0.0/src/FDM/YASim: FGFDM.o
+Only in FlightGear-2.0.0/src/FDM/YASim: FGGround.o
+Only in FlightGear-2.0.0/src/FDM/YASim: Gear.o
+Only in FlightGear-2.0.0/src/FDM/YASim: Glue.o
+Only in FlightGear-2.0.0/src/FDM/YASim: Ground.o
+Only in FlightGear-2.0.0/src/FDM/YASim: Hitch.o
+Only in FlightGear-2.0.0/src/FDM/YASim: Hook.o
+Only in FlightGear-2.0.0/src/FDM/YASim: Integrator.o
+Only in FlightGear-2.0.0/src/FDM/YASim: Jet.o
+Only in FlightGear-2.0.0/src/FDM/YASim: Launchbar.o
+Only in FlightGear-2.0.0/src/FDM/YASim: Makefile
+Only in FlightGear-2.0.0/src/FDM/YASim: Math.o
+Only in FlightGear-2.0.0/src/FDM/YASim: Model.o
+Only in FlightGear-2.0.0/src/FDM/YASim: PistonEngine.o
+Only in FlightGear-2.0.0/src/FDM/YASim: PropEngine.o
+Only in FlightGear-2.0.0/src/FDM/YASim: Propeller.o
+Only in FlightGear-2.0.0/src/FDM/YASim: RigidBody.o
+Only in FlightGear-2.0.0/src/FDM/YASim: Rotor.o
+Only in FlightGear-2.0.0/src/FDM/YASim: Rotorpart.o
+Only in FlightGear-2.0.0/src/FDM/YASim: SimpleJet.o
+Only in FlightGear-2.0.0/src/FDM/YASim: Surface.o
+Only in FlightGear-2.0.0/src/FDM/YASim: Thruster.o
+Only in FlightGear-2.0.0/src/FDM/YASim: TurbineEngine.o
+Only in FlightGear-2.0.0/src/FDM/YASim: Turbulence.o
+Only in FlightGear-2.0.0/src/FDM/YASim: Wing.o
+Only in FlightGear-2.0.0/src/FDM/YASim: YASim.o
+Only in FlightGear-2.0.0/src/FDM/YASim: libYASim.a
+Only in FlightGear-2.0.0/src/FDM/YASim: proptest
+diff -ru FlightGear-2.0.0.orig/src/FDM/YASim/proptest.cpp FlightGear-2.0.0/src/FDM/YASim/proptest.cpp
+--- FlightGear-2.0.0.orig/src/FDM/YASim/proptest.cpp	2010-02-17 17:11:56.000000000 +0100
++++ FlightGear-2.0.0/src/FDM/YASim/proptest.cpp	2010-05-07 21:57:11.659290000 +0200
+@@ -20,8 +20,11 @@
+ SGPropertyNode* fgGetNode (const char * path, bool create) { return 0; }
+ SGPropertyNode* fgGetNode (const char * path, int i, bool create) { return 0; }
+ float fgGetFloat (const char * name, float defaultValue) { return 0; }
+-float fgGetDouble (const char * name, double defaultValue) { return 0; }
+-float fgSetDouble (const char * name, double defaultValue) { return 0; }
++//float fgGetDouble (const char * name, double defaultValue) { return 0; }
++//float fgSetDouble (const char * name, double defaultValue) { return 0; }
++double fgGetDouble (const char * name, double defaultValue) { return 0; }
++bool fgSetDouble (const char * name, double defaultValue) { return 0; }
++
+ 
+ static const float KTS2MPS = 0.514444444444;
+ static const float RPM2RAD = 0.10471975512;
+Only in FlightGear-2.0.0/src/FDM/YASim: proptest.o
+Only in FlightGear-2.0.0/src/FDM/YASim: yasim
+Only in FlightGear-2.0.0/src/FDM/YASim: yasim-test.o
+Only in FlightGear-2.0.0/src/FDM: flight.o
+Only in FlightGear-2.0.0/src/FDM: groundcache.o
+Only in FlightGear-2.0.0/src/FDM: libFlight.a
+Only in FlightGear-2.0.0/src/GUI: .deps
+Only in FlightGear-2.0.0/src/GUI: AirportList.o
+Only in FlightGear-2.0.0/src/GUI: Makefile
+Only in FlightGear-2.0.0/src/GUI: SafeTexFont.o
+Only in FlightGear-2.0.0/src/GUI: dialog.o
+Only in FlightGear-2.0.0/src/GUI: fonts.o
+Only in FlightGear-2.0.0/src/GUI: gui.o
+Only in FlightGear-2.0.0/src/GUI: gui_funcs.o
+Only in FlightGear-2.0.0/src/GUI: layout-props.o
+Only in FlightGear-2.0.0/src/GUI: layout-test
+Only in FlightGear-2.0.0/src/GUI: layout-test.o
+Only in FlightGear-2.0.0/src/GUI: layout.o
+Only in FlightGear-2.0.0/src/GUI: libGUI.a
+Only in FlightGear-2.0.0/src/GUI: menubar.o
+Only in FlightGear-2.0.0/src/GUI: new_gui.o
+Only in FlightGear-2.0.0/src/GUI: property_list.o
+Only in FlightGear-2.0.0/src/Include: Makefile
+Only in FlightGear-2.0.0/src/Include: config.h
+Only in FlightGear-2.0.0/src/Include: config.h-msvc90
+Only in FlightGear-2.0.0/src/Include: stamp-h1
+Only in FlightGear-2.0.0/src/Include: version.h
+Only in FlightGear-2.0.0/src/Input: .deps
+Only in FlightGear-2.0.0/src/Input: FGButton.o
+Only in FlightGear-2.0.0/src/Input: FGCommonInput.o
+Only in FlightGear-2.0.0/src/Input: FGDeviceConfigurationMap.o
+Only in FlightGear-2.0.0/src/Input: FGJoystickInput.o
+Only in FlightGear-2.0.0/src/Input: FGKeyboardInput.o
+Only in FlightGear-2.0.0/src/Input: FGMouseInput.o
+Only in FlightGear-2.0.0/src/Input: Makefile
+Only in FlightGear-2.0.0/src/Input: fgjs
+Only in FlightGear-2.0.0/src/Input: fgjs.o
+Only in FlightGear-2.0.0/src/Input: input.o
+Only in FlightGear-2.0.0/src/Input: js_demo
+Only in FlightGear-2.0.0/src/Input: js_demo.o
+Only in FlightGear-2.0.0/src/Input: jsinput.o
+Only in FlightGear-2.0.0/src/Input: jssuper.o
+Only in FlightGear-2.0.0/src/Input: libInput.a
+Only in FlightGear-2.0.0/src/Instrumentation: .deps
+Only in FlightGear-2.0.0/src/Instrumentation/HUD: .deps
+Only in FlightGear-2.0.0/src/Instrumentation/HUD: HUD.o
+Only in FlightGear-2.0.0/src/Instrumentation/HUD: HUD_dial.o
+Only in FlightGear-2.0.0/src/Instrumentation/HUD: HUD_gauge.o
+Only in FlightGear-2.0.0/src/Instrumentation/HUD: HUD_instrument.o
+Only in FlightGear-2.0.0/src/Instrumentation/HUD: HUD_label.o
+Only in FlightGear-2.0.0/src/Instrumentation/HUD: HUD_ladder.o
+Only in FlightGear-2.0.0/src/Instrumentation/HUD: HUD_misc.o
+Only in FlightGear-2.0.0/src/Instrumentation/HUD: HUD_runway.o
+Only in FlightGear-2.0.0/src/Instrumentation/HUD: HUD_scale.o
+Only in FlightGear-2.0.0/src/Instrumentation/HUD: HUD_tape.o
+Only in FlightGear-2.0.0/src/Instrumentation/HUD: HUD_tbi.o
+Only in FlightGear-2.0.0/src/Instrumentation/HUD: Makefile
+Only in FlightGear-2.0.0/src/Instrumentation/HUD: libHUD.a
+Only in FlightGear-2.0.0/src/Instrumentation/KLN89: .deps
+Only in FlightGear-2.0.0/src/Instrumentation/KLN89: Makefile
+Only in FlightGear-2.0.0/src/Instrumentation/KLN89: kln89.o
+Only in FlightGear-2.0.0/src/Instrumentation/KLN89: kln89_page.o
+Only in FlightGear-2.0.0/src/Instrumentation/KLN89: kln89_page_act.o
+Only in FlightGear-2.0.0/src/Instrumentation/KLN89: kln89_page_apt.o
+Only in FlightGear-2.0.0/src/Instrumentation/KLN89: kln89_page_cal.o
+Only in FlightGear-2.0.0/src/Instrumentation/KLN89: kln89_page_dir.o
+Only in FlightGear-2.0.0/src/Instrumentation/KLN89: kln89_page_fpl.o
+Only in FlightGear-2.0.0/src/Instrumentation/KLN89: kln89_page_int.o
+Only in FlightGear-2.0.0/src/Instrumentation/KLN89: kln89_page_nav.o
+Only in FlightGear-2.0.0/src/Instrumentation/KLN89: kln89_page_ndb.o
+Only in FlightGear-2.0.0/src/Instrumentation/KLN89: kln89_page_nrst.o
+Only in FlightGear-2.0.0/src/Instrumentation/KLN89: kln89_page_oth.o
+Only in FlightGear-2.0.0/src/Instrumentation/KLN89: kln89_page_set.o
+Only in FlightGear-2.0.0/src/Instrumentation/KLN89: kln89_page_usr.o
+Only in FlightGear-2.0.0/src/Instrumentation/KLN89: kln89_page_vor.o
+Only in FlightGear-2.0.0/src/Instrumentation/KLN89: libKLN89.a
+Only in FlightGear-2.0.0/src/Instrumentation: Makefile
+Only in FlightGear-2.0.0/src/Instrumentation: adf.o
+Only in FlightGear-2.0.0/src/Instrumentation: agradar.o
+Only in FlightGear-2.0.0/src/Instrumentation: airspeed_indicator.o
+Only in FlightGear-2.0.0/src/Instrumentation: altimeter.o
+Only in FlightGear-2.0.0/src/Instrumentation: attitude_indicator.o
+Only in FlightGear-2.0.0/src/Instrumentation: clock.o
+Only in FlightGear-2.0.0/src/Instrumentation: dclgps.o
+Only in FlightGear-2.0.0/src/Instrumentation: dme.o
+Only in FlightGear-2.0.0/src/Instrumentation: gps.o
+Only in FlightGear-2.0.0/src/Instrumentation: groundradar.o
+Only in FlightGear-2.0.0/src/Instrumentation: gsdi.o
+Only in FlightGear-2.0.0/src/Instrumentation: gyro.o
+Only in FlightGear-2.0.0/src/Instrumentation: heading_indicator.o
+Only in FlightGear-2.0.0/src/Instrumentation: heading_indicator_dg.o
+Only in FlightGear-2.0.0/src/Instrumentation: heading_indicator_fg.o
+Only in FlightGear-2.0.0/src/Instrumentation: inst_vertical_speed_indicator.o
+Only in FlightGear-2.0.0/src/Instrumentation: instrument_mgr.o
+Only in FlightGear-2.0.0/src/Instrumentation: kr_87.o
+Only in FlightGear-2.0.0/src/Instrumentation: kt_70.o
+Only in FlightGear-2.0.0/src/Instrumentation: libInstrumentation.a
+Only in FlightGear-2.0.0/src/Instrumentation: mag_compass.o
+Only in FlightGear-2.0.0/src/Instrumentation: marker_beacon.o
+Only in FlightGear-2.0.0/src/Instrumentation: mk_viii.o
+Only in FlightGear-2.0.0/src/Instrumentation: mrg.o
+Only in FlightGear-2.0.0/src/Instrumentation: navradio.o
+Only in FlightGear-2.0.0/src/Instrumentation: od_gauge.o
+Only in FlightGear-2.0.0/src/Instrumentation: rad_alt.o
+Only in FlightGear-2.0.0/src/Instrumentation: render_area_2d.o
+Only in FlightGear-2.0.0/src/Instrumentation: slip_skid_ball.o
+Only in FlightGear-2.0.0/src/Instrumentation: tacan.o
+Only in FlightGear-2.0.0/src/Instrumentation: transponder.o
+Only in FlightGear-2.0.0/src/Instrumentation: turn_indicator.o
+Only in FlightGear-2.0.0/src/Instrumentation: vertical_speed_indicator.o
+Only in FlightGear-2.0.0/src/Instrumentation: wxradar.o
+Only in FlightGear-2.0.0/src/Main: .deps
+Only in FlightGear-2.0.0/src/Main: CameraGroup.o
+Only in FlightGear-2.0.0/src/Main: FGEventHandler.o
+Only in FlightGear-2.0.0/src/Main: Makefile
+Only in FlightGear-2.0.0/src/Main: WindowBuilder.o
+Only in FlightGear-2.0.0/src/Main: WindowSystemAdapter.o
+Only in FlightGear-2.0.0/src/Main: bootstrap.o
+Only in FlightGear-2.0.0/src/Main: fg_commands.o
+Only in FlightGear-2.0.0/src/Main: fg_init.o
+Only in FlightGear-2.0.0/src/Main: fg_io.o
+Only in FlightGear-2.0.0/src/Main: fg_os_common.o
+Only in FlightGear-2.0.0/src/Main: fg_os_osgviewer.o
+Only in FlightGear-2.0.0/src/Main: fg_props.o
+Only in FlightGear-2.0.0/src/Main: fgfs
+Only in FlightGear-2.0.0/src/Main: fgviewer.o
+Only in FlightGear-2.0.0/src/Main: globals.o
+Only in FlightGear-2.0.0/src/Main: libMain.a
+Only in FlightGear-2.0.0/src/Main: logger.o
+Only in FlightGear-2.0.0/src/Main: main.o
+Only in FlightGear-2.0.0/src/Main: metar
+Only in FlightGear-2.0.0/src/Main: metar_main.o
+Only in FlightGear-2.0.0/src/Main: options.o
+Only in FlightGear-2.0.0/src/Main: renderer.o
+Only in FlightGear-2.0.0/src/Main: runfgfs
+Only in FlightGear-2.0.0/src/Main: runfgfs.bat
+Only in FlightGear-2.0.0/src/Main: splash.o
+Only in FlightGear-2.0.0/src/Main: util.o
+Only in FlightGear-2.0.0/src/Main: viewer.o
+Only in FlightGear-2.0.0/src/Main: viewmgr.o
+Only in FlightGear-2.0.0/src: Makefile
+Only in FlightGear-2.0.0/src/Model: .deps
+Only in FlightGear-2.0.0/src/Model: Makefile
+Only in FlightGear-2.0.0/src/Model: acmodel.o
+Only in FlightGear-2.0.0/src/Model: libModel.a
+Only in FlightGear-2.0.0/src/Model: model_panel.o
+Only in FlightGear-2.0.0/src/Model: modelmgr.o
+Only in FlightGear-2.0.0/src/Model: panelnode.o
+Only in FlightGear-2.0.0/src/MultiPlayer: .deps
+Only in FlightGear-2.0.0/src/MultiPlayer: Makefile
+Only in FlightGear-2.0.0/src/MultiPlayer: libMultiPlayer.a
+Only in FlightGear-2.0.0/src/MultiPlayer: multiplaymgr.o
+Only in FlightGear-2.0.0/src/MultiPlayer: tiny_xdr.o
+Only in FlightGear-2.0.0/src/Navaids: .deps
+Only in FlightGear-2.0.0/src/Navaids: Makefile
+Only in FlightGear-2.0.0/src/Navaids: awynet.o
+Only in FlightGear-2.0.0/src/Navaids: fixlist.o
+Only in FlightGear-2.0.0/src/Navaids: libNavaids.a
+Only in FlightGear-2.0.0/src/Navaids: markerbeacon.o
+diff -ru FlightGear-2.0.0.orig/src/Navaids/navdb.cxx FlightGear-2.0.0/src/Navaids/navdb.cxx
+--- FlightGear-2.0.0.orig/src/Navaids/navdb.cxx	2010-02-17 17:11:56.000000000 +0100
++++ FlightGear-2.0.0/src/Navaids/navdb.cxx	2010-05-07 22:09:46.562515000 +0200
+@@ -53,7 +53,7 @@
+   case 3: return FGPositioned::VOR;
+   case 4: return FGPositioned::ILS;
+   case 5: return FGPositioned::LOC;
+-  case 6: return FGPositioned::GS;
++  case 6: return FGPositioned::GLIDESLOP;
+   case 12:
+   case 13: return FGPositioned::DME;
+   case 99: return FGPositioned::INVALID; // end-of-file code
+@@ -138,7 +138,7 @@
+         loclist->add(r);
+         break;
+         
+-      case FGPositioned::GS:
++      case FGPositioned::GLIDESLOP:
+         gslist->add(r);
+         break;
+       
+Only in FlightGear-2.0.0/src/Navaids: navdb.o
+Only in FlightGear-2.0.0/src/Navaids: navlist.o
+diff -ru FlightGear-2.0.0.orig/src/Navaids/navrecord.cxx FlightGear-2.0.0/src/Navaids/navrecord.cxx
+--- FlightGear-2.0.0.orig/src/Navaids/navrecord.cxx	2010-02-17 17:11:56.000000000 +0100
++++ FlightGear-2.0.0/src/Navaids/navrecord.cxx	2010-05-07 21:57:11.659949000 +0200
+@@ -69,7 +69,7 @@
+     
+     case LOC:
+     case ILS:
+-    case GS:
++    case GLIDESLOP:
+       range = FG_LOC_DEFAULT_RANGE;
+       break;
+       
+@@ -86,7 +86,7 @@
+ 
+ void FGNavRecord::initAirportRelation()
+ {
+-  if ((type() < ILS) || (type() > GS)) {
++  if ((type() < ILS) || (type() > GLIDESLOP)) {
+     return; // not airport-located
+   }
+   
+@@ -95,7 +95,7 @@
+     return;
+   }
+   
+-  if (type() != GS) {
++  if (type() != GLIDESLOP) {
+     readAirportSceneryData();
+   }
+         
+Only in FlightGear-2.0.0/src/Navaids: navrecord.o
+diff -ru FlightGear-2.0.0.orig/src/Navaids/positioned.cxx FlightGear-2.0.0/src/Navaids/positioned.cxx
+--- FlightGear-2.0.0.orig/src/Navaids/positioned.cxx	2010-02-17 17:11:56.000000000 +0100
++++ FlightGear-2.0.0/src/Navaids/positioned.cxx	2010-05-07 21:57:11.660545000 +0200
+@@ -793,7 +793,7 @@
+  case NDB: return "NDB";
+  case ILS: return "ILS";
+  case LOC: return "localiser";
+- case GS: return "glideslope";
++ case GLIDESLOP: return "glideslope";
+  case OM: return "outer-marker";
+  case MM: return "middle-marker";
+  case IM: return "inner-marker";
+diff -ru FlightGear-2.0.0.orig/src/Navaids/positioned.hxx FlightGear-2.0.0/src/Navaids/positioned.hxx
+--- FlightGear-2.0.0.orig/src/Navaids/positioned.hxx	2010-02-17 17:11:56.000000000 +0100
++++ FlightGear-2.0.0/src/Navaids/positioned.hxx	2010-05-07 21:57:11.661128000 +0200
+@@ -48,7 +48,7 @@
+     NDB,
+     ILS,
+     LOC,
+-    GS,
++    GLIDESLOP,
+     OM,
+     MM,
+     IM,
+Only in FlightGear-2.0.0/src/Navaids: positioned.o
+Only in FlightGear-2.0.0/src/Network: .deps
+Only in FlightGear-2.0.0/src/Network: ATC-Inputs.o
+Only in FlightGear-2.0.0/src/Network: ATC-Main.o
+Only in FlightGear-2.0.0/src/Network: ATC-Outputs.o
+Only in FlightGear-2.0.0/src/Network: AV400.o
+Only in FlightGear-2.0.0/src/Network: AV400Sim.o
+Only in FlightGear-2.0.0/src/Network: Makefile
+Only in FlightGear-2.0.0/src/Network: atlas.o
+Only in FlightGear-2.0.0/src/Network: garmin.o
+Only in FlightGear-2.0.0/src/Network: generic.o
+Only in FlightGear-2.0.0/src/Network: httpd.o
+Only in FlightGear-2.0.0/src/Network: joyclient.o
+Only in FlightGear-2.0.0/src/Network: jsclient.o
+Only in FlightGear-2.0.0/src/Network: lfsglass.o
+Only in FlightGear-2.0.0/src/Network: libNetwork.a
+Only in FlightGear-2.0.0/src/Network: multiplay.o
+Only in FlightGear-2.0.0/src/Network: native.o
+Only in FlightGear-2.0.0/src/Network: native_ctrls.o
+Only in FlightGear-2.0.0/src/Network: native_fdm.o
+Only in FlightGear-2.0.0/src/Network: native_gui.o
+Only in FlightGear-2.0.0/src/Network: nmea.o
+Only in FlightGear-2.0.0/src/Network: opengc.o
+Only in FlightGear-2.0.0/src/Network: props.o
+Only in FlightGear-2.0.0/src/Network: protocol.o
+Only in FlightGear-2.0.0/src/Network: pve.o
+Only in FlightGear-2.0.0/src/Network: ray.o
+Only in FlightGear-2.0.0/src/Network: rul.o
+Only in FlightGear-2.0.0/src/Scenery: .deps
+Only in FlightGear-2.0.0/src/Scenery: Makefile
+Only in FlightGear-2.0.0/src/Scenery: SceneryPager.o
+Only in FlightGear-2.0.0/src/Scenery: libScenery.a
+Only in FlightGear-2.0.0/src/Scenery: redout.o
+Only in FlightGear-2.0.0/src/Scenery: scenery.o
+Only in FlightGear-2.0.0/src/Scenery: tilemgr.o
+Only in FlightGear-2.0.0/src/Scripting: .deps
+Only in FlightGear-2.0.0/src/Scripting: Makefile
+Only in FlightGear-2.0.0/src/Scripting: NasalSys.o
+Only in FlightGear-2.0.0/src/Scripting: libScripting.a
+Only in FlightGear-2.0.0/src/Scripting: nasal-props.o
+Only in FlightGear-2.0.0/src/Sound: .deps
+Only in FlightGear-2.0.0/src/Sound: Makefile
+Only in FlightGear-2.0.0/src/Sound: beacon.o
+Only in FlightGear-2.0.0/src/Sound: fg_fx.o
+Only in FlightGear-2.0.0/src/Sound: libSound.a
+Only in FlightGear-2.0.0/src/Sound: morse.o
+Only in FlightGear-2.0.0/src/Sound: sample_queue.o
+Only in FlightGear-2.0.0/src/Sound: voice.o
+Only in FlightGear-2.0.0/src/Systems: .deps
+Only in FlightGear-2.0.0/src/Systems: Makefile
+Only in FlightGear-2.0.0/src/Systems: electrical.o
+Only in FlightGear-2.0.0/src/Systems: libSystems.a
+Only in FlightGear-2.0.0/src/Systems: pitot.o
+Only in FlightGear-2.0.0/src/Systems: static.o
+Only in FlightGear-2.0.0/src/Systems: system_mgr.o
+Only in FlightGear-2.0.0/src/Systems: vacuum.o
+Only in FlightGear-2.0.0/src/Time: .deps
+Only in FlightGear-2.0.0/src/Time: Makefile
+Only in FlightGear-2.0.0/src/Time: libTime.a
+Only in FlightGear-2.0.0/src/Time: light.o
+Only in FlightGear-2.0.0/src/Time: sunsolver.o
+Only in FlightGear-2.0.0/src/Time: tmp.o
+Only in FlightGear-2.0.0/src/Traffic: .deps
+Only in FlightGear-2.0.0/src/Traffic: Makefile
+Only in FlightGear-2.0.0/src/Traffic: SchedFlight.o
+Only in FlightGear-2.0.0/src/Traffic: Schedule.o
+Only in FlightGear-2.0.0/src/Traffic: TrafficMgr.o
+Only in FlightGear-2.0.0/src/Traffic: libTraffic.a
+Only in FlightGear-2.0.0/tests: .deps
+Only in FlightGear-2.0.0/tests: Makefile
+Only in FlightGear-2.0.0/tests: alcinfo
+Only in FlightGear-2.0.0/tests: alcinfo.o
+Only in FlightGear-2.0.0/tests: est-epsilon
+Only in FlightGear-2.0.0/tests: est-epsilon.o
+Only in FlightGear-2.0.0/tests: gl-info
+Only in FlightGear-2.0.0/tests: gl-info.o
+Only in FlightGear-2.0.0/tests: test-env-map
+Only in FlightGear-2.0.0/tests: test-env-map.o
+Only in FlightGear-2.0.0/tests: test-gethostname
+Only in FlightGear-2.0.0/tests: test-gethostname.o
+Only in FlightGear-2.0.0/tests: test-mktime
+Only in FlightGear-2.0.0/tests: test-mktime.o
+Only in FlightGear-2.0.0/tests: test-text
+Only in FlightGear-2.0.0/tests: test-text.o
+Only in FlightGear-2.0.0/tests: test-up
+Only in FlightGear-2.0.0/tests: test-up.o
+Only in FlightGear-2.0.0/utils/GPSsmooth: .deps
+Only in FlightGear-2.0.0/utils/GPSsmooth: GPSsmooth
+Only in FlightGear-2.0.0/utils/GPSsmooth: MIDG-II.o
+Only in FlightGear-2.0.0/utils/GPSsmooth: MIDG_main.o
+Only in FlightGear-2.0.0/utils/GPSsmooth: MIDGsmooth
+Only in FlightGear-2.0.0/utils/GPSsmooth: Makefile
+Only in FlightGear-2.0.0/utils/GPSsmooth: UGear.o
+Only in FlightGear-2.0.0/utils/GPSsmooth: UGear_command.o
+Only in FlightGear-2.0.0/utils/GPSsmooth: UGear_main.o
+Only in FlightGear-2.0.0/utils/GPSsmooth: UGear_telnet.o
+Only in FlightGear-2.0.0/utils/GPSsmooth: UGsmooth
+Only in FlightGear-2.0.0/utils/GPSsmooth: gps.o
+Only in FlightGear-2.0.0/utils/GPSsmooth: gps_main.o
+Only in FlightGear-2.0.0/utils: Makefile
+Only in FlightGear-2.0.0/utils/Modeller: .deps
+Only in FlightGear-2.0.0/utils/Modeller: Makefile
+diff -ru FlightGear-2.0.0.orig/utils/Modeller/Makefile.in FlightGear-2.0.0/utils/Modeller/Makefile.in
+--- FlightGear-2.0.0.orig/utils/Modeller/Makefile.in	2010-02-17 17:13:28.000000000 +0100
++++ FlightGear-2.0.0/utils/Modeller/Makefile.in	2010-05-07 23:18:19.328672000 +0200
+@@ -63,10 +63,10 @@
+ depcomp = $(SHELL) $(top_srcdir)/depcomp
+ am__depfiles_maybe = depfiles
+ am__mv = mv -f
+-COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
++COMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
+ 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+-CCLD = $(CC)
+-LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
++CCLD = $(CXX)
++LINK = $(CXXLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
+ CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
+ 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
+ CXXLD = $(CXX)
+diff -ru FlightGear-2.0.0.orig/utils/Modeller/animassist.c FlightGear-2.0.0/utils/Modeller/animassist.c
+--- FlightGear-2.0.0.orig/utils/Modeller/animassist.c	2010-02-17 17:11:56.000000000 +0100
++++ FlightGear-2.0.0/utils/Modeller/animassist.c	2010-05-07 23:08:53.270262000 +0200
+@@ -24,6 +24,9 @@
+ #include <stdlib.h>
+ #include <stdio.h>
+ #include <math.h>
++#include <iostream>
++#include <string>
++using namespace std;
+ 
+ int main( int argc, char **argv ) {
+ 	float x1,y1,z1,x2,y2,z2 = 0;
+Only in FlightGear-2.0.0/utils/Modeller: animassist.o
+Only in FlightGear-2.0.0/utils/TerraSync: .deps
+Only in FlightGear-2.0.0/utils/TerraSync: Makefile
+Only in FlightGear-2.0.0/utils/TerraSync: terrasync
+Only in FlightGear-2.0.0/utils/TerraSync: terrasync.o
+Only in FlightGear-2.0.0/utils/fgadmin: Makefile
+Only in FlightGear-2.0.0/utils/fgadmin/src: .deps
+Only in FlightGear-2.0.0/utils/fgadmin/src: Makefile
+Only in FlightGear-2.0.0/utils/fgviewer: .deps
+Only in FlightGear-2.0.0/utils/fgviewer: Makefile
+Only in FlightGear-2.0.0/utils/js_server: .deps
+Only in FlightGear-2.0.0/utils/js_server: Makefile
+Only in FlightGear-2.0.0/utils/propmerge: .deps
+Only in FlightGear-2.0.0/utils/propmerge: Makefile
+Only in FlightGear-2.0.0/utils/xmlgrep: .deps
+Only in FlightGear-2.0.0/utils/xmlgrep: Makefile

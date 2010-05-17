@@ -54,8 +54,10 @@ Requires:        %{name}
 #PROTO_PKG=$RPM_BUILD_DIR/%{name}/usr/X11/lib/pkgconfig
 #export PKG_CONFIG_PATH="$PROTO_PKG"
 
-export CFLAGS="%optflags"
-export LDFLAGS="%_ldflags"
+#export CFLAGS="%optflags"
+#export LDFLAGS="%_ldflags"
+export CC=/usr/gcc/4.3/bin/gcc
+export CXX=/usr/gcc/4.3/bin/g++
 
 libtoolize --copy --force
 ./autogen.sh

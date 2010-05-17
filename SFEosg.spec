@@ -39,6 +39,8 @@ BuildRoot:              %{_tmppath}/%{name}-%{version}-build
 #Requires: libpng
 #Requires: doxygen graphviz
 #Requires: cmake
+# TODO : look at patch : Wx is compiled with SunStudio on OpenSolaris
+# and it is not compatible with g++ 43. GD 20100507
 #Requires: wxGTK
 #Requires: curl
 #
@@ -130,18 +132,18 @@ rm -rf $RPM_BUILD_ROOT
 %defattr (-, root, bin)
 %{_bindir}
 %dir %attr(0755,root,bin) %{_libdir}
-%{_libdir}/lib*.so*
-%dir %attr(0755,root,bin) %{_libdir}osgPlugins-%{version}
-%{_libdir}osgPlugins-%{version}
 %dir %attr(0755,root,other) %{_libdir}/pkgconfig
-%{_libdir}/pkgconfig
+%dir %attr(0755,root,bin) %{_libdir}/osgPlugins-%{version}
 %dir %attr(0755,root,bin) %{_prefix}/doc/OpenThreadsReferenceDocs
-%{_prefix}/doc/OpenThreadsReferenceDocs
 %dir %attr(0755,root,bin) %{_prefix}/doc/OpenSceneGraphReferenceDocs
-%{_prefix}/doc/OpenSceneGraphReferenceDocs
 %dir %attr (0755, root, sys) %{_datadir}
-%{_datadir}/OpenSceneGraph
 %dir %attr (0755, root, bin) %{_includedir}
+%{_libdir}/lib*.so*
+%{_libdir}/pkgconfig/*
+%{_libdir}/osgPlugins-%{version}/*
+%{_prefix}/doc/OpenThreadsReferenceDocs/*
+%{_prefix}/doc/OpenSceneGraphReferenceDocs/*
+%{_datadir}/OpenSceneGraph/*
 %{_includedir}/*
 
 %changelog
