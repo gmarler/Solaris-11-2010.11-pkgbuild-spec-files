@@ -23,6 +23,11 @@ BuildRequires: SUNWlibsdl-devel
 Requires: SUNWpng
 BuildRequires: SUNWpng-devel
 Requires: %{name}-root
+BuildRequires: SFElibiconv-devel
+Requires: SFElibiconv
+BuildRequires: SUNWaudh
+BuildRequires: SFEsdl-mixer-devel
+Requires: SFEsdl-mixer
 
 %package root
 Summary:                 %{summary} - / filesystem components
@@ -35,7 +40,6 @@ Requires:                %{name}
 %patch1 -p1
 
 %build
-
 export CFLAGS="%optflags -I%{gnu_inc} -DINSTALLPREFIX=\\\"%{_prefix}\\\""
 export LDFLAGS="%_ldflags %{gnu_lib_path} -liconv -lintl -lsocket -lnsl"
 

@@ -11,3 +11,16 @@
  /***** EXTERNAL VARIABLES **************************************************/
  
  extern int net_buffer_cur_size, msg_read_pos;
+--- lbreakout2-2.6.1/client/main.c	2009-10-26 16:38:44.000000000 +0100
++++ lbreakout2-2.6.1-patch/client/main.c	2010-05-17 20:03:49.570619339 +0200
+@@ -38,6 +38,10 @@
+ #include "client.h"
+ #include "../gui/gui.h"
+ 
++#if defined(ENABLE_NLS) && (defined(__sun) || defined(sun))
++#include <locale.h>
++#endif
++
+ #define CHART_FILE_NAME "lbreakout2.hscr"
+ 
+ extern int stk_quit_request;
