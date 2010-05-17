@@ -4,16 +4,17 @@
 #
 %include Solaris.inc
 
-Name:                    SFElbreakout2
-Summary:                 LBreakout2 is a successor to LBreakout a breakout-style arcade game
-Version:                 2.6beta-7
-Source:                  %{sf_download}/lgames/lbreakout2-%{version}.tar.gz
-Source1:                 lbreakout2.desktop
-Patch1:                  lbreakout2-01-locale.diff
-
-URL:                     http://lgames.sourceforge.net/index.php?project=LBreakout2
-SUNW_BaseDir:            %{_basedir}
-BuildRoot:               %{_tmppath}/%{name}-%{version}-build
+Name:		SFElbreakout2
+Summary:	LBreakout2 is a successor to LBreakout a breakout-style arcade game
+Version:	2.6.1
+Source:		%{sf_download}/lgames/lbreakout2-%{version}.tar.gz
+Source1:	lbreakout2.desktop
+Patch1:		lbreakout2-01-locale.diff
+URL:		http://lgames.sourceforge.net/index.php?project=LBreakout2
+License:	GPLv2
+Group:		Amusements/Games
+SUNW_BaseDir:	%{_basedir}
+BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 
 %include default-depend.inc
 Requires: SUNWcsu
@@ -54,7 +55,7 @@ make install DESTDIR=$RPM_BUILD_ROOT
 
 rm -rf ${RPM_BUILD_ROOT}/usr/var
 rm -rf ${RPM_BUILD_ROOT}/usr/doc
-rm -f ${RPM_BUILD_ROOT}/var/lbreakout2.hscr
+rm -f ${RPM_BUILD_ROOT}/var/lbreakout2/lbreakout2.hscr
 
 mkdir -p ${RPM_BUILD_ROOT}%{_datadir}/applications
 mkdir -p ${RPM_BUILD_ROOT}%{_datadir}/pixmaps
@@ -77,6 +78,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/pixmaps/*
 %dir %attr (0755, root, other) %{_datadir}/doc
 %{_datadir}/doc/*
+%dir %attr (0755, root, other) %{_datadir}/icons
+%{_datadir}/icons/*
 
 %defattr (-, root, other)
 %dir %attr (0755, root, other) %{_localedir}
@@ -85,9 +88,11 @@ rm -rf $RPM_BUILD_ROOT
 %files root
 %dir %attr (0755, root, sys) %{_localstatedir}
 %dir %attr (0755, root, other) %{_localstatedir}/lbreakout2
-%{_localstatedir}/lbreakout2/*
+#%{_localstatedir}/lbreakout2/*
 
 %changelog
-- Wed Feb  6 pradhap (at) gmail.com
+* Mon May 17 2010 - Milan Jurik
+- update to 2.6.1
+* Wed Feb  6 pradhap (at) gmail.com
 - Initial lbreakout spec file.
 

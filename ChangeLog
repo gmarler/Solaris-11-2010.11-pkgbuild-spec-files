@@ -13,6 +13,7 @@
 	* base-specs/sdl-image.spec: force linking with compiled in libpng to
 	  solve dynamic loader problem
 	* SFElbreakout.spec: cleanup of spec and dependencies
+	* SFElbreakout2.spec: update to 2.6.1
 
 2010-05-18  Simon Jin <yuntong.jin@sun.com>
 
