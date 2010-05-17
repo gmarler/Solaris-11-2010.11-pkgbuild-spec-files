@@ -5,15 +5,18 @@
 #
 %include Solaris.inc
 
-Name:                    SFEleafpad
-Summary:                 Leafpad - A GTK+ based text editor
-Version:                 0.8.13
-Source:                  http://savannah.nongnu.org/download/leafpad/leafpad-%{version}.tar.gz
-URL:                     http://tarot.freeshell.org/leafpad/
-SUNW_BaseDir:            %{_basedir}
-BuildRoot:               %{_tmppath}/%{name}-%{version}-build
+Name:		SFEleafpad
+Summary:	Leafpad - A GTK+ based text editor
+Version:	0.8.17
+Source:		http://savannah.nongnu.org/download/leafpad/leafpad-%{version}.tar.gz
+URL:		http://tarot.freeshell.org/leafpad/
+License:	GPLv2
+Group:		Office/Editor
+SUNW_BaseDir:	%{_basedir}
+BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 
 %include default-depend.inc
+BuildRequires:	SUNWgnome-common-devel
 
 %if %build_l10n
 %package l10n
@@ -71,6 +74,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Mon May 17 2010 - Milan Jurik
+- bump to 0.8.17
 * Sun Dec 25 2007 - Ananth Shrinivas <ananth@sun.com>
 - Cleaned up spec file and fixed attributes
 * Sat Dec 23 2007 - pradhap (at) gmail.com

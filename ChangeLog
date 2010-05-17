@@ -14,6 +14,7 @@
 	  solve dynamic loader problem
 	* SFElbreakout.spec: cleanup of spec and dependencies
 	* SFElbreakout2.spec: update to 2.6.1
+	* SFEleafpad.spec: bump to 0.8.17
 
 2010-05-18  Simon Jin <yuntong.jin@sun.com>
 
