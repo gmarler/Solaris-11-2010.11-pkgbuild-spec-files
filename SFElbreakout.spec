@@ -3,23 +3,34 @@
 #
 #
 %include Solaris.inc
+%define cc_is_gcc 1
+%include base.inc
 
-Name:                    SFElbreakout
-Summary:                 LBreakout is a breakout-style arcade game in the manner of Arkanoid.
-Version:                 010315
-Source:                  %{sf_download}/lgames/lbreakout-%{version}.tar.gz
-URL:                     http://lgames.sourceforge.net/index.php?project=LBreakout
-#SUNW_BaseDir:            %{_basedir}
-BuildRoot:               %{_tmppath}/%{name}-%{version}-build
+%define src_version 010315
+
+Name:		SFElbreakout
+Summary:	LBreakout is a breakout-style arcade game in the manner of Arkanoid.
+Version:	0.10315
+Source:		%{sf_download}/lgames/lbreakout-%{src_version}.tar.gz
+URL:		http://lgames.sourceforge.net/index.php?project=LBreakout
+Group:		Amusements/Games
+SUNW_BaseDir:	/
+BuildRoot:	%{_tmppath}/%{name}-%{src_version}-build
 
 %include default-depend.inc
-
 Requires: SUNWcsu
+Requires: SUNWlibsdl
+BuildRequires: SUNWlibsdl-devel
 
 %prep
-%setup -q -n lbreakout-%version
+%setup -q -n lbreakout-%{src_version}
 
 %build
+export CC=gcc
+export CXX=g++
+export CFLAGS="%optflags"
+export CXXFLAGS="%{gcc_cxx_optflags}"
+export LDFLAGS="%{_ldflags}"
 mkdir -p $RPM_BUILD_ROOT/var/lib/games
 ./configure --prefix=%{_prefix} \
             --mandir=%{_mandir} \
@@ -56,6 +67,8 @@ rm -rf $RPM_BUILD_ROOT
 #%dir %attr(0755, root, bin) %{_mandir}/man1/*
 
 %changelog
-- Wed Feb  6 pradhap (at) gmail.com
+* Mon May 17 2010 - Milan Jurik
+- cleanup of spec and dependencies 
+* Wed Feb  6 pradhap (at) gmail.com
 - Initial lbreakout spec file.
 
