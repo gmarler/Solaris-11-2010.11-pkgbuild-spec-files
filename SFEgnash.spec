@@ -21,7 +21,7 @@ Patch1:              gnash-01-stdc.diff
 Patch2:              gnash-02-sunpro.diff
 Patch3:              gnash-03-gnashrc.diff
 Patch4:              gnash-04-plugin.diff
-Patch5:              gnash-04-macros.diff
+Patch5:              gnash-05-macros.diff
 %else
 # bzr code
 Version:             0.8.6.999
