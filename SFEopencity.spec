@@ -4,15 +4,22 @@
 # includes module(s): opencity
 #
 %include Solaris.inc
+%define cc_is_gcc 1
+%include base.inc
 
-Name:                    SFEopencity
-Summary:                 opencity - OpenCity Game
-Version:                 0.0.4stable
-Source:                  %{sf_download}/opencity/opencity-%{version}.tar.bz2
-Patch1:			 opencity-01-makefile.diff
-Patch2:			 opencity-02-homedir.diff
-SUNW_BaseDir:            %{_basedir}
-BuildRoot:               %{_tmppath}/%{name}-%{version}-build
+%define src_name opencity
+%define src_version 0.0.6.2stable
+
+Name:		SFEopencity
+Summary:	opencity - OpenCity Game
+Version:	0.0.6.2
+Source:		%{sf_download}/%{src_name}/%{src_name}-%{src_version}.tar.bz2
+Patch1:		opencity-01-errors.diff
+URL:		http://www.opencity.info/
+License:	GPLv2
+Group:		Amusements/Game
+SUNW_BaseDir:	%{_basedir}
+BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 BuildRequires: SFEsdl-ttf-devel
 Requires: SFEsdl-ttf
@@ -20,11 +27,19 @@ BuildRequires: SFEsdl-mixer-devel
 Requires: SFEsdl-mixer
 BuildRequires: SFEsdl-net-devel
 Requires: SFEsdl-net
+BuildRequires: SFEsdl-image-devel
+Requires: SFEsdl-image
+BuildRequires: SUNWxorg-mesa
+Requires: SUNWxorg-mesa
+
+%package root
+Summary:	%{summary} - / filesystem
+SUNW_BaseDir:	/
+%include default-depend.inc
 
 %prep
-%setup -q -n opencity-%{version}
+%setup -q -n %{src_name}-%{src_version}
 %patch1 -p1
-%patch2 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -36,7 +51,8 @@ export CFLAGS="%_ldflags -L/usr/gnu/lib -R/usr/gnu/lib"
 export ACLOCAL_FLAGS="-I %{_datadir}/aclocal"
 export MSGFMT="/usr/bin/msgfmt"
 
-export CXX=/usr/sfw/bin/g++
+export CC=gcc
+export CXX=g++
 export CXXFLAGS="-O3 -Xlinker -i -fno-omit-frame-pointer -fpic -Dpic"
 libtoolize --copy
 aclocal
@@ -80,9 +96,22 @@ rm -rf $RPM_BUILD_ROOT
 %defattr (-, root, other)
 %dir %attr (0755, root, sys) %{_datadir}
 %{_datadir}/pixmaps
-%{_datadir}/opencity
+%{_datadir}/%{src_name}
 %{_datadir}/applications
+%dir %attr (0755, root, other) %{_docdir}
+%{_docdir}/%{src_name}/*
+%dir %attr(0755, root, bin) %{_mandir}
+%{_mandir}/man6/*
+
+%files root
+%defattr (-, root, bin)
+%attr (0755, root, bin) %dir %{_sysconfdir}
+%defattr (-, root, bin)
+%attr (0755, root, bin) %dir %{_sysconfdir}/%{src_name}
+%{_sysconfdir}/%{src_name}/*
 
 %changelog
+* Mon May 17 2010 - Milan Jurik
+- update to 0.0.6.2stable
 * Sun Apr 22 2007 - dougs@truemail.co.th
 - Initial version
