@@ -1,0 +1,120 @@
+diff -r 3bdbc1d2a0a3 JavaScriptCore/runtime/JSString.h
+--- a/JavaScriptCore/runtime/JSString.h	Tue Mar 23 16:41:06 2010 +0800
++++ b/JavaScriptCore/runtime/JSString.h	Tue Mar 23 18:49:11 2010 +0800
+@@ -139,7 +139,7 @@
+             , m_length(rope->length())
+             , m_fiberCount(1)
+         {
+-            m_other.m_fibers[0] = rope.releaseRef();
++            m_other.m_union.m_fibers[0] = rope.releaseRef();
+         }
+         // This constructor constructs a new string by concatenating s1 & s2.
+         // This should only be called with fiberCount <= 3.
+@@ -203,8 +203,8 @@
+             , m_fiberCount(0)
+         {
+             // nasty hack because we can't union non-POD types
+-            m_other.m_finalizerCallback = finalizer;
+-            m_other.m_finalizerContext = context;
++            m_other.m_union.m_struct.m_finalizerCallback = finalizer;
++            m_other.m_union.m_struct.m_finalizerContext = context;
+             Heap::heap(this)->reportExtraMemoryCost(value.cost());
+         }
+ 
+@@ -212,10 +212,10 @@
+         {
+             ASSERT(vptr() == JSGlobalData::jsStringVPtr);
+             for (unsigned i = 0; i < m_fiberCount; ++i)
+-                m_other.m_fibers[i]->deref();
++                m_other.m_union.m_fibers[i]->deref();
+ 
+-            if (!m_fiberCount && m_other.m_finalizerCallback)
+-                m_other.m_finalizerCallback(this, m_other.m_finalizerContext);
++            if (!m_fiberCount && m_other.m_union.m_struct.m_finalizerCallback)
++                m_other.m_union.m_struct.m_finalizerCallback(this, m_other.m_union.m_struct.m_finalizerContext);
+         }
+ 
+         const UString& value(ExecState* exec) const
+@@ -256,16 +256,16 @@
+         {
+             UStringImpl* impl = string.rep();
+             impl->ref();
+-            m_other.m_fibers[index++] = impl;
++            m_other.m_union.m_fibers[index++] = impl;
+         }
+ 
+         void appendStringInConstruct(unsigned& index, JSString* jsString)
+         {
+             if (jsString->isRope()) {
+                 for (unsigned i = 0; i < jsString->m_fiberCount; ++i) {
+-                    Rope::Fiber fiber = jsString->m_other.m_fibers[i];
++                    Rope::Fiber fiber = jsString->m_other.m_union.m_fibers[i];
+                     fiber->ref();
+-                    m_other.m_fibers[index++] = fiber;
++                    m_other.m_union.m_fibers[index++] = fiber;
+                 }
+             } else
+                 appendStringInConstruct(index, jsString->string());
+@@ -283,7 +283,7 @@
+                 UString u(v.toString(exec));
+                 UStringImpl* impl = u.rep();
+                 impl->ref();
+-                m_other.m_fibers[index++] = impl;
++                m_other.m_union.m_fibers[index++] = impl;
+                 m_length += u.size();
+             }
+         }
+@@ -312,14 +312,14 @@
+         mutable unsigned m_fiberCount;
+         // This structure exists to support a temporary workaround for a GC issue.
+         struct JSStringFinalizerStruct {
+-            JSStringFinalizerStruct() : m_finalizerCallback(0) {}
++            //JSStringFinalizerStruct() : JSStringFinalizerStructUnion::JSStringFinalizerStructInner::m_finalizerCallback(0) {}
+             union {
+                 mutable Rope::Fiber m_fibers[s_maxInternalRopeLength];
+                 struct {
+                     JSStringFinalizerCallback m_finalizerCallback;
+                     void* m_finalizerContext;
+-                };
+-            };
++                } m_struct;
++            } m_union;
+         } m_other;
+ 
+         bool isRope() const { return m_fiberCount; }
+diff -r d743efab4cb5 JavaScriptCore/runtime/JSString.cpp
+--- a/JavaScriptCore/runtime/JSString.cpp	Wed Mar 24 18:16:39 2010 +0800
++++ b/JavaScriptCore/runtime/JSString.cpp	Wed Mar 24 20:26:23 2010 +0800
+@@ -51,8 +51,8 @@
+         m_value = newImpl;
+     else {
+         for (unsigned i = 0; i < m_fiberCount; ++i) {
+-            m_other.m_fibers[i]->deref();
+-            m_other.m_fibers[i] = 0;
++            m_other.m_union.m_fibers[i]->deref();
++            m_other.m_union.m_fibers[i] = 0;
+         }
+         m_fiberCount = 0;
+         ASSERT(!isRope());
+@@ -66,8 +66,8 @@
+     Vector<Rope::Fiber, 32> workQueue;
+     Rope::Fiber currentFiber;
+     for (unsigned i = 0; i < (m_fiberCount - 1); ++i)
+-        workQueue.append(m_other.m_fibers[i]);
+-    currentFiber = m_other.m_fibers[m_fiberCount - 1];
++        workQueue.append(m_other.m_union.m_fibers[i]);
++    currentFiber = m_other.m_union.m_fibers[m_fiberCount - 1];
+     while (true) {
+         if (currentFiber->isRope()) {
+             Rope* rope = static_cast<URopeImpl*>(currentFiber);
+@@ -88,8 +88,8 @@
+                 // Create a string from the UChar buffer, clear the rope RefPtr.
+                 ASSERT(buffer == position);
+                 for (unsigned i = 0; i < m_fiberCount; ++i) {
+-                    m_other.m_fibers[i]->deref();
+-                    m_other.m_fibers[i] = 0;
++                    m_other.m_union.m_fibers[i]->deref();
++                    m_other.m_union.m_fibers[i] = 0;
+                 }
+                 m_fiberCount = 0;
+ 

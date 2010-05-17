@@ -10,7 +10,7 @@
 
 Name:                    SFEwebkit
 Summary:                 WetKit, an open source web browser engine that's used by Safari, Dashboard, Mail, and many other OS X applications.
-Version:                 1.1.19
+Version:                 1.1.90
 Source:                  http://www.webkitgtk.org/webkit-%{version}.tar.gz
 URL:                     http://www.webkitgtk.org/
 
@@ -37,8 +37,11 @@ Patch19:                 webkit-19-ss12-ternary-operator.diff
 Patch20:                 webkit-20-visibility.diff
 Patch21:                 webkit-21-vector-not-const.diff
 Patch22:                 webkit-22-not-reinterpretcast.diff
-Patch23:                 webkit-23-a11y-34463.diff
-Patch24:                 webkit-24-a11y-35169.diff
+Patch23:                 webkit-23-name-union.diff 
+Patch24:                 webkit-24-MathExtras.diff 
+Patch25:                 webkit-25-misc.diff
+Patch26:                  webkit-26-copycons-imp.diff
+Patch27:                 webkit-27-gtk-deprive.diff
 
 SUNW_BaseDir:            %{_basedir}
 # copyright place holder.
@@ -80,6 +83,7 @@ SUNW_BaseDir:            %{_basedir}
 %prep
 %setup -q -n %name-%version -c -a0
 cd webkit-%version
+
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
@@ -104,6 +108,9 @@ cd webkit-%version
 %patch22 -p1
 %patch23 -p1
 %patch24 -p1
+%patch25 -p1
+%patch26 -p1
+%patch27 -p1
 
 %build
 #export LD=CC
@@ -174,6 +181,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon May 18 2010 - yuntong.jin@sun.com
+- Bump to 1.1.90
 * Tue Feb 25 2010 - yuntong.jin@sun.com
 - Add patch for 34463 35169 in webkit community
 * Wen Feb 03 2010 - yuntong.jin@sun.com

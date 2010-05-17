@@ -1,0 +1,69 @@
+From bc070084a9928a29289eacb1db13aad36330cc04 Mon Sep 17 00:00:00 2001
+From: Thiago Macieira <thiago.macieira@nokia.com>
+Date: Tue, 21 Jul 2009 14:18:35 +0200
+Subject: [PATCH 11/17] Fix compilation with Sun CC 5.9: moving elements in a vector requires source not to be const
+
+I don't know why the compiler couldn't call src->~T() on a const T *src,
+but fact is it couldn't.
+
+In any case, since move is copying the source and deleting it, formally
+the argument shouldn't be const anyway.
+---
+ src/3rdparty/webkit/JavaScriptCore/wtf/Vector.h |   12 ++++++------
+ 1 files changed, 6 insertions(+), 6 deletions(-)
+
+diff --git webkit/JavaScriptCore/wtf/Vector.h webkit/JavaScriptCore/wtf/Vector.h
+index e303444..d950866 100644
+--- webkit/JavaScriptCore/wtf/Vector.h
++++ webkit/JavaScriptCore/wtf/Vector.h
+@@ -129,7 +129,7 @@ namespace WTF {
+     template<typename T>
+     struct VectorMover<false, T>
+     {
+-        static void move(const T* src, const T* srcEnd, T* dst)
++        static void move(T* src, const T* srcEnd, T* dst)
+         {
+             while (src != srcEnd) {
+                 new (dst) T(*src);
+@@ -138,7 +138,7 @@ namespace WTF {
+                 ++src;
+             }
+         }
+-        static void moveOverlapping(const T* src, const T* srcEnd, T* dst)
++        static void moveOverlapping(T* src, const T* srcEnd, T* dst)
+         {
+             if (src > dst)
+                 move(src, srcEnd, dst);
+@@ -157,11 +157,11 @@ namespace WTF {
+     template<typename T>
+     struct VectorMover<true, T>
+     {
+-        static void move(const T* src, const T* srcEnd, T* dst) 
++        static void move(T* src, const T* srcEnd, T* dst) 
+         {
+             memcpy(dst, src, reinterpret_cast<const char*>(srcEnd) - reinterpret_cast<const char*>(src));
+         }
+-        static void moveOverlapping(const T* src, const T* srcEnd, T* dst) 
++        static void moveOverlapping(T* src, const T* srcEnd, T* dst) 
+         {
+             memmove(dst, src, reinterpret_cast<const char*>(srcEnd) - reinterpret_cast<const char*>(src));
+         }
+@@ -254,12 +254,12 @@ namespace WTF {
+             VectorInitializer<VectorTraits<T>::needsInitialization, VectorTraits<T>::canInitializeWithMemset, T>::initialize(begin, end);
+         }
+ 
+-        static void move(const T* src, const T* srcEnd, T* dst)
++        static void move(T* src, const T* srcEnd, T* dst)
+         {
+             VectorMover<VectorTraits<T>::canMoveWithMemcpy, T>::move(src, srcEnd, dst);
+         }
+ 
+-        static void moveOverlapping(const T* src, const T* srcEnd, T* dst)
++        static void moveOverlapping(T* src, const T* srcEnd, T* dst)
+         {
+             VectorMover<VectorTraits<T>::canMoveWithMemcpy, T>::moveOverlapping(src, srcEnd, dst);
+         }
+-- 
+1.6.2.1.223.g2f1f
+
+

@@ -74,19 +74,6 @@ index 8039e35..67a39f1 100644
          RefPtr<CSSPrimitiveValue> color = CSSPrimitiveValue::createColor(s->color.rgb());
          list->prepend(ShadowValue::create(x.release(), y.release(), blur.release(), spread.release(), style.release(), color.release()));
      }
-diff --git a/WebCore/bindings/js/JSPluginElementFunctions.cpp b/WebCore/bindings/js/JSPluginElementFunctions.cpp
-index e927ef1..3ea02ed 100644
---- a/WebCore/bindings/js/JSPluginElementFunctions.cpp
-+++ b/WebCore/bindings/js/JSPluginElementFunctions.cpp
-@@ -62,7 +62,7 @@ JSValue runtimeObjectGetter(ExecState* exec, const Identifier&, const PropertySl
-     JSHTMLElement* thisObj = static_cast<JSHTMLElement*>(asObject(slot.slotBase()));
-     HTMLElement* element = static_cast<HTMLElement*>(thisObj->impl());
-     RuntimeObjectImp* runtimeObject = getRuntimeObject(exec, element);
--    return runtimeObject ? runtimeObject : jsUndefined();
-+    return runtimeObject ? (JSValue)runtimeObject : jsUndefined();
- }
- 
- JSValue runtimeObjectPropertyGetter(ExecState* exec, const Identifier& propertyName, const PropertySlot& slot)
 diff --git a/WebCore/bindings/js/JSJavaScriptCallFrameCustom.cpp b/WebCore/bindings/js/JSJavaScriptCallFrameCustom.cpp
 index afbdf5d..6ba1f90 100644
 --- a/WebCore/bindings/js/JSJavaScriptCallFrameCustom.cpp

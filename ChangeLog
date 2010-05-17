@@ -1,3 +1,22 @@
+2010-05-18  Simon Jin <yuntong.jin@sun.com>
+
+	* SFEwebkit-cstd.spec:
+	* patches/webkit-01-configure-and-makefile.diff:
+	* patches/webkit-04-make-pair.diff:
+	* patches/webkit-05-ustring.diff:
+	* patches/webkit-08-svgpodlist.diff:
+	* patches/webkit-10-pow.diff:
+	* patches/webkit-11-g-byte-order-marco.diff:
+	* patches/webkit-15-static.diff:
+	* patches/webkit-19-ss12-ternary-operator.diff:
+	* patches/webkit-21-vector-not-const.diff~:
+	* patches/webkit-23-name-union.diff:
+	* patches/webkit-24-MathExtras.diff:
+	* patches/webkit-24-a11y-35169.diff~:
+	* patches/webkit-25-misc.diff:
+	* patches/webkit-26-copycons-imp.diff:
+	* patches/webkit-27-gtk-deprive.diff:
+
 2010-05-16  Albert Lee  <trisk@opensolaris.org>
 
 	* SFEmousetrap.spec: Use Debian a11y fork of 0.3 by default,

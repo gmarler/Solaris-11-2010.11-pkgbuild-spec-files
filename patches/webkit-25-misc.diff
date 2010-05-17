@@ -1,0 +1,24 @@
+diff -r f96dc080483f JavaScriptCore/wtf/Vector.h
+--- a/JavaScriptCore/wtf/Vector.h	Thu Apr 22 12:51:41 2010 +0800
++++ b/JavaScriptCore/wtf/Vector.h	Tue May 04 13:48:16 2010 +0800
+@@ -948,7 +964,7 @@
+         // one is needed. 
+         new (end()) T(static_cast<T>(*ptr));
+ #else
+-        new (end()) T(*ptr);
++	new (end()) T(*(T*)ptr);
+ #endif
+         ++m_size;
+     } 
+diff -r 42df7d3e6809 JavaScriptCore/runtime/SmallStrings.cpp
+--- a/JavaScriptCore/runtime/SmallStrings.cpp	Thu May 13 17:59:14 2010 +0800
++++ b/JavaScriptCore/runtime/SmallStrings.cpp	Thu May 13 18:02:32 2010 +0800
+@@ -61,7 +61,7 @@
+ 
+ SmallStrings::SmallStrings()
+ {
+-    COMPILE_ASSERT(numCharactersToStore == arrayLength(m_singleCharacterStrings), IsNumCharactersConstInSyncWithClassUsage);
++    //COMPILE_ASSERT(numCharactersToStore == arrayLength(m_singleCharacterStrings), IsNumCharactersConstInSyncWithClassUsage);
+     clear();
+ }
+ 

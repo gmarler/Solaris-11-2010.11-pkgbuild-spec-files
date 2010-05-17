@@ -1,13 +1,21 @@
-diff --git a/WebCore/rendering/RenderListMarker.cpp b/WebCore/rendering/RenderListMarker.cpp
-index 5ce9a21..b5666e9 100644
---- a/WebCore/rendering/RenderListMarker.cpp
-+++ b/WebCore/rendering/RenderListMarker.cpp
-@@ -78,7 +78,7 @@ static String toRoman(int number, bool upper)
+diff -r 4c3cd7f45889 WebCore/rendering/RenderListMarker.cpp
+--- a/WebCore/rendering/RenderListMarker.cpp	Mon Apr 12 16:22:34 2010 +0800
++++ b/WebCore/rendering/RenderListMarker.cpp	Mon Apr 12 16:29:53 2010 +0800
+@@ -114,7 +114,7 @@
      return String(&letters[lettersSize - length], length);
  }
  
 -static String toAlphabetic(int number, const UChar* alphabet, int alphabetSize)
-+String toAlphabetic(int number, const UChar* alphabet, int alphabetSize)
++static inline String toAlphabetic(int number, const UChar* alphabet, int alphabetSize)
  {
-     ASSERT(alphabetSize >= 10);
+     if (number < 1)
+         return String::number(number);
+@@ -122,7 +122,7 @@
+     return toAlphabeticOrNumeric(number, alphabet, alphabetSize, AlphabeticSequence);
+ }
  
+-static String toNumeric(int number, const UChar* numerals, int numeralsSize)
++static inline String toNumeric(int number, const UChar* numerals, int numeralsSize)
+ {
+     return toAlphabeticOrNumeric(number, numerals, numeralsSize, NumericSequence);
+ }

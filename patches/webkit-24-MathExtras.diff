@@ -1,0 +1,23 @@
+diff -r b65d0057a2f3 JavaScriptCore/wtf/MathExtras.h
+--- a/JavaScriptCore/wtf/MathExtras.h	Tue Mar 23 18:49:29 2010 +0800
++++ b/JavaScriptCore/wtf/MathExtras.h	Tue Mar 23 19:00:53 2010 +0800
+@@ -186,7 +186,7 @@
+ inline float rad2grad(float r) { return r * 200.0f / piFloat; }
+ inline float grad2rad(float g) { return g * piFloat / 200.0f; }
+ 
+-#if !COMPILER(MSVC) && !COMPILER(RVCT) && !OS(ANDROID) && !COMPILER(WINSCW)
++#if !COMPILER(MSVC) && !COMPILER(RVCT) && !OS(ANDROID) && !COMPILER(WINSCW) && !COMPILER(SUNCC)
+ using std::isfinite;
+ using std::isinf;
+ using std::isnan;
+diff -r d743efab4cb5 JavaScriptCore/wtf/MathExtras.h
+--- a/JavaScriptCore/wtf/MathExtras.h	Wed Mar 24 18:16:39 2010 +0800
++++ b/JavaScriptCore/wtf/MathExtras.h	Thu Mar 25 10:55:43 2010 +0800
+@@ -32,6 +32,7 @@
+ 
+ #if OS(SOLARIS)
+ #include <ieeefp.h>
++#include <math.h>
+ #endif
+ 
+ #if OS(OPENBSD)
