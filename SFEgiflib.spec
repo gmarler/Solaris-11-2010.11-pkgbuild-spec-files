@@ -15,6 +15,8 @@
 Name:		SFEgiflib
 Summary:	%{giflib.summary}
 Version:	%{giflib.version}
+URL:		http://giflib.sourceforge.net/
+Group:		System/Libraries
 SUNW_BaseDir:	%{_basedir}
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -74,5 +76,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}
 
 %changelog
+* Mon May 17 2010 - Milan Jurik
+- bump to 4.1.6
 * Thu Sep  6 2007 - dougs@truemail.co.th
 - Initial version

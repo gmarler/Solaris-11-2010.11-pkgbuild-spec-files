@@ -15,6 +15,7 @@
 	* SFElbreakout.spec: cleanup of spec and dependencies
 	* SFElbreakout2.spec: update to 2.6.1
 	* SFEleafpad.spec: bump to 0.8.17
+	* SFEgiflib.spec: bump to 4.1.6
 
 2010-05-18  Simon Jin <yuntong.jin@sun.com>
 
