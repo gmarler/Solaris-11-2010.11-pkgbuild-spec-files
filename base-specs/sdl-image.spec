@@ -25,7 +25,8 @@ export LDFLAGS="%_ldflags"
             --mandir=%{_mandir}                 \
             --libdir=%{_libdir}                 \
             --libexecdir=%{_libexecdir}         \
-            --sysconfdir=%{_sysconfdir}
+            --sysconfdir=%{_sysconfdir}		\
+            --disable-png-shared
 
 make
 
@@ -38,6 +39,8 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/*.a
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Mon May 17 2010 - Milan Jurik
+- force linking with compiled in libpng to solve dynamic loader problem
 * Tue Mar 02 2010 - matt@greenviolet.net
 - Bump version to 1.2.10
 * Sun Aug 16 2009 - Milan Jurik
