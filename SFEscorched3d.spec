@@ -90,6 +90,7 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
     CPUS=1
 fi
 
+export PKG_CONFIG_PATH="%{_libdir}/pkgconfig"
 export CXXFLAGS="%cxx_optflags"
 export CFLAGS="%optflags -I%{sfw_inc}"
 export MSGFMT="/usr/bin/msgfmt"
