@@ -31,6 +31,7 @@ BuildRequires: SFEsdl-image-devel
 Requires: SFEsdl-image
 BuildRequires: SUNWxorg-mesa
 Requires: SUNWxorg-mesa
+BuildRequires: SUNWgnome-common-devel
 
 %package root
 Summary:	%{summary} - / filesystem
@@ -63,9 +64,7 @@ autoconf --force
 	    --mandir=%{_mandir}		\
             --libdir=%{_libdir}		\
             --libexecdir=%{_libexecdir} \
-            --sysconfdir=%{_sysconfdir} \
-            --enable-shared		\
-	    --disable-static
+            --sysconfdir=%{_sysconfdir}
 
 make -j$CPUS 
 
