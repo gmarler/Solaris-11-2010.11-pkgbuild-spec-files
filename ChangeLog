@@ -1,3 +1,7 @@
+2010-05-16 Milan Jurik <sfnet@xylab.cz>
+
+	* SFEsdl-image.spec: fix SPARC packaging
+
 2010-05-18  Simon Jin <yuntong.jin@sun.com>
 
 	* SFEwebkit-cstd.spec:

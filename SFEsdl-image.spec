@@ -104,10 +104,15 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, bin) %{_libdir}
 %dir %attr (0755, root, other) %{_libdir}/pkgconfig
 %{_libdir}/pkgconfig/SDL_image.pc
-%ifarch amd64 sparcv9
+%ifarch amd64
 %dir %attr (0755, root, bin) %{_libdir}/amd64
 %dir %attr (0755, root, other) %{_libdir}/amd64/pkgconfig
 %{_libdir}/amd64/pkgconfig/SDL_image.pc
+%endif
+%ifarch sparcv9
+%dir %attr (0755, root, bin) %{_libdir}/sparcv9
+%dir %attr (0755, root, other) %{_libdir}/sparcv9/pkgconfig
+%{_libdir}/sparcv9/pkgconfig/SDL_image.pc
 %endif
 %if %arch_sse2
 %dir %attr (0755, root, bin) %{_libdir}/pentium_pro+mmx
@@ -116,6 +121,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Mon May 17 2010 - Milan Jurik
+- fix SPARC packaging
 * Sun Apr 11 2010 - Milan Jurik
 - prefer SUNWlibsdl
 * Fri Mar 05 2010 - Brian Cameron  <brian.cameron@sun.com>
