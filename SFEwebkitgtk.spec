@@ -55,10 +55,13 @@ Requires: SUNWlxml
 Requires: SUNWsqlite3
 Requires: SUNWzlib
 Requires: SUNWlibsoup
+Requires: SUNWgnome-media
 
 BuildRequires: SUNWicud
 BuildRequires: SUNWgnu-gettext
 BuildRequires: SUNWgnu-gperf
+BuildRequires: SUNWgnome-common-devel
+BuildRequires: SUNWgnome-media
 
 %if %OS2nnn
 Requires: SUNWopenssl
@@ -66,7 +69,6 @@ Requires: SUNWopenssl
 BuildRequires: SUNWopenssl-include
 Requires: SUNWopenssl-libraries
 %endif
-
 
 
 %package devel
