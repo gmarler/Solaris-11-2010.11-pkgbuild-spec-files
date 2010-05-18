@@ -1,3 +1,9 @@
+2010-05-18  Gilles Dauphin
+
+	* fork SFEplib to SFEplib-gpp, 
+	* SFEplib is needed by Milan compile with ss12
+	* SFEplib-gpp needed by me , compile with gcc4.3
+
 2010-05-18  Simon Jin  <yuntong.jin@sun.com>
 
 	* SFEwebkit-cstd.spec:

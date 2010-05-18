@@ -9,8 +9,8 @@
 %define osbuild %(uname -v | sed -e 's/[A-z_]//g')
 %define src_name plib
 
-Name:           SFEplib
-Summary:        plib
+Name:           SFEplib-gpp
+Summary:        plib , compile with gcc43
 Version:        1.8.5
 Source:		http://plib.sourceforge.net/dist/%{src_name}-%{version}.tar.gz
 Patch1:		plib-01-sharelibs.diff
@@ -23,6 +23,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 #Requires: 	SFEfreeglut
 Requires: 	SUNWxorg-mesa
 Requires: 	SUNWxwice
+Requires:	developer/gcc/gcc-43
 
 %if %(expr %{osbuild} '>=' 134)
 BuildRequires:	system/header/header-audio
@@ -36,26 +37,13 @@ SUNW_BaseDir:            %{_basedir}
 %include default-depend.inc
 Requires:		 %name
 
-%if %build_l10n
-%package l10n
-Summary:                 %{summary} - l10n files
-SUNW_BaseDir:            %{_basedir}
-%include default-depend.inc
-Requires:        %{name}
-%endif
-
 %prep
 %setup -q -n %{src_name}-%{version}
 %patch1 -p1
 
 %build
-#PROTO_LIB=$RPM_BUILD_DIR/%{name}/usr/X11/lib
-#PROTO_INC=$RPM_BUILD_DIR/%{name}/usr/X11/include
-#PROTO_PKG=$RPM_BUILD_DIR/%{name}/usr/X11/lib/pkgconfig
-#export PKG_CONFIG_PATH="$PROTO_PKG"
-
-export CFLAGS="%optflags"
-export LDFLAGS="%_ldflags"
+export CC=/usr/gcc/4.3/bin/gcc
+export CXX=/usr/gcc/4.3/bin/g++
 
 libtoolize --copy --force
 ./autogen.sh
@@ -64,16 +52,10 @@ gmake
 
 %install
 rm -rf $RPM_BUILD_ROOT
-#gmake install DESTDIR=$RPM_BUILD_ROOT/%_basedir
 gmake install DESTDIR=$RPM_BUILD_ROOT
 
 rm -f $RPM_BUILD_ROOT%{_libdir}/*.la
 rm -f $RPM_BUILD_ROOT%{_libdir}/*.a
-
-#%if %build_l10n
-#%else
-#rm -rf $RPM_BUILD_ROOT%{_datadir}/locale
-#%endif
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -86,16 +68,9 @@ rm -rf $RPM_BUILD_ROOT
 %defattr (-, root, bin)
 %{_includedir}/plib
 
-#%if %build_l10n
-#%files l10n
-#%defattr (-, root, bin)
-#%dir %attr (0755, root, sys) %{_datadir}
-#%attr (-, root, other) %{_datadir}/locale
-#%endif
-
 %changelog
 * May 18 2010 - Gilles Dauphin
-- fork to SFEplib-gpp, reverse change for compilation with ss12
+- fork plib with gcc 4.3, needed for Flightgear and al..
 * Mon May 03 2010 - Milan Jurik
 - static libraries should be avoided, Debian patch makes dynamic libraries
 * May 03 2010 - Gilles Dauphin
