@@ -1,20 +1,19 @@
-# spec file for package SFEwebkit
+# spec file for package SFEwebkitgtk
 #
 #
-# includes module(s): webkit
+# includes module(s): webkitgtk
 #
 %include Solaris.inc
 
 #we are on OpenSolaris (or on SXCE or Solaris 10)
 %define OS2nnn %( egrep "OpenSolaris 20[0-9][0-9]" /etc/release > /dev/null  && echo 1 || echo 0) 
 
-Name:                    SFEwebkit
+Name:                    SFEwebkitgtk
 Summary:                 WetKit, an open source web browser engine that's used by Safari, Dashboard, Mail, and many other OS X applications.
-Version:                 1.1.90
+Version:                 1.2.0
 Source:                  http://www.webkitgtk.org/webkit-%{version}.tar.gz
 URL:                     http://www.webkitgtk.org/
 
-# owner:jouby date:2010-01-25 type:bug
 Patch1:                 webkit-01-configure-and-makefile.diff
 Patch2:                 webkit-02-mmap.diff
 Patch3:                 webkit-03-return.diff
@@ -30,7 +29,6 @@ Patch12:                 webkit-12-isnan.diff
 Patch13:                 webkit-13-webcore-frame.diff
 Patch14:                 webkit-14-extern-c.diff
 Patch15:                 webkit-15-static.diff
-#Patch16:                 webkit-16-const-string.diff
 Patch17:                 webkit-17-make-pair-range.diff
 Patch18:                 webkit-18-locale-h.diff
 Patch19:                 webkit-19-ss12-ternary-operator.diff
@@ -41,11 +39,8 @@ Patch23:                 webkit-23-name-union.diff
 Patch24:                 webkit-24-MathExtras.diff 
 Patch25:                 webkit-25-misc.diff
 Patch26:                  webkit-26-copycons-imp.diff
-Patch27:                 webkit-27-gtk-deprive.diff
 
 SUNW_BaseDir:            %{_basedir}
-# copyright place holder.
-# TODO: add the WebKit copyright
 SUNW_Copyright:          SFEwebkit.copyright
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -99,7 +94,6 @@ cd webkit-%version
 %patch13 -p1
 %patch14 -p1
 %patch15 -p1
-#%patch16 -p1
 %patch17 -p1
 %patch18 -p1
 %patch19 -p1
@@ -110,7 +104,6 @@ cd webkit-%version
 %patch24 -p1
 %patch25 -p1
 %patch26 -p1
-%patch27 -p1
 
 %build
 #export LD=CC
@@ -181,6 +174,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue May 19 2010 - yuntong.jin@sun.com
+- Bump to 1.2.0
 * Mon May 18 2010 - yuntong.jin@sun.com
 - Bump to 1.1.90
 * Tue Feb 25 2010 - yuntong.jin@sun.com

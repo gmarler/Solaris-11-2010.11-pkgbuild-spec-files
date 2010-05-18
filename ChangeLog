@@ -1,5 +1,11 @@
 2010-05-18  Simon Jin  <yuntong.jin@sun.com>
 
+	* SFEwebkit-cstd.spec:
+	* SFEwebkitgtk.spec:Bump to 1.2.0 and rename SFEwebkit-cstd.spec to
+	  SFEwebkitgtk.spec
+
+2010-05-18  Simon Jin  <yuntong.jin@sun.com>
+
 	* patches/webkit-04-make-pair.diff:update patch
 
 2010-05-18  Simon Jin <yuntong.jin@sun.com>
