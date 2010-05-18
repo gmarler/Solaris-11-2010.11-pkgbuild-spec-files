@@ -105,3 +105,16 @@ diff -r d2a07bdc6744 JavaScriptCore/wtf/RefPtrHashMap.h
      }
  
      template<typename T, typename U, typename V, typename W, typename X>
+diff -r c59477597eb0 JavaScriptCore/runtime/Structure.cpp
+--- a/JavaScriptCore/runtime/Structure.cpp	Tue May 18 21:41:44 2010 +0800
++++ b/JavaScriptCore/runtime/Structure.cpp	Tue May 18 21:43:45 2010 +0800
+@@ -262,7 +262,8 @@
+ {
+     if (m_previous) {
+         ASSERT(m_nameInPrevious);
+-        m_previous->transitionTableRemove(make_pair(m_nameInPrevious.get(), m_attributesInPrevious), m_specificValueInPrevious);
++        m_previous->transitionTableRemove(make_pair<WTF::RefPtr<JSC::UStringImpl>,
++			unsigned>(m_nameInPrevious.get(), m_attributesInPrevious), m_specificValueInPrevious);
+ 
+     }
+     ASSERT(!m_enumerationCache.hasDeadObject());
