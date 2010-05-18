@@ -36,7 +36,7 @@ Requires:		SFEfreeglut
 Requires:		SFESimGear20
 # TODO: somethings i don't understand
 #BuildRequires:		SFEplib-devel
-Requires:		SFEplib
+Requires:		SFEplib-gpp
 Requires:		SFEboost
 Requires:		SFEosg
 

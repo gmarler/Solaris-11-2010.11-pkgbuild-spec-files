@@ -23,7 +23,7 @@ BuildRequires:		SFEopenal-devel
 Requires:		SFEopenal
 BuildRequires:		SFEfreealut-devel
 Requires:		SFEfreealut
-Requires:		SFEplib
+Requires:		SFEplib-gpp
 Requires:		SFEosg
 
 # that's a nightmare with g++
