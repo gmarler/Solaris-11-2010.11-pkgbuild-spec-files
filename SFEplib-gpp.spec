@@ -15,8 +15,9 @@ Version:        1.8.5
 Source:		http://plib.sourceforge.net/dist/%{src_name}-%{version}.tar.gz
 Patch1:		plib-01-sharelibs.diff
 URL:		http://plib.sourceforge.net/
+Group:		Applications/Games
 License:        GPLv2
-SUNW_Copyright: %{name}.copyright
+SUNW_Copyright: SFEplib.copyright
 SUNW_BaseDir:   %{_basedir}
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %include	default-depend.inc
@@ -30,12 +31,6 @@ BuildRequires:	system/header/header-audio
 %else
 BuildRequires:	SUNWaudh
 %endif
-
-%package devel
-Summary:		 %summary - developer files
-SUNW_BaseDir:            %{_basedir}
-%include default-depend.inc
-Requires:		 %name
 
 %prep
 %setup -q -n %{src_name}-%{version}
@@ -63,8 +58,6 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr (-, root, bin)
 %{_libdir}
-
-%files devel
 %defattr (-, root, bin)
 %{_includedir}/plib
 

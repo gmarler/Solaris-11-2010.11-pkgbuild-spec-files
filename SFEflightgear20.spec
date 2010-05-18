@@ -7,25 +7,22 @@
 
 %define src_name	FlightGear
 %define src_url		ftp://ftp.kingmont.com/flightsims/flightgear/Source
-# mirror that works sometime:
-# http://flightgear.mxchange.org/pub/fgfs/Source/FlightGear-1.0.0.tar.gz
-# http://mirror.fslutd.org/flightgear/Source/FlightGear-1.0.0.tar.gz
-#ftp://ftp.kingmont.com/flightsims/flightgear/Source/FlightGear-1.0.0.tar.gz
+
 # TODO: make package with:
 # http://www.flightgear.org/Docs/getstart/getstart.html
 # http://mirrors.ibiblio.org/pub/mirrors/flightgear/ftp/Docs/getstart.pdf
-# faire un package pour installer modele son et scene.
-# ftp://ftp.flightgear.org/pub/fgfs/Shared/fgfs-base-1.0.0.tar.bz2
 
 Name:                   SFEFlightGear20
 Summary:                Flight Simulator for 'true' airplane
 Version:                2.0.0
 Source:                 %{src_url}/%{src_name}-%{version}.tar.gz
 Source1:		ftp://ftp.de.flightgear.org/pub/fgfs/Shared/FlightGear-data-%{version}.tar.bz2
+Group:			Applications/Games
 Patch1:			FlightGear20-04.diff
 SUNW_BaseDir:           %{_basedir}
 BuildRoot:              %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
+
 BuildRequires:		SFEopenal-devel
 Requires:		SFEopenal
 BuildRequires:		SFEfreealut-devel
@@ -34,21 +31,12 @@ Requires:		SFEfreealut
 BuildRequires:		SFEfreeglut-devel
 Requires:		SFEfreeglut
 Requires:		SFESimGear20
-# TODO: somethings i don't understand
-#BuildRequires:		SFEplib-devel
 Requires:		SFEplib-gpp
 Requires:		SFEboost
 Requires:		SFEosg
 
-#Requires:		SFEflightgear-data
-
-#%package root
-#Summary:                 %{summary} - root files
-#SUNW_BaseDir:            %{_prefix}
-#%include default-depend.inc
 
 %prep
-#%setup -q -n -c %{src_name}-%{version}
 %setup -q -c -n  %{name}
 %patch1 -p0
 
@@ -95,14 +83,10 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr(0755,root,bin) %{_mandir}
 %{_mandir}/*
 
-#%files devel
-#%defattr (-, root, bin)
-#%{_includedir}
-#%dir %attr(0755,root,bin) %{_libdir}
-#%dir %attr(0755,root,other) %{_libdir}/pkgconfig
-#%{_libdir}/pkgconfig/*
 
 %changelog
+* May 2010 - G.D.
+- update to 2.0
 * Mar 2010 - Gilles Dauphin
 - search includedir in /usr/SFE (exemple)
 - that's where I install freeglut

@@ -11,17 +11,10 @@
 
 Name:                   SFEosg
 Summary:                High performance real-time graphics toolkit
-Group:			Graphics
+Group:			Applications/Graphics
 Version:                2.9.7
 Source:                  http://www.openscenegraph.org/downloads/developer_releases/OpenSceneGraph-%{version}.zip
 URL:			http:///www.openscenegraph.org/
-#Patch1:			OpenSceneGraph-01-boost-concept-check.diff
-#Patch2:			OpenSceneGraph-02-boost-concept-check.diff
-#Patch3:			OpenSceneGraph-03-boost-concept-check.diff
-#Patch4:			OpenSceneGraph-04-boost-concept-check.diff
-#Patch5:			OpenSceneGraph-05-boost-concept-check.diff
-#Patch6:			OpenSceneGraph-06-boost-concept-check.diff
-#Patch7:			OpenSceneGraph-07-boost-concept-check.diff
 Patch9:			OpenSceneGraph-09-boost-concept-check.diff
 SUNW_BaseDir:           %{_basedir}
 BuildRoot:              %{_tmppath}/%{name}-%{version}-build
@@ -70,14 +63,6 @@ for rapid development of graphics applications.
 
 %prep
 %setup -q -c -n %{src_name}-%{version}
-#cd %{src_name}-%{version}
-#%patch1 -p0
-#%patch2 -p0
-#%patch3 -p0
-#%patch4 -p0
-#%patch5 -p0
-#%patch6 -p0
-#%patch7 -p0
 %patch9 -p0
 
 %build
