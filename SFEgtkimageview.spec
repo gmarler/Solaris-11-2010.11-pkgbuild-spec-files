@@ -8,6 +8,8 @@
 %include base.inc
 %use gtkimageview = gtkimageview.spec
 
+%define osbuild %(uname -v | sed -e 's/[A-z_]//g')
+
 Name:           SFEgtkimageview
 Summary:        Image metadata library
 Version:        %{default_pkg_version}
@@ -15,9 +17,13 @@ SUNW_BaseDir:	%{_basedir}
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 
 %include default-depend.inc
+%if %(expr %{osbuild} '>=' 134)
+BuildRequires:	consolidation/gnome/gnome-incorporation
+%else
 BuildRequires:	SUNWgnome-common-devel
 BuildRequires:	SUNWgtk-doc
 BuildRequires:	SUNWgnome-xml
+%endif
 
 %prep
 rm -rf %name-%version
@@ -80,6 +86,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* May 18 2010 - Gilles Dauphin
+- ready for next release
 * Tue Mar 30 2010 - Milan Jurik
 - add missing build dependency
 * Fri Jan 22 2010 - jedy.wang@sun.com
