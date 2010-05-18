@@ -1,16 +1,16 @@
-diff -r 64e637f8ea97 JavaScriptCore/runtime/Structure.cpp
---- a/JavaScriptCore/runtime/Structure.cpp	Mon Mar 01 14:58:04 2010 +0800
-+++ b/JavaScriptCore/runtime/Structure.cpp	Mon Mar 01 15:14:19 2010 +0800
-@@ -262,7 +262,7 @@
- {
-     if (m_previous) {
-         ASSERT(m_nameInPrevious);
--        m_previous->transitionTableRemove(make_pair(m_nameInPrevious.get(), m_attributesInPrevious), m_specificValueInPrevious);
-+        m_previous->transitionTableRemove(std::make_pair<RefPtr<UString::Rep>,unsigned>(m_nameInPrevious.get(), m_attributesInPrevious), m_specificValueInPrevious);
- 
+diff -r d2a07bdc6744 JavaScriptCore/runtime/Structure.cpp
+--- a/JavaScriptCore/runtime/Structure.cpp	Tue May 18 19:09:56 2010 +0800
++++ b/JavaScriptCore/runtime/Structure.cpp	Tue May 18 19:40:23 2010 +0800
+@@ -163,7 +163,7 @@
+         TransitionTable* transitionTable = new TransitionTable;
+         setTransitionTable(transitionTable);
+         if (existingTransition)
+-            transitionTableAdd(std::make_pair(existingTransition->m_nameInPrevious.get(), existingTransition->m_attributesInPrevious), existingTransition, existingTransition->m_specificValueInPrevious);
++            transitionTableAdd(std::make_pair<RefPtr<JSC::UStringImpl>, unsigned>(existingTransition->m_nameInPrevious.get(), existingTransition->m_attributesInPrevious), existingTransition, existingTransition->m_specificValueInPrevious);
      }
-     
-@@ -446,7 +446,7 @@
+     if (!specificValue) {
+         TransitionTable::iterator find = transitionTable()->find(key);
+@@ -444,7 +444,7 @@
      ASSERT(!structure->isDictionary());
      ASSERT(structure->typeInfo().type() == ObjectType);
  
@@ -19,7 +19,7 @@ diff -r 64e637f8ea97 JavaScriptCore/runtime/Structure.cpp
          ASSERT(existingTransition->m_offset != noOffset);
          offset = existingTransition->m_offset + existingTransition->m_anonymousSlotCount;
          ASSERT(offset >= structure->m_anonymousSlotCount);
-@@ -511,7 +511,7 @@
+@@ -509,7 +509,7 @@
  
      transition->m_offset = offset - structure->m_anonymousSlotCount;
      ASSERT(structure->anonymousSlotCount() == transition->anonymousSlotCount());
@@ -28,7 +28,7 @@ diff -r 64e637f8ea97 JavaScriptCore/runtime/Structure.cpp
      return transition.release();
  }
  
-@@ -958,7 +958,7 @@
+@@ -956,7 +956,7 @@
  
  bool Structure::hasTransition(UString::Rep* rep, unsigned attributes)
  {
@@ -37,11 +37,10 @@ diff -r 64e637f8ea97 JavaScriptCore/runtime/Structure.cpp
  }
  
  size_t Structure::remove(const Identifier& propertyName)
-diff --git a/JavaScriptCore/wtf/HashMap.h b/JavaScriptCore/wtf/HashMap.h
-index ece3812..c36b91f 100644
---- a/JavaScriptCore/wtf/HashMap.h
-+++ b/JavaScriptCore/wtf/HashMap.h
-@@ -235,7 +235,8 @@ namespace WTF {
+diff -r d2a07bdc6744 JavaScriptCore/wtf/HashMap.h
+--- a/JavaScriptCore/wtf/HashMap.h	Tue May 18 19:09:56 2010 +0800
++++ b/JavaScriptCore/wtf/HashMap.h	Tue May 18 19:40:23 2010 +0800
+@@ -238,7 +238,8 @@
      HashMap<T, U, V, W, X>::inlineAdd(const KeyType& key, const MappedType& mapped) 
      {
          typedef HashMapTranslator<ValueType, ValueTraits, HashFunctions> TranslatorType;
@@ -51,7 +50,7 @@ index ece3812..c36b91f 100644
      }
  
      template<typename T, typename U, typename V, typename W, typename X>
-@@ -256,7 +257,8 @@ namespace WTF {
+@@ -259,7 +260,8 @@
      HashMap<T, U, V, W, X>::add(const TYPE& key, const MappedType& value)
      {
          typedef HashMapTranslatorAdapter<ValueType, ValueTraits, TYPE, HashTranslator> Adapter;
@@ -61,11 +60,10 @@ index ece3812..c36b91f 100644
      }
  
      template<typename T, typename U, typename V, typename W, typename X>
-diff --git a/JavaScriptCore/wtf/HashSet.h b/JavaScriptCore/wtf/HashSet.h
-index 0d7b4bb..1779212 100644
---- a/JavaScriptCore/wtf/HashSet.h
-+++ b/JavaScriptCore/wtf/HashSet.h
-@@ -207,7 +207,8 @@ namespace WTF {
+diff -r d2a07bdc6744 JavaScriptCore/wtf/HashSet.h
+--- a/JavaScriptCore/wtf/HashSet.h	Tue May 18 19:09:56 2010 +0800
++++ b/JavaScriptCore/wtf/HashSet.h	Tue May 18 19:40:23 2010 +0800
+@@ -207,7 +207,8 @@
      template<typename T, typename U, typename V>
      pair<typename HashSet<T, U, V>::iterator, bool> HashSet<T, U, V>::add(const ValueType& value)
      {
@@ -75,7 +73,7 @@ index 0d7b4bb..1779212 100644
      }
  
      template<typename Value, typename HashFunctions, typename Traits>
-@@ -216,7 +217,8 @@ namespace WTF {
+@@ -216,7 +217,8 @@
      HashSet<Value, HashFunctions, Traits>::add(const T& value)
      {
          typedef HashSetTranslatorAdapter<ValueType, ValueTraits, T, HashTranslator> Adapter;
@@ -85,11 +83,10 @@ index 0d7b4bb..1779212 100644
      }
  
      template<typename T, typename U, typename V>
-diff --git a/JavaScriptCore/wtf/RefPtrHashMap.h b/JavaScriptCore/wtf/RefPtrHashMap.h
-index 9433025..3b68439 100644
---- a/JavaScriptCore/wtf/RefPtrHashMap.h
-+++ b/JavaScriptCore/wtf/RefPtrHashMap.h
-@@ -205,14 +205,16 @@ namespace WTF {
+diff -r d2a07bdc6744 JavaScriptCore/wtf/RefPtrHashMap.h
+--- a/JavaScriptCore/wtf/RefPtrHashMap.h	Tue May 18 19:09:56 2010 +0800
++++ b/JavaScriptCore/wtf/RefPtrHashMap.h	Tue May 18 19:40:23 2010 +0800
+@@ -205,14 +205,16 @@
      HashMap<RefPtr<T>, U, V, W, X>::inlineAdd(const KeyType& key, const MappedType& mapped) 
      {
          typedef HashMapTranslator<ValueType, ValueTraits, HashFunctions> TranslatorType;
@@ -108,15 +105,3 @@ index 9433025..3b68439 100644
      }
  
      template<typename T, typename U, typename V, typename W, typename X>
-diff -r c07a4c842742 JavaScriptCore/runtime/Structure.cpp
---- a/JavaScriptCore/runtime/Structure.cpp	Fri Mar 26 15:54:11 2010 +0800
-+++ b/JavaScriptCore/runtime/Structure.cpp	Fri Mar 26 15:56:25 2010 +0800
-@@ -163,7 +163,7 @@
-         TransitionTable* transitionTable = new TransitionTable;
-         setTransitionTable(transitionTable);
-         if (existingTransition)
--            transitionTableAdd(std::make_pair(existingTransition->m_nameInPrevious.get(), existingTransition->m_attributesInPrevious), existingTransition, existingTransition->m_specificValueInPrevious);
-+            transitionTableAdd(std::make_pair<RefPtr<JSC::UStringImpl>, unsigned>(existingTransition->m_nameInPrevious.get(), existingTransition->m_attributesInPrevious), existingTransition, existingTransition->m_specificValueInPrevious);
-     }
-     if (!specificValue) {
-         TransitionTable::iterator find = transitionTable()->find(key);

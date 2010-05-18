@@ -30,7 +30,7 @@ Patch12:                 webkit-12-isnan.diff
 Patch13:                 webkit-13-webcore-frame.diff
 Patch14:                 webkit-14-extern-c.diff
 Patch15:                 webkit-15-static.diff
-Patch16:                 webkit-16-const-string.diff
+#Patch16:                 webkit-16-const-string.diff
 Patch17:                 webkit-17-make-pair-range.diff
 Patch18:                 webkit-18-locale-h.diff
 Patch19:                 webkit-19-ss12-ternary-operator.diff
@@ -99,7 +99,7 @@ cd webkit-%version
 %patch13 -p1
 %patch14 -p1
 %patch15 -p1
-%patch16 -p1
+#%patch16 -p1
 %patch17 -p1
 %patch18 -p1
 %patch19 -p1

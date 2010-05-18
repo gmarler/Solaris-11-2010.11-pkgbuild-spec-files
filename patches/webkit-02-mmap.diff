@@ -1,8 +1,7 @@
-diff --git a/JavaScriptCore/interpreter/RegisterFile.cpp b/JavaScriptCore/interpreter/RegisterFile.cpp
-index 510effe..0d90f2d 100644
---- a/JavaScriptCore/interpreter/RegisterFile.cpp
-+++ b/JavaScriptCore/interpreter/RegisterFile.cpp
-@@ -34,7 +34,7 @@ namespace JSC {
+diff -r d2a07bdc6744 JavaScriptCore/interpreter/RegisterFile.cpp
+--- a/JavaScriptCore/interpreter/RegisterFile.cpp	Tue May 18 19:09:56 2010 +0800
++++ b/JavaScriptCore/interpreter/RegisterFile.cpp	Tue May 18 19:37:36 2010 +0800
+@@ -34,7 +34,7 @@
  RegisterFile::~RegisterFile()
  {
  #if HAVE(MMAP)
@@ -11,11 +10,10 @@ index 510effe..0d90f2d 100644
  #elif HAVE(VIRTUALALLOC)
  #if OS(WINCE)
      VirtualFree(m_buffer, DWORD(m_commitEnd) - DWORD(m_buffer), MEM_DECOMMIT);
-diff --git a/JavaScriptCore/interpreter/RegisterFile.h b/JavaScriptCore/interpreter/RegisterFile.h
-index 1fc4f82..e2c5922 100644
---- a/JavaScriptCore/interpreter/RegisterFile.h
-+++ b/JavaScriptCore/interpreter/RegisterFile.h
-@@ -174,7 +174,7 @@ namespace JSC {
+diff -r d2a07bdc6744 JavaScriptCore/interpreter/RegisterFile.h
+--- a/JavaScriptCore/interpreter/RegisterFile.h	Tue May 18 19:09:56 2010 +0800
++++ b/JavaScriptCore/interpreter/RegisterFile.h	Tue May 18 19:37:36 2010 +0800
+@@ -174,7 +174,7 @@
  
          size_t bufferLength = (capacity + maxGlobals) * sizeof(Register);
      #if HAVE(MMAP)
@@ -24,11 +22,10 @@ index 1fc4f82..e2c5922 100644
          if (m_buffer == MAP_FAILED) {
  #if OS(WINCE)
              fprintf(stderr, "Could not allocate register file: %d\n", GetLastError());
-diff --git a/JavaScriptCore/runtime/MarkStackPosix.cpp b/JavaScriptCore/runtime/MarkStackPosix.cpp
-index c28bc0d..4c9d3e2 100644
---- a/JavaScriptCore/runtime/MarkStackPosix.cpp
-+++ b/JavaScriptCore/runtime/MarkStackPosix.cpp
-@@ -44,7 +44,7 @@ void* MarkStack::allocateStack(size_t size)
+diff -r d2a07bdc6744 JavaScriptCore/runtime/MarkStackPosix.cpp
+--- a/JavaScriptCore/runtime/MarkStackPosix.cpp	Tue May 18 19:09:56 2010 +0800
++++ b/JavaScriptCore/runtime/MarkStackPosix.cpp	Tue May 18 19:37:36 2010 +0800
+@@ -44,7 +44,7 @@
  }
  void MarkStack::releaseStack(void* addr, size_t size)
  {
@@ -37,11 +34,10 @@ index c28bc0d..4c9d3e2 100644
  }
  
  }
-diff --git a/JavaScriptCore/wtf/TCSystemAlloc.cpp b/JavaScriptCore/wtf/TCSystemAlloc.cpp
-index 4d02919..3e7888f 100644
---- a/JavaScriptCore/wtf/TCSystemAlloc.cpp
-+++ b/JavaScriptCore/wtf/TCSystemAlloc.cpp
-@@ -193,10 +193,10 @@ static void* TryMmap(size_t size, size_t *actual_size, size_t alignment) {
+diff -r d2a07bdc6744 JavaScriptCore/wtf/TCSystemAlloc.cpp
+--- a/JavaScriptCore/wtf/TCSystemAlloc.cpp	Tue May 18 19:09:56 2010 +0800
++++ b/JavaScriptCore/wtf/TCSystemAlloc.cpp	Tue May 18 19:37:36 2010 +0800
+@@ -194,10 +194,10 @@
  
    // Return the unused memory to the system
    if (adjust > 0) {
@@ -54,7 +50,7 @@ index 4d02919..3e7888f 100644
    }
  
    ptr += adjust;
-@@ -442,7 +442,7 @@ void TCMalloc_SystemRelease(void* start, size_t length)
+@@ -443,7 +443,7 @@
  
  void TCMalloc_SystemRelease(void* start, size_t length)
  {

@@ -1,8 +1,7 @@
-diff --git a/GNUmakefile.am b/GNUmakefile.am
-index f9ad21c..f440ec0 100644
---- a/GNUmakefile.am
-+++ b/GNUmakefile.am
-@@ -95,7 +95,6 @@ MAINTAINERCLEANFILES :=
+diff -r d2a07bdc6744 GNUmakefile.am
+--- a/GNUmakefile.am	Tue May 18 19:09:56 2010 +0800
++++ b/GNUmakefile.am	Tue May 18 19:33:11 2010 +0800
+@@ -95,7 +95,6 @@
  # Don't include them for now to reduce the noise when compiling
  # $(GLIB_CFLAGS) $(CAIRO_CFLAGS) $(PANGO_CFLAGS)  $(FREETYPE_CFLAGS)
  corekit_cflags += \
@@ -10,7 +9,7 @@ index f9ad21c..f440ec0 100644
  	$(COVERAGE_CFLAGS) \
  	$(ENCHANT_CFLAGS) \
  	$(GAIL_CFLAGS) \
-@@ -126,17 +125,10 @@ corekit_cppflags += -DXP_UNIX
+@@ -126,17 +125,10 @@
  endif
  
  # Default compiler flags
@@ -30,7 +29,7 @@ index f9ad21c..f440ec0 100644
  
  # -no-undefined required for building DLLs on Windows
  # It breaks the build on other platforms, so we use it conditionally
-@@ -186,8 +178,7 @@ libJavaScriptCore_la_CXXFLAGS = \
+@@ -188,8 +180,7 @@
  	$(libJavaScriptCore_la_CFLAGS)
  
  libJavaScriptCore_la_CFLAGS = \
@@ -40,7 +39,7 @@ index f9ad21c..f440ec0 100644
  	$(global_cflags) \
  	$(GLIB_CFLAGS) \
  	$(UNICODE_CFLAGS)
-@@ -289,7 +280,7 @@ endif
+@@ -283,7 +274,7 @@
  
  if !ENABLE_DEBUG
  global_cppflags += -DNDEBUG
@@ -49,7 +48,7 @@ index f9ad21c..f440ec0 100644
  
  else
  webcoregtk_cppflags += \
-@@ -546,7 +537,6 @@ include WebKit/gtk/po/GNUmakefile.am
+@@ -544,7 +535,6 @@
  noinst_PROGRAMS += $(TEST_PROGS)
  
  webkit_tests_cflags = \
@@ -57,7 +56,7 @@ index f9ad21c..f440ec0 100644
  	-I$(srcdir)/JavaScriptCore/ForwardingHeaders \
  	-I$(srcdir)/WebKit/gtk \
  	-I$(top_builddir)/WebKit/gtk \
-@@ -561,9 +551,7 @@ webkit_tests_ldadd = \
+@@ -559,9 +549,7 @@
  	$(GLIB_LIBS) \
  	$(LIBSOUP_LIBS)
  
@@ -68,11 +67,10 @@ index f9ad21c..f440ec0 100644
  
  TEST_PROGS += Programs/unittests/testhttpbackend \
  	Programs/unittests/testloading \
-diff --git a/GNUmakefile.in b/GNUmakefile.in
-index 3cdfc04..6aba754 100644
---- a/GNUmakefile.in
-+++ b/GNUmakefile.in
-@@ -108,7 +108,7 @@ noinst_PROGRAMS = Programs/minidom$(EXEEXT) \
+diff -r d2a07bdc6744 GNUmakefile.in
+--- a/GNUmakefile.in	Tue May 18 19:09:56 2010 +0800
++++ b/GNUmakefile.in	Tue May 18 19:33:11 2010 +0800
+@@ -99,7 +99,7 @@
  @ENABLE_FAST_MALLOC_FALSE@	-DUSE_SYSTEM_MALLOC
  
  @ENABLE_DEBUG_FALSE@am__append_5 = -DNDEBUG
@@ -81,7 +79,7 @@ index 3cdfc04..6aba754 100644
  @ENABLE_DEBUG_TRUE@am__append_7 = \
  @ENABLE_DEBUG_TRUE@	-DG_DISABLE_DEPRECATED \
  @ENABLE_DEBUG_TRUE@	-DGDK_PIXBUF_DISABLE_DEPRECATED \
-@@ -6176,7 +6176,7 @@ INTROSPECTION_CFLAGS = @INTROSPECTION_CFLAGS@
+@@ -6326,7 +6326,7 @@
  INTROSPECTION_LIBS = @INTROSPECTION_LIBS@
  JPEG_LIBS = @JPEG_LIBS@
  LD = @LD@
@@ -89,8 +87,8 @@ index 3cdfc04..6aba754 100644
 +LDFLAGS = @LDFLAGS@ -Wl,-z -Wl,muldefs
  LIBOBJS = @LIBOBJS@
  LIBS = @LIBS@
- LIBSOUP_2_29_3_CFLAGS = @LIBSOUP_2_29_3_CFLAGS@
-@@ -6223,8 +6223,8 @@ SHELL = @SHELL@
+ LIBSOUP_2_29_90_CFLAGS = @LIBSOUP_2_29_90_CFLAGS@
+@@ -6373,8 +6373,8 @@
  SQLITE3_CFLAGS = @SQLITE3_CFLAGS@
  SQLITE3_LIBS = @SQLITE3_LIBS@
  STRIP = @STRIP@
@@ -101,8 +99,8 @@ index 3cdfc04..6aba754 100644
  UNICODE_CFLAGS = @UNICODE_CFLAGS@
  UNICODE_LIBS = @UNICODE_LIBS@
  VERSION = @VERSION@
-@@ -8629,20 +8629,16 @@ global_cppflags := -DBUILDING_CAIRO__=1 -DBUILDING_GTK__=1 \
- 	$(am__append_5) $(am__append_8) $(am__append_43)
+@@ -8835,20 +8835,16 @@
+ 	$(am__append_5) $(am__append_8) $(am__append_45)
  
  # Default compiler flags
 -global_cflags := -Wall -W -Wcast-align -Wchar-subscripts -Wreturn-type \
@@ -125,7 +123,7 @@ index 3cdfc04..6aba754 100644
  	$(ENCHANT_CFLAGS) $(GAIL_CFLAGS) $(GEOCLUE_CFLAGS) \
  	$(GLIB_CFLAGS) $(GSTREAMER_CFLAGS) $(GTK_CFLAGS) \
  	$(HILDON_CFLAGS) $(LIBSOUP_CFLAGS) $(LIBXML_CFLAGS) \
-@@ -8743,8 +8739,6 @@ libJavaScriptCore_la_CXXFLAGS = \
+@@ -8951,8 +8947,6 @@
  	$(libJavaScriptCore_la_CFLAGS)
  
  libJavaScriptCore_la_CFLAGS = \
@@ -134,7 +132,7 @@ index 3cdfc04..6aba754 100644
  	$(global_cflags) \
  	$(GLIB_CFLAGS) \
  	$(UNICODE_CFLAGS)
-@@ -8845,19 +8839,16 @@ Programs_minidom_CPPFLAGS = \
+@@ -9053,19 +9047,16 @@
  	$(javascriptcore_cppflags)
  
  Programs_minidom_CFLAGS = \
@@ -147,17 +145,18 @@ index 3cdfc04..6aba754 100644
  	 libJavaScriptCore.la \
  	 -lm \
 -	 -lstdc++
-+	 -lCstd \
-+	 -lCrun
- 
+-
 -Programs_minidom_LDFLAGS = \
 -	-no-install \
 -	-no-fast-install
++	 -lCstd \
++	 -lCrun
++
 +Programs_minidom_LDFLAGS =
  
  
  # jsc
-@@ -8869,7 +8860,6 @@ Programs_jsc_CPPFLAGS = \
+@@ -9077,7 +9068,6 @@
  	$(javascriptcore_cppflags)
  
  Programs_jsc_CXXFLAGS = \
@@ -165,7 +164,7 @@ index 3cdfc04..6aba754 100644
  	$(global_cxxflags) \
  	$(global_cflags) \
  	$(GLOBALDEPS_CFLAGS) \
-@@ -8995,8 +8985,6 @@ Programs_GtkLauncher_SOURCES = \
+@@ -9209,8 +9199,6 @@
  	WebKitTools/GtkLauncher/main.c
  
  Programs_GtkLauncher_CFLAGS = \
@@ -174,7 +173,7 @@ index 3cdfc04..6aba754 100644
  	$(global_cflags) \
  	$(GTK_CFLAGS) \
  	$(LIBSOUP_CFLAGS)
-@@ -9006,9 +8994,7 @@ Programs_GtkLauncher_LDADD = \
+@@ -9220,9 +9208,7 @@
  	$(GTK_LIBS) \
  	$(GLIB_LIBS)
  
@@ -185,7 +184,7 @@ index 3cdfc04..6aba754 100644
  
  
  # DumpRenderTree
-@@ -9051,7 +9037,6 @@ Programs_DumpRenderTree_CXXFLAGS = \
+@@ -9265,7 +9251,6 @@
  	$(Programs_DumpRenderTree_CFLAGS)
  
  Programs_DumpRenderTree_CFLAGS = \
@@ -193,7 +192,7 @@ index 3cdfc04..6aba754 100644
  	$(dumprendertree_cppflags) \
  	$(global_cflags) \
  	$(GLOBALDEPS_CFLAGS) \
-@@ -9069,9 +9054,7 @@ Programs_DumpRenderTree_LDADD = \
+@@ -9283,9 +9268,7 @@
  	$(LIBSOUP_LIBS) \
  	$(FREETYPE_LIBS)
  
@@ -204,7 +203,7 @@ index 3cdfc04..6aba754 100644
  
  @TARGET_X11_TRUE@TestNetscapePlugin_libtestnetscapeplugin_la_CPPFLAGS = \
  @TARGET_X11_TRUE@	-I$(srcdir)/WebKitTools/DumpRenderTree \
-@@ -9105,7 +9088,6 @@ XGETTEXT := $(shell which xgettext)
+@@ -9319,7 +9302,6 @@
  MSGMERGE := $(shell which msgmerge)
  MSGMERGE_UPDATE := $(MSGMERGE) --update
  webkit_tests_cflags = \
@@ -212,11 +211,10 @@ index 3cdfc04..6aba754 100644
  	-I$(srcdir)/JavaScriptCore/ForwardingHeaders \
  	-I$(srcdir)/WebKit/gtk \
  	-I$(top_builddir)/WebKit/gtk \
-diff --git a/JavaScriptCore/GNUmakefile.am b/JavaScriptCore/GNUmakefile.am
-index 13d6092..1204fbb 100644
---- a/JavaScriptCore/GNUmakefile.am
-+++ b/JavaScriptCore/GNUmakefile.am
-@@ -559,19 +559,15 @@ Programs_minidom_CPPFLAGS = \
+diff -r d2a07bdc6744 JavaScriptCore/GNUmakefile.am
+--- a/JavaScriptCore/GNUmakefile.am	Tue May 18 19:09:56 2010 +0800
++++ b/JavaScriptCore/GNUmakefile.am	Tue May 18 19:33:11 2010 +0800
+@@ -554,19 +554,15 @@
  	$(javascriptcore_cppflags)
  
  Programs_minidom_CFLAGS = \
@@ -238,7 +236,7 @@ index 13d6092..1204fbb 100644
  
  # jsc
  Programs_jsc_SOURCES = \
-@@ -582,7 +578,6 @@ Programs_jsc_CPPFLAGS = \
+@@ -577,7 +573,6 @@
  	$(javascriptcore_cppflags)
  
  Programs_jsc_CXXFLAGS = \
@@ -246,11 +244,10 @@ index 13d6092..1204fbb 100644
  	$(global_cxxflags) \
  	$(global_cflags) \
  	$(GLOBALDEPS_CFLAGS) \
-diff --git a/configure.ac b/configure.ac
-index 3924294..ef805e0 100644
---- a/configure.ac
-+++ b/configure.ac
-@@ -623,11 +623,11 @@ fi
+diff -r d2a07bdc6744 configure.ac
+--- a/configure.ac	Tue May 18 19:09:56 2010 +0800
++++ b/configure.ac	Tue May 18 19:33:11 2010 +0800
+@@ -671,11 +671,11 @@
  
  # Add the appropriate 'O' level for optimized builds
  if test "$enable_optimizations" = "yes"; then

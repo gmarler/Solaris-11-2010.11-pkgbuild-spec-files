@@ -1,3 +1,14 @@
+2010-05-18  Simon Jin <yuntong.jin@sun.com>
+
+	* SFEwebkit-cstd.spec:
+	* patches/webkit-01-configure-and-makefile.diff:
+	* patches/webkit-02-mmap.diff:
+	* patches/webkit-03-return.diff:
+	* patches/webkit-04-make-pair.diff:
+	* patches/webkit-07-wtf-aligned.diff:
+	* patches/webkit-09-ternary-operator.diff:
+	* patches/webkit-25-misc.diff: Remake patches
+
 2010-05-17 Gilles Dauphin
 
 	* SFEflightgear20
