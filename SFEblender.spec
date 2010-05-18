@@ -145,7 +145,7 @@ fi
 		ln -s "\${BLENDER_DATA}/\${file}" "\${BLENDER_HOME}/\${file}"
 done)
 
-exec /usr/bin/blender-bin "\$@"
+exec %{_bindir}/blender-bin "\$@"
 EOF
 
 install -m 0755 blender.sh $RPM_BUILD_ROOT%{_bindir}/blender
@@ -178,6 +178,8 @@ rm -rf $RPM_BUILD_ROOT
 #%endif
 
 %changelog
+* May 18 2010 - G.D.
+- exec in bindir
 * Wed May 12 2010 - Albert Lee <trisk@opensolaris.org>
 - Bump to 2.49b
 - Update Python version to 2.6
