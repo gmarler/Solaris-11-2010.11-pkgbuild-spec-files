@@ -1,5 +1,10 @@
 2010-05-18  Simon Jin <yuntong.jin@sun.com>
 
+	* patches/webkit-23-name-union.diff:
+	* patches/webkit-26-copycons-imp.diff:polish patches
+
+2010-05-18  Simon Jin <yuntong.jin@sun.com>
+
 	* SFEwebkit-cstd.spec:
 	* patches/webkit-01-configure-and-makefile.diff:
 	* patches/webkit-02-mmap.diff:

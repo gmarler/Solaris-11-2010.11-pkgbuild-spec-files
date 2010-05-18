@@ -118,3 +118,15 @@ diff -r d743efab4cb5 JavaScriptCore/runtime/JSString.cpp
                  }
                  m_fiberCount = 0;
  
+diff -r d2a07bdc6744 JavaScriptCore/runtime/JSString.h
+--- a/JavaScriptCore/runtime/JSString.h	Tue May 18 19:09:56 2010 +0800
++++ b/JavaScriptCore/runtime/JSString.h	Tue May 18 20:11:12 2010 +0800
+@@ -92,7 +92,7 @@
+             {
+                 if (jsString->isRope()) {
+                     for (unsigned i = 0; i < jsString->m_fiberCount; ++i)
+-                        append(jsString->m_other.m_fibers[i]);
++                        append(jsString->m_other.m_union.m_fibers[i]);
+                 } else
+                     append(jsString->string());
+             }
