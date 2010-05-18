@@ -91,6 +91,7 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
 fi
 export CC=gcc
 export CXX=g++
+export PKG_CONFIG_PATH="%{_libdir}/pkgconfig"
 export LDFLAGS="%_ldflags  -L/usr/sfw/lib -R/usr/sfw/lib  -L/usr/gnu/lib -R/usr/gnu/lib"
 export POD2MAN=/usr/perl5/bin/pod2man
 
@@ -150,6 +151,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* 18 May 2010 - Gilles Dauphin
+- check where is gtkimageview
 * Tue Mar 30 2010 - Milan Jurik
 - update to 0.16
 * Sun Oct 11 2009 - Milan Jurik
