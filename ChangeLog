@@ -1,3 +1,8 @@
+2010-02-02  Thomas Wagner  <tom68@users.sourceforge.net>
+        * SFEdovecot.spec: - migrate experimental/SFEdovecot.spec to regular spec directory,
+          - add note and description pointing to dovecot wiki page,
+          - discard svn history from experimental) - includes bump to 1.2.9
+
 2010-05-19  Gilles Dauphin
 
 	* update SFEbullet
