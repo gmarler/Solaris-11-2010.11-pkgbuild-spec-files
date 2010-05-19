@@ -22,35 +22,11 @@ SUNW_Copyright: 	%{name}.copyright
 Group:			Applications/Math
 #Source:			http://cran.cict.fr/src/contrib/Archive/%{packname}/%{packname}_%{version}-%{packrel}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-build
-Requires: SPROcc
-Requires: SPROcmpl
-Requires: SPROf90
-Requires: SPROftool
-Requires: SUNWpng
-Requires: SUNWjpg
-Requires: SFEreadline
-Requires: SFEblas
-Requires: SUNWTcl
-Requires: SUNWncurses
-Requires: SUNWpcre
-Requires: SUNWzlib
-Requires: SUNWTk
-Requires: SFElapack
-Requires: SUNWxwrtl
-Requires: SUNWbzip
-Requires: SUNWgnome-base-libs
-Requires: SUNWTiff
-Requires: SUNWj5rt
 Requires: SFER
 Requires: SFER-Matrix
 Requires: SFER-ctv
 # TODO
 #BuildRequires: tetex-latex, texinfo-tex 
-BuildRequires: SUNWpng-devel
-BuildRequires: SUNWjpg-devel
-BuildRequires: SFEreadline-devel
-BuildRequires: SUNWncurses-devel
-BuildRequires: SUNWj5dev
 
 Meta(info.upstream):		cran.r-projet.org
 Meta(info.maintainer):		Gilles Dauphin
@@ -61,12 +37,11 @@ Several add-on packages implement ideas and methods developed at the borderline
 between computer science and statistics - this field of research is usually 
 referred to as machine learning.
 
-%prep
-#%setup -q -n %{packname}-%{version}
-%setup -q -c -n %{packname}
+#%prep
+#%setup -q -c -n %{packname}
 #%patch1 -p1 -b .filter-little-out
 
-%build
+#%build
 
 %install
 rm -rf ${RPM_BUILD_ROOT}
