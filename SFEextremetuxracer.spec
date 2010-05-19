@@ -38,9 +38,11 @@ fi
 
 export CC="gcc"
 export CXX="g++"
-export CFLAGS="-I/usr/sfw/include"
-export CXXFLAGS="-I/usr/sfw/include"
-export LDFLAGS="%_ldflags -L/usr/sfw/lib -R/usr/sfw/lib -lsocket -lnsl"
+export CFLAGS="-I/usr/sfw/include -I%{_includedir} -I%{_includedir}/SDL"
+export CXXFLAGS="-I/usr/sfw/include -I%{_includedir} -I%{_includedir}/SDL"
+# does not work with gpp 4.3
+#export LDFLAGS="%_ldflags -L/usr/sfw/lib -R/usr/sfw/lib -L%{_libdir} -R%{_libdir} -lsocket -lnsl"
+export LDFLAGS="%_ldflags  -L%{_libdir} -R%{_libdir} -lsocket -lnsl"
 
 ./configure --prefix=%{_basedir}			\
             --bindir=%{_bindir}				\
@@ -71,6 +73,7 @@ rm -rf $RPM_BUILD_ROOT
 %changelog
 * Sun May 09 2010 - Milan Jurik
 - cleanup build dependencies
+- found SDL_mixer in _libdir
 * Thu Aug 20 2009 - Milan Jurik
 - update to 0.4
 * Thu Nov 15 2007 - daymobrew@users.sourceforge.net
