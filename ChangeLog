@@ -1,3 +1,15 @@
+2010-05-19  Simon Jin <yuntong.jin@sun.com>
+
+	* SFEwebkit.spec:
+	* patches/webkit-01-sun-studio-build-hack.diff:
+	* patches/webkit-02-explicit-const.diff:
+	* patches/webkit-03-1.1.13-failed.diff:
+	* patches/webkit-04-1.1.14-new.diff:
+	* patches/webkit-05-17-cstd.diff:
+	* patches/webkit-06-17-noapache.diff:
+	* patches/webkit-07-17-new.diff: Delete spec file SFEwebki.spec which
+	  build webkit with stl apache stdcxx4 
+
 2010-05-18  Gilles Dauphin
 
 	* fork SFEplib to SFEplib-gpp, 
