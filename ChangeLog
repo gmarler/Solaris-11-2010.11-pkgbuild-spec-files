@@ -1,3 +1,8 @@
+2010-05-19  Gilles Dauphin
+
+	* update SFEbullet
+	* supertuxkart works with new bullet
+
 2010-05-20  Simon Jin <yuntong.jin@sun.com>
 
 	* SFEwebkitgtk.spec:add buildrequire developer/gcc-3

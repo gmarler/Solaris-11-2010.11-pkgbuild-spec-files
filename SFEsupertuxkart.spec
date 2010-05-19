@@ -7,6 +7,8 @@
 %define src_version 0.6.2a
 
 %define SFEsdl      %(/usr/bin/pkginfo -q SFEsdl && echo 1 || echo 0)
+%define SFEplib_gpp %(/usr/bin/pkginfo -q SFEplib-gpp && echo 1 || echo 0)
+
 
 
 Name:           SFEsupertuxkart
@@ -19,7 +21,16 @@ Source0:        %{sf_download}/%{src_name}/%{src_name}-%{src_version}-src.tar.bz
 Source2:	%{sf_download}/%{src_name}/addon0.6.1-1.zip
 Patch1:		supertuxkart-01-sunstudio.diff
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
+
+%if %SFEplib_gpp
+BuildRequires:  SFEplib-gpp
+%define cc_is_gcc 1
+%define _gpp g++
+%include base.inc
+%else
 BuildRequires:  SFEplib-devel
+%endif
+
 BuildRequires:  SUNWlibsdl-devel
 BuildRequires:	SFElibmikmod-devel
 BuildRequires:  SUNWogg-vorbis
@@ -27,7 +38,8 @@ BuildRequires:	SFEfreeglut-devel
 BuildRequires:  SFEopenal-devel
 BuildRequires:	SFEfreealut-devel
 BuildRequires:	SUNWgawk
-Requires:	%{name}-data = %{version}
+#Requires:	%{name}-data = %{version}
+Requires:	SFEbullet
 
 %description
 3D go-kart racing game for kids with several famous OpenSource mascots
@@ -36,14 +48,14 @@ race courses (Standard race track, Dessert, Mathclass, etc). Full information
 on how to add your own race courses is included. During the race you can pick
 up powerups such as: (homing) missiles, magnets and portable zippers.
 
-%package data
-Summary:	%{summary}
-Group:		Amusements/Games
-Requires:	%{name} = %{version}
-BuildArch:	noarch
-
-%description data
-This package contains the data files for SuperTuxKart, as well as the add-on pack.
+#%package data
+#Summary:	%{summary}
+#Group:		Applications/Games
+#Requires:	%{name} = %{version}
+#BuildArch:	noarch
+#
+#%description data
+#This package contains the data files for SuperTuxKart, as well as the add-on pack.
 
 %prep
 %setup -q -n %{src_name}-%{src_version}
@@ -56,11 +68,19 @@ rm -fr data/karts/*/.svn data/karts/.svn
 unzip %{SOURCE2} -d data/ -x karts/mriceblock*
 
 %build
+%if %SFEplib_gpp
+export CC="/usr/gcc/4.3/bin/gcc"
+export CXX="/usr/gcc/4.3/bin/g++"
+export CXXFLAGS="-I%{_includedir} -I%{_prefix}/X11/include"
+export LDFLAGS="-L%{_libdir} -R%{_libdir} -lGLU -lnsl -lsocket"
+%else
+export CXXFLAGS="%cxx_optflags -I%{_includedir} -I%{_prefix}/X11/include"
+export LDFLAGS="%_ldflags -L%{_libdir} -R%{_libdir} -lGLU -lnsl -lsocket"
+%endif
+export PKG_CONFIG_PATH="%{_libdir}/pkgconfig"
+
 autoconf
-
-export CXXFLAGS="%cxx_optflags"
-export LDFLAGS="%_ldflags -lGLU -lnsl -lsocket"
-
+export ac_cv_member_struct_msghdr_msg_flags=no
 ./configure --prefix=%{_prefix} --mandir=%{_mandir}
 make
 
@@ -72,12 +92,13 @@ make install DESTDIR=$RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT%{_bindir}
 mv $RPM_BUILD_ROOT%{_prefix}/games/%{src_name} $RPM_BUILD_ROOT%{_bindir}
 mv $RPM_BUILD_ROOT%{_datadir}/games/%{src_name}/data/po $RPM_BUILD_ROOT%{_datadir}/locale
-rm $RPM_BUILD_ROOT%{_datadir}/locale/*.po
-rm $RPM_BUILD_ROOT%{_datadir}/locale/%{src_name}.pot
-ln -s ../../locale $RPM_BUILD_ROOT%{_datadir}/games/%{src_name}/data/po
 rmdir $RPM_BUILD_ROOT%{_prefix}/games
 
-%find_lang %{src_name}
+# TODO something goes wrong here
+#rm $RPM_BUILD_ROOT%{_datadir}/locale/*.po
+#rm $RPM_BUILD_ROOT%{_datadir}/locale/%{src_name}.pot
+#ln -s ../../locale $RPM_BUILD_ROOT%{_datadir}/games/%{src_name}/data/po
+#%find_lang %{src_name}
 
 
 %clean
@@ -96,14 +117,18 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, other) %{_datadir}/doc
 %{_datadir}/doc/*
 
-%files data
-%defattr(-,root,bin)
-%dir %attr (0755, root, sys) %{_prefix}
-%dir %attr (0755, root, sys) %{_datadir}
+#%files data
+#%defattr(-,root,bin)
+#%dir %attr (0755, root, sys) %{_prefix}
+#%dir %attr (0755, root, sys) %{_datadir}
 %{_datadir}/games/%{src_name}
 %attr (-, root, other) %{_datadir}/locale
 
 %changelog
+* May 2010 - G.d.
+- an other try
+* Sun May 09 2010 - Gilles Dauphin
+- search Openal in AL/al.h
 * Sun May 09 2010 Milan Jurik
 - initial SFE import
 * Thu Jan 14 2010 Jon Ciesla <limb@jcomserv.net> - 0.6.2-3
