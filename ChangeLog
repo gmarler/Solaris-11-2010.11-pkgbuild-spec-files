@@ -5,6 +5,8 @@
 2010-05-19 Milan Jurik <sfnet@xylab.cz>
 
 	* SFElibevent.spec: bump to 1.4.13
+	* SFEproftpd.spec: SMF service for standalone mode added, new bundled 
+	  modules included
 
 2010-05-19  Simon Jin <yuntong.jin@sun.com>
 
