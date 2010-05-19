@@ -3,28 +3,31 @@
 #
 
 %include Solaris.inc
-Name:                    SFExlincity
-Summary:                 xlincity - Simulation game based on opensourced components of S*mc*ty. 
-Group:                   Game/Simulation
-URL:                     http://lincity.sourceforge.net 
-Version:                 1.12.0
-Source:                  http://www.ibiblio.org/pub/Linux/games/strategy/lincity-1.12.0.tar.gz 
-Patch1:			 xlincity-01-solaris.diff
-SUNW_Copyright:          %{name}.copyright
-SUNW_BaseDir:            %{_basedir}
-BuildRoot:               %{_tmppath}/%{name}-%{version}-build
+
+%define src_name lincity
+
+Name:		SFExlincity
+Summary:	xlincity - Simulation game based on opensourced components of S*mc*ty. 
+Group:		Game/Simulation
+URL:		http://lincity.sourceforge.net 
+Version:	1.12.1
+Source:		%{sf_download}/%{src_name}/%{src_name}-%{version}.tar.gz 
+Patch1:		xlincity-01-solaris.diff
+SUNW_Copyright:	%{name}.copyright
+SUNW_BaseDir:	%{_basedir}
+BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 
 
 %prep
-%setup -q  -n lincity-%{version} 
+%setup -q  -n %{src_name}-%{version} 
 find ./intl -name \*.c -exec dos2unix {} {} \;
 find ./intl -name \*.h -exec dos2unix {} {} \;
 find ./intl -name \*.charset -exec dos2unix {} {} \;
 %patch1 -p1
 
 %build
-./configure
+./configure --prefix=%{_prefix} --mandir=%{_mandir}
 make
 
 %install
@@ -36,15 +39,18 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-, root, bin)
-/usr/local/share/lincity/*
-/usr/local/lib/charset.alias
-/usr/local/share/locale/ca/LC_MESSAGES/lincity.mo
-/usr/local/share/locale/it/LC_MESSAGES/lincity.mo
-/usr/local/share/locale/locale.alias
-/usr/local/bin/xlincity
-/usr/local/man/man6/lincity.6
-
+%dir %attr (0755, root, bin) %{_bindir}
+%{_bindir}/*
+%dir %attr (0755, root, sys) %{_datadir}
+%{_datadir}/%{src_name}/*
+%dir %attr(0755, root, bin) %{_mandir}
+%dir %attr(0755, root, bin) %{_mandir}/man6
+%{_mandir}/man6/*
+%dir %attr (0755, root, other) %{_datadir}/locale
+%{_datadir}/locale/*/LC_MESSAGES/%{src_name}.mo
 
 %changelog
+* Wed May 19 2010 - Milan Jurik
+- update to 1.12.1
 * Wed Jan 23 2008 - Brian Nitz - <brian dot nitz at sun dot com> 
 - Initial version.
