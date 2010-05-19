@@ -7,7 +7,7 @@
 
 Name:                SFElibevent
 Summary:             An event notification library for event-driven network servers.
-Version:             1.4.10
+Version:             1.4.13
 Source:              http://www.monkey.org/~provos/libevent-%{version}-stable.tar.gz
 URL:                 http://monkey.org/~provos/libevent/
 License:             BSD
@@ -60,6 +60,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man3/*
 
 %changelog
+* Wed May 13 2010 - Milan Jurik
+- bump to 1.4.13
 * Mon May 10 2010 - Milan Jurik
 - update to 1.4.10
 * Wed Feb 25 2009 - alfred.peng@sun.com
