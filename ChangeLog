@@ -1,3 +1,7 @@
+2010-05-20  Simon Jin <yuntong.jin@sun.com>
+
+	* SFEwebkitgtk.spec:add buildrequire developer/gcc-3
+
 2010-05-19 Milan Jurik <sfnet@xylab.cz>
 
 	* SFElibevent.spec: bump to 1.4.13

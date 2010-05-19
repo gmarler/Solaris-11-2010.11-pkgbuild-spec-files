@@ -62,6 +62,7 @@ BuildRequires: SUNWgnu-gettext
 BuildRequires: SUNWgnu-gperf
 BuildRequires: SUNWgnome-common-devel
 BuildRequires: SUNWgnome-media
+BuildRequires: developer/gcc-3
 
 %if %OS2nnn
 Requires: SUNWopenssl
