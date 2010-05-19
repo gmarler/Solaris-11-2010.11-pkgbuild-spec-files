@@ -26,12 +26,13 @@ CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
 if test "x$CPUS" = "x" -o $CPUS = 0; then                                                                     
     CPUS=1                                                                                                    
 fi                                                                                                            
-                                                                                                                  
+
 make -j $CPUS solaris-gcc                      
 
 %install
-mkdir -p $RPM_BUILD_ROOT/usr/bin
-mv $RPM_BUILD_DIR/crafty-%version/crafty $RPM_BUILD_ROOT/usr/bin/
+rm -rf $RPM_BUILD_ROOT
+mkdir -p $RPM_BUILD_ROOT/%{_bindir}
+mv $RPM_BUILD_DIR/crafty-%version/crafty $RPM_BUILD_ROOT/%{_bindir}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -39,9 +40,12 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr (-, root, bin)
 %dir %attr (0755, root, sys) %{_prefix}
-%{_bindir}
+%dir %attr (0755, root, bin) %{_bindir}
+%{_bindir}/*
 
 %changelog
+* May 2010 - Gilles Dauphin
+- %files update, move to %_bindir
 * Sun May 09 2010 - Milan Jurik
 - update to 23.2
 * Wed Apr 15 2009 - Alexander R. Eremin eremin@milax.org
