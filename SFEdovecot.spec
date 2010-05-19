@@ -3,7 +3,9 @@
 #
 # works: snv105 / pkgbuild 1.3.91 / Sun Ceres C 5.10 SunOS_i386 2008/10/22
 
+# NOTE: READ THE WIKI page for SFEdovecot.spec : http://pkgbuild.wiki.sourceforge.net/SFEdovecot.spec
 
+##TODO## %action to create dovecot userid on IPS 
 ##TODO## check if adding pam settings is necessary (by one-time SMF service)
 ##TODO## add convenient helper for generating a default configuration file, by default with SSL enabled
 ##TODO## add convenient helper for generating SSL-certificates, make one-time SMF service calling that helper on request
@@ -11,14 +13,14 @@
 %define src_name dovecot
 # maybe set to nullstring outside release-candidates (example: 1.1/rc  or just 1.1)
 #%define downloadversion	 1.1/rc
-%define downloadversion	 1.1
+%define downloadversion	 1.2
 
 %include Solaris.inc
 Name:                    SFEdovecot
 Summary:                 dovecot - A Maildir based pop3/imap email daemon
 URL:                     http://www.dovecot.org
 #note: see downloadversion above
-Version:                 1.1.20
+Version:                 1.2.9
 Source:                  http://dovecot.org/releases/%{downloadversion}/%{src_name}-%{version}.tar.gz
 Source2:		dovecot.xml
 
@@ -39,6 +41,10 @@ Summary:                 %{summary} - / filesystem
 SUNW_BaseDir:            /
 Requires: %name
 
+%description
+Dovecot IMAP and POP3 Email Server. Also usable for SMTP_AUTH.
+See the wiki page for SFEdovecot.spec for installation guidance:
+  http://pkgbuild.wiki.sourceforge.net/SFEdovecot.spec
 
 %prep
 %setup -q -n %{src_name}-%version
@@ -51,30 +57,16 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
     CPUS=1
 fi
 
-#lib|libexec tweaked bcs. names used twice as files and directories ... "imap" and "pop3"
-#/usr/libexec
-#/usr/libexec/dovecot
-#/usr/lib
-#/usr/lib/dovecot
-#/usr/lib/dovecot/auth
-#/usr/lib/dovecot/imap
-#/usr/lib/dovecot/lda
-#/usr/lib/dovecot/pop3
 
-# we want:
-#/usr/lib/dovecot/bin
-#/usr/lib/dovecot/auth
-#/usr/lib/dovecot/imap
-#/usr/lib/dovecot/lda
-#/usr/lib/dovecot/pop3
-
+export CFLAGS="%optflags"
 
 ./configure --prefix=%{_prefix}		\
 	    --bindir=%{_bindir}		\
 	    --mandir=%{_mandir}		\
-            --libdir=%{_libdir}/%{src_name} \
+            --libdir=%{_libdir}         \
+            --libexecdir=%{_libexecdir}         \
+            --with-moduledir=%{_libexecdir}/%{src_name}/modules \
             --datadir=%{_datadir}	\
-            --libexecdir=%{_libdir}/%{src_name}/bin \
             --sysconfdir=%{_sysconfdir}/%{src_name} \
             --enable-shared		\
             --with-rundir=%{_localstatedir}/run/%{src_name} \
@@ -82,10 +74,6 @@ fi
             --with-solr \
 	    --disable-static		
 
-#  --with-rundir=DIR       Runtime data directory (LOCALSTATEDIR/run/dovecot)
-#  --with-statedir=DIR     Permanent data directory (LOCALSTATEDIR/lib/dovecot)
-
-   #	--with-ioloop=select \
 
 gmake -j $CPUS
 
@@ -126,11 +114,21 @@ rm -rf $RPM_BUILD_ROOT
 %{_sysconfdir}/%{src_name}/*
 %defattr (-, root, sys)
 %dir %attr (0755, root, sys) %{_localstatedir}
+%dir %attr (0755, root, sys) %{_localstatedir}/run
 %dir %attr (0755, root, sys) %{_localstatedir}/run/%{src_name}
 %class(manifest) %attr(0444, root, sys)/var/svc/manifest/site/dovecot.xml
 
 
 %changelog
+* Wed May 19 2010 - Thomas Wagner
+- migrate experimental/SFEdovecot.spec to regular spec directory (w/o svn history form experimental)
+- add note and description pointing to dovecot wiki page
+* Thu Feb 04 2010 - Albert Lee <trisk@opensolaris.org>
+- Set CFLAGS
+- Fix /var/run permissions
+* Thu Jan 07 2010 - Thomas Wagner
+- bump to 1.2.9
+- adjust _libexexdir
 * Fri Jan 01 2010 - Thomas Wagner
 - bump to 1.1.20
 - add --with-rundir=%{_localstatedir}/run/%{src_name}  since /usr/var/run/dovecot is wrong, add new location to %files
