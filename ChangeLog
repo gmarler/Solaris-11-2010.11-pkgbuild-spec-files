@@ -1,3 +1,7 @@
+2010-05-20  Simon Jin <yuntong.jin@sun.com>
+
+	* SFEwaf.spec: Add SFE prefix into package name 
+
 2010-02-02  Thomas Wagner  <tom68@users.sourceforge.net>
         * SFEdovecot.spec: - migrate experimental/SFEdovecot.spec to regular spec directory,
           - add note and description pointing to dovecot wiki page,

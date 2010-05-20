@@ -9,7 +9,7 @@
 %define pythonver 2.6
 
 Summary:	The Waf build system
-Name:		waf
+Name:		SFEwaf
 Version:	1.5.16
 SUNW_BaseDir:   %{_basedir}
 Release:	1
