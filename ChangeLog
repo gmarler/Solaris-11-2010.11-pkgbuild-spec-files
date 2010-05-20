@@ -7,10 +7,10 @@
           - add note and description pointing to dovecot wiki page,
           - discard svn history from experimental) - includes bump to 1.2.9
 
-2010-05-19  Gilles Dauphin
+2010-05-19  Gilles Dauphin  <dauphin@enst.fr>
 
-	* update SFEbullet
-	* supertuxkart works with new bullet
+	* SFEbullet: update to 2.76
+	* SFEsupertuxkart: works with new SFEbullet, search OpenAl in _libdir
 
 2010-05-20  Simon Jin <yuntong.jin@sun.com>
 
@@ -35,11 +35,10 @@
 	* patches/webkit-07-17-new.diff: Delete spec file SFEwebki.spec which
 	  build webkit with stl apache stdcxx4 
 
-2010-05-18  Gilles Dauphin
+2010-05-18  Gilles Dauphin  <dauphin@enst.fr>
 
-	* fork SFEplib to SFEplib-gpp, 
-	* SFEplib is needed by Milan compile with ss12
-	* SFEplib-gpp needed by me , compile with gcc4.3
+	* SFEplib-gpp: a fork of SFEplib. SFEplib is needed by Milan compile with ss12
+	  SFEplib-gpp needed by me , compile with gcc4.3
 
 2010-05-18  Simon Jin  <yuntong.jin@sun.com>
 
@@ -67,13 +66,13 @@
 	* patches/webkit-09-ternary-operator.diff:
 	* patches/webkit-25-misc.diff: Remake patches
 
-2010-05-17 Gilles Dauphin
+2010-05-17 Gilles Dauphin  <dauphin@enst.fr>
 
-	* SFEflightgear20
-	* SFEosg
-	* SFEsimgear20
-	* SFEplib
-	* update for flightgear 2.0
+	* SFEflightgear20.spec: now it works with data include.
+	* SFEosg.spec: last release of OpenScenGraph for FlightGear20
+	* SFEsimgear20.spec: init spec , needed for FG20
+	* SFEplib-gpp.spec: The gcc4.3 version of SFEplib for FG20
+	  all the above is for SFEflightgear20. It works.
 
 2010-05-16 Milan Jurik <sfnet@xylab.cz>
 
@@ -232,17 +231,18 @@
 
 	* SFEscorched3d.spec: update to 43.1c
 
-2010-05-07 Gilles Dauphin
+2010-05-07 Gilles Dauphin  <dauphin@enst.fr>
 
-	* SFEosg.spec
-	* SFER-car.spec
-	* SFER-Matrix.spec
-	* SFEfltk.spec
-	* SFER.spec
-	* patches/OpenSceneGraph-09-boost-concept-check.diff
-	* SFER-ctv.spec
-	* SFER-e1071.spec
-	* start FlightGear 2.0
+	* SFEosg.spec: minor change
+	* SFER-car.spec: init spec . Module for R langage
+	* SFER-Matrix.spec: init spec . Module for R langage
+	* SFEfltk.spec: try with gcc 4.3 (good)
+	* SFER.spec: init spec. The R langage
+	* patches/OpenSceneGraph-09-boost-concept-check.diff:
+	  In OpenSolaris 's gcc4.3 , avoid the use of boost-concept-check
+	* SFER-ctv.spec: init spec . Module for R langage
+	* SFER-e1071.spec: init spec . Module for R langage
+	* SFEflightgear20: init spec. don't work yet. Start upgrade form 1.0 to 2.0
 
 2010-05-07 Milan Jurik <sfnet@xylab.cz>
 
@@ -254,8 +254,11 @@
 
 2010-05-06 Gilles Dauphin <dauphin@enst.fr>
 
-	* SFEosg.spec , init spec
-	* SFEtransfig , netpbm, xfig , Xaw3d, Name is SFE...
+	* SFEosg.spec: OpenSceneGraph , init spec
+	* SFEtransfig.spec: from jucr. Name is SFExxx 
+	* SFEnetpbm.spec: from jucr. Name is SFExxx 
+	* SFExfig.spec: from jucr. Name is SFExxx 
+	* SFEXaw3d.spec: from jucr. Name is SFExxx 
 
 2010-05-06  Simon Jin <yuntong.jin@sun.com>
 
@@ -279,14 +282,15 @@
 
 2010-05-05 Gilles Dauphin <dauphin@enst.fr>
 
-	*         SFEtransfig.spec
-	*         copyright/netpbm.copyright
-	*         copyright/transfig.copyright
-	*         ext-sources/netpbm-Makefile.conf
-	*         patches/netpbm-02-no-XDefs.diff
-	*         patches/transfig-1-3.2.5a-transfig-Imakefile.diff
-	*         patches/transfig-0-3.2.5a-fig2dev-Imakefile.diff
-	*         patches/netpbm-03-Makefile.manpage.diff
+	* SFEtransfig.spec: port form jucr
+	* copyright/netpbm.copyright:
+	* copyright/transfig.copyright:
+	* ext-sources/netpbm-Makefile.conf:
+	* patches/netpbm-02-no-XDefs.diff:
+	* patches/transfig-1-3.2.5a-transfig-Imakefile.diff:
+	* patches/transfig-0-3.2.5a-fig2dev-Imakefile.diff:
+	* patches/netpbm-03-Makefile.manpage.diff:
+	  all the above is from jucr. try to make SFExfig
 
 2010-05-05 Mark Wright <markwright@internode.on.net>
 
@@ -325,11 +329,13 @@
 
 2010-05-03 Gilles Dauphin <dauphin@enst.fr>
 
-        * SFEscumvm update FLAGS
-        * SFEsimgear bump release
-	* SFEscribus TODO list
-	* SFEgoocanvas get ready for next release (2010.03?)
-	* SFEghc for b134 in /opt/SFE
+        * SFEscumvm.spec: update FLAGS
+        * SFEsimgear.spec: bump release
+	* SFEscribus.spec: update TODO list. It works for me in b134
+	  I know a problem with 'locale'. I can't reproduce the bug.
+	  It smell a bug around Input Method and/or LOCALE.
+	* SFEgoocanvas.spec: get ready for next release (2010.03?)
+	* SFEghc.spec: for b134 in /opt/SFE
 
 2010-05-03 Milan Jurik <sfnet@xylab.cz>
 
@@ -360,8 +366,8 @@
 
 2010-04-29 Gilles Dauphin <dauphin@enst.fr>
 
-        * SFEscribus first try
-        * qt45 update for scribus
+        * SFEscribus.spec: init spec . desktop publishing. first try
+        * SFEqt45.spec: update for scribus
 
 2010-04-29  Milan Jurik <sfnet@xylab.cz>
 
@@ -493,10 +499,10 @@
 	* SFEdspam.spec, ext-sources/dspam.xml: Bump to 3.9.0. Add SMF manifest
 	  for daemon mode. Add devel package.
 
-2010-04-20 Gilles Dauphin
+2010-04-20 Gilles Dauphin  <dauphin@enst.fr>
 
-	* xfig from jr
-	* Xaw3d for xfig
+	* SFExfig.spec: init spec from jucr
+	* SFEXaw3d.spec: init spec for SFExfig
 
 2010-04-20  Laszlo (Laca) Peter  <laszlo.peter@oracle.com>
 
@@ -606,9 +612,10 @@
 
 	* SFElibofa.spec: updated source url to Google Code
 
-2010-04-06 Gilles Dauphin
+2010-04-06 Gilles Dauphin  <dauphin@enst.fr>
 
-	* misc patch SFEtexlive and SFExine-lib
+	* SFEtexlive.spec: misc patch 
+	* SFExine-lib.spec: read MNG and FLV format
 
 2010-04-06  Milan Jurik <sfnet@xylab.cz>
 
@@ -674,22 +681,23 @@
 
 	* SFEntfs-3g.spec: Bump 2010.3.6. Update URL, License. Add mount helper.
 
-2010-03-24  Gilles Dauphin
+2010-03-24  Gilles Dauphin <dauphin@enst.fr>
 
-	* SFEproftpd to 1.3.3
-	* update ddd to official release
-	* CFLAGS for tremulous
-	* SFEjhead release bump
-	* xosd , download URL
-	* SFElibksba, patch
-	* SFElcab, Ips versioning
-	* SFEpostgis, update for b134
-	* SFEarj, SFEpth minor patch
-	* SFEgnupg2 , look at _bindir in PATH
-	* SFEfvwm-theme, look at _bindir
-	* SFEisaexec-opt-sfe, because some package need isaexec
+	* SFEproftpd.spec: to 1.3.3
+	* SFEddd.spec: update ddd to official release
+	* SFEtremulous.spec: CFLAGS for tremulous
+	* SFEjhead.spec: release bump
+	* SFExosd.spec: update download URL
+	* SFElibksba.spec: patch
+	* SFElcab.spec: Ips versioning
+	* SFEpostgis.spec: ready for  b134
+	* SFEarj.spec: minor patch
+	* SFEpth.spec: minor patch
+	* SFEgnupg2.spec: look at _bindir in PATH
+	* SFEfvwm-theme.spec: look at _bindir
+	* SFEisaexec-opt-sfe.spec:, because some package need isaexec
 	  and is not in the file system you install i.e /opt/SFE
-	* SFElibassuan, --with-pth-prefix
+	* SFElibassuan.spec: --with-pth-prefix
 
 2010-03-24  Milan Jurik <sfnet@xylab.cz>
 
@@ -715,15 +723,12 @@
 
 	* SFEseamonkey.spec: bump to 1.1.19. first attempt to fix dependencies
 
-2010-03-15  Gilles Dauphin
+2010-03-15  Gilles Dauphin  <dauphin@enst.fr?
 
-	* patches vlc for gcc43 provide by b134
-	* g++ --enable-concept-check is the problem, it is enable in the b134
-	  distrib.
-	* experimental/SFEvlc-1.0.5-b134.spec
-	* experimental/SFEqt45-gcc-usr-sfe.spec install in a possible /usr/SFE
-	  rep.
-	* qt45 patch for gcc433 of b134 distrib
+	* experimental/SFEvlc-1.0.5-b134.spec:  patches vlc for gcc43 provide by b134
+	  g++ --enable-concept-check is the problem, it is enable in the b134 distrib.
+	* experimental/SFEqt45-gcc-usr-sfe.spec install in a possible /usr/SFE rep.
+	  and qt45 patch for gcc433 of b134 distrib. needed for vlc1.0.5
 
 2010-03-16  Brian Lu  <brian.lu@sun.com>
 
@@ -770,10 +775,9 @@
 
 2010-03-12  Gilles Dauphin <dauphin@enst.fr>
 
-	* SFEmplayer may go in /usr/SFE
-	* SFEliveMedia , install in /usr/SFE
-	* add gpac patch
-	* SFEgpac, install possible in /usr/SFE
+	* SFEmplayer.spec: may go in /usr/SFE
+	* SFEliveMedia.spec: , install in /usr/SFE
+	* SFEgpac.spec: install possible in /usr/SFE
 
 2010-03-11  Milan Jurik <sfnet@xylab.cz>
 
@@ -781,29 +785,33 @@
 
 2010-03-11  Gilles Dauphin <dauphin@enst.fr>
 
-	* SFEbullet, starting to provide a install base in /usr/SFE.
+	* SFEbullet.spec: starting to provide a install base in /usr/SFE.
 	  like pkgtool --define "_basedir /usr/SFE" ...
-	* SFElibmatroska, enable built even if some package is in /usr/SFE
-	* compat ips versioning for SFElivemedia
-	* SFEBillardGL, SFEsimgear, search in /usr/SFE (exemple)
-	* SFEplib don't need freeglut
-	* patches/libmatroska-01-makefile.diff , add -LDFLAGS search lib in
+	* SFElibmatroska.spec: enable built even if some package is in /usr/SFE
+	* SFElivemedia.spec: compat ips versioning for SFElivemedia
+	* SFEBillardGL.spec: search in /usr/SFE (exemple)
+	* SFEsimgear.spec:  search in /usr/SFE (exemple)
+	* SFEplib.spec: don't need freeglut
+	* patches/libmatroska-01-makefile.diff:  add -LDFLAGS search lib in
 	  /usr/SFE/lib
-	* SFEflightgear, includedir is maybe in /usr/SFE
-	* SFEcairo-dock, update TODO
-	* SFEfreealut , basedir is maybe in /use/SFE
+	* SFEflightgear.spec:, includedir is maybe in /usr/SFE
+	* SFEcairo-dock.spec: update TODO
+	* SFEfreealut.spec:  basedir is maybe in /use/SFE
 	* archive/SFEgraphviz.spec, SUNWsfwhea is obsolete in b133
-	* SFElibdvdnav, SFEnasm, would install in /usr/SFE
-	* SFEgnuplot workaround for bug
+	* SFElibdvdnav.spec: would install in /usr/SFE
+	* SFEnasm, would install in /usr/SFE
+	* SFEgnuplot.spec: workaround for bug
 	  http://defect.opensolaris.org/bz/show_bug.cgi?id=3644
 	  bump to 4.2.5
-	* SFEcrrcsim.spec SFEvcdimager.spec SFEopenal.spec
-	  want to install somewhere in /usr/SFE (example)
-	* SFEoctave, gnuplot is in b133
-	* SFElibx264, copy isaexec instead of hardlink
+	* SFEcrrcsim.spec: want to install somewhere in /usr/SFE (example)
+	* SFEvcdimager.spec: want to install somewhere in /usr/SFE (example) 
+	* SFEopenal.spec: want to install somewhere in /usr/SFE (example)
+	* SFEoctave.spec:  gnuplot is in b133
+	* SFElibx264.spec: copy isaexec instead of hardlink
 	  hardlink is needed by isaexec and is not possible if
-	  install is in an other basedir. 
-	* SFEffmpeg,  would install in /usr/SFE
+	  install is in an other basedir (ie /opt/SFE). 
+	  TODO: Check and make a depend to SFEisaexec
+	* SFEffmpeg.spec:  would install in /usr/SFE
 
 2010-03-11  Brian Lu  <brian.lu@sun.com>
 
