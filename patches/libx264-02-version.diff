@@ -1,5 +1,5 @@
---- x264-snapshot-20090208-2245/version.sh	ne úno  8 22:45:10 2009
-+++ x264-snapshot-20090208-2245-patch/version.sh	so úno 14 17:53:04 2009
+--- x264-snapshot-20100520-2245/version.sh	Fri May 21 21:17:43 2010
++++ x264-snapshot-20100520-2245-patch/version.sh	Fri May 21 21:17:25 2010
 @@ -1,19 +1,20 @@
  #!/bin/bash
 -git rev-list HEAD | sort > config.git-hash
@@ -11,7 +11,7 @@
 -    elif git status | grep -q "modified:" ; then
 -        VER="${VER}M"
 -    fi
--    VER="$VER $(git rev-list HEAD -n 1 | head -c 7)"
+-    VER="$VER $(git rev-list HEAD -n 1 | cut -c 1-7)"
 +#git rev-list HEAD | sort > config.git-hash
 +#LOCALVER=`wc -l config.git-hash | awk '{print $1}'`
 +#if [ $LOCALVER \> 1 ] ; then
@@ -20,9 +20,9 @@
 +#        VER="$VER+$(($LOCALVER-$VER))"
 +#    elif git status | grep -q "modified:" ; then
 +#        VER="${VER}M"
-+VER="git-2245M"
 +#    fi
-+#    VER="$VER $(git rev-list HEAD -n 1 | head -c 7)"
++#    VER="$VER $(git rev-list HEAD -n 1 | cut -c 1-7)"
++VER="git-2245M"
      echo "#define X264_VERSION \" r$VER\"" >> config.h
 -else
 -    echo "#define X264_VERSION \"\"" >> config.h

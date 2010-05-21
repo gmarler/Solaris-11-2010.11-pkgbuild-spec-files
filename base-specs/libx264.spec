@@ -4,7 +4,7 @@
 # includes module(s): libx264
 #
 
-%define         snap    20100123
+%define         snap    20100520
 %define         snaph   2245
 %define src_name x264-snapshot
 %define src_url	 http://download.videolan.org/pub/videolan/x264/snapshots
@@ -28,8 +28,8 @@ BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 #%patch1 -p1
 %patch2 -p1
 %patch3 -p1
-%patch4 -p1
-%patch5 -p1
+#%patch4 -p1
+#%patch5 -p1
 %patch6 -p1
 %patch7 -p1
 
@@ -78,6 +78,8 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/lib*.*a
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Fri May 21 2010 - Milan Jurik
+- update to new tarball
 * Sat Nov 28 2009 - Albert Lee <trisk@opensolaris.org>
 - Remove GPAC dependency
 * Fri Oct 30 2009 - Milan Jurik
