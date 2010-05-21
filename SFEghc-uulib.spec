@@ -1,5 +1,5 @@
 #
-# spec file for package SFEghc-AspectAG
+# spec file for package SFEghc-uulib
 #
 # Copyright 2010 Sun Microsystems, Inc.
 # This file and all modifications and additions to the pristine
@@ -13,17 +13,17 @@
 
 %define ghc_version 6.12.1
 
-Name:                    AspectAG
-Summary:                 AspectAG - Attribute Grammars in the form of an EDSL
-Version:                 0.2
+Name:                    uulib
+Summary:                 uulib - Haskell Utrecht Tools Library
+Version:                 0.9.12
 Release:                 1
 License:                 LGPL
 Group:                   Development/Languages/Haskell
 Distribution:            Java Desktop System
 Vendor:                  Sun Microsystems, Inc.
-URL:                     http://www.cs.uu.nl/wiki/bin/view/Center/AspectAG
+URL:                     http://www.cs.uu.nl/wiki/HUT/WebHome
 Source:                  http://hackage.haskell.org/packages/archive/%{name}/%{version}/%{name}-%{version}.tar.gz
-SUNW_Pkg:		 SFEghc-AspectAG
+SUNW_Pkg:		 SFEghc-uulib
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 
@@ -31,28 +31,24 @@ BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 Requires: SFEgcc
 Requires: SFEghc
 Requires: SFEghc-haskell-platform
-Requires: SFEghc-HList
 
 %description
-Library of strongly typed Attribute Grammars implemented using
-type-level programming.
+Fast Parser Combinators and Pretty Printing Combinators
 
-%package -n SFEghc-AspectAG-prof
+%package -n SFEghc-uulib-prof
 Summary:                 %{summary} - profiling libraries
 SUNW_BaseDir:            %{_basedir}
 %include default-depend.inc
-Requires: SFEghc-AspectAG
+Requires: SFEghc-uulib
 
-%package -n SFEghc-AspectAG-doc
+%package -n SFEghc-uulib-doc
 Summary:                 %{summary} - doc files
 SUNW_BaseDir:            %{_basedir}
 %include default-depend.inc
-Requires: SFEghc-AspectAG
+Requires: SFEghc-uulib
 
 %prep
 %setup -q -n %{name}-%{version}
-
-sed -i -e 's,template-haskell>=2.4.0.1,template-haskell>=2.4.0.0,' AspectAG.cabal
 
 export LD_LIBRARY_PATH=/usr/gnu/lib:$LD_LIBRARY_PATH
 
@@ -130,14 +126,14 @@ rm -rf $RPM_BUILD_ROOT
 # We need to register the package with ghc-pkg for ghc to find it
 /usr/bin/ghc-pkg register --global --force %{_cxx_libdir}/ghc-%{ghc_version}/%{name}-%{version}/%{name}-%{version}.conf
 
-%post -n SFEghc-AspectAG-doc
+%post -n SFEghc-uulib-doc
 cd %{_docdir}/ghc/html/libraries && [ -x "./gen_contents_index" ] && ./gen_contents_index
 
 %preun
 # Need to unregister the package with ghc-pkg for the rebuild of the spec file to work
 /usr/bin/ghc-pkg unregister --global --force %{name}-%{version}
 
-%postun -n SFEghc-AspectAG-doc
+%postun -n SFEghc-uulib-doc
 if [ "$1" -eq 0 ] ; then
   cd %{_docdir}/ghc/html/libraries && [ -x "./gen_contents_index" ] && ./gen_contents_index
 fi
@@ -145,10 +141,10 @@ fi
 %files -f pkg.files
 %defattr (-, root, bin)
 
-%files -n SFEghc-AspectAG-prof -f pkg-prof.files
+%files -n SFEghc-uulib-prof -f pkg-prof.files
 %defattr (-, root, bin)
 
-%files  -n SFEghc-AspectAG-doc -f pkg-doc.files
+%files  -n SFEghc-uulib-doc -f pkg-doc.files
 %defattr(-,root,root,-)
 %dir %attr (0755, root, sys) %{_datadir}
 %dir %attr (0755, root, other) %{_docdir}
@@ -159,6 +155,4 @@ fi
 
 %changelog
 * Fri May 21 2010 - markwright@internode.on.net
-- Bump to 0.2
-* Fri Apr 30 2010 - markwright@internode.on.net
-- Initial Solaris version
+- Initial Solaris version 0.9.12

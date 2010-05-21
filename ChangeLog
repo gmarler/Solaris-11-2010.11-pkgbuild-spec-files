@@ -1,3 +1,10 @@
+2010-05-06 Mark Wright <markwright@internode.on.net>
+
+	* SFEghc-AspectAG: bump to 0.2
+	* SFEghc-HList: bump to 0.2.3
+	* SFEghc-SyntaxMacros.spec, SFEghc-TTTAS.spec, SFEghc-uulib.spec,
+	  SFEghc-ChristmasTree.spec: *NEW* haskell packages
+
 2010-05-20  Simon Jin <yuntong.jin@sun.com>
 
 	* SFEwaf.spec: Add SFE prefix into package name 
