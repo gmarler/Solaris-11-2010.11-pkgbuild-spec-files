@@ -1,6 +1,7 @@
 2010-05-21 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEopenjpeg.spec: update to 1.3, split devel package
+	* encumbered/SFEmplayer-snap.spec: openjpeg and giflib support
 
 2010-05-06 Mark Wright <markwright@internode.on.net>
 

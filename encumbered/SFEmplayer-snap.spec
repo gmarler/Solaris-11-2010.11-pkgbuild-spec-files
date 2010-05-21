@@ -16,6 +16,8 @@
 %define with_mpcdec %(pkginfo -q SFElibmpcdec && echo 1 || echo 0)
 %define with_xvid %(pkginfo -q SFExvid && echo 1 || echo 0)
 %define with_x264 %(pkginfo -q SFElibx264 && echo 1 || echo 0)
+%define with_openjpeg %(pkginfo -q SFEopenjpeg && echo 1 || echo 0)
+%define with_giflib %(pkginfo -q SFEgiflib && echo 1 || echo 0)
 
 %define ver %(date '+%Y%m%d')
 
@@ -92,6 +94,14 @@ BuildRequires: SFExvid-devel
 %if %with_x264
 Requires: SFElibx264
 BuildRequires: SFElibx264-devel
+%endif
+%if %with_openjpeg
+Requires: SFEopenjpeg
+BuildRequires: SFEopenjpeg-devel
+%endif
+%if %with_giflib
+Requires: SFEgiflib
+BuildRequires: SFEgiflib-devel
 %endif
 
 %define x11	/usr/openwin
@@ -192,6 +202,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/pixmaps/*
 
 %changelog
+* Fri May 21 2010 - Milan Jurik
+- openjpeg and giflib support
 * Thu Aug 20 2009 - Milan Jurik
 - -fomit-frame-pointer to workaround Solaris GCC bug on Nehalem
 * Sun Aug 16 2009 - Milan Jurik
