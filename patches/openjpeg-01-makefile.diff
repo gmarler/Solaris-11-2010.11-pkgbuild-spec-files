@@ -1,10 +1,7 @@
---- trunk/Makefile.orig	2007-07-30 00:44:43.206713585 +0700
-+++ trunk/Makefile	2007-07-30 00:53:07.086469018 +0700
-@@ -8,18 +8,16 @@
- INCLUDE = -Ilibopenjpeg
- 
- # General configuration variables:
--CC = gcc
+--- OpenJPEG_v1_3/Makefile	Fri Dec 21 11:39:41 2007
++++ OpenJPEG_v1_3-patch/Makefile	Fri May 21 21:59:24 2010
+@@ -11,7 +11,7 @@
+ CC = gcc
  AR = ar
  
 -PREFIX = /usr
@@ -12,16 +9,16 @@
  INSTALL_LIBDIR = $(PREFIX)/lib
  INSTALL_INCLUDE = $(PREFIX)/include
  
- # Converts cr/lf to just lf
+@@ -19,7 +19,7 @@
  DOS2UNIX = dos2unix
  
--COMPILERFLAGS = -O3 -fPIC
+ COMPILERFLAGS = -Wall -O3 -ffast-math -std=c99 -fPIC
 -LIBRARIES = -lstdc++
-+LIBRARIES = 
++LIBRARIES =
  
  MODULES = $(SRCS:.c=.o)
  CFLAGS = $(COMPILERFLAGS) $(INCLUDE)
-@@ -45,7 +43,7 @@
+@@ -45,7 +45,7 @@
  dos2unix:
  	@$(DOS2UNIX) $(SRCS) $(INCLS)
  
@@ -30,7 +27,7 @@
  
  .c.o:
  	$(CC) $(CFLAGS) -c $< -o $@
-@@ -54,25 +52,14 @@
+@@ -54,25 +54,15 @@
  	$(AR) r $@ $(MODULES)
  
  $(SHAREDLIB): $(MODULES)
@@ -53,7 +50,7 @@
  
  clean:
  	rm -rf core dist/ u2dtmp* $(MODULES) $(STATICLIB) $(SHAREDLIB) $(LIBNAME)
--
+ 
 -osx:
 -	make -f Makefile.osx
 -
