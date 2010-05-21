@@ -3,6 +3,7 @@
 	* SFEopenjpeg.spec: update to 1.3, split devel package
 	* encumbered/SFEmplayer-snap.spec: openjpeg and giflib support
 	* base-specs/libx264.spec: update to new tarball
+	* SFEliferea.spec: update to 1.6.3, dependency on webkit
 
 2010-05-06 Mark Wright <markwright@internode.on.net>
 

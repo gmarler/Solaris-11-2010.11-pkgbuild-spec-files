@@ -1,22 +1,20 @@
---- src/common.c.orig	Mon Jun 23 03:30:12 2008
-+++ src/common.c	Mon Jun 23 03:30:24 2008
-@@ -37,8 +37,6 @@
- #  include <config.h>
- #endif
- 
--#define _XOPEN_SOURCE	600 /* glibc2 needs this (man strptime) */
--
- #include <libxml/uri.h>
- 
- #include <glib.h>
---- src/parsers/ns_dc.c.old	Mon Jun 23 03:32:24 2008
-+++ src/parsers/ns_dc.c	Mon Jun 23 03:32:29 2008
-@@ -23,8 +23,6 @@
+--- liferea-1.6.3/src/parsers/ns_dc.c	Fri May 21 22:44:46 2010
++++ liferea-1.6.3-patch/src/parsers/ns_dc.c	Fri May 21 22:43:40 2010
+@@ -23,7 +23,6 @@
  #  include <config.h>
  #endif
  
 -#define _XOPEN_SOURCE	600 	/* glibc2 needs this (man strptime) */
--
+ 
  #include "ns_dc.h"
- #include "conf.h"
  #include "common.h"
+--- liferea-1.6.3/src/common.c	Fri May 21 22:44:46 2010
++++ liferea-1.6.3-patch/src/common.c	Fri May 21 22:47:27 2010
+@@ -37,7 +37,6 @@
+ #  include <config.h>
+ #endif
+ 
+-#define _XOPEN_SOURCE	600 /* glibc2 needs this (man strptime) */
+ 
+ #include <libxml/uri.h>
+ #include <gtk/gtk.h>

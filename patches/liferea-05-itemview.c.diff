@@ -1,11 +1,11 @@
---- src/itemview.c.old	Mon Jun 23 03:40:14 2008
-+++ src/itemview.c	Mon Jun 23 03:40:28 2008
-@@ -87,7 +87,7 @@
- 	itemView_priv.needsHTMLViewUpdate = TRUE;
+--- liferea-1.6.3/src/ui/itemview.c	Fri May  1 20:53:17 2009
++++ liferea-1.6.3-patch/src/ui/itemview.c	Fri May 21 22:45:32 2010
+@@ -135,7 +135,7 @@
  }
  
--void itemview_set_mode(guint mode) {
-+void itemview_set_mode(itemViewMode mode) {
- 
- 	if(itemView_priv.mode != mode) {
- 		itemView_priv.mode = mode;
+ void
+-itemview_set_mode (guint mode)
++itemview_set_mode (itemViewMode mode)
+ {
+ 	if (itemview->priv->mode != mode) {
+ 		itemview->priv->mode = mode;

@@ -1,5 +1,5 @@
---- src/htmlview.c.old	Mon Jun 23 03:34:58 2008
-+++ src/htmlview.c	Mon Jun 23 03:34:49 2008
+--- liferea-1.6.3/src/htmlview.c	Sun May 24 12:11:35 2009
++++ liferea-1.6.3-patch/src/htmlview.c	Fri May 21 22:49:34 2010
 @@ -316,7 +316,7 @@
  }
  

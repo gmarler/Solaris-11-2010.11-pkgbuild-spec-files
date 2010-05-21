@@ -5,17 +5,18 @@
 #
 %include Solaris.inc
 
-Name:                    SFEliferea
-Summary:                 Liferea - aggregator for online news feeds
-Version:                 1.4.16b
-Source:                  %{sf_download}/liferea/liferea-%{version}.tar.gz
-Patch1:                  liferea-01-liferea.in.diff
-Patch2:                  liferea-02-libxsltversion.diff
-Patch3:                  liferea-03-no-unix03.diff
-Patch4:                  liferea-04-htmlview.c.diff
-Patch5:                  liferea-05-itemview.c.diff
-SUNW_BaseDir:            %{_basedir}
-BuildRoot:               %{_tmppath}/%{name}-%{version}-build
+Name:		SFEliferea
+Summary:	Liferea - aggregator for online news feeds
+Version:	1.6.3
+Source:		%{sf_download}/liferea/liferea-%{version}.tar.gz
+URL:		http://liferea.sourceforge.net/
+Group:		Applications/Internet
+License:	GPLv2
+Patch3:		liferea-03-no-unix03.diff
+Patch4:		liferea-04-htmlview.c.diff
+Patch5:		liferea-05-itemview.c.diff
+SUNW_BaseDir:	%{_basedir}
+BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 BuildRequires: SUNWgnome-libs-devel
 BuildRequires: SUNWdbus-devel
@@ -32,6 +33,8 @@ Requires: SUNWgnu-gettext
 %else
 Requires: SUNWuiu8
 %endif
+BuildRequires: SFEwebkitgtk-devel
+Requires: SFEwebkitgtk
 
 %package root
 Summary:                 %{summary} - / filesystem
@@ -48,11 +51,9 @@ Requires:                %{name}
 
 %prep
 %setup -q -n liferea-%version
-%patch1 -p0 -b .orig
-%patch2 -p0 -b .orig
-%patch3 -p0 -b .orig
-%patch4 -p0 -b .orig
-%patch5 -p0 -b .orig
+%patch3 -p1
+%patch4 -p1
+%patch5 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -69,6 +70,7 @@ export LDFLAGS="-R/usr/lib/firefox"
 
 glib-gettextize -f
 libtoolize --copy --force
+intltoolize --force --copy
 aclocal $ACLOCAL_FLAGS
 autoheader
 automake -a -c -f 
@@ -77,8 +79,7 @@ autoconf
 ./configure --prefix=%{_prefix} --mandir=%{_mandir} \
             --libdir=%{_libdir}              \
             --libexecdir=%{_libexecdir}      \
-            --sysconfdir=%{_sysconfdir}      \
-            --enable-gecko=firefox
+            --sysconfdir=%{_sysconfdir}
 
 # FIXME: adding INTLLIBS=-lresolv is cheating, instead,
 # src/Makefile.am and configure.in should be updated to link to resolv
@@ -136,10 +137,25 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, other) %{_datadir}/liferea
 %dir %attr (0755, root, other) %{_datadir}/icons
 %dir %attr (0755, root, other) %{_datadir}/icons/hicolor
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/16x16
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/16x16/apps
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/22x22
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/22x22/apps
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/24x24
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/24x24/apps
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/32x32
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/32x32/apps
 %dir %attr (0755, root, other) %{_datadir}/icons/hicolor/48x48
 %dir %attr (0755, root, other) %{_datadir}/icons/hicolor/48x48/apps
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/scalable
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/scalable/apps
 %{_datadir}/liferea/*
+%{_datadir}/icons/hicolor/16x16/apps/*
+%{_datadir}/icons/hicolor/22x22/apps/*
+%{_datadir}/icons/hicolor/24x24/apps/*
+%{_datadir}/icons/hicolor/32x32/apps/*
 %{_datadir}/icons/hicolor/48x48/apps/*
+%{_datadir}/icons/hicolor/scalable/apps/*
 %dir %attr(0755, root, bin) %{_mandir}
 %dir %attr(0755, root, bin) %{_mandir}/*
 %{_mandir}/*/*
@@ -157,6 +173,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Fri May 21 2010 - Milan Jurik
+- update to 1.6.3, dependency on webkit
 * Mon Jun 23 2008 - river@wikimedia.org
 - 1.4.16b
 * Sun Nov 18 2007 - daymobrew@users.sourceforge.net
