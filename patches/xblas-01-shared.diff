@@ -1,0 +1,665 @@
+diff -up xblas/Makefile.m4.shared xblas/Makefile.m4
+--- xblas/Makefile.m4.shared	2008-11-15 13:58:30.000000000 -0500
++++ xblas/Makefile.m4	2009-04-20 15:42:16.000000000 -0400
+@@ -169,6 +169,9 @@ lib: if_m4(`sources ')$(LIB)
+ FOREACH(`LIBNAMES', 
+ `	cd $(SRC_DIR)/arg && $(MAKE) lib
+ ')dnl
++	$(CC) $(CFLAGS) -G -Wl,-h,$(XBLASLIB_SHORT) -o $(XBLASLIB) $(SRC_DIR)/common/*.o FOREACH(`LIBNAMES', `$(SRC_DIR)/arg/*.o ')$(EXTRA_LIBS)
++	if [ ! -L $(XBLASLIB_SHORT) ]; then ln -s $(XBLASLIB) $(XBLASLIB_SHORT); fi
++	if [ ! -L $(XBLASLIB_BASE) ]; then ln -s $(XBLASLIB) $(XBLASLIB_BASE); fi
+ 
+ if_m4(`
+ Makefile: Makefile.m4
+diff -up xblas/make.inc.in.shared xblas/make.inc.in
+--- xblas/make.inc.in.shared	2008-11-15 13:58:30.000000000 -0500
++++ xblas/make.inc.in	2009-04-20 15:42:16.000000000 -0400
+@@ -5,12 +5,14 @@
+ #
+ 
+ # The name of the libraries to be created/linked to
+-XBLASLIB = libxblas.a
++XBLASLIB_BASE = libxblas.so
++XBLASLIB_SHORT = $(XBLASLIB_BASE).1
++XBLASLIB = $(XBLASLIB_SHORT).0.0
+ 
+ # CC is the C compiler, normally invoked with options CFLAGS.
+ # LINKER and LDFLAGS function as CC and CFLAGS, but for linking stages.
+ CC = @CC@
+-CFLAGS = @CFLAGS@
++CFLAGS = @CFLAGS@ -fPIC
+ LINKER = $(CC)
+ LDFLAGS = @LDFLAGS@
+ 
+diff -up xblas/src/common/Makefile.m4.shared xblas/src/common/Makefile.m4
+--- xblas/src/common/Makefile.m4.shared	2008-11-15 13:58:30.000000000 -0500
++++ xblas/src/common/Makefile.m4	2009-04-20 15:42:16.000000000 -0400
+@@ -13,8 +13,6 @@ COMM_OBJS = BLAS_error.o blas_malloc.o B
+ all: $(COMM_OBJS)
+ 
+ lib: $(COMM_OBJS)
+-	$(ARCH) $(ARCHFLAGS) $(LIB_PATH)/$(XBLASLIB) $(COMM_OBJS)
+-	$(RANLIB) $(LIB_PATH)/$(XBLASLIB)
+ 
+ .c.o:
+ 	$(CC) $(CFLAGS) -I$(HEADER_PATH) -c -o $@ $<
+diff -up xblas/src/Makefile.template.shared xblas/src/Makefile.template
+--- xblas/src/Makefile.template.shared	2008-11-15 13:58:30.000000000 -0500
++++ xblas/src/Makefile.template	2009-04-20 15:42:16.000000000 -0400
+@@ -27,8 +27,6 @@ ROUTINE()_OBJS = $(ROUTINE()_SRCS:.c=.o)
+ all: $(ROUTINE()_OBJS)
+ 
+ lib: $(ROUTINE()_OBJS)
+-	$(ARCH) $(ARCHFLAGS) $(LIB_PATH)/$(XBLASLIB) $(ROUTINE()_OBJS)
+-	$(RANLIB) $(LIB_PATH)/$(XBLASLIB)
+ 
+ .c.o: 
+ 	$(CC) $(CFLAGS) -I$(HEADER_PATH) -c -o $@ $<
+diff -up xblas/testing/test-axpby/Makefile.shared xblas/testing/test-axpby/Makefile
+--- xblas/testing/test-axpby/Makefile.shared	2009-04-20 15:46:31.000000000 -0400
++++ xblas/testing/test-axpby/Makefile	2009-04-20 15:47:33.000000000 -0400
+@@ -26,10 +26,10 @@ ALL_OBJS = $(TEST_DOT_OBJS) $(TEST_OBJS)
+ 
+ test: do_test_axpby
+ 	@echo Testing AXPBY
+-	./do_test_axpby 10 1 1.0 1 1 > axpby.results
++	LD_LIBRARY_PATH="../.." ./do_test_axpby 10 1 1.0 1 1 > axpby.results
+ 
+ do_test_axpby: $(ALL_OBJS) $(LIB_PATH)/$(XBLASLIB)
+-	$(LINKER) $(LDFLAGS) $(ALL_OBJS) $(LIB_PATH)/$(XBLASLIB) -o do_test_axpby $(EXTRA_LIBS)
++	$(LINKER) $(LDFLAGS) $(ALL_OBJS) -L$(LIB_PATH) -lxblas -o do_test_axpby $(EXTRA_LIBS)
+ 
+ .c.o:
+ 	$(CC) $(CFLAGS) $(HEADER_PATH) -c -o $@ $<
+diff -up xblas/testing/test-dot2/Makefile.shared xblas/testing/test-dot2/Makefile
+--- xblas/testing/test-dot2/Makefile.shared	2008-11-15 13:58:30.000000000 -0500
++++ xblas/testing/test-dot2/Makefile	2009-04-20 15:42:16.000000000 -0400
+@@ -21,12 +21,12 @@ ALL_OBJS = $(TEST_OBJS) $(TEST_DOT_OBJS)
+ 
+ test: do_test_dot2
+ 	@echo Testing DOT2
+-	./do_test_dot2 20 1 1.0 0 1 > dot2.results
++	LD_LIBRARY_PATH="../.." ./do_test_dot2 20 1 1.0 0 1 > dot2.results
+ 
+ test-lib: $(TEST_OBJS)
+ 
+ do_test_dot2: $(TEST_OBJS) $(COMMON_OBJS) $(LIB_PATH)/$(XBLASLIB)
+-	$(LINKER) $(LDFLAGS) $(ALL_OBJS) $(LIB_PATH)/$(XBLASLIB) \
++	$(LINKER) $(LDFLAGS) $(ALL_OBJS) -L$(LIB_PATH) -lxblas \
+ 	-o do_test_dot2 $(EXTRA_LIBS)
+ 
+ .c.o:
+diff -up xblas/testing/test-dot/Makefile.shared xblas/testing/test-dot/Makefile
+--- xblas/testing/test-dot/Makefile.shared	2008-11-15 13:58:30.000000000 -0500
++++ xblas/testing/test-dot/Makefile	2009-04-20 15:42:16.000000000 -0400
+@@ -13,12 +13,12 @@ COMMON_OBJS = ../common/dummy_main.o
+ 
+ test: do_test_dot
+ 	@echo Testing DOT
+-	./do_test_dot 20 1 1.0 0 1 > dot.results
++	LD_LIBRARY_PATH="../.." ./do_test_dot 20 1 1.0 0 1 > dot.results
+ 
+ test-lib: $(TEST_OBJS)
+ 
+ do_test_dot: $(TEST_OBJS) $(COMMON_OBJS) $(LIB_PATH)/$(XBLASLIB)
+-	$(LINKER) $(LDFLAGS) $(TEST_OBJS) $(COMMON_OBJS) $(LIB_PATH)/$(XBLASLIB) \
++	$(LINKER) $(LDFLAGS) $(TEST_OBJS) $(COMMON_OBJS) -L$(LIB_PATH) -lxblas \
+ 	-o do_test_dot $(EXTRA_LIBS)
+ 
+ .c.o:
+diff -up xblas/testing/test-gbmv2/Makefile.shared xblas/testing/test-gbmv2/Makefile
+--- xblas/testing/test-gbmv2/Makefile.shared	2008-11-15 13:58:30.000000000 -0500
++++ xblas/testing/test-gbmv2/Makefile	2009-04-20 15:42:16.000000000 -0400
+@@ -29,10 +29,10 @@ ALL_OBJS = $(TEST_OBJS) $(TEST_DOT_OBJS)
+ 
+ test: do_test_gbmv2
+ 	@echo Testing GBMV2
+-	./do_test_gbmv2 12 1 1.0 0 0.01 > gbmv2.results
++	LD_LIBRARY_PATH="../.." ./do_test_gbmv2 12 1 1.0 0 0.01 > gbmv2.results
+ 
+ do_test_gbmv2: $(ALL_OBJS) $(LIB_PATH)/$(XBLASLIB)
+-	$(LINKER) $(LDFLAGS) $(ALL_OBJS) $(LIB_PATH)/$(XBLASLIB) \
++	$(LINKER) $(LDFLAGS) $(ALL_OBJS) -L$(LIB_PATH) -lxblas \
+ 	-o do_test_gbmv2 $(EXTRA_LIBS)
+ 
+ .c.o:
+diff -up xblas/testing/test-gbmv/Makefile.shared xblas/testing/test-gbmv/Makefile
+--- xblas/testing/test-gbmv/Makefile.shared	2008-11-15 13:58:30.000000000 -0500
++++ xblas/testing/test-gbmv/Makefile	2009-04-20 15:42:16.000000000 -0400
+@@ -23,10 +23,10 @@ ALL_OBJS = $(TEST_OBJS) $(TEST_DOT_OBJS)
+ 
+ test: do_test_gbmv
+ 	@echo Testing GBMV
+-	./do_test_gbmv 12 1 1.0 0 0.01 > gbmv.results
++	LD_LIBRARY_PATH="../.." ./do_test_gbmv 12 1 1.0 0 0.01 > gbmv.results
+ 
+ do_test_gbmv: $(ALL_OBJS) $(LIB_PATH)/$(XBLASLIB)
+-	$(LINKER) $(LDFLAGS) $(ALL_OBJS) $(LIB_PATH)/$(XBLASLIB) \
++	$(LINKER) $(LDFLAGS) $(ALL_OBJS) -L$(LIB_PATH) -lxblas \
+ 	-o do_test_gbmv $(EXTRA_LIBS)
+ 
+ .c.o:
+diff -up xblas/testing/test-gemm/Makefile.shared xblas/testing/test-gemm/Makefile
+--- xblas/testing/test-gemm/Makefile.shared	2008-11-15 13:58:30.000000000 -0500
++++ xblas/testing/test-gemm/Makefile	2009-04-20 15:42:16.000000000 -0400
+@@ -26,12 +26,12 @@ ALL_OBJS = $(TEST_OBJS) $(TEST_DOT_OBJS)
+ 
+ test: do_test_gemm
+ 	@echo Testing GEMM - default quick test
+-	./do_test_gemm 9 1 1.0 0 0.001 > gemm.results
++	LD_LIBRARY_PATH="../.." ./do_test_gemm 9 1 1.0 0 0.001 > gemm.results
+ 
+ test-lib: $(TEST_OBJS)
+ 
+ do_test_gemm: $(ALL_OBJS) $(LIB_PATH)/$(XBLASLIB)
+-	$(LINKER) $(LDFLAGS) $(ALL_OBJS) $(LIB_PATH)/$(XBLASLIB) \
++	$(LINKER) $(LDFLAGS) $(ALL_OBJS) -L$(LIB_PATH) -lxblas \
+ 	-o do_test_gemm $(EXTRA_LIBS)
+ 
+ .c.o:
+diff -up xblas/testing/test-gemv2/Makefile.shared xblas/testing/test-gemv2/Makefile
+--- xblas/testing/test-gemv2/Makefile.shared	2008-11-15 13:58:30.000000000 -0500
++++ xblas/testing/test-gemv2/Makefile	2009-04-20 15:42:16.000000000 -0400
+@@ -29,10 +29,10 @@ ALL_OBJS = $(TEST_OBJS) $(TEST_DOT_OBJS)
+ 
+ test: do_test_gemv2
+ 	@echo Testing GEMV2 - default quick test
+-	./do_test_gemv2 12 1 1.0 0 0.01 > gemv2.results
++	LD_LIBRARY_PATH="../.." ./do_test_gemv2 12 1 1.0 0 0.01 > gemv2.results
+ 
+ do_test_gemv2: $(LIB_PATH)/$(XBLASLIB) $(ALL_OBJS)
+-	$(LINKER) $(LDFLAGS) $(ALL_OBJS) $(LIB_PATH)/$(XBLASLIB) \
++	$(LINKER) $(LDFLAGS) $(ALL_OBJS) -L$(LIB_PATH) -lxblas \
+ 	-o do_test_gemv2 $(EXTRA_LIBS)
+ 
+ .c.o:
+diff -up xblas/testing/test-gemv/Makefile.shared xblas/testing/test-gemv/Makefile
+--- xblas/testing/test-gemv/Makefile.shared	2008-11-15 13:58:30.000000000 -0500
++++ xblas/testing/test-gemv/Makefile	2009-04-20 15:42:16.000000000 -0400
+@@ -23,10 +23,10 @@ ALL_OBJS = $(TEST_OBJS) $(TEST_DOT_OBJS)
+ 
+ test: do_test_gemv
+ 	@echo Testing GEMV - default quick test
+-	./do_test_gemv 12 1 1.0 0 0.01 > gemv.results
++	LD_LIBRARY_PATH="../.." ./do_test_gemv 12 1 1.0 0 0.01 > gemv.results
+ 
+ do_test_gemv: $(LIB_PATH)/$(XBLASLIB) $(ALL_OBJS)
+-	$(LINKER) $(LDFLAGS) $(ALL_OBJS) $(LIB_PATH)/$(XBLASLIB) \
++	$(LINKER) $(LDFLAGS) $(ALL_OBJS) -L$(LIB_PATH) -lxblas \
+ 	-o do_test_gemv $(EXTRA_LIBS)
+ 
+ .c.o:
+diff -up xblas/testing/test-ge_sum_mv/Makefile.shared xblas/testing/test-ge_sum_mv/Makefile
+--- xblas/testing/test-ge_sum_mv/Makefile.shared	2008-11-15 13:58:30.000000000 -0500
++++ xblas/testing/test-ge_sum_mv/Makefile	2009-04-20 15:42:16.000000000 -0400
+@@ -33,26 +33,26 @@ ALL_OBJS = $(TEST_OBJS) $(TEST_DOT_OBJS)
+ 
+ test: do_test_ge_sum_mv warning
+ 	@echo Testing GE_SUM_MV - default quick test
+-	./do_test_ge_sum_mv 7 1 1.0 3 0.01 > ge_sum_mv.results
++	LD_LIBRARY_PATH="../.." ./do_test_ge_sum_mv 7 1 1.0 3 0.01 > ge_sum_mv.results
+ 
+ test-few: do_test_ge_sum_mv warning
+ 	@echo Testing GE_SUM_MV - preforming a small set of tests
+-	./do_test_ge_sum_mv 7 1 1.0 3 $(DO_FEW_TESTS) > ge_sum_mv.results
++	LD_LIBRARY_PATH="../.." ./do_test_ge_sum_mv 7 1 1.0 3 $(DO_FEW_TESTS) > ge_sum_mv.results
+ 
+ test-some: do_test_ge_sum_mv warning
+ 	@echo Testing GE_SUM_MV - preforming some tests : not all tests 
+-	./do_test_ge_sum_mv 7 1 1.0 3 $(DO_SOME_TESTS) > ge_sum_mv.results
++	LD_LIBRARY_PATH="../.." ./do_test_ge_sum_mv 7 1 1.0 3 $(DO_SOME_TESTS) > ge_sum_mv.results
+ 
+ test-all: do_test_ge_sum_mv warning
+ 	@echo Testing GE_SUM_MV Very Thoroughly
+-	./do_test_ge_sum_mv 7 1 1.0 3 $(DO_ALL_TESTS) > ge_sum_mv.results
++	LD_LIBRARY_PATH="../.." ./do_test_ge_sum_mv 7 1 1.0 3 $(DO_ALL_TESTS) > ge_sum_mv.results
+ 
+ test-none: do_test_ge_sum_mv
+ 	@echo NOT Testing GE_SUM_MV - PREFORMING NO TESTS. NOT TESTING
+-	./do_test_ge_sum_mv 7 1 1.0 3 $(DO_NO_TESTS) > ge_sum_mv.results
++	LD_LIBRARY_PATH="../.." ./do_test_ge_sum_mv 7 1 1.0 3 $(DO_NO_TESTS) > ge_sum_mv.results
+ 
+ do_test_ge_sum_mv: $(ALL_OBJS) $(LIB_PATH)/$(XBLASLIB)
+-	$(LINKER) $(LDFLAGS) $(ALL_OBJS) $(LIB_PATH)/$(XBLASLIB) \
++	$(LINKER) $(LDFLAGS) $(ALL_OBJS) -L$(LIB_PATH) -lxblas \
+ 	-o do_test_ge_sum_mv $(EXTRA_LIBS)
+ 
+ test-lib: $(TEST_OBJS)
+diff -up xblas/testing/test-hbmv/Makefile.shared xblas/testing/test-hbmv/Makefile
+--- xblas/testing/test-hbmv/Makefile.shared	2008-11-15 13:58:30.000000000 -0500
++++ xblas/testing/test-hbmv/Makefile	2009-04-20 15:42:16.000000000 -0400
+@@ -33,26 +33,26 @@ ALL_OBJS = $(TEST_OBJS) $(TEST_DOT_OBJS)
+ 
+ test: do_test_hbmv
+ 	@echo Testing HBMV - default quick test
+-	./do_test_hbmv 7 1 1.0 3 0.01 > hbmv.results
++	LD_LIBRARY_PATH="../.." ./do_test_hbmv 7 1 1.0 3 0.01 > hbmv.results
+ 
+ test-few: do_test_hbmv
+ 	@echo Testing HBMV - preforming a small set of tests
+-	./do_test_hbmv 7 1 1.0 3 $(DO_FEW_TESTS) > hbmv.results
++	LD_LIBRARY_PATH="../.." ./do_test_hbmv 7 1 1.0 3 $(DO_FEW_TESTS) > hbmv.results
+ 
+ test-some: do_test_hbmv
+ 	@echo Testing HBMV - preforming some tests : not all tests 
+-	./do_test_hbmv 7 1 1.0 3 $(DO_SOME_TESTS) > hbmv.results
++	LD_LIBRARY_PATH="../.." ./do_test_hbmv 7 1 1.0 3 $(DO_SOME_TESTS) > hbmv.results
+ 
+ test-all: do_test_hbmv
+ 	@echo Testing HBMV Very Thoroughly
+-	./do_test_hbmv 7 1 1.0 3 $(DO_ALL_TESTS) > hbmv.results
++	LD_LIBRARY_PATH="../.." ./do_test_hbmv 7 1 1.0 3 $(DO_ALL_TESTS) > hbmv.results
+ 
+ test-none: do_test_hbmv
+ 	@echo NOT Testing HBMV - PREFORMING NO TESTS. NOT TESTING
+-	./do_test_hbmv 7 1 1.0 3 $(DO_NO_TESTS) > hbmv.results
++	LD_LIBRARY_PATH="../.." ./do_test_hbmv 7 1 1.0 3 $(DO_NO_TESTS) > hbmv.results
+ 
+ do_test_hbmv: $(ALL_OBJS) $(LIB_PATH)/$(XBLASLIB)
+-	$(LINKER) $(LDFLAGS) $(ALL_OBJS) $(LIB_PATH)/$(XBLASLIB) \
++	$(LINKER) $(LDFLAGS) $(ALL_OBJS) -L$(LIB_PATH) -lxblas \
+ 	-o do_test_hbmv $(EXTRA_LIBS)
+ 
+ test-lib: $(TEST_OBJS)
+diff -up xblas/testing/test-hemm/Makefile.shared xblas/testing/test-hemm/Makefile
+--- xblas/testing/test-hemm/Makefile.shared	2008-11-15 13:58:30.000000000 -0500
++++ xblas/testing/test-hemm/Makefile	2009-04-20 15:42:16.000000000 -0400
+@@ -33,26 +33,26 @@ ALL_OBJS = $(TEST_OBJS) $(TEST_DOT_OBJS)
+ 
+ test: do_test_hemm
+ 	@echo Testing HEMM - default quick test
+-	./do_test_hemm 7 1 1.0 0 0.01 > hemm.results
++	LD_LIBRARY_PATH="../.." ./do_test_hemm 7 1 1.0 0 0.01 > hemm.results
+ 
+ test-few: do_test_hemm
+ 	@echo Testing HEMM - preforming a small set of tests
+-	./do_test_hemm 7 1 1.0 0 $(DO_FEW_TESTS) > hemm.results
++	LD_LIBRARY_PATH="../.." ./do_test_hemm 7 1 1.0 0 $(DO_FEW_TESTS) > hemm.results
+ 
+ test-some: do_test_hemm
+ 	@echo Testing HEMM - preforming some tests : not all tests 
+-	./do_test_hemm 7 1 1.0 0 $(DO_SOME_TESTS) > hemm.results
++	LD_LIBRARY_PATH="../.." ./do_test_hemm 7 1 1.0 0 $(DO_SOME_TESTS) > hemm.results
+ 
+ test-all: do_test_hemm
+ 	@echo Testing HEMM Very Thoroughly
+-	./do_test_hemm 7 1 1.0 0 $(DO_ALL_TESTS) > hemm.results
++	LD_LIBRARY_PATH="../.." ./do_test_hemm 7 1 1.0 0 $(DO_ALL_TESTS) > hemm.results
+ 
+ test-none: do_test_hemm
+ 	@echo NOT Testing HEMM - PREFORMING NO TESTS. NOT TESTING
+-	./do_test_hemm 7 1 1.0 0 $(DO_NO_TESTS) > hemm.results
++	LD_LIBRARY_PATH="../.." ./do_test_hemm 7 1 1.0 0 $(DO_NO_TESTS) > hemm.results
+ 
+ do_test_hemm: $(ALL_OBJS) $(LIB_PATH)/$(XBLASLIB)
+-	$(LINKER) $(LDFLAGS) $(ALL_OBJS) $(LIB_PATH)/$(XBLASLIB) \
++	$(LINKER) $(LDFLAGS) $(ALL_OBJS) -L$(LIB_PATH) -lxblas \
+ 	-o do_test_hemm $(EXTRA_LIBS)
+ 
+ .c.o:
+diff -up xblas/testing/test-hemv2/Makefile.shared xblas/testing/test-hemv2/Makefile
+--- xblas/testing/test-hemv2/Makefile.shared	2008-11-15 13:58:30.000000000 -0500
++++ xblas/testing/test-hemv2/Makefile	2009-04-20 15:42:16.000000000 -0400
+@@ -34,10 +34,10 @@ ALL_OBJS = $(TEST_OBJS) $(TEST_DOT_OBJS)
+ 
+ test: do_test_hemv2
+ 	@echo Testing HEMV2 - default test
+-	./do_test_hemv2 7 1 1.0 0 0.1 > hemv2.results
++	LD_LIBRARY_PATH="../.." ./do_test_hemv2 7 1 1.0 0 0.1 > hemv2.results
+ 
+ do_test_hemv2: $(LIB_PATH)/$(XBLASLIB) $(ALL_OBJS)
+-	$(LINKER) $(LDFLAGS) $(ALL_OBJS) $(LIB_PATH)/$(XBLASLIB) \
++	$(LINKER) $(LDFLAGS) $(ALL_OBJS) -L$(LIB_PATH) -lxblas \
+ 	-o do_test_hemv2 $(EXTRA_LIBS)
+ 
+ .c.o:
+diff -up xblas/testing/test-hemv/Makefile.shared xblas/testing/test-hemv/Makefile
+--- xblas/testing/test-hemv/Makefile.shared	2008-11-15 13:58:30.000000000 -0500
++++ xblas/testing/test-hemv/Makefile	2009-04-20 15:42:16.000000000 -0400
+@@ -27,10 +27,10 @@ ALL_OBJS = $(TEST_OBJS) $(TEST_DOT_OBJS)
+ 
+ test: do_test_hemv
+ 	@echo Testing HEMV
+-	./do_test_hemv 7 1 1.0 3 0.01 > hemv.results
++	LD_LIBRARY_PATH="../.." ./do_test_hemv 7 1 1.0 3 0.01 > hemv.results
+ 
+ do_test_hemv: $(ALL_OBJS) $(LIB_PATH)/$(XBLASLIB)
+-	$(LINKER) $(LDFLAGS) $(ALL_OBJS) $(LIB_PATH)/$(XBLASLIB) \
++	$(LINKER) $(LDFLAGS) $(ALL_OBJS) -L$(LIB_PATH) -lxblas \
+ 	-o do_test_hemv $(EXTRA_LIBS)
+ 
+ test-lib: $(TEST_OBJS)
+diff -up xblas/testing/test-hpmv/Makefile.shared xblas/testing/test-hpmv/Makefile
+--- xblas/testing/test-hpmv/Makefile.shared	2008-11-15 13:58:30.000000000 -0500
++++ xblas/testing/test-hpmv/Makefile	2009-04-20 15:42:16.000000000 -0400
+@@ -31,10 +31,10 @@ ALL_OBJS = $(TEST_OBJS) $(TEST_DOT_OBJS)
+ 
+ test: do_test_hpmv
+ 	@echo Testing HPMV
+-	./do_test_hpmv 7 1 1.0 3 0.01 > hpmv.results
++	LD_LIBRARY_PATH="../.." ./do_test_hpmv 7 1 1.0 3 0.01 > hpmv.results
+ 
+ do_test_hpmv: $(ALL_OBJS) $(LIB_PATH)/$(XBLASLIB)
+-	$(LINKER) $(LDFLAGS) $(ALL_OBJS) $(LIB_PATH)/$(XBLASLIB) \
++	$(LINKER) $(LDFLAGS) $(ALL_OBJS) -L$(LIB_PATH) -lxblas \
+ 	-o do_test_hpmv $(EXTRA_LIBS)
+ 
+ test-lib: $(TEST_OBJS)
+diff -up xblas/testing/test-sbmv/Makefile.shared xblas/testing/test-sbmv/Makefile
+--- xblas/testing/test-sbmv/Makefile.shared	2008-11-15 13:58:30.000000000 -0500
++++ xblas/testing/test-sbmv/Makefile	2009-04-20 15:42:16.000000000 -0400
+@@ -29,26 +29,26 @@ ALL_OBJS = $(TEST_OBJS) $(TEST_DOT_OBJS)
+ 
+ test: do_test_sbmv
+ 	@echo Testing SBMV - default quick test
+-	./do_test_sbmv 7 1 1.0 3 0.001 > sbmv.results
++	LD_LIBRARY_PATH="../.." ./do_test_sbmv 7 1 1.0 3 0.001 > sbmv.results
+ 
+ test-few: do_test_sbmv
+ 	@echo Testing SBMV - preforming a small set of tests
+-	./do_test_sbmv 7 1 1.0 3 $(DO_FEW_TESTS) > sbmv.results
++	LD_LIBRARY_PATH="../.." ./do_test_sbmv 7 1 1.0 3 $(DO_FEW_TESTS) > sbmv.results
+ 
+ test-some: do_test_sbmv
+ 	@echo Testing SBMV - preforming some tests : not all tests 
+-	./do_test_sbmv 7 1 1.0 3 $(DO_SOME_TESTS) > sbmv.results
++	LD_LIBRARY_PATH="../.." ./do_test_sbmv 7 1 1.0 3 $(DO_SOME_TESTS) > sbmv.results
+ 
+ test-all: do_test_sbmv
+ 	@echo Testing SBMV Very Thoroughly
+-	./do_test_sbmv 7 1 1.0 3 $(DO_ALL_TESTS) > sbmv.results
++	LD_LIBRARY_PATH="../.." ./do_test_sbmv 7 1 1.0 3 $(DO_ALL_TESTS) > sbmv.results
+ 
+ test-none: do_test_sbmv
+ 	@echo NOT Testing SBMV - PREFORMING NO TESTS. NOT TESTING
+-	./do_test_sbmv 7 1 1.0 3 $(DO_NO_TESTS) > sbmv.results
++	LD_LIBRARY_PATH="../.." ./do_test_sbmv 7 1 1.0 3 $(DO_NO_TESTS) > sbmv.results
+ 
+ do_test_sbmv: $(ALL_OBJS) $(LIB_PATH)/$(XBLASLIB)
+-	$(LINKER) $(LDFLAGS) $(ALL_OBJS) $(LIB_PATH)/$(XBLASLIB) \
++	$(LINKER) $(LDFLAGS) $(ALL_OBJS) -L$(LIB_PATH) -lxblas \
+ 	-o do_test_sbmv $(EXTRA_LIBS)
+ 
+ test-lib: $(TEST_OBJS)
+diff -up xblas/testing/test-spmv/Makefile.shared xblas/testing/test-spmv/Makefile
+--- xblas/testing/test-spmv/Makefile.shared	2008-11-15 13:58:30.000000000 -0500
++++ xblas/testing/test-spmv/Makefile	2009-04-20 15:42:16.000000000 -0400
+@@ -27,26 +27,26 @@ ALL_OBJS =  $(TEST_OBJS) $(TEST_DOT_OBJS
+ 
+ test: do_test_spmv
+ 	@echo Testing SPMV - default quick test
+-	./do_test_spmv 7 1 1.0 3 0.01 > spmv.results
++	LD_LIBRARY_PATH="../.." ./do_test_spmv 7 1 1.0 3 0.01 > spmv.results
+ 
+ test-few: do_test_spmv
+ 	@echo Testing SPMV - preforming a small set of tests
+-	./do_test_spmv 7 1 1.0 3 $(DO_FEW_TESTS) > spmv.results
++	LD_LIBRARY_PATH="../.." ./do_test_spmv 7 1 1.0 3 $(DO_FEW_TESTS) > spmv.results
+ 
+ test-some: do_test_spmv
+ 	@echo Testing SPMV - preforming some tests : not all tests 
+-	./do_test_spmv 7 1 1.0 3 $(DO_SOME_TESTS) > spmv.results
++	LD_LIBRARY_PATH="../.." ./do_test_spmv 7 1 1.0 3 $(DO_SOME_TESTS) > spmv.results
+ 
+ test-all: do_test_spmv
+ 	@echo Testing SPMV Very Thoroughly
+-	./do_test_spmv 7 1 1.0 3 $(DO_ALL_TESTS) > spmv.results
++	LD_LIBRARY_PATH="../.." ./do_test_spmv 7 1 1.0 3 $(DO_ALL_TESTS) > spmv.results
+ 
+ test-none: do_test_spmv
+ 	@echo NOT Testing SPMV - PREFORMING NO TESTS. NOT TESTING
+-	./do_test_spmv 7 1 1.0 3 $(DO_NO_TESTS) > spmv.results
++	LD_LIBRARY_PATH="../.." ./do_test_spmv 7 1 1.0 3 $(DO_NO_TESTS) > spmv.results
+ 
+ do_test_spmv: $(ALL_OBJS) $(LIB_PATH)/$(XBLASLIB)
+-	$(LINKER) $(LDFLAGS) $(ALL_OBJS) $(LIB_PATH)/$(XBLASLIB) \
++	$(LINKER) $(LDFLAGS) $(ALL_OBJS) -L$(LIB_PATH) -lxblas \
+ 	-o do_test_spmv $(EXTRA_LIBS)
+ 
+ .c.o:
+diff -up xblas/testing/test-sum/Makefile.shared xblas/testing/test-sum/Makefile
+--- xblas/testing/test-sum/Makefile.shared	2008-11-15 13:58:30.000000000 -0500
++++ xblas/testing/test-sum/Makefile	2009-04-20 15:42:16.000000000 -0400
+@@ -25,10 +25,10 @@ ALL_OBJS = $(TEST_OBJS) $(TEST_DOT_OBJS)
+ 
+ test: do_test_sum
+ 	@echo Testing SUM
+-	./do_test_sum 20 1 1.0 0 1.0 > sum.results
++	LD_LIBRARY_PATH="../.." ./do_test_sum 20 1 1.0 0 1.0 > sum.results
+ 
+ do_test_sum: $(ALL_OBJS) $(LIB_PATH)/$(XBLASLIB)
+-	$(LINKER) $(LDFLAGS) $(ALL_OBJS) $(LIB_PATH)/$(XBLASLIB) \
++	$(LINKER) $(LDFLAGS) $(ALL_OBJS) -L$(LIB_PATH) -lxblas \
+ 	-o do_test_sum $(EXTRA_LIBS)
+ 
+ .c.o:
+diff -up xblas/testing/test-symm/Makefile.shared xblas/testing/test-symm/Makefile
+--- xblas/testing/test-symm/Makefile.shared	2008-11-15 13:58:30.000000000 -0500
++++ xblas/testing/test-symm/Makefile	2009-04-20 15:42:16.000000000 -0400
+@@ -28,26 +28,26 @@ ALL_OBJS = $(TEST_OBJS) $(TEST_DOT_OBJS)
+ 
+ test: do_test_symm
+ 	@echo Testing SYMM - default quick test
+-	./do_test_symm 7 1 1.0 3 0.001 > symm.results
++	LD_LIBRARY_PATH="../.." ./do_test_symm 7 1 1.0 3 0.001 > symm.results
+ 
+ test-few: do_test_symm
+ 	@echo Testing SYMM - preforming a small set of tests
+-	./do_test_symm 7 1 1.0 3 $(DO_FEW_TESTS) > symm.results
++	LD_LIBRARY_PATH="../.." ./do_test_symm 7 1 1.0 3 $(DO_FEW_TESTS) > symm.results
+ 
+ test-some: do_test_symm
+ 	@echo Testing SYMM - preforming some tests : not all tests 
+-	./do_test_symm 7 1 1.0 3 $(DO_SOME_TESTS) > symm.results
++	LD_LIBRARY_PATH="../.." ./do_test_symm 7 1 1.0 3 $(DO_SOME_TESTS) > symm.results
+ 
+ test-all: do_test_symm
+ 	@echo Testing SYMM Very Thoroughly
+-	./do_test_symm 7 1 1.0 3 $(DO_ALL_TESTS) > symm.results
++	LD_LIBRARY_PATH="../.." ./do_test_symm 7 1 1.0 3 $(DO_ALL_TESTS) > symm.results
+ 
+ test-none: do_test_symm
+ 	@echo NOT Testing SYMM - PREFORMING NO TESTS. NOT TESTING
+-	./do_test_symm 7 1 1.0 3 $(DO_NO_TESTS) > symm.results
++	LD_LIBRARY_PATH="../.." ./do_test_symm 7 1 1.0 3 $(DO_NO_TESTS) > symm.results
+ 
+ do_test_symm: $(ALL_OBJS) $(LIB_PATH)/$(XBLASLIB)
+-	$(LINKER) $(LDFLAGS) $(ALL_OBJS) $(LIB_PATH)/$(XBLASLIB) \
++	$(LINKER) $(LDFLAGS) $(ALL_OBJS) -L$(LIB_PATH) -lxblas \
+ 	-o do_test_symm $(EXTRA_LIBS)
+ 
+ test-lib: $(TEST_OBJS)
+diff -up xblas/testing/test-symv2/Makefile.shared xblas/testing/test-symv2/Makefile
+--- xblas/testing/test-symv2/Makefile.shared	2008-11-15 13:58:30.000000000 -0500
++++ xblas/testing/test-symv2/Makefile	2009-04-20 15:42:16.000000000 -0400
+@@ -29,10 +29,10 @@ ALL_OBJS = $(TEST_OBJS) $(TEST_DOT_OBJS)
+ 
+ test: do_test_symv2
+ 	@echo Testing SYMV2 - default quick test
+-	./do_test_symv2 7 1 1.0 0 0.1 > symv2.results
++	LD_LIBRARY_PATH="../.." ./do_test_symv2 7 1 1.0 0 0.1 > symv2.results
+ 
+ do_test_symv2: $(LIB_PATH)/$(XBLASLIB) $(ALL_OBJS)
+-	$(LINKER) $(LDFLAGS) $(ALL_OBJS) $(LIB_PATH)/$(XBLASLIB) \
++	$(LINKER) $(LDFLAGS) $(ALL_OBJS) -L$(LIB_PATH) -lxblas \
+ 	-o do_test_symv2 $(EXTRA_LIBS)
+ 
+ .c.o:
+diff -up xblas/testing/test-symv/Makefile.shared xblas/testing/test-symv/Makefile
+--- xblas/testing/test-symv/Makefile.shared	2008-11-15 13:58:30.000000000 -0500
++++ xblas/testing/test-symv/Makefile	2009-04-20 15:42:16.000000000 -0400
+@@ -25,26 +25,26 @@ ALL_OBJS = $(TEST_OBJS) $(TEST_DOT_OBJS)
+ 
+ test: do_test_symv
+ 	@echo Testing SYMV - default quick test
+-	./do_test_symv 7 1 1.0 3 0.01 > symv.results
++	LD_LIBRARY_PATH="../.." ./do_test_symv 7 1 1.0 3 0.01 > symv.results
+ 
+ test-few: do_test_symv
+ 	@echo Testing SYMV - preforming a small set of tests
+-	./do_test_symv 7 1 1.0 3 $(DO_FEW_TESTS) > symv.results
++	LD_LIBRARY_PATH="../.." ./do_test_symv 7 1 1.0 3 $(DO_FEW_TESTS) > symv.results
+ 
+ test-some: do_test_symv
+ 	@echo Testing SYMV - preforming some tests : not all tests 
+-	./do_test_symv 7 1 1.0 3 $(DO_SOME_TESTS) > symv.results
++	LD_LIBRARY_PATH="../.." ./do_test_symv 7 1 1.0 3 $(DO_SOME_TESTS) > symv.results
+ 
+ test-all: do_test_symv
+ 	@echo Testing SYMV Very Thoroughly
+-	./do_test_symv 7 1 1.0 3 $(DO_ALL_TESTS) > symv.results
++	LD_LIBRARY_PATH="../.." ./do_test_symv 7 1 1.0 3 $(DO_ALL_TESTS) > symv.results
+ 
+ test-none: do_test_symv
+ 	@echo NOT Testing SYMV - PREFORMING NO TESTS. NOT TESTING
+-	./do_test_symv 7 1 1.0 3 $(DO_NO_TESTS) > symv.results
++	LD_LIBRARY_PATH="../.." ./do_test_symv 7 1 1.0 3 $(DO_NO_TESTS) > symv.results
+ 
+ do_test_symv: $(ALL_OBJS) $(LIB_PATH)/$(XBLASLIB)
+-	$(LINKER) $(LDFLAGS) $(ALL_OBJS) $(LIB_PATH)/$(XBLASLIB) \
++	$(LINKER) $(LDFLAGS) $(ALL_OBJS) -L$(LIB_PATH) -lxblas \
+ 	-o do_test_symv $(EXTRA_LIBS)
+ 
+ test-lib: $(TEST_OBJS)
+diff -up xblas/testing/test-tbsv/Makefile.shared xblas/testing/test-tbsv/Makefile
+--- xblas/testing/test-tbsv/Makefile.shared	2008-11-15 13:58:30.000000000 -0500
++++ xblas/testing/test-tbsv/Makefile	2009-04-20 15:42:16.000000000 -0400
+@@ -31,26 +31,26 @@ ALL_OBJS = $(TEST_OBJS) $(TEST_DOT_OBJS)
+ 
+ test: do_test_tbsv
+ 	@echo Testing TBSV - default quick test
+-	./do_test_tbsv 9 1 1.0 3 0.01 > tbsv.results
++	LD_LIBRARY_PATH="../.." ./do_test_tbsv 9 1 1.0 3 0.01 > tbsv.results
+ 
+ test-few: do_test_tbsv
+ 	@echo Testing TBSV - preforming a small set of tests
+-	./do_test_tbsv 9 1 1.0 3 $(DO_FEW_TESTS) > tbsv.results
++	LD_LIBRARY_PATH="../.." ./do_test_tbsv 9 1 1.0 3 $(DO_FEW_TESTS) > tbsv.results
+ 
+ test-some: do_test_tbsv
+ 	@echo Testing TBSV - preforming some tests : not all tests 
+-	./do_test_tbsv 9 1 1.0 3 $(DO_SOME_TESTS) > tbsv.results
++	LD_LIBRARY_PATH="../.." ./do_test_tbsv 9 1 1.0 3 $(DO_SOME_TESTS) > tbsv.results
+ 
+ test-all: do_test_tbsv
+ 	@echo Testing TBSV Very Thoroughly
+-	./do_test_tbsv 9 1 1.0 3 $(DO_ALL_TESTS) > tbsv.results
++	LD_LIBRARY_PATH="../.." ./do_test_tbsv 9 1 1.0 3 $(DO_ALL_TESTS) > tbsv.results
+ 
+ test-none: do_test_tbsv
+ 	@echo NOT Testing TBSV - PREFORMING NO TESTS. NOT TESTING
+-	./do_test_tbsv 9 1 1.0 3 $(DO_NO_TESTS) > tbsv.results
++	LD_LIBRARY_PATH="../.." ./do_test_tbsv 9 1 1.0 3 $(DO_NO_TESTS) > tbsv.results
+ 
+ do_test_tbsv: $(ALL_OBJS) $(LIB_PATH)/$(XBLASLIB)
+-	$(LINKER) $(LDFLAGS) $(ALL_OBJS) $(LIB_PATH)/$(XBLASLIB) \
++	$(LINKER) $(LDFLAGS) $(ALL_OBJS) -L$(LIB_PATH) -lxblas \
+ 	-o do_test_tbsv $(EXTRA_LIBS)
+ 
+ .c.o:
+diff -up xblas/testing/test-tpmv/Makefile.shared xblas/testing/test-tpmv/Makefile
+--- xblas/testing/test-tpmv/Makefile.shared	2008-11-15 13:58:30.000000000 -0500
++++ xblas/testing/test-tpmv/Makefile	2009-04-20 15:42:16.000000000 -0400
+@@ -23,26 +23,26 @@ ALL_OBJS = $(TEST_OBJS) $(TEST_DOT_OBJS)
+ 
+ test: do_test_tpmv
+ 	@echo Testing TPMV - default quick test
+-	./do_test_tpmv 12 1 1.0 0 0.01 > tpmv.results
++	LD_LIBRARY_PATH="../.." ./do_test_tpmv 12 1 1.0 0 0.01 > tpmv.results
+ 
+ test-few: do_test_tpmv
+ 	@echo Testing TPMV - preforming a small set of tests
+-	./do_test_tpmv 12 1 1.0 0 $(DO_FEW_TESTS)
++	LD_LIBRARY_PATH="../.." ./do_test_tpmv 12 1 1.0 0 $(DO_FEW_TESTS)
+ 
+ test-some: do_test_tpmv
+ 	@echo Testing TPMV - preforming some tests : not all tests 
+-	./do_test_tpmv 12 1 1.0 3 $(DO_SOME_TESTS)
++	LD_LIBRARY_PATH="../.." ./do_test_tpmv 12 1 1.0 3 $(DO_SOME_TESTS)
+ 
+ test-all: do_test_tpmv
+ 	@echo Testing TPMV Very Thoroughly
+-	./do_test_tpmv 12 1 1.0 0 $(DO_ALL_TESTS)
++	LD_LIBRARY_PATH="../.." ./do_test_tpmv 12 1 1.0 0 $(DO_ALL_TESTS)
+ 
+ test-none: do_test_tpmv
+ 	@echo NOT Testing TPMV - PREFORMING NO TESTS. NOT TESTING
+-	./do_test_tpmv 12 1 1.0 0 $(DO_NO_TESTS)
++	LD_LIBRARY_PATH="../.." ./do_test_tpmv 12 1 1.0 0 $(DO_NO_TESTS)
+ 
+ do_test_tpmv: $(ALL_OBJS) $(LIB_PATH)/$(XBLASLIB)
+-	$(LINKER) $(LDFLAGS) $(ALL_OBJS) $(LIB_PATH)/$(XBLASLIB) \
++	$(LINKER) $(LDFLAGS) $(ALL_OBJS) -L$(LIB_PATH) -lxblas \
+ 	-o do_test_tpmv $(EXTRA_LIBS)
+ 
+ test-lib: $(TEST_OBJS)
+diff -up xblas/testing/test-trmv/Makefile.shared xblas/testing/test-trmv/Makefile
+--- xblas/testing/test-trmv/Makefile.shared	2008-11-15 13:58:30.000000000 -0500
++++ xblas/testing/test-trmv/Makefile	2009-04-20 15:42:16.000000000 -0400
+@@ -24,12 +24,12 @@ ALL_OBJS = $(TEST_OBJS) $(TEST_DOT_OBJS)
+ all: test
+ 
+ do_test_trmv: $(ALL_OBJS) $(LIB_PATH)/$(XBLASLIB)
+-	$(LINKER) $(LDFLAGS) $(ALL_OBJS) $(LIB_PATH)/$(XBLASLIB) \
++	$(LINKER) $(LDFLAGS) $(ALL_OBJS) -L$(LIB_PATH) -lxblas \
+ 	-o do_test_trmv $(EXTRA_LIBS)
+ 
+ test: do_test_trmv
+ 	@echo Testing TRMV
+-	./do_test_trmv 12 1 1.0 0 0.01 > trmv.results
++	LD_LIBRARY_PATH="../.." ./do_test_trmv 12 1 1.0 0 0.01 > trmv.results
+ 
+ .c.o:
+ 	$(CC) $(CFLAGS) $(HEADER_PATH) -c -o $@ $<
+diff -up xblas/testing/test-trsv/Makefile.shared xblas/testing/test-trsv/Makefile
+--- xblas/testing/test-trsv/Makefile.shared	2008-11-15 13:58:30.000000000 -0500
++++ xblas/testing/test-trsv/Makefile	2009-04-20 15:42:16.000000000 -0400
+@@ -26,26 +26,26 @@ ALL_OBJS = $(TEST_OBJS) $(TEST_DOT_OBJS)
+ 
+ test: do_test_trsv
+ 	@echo Testing TRSV - default quick test
+-	./do_test_trsv 10 1 1.0 3 0.01 > trsv.results
++	LD_LIBRARY_PATH="../.." ./do_test_trsv 10 1 1.0 3 0.01 > trsv.results
+ 
+ test-few: do_test_trsv
+ 	@echo Testing TRSV - preforming a small set of tests
+-	./do_test_trsv 10 1 1.0 0 $(DO_FEW_TESTS) > trsv.results
++	LD_LIBRARY_PATH="../.." ./do_test_trsv 10 1 1.0 0 $(DO_FEW_TESTS) > trsv.results
+ 
+ test-some: do_test_trsv
+ 	@echo Testing TRSV - preforming some tests : not all tests 
+-	./do_test_trsv 10 1 1.0 0 $(DO_SOME_TESTS) > trsv.results
++	LD_LIBRARY_PATH="../.." ./do_test_trsv 10 1 1.0 0 $(DO_SOME_TESTS) > trsv.results
+ 
+ test-all: do_test_trsv
+ 	@echo Testing TRSV Very Thoroughly
+-	./do_test_trsv 10 1 1.0 0 $(DO_ALL_TESTS) > trsv.results
++	LD_LIBRARY_PATH="../.." ./do_test_trsv 10 1 1.0 0 $(DO_ALL_TESTS) > trsv.results
+ 
+ test-none: do_test_trsv
+ 	@echo NOT Testing TRSV - PREFORMING NO TESTS. NOT TESTING
+-	./do_test_trsv 10 1 1.0 0 $(DO_NO_TESTS) > trsv.results
++	LD_LIBRARY_PATH="../.." ./do_test_trsv 10 1 1.0 0 $(DO_NO_TESTS) > trsv.results
+ 
+ do_test_trsv: $(ALL_OBJS) $(LIB_PATH)/$(XBLASLIB)
+-	$(LINKER) $(LDFLAGS) $(ALL_OBJS) $(LIB_PATH)/$(XBLASLIB) \
++	$(LINKER) $(LDFLAGS) $(ALL_OBJS) -L$(LIB_PATH) -lxblas \
+ 	-o do_test_trsv $(EXTRA_LIBS)
+ 
+ .c.o:
+diff -up xblas/testing/test-waxpby/Makefile.shared xblas/testing/test-waxpby/Makefile
+--- xblas/testing/test-waxpby/Makefile.shared	2008-11-15 13:58:30.000000000 -0500
++++ xblas/testing/test-waxpby/Makefile	2009-04-20 15:42:16.000000000 -0400
+@@ -24,10 +24,10 @@ ALL_OBJS = $(TEST_OBJS) $(TEST_DOT_OBJS)
+ 
+ test: do_test_waxpby
+ 	@echo Testing WAXPBY
+-	./do_test_waxpby 20 1 1.0 0 0.1 > waxpby.results
++	LD_LIBRARY_PATH="../.." ./do_test_waxpby 20 1 1.0 0 0.1 > waxpby.results
+ 
+ do_test_waxpby: $(ALL_OBJS) $(LIB_PATH)/$(XBLASLIB)
+-	$(LINKER) $(LDFLAGS) $(ALL_OBJS) $(LIB_PATH)/$(XBLASLIB) \
++	$(LINKER) $(LDFLAGS) $(ALL_OBJS) -L$(LIB_PATH) -lxblas \
+ 	-o do_test_waxpby $(EXTRA_LIBS)
+ 
+ .c.o:

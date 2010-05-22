@@ -1,3 +1,7 @@
+2010-05-22 Milan Jurik <sfnet@xylab.cz>
+
+	* SFExblas.spec: initial import to SFE
+ 
 2010-05-21 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEopenjpeg.spec: update to 1.3, split devel package
