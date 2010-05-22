@@ -16,6 +16,7 @@ Name:		SFElibquicktime
 Summary:	%{libquicktime.summary}
 Version:	%{libquicktime.version}
 URL:		http://libquicktime.sourceforge.net/
+Group:		Libraries/Multimedia
 License:	LGPL
 SUNW_BaseDir:	%{_basedir}
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
@@ -33,6 +34,9 @@ Requires: SFEfaad2
 BuildRequires: SFEfaad2-devel
 Requires: SFElibx264
 BuildRequires: SFElibx264-devel
+BuildRequires: SUNWdoxygen
+BuildRequires: SUNWgsed
+BuildRequires: SUNWscp
 
 %package devel
 Summary:         %{summary} - development files

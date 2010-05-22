@@ -31,6 +31,7 @@ Name:                    SFEffmpeg
 Summary:                 %{ffmpeg.summary}
 Version:                 %{ffmpeg.version}
 URL:                     %{ffmpeg.url}
+Group:		Libraries/Multimedia
 
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -60,6 +61,7 @@ Requires: SFExvid
 BuildRequires: SFElibx264-devel
 Requires: SFElibx264
 BuildRequires: SFEfaad2-devel
+Requires: SFEfaad2
 BuildRequires: SFElame-devel
 Requires: SFElame
 BuildRequires: SUNWogg-vorbis-devel
