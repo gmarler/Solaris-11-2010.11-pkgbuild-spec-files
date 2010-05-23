@@ -1,6 +1,7 @@
 2010-05-23 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEproftpd.spec: shaper module build, Kerberos module added
+	* encumbered/SFEmplayer.spec: rtsp integer overflow fix
 
 2010-05-23 Mark Wright <markwright@internode.on.net>
 

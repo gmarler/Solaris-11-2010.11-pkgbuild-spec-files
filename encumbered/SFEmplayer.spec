@@ -53,6 +53,7 @@ Patch17:                 mplayer-17-demux-audio.diff
 Patch18:                 mplayer-18-demux-mov.diff
 Patch19:                 mplayer-19-cddb-stream.diff
 Patch20:                 mplayer-20-url-fix.diff
+Patch21:                 mplayer-21-realrtsp.diff
 Source3:                 http://www.mplayerhq.hu/MPlayer/skins/Blue-1.7.tar.bz2
 Source4:                 http://www.mplayerhq.hu/MPlayer/skins/Abyss-1.7.tar.bz2
 Source5:                 http://www.mplayerhq.hu/MPlayer/skins/neutron-1.5.tar.bz2
@@ -264,6 +265,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/pixmaps/*
 
 %changelog
+* Sun May 23 2010 - Milan Jurik
+- rtsp integer overflow fix
 * Mars 12 2010 - Gilles Dauphin
 - includedir search path in /usr/SFE
 * Tue Sep 14 2009 - Thomas Wagner

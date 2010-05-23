@@ -1,0 +1,13 @@
+Index: stream/realrtsp/real.c
+===================================================================
+--- a/stream/realrtsp/real.c	(revision 29446)
++++ b/stream/realrtsp/real.c	(revision 29447)
+@@ -386,6 +386,8 @@
+     return (n <= 0) ? 0 : n;
+   }
+   rmff_dump_pheader(&ph, *buffer);
++  if (size < 12)
++      return 0;
+   size-=12;
+   n=rtsp_read_data(rtsp_session, (*buffer)+12, size);
+ 
