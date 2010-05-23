@@ -2,6 +2,7 @@
 
 	* SFEproftpd.spec: shaper module build, Kerberos module added
 	* encumbered/SFEmplayer.spec: rtsp integer overflow fix
+	* SFEliblinebreak.spec: initial import to SFE
 
 2010-05-23 Mark Wright <markwright@internode.on.net>
 
