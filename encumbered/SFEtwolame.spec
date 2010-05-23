@@ -28,6 +28,7 @@ Requires: SFElibsndfile
 BuildRequires:	SUNWlibsndfile
 Requires:	SUNWlibsndfile
 %endif
+BuildRequires:	SUNWgnome-common-devel
 
 Requires: SUNWlibms
 
