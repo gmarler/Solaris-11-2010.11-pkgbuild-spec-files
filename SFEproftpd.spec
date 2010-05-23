@@ -25,6 +25,7 @@ Group:		Applications/Internet
 URL:		http://www.proftpd.org/
 Source:		ftp://ftp.proftpd.org/distrib/source/%{src_name}-%{version}.tar.gz
 Source1:	proftpd.xml
+Source2:	%{sf_download}/gssmod/mod_gss-%{version}.tar.gz
 SUNW_BaseDir:	%{_basedir}
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -33,6 +34,8 @@ Requires: %name-root
 BuildRequires: SUNWhea
 BuildRequires: SUNWopenssl-include
 Requires: SUNWopenssl-libraries
+BuildRequires: SUNWgss
+Requires: SUNWgss
 
 %package root
 Summary:                 %{summary} - / filesystem
@@ -47,6 +50,7 @@ Requires:                %{name}
 
 %prep
 %setup -q -n %{src_name}-%version
+gzcat %{SOURCE2} | tar xf -
 
 %build
 
@@ -61,6 +65,13 @@ export LDFLAGS="%_ldflags"
 export install_user=$LOGNAME
 export install_group=`groups | awk '{print $1}'`
 
+pushd mod_gss-%{version}
+./configure
+popd
+
+cp mod_gss-%{version}/mod_gss.h include
+cp mod_gss-%{version}/mod_gss.c contrib
+
 ./configure --prefix=%{_prefix}/%{src_name}  \
             --bindir=%{_bindir} \
             --libdir=%{_libdir} \
@@ -73,7 +84,8 @@ export install_group=`groups | awk '{print $1}'`
             --enable-facl \
             --enable-nls \
             --enable-dso \
-            --enable-openssl
+            --enable-openssl \
+            --with-shared=mod_shaper:mod_gss
 
 make -j$CPUS
 
@@ -82,7 +94,12 @@ rm -rf $RPM_BUILD_ROOT
 
 make install DESTDIR=$RPM_BUILD_ROOT
 
-cp -r doc ${RPM_BUILD_ROOT}%{_docdir}/
+cp -r doc ${RPM_BUILD_ROOT}%{_docdir}
+cp mod_gss-%{version}/README.mod_auth_gss ${RPM_BUILD_ROOT}%{_docdir}/contrib
+cp mod_gss-%{version}/README.mod_gss ${RPM_BUILD_ROOT}%{_docdir}/contrib
+cp mod_gss-%{version}/mod_gss.html ${RPM_BUILD_ROOT}%{_docdir}/contrib
+cp mod_gss-%{version}/rfc1509.txt ${RPM_BUILD_ROOT}%{_docdir}/rfc
+cp mod_gss-%{version}/rfc2228.txt ${RPM_BUILD_ROOT}%{_docdir}/rfc
 
 install -d 0755 %{buildroot}%/var/svc/manifest/site
 install -m 0644 %{SOURCE1} %{buildroot}%/var/svc/manifest/site
@@ -101,6 +118,9 @@ do
   sed 's/(8)/(1M)/g' $i | sed '/^\.TH/s/ \"8\" / \"1M\" /g' > $i.new
   mv $i.new $i
 done
+
+find $RPM_BUILD_ROOT%{_prefix}/%{src_name}/libexec -type f -name "*.a" -exec rm -f {} ';'
+find $RPM_BUILD_ROOT%{_prefix}/%{src_name}/libexec -type f -name "*.la" -exec rm -f {} ';'
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -123,6 +143,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_docdir}/*
 %attr (-, root, other) %{_localedir}
 %dir %attr (0755, root, bin) %{_prefix}/%{src_name}/libexec
+%{_prefix}/%{src_name}/libexec/*
 
 %files root
 %defattr (-, root, sys)
@@ -138,6 +159,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sun May 23 2010 - Milan Jurik
+- shaper module build
+- Kerberos module added
 * Tue May 19 2010 - Milan Jurik
 - SMF service for standalone mode added
 - new bundled modules included

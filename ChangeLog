@@ -1,3 +1,7 @@
+2010-05-23 Milan Jurik <sfnet@xylab.cz>
+
+	* SFEproftpd.spec: shaper module build, Kerberos module added
+
 2010-05-23 Mark Wright <markwright@internode.on.net>
 
 	* SFEocaml, patches/ocaml-01-ldflags.diff: bump to 3.11.2
