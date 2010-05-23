@@ -1,3 +1,9 @@
+2010-05-23 Mark Wright <markwright@internode.on.net>
+
+	* SFEocaml, patches/ocaml-01-ldflags.diff: bump to 3.11.2
+	* SFEghc-uu-parsinglib.spec, SFEghc-HStringTemplate.spec: *NEW*
+	  haskell packages
+
 2010-05-22 Milan Jurik <sfnet@xylab.cz>
 
 	* SFExblas.spec: initial import to SFE
@@ -9,7 +15,7 @@
 	* base-specs/libx264.spec: update to new tarball
 	* SFEliferea.spec: update to 1.6.3, dependency on webkit
 
-2010-05-06 Mark Wright <markwright@internode.on.net>
+2010-05-21 Mark Wright <markwright@internode.on.net>
 
 	* SFEghc-AspectAG: bump to 0.2
 	* SFEghc-HList: bump to 0.2.3

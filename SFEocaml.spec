@@ -9,12 +9,12 @@
 
 Name:         SFEocaml
 Summary:      ocaml - Objective Caml Programming Language
-Version:      3.09.2
+Version:      3.11.2
 License:      GPL
 Group:        Development/Languages
 Release:      1
 BuildRoot:    %{_tmppath}/%{name}-%{version}-build
-Source0:      http://caml.inria.fr/pub/distrib/ocaml-3.09/ocaml-%{version}.tar.bz2
+Source0:      http://caml.inria.fr/pub/distrib/ocaml-3.11/ocaml-%{version}.tar.bz2
 Patch1:       ocaml-01-ldflags.diff
 URL:          http://caml.inria.fr/
 SUNW_BaseDir: %{_basedir}
@@ -123,6 +123,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man[13]/*
 
 %changelog
+* Sun May 23 2010 - markwright@internode.on.net
+- bump to 3.11.2
 * Thu Nov 15 2007 - daymobrew@users.sourceforge.net
 - Enable building with either SUNWlibsdl or SFEsdl.
 * Thu Aug 24 2006 - halton.huo@sun.com

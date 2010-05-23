@@ -1,5 +1,5 @@
---- ocaml-3.09.2/otherlibs/systhreads/Makefile.ldflags	2006-07-15 19:05:08.827315000 -0400
-+++ ocaml-3.09.2/otherlibs/systhreads/Makefile	2006-07-15 19:05:51.001367000 -0400
+--- ocaml-3.11.2-orig/otherlibs/systhreads/Makefile	2008-07-15 15:31:32.000000000 +0000
++++ ocaml-3.11.2/otherlibs/systhreads/Makefile	2010-05-23 03:09:50.833958107 +0000
 @@ -32,7 +32,7 @@
  allopt: libthreadsnat.a threads.cmxa
  
@@ -9,9 +9,9 @@
  
  posix_b.o: posix.c
  	$(BYTECC) -O -I../../byterun $(BYTECCCOMPOPTS) $(SHAREDCCCOMPOPTS) \
---- ocaml-3.09.2/otherlibs/threads/Makefile.ldflags	2004-11-29 09:53:32.000000000 -0500
-+++ ocaml-3.09.2/otherlibs/threads/Makefile	2006-07-15 18:43:14.116772000 -0400
-@@ -53,7 +53,7 @@
+--- ocaml-3.11.2-orig/otherlibs/threads/Makefile	2008-10-08 13:09:39.000000000 +0000
++++ ocaml-3.11.2/otherlibs/threads/Makefile	2010-05-23 03:09:50.834326250 +0000
+@@ -54,7 +54,7 @@
  allopt:
  
  libvmthreads.a: $(C_OBJS)
@@ -20,14 +20,14 @@
  
  threads.cma: $(CAML_OBJS)
  	$(MKLIB) -ocamlc '$(CAMLC)' -o threads -oc vmthreads $(CAML_OBJS)
---- ocaml-3.09.2/otherlibs/unix/Makefile.ldflags	2004-11-29 09:53:32.000000000 -0500
-+++ ocaml-3.09.2/otherlibs/unix/Makefile	2006-07-15 18:43:14.117178000 -0400
-@@ -49,7 +49,7 @@
- allopt: libunix.a unix.cmxa
+--- ocaml-3.11.2-orig/otherlibs/unix/Makefile	2007-11-06 15:16:56.000000000 +0000
++++ ocaml-3.11.2/otherlibs/unix/Makefile	2010-05-23 03:19:32.345485105 +0000
+@@ -19,6 +19,8 @@
  
- libunix.a: $(OBJS)
--	$(MKLIB) -o unix $(OBJS)
-+	$(MKLIB) -ldopt "$(BYTECCLIBS)" -o unix $(OBJS) $(LIBS)
+ EXTRACAMLFLAGS=-nolabels
  
- unix.cma: $(MLOBJS)
- 	$(MKLIB) -o unix -ocamlc '$(CAMLC)' -linkall $(MLOBJS)
++LDOPTS=-ldopt "$(BYTECCLIBS)"
++
+ COBJS=accept.o access.o addrofstr.o alarm.o bind.o chdir.o chmod.o \
+   chown.o chroot.o close.o closedir.o connect.o cst2constr.o cstringv.o \
+   dup.o dup2.o envir.o errmsg.o execv.o execve.o execvp.o exit.o \
