@@ -7,6 +7,7 @@
 %include Solaris.inc
 
 %define pythonver 2.6
+%define src_name waf
 
 Summary:	The Waf build system
 Name:		SFEwaf
@@ -15,8 +16,8 @@ SUNW_BaseDir:   %{_basedir}
 Release:	1
 License:	BSD
 Group:		Development/Building
-Source0:	http://waf.googlecode.com/files/%{name}-%{version}.tar.bz2
-Patch0:		%{name}-01-path.diff
+Source0:	http://waf.googlecode.com/files/%{src_name}-%{version}.tar.bz2
+Patch0:		%{src_name}-01-path.diff
 URL:		http://code.google.com/p/waf/
 
 Requires:       SUNWgnome-python26-libs
@@ -35,10 +36,10 @@ that Waf is a vastly superior alternative to its competitors
 
 %prep
 
-rm -rf %name-%version
-mkdir -p %name-%version
+rm -rf %src_name-%version
+mkdir -p %src_name-%version
 
-%setup -q -n %name-%version
+%setup -q -n %src_name-%version
 %patch0 -p1
 
 %build
