@@ -38,7 +38,7 @@ BuildRequires:	SFEfreeglut-devel
 BuildRequires:  SFEopenal-devel
 BuildRequires:	SFEfreealut-devel
 BuildRequires:	SUNWgawk
-#Requires:	%{name}-data = %{version}
+BuildRequires:	SUNWgnu-findutils
 Requires:	SFEbullet
 
 %description
