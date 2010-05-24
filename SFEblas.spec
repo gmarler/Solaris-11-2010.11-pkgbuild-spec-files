@@ -5,40 +5,54 @@
 #
 %include Solaris.inc
 
+%ifarch amd64 sparcv9
+%include arch64.inc
+%use blas64 = blas.spec
+%endif
+
+%include base.inc
+%use blas = blas.spec
+
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 # Tag definitions
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
-Name:                   SFEblas
-Summary:                BLAS - Basic Linear Algebra Subprograms
-# In fact there is no version , we give it
-Version:                1.1
-Source:                 ftp://ftp.netlib.org/blas/blas.tgz
-#Source1:		blas.Makefile
-SUNW_BaseDir:           %{_basedir}
-Group:			Math
-BuildRoot:              %{_tmppath}/%{name}-%{version}-build
-URL:                    http://www.netlib.org/blas/
-#Patch0:                blas-01.diff
+Name:		SFEblas
+Summary:	%{blas.summary}
+Version:	%{blas.version}
+Group:		%{blas.group}
+URL:		%{blas.url}
+BuildRoot:	%{_tmppath}/%{name}-%{version}-build
+SUNW_BaseDir:	%{_basedir}
+%include default-depend.inc
 
 Requires: SUNWcsl
 Requires: SUNWlibms
 
 %prep
-%setup -q -c -n %{name}
-#%patch0 -p1
+rm -rf %name-%version
+mkdir %name-%version
+%ifarch amd64 sparcv9
+mkdir %name-%version/%_arch64
+%blas64.prep -d %name-%version/%_arch64
+%endif
+
+mkdir %name-%version/%{base_arch}
+%blas.prep -d %name-%version/%{base_arch}
 
 %build
-cd BLAS
-#CC=cc CXX=CC F77=f77 FORTRAN=f77 LOADER=f77 PLAT="" 
-#export CC CXX F77 FORTRAN LOADER 
-make CC=cc CXX=CC F77=f77 FORTRAN=f77 LOADER=f77 PLAT=""
+%ifarch amd64 sparcv9
+%blas64.build -d %name-%version/%_arch64
+%endif
+
+%blas.build -d %name-%version/%{base_arch}
 
 %install
 rm -rf $RPM_BUILD_ROOT
-cd BLAS
-mv blas.a libblas.a
-install -d -m 0755 $RPM_BUILD_ROOT/%{_libdir}
-install -m 0755 libblas.a $RPM_BUILD_ROOT%{_libdir}
+%ifarch amd64 sparcv9
+%blas64.install -d %name-%version/%_arch64
+%endif
+
+%blas.install -d %name-%version/%{base_arch}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -47,8 +61,15 @@ rm -rf $RPM_BUILD_ROOT
 %defattr (-, root, bin)
 
 %dir %attr(0755,root,bin) %{_libdir}
-%{_libdir}/*
+%{_libdir}/lib*.a
+%ifarch amd64 sparcv9
+%dir %attr (0755, root, bin) %{_libdir}/%{_arch64}
+%{_libdir}/%{_arch64}/lib*.a
+%endif
+
 
 %changelog
+* Mon May 24 2010 - Milan Jurik
+- multiarch support
 * Wed Dec 10 2008 - dauphin@enst.fr
 - Initial version
