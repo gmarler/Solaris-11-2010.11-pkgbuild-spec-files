@@ -1,6 +1,7 @@
 2010-05-24 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEblas.spec: multiarch support
+	* SFElapack.spec: multiarch support
 
 2010-05-23 Milan Jurik <sfnet@xylab.cz>
 

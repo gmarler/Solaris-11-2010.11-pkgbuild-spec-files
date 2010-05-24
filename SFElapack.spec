@@ -5,51 +5,70 @@
 #
 %include Solaris.inc
 
+%ifarch amd64 sparcv9
+%include arch64.inc
+%use lapack64 = lapack.spec
+%endif
+
+%include base.inc
+%use lapack = lapack.spec
+
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 # Tag definitions
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
-Name:                   SFElapack
-Summary:                LAPACK - Linear Algebra PACKage
-Version:                3.1.1
-Source:                 ftp://ftp.netlib.org/lapack/lapack-%{version}.tgz
-SUNW_BaseDir:           %{_basedir}
-Group:			Math
-BuildRoot:              %{_tmppath}/%{name}-%{version}-build
-URL:                    http://www.netlib.org/lapack/
-#Patch0:                lapack-01.diff
+Name:		SFElapack
+Summary:	%{lapack.summary}
+Version:	%{lapack.version}
+Group:		%{lapack.group}
+URL:		%{lapack.url}
+SUNW_BaseDir:	%{_basedir}
+BuildRoot:	%{_tmppath}/%{name}-%{version}-build
+%include default-depend.inc
 
 Requires: SUNWcsl
 Requires: SUNWlibms
 Requires: SFEblas
 
 %prep
-%setup -q -c -n %{name}
-#%patch0 -p1
+rm -rf %name-%version
+mkdir %name-%version
+%ifarch amd64 sparcv9
+mkdir %name-%version/%_arch64
+%lapack64.prep -d %name-%version/%_arch64
+%endif
+
+mkdir %name-%version/%{base_arch}
+%lapack.prep -d %name-%version/%{base_arch}
 
 %build
-cd lapack-%{version}
-#CC=cc CXX=CC F77=f77 FORTRAN=f77 LOADER=f77 PLAT="" 
-#export CC CXX F77 FORTRAN LOADER 
-mv make.inc.example make.inc
-ln -s %{_libdir}/libblas.a blas.a
-make CC=cc CXX=CC F77=f77 FORTRAN=f77 LOADER=f77 PLAT="" OPTS=-O3
+%ifarch amd64 sparcv9
+%lapack64.build -d %name-%version/%_arch64
+%endif
+
+%lapack.build -d %name-%version/%{base_arch}
 
 %install
 rm -rf $RPM_BUILD_ROOT
-cd lapack-%{version}
-mv lapack.a liblapack.a
-install -d -m 0755 $RPM_BUILD_ROOT/%{_libdir}
-install -m 0755 liblapack.a $RPM_BUILD_ROOT%{_libdir}
+%ifarch amd64 sparcv9
+%lapack64.install -d %name-%version/%_arch64
+%endif
+
+%lapack.install -d %name-%version/%{base_arch}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr (-, root, bin)
-
 %dir %attr(0755,root,bin) %{_libdir}
-%{_libdir}/*
+%{_libdir}/lib*.a
+%ifarch amd64 sparcv9
+%dir %attr (0755, root, bin) %{_libdir}/%{_arch64}
+%{_libdir}/%{_arch64}/lib*.a
+%endif
 
 %changelog
+* Mon May 24 2010 - Milan Jurik
+- multiarch support
 * Wed Dec 10 2008 - dauphin@enst.fr
 - Initial version
