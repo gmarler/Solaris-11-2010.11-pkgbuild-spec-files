@@ -25,8 +25,8 @@
 
 Name:                    SFErrdtool
 Summary:                 rrdtool - data logging and graphing system for time series data.
-URL:                     http://http://oss.oetiker.ch/rrdtool/
-Version:                 1.3.6
+URL:                     http://oss.oetiker.ch/rrdtool/
+Version:                 1.4.3
 Source:                  http://oss.oetiker.ch/rrdtool/pub/rrdtool-%{version}.tar.gz
 
 
@@ -54,7 +54,6 @@ Requires: SUNWPython-devel
 #want perl modules, right.
 Requires:                SUNWperl584core
 BuildRequires:           SUNWperl584core
-BuildRequires:           SUNWsfwhea
 
 #bug and lacks perl modules (, ruby, python too)
 Conflicts: SUNWrrdtool
@@ -137,6 +136,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon May 24 2010 - Milan Jurik
+- bump to 1.4.3
 * Thr Feb 27 2009  - Thomas Wagner
 - Initial spec version 1.3.6
 - include Perl-Support to "use RRDs/RRDp", ruby, python support

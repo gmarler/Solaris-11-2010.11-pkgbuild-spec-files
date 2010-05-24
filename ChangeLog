@@ -4,6 +4,7 @@
 	* SFElapack.spec: multiarch support
 	* SFEunzoo.spec: initial import to SFE
 	* SFElha.spec: initial import to SFE
+	* SFErrdtool.spec: bump to 1.4.3
 
 2010-05-23 Milan Jurik <sfnet@xylab.cz>
 
