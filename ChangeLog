@@ -3,6 +3,7 @@
 	* SFEblas.spec: multiarch support
 	* SFElapack.spec: multiarch support
 	* SFEunzoo.spec: initial import to SFE
+	* SFElha.spec: initial import to SFE
 
 2010-05-23 Milan Jurik <sfnet@xylab.cz>
 
