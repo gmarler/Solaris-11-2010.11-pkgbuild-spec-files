@@ -14,21 +14,18 @@ Source:		ftp://ftp.netlib.org/lapack/lapack-%{version}.tgz
 Group:		Math
 URL:		http://www.netlib.org/lapack/
 
-Requires: SUNWcsl
-Requires: SUNWlibms
-Requires: SFEblas
-
 %prep
 %setup -q -c -n %{name}
 
 %build
+export PATH=/usr/gcc/4.3/bin:$PATH
 cd lapack-%{version}
 mv make.inc.example make.inc
 ln -s %{_libdir}/libblas.a blas.a
 if $( echo "%{_libdir}" | /usr/xpg4/bin/grep -q %{_arch64} ) ; then
-  make CC=cc CXX=CC F77=f77 FORTRAN=f90 LOADER=f90 PLAT="" OPTS="-O3 -m64" LOADOPTS=-m64 NOOPT=-m64
+  make F77=f77 FORTRAN=f90 LOADER=f90 PLAT="" OPTS="-O3 -m64" LOADOPTS=-m64 NOOPT=-m64
 else
-  make CC=cc CXX=CC F77=f77 FORTRAN=f90 LOADER=f90 PLAT="" OPTS=-O3
+  make PLAT="" OPTS=-O3
 fi
 
 %install
@@ -41,6 +38,8 @@ install -m 0755 liblapack.a $RPM_BUILD_ROOT%{_libdir}
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Tue May 25 2010 - Milan Jurik
+- disable multiarch support, not stable with Sun studio Fortran and unsupported with gfortran yet
 * Mon May 24 2010 - Milan Jurik
 - multiarch support
 * Wed Dec 10 2008 - dauphin@enst.fr

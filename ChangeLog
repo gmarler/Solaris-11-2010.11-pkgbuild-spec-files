@@ -1,5 +1,9 @@
 2010-05-24 Milan Jurik <sfnet@xylab.cz>
 
+	* SFEblas.spec, SFElapack.spec: disable multiarch support, not stable with Sun studio Fortran and unsupported with gfortran yet
+
+2010-05-24 Milan Jurik <sfnet@xylab.cz>
+
 	* SFEblas.spec: multiarch support
 	* SFElapack.spec: multiarch support
 	* SFEunzoo.spec: initial import to SFE

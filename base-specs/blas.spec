@@ -20,11 +20,12 @@ Requires: SUNWlibms
 %setup -q -c -n %{name}
 
 %build
+export PATH=/usr/gcc/4.3/bin:$PATH
 cd BLAS
 if $( echo "%{_libdir}" | /usr/xpg4/bin/grep -q %{_arch64} ) ; then
   make CC=cc CXX=CC F77=f77 FORTRAN=f77 LOADER=f77 PLAT="" OPTS="-03 -m64"
 else
-  make CC=cc CXX=CC F77=f77 FORTRAN=f77 LOADER=f77 PLAT="" OPTS="-03"
+  make F77=gfortran FORTRAN=gfortran LOADER=gfortran PLAT="" OPTS="-03"
 fi
 
 %install
@@ -37,6 +38,8 @@ install -m 0755 libblas.a $RPM_BUILD_ROOT%{_libdir}
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Tue May 25 2010 - Milan Jurik
+- disable multiarch support, not stable with Sun studio Fortran and unsupported with gfortran yet
 * Mon May 24 2010 - Milan Jurik
 - multiarch support
 * Wed Dec 10 2008 - dauphin@enst.fr
