@@ -113,3 +113,25 @@
  gjs_console_SOURCES = gjs/console.c
  
  install-exec-hook:
+--- gjs-0.7/gjs/native.h        2010-04-18 02:55:15.000000000 +0200
++++ gjs-0.7-sunpro/gjs/native.h 2010-05-26 14:29:17.761796993 +0200
+@@ -65,8 +65,18 @@
+ typedef JSBool (* GjsDefineModuleFunc) (JSContext *context,
+                                         JSObject  *module_obj);
+ 
++#ifdef __GNUC__
++#define INIT __attribute__((constructor))
++#elif __SUNPRO_C
++#define Pragma(x) _Pragma(#x)
++#define INIT Pragma(init(register_native_module))
++#else
++Initialization routine in a dynamic object not defined for current compiler
++#endif
++
+ #define GJS_REGISTER_NATIVE_MODULE_WITH_FLAGS(module_id_string, module_func, flags) \
+-    __attribute__((constructor)) static void                                 \
++    INIT                                            \
++    static void                                                                     \
+     register_native_module (void)                                            \
+     {                                                                        \
+         gjs_register_native_module(module_id_string, module_func, flags); \

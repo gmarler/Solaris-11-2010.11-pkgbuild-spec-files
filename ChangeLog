@@ -1,3 +1,8 @@
+2010-05-26 Erwann Chenede - <erwann.chenede@sun.com>
+
+	* SFEgjs.spec: bumped to 0.7 
+	* patches/gjs-01-solaris.diff : added fix for 619721
+
 2010-05-24 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEblas.spec, SFElapack.spec: disable multiarch support, not stable with Sun studio Fortran and unsupported with gfortran yet
