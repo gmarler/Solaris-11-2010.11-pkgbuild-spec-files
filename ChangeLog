@@ -1,3 +1,14 @@
+2010-05-27 Mark Wright <markwright@internode.on.net>
+
+	* SFEghc-monads-tf.spec, SFEghc-control-monad-attempt.spec,
+	  SFEghc-control-monad-exception-mtl.spec, SFEghc-monadloc.spec,
+	  SFEghc-control-monad-exception-monadstf.spec,
+	  SFEghc-control-monad-failure.spec, SFEghc-control-monad-exception.spec,
+	  SFEghc-hlint.spec, SFEghc-attempt.spec,
+	  SFEghc-control-monad-failure-mtl.spec, SFEghc-failure.spec,
+	  SFEghc-control-monad-exception-monadsfd.spec,
+	  SFEghc-safe-failure.spec: *NEW* Haskell packages
+
 2010-05-26 Erwann Chenede - <erwann.chenede@sun.com>
 
 	* SFEgjs.spec: bumped to 0.7 
