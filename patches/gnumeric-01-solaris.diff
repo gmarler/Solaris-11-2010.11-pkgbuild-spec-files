@@ -1,23 +1,17 @@
---- gnumeric-1.7.14/plugins/numtheory/numtheory.c.orig	2007-11-16 22:50:00.566948000 +0000
-+++ gnumeric-1.7.14/plugins/numtheory/numtheory.c	2007-11-16 23:07:30.657312000 +0000
-@@ -33,7 +33,8 @@
- 
- #define OUT_OF_BOUNDS "#LIMIT!"
- 
+--- gnumeric-1.10.4/plugins/fn-numtheory/numtheory.c	Sat Apr 24 04:31:21 2010
++++ gnumeric-1.10.4-patch/plugins/fn-numtheory/numtheory.c	Wed May 26 11:09:38 2010
+@@ -41,1 +41,2 @@
 -static const double bit_max = MIN (1 / GNM_EPSILON, (gnm_float)G_MAXUINT64);
-+/*static const double bit_max = MIN (1 / GNM_EPSILON, (gnm_float)G_MAXUINT64);*/
++//static const double bit_max = MIN (1 / GNM_EPSILON, (gnm_float)G_MAXUINT64);
 +static const double bit_max = G_MAXUINT64;
- 
- /* ------------------------------------------------------------------------- */
- 
---- gnumeric-1.7.14/src/gnm-so-polygon.c.orig	2007-11-16 22:42:02.243683000 +0000
-+++ gnumeric-1.7.14/src/gnm-so-polygon.c	2007-11-16 22:42:08.927667000 +0000
-@@ -223,7 +223,7 @@
- gnm_so_polygon_write_xml_sax (SheetObject const *so, GsfXMLOut *output)
- {
- 	/* TODO */
--	return gnm_so_polygon_parent_class->write_xml_sax (so, output);
-+	gnm_so_polygon_parent_class->write_xml_sax (so, output);
- }
- 
+--- gnumeric-1.10.4/src/graph.c	Wed May 26 12:39:49 2010
++++ gnumeric-1.10.4-patch/src/graph.c	Wed May 26 12:40:00 2010
+@@ -56,7 +56,7 @@
  static void
+ set_pending_str (const GOData *data, const char *str)
+ {
+-	return g_object_set_data_full (G_OBJECT (data),
++	g_object_set_data_full (G_OBJECT (data),
+ 				       "unserialize", g_strdup (str),
+ 				       g_free);
+ }

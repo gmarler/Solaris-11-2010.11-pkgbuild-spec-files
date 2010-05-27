@@ -3,57 +3,64 @@
 #
 
 %include Solaris.inc
-Name:                    SFEgnumeric
-Summary:                 gnumeric - Spreadsheet for GNOME
-URL:                     http://www.gnome.org/projects/gnumeric/
-Version:                 1.8.2
-Source:                  http://ftp.gnome.org/pub/GNOME/sources/gnumeric/1.8/gnumeric-%{version}.tar.gz
-Patch1:                  gnumeric-01-solaris.diff
-Patch2:                  gnumeric-02-528222-struct.diff
-SUNW_BaseDir:            %{_basedir}
-BuildRoot:               %{_tmppath}/%{name}-%{version}-build
+
+Name:		SFEgnumeric
+Summary:	gnumeric - Spreadsheet for GNOME
+URL:		http://www.gnome.org/projects/gnumeric/
+Version:	1.10.4
+Group:		Applications/Spreadsheet
+License:	GPLv2
+Source:		http://ftp.gnome.org/pub/GNOME/sources/gnumeric/1.10/gnumeric-%{version}.tar.gz
+Patch1:		gnumeric-01-solaris.diff
+SUNW_BaseDir:	%{_basedir}
+BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 Requires: SUNWgnome-base-libs
 BuildRequires: SUNWgnome-base-libs-devel
 Requires: SUNWgnome-libs
 BuildRequires: SUNWgnome-libs-devel
-Requires: SFEgoffice
-BuildRequires: SFEgoffice-devel
+Requires: SUNWlibgoffice
+BuildRequires: SUNWlibgoffice-devel
 %if %option_with_gnu_iconv
 Requires: SUNWgnu-libiconv
 Requires: SUNWgnu-gettext
 %else
 Requires: SUNWuiu8
 %endif
+Requires:	SUNWlibgsf
+BuildRequires:	SUNWlibgsf-devel
+BuildRequires:	SUNWgnome-common-devel
+BuildRequires:	SUNWgtk-doc
+BuildRequires:	SUNWperl-xml-parser
+BuildRequires:	SUNWgnu-findutils
 
 %package devel
-Summary:                 %{summary} - development files
-SUNW_BaseDir:            %{_basedir}
+Summary:	%{summary} - development files
+SUNW_BaseDir:	%{_basedir}
 %include default-depend.inc
 Requires: %name
 Requires: SUNWgnome-libs-devel
 
 %package root
-Summary:                 %{summary} - / filesystem
-SUNW_BaseDir:            /
+Summary:	%{summary} - / filesystem
+SUNW_BaseDir:	/
 %include default-depend.inc
 Requires: SUNWpostrun-root
 
 %if %build_l10n
 %package l10n
-Summary:                 %{summary} - l10n files
-SUNW_BaseDir:            %{_basedir}
+Summary:	%{summary} - l10n files
+SUNW_BaseDir:	%{_basedir}
 %include default-depend.inc
-Requires:                %{name}
+Requires: %{name}
 %endif
 
 %prep
 %setup -q -n gnumeric-%version
 %patch1 -p1
-%patch2 -p1
 
 %build
-export CFLAGS="%optflags -I/usr/include/libgoffice-0.5"
+export CFLAGS="%optflags -I/usr/include/libgoffice-0.8"
 %if %option_with_gnu_iconv
 export CFLAGS="$CFLAGS -I/usr/gnu/include -L/usr/gnu/lib -R/usr/gnu/lib -lintl"
 %endif
@@ -71,7 +78,6 @@ make
 rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
 rm $RPM_BUILD_ROOT%{_libdir}/*.la
-rm -r $RPM_BUILD_ROOT%{_prefix}/var
 
 %if %{build_l10n}
 %else
@@ -126,6 +132,26 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 %dir %attr(0755, root, bin) %{_mandir}/man1
 %{_mandir}/man1/*
 %{_datadir}/omf/gnumeric/*-C.omf
+%dir %attr (0755, root, other) %{_datadir}/icons
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/16x16
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/16x16/apps/
+%{_datadir}/icons/hicolor/16x16/apps/*
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/22x22/
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/22x22/apps/
+%{_datadir}/icons/hicolor/22x22/apps/*
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/24x24/
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/24x24/apps/
+%{_datadir}/icons/hicolor/24x24/apps/*
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/32x32/
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/32x32/apps/
+%{_datadir}/icons/hicolor/32x32/apps/*
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/48x48/
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/48x48/apps/
+%{_datadir}/icons/hicolor/48x48/apps/*
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/scalable/
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/scalable/apps/
+%{_datadir}/icons/hicolor/scalable/apps/*
 %dir %attr (0755, root, other) %{_datadir}/pixmaps
 %{_datadir}/pixmaps/*
 %dir %attr (0755, root, other) %{_datadir}/gnome
@@ -133,8 +159,7 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 %dir %attr (0755, root, bin) %{_libdir}
 %{_libdir}/*.so
 %{_libdir}/gnumeric
-%dir %attr (0755, root, other) %{_libdir}/pkgconfig
-%{_libdir}/pkgconfig/*
+%{_libdir}/goffice/0.8.3/plugins/gnumeric/*
 
 %files root
 %defattr (-, root, sys)
@@ -147,6 +172,9 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 %defattr (-, root, bin)
 %dir %attr (0755, root, bin) %{_includedir}
 %{_includedir}/*
+%dir %attr (0755, root, bin) %{_libdir}
+%dir %attr (0755, root, other) %{_libdir}/pkgconfig
+%{_libdir}/pkgconfig/*
 
 %if %build_l10n
 %files l10n
@@ -157,6 +185,8 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 
 
 %changelog
+* Thu May 27 2010 - Milan Jurik
+- bump to 1.10.4
 * Mon Apr 14 2008 - trisk@acm.jhu.edu
 - Bump to 1.8.2, add patch2
 * Tue Sep 04 2007  - Thomas Wagner
