@@ -1,0 +1,19 @@
+--- ntop-3.3.10/configure.in	Thu May 27 20:58:10 2010
++++ ntop-3.3.10-patch/configure.in	Thu May 27 20:59:13 2010
+@@ -1662,6 +1662,7 @@
+ tar xvfz $LUA_VERSION.tar.gz
+ cat $LUA_VERSION/src/Makefile | sed -e s,'MYCFLAGS=-DLUA_USE_POSIX',' MYCFLAGS="-fPIC -DLUA_USE_POSIX"',g > /tmp/lua.temp
+ cat /tmp/lua.temp >  $LUA_VERSION/src/Makefile
++cd $LUA_VERSION; gpatch -p1 < ../ntop-01-lua-hidden.diff; cd ..
+ #rm -f /tmp/lua.temp
+ cd $LUA_VERSION; make posix; cd ..
+ 
+@@ -1970,7 +1971,7 @@
+ fi
+ tar xvfz GeoIP.tar.gz
+ GEO_DIR=`find $PWD -type d -name "GeoIP-*"`
+-cd $GEO_DIR; ./configure --prefix=${prefix}; make; cd ..
++cd $GEO_DIR; ./configure --prefix=${prefix} --sysconfdir=$sysconfdir; make; cd ..
+ # OSX Fix
+ GEO_DYLIB="$GEO_DIR/libGeoIP/.libs/libGeoIP.dylib"
+ if test -f $GEO_DYLIB; then

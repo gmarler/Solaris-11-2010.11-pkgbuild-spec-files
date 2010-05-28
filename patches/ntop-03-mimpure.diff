@@ -1,0 +1,5 @@
+--- ntop-3.3.10/Makefile.am	Wed May 26 21:06:13 2010
++++ ntop-3.3.10-patch/Makefile.am	Wed May 26 21:05:57 2010
+@@ -155,1 +155,1 @@
+-libntopreport_la_LDFLAGS      = $(AM_LDFLAGS) -release $(VERSION) -export-dynamic @DYN_FLAGS@
++libntopreport_la_LDFLAGS      = $(AM_LDFLAGS) -release $(VERSION) -export-dynamic -mimpure-text @DYN_FLAGS@
