@@ -7,10 +7,11 @@
 
 Name:                SFElibtool
 Summary:             Generic library support script
-Version:             2.2.4
+Version:             2.2.6b
 Source:              http://ftp.gnu.org/gnu/libtool/libtool-%{version}.tar.gz
 Patch1:              libtool-01-bash.diff
 SUNW_BaseDir:        %{_basedir}
+SUNW_Copyright:      SFExdialog.copyright
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 
@@ -81,12 +82,15 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, bin) %{_datadir}/info
 %{_datadir}/info/libtool.info
 %{_datadir}/info/libtool.info-1
+%{_datadir}/info/libtool.info-2
 %dir %attr (0755, root, other) %{_datadir}/aclocal
 %{_datadir}/aclocal/*
 %dir %attr (0755, root, other) %{_datadir}/libtool
 %{_datadir}/libtool/*
 
 %changelog
+* Wed May 26 2010 - brian.cameron@oracle.com
+- Bump to 2.2.6b.
 * Sat May 24 2008 - Mark Wright <markwright@internode.on.net>
 - Bump to 2.2.4.  Add patch1 to use bash.
 * Sun Mar 2 2008 - Mark Wright <markwright@internode.on.net>

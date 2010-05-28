@@ -1,3 +1,7 @@
+2010-05-28  Brian Cameron  <brian.cameron@sun.com>
+
+	* archive/SFElibtool.spec: Bump to 2.2.6b.
+
 2010-05-28 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEntop.spec: update to 3.3.10
@@ -11,7 +15,8 @@
 	* SFEghc-monads-tf.spec, SFEghc-control-monad-attempt.spec,
 	  SFEghc-control-monad-exception-mtl.spec, SFEghc-monadloc.spec,
 	  SFEghc-control-monad-exception-monadstf.spec,
-	  SFEghc-control-monad-failure.spec, SFEghc-control-monad-exception.spec,
+	  SFEghc-control-monad-failure.spec,
+	  SFEghc-control-monad-exception.spec,
 	  SFEghc-hlint.spec, SFEghc-attempt.spec,
 	  SFEghc-control-monad-failure-mtl.spec, SFEghc-failure.spec,
 	  SFEghc-control-monad-exception-monadsfd.spec,
@@ -24,7 +29,8 @@
 
 2010-05-24 Milan Jurik <sfnet@xylab.cz>
 
-	* SFEblas.spec, SFElapack.spec: disable multiarch support, not stable with Sun studio Fortran and unsupported with gfortran yet
+	* SFEblas.spec, SFElapack.spec: disable multiarch support, not stable
+	  with Sun studio Fortran and unsupported with gfortran yet.
 
 2010-05-24 Milan Jurik <sfnet@xylab.cz>
 
@@ -49,7 +55,7 @@
 2010-05-22 Milan Jurik <sfnet@xylab.cz>
 
 	* SFExblas.spec: initial import to SFE
- 
+
 2010-05-21 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEopenjpeg.spec: update to 1.3, split devel package
@@ -69,9 +75,11 @@
 	* SFEwaf.spec: Add SFE prefix into package name 
 
 2010-02-02  Thomas Wagner  <tom68@users.sourceforge.net>
-        * SFEdovecot.spec: - migrate experimental/SFEdovecot.spec to regular spec directory,
-          - add note and description pointing to dovecot wiki page,
-          - discard svn history from experimental) - includes bump to 1.2.9
+
+	* SFEdovecot.spec: - migrate experimental/SFEdovecot.spec to regular
+	  spec directory,
+	  - add note and description pointing to dovecot wiki page,
+	  - discard svn history from experimental) - includes bump to 1.2.9
 
 2010-05-19  Gilles Dauphin  <dauphin@enst.fr>
 
@@ -103,8 +111,8 @@
 
 2010-05-18  Gilles Dauphin  <dauphin@enst.fr>
 
-	* SFEplib-gpp: a fork of SFEplib. SFEplib is needed by Milan compile with ss12
-	  SFEplib-gpp needed by me , compile with gcc4.3
+	* SFEplib-gpp: a fork of SFEplib. SFEplib is needed by Milan compile
+	  with ss12 SFEplib-gpp needed by me, compile with gcc4.3
 
 2010-05-18  Simon Jin  <yuntong.jin@sun.com>
 
@@ -259,6 +267,7 @@
 	* patches/libgda-03-missing-libgda-h.diff: Remove upstreamed patch
 
 2010-05-09  Albert Lee  <trisk@opensolaris.org>
+
 	* patches/opencv-03-sunpro.diff: Typo fix.
 
 2010-05-09  Albert Lee  <trisk@opensolaris.org>
@@ -308,7 +317,8 @@
 	  In OpenSolaris 's gcc4.3 , avoid the use of boost-concept-check
 	* SFER-ctv.spec: init spec . Module for R langage
 	* SFER-e1071.spec: init spec . Module for R langage
-	* SFEflightgear20: init spec. don't work yet. Start upgrade form 1.0 to 2.0
+	* SFEflightgear20: init spec. don't work yet. Start upgrade form 1.0 to
+	  2.0
 
 2010-05-07 Milan Jurik <sfnet@xylab.cz>
 
@@ -328,8 +338,8 @@
 
 2010-05-06  Simon Jin <yuntong.jin@sun.com>
 
-	* SFElibdesktop-agnostic.spec:inital spec of desktop-agnostic, which needed in
-	 awn 0.4.0
+	* SFElibdesktop-agnostic.spec:inital spec of desktop-agnostic, which is
+	  needed by awn 0.4.0
 
 2010-05-06 Mark Wright <markwright@internode.on.net>
 
@@ -395,8 +405,8 @@
 
 2010-05-03 Gilles Dauphin <dauphin@enst.fr>
 
-        * SFEscumvm.spec: update FLAGS
-        * SFEsimgear.spec: bump release
+	* SFEscumvm.spec: update FLAGS
+	* SFEsimgear.spec: bump release
 	* SFEscribus.spec: update TODO list. It works for me in b134
 	  I know a problem with 'locale'. I can't reproduce the bug.
 	  It smell a bug around Input Method and/or LOCALE.
@@ -432,8 +442,8 @@
 
 2010-04-29 Gilles Dauphin <dauphin@enst.fr>
 
-        * SFEscribus.spec: init spec . desktop publishing. first try
-        * SFEqt45.spec: update for scribus
+	* SFEscribus.spec: init spec . desktop publishing. first try
+	* SFEqt45.spec: update for scribus
 
 2010-04-29  Milan Jurik <sfnet@xylab.cz>
 
@@ -478,7 +488,8 @@
 	* SFEghc-uniplate: bump to 1.5.1
 	* SFEghc-haskell-src-exts: bump to 1.9.0
 	* SFEghc-yi: add SFEghc-haskell-src-exts dependency
-	* SFEghc-derive: Bump to 2.3.0.1, with uniplate == 1.5.1 and haskell-src-exts == 1.9.0
+	* SFEghc-derive: Bump to 2.3.0.1, with uniplate == 1.5.1 and
+	  haskell-src-exts == 1.9.0
 
 2010-04-25  Milan Jurik <sfnet@xylab.cz>
 
