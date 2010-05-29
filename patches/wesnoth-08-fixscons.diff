@@ -17,7 +17,7 @@
      if "suncc" in env["TOOLS"]:
 -        env["OPT_FLAGS"] = "-g0"
 -        env["DEBUG_FLAGS"] = "-g"
-+        env["OPT_FLAGS"] = "-04"
++        env["OPT_FLAGS"] = "-O4"
 +        env["DEBUG_FLAGS"] = "-g1"
  
      if env['gui'] == 'tiny':
