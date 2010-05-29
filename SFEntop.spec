@@ -44,8 +44,11 @@ BuildRequires: SUNWopenssl-include
 Requires: SUNWopenssl-libraries
 Requires: %name-root
 BuildRequires: SUNWgzip
-
 BuildRequires: SUNWgawk
+BuildRequires: SUNWgsed
+BuildRequires: SUNWscp
+BuildRequires: SUNWperl584usr
+Requires: SUNWperl584usr
 
 %if %SFErrdtool
 BuildRequires: SFErrdtool
