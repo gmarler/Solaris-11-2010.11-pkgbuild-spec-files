@@ -1,0 +1,14 @@
+diff --git a/configure.ac b/configure.ac
+--- a/configure.ac
++++ b/configure.ac
+@@ -4,7 +4,9 @@
+ 
+ AC_PROG_CC
+ AM_PROG_CC_C_O
+-CFLAGS="$CFLAGS -Wall -W"
++if test "$GCC" = "yes"; then
++	CFLAGS="$CFLAGS -Wall -W"
++fi
+ LIBS=
+ AC_SEARCH_LIBS(dlsym, [dl])
+ sshnodelay_libs=$LIBS
