@@ -1,0 +1,24 @@
+--- lives-1.3.3/src/lives-yuv4mpeg.c	Wed May  5 22:31:16 2010
++++ lives-1.3.3-patch/src/lives-yuv4mpeg.c	Sat May 29 21:28:32 2010
+@@ -58,7 +58,7 @@
+   size_t bytes=0;
+ 
+   do {
+-    bytes+=read(fd,buf+bytes,count-bytes);
++    bytes+=read(fd,(char *)buf+bytes,count-bytes);
+   } while (bytes<count);
+ 
+ }
+@@ -482,7 +482,12 @@
+   int ret;
+   int fd=open(devstr,O_RDONLY|O_NONBLOCK);
+   if (fd==-1) return FALSE;
++#ifndef IS_SOLARIS
+   ret=flock(fd,LOCK_EX|LOCK_NB);
++#else
++  // Dirty hack
++  ret = 0;
++#endif
+   close(fd);
+   if (ret==-1) return FALSE;
+   return TRUE;

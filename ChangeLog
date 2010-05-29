@@ -1,3 +1,7 @@
+2010-05-29 Milan Jurik <sfnet@xylab.cz>
+
+	* SFElives.spec: update to 1.3.3, remove patch applied by upstream
+
 2010-05-29  Albert Lee  <trisk@opensolaris.org>
 
 	* SFEsshfs.spec, patches/sshfs-fuse-01-sunpro.diff: *NEW* sshfs -
