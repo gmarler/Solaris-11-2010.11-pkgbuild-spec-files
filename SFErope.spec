@@ -24,13 +24,13 @@ Meta(pkg.detailed_url):     http://rope.sourceforge.net/
 Meta(info.classification):  org.opensolaris.category.2009:Development/Python
 Meta(info.maintainer):      Petr Sobotka sobotkap@gmail.com
 
-Requires:                   SUNWPython26
+Requires:                   python-26
 
 %prep
 %setup -q -n rope-%{version}
 
 %build
-
+python2.6 ./setup.py build
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -45,5 +45,5 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/python2.6/site-packages/*
 
 %changelog
-* Sat Jan 09 2010 - sobotkap@gmail.com
+* Sat May 30 2010 - sobotkap@gmail.com
 - Inital version.
