@@ -1,15 +1,15 @@
---- MPlayer-1.0rc2-orig/stream/stream_cddb.c	2007-10-07 19:49:26.000000000 +0000
-+++ MPlayer-1.0rc2/stream/stream_cddb.c	2007-11-03 06:25:48.868519517 +0000
-@@ -41,7 +41,7 @@
+--- MPlayer-1.0rc3/stream/stream_cddb.c	Sun Feb  1 14:42:27 2009
++++ MPlayer-1.0rc3-patch/stream/stream_cddb.c	Mon May 31 19:38:45 2010
+@@ -42,7 +42,7 @@
  
  #if defined(__linux__)
  	#include <linux/cdrom.h>
 -#elif defined(__FreeBSD__) || defined(__FreeBSD_kernel__) || defined(__NetBSD__) || defined(__OpenBSD__) || defined(__DragonFly__)
 +#elif defined(__FreeBSD__) || defined(__FreeBSD_kernel__) || defined(__NetBSD__) || defined(__OpenBSD__) || defined(__DragonFly__) || (defined(__sun) && defined(__SVR4))
  	#include <sys/cdio.h>
- #elif defined(WIN32)
+ #elif defined(__MINGW32__) || defined(__CYGWIN__)
          #include <ddk/ntddcdrm.h>
-@@ -95,7 +95,7 @@
+@@ -101,7 +101,7 @@
  		return drive;
  	}
  	

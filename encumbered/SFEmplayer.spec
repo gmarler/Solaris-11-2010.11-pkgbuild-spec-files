@@ -18,50 +18,36 @@
 %include base.inc
 
 
-
-%define with_dvdnav %(pkginfo -q SFElibdvdnav && echo 1 || echo 0)
-%define with_faad %(pkginfo -q SFEfaad && echo 1 || echo 0)
 %define with_fribidi %(pkginfo -q SFElibfribidi && echo 1 || echo 0)
 %define with_ladspa %(pkginfo -q SFEladspa && echo 1 || echo 0)
 %define with_openal %(pkginfo -q SFEopenal && echo 1 || echo 0)
 %define with_mad %(pkginfo -q SFElibmad && echo 1 || echo 0)
-%define with_liba52 %(pkginfo -q SFEliba52 && echo 1 || echo 0)
 %define with_lame %(pkginfo -q SFElame && echo 1 || echo 0)
 %define with_twolame %(pkginfo -q SFEtwolame && echo 1 || echo 0)
 %define with_mpcdec %(pkginfo -q SFElibmpcdec && echo 1 || echo 0)
 %define with_xvid %(pkginfo -q SFExvid && echo 1 || echo 0)
+%define with_giflib %(pkginfo -q SFEgiflib && echo 1 || echo 0)
 
 %define SFElibsndfile   %(/usr/bin/pkginfo -q SFElibsndfile && echo 1 || echo 0)
 
-Name:                    SFEmplayer
-Summary:                 mplayer - The Movie Player
-Version:                 1.0
-%define tarball_version 1.0rc2
-URL:                     http://www.mplayerhq.hu/
-Source:                  http://www.mplayerhq.hu/MPlayer/releases/MPlayer-%{tarball_version}.tar.bz2
-Patch1:                  mplayer-01-cddb.diff
-#Patch2:                 mplayer-02-makefile-libfame-dep.diff
-#Patch3:                 mplayer-03-asmrules_20061231.diff
-Patch4:                  mplayer-04-cabac-asm.diff
-Patch5:                  mplayer-05-configure.diff
-Patch10:                 mplayer-10-configure.diff
-Patch11:                 mplayer-11-cpudetect.diff
-Patch12:                 mplayer-12-realplayer.diff
-Patch15:                 mplayer-15-demux_vqf.diff
-Patch16:                 mplayer-16-demux-real.diff
-Patch17:                 mplayer-17-demux-audio.diff
-Patch18:                 mplayer-18-demux-mov.diff
-Patch19:                 mplayer-19-cddb-stream.diff
-Patch20:                 mplayer-20-url-fix.diff
-Patch21:                 mplayer-21-realrtsp.diff
-Source3:                 http://www.mplayerhq.hu/MPlayer/skins/Blue-1.7.tar.bz2
-Source4:                 http://www.mplayerhq.hu/MPlayer/skins/Abyss-1.7.tar.bz2
-Source5:                 http://www.mplayerhq.hu/MPlayer/skins/neutron-1.5.tar.bz2
-Source6:                 http://www.mplayerhq.hu/MPlayer/skins/proton-1.2.tar.bz2
-#Source7:                 http://www.3gpp.org/ftp/Specs/latest/Rel-6/26_series/26104-610.zip
-#Source8:                 http://www.3gpp.org/ftp/Specs/latest/Rel-6/26_series/26204-610.zip
-SUNW_BaseDir:            %{_basedir}
-BuildRoot:               %{_tmppath}/%{name}-%{tarball_version}-build
+Name:		SFEmplayer
+Summary:	mplayer - The Movie Player
+Version:	1.0.0.0.3
+%define tarball_version 1.0rc3
+URL:		http://www.mplayerhq.hu/
+Source:		http://www.mplayerhq.hu/MPlayer/releases/MPlayer-%{tarball_version}.tar.bz2
+Source3:	http://www.mplayerhq.hu/MPlayer/skins/Blue-1.7.tar.bz2
+Source4:	http://www.mplayerhq.hu/MPlayer/skins/Abyss-1.7.tar.bz2
+Source5:	http://www.mplayerhq.hu/MPlayer/skins/neutron-1.5.tar.bz2
+Source6:	http://www.mplayerhq.hu/MPlayer/skins/proton-1.2.tar.bz2
+Patch1:		mplayer-01-cddb.diff
+Patch4:		mplayer-04-cabac-asm.diff
+Patch11:	mplayer-11-cpudetect.diff
+Patch12:	mplayer-12-realplayer.diff
+Patch30:	mplayer-30-configure.diff
+Patch31:	mplayer-31-rdynamic.diff
+SUNW_BaseDir:	%{_basedir}
+BuildRoot:	%{_tmppath}/%{name}-%{tarball_version}-build
 
 %include default-depend.inc
 Requires: SUNWsmbau
@@ -85,7 +71,6 @@ BuildRequires: SUNWgcc
 Requires: SUNWgccruntime
 %endif
 Requires: SUNWgnome-base-libs
-Requires: SUNWsmbau
 BuildRequires: SUNWxwrtl
 Requires: SUNWxwrtl
 BuildRequires: SUNWxorg-mesa
@@ -113,13 +98,6 @@ BuildRequires: SFElame-devel
 Requires: SFEtwolame
 BuildRequires: SFEtwolame-devel
 Requires: SUNWgawk
-#BuildRequires: SFEgawk
-# FIXME: If have dvdnav, need use --disable-dvdread-internal when ./configure,
-# but this will cause build fail, do not use it for now.
-Requires: SFElibdvdnav
-BuildRequires: SFElibdvdnav-devel
-Requires: SFEfaad2
-BuildRequires: SFEfaad2-devel
 Requires: SFElibmpcdec
 BuildRequires: SFElibmpcdec-devel
 Requires: SFElibfribidi
@@ -128,8 +106,6 @@ Requires: SFEladspa
 BuildRequires: SFEladspa-devel
 Requires: SFElibmad
 BuildRequires: SFElibmad-devel
-Requires: SFEliba52
-BuildRequires: SFEliba52-devel
 %if %with_openal
 Requires: SFEopenal
 BuildRequires: SFEopenal-devel
@@ -138,8 +114,12 @@ BuildRequires: SFEopenal-devel
 Requires: SFExvid
 BuildRequires: SFExvid-devel
 %endif
-#latest CDE include gawk, so remove SFEgawk depedency 
-#BuildRequires: SFEgawk
+BuildRequires: SUNWgawk
+
+%if %with_giflib
+Requires: SFEgiflib
+BuildRequires: SFEgiflib-devel
+%endif
 
 %define x11	/usr/openwin
 %ifarch i386 amd64
@@ -149,28 +129,11 @@ BuildRequires: SFExvid-devel
 %prep
 %setup -q -n MPlayer-%tarball_version
 %patch1 -p1
-#%patch2 -p1
-#%patch3 -p1
 %patch4 -p1
-%patch5 -p1
-%patch10 -p1
 %patch11 -p1
 %patch12 -p1
-%patch15 -p2
-%patch16 -p0
-%patch17 -p0
-%patch18 -p0
-%patch19 -p0
-%patch20 -p0
-
-#unzip %SOURCE7
-#unzip 26104-610_ANSI_C_source_code.zip
-#mv c-code libavcodec/amr_float
-#unzip %SOURCE8
-#unzip 26204-610_ANSI-C_source_code.zip
-#mv c-code libavcodec/amrwb_float
-
-perl -pi -e 's/-O2/-O1/' configure
+%patch30 -p1
+%patch31 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -185,7 +148,7 @@ export CFLAGS="-g -D__hidden=\"\""
 %else
 dbgflag=--disable-debug
 #export CFLAGS="-O2 -D__hidden=\"\" -I%{_includedir}"
-export CFLAGS="-O2 -D__hidden=\"\""
+export CFLAGS="-O3 -D__hidden=\"\" -std=gnu99"
 %endif
 
 export LDFLAGS="-L%{x11}/lib -L/usr/gnu/lib -R/usr/gnu/lib -L/usr/sfw/lib -R/usr/sfw/lib -L%{_libdir} -R%{_libdir} -liconv" 
@@ -196,36 +159,29 @@ export CXX=/usr/gnu/bin/g++
 export CC=/usr/sfw/bin/gcc
 export CXX=/usr/sfw/bin/g++
 %endif
-rm -rf ./grep
-ln -s /usr/sfw/bin/ggrep ./grep
-PATH="`pwd`:$PATH"
-echo "`type grep`"
 
-bash ./configure				\
-	    --prefix=%{_prefix}			\
-	    --mandir=%{_mandir}			\
-            --libdir=%{_libdir}			\
-            --confdir=%{_sysconfdir}		\
-            --enable-gui			\
-            --enable-menu			\
-            --with-extraincdir=%{_libdir}/live/liveMedia/include:%{_libdir}/live/groupsock/include:%{_libdir}/live/UsageEnvironment/include:%{_libdir}/live/BasicUsageEnvironment/include:%{x11}/include:/usr/sfw/include:%{_prefix}/X11/include \
-            --with-extralibdir=%{_libdir}/live/liveMedia:%{_libdir}/live/groupsock:%{_libdir}/live/UsageEnvironment:%{_libdir}/live/BasicUsageEnvironment:%{x11}/lib:/usr/gnu/lib:/usr/sfw/lib \
+bash ./configure			\
+	    --prefix=%{_prefix}		\
+	    --mandir=%{_mandir}		\
+            --libdir=%{_libdir}		\
+            --confdir=%{_sysconfdir}	\
+            --enable-gui		\
+            --enable-menu		\
+            --extra-cflags="-I%{_libdir}/live/liveMedia/include -I%{_libdir}/live/groupsock/include -I%{_libdir}/live/UsageEnvironment/include -I%{_libdir}/live/BasicUsageEnvironment/include -I%{x11}/include -I/usr/sfw/include -I%{_prefix}/X11/include" \
+            --extra-ldflags="-L%{_libdir}/live/liveMedia -R%{_libdir}/live/liveMedia -L%{_libdir}/live/groupsock -R%{_libdir}/live/groupsock -L%{_libdir}/live/UsageEnvironment -R%{_libdir}/live/UsageEnvironment -L%{_libdir}/live/BasicUsageEnvironment -R%{_libdir}/live/BasicUsageEnvironment -L%{x11}/lib -R%{x11}/lib -L/usr/gnu/lib -R/usr/gnu/lib -L/usr/sfw/lib -R/usr/sfw/lib" \
             --extra-libs='-lBasicUsageEnvironment -lUsageEnvironment -lgroupsock -lliveMedia -lstdc++ -liconv' \
             --codecsdir=%{_libdir}/mplayer/codecs \
-%if %with_faad
-            --enable-faad-external		\
-%endif
-            --enable-live			\
-            --enable-network			\
-	    --enable-rpath			\
-            --enable-largefiles			\
-	    --enable-crash-debug		\
-            --enable-dynamic-plugins            \
-            --disable-directfb			\
-            --disable-x264			\
+            --enable-live		\
+            --enable-network		\
+	    --enable-rpath		\
+            --enable-largefiles		\
+	    --enable-crash-debug	\
+            --enable-dynamic-plugins	\
+            --enable-runtime-cpudetection	\
+            --disable-xvr100		\
 	    $dbgflag
 
-make # -j$CPUS 
+make -j$CPUS
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -240,7 +196,7 @@ mkdir -p $RPM_BUILD_ROOT%{_datadir}/mplayer/skins
 	gtar fxj %SOURCE6
 	ln -s Blue default
 )
-ln -s /usr/openwin/lib/X11/fonts/TrueType/FreeSerif.ttf $RPM_BUILD_ROOT%{_datadir}/mplayer/subfont.ttf
+ln -s /usr/share/fonts/TrueType/freefont/FreeSerif.ttf $RPM_BUILD_ROOT%{_datadir}/mplayer/subfont.ttf
 rm -f $RPM_BUILD_ROOT%{_libdir}/lib*a
 
 rm -rf $RPM_BUILD_ROOT%{_sysconfdir}
@@ -265,6 +221,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/pixmaps/*
 
 %changelog
+* Mon May 31 2010 - Milan Jurik
+- update to rc3, cleanup in patches
 * Sun May 23 2010 - Milan Jurik
 - rtsp integer overflow fix
 * Mars 12 2010 - Gilles Dauphin
