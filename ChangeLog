@@ -1,3 +1,8 @@
+2010-06-01  Simon Jin <yuntong.jin@sun.com>
+
+	* SFEwebkitgtk.spec:
+	fix d.o.o: Bug 16002 - webkitgtk  1.1.90 initialize failed  
+
 2010-05-30  Petr Sobotka  <sobotkap@gmail.com>
 
 	* SFErope.spec: Initial version.

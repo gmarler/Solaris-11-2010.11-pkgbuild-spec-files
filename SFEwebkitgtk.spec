@@ -35,7 +35,7 @@ Patch19:                 webkit-19-ss12-ternary-operator.diff
 Patch20:                 webkit-20-visibility.diff
 Patch21:                 webkit-21-vector-not-const.diff
 Patch22:                 webkit-22-not-reinterpretcast.diff
-Patch23:                 webkit-23-name-union.diff 
+#Patch23:                 webkit-23-name-union.diff 
 Patch24:                 webkit-24-MathExtras.diff 
 Patch25:                 webkit-25-misc.diff
 Patch26:                  webkit-26-copycons-imp.diff
@@ -103,18 +103,16 @@ cd webkit-%version
 %patch20 -p1
 %patch21 -p1
 %patch22 -p1
-%patch23 -p1
+#%patch23 -p1
 %patch24 -p1
 %patch25 -p1
 %patch26 -p1
 
 %build
 #export LD=CC
-#export CPPFLAGS=`pkg-config --cflags-only-I libstdcxx4`
-#export CXXFLAGS=`pkg-config --cflags-only-other libstdcxx4` 
-#export LDFLAGS=`pkg-config --libs libstdcxx4`
 #export CPPFLAGS="-D__FUNCTION__=__func__"
-#export CXXFLAGS="%cxx_optflags -features=extensions"
+export CPPFLAGS="-DUSE_SYSTEM_MALLOC"
+export CXXFLAGS="%cxx_optflags -features=extensions"
 #export  LDFLAGS="%_ldflags -Wl,-zmuldefs"
 cd webkit-%version
 

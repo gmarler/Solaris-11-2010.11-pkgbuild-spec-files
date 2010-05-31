@@ -24,3 +24,17 @@ diff -r d2a07bdc6744 JavaScriptCore/wtf/FastMalloc.cpp
    // Without this, Visual Studio will complain that this method does not return a value.
    return 0;
  #endif
+diff -r 7f0899abd82d JavaScriptCore/wtf/FastMalloc.cpp
+--- a/JavaScriptCore/wtf/FastMalloc.cpp	Fri May 21 01:19:20 2010 +0800
++++ b/JavaScriptCore/wtf/FastMalloc.cpp	Fri May 21 01:20:53 2010 +0800
+@@ -3506,8 +3506,8 @@
+   }
+   if (!ret) {
+ #ifdef WTF_CHANGES
+-    if (crashOnFailure) // This branch should be optimized out by the compiler.
+-        CRASH();
++    //if (crashOnFailure) // This branch should be optimized out by the compiler.
++     //   CRASH();
+ #else
+     errno = ENOMEM;
+ #endif
