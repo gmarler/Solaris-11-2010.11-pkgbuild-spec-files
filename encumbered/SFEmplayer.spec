@@ -26,6 +26,7 @@
 %define with_twolame %(pkginfo -q SFEtwolame && echo 1 || echo 0)
 %define with_mpcdec %(pkginfo -q SFElibmpcdec && echo 1 || echo 0)
 %define with_xvid %(pkginfo -q SFExvid && echo 1 || echo 0)
+%define with_x264 %(pkginfo -q SFElibx264 && echo 1 || echo 0)
 %define with_giflib %(pkginfo -q SFEgiflib && echo 1 || echo 0)
 
 %define SFElibsndfile   %(/usr/bin/pkginfo -q SFElibsndfile && echo 1 || echo 0)
@@ -115,11 +116,16 @@ Requires: SFExvid
 BuildRequires: SFExvid-devel
 %endif
 BuildRequires: SUNWgawk
-
+%if %with_x264
+Requires: SFElibx264
+BuildRequires: SFElibx264-devel
+%endif
 %if %with_giflib
 Requires: SFEgiflib
 BuildRequires: SFEgiflib-devel
 %endif
+Requires: SFElibschroedinger
+BuildRequires: SFElibschroedinger-devel
 
 %define x11	/usr/openwin
 %ifarch i386 amd64
