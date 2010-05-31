@@ -132,15 +132,19 @@
 
 
 
-##START build 134 and up, os2010.03 as os201003
+#note: build 140 does read "Solaris Next Development"
+#note: build 134 does read "OpenSolaris Development"
+#below probably release of 2010.05 (was 2010.03 or whatever name)
+
+##START build 134 and up, os2010.05 as os201005
 %if %{osdet299999}
 %if %( expr %{osbuild} '>=' 134 )
-%if %( egrep "OpenSolaris Develop" /etc/release > /dev/null && echo 1 || echo 0 )
+%if %( egrep "Solaris (Next|) Develop" /etc/release > /dev/null && echo 1 || echo 0 )
 #we are on an IPS based OS distro
 %define os2nnn   1
-%define os201003 1
-%define osdistrelnumber 201003
-%define osdistrelname   "os2010.03"
+%define os201005 1
+%define osdistrelnumber 201005
+%define osdistrelname   "os2010.05"
 #this was the last check, skip all others
 %define osdet299999 0
 %else
@@ -200,6 +204,9 @@
 
 
 %changelog
+* May 31 2010 - Thomas Wagner
+- rename 201003/2010.03 to 201005/2010.05 (speculative)
+- change egrep for builds >=134 to match OpenSolaris Development and Solaris Next Development
 * May  5 2010 - Thomas Wagner
 - fix ifs to give echo 0 | echo 1 and not strings or exitcodes
 - lot's of fixes over time, especially %if logic is non standard in spec files...
