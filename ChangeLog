@@ -1,3 +1,7 @@
+2010-05-31  Thomas Wagner  <tom68@users.sourceforge.net>
+        * include/osdistro.inc: rename 201003/2010.03 to 201005/2010.05 (speculative),
+              change egrep for builds >=134 to match OpenSolaris Development and Solaris Next Development (~140)
+
 2010-05-31 Milan Jurik <sfnet@xylab.cz>
 
 	* encumbered/SFEmplayer.spec: update to rc3, cleanup in patches
