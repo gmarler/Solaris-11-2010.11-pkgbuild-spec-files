@@ -1,0 +1,11 @@
+--- MPlayer-1.0rc3/configure	Mon May 31 20:20:08 2010
++++ MPlayer-1.0rc3-patch/configure	Mon May 31 20:17:09 2010
+@@ -7847,7 +7847,7 @@
+ # (FIXME: 'echocheck "dynamic linking"' above and modify here accordingly)
+ _ld_dl_dynamic=''
+ freebsd || netbsd || openbsd || dragonfly || bsdos && _ld_dl_dynamic='-rdynamic'
+-if test "$_real" = yes || test "$_xanim" = yes && ! win32 && ! qnx && ! darwin && ! os2 ; then
++if test "$_real" = yes || test "$_xanim" = yes && ! win32 && ! qnx && ! darwin && ! os2 && ! sunos; then
+   _ld_dl_dynamic='-rdynamic'
+ fi
+ 
