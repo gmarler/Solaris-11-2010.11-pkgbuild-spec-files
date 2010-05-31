@@ -108,265 +108,265 @@ fi
 
 %files
 %defattr (-, root, bin)
-%dir %attr(0755, root, bin) /usr/bin
-%dir %attr(0755, root, bin) /usr/lib
-%dir %attr(0755, root, bin) /usr/lib/python%{python_version}
-%dir %attr(0755, root, bin) /usr/lib/python%{python_version}/vendor-packages
-%dir %attr(0755, root, bin) /usr/lib/python%{python_version}/vendor-packages/Bcfg2
-%dir %attr(0755, root, bin) /usr/lib/python%{python_version}/vendor-packages/Bcfg2/Client
-%dir %attr(0755, root, bin) /usr/lib/python%{python_version}/vendor-packages/Bcfg2/Client/Tools
-%dir %attr(0755, root, bin) /usr/lib/python%{python_version}/vendor-packages/Bcfg2/Server
-%dir %attr(0755, root, bin) /usr/lib/python%{python_version}/vendor-packages/Bcfg2/Server/Hostbase
-%dir %attr(0755, root, bin) /usr/lib/python%{python_version}/vendor-packages/Bcfg2/Server/Hostbase/hostbase
-%dir %attr(0755, root, bin) /usr/lib/python%{python_version}/vendor-packages/Bcfg2/Server/Plugins
-%dir %attr(0755, root, bin) /usr/lib/python%{python_version}/vendor-packages/Bcfg2/Server/Reports
-%dir %attr(0755, root, bin) /usr/lib/python%{python_version}/vendor-packages/Bcfg2/Server/Reports/reports
-%dir %attr(0755, root, bin) /usr/lib/python%{python_version}/vendor-packages/Bcfg2/Server/Reports/reports/templatetags
-%dir %attr(0755, root, bin) /usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite
-%dir %attr(0755, root, bin) /usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/integration
-%dir %attr(0755, root, bin) /usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils
-%dir %attr(0755, root, bin) /usr/share
-%dir %attr(0755, root, bin) /usr/share/bcfg2
-%dir %attr(0755, root, bin) /usr/share/bcfg2/Hostbase
-%dir %attr(0755, root, bin) /usr/share/bcfg2/Hostbase/repo
-%dir %attr(0755, root, bin) /usr/share/bcfg2/Hostbase/templates
-%dir %attr(0755, root, bin) /usr/share/bcfg2/Reports
-%dir %attr(0755, root, bin) /usr/share/bcfg2/Reports/templates
-%dir %attr(0755, root, bin) /usr/share/bcfg2/Reports/templates/clients
-%dir %attr(0755, root, bin) /usr/share/bcfg2/Reports/templates/config_items
-%dir %attr(0755, root, bin) /usr/share/bcfg2/Reports/templates/displays
-%dir %attr(0755, root, bin) /usr/share/bcfg2/schemas
-%dir %attr(0755, root, bin) /usr/share/bcfg2/xsl-transforms
-%dir %attr(0755, root, bin) /usr/share/bcfg2/xsl-transforms/xsl-transform-includes
-%dir %attr(0755, root, bin) /usr/share/man
-%dir %attr(0755, root, bin) /usr/share/man/man1
-%dir %attr(0755, root, bin) /usr/share/man/man5
-%dir %attr(0755, root, bin) /usr/share/man/man8
-/usr/bin/bcfg2
-/usr/bin/bcfg2-admin
-/usr/bin/bcfg2-build-reports
-/usr/bin/bcfg2-info
-/usr/bin/bcfg2-ping-sweep
-/usr/bin/bcfg2-query
-/usr/bin/bcfg2-remote
-/usr/bin/bcfg2-repo-validate
-/usr/bin/bcfg2-server
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Client/Frame.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Client/Proxy.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Client/Tools/APT.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Client/Tools/Action.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Client/Tools/Blast.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Client/Tools/Chkconfig.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Client/Tools/DebInit.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Client/Tools/Encap.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Client/Tools/FreeBSDPackage.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Client/Tools/POSIX.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Client/Tools/Portage.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Client/Tools/PostInstall.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Client/Tools/RPM.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Client/Tools/RPMng.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Client/Tools/RcUpdate.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Client/Tools/SMF.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Client/Tools/SYSV.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Client/Tools/YUMng.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Client/Tools/Yum.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Client/Tools/__init__.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Client/Tools/launchd.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Client/Tools/rpmtools.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Client/XML.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Client/__init__.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Component.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Logging.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Options.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Server/Core.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Server/Hostbase/__init__.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Server/Hostbase/backends.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Server/Hostbase/hostbase/__init__.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Server/Hostbase/hostbase/models.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Server/Hostbase/hostbase/views.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Server/Hostbase/ldapauth.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Server/Hostbase/manage.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Server/Hostbase/nisauth.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Server/Hostbase/regex.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Server/Hostbase/settings.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Server/Hostbase/urls.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Server/Plugin.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Server/Plugins/Account.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Server/Plugins/Base.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Server/Plugins/Bundler.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Server/Plugins/Cfg.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Server/Plugins/Deps.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Server/Plugins/Hostbase.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Server/Plugins/Metadata.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Server/Plugins/Pkgmgr.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Server/Plugins/Rules.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Server/Plugins/SGenshi.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Server/Plugins/SSHbase.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Server/Plugins/Svcmgr.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Server/Plugins/TCheetah.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Server/Plugins/TGenshi.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Server/Plugins/Vhost.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Server/Plugins/__init__.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Server/Reports/__init__.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Server/Reports/backends.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Server/Reports/importscript.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Server/Reports/manage.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Server/Reports/nisauth.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Server/Reports/reports/__init__.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Server/Reports/reports/models.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Server/Reports/reports/templatetags/__init__.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Server/Reports/reports/templatetags/django_templating_sigh.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Server/Reports/reports/templatetags/syntax_coloring.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Server/Reports/reports/views.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Server/Reports/settings.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Server/Reports/urls.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Server/Statistics.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/Server/__init__.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/__init__.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/BaseDB.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/Checker.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/FileObject.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/HandshakeSettings.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/Session.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/SessionCache.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/SharedKeyDB.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/TLSConnection.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/TLSRecordLayer.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/VerifierDB.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/X509.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/X509CertChain.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/__init__.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/api.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/constants.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/errors.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/integration/AsyncStateMachine.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/integration/ClientHelper.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/integration/HTTPTLSConnection.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/integration/IMAP4_TLS.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/integration/IntegrationHelper.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/integration/POP3_TLS.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/integration/SMTP_TLS.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/integration/TLSAsyncDispatcherMixIn.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/integration/TLSSocketServerMixIn.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/integration/TLSTwistedProtocolWrapper.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/integration/XMLRPCTransport.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/integration/__init__.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/mathtls.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/messages.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/AES.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/ASN1Parser.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/Cryptlib_AES.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/Cryptlib_RC4.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/Cryptlib_TripleDES.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/OpenSSL_AES.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/OpenSSL_RC4.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/OpenSSL_RSAKey.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/OpenSSL_TripleDES.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/PyCrypto_AES.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/PyCrypto_RC4.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/PyCrypto_RSAKey.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/PyCrypto_TripleDES.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/Python_AES.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/Python_RC4.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/Python_RSAKey.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/RC4.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/RSAKey.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/TripleDES.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/__init__.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/cipherfactory.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/codec.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/compat.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/cryptomath.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/dateFuncs.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/hmac.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/jython_compat.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/keyfactory.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/prngd.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/rijndael.py
-/usr/lib/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/xmltools.py
-/usr/share/bcfg2/Hostbase/repo/batchadd.tmpl
-/usr/share/bcfg2/Hostbase/repo/dhcpd.conf.head
-/usr/share/bcfg2/Hostbase/repo/dhcpd.tmpl
-/usr/share/bcfg2/Hostbase/repo/hosts.tmpl
-/usr/share/bcfg2/Hostbase/repo/hostsappend.tmpl
-/usr/share/bcfg2/Hostbase/repo/named.tmpl
-/usr/share/bcfg2/Hostbase/repo/namedviews.tmpl
-/usr/share/bcfg2/Hostbase/repo/reverseappend.tmpl
-/usr/share/bcfg2/Hostbase/repo/reversesoa.tmpl
-/usr/share/bcfg2/Hostbase/repo/zone.tmpl
-/usr/share/bcfg2/Hostbase/templates/base.html
-/usr/share/bcfg2/Hostbase/templates/confirm.html
-/usr/share/bcfg2/Hostbase/templates/copy.html
-/usr/share/bcfg2/Hostbase/templates/dns.html
-/usr/share/bcfg2/Hostbase/templates/dnsedit.html
-/usr/share/bcfg2/Hostbase/templates/edit.html
-/usr/share/bcfg2/Hostbase/templates/errors.html
-/usr/share/bcfg2/Hostbase/templates/host.html
-/usr/share/bcfg2/Hostbase/templates/index.html
-/usr/share/bcfg2/Hostbase/templates/login.html
-/usr/share/bcfg2/Hostbase/templates/logout
-/usr/share/bcfg2/Hostbase/templates/logout.html
-/usr/share/bcfg2/Hostbase/templates/logviewer.html
-/usr/share/bcfg2/Hostbase/templates/navbar
-/usr/share/bcfg2/Hostbase/templates/new.html
-/usr/share/bcfg2/Hostbase/templates/remove.html
-/usr/share/bcfg2/Hostbase/templates/results.html
-/usr/share/bcfg2/Hostbase/templates/search.html
-/usr/share/bcfg2/Hostbase/templates/zoneedit.html
-/usr/share/bcfg2/Hostbase/templates/zonenew.html
-/usr/share/bcfg2/Hostbase/templates/zones.html
-/usr/share/bcfg2/Hostbase/templates/zoneview.html
-/usr/share/bcfg2/Reports/templates/base.html
-/usr/share/bcfg2/Reports/templates/clients/client-nodebox.html
-/usr/share/bcfg2/Reports/templates/clients/detail.html
-/usr/share/bcfg2/Reports/templates/clients/index.html
-/usr/share/bcfg2/Reports/templates/clients/manage.html
-/usr/share/bcfg2/Reports/templates/config_items/index.html
-/usr/share/bcfg2/Reports/templates/config_items/listing.html
-/usr/share/bcfg2/Reports/templates/displays/index.html
-/usr/share/bcfg2/Reports/templates/displays/summary-block-direct-links.html
-/usr/share/bcfg2/Reports/templates/displays/summary-block.html
-/usr/share/bcfg2/Reports/templates/displays/summary.html
-/usr/share/bcfg2/Reports/templates/displays/sys_view.html
-/usr/share/bcfg2/Reports/templates/displays/timing.html
-/usr/share/bcfg2/Reports/templates/index.html
-/usr/share/bcfg2/schemas/atom.xsd
-/usr/share/bcfg2/schemas/base.xsd
-/usr/share/bcfg2/schemas/bundle.xsd
-/usr/share/bcfg2/schemas/clients.xsd
-/usr/share/bcfg2/schemas/deps.xsd
-/usr/share/bcfg2/schemas/info.xsd
-/usr/share/bcfg2/schemas/metadata.xsd
-/usr/share/bcfg2/schemas/pkglist.xsd
-/usr/share/bcfg2/schemas/report-configuration.xsd
-/usr/share/bcfg2/schemas/rules.xsd
-/usr/share/bcfg2/schemas/services.xsd
-/usr/share/bcfg2/schemas/translation.xsd
-/usr/share/bcfg2/schemas/types.xsd
-/usr/share/bcfg2/schemas/xml.xsd
-/usr/share/bcfg2/xsl-transforms/nodes-digest-mail.xsl
-/usr/share/bcfg2/xsl-transforms/nodes-digest-rss.xsl
-/usr/share/bcfg2/xsl-transforms/nodes-digest-www.xsl
-/usr/share/bcfg2/xsl-transforms/nodes-individual-mail.xsl
-/usr/share/bcfg2/xsl-transforms/overview-matrix-www.xsl
-/usr/share/bcfg2/xsl-transforms/overview-stats-mail.xsl
-/usr/share/bcfg2/xsl-transforms/overview-stats-rss.xsl
-/usr/share/bcfg2/xsl-transforms/overview-stats-www.xsl
-/usr/share/bcfg2/xsl-transforms/timing-summary-www.xsl
-/usr/share/bcfg2/xsl-transforms/xsl-transform-includes/boxypastel-css.xsl
-/usr/share/bcfg2/xsl-transforms/xsl-transform-includes/html-templates.xsl
-/usr/share/bcfg2/xsl-transforms/xsl-transform-includes/main-js.xsl
-/usr/share/bcfg2/xsl-transforms/xsl-transform-includes/sorttable-js.xsl
-/usr/share/bcfg2/xsl-transforms/xsl-transform-includes/text-templates.xsl
-/usr/share/man/man1/bcfg2.1
-/usr/share/man/man5/bcfg2.conf.5
-/usr/share/man/man8/bcfg2-admin.8
-/usr/share/man/man8/bcfg2-build-reports.8
-/usr/share/man/man8/bcfg2-info.8
-/usr/share/man/man8/bcfg2-query.8
-/usr/share/man/man8/bcfg2-remote.8
-/usr/share/man/man8/bcfg2-repo-validate.8
-/usr/share/man/man8/bcfg2-server.8
+%dir %attr(0755, root, bin) %{_bindir}
+%dir %attr(0755, root, bin) %{_libdir}
+%dir %attr(0755, root, bin) %{_libdir}/python%{python_version}
+%dir %attr(0755, root, bin) %{_libdir}/python%{python_version}/vendor-packages
+%dir %attr(0755, root, bin) %{_libdir}/python%{python_version}/vendor-packages/Bcfg2
+%dir %attr(0755, root, bin) %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Client
+%dir %attr(0755, root, bin) %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Client/Tools
+%dir %attr(0755, root, bin) %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server
+%dir %attr(0755, root, bin) %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Hostbase
+%dir %attr(0755, root, bin) %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Hostbase/hostbase
+%dir %attr(0755, root, bin) %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Plugins
+%dir %attr(0755, root, bin) %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Reports
+%dir %attr(0755, root, bin) %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Reports/reports
+%dir %attr(0755, root, bin) %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Reports/reports/templatetags
+%dir %attr(0755, root, bin) %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite
+%dir %attr(0755, root, bin) %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/integration
+%dir %attr(0755, root, bin) %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils
+%dir %attr(0755, root, bin) %{_datadir}
+%dir %attr(0755, root, bin) %{_datadir}/bcfg2
+%dir %attr(0755, root, bin) %{_datadir}/bcfg2/Hostbase
+%dir %attr(0755, root, bin) %{_datadir}/bcfg2/Hostbase/repo
+%dir %attr(0755, root, bin) %{_datadir}/bcfg2/Hostbase/templates
+%dir %attr(0755, root, bin) %{_datadir}/bcfg2/Reports
+%dir %attr(0755, root, bin) %{_datadir}/bcfg2/Reports/templates
+%dir %attr(0755, root, bin) %{_datadir}/bcfg2/Reports/templates/clients
+%dir %attr(0755, root, bin) %{_datadir}/bcfg2/Reports/templates/config_items
+%dir %attr(0755, root, bin) %{_datadir}/bcfg2/Reports/templates/displays
+%dir %attr(0755, root, bin) %{_datadir}/bcfg2/schemas
+%dir %attr(0755, root, bin) %{_datadir}/bcfg2/xsl-transforms
+%dir %attr(0755, root, bin) %{_datadir}/bcfg2/xsl-transforms/xsl-transform-includes
+%dir %attr(0755, root, bin) %{_datadir}/man
+%dir %attr(0755, root, bin) %{_datadir}/man/man1
+%dir %attr(0755, root, bin) %{_datadir}/man/man5
+%dir %attr(0755, root, bin) %{_datadir}/man/man8
+%{_bindir}/bcfg2
+%{_bindir}/bcfg2-admin
+%{_bindir}/bcfg2-build-reports
+%{_bindir}/bcfg2-info
+%{_bindir}/bcfg2-ping-sweep
+%{_bindir}/bcfg2-query
+%{_bindir}/bcfg2-remote
+%{_bindir}/bcfg2-repo-validate
+%{_bindir}/bcfg2-server
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Client/Frame.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Client/Proxy.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Client/Tools/APT.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Client/Tools/Action.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Client/Tools/Blast.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Client/Tools/Chkconfig.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Client/Tools/DebInit.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Client/Tools/Encap.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Client/Tools/FreeBSDPackage.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Client/Tools/POSIX.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Client/Tools/Portage.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Client/Tools/PostInstall.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Client/Tools/RPM.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Client/Tools/RPMng.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Client/Tools/RcUpdate.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Client/Tools/SMF.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Client/Tools/SYSV.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Client/Tools/YUMng.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Client/Tools/Yum.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Client/Tools/__init__.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Client/Tools/launchd.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Client/Tools/rpmtools.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Client/XML.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Client/__init__.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Component.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Logging.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Options.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Core.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Hostbase/__init__.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Hostbase/backends.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Hostbase/hostbase/__init__.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Hostbase/hostbase/models.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Hostbase/hostbase/views.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Hostbase/ldapauth.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Hostbase/manage.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Hostbase/nisauth.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Hostbase/regex.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Hostbase/settings.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Hostbase/urls.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Plugin.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Plugins/Account.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Plugins/Base.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Plugins/Bundler.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Plugins/Cfg.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Plugins/Deps.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Plugins/Hostbase.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Plugins/Metadata.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Plugins/Pkgmgr.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Plugins/Rules.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Plugins/SGenshi.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Plugins/SSHbase.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Plugins/Svcmgr.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Plugins/TCheetah.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Plugins/TGenshi.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Plugins/Vhost.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Plugins/__init__.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Reports/__init__.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Reports/backends.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Reports/importscript.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Reports/manage.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Reports/nisauth.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Reports/reports/__init__.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Reports/reports/models.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Reports/reports/templatetags/__init__.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Reports/reports/templatetags/django_templating_sigh.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Reports/reports/templatetags/syntax_coloring.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Reports/reports/views.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Reports/settings.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Reports/urls.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Statistics.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/__init__.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/__init__.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/BaseDB.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/Checker.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/FileObject.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/HandshakeSettings.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/Session.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/SessionCache.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/SharedKeyDB.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/TLSConnection.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/TLSRecordLayer.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/VerifierDB.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/X509.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/X509CertChain.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/__init__.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/api.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/constants.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/errors.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/integration/AsyncStateMachine.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/integration/ClientHelper.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/integration/HTTPTLSConnection.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/integration/IMAP4_TLS.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/integration/IntegrationHelper.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/integration/POP3_TLS.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/integration/SMTP_TLS.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/integration/TLSAsyncDispatcherMixIn.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/integration/TLSSocketServerMixIn.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/integration/TLSTwistedProtocolWrapper.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/integration/XMLRPCTransport.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/integration/__init__.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/mathtls.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/messages.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/AES.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/ASN1Parser.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/Cryptlib_AES.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/Cryptlib_RC4.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/Cryptlib_TripleDES.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/OpenSSL_AES.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/OpenSSL_RC4.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/OpenSSL_RSAKey.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/OpenSSL_TripleDES.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/PyCrypto_AES.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/PyCrypto_RC4.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/PyCrypto_RSAKey.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/PyCrypto_TripleDES.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/Python_AES.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/Python_RC4.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/Python_RSAKey.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/RC4.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/RSAKey.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/TripleDES.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/__init__.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/cipherfactory.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/codec.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/compat.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/cryptomath.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/dateFuncs.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/hmac.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/jython_compat.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/keyfactory.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/prngd.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/rijndael.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/xmltools.py
+%{_datadir}/bcfg2/Hostbase/repo/batchadd.tmpl
+%{_datadir}/bcfg2/Hostbase/repo/dhcpd.conf.head
+%{_datadir}/bcfg2/Hostbase/repo/dhcpd.tmpl
+%{_datadir}/bcfg2/Hostbase/repo/hosts.tmpl
+%{_datadir}/bcfg2/Hostbase/repo/hostsappend.tmpl
+%{_datadir}/bcfg2/Hostbase/repo/named.tmpl
+%{_datadir}/bcfg2/Hostbase/repo/namedviews.tmpl
+%{_datadir}/bcfg2/Hostbase/repo/reverseappend.tmpl
+%{_datadir}/bcfg2/Hostbase/repo/reversesoa.tmpl
+%{_datadir}/bcfg2/Hostbase/repo/zone.tmpl
+%{_datadir}/bcfg2/Hostbase/templates/base.html
+%{_datadir}/bcfg2/Hostbase/templates/confirm.html
+%{_datadir}/bcfg2/Hostbase/templates/copy.html
+%{_datadir}/bcfg2/Hostbase/templates/dns.html
+%{_datadir}/bcfg2/Hostbase/templates/dnsedit.html
+%{_datadir}/bcfg2/Hostbase/templates/edit.html
+%{_datadir}/bcfg2/Hostbase/templates/errors.html
+%{_datadir}/bcfg2/Hostbase/templates/host.html
+%{_datadir}/bcfg2/Hostbase/templates/index.html
+%{_datadir}/bcfg2/Hostbase/templates/login.html
+%{_datadir}/bcfg2/Hostbase/templates/logout
+%{_datadir}/bcfg2/Hostbase/templates/logout.html
+%{_datadir}/bcfg2/Hostbase/templates/logviewer.html
+%{_datadir}/bcfg2/Hostbase/templates/navbar
+%{_datadir}/bcfg2/Hostbase/templates/new.html
+%{_datadir}/bcfg2/Hostbase/templates/remove.html
+%{_datadir}/bcfg2/Hostbase/templates/results.html
+%{_datadir}/bcfg2/Hostbase/templates/search.html
+%{_datadir}/bcfg2/Hostbase/templates/zoneedit.html
+%{_datadir}/bcfg2/Hostbase/templates/zonenew.html
+%{_datadir}/bcfg2/Hostbase/templates/zones.html
+%{_datadir}/bcfg2/Hostbase/templates/zoneview.html
+%{_datadir}/bcfg2/Reports/templates/base.html
+%{_datadir}/bcfg2/Reports/templates/clients/client-nodebox.html
+%{_datadir}/bcfg2/Reports/templates/clients/detail.html
+%{_datadir}/bcfg2/Reports/templates/clients/index.html
+%{_datadir}/bcfg2/Reports/templates/clients/manage.html
+%{_datadir}/bcfg2/Reports/templates/config_items/index.html
+%{_datadir}/bcfg2/Reports/templates/config_items/listing.html
+%{_datadir}/bcfg2/Reports/templates/displays/index.html
+%{_datadir}/bcfg2/Reports/templates/displays/summary-block-direct-links.html
+%{_datadir}/bcfg2/Reports/templates/displays/summary-block.html
+%{_datadir}/bcfg2/Reports/templates/displays/summary.html
+%{_datadir}/bcfg2/Reports/templates/displays/sys_view.html
+%{_datadir}/bcfg2/Reports/templates/displays/timing.html
+%{_datadir}/bcfg2/Reports/templates/index.html
+%{_datadir}/bcfg2/schemas/atom.xsd
+%{_datadir}/bcfg2/schemas/base.xsd
+%{_datadir}/bcfg2/schemas/bundle.xsd
+%{_datadir}/bcfg2/schemas/clients.xsd
+%{_datadir}/bcfg2/schemas/deps.xsd
+%{_datadir}/bcfg2/schemas/info.xsd
+%{_datadir}/bcfg2/schemas/metadata.xsd
+%{_datadir}/bcfg2/schemas/pkglist.xsd
+%{_datadir}/bcfg2/schemas/report-configuration.xsd
+%{_datadir}/bcfg2/schemas/rules.xsd
+%{_datadir}/bcfg2/schemas/services.xsd
+%{_datadir}/bcfg2/schemas/translation.xsd
+%{_datadir}/bcfg2/schemas/types.xsd
+%{_datadir}/bcfg2/schemas/xml.xsd
+%{_datadir}/bcfg2/xsl-transforms/nodes-digest-mail.xsl
+%{_datadir}/bcfg2/xsl-transforms/nodes-digest-rss.xsl
+%{_datadir}/bcfg2/xsl-transforms/nodes-digest-www.xsl
+%{_datadir}/bcfg2/xsl-transforms/nodes-individual-mail.xsl
+%{_datadir}/bcfg2/xsl-transforms/overview-matrix-www.xsl
+%{_datadir}/bcfg2/xsl-transforms/overview-stats-mail.xsl
+%{_datadir}/bcfg2/xsl-transforms/overview-stats-rss.xsl
+%{_datadir}/bcfg2/xsl-transforms/overview-stats-www.xsl
+%{_datadir}/bcfg2/xsl-transforms/timing-summary-www.xsl
+%{_datadir}/bcfg2/xsl-transforms/xsl-transform-includes/boxypastel-css.xsl
+%{_datadir}/bcfg2/xsl-transforms/xsl-transform-includes/html-templates.xsl
+%{_datadir}/bcfg2/xsl-transforms/xsl-transform-includes/main-js.xsl
+%{_datadir}/bcfg2/xsl-transforms/xsl-transform-includes/sorttable-js.xsl
+%{_datadir}/bcfg2/xsl-transforms/xsl-transform-includes/text-templates.xsl
+%{_datadir}/man/man1/bcfg2.1
+%{_datadir}/man/man5/bcfg2.conf.5
+%{_datadir}/man/man8/bcfg2-admin.8
+%{_datadir}/man/man8/bcfg2-build-reports.8
+%{_datadir}/man/man8/bcfg2-info.8
+%{_datadir}/man/man8/bcfg2-query.8
+%{_datadir}/man/man8/bcfg2-remote.8
+%{_datadir}/man/man8/bcfg2-repo-validate.8
+%{_datadir}/man/man8/bcfg2-server.8
 %changelog
 * May 2010 - Gilles Dauphin
 - inital spec for SFE
