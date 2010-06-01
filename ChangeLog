@@ -1,11 +1,20 @@
+2010-06-01  Thomas Wagner  <tom68@users.sourceforge.net>
+        * SFEnasm.spec: added include/osdistro.inc, changed (Build)Requires to match 
+          SXCE, OS20nn build <134 => 134 (the time the packages got new names)
+
+
 2010-06-01 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEgdbm.spec: obsolete, replaced by SUNWgnu-dbm
 	* SFEgazpacho.spec: obsolete, unmaitained by upstream for years
 
 2010-06-01  Thomas Wagner  <tom68@users.sourceforge.net>
-        * include/osdistro.inc: fix detection of "Solaris Next Development" (~snv_140), add missing %define os201005 0, remove typo os2distrelname -> osdistrelname, for SXCE %define osdistrelname   "SXCE"
-        * base-specs/osdistro.spec: prettyprint detected variables, check for already included osdistro.inc, added more description for self-demo by pkgtool --interacrive prep base-specs/osdistro.spec
+        * include/osdistro.inc: fix detection of "Solaris Next Development" (~snv_140), 
+          add missing %define os201005 0, remove typo os2distrelname -> osdistrelname, 
+          for SXCE %define osdistrelname   "SXCE"
+        * base-specs/osdistro.spec: prettyprint detected variables, check for already 
+          included osdistro.inc, added more description for self-demo by 
+          pkgtool --interactive prep base-specs/osdistro.spec
 
 2010-05-31  Thomas Wagner  <tom68@users.sourceforge.net>
         * include/osdistro.inc: rename 201003/2010.03 to 201005/2010.05 (speculative),
