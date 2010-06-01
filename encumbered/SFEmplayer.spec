@@ -183,7 +183,9 @@ bash ./configure			\
             --enable-largefiles		\
 	    --enable-crash-debug	\
             --enable-dynamic-plugins	\
+%ifarch i386 amd64
             --enable-runtime-cpudetection	\
+%endif
             --disable-xvr100		\
 	    $dbgflag
 
