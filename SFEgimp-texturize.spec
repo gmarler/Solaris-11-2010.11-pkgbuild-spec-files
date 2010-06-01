@@ -4,23 +4,28 @@
 # includes module(s): gimp-texturize
 #
 %include Solaris.inc
+%define cc_is_gcc 1
+%include base.inc
 
-Name:                SFEgimp-texturize
-Summary:             Cross-platform development framework/toolkit
-Version:             2.0
-Source:              %{sf_download}/gimp-texturize/gimp-texturize-%{version}.tgz
-SUNW_BaseDir:        %{_basedir}
-BuildRoot:           %{_tmppath}/%{name}-%{version}-build
+Name:		SFEgimp-texturize
+Summary:	Cross-platform development framework/toolkit
+Group:		Applications/Graphics
+Version:	2.1
+Source:		%{sf_download}/gimp-texturize/texturize-%{version}_src.tgz
+License:	GPLv2
+SUNW_BaseDir:	%{_basedir}
+BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 BuildRequires: SUNWgnome-img-editor-devel
 Requires: SUNWgnome-img-editor
+BuildRequires: SUNWgnome-common-devel
 
 %if %build_l10n
 %package l10n
-Summary:                 %{summary} - l10n files
-SUNW_BaseDir:            %{_basedir}
+Summary:	%{summary} - l10n files
+SUNW_BaseDir:	%{_basedir}
 %include default-depend.inc
-Requires:                %{name}
+Requires:	%{name}
 %endif
 
 %prep
@@ -34,10 +39,12 @@ fi
 
 export CC=gcc
 export CXX=g++
-export CFLAGS="-O4"
+export CFLAGS="$optflags"
+export CXXFLAGS="%cxx_optflags"
 export LDFLAGS="%arch_ldadd %ldadd ${EXTRA_LDFLAGS}"
 ./configure \
     --prefix=%{_prefix}
+
 make -j$CPUS
 
 %install
@@ -71,6 +78,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Tue Jun 02 2010 - Milan Jurik
+- bump to 2.1
 * Sun Nov 18 2007 - daymobrew@users.sourceforge.net
 - Change LDFLAGS to work for gcc.
 * Sun Feb 11 2007 - laca@sun.com
