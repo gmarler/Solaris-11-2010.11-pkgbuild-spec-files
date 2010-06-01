@@ -4,8 +4,7 @@
 # package are under the same license as the package itself.
 
 %include Solaris.inc
-
-%define osbuild %(uname -v | sed -e 's/[A-z_]//g')
+%include osdistro.inc
 
 %define src_version 2.08.01
 
@@ -18,12 +17,27 @@ SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 
+#new os2nnn and starting with build 134
+%if %{os2nnn}
 %if %(expr %{osbuild} '>=' 134)
 BuildRequires:		text/texinfo
 BuildRequires:		print/filter/ghostscript
-%else
+%endif
+%endif
+
+#os os2nnn below build 134 (excluding)
+%if %{os2nnn}
+%if %(expr %{osbuild} '<' 134)
 BuildRequires:       SUNWtexi
 BuildRequires:       SUNWghostscript
+%endif
+%endif
+
+#SXCE
+%if %SXCE
+BuildRequires:       SUNWtexi
+BuildRequires:       SUNWghostscriptr
+BuildRequires:       SUNWghostscriptu
 %endif
 
 %prep
@@ -75,6 +89,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/doc/nasm/*
 
 %changelog
+* May 30 2010 - Thomas Wagner
+- added include/osdistro.inc
+- changes to (Build)Requires to match SXCE, OS20nn build <134 => 134 (the time the packages got new names)
 * Apr 01 2010 - Milan Jurik
 - update to 2.08.01
 - build dependency fix
