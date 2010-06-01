@@ -1,6 +1,7 @@
 2010-06-01 Milan Jurik <sfnet@xylab.cz>
 
-	* SFEgdbm.spec: obsolete
+	* SFEgdbm.spec: obsolete, replaced by SUNWgnu-dbm
+	* SFEgazpacho.spec: obsolete, unmaitained by upstream for years
 
 2010-06-01  Thomas Wagner  <tom68@users.sourceforge.net>
         * include/osdistro.inc: fix detection of "Solaris Next Development" (~snv_140), add missing %define os201005 0, remove typo os2distrelname -> osdistrelname, for SXCE %define osdistrelname   "SXCE"
