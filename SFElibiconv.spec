@@ -6,6 +6,12 @@
 %include Solaris.inc
 %include usr-gnu.inc
 
+##TODO## Bug SUNWncurses and SUNWtixi do not define group "other" for /usr/gnu/share/doc
+##TODO## Bug No SUNWncurses TBD 
+##TODO## Bug No SUNWtixi    TBD 
+%define workaround_gnu_share_doc_group %( /usr/bin/ls -dl /usr/gnu/share/doc | grep " root.*bin " > /dev/null 2>&1 && echo bin || echo other )
+
+
 Name:                SFElibiconv
 Summary:             GNU iconv -- Code set conversion
 Version:             1.13.1
@@ -88,7 +94,9 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, bin) %{_includedir}
 %{_includedir}/*.h
 %dir %attr (0755, root, sys) %{_datadir}
-%dir %attr (0755, root, bin) %{_datadir}/doc
+##TODO## fix see bugs on top of the spec
+#%dir %attr (0755, root, other) %{_datadir}/doc
+%dir %attr (0755, root, %{workaround_gnu_share_doc_group}) %{_datadir}/doc
 %{_datadir}/doc/*
 
 %if %build_l10n
@@ -99,6 +107,10 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* May 30 2010 - Thomas Wagner
+- build workaround to build this package according to the group set on the
+  building machine's directory /usr/gnu/share/doc/, reason behind is
+  SUNWncurses creates /usr/gnu/share/doc with root:bin instead root:other
 * Wed Feb 24 2010 - Milan Jurik
 - update to 1.13.1
 - remove runpath patch as not needed
