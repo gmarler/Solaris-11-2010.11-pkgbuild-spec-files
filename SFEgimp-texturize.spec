@@ -78,7 +78,7 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
-* Tue Jun 02 2010 - Milan Jurik
+* Wed Jun 02 2010 - Milan Jurik
 - bump to 2.1
 * Sun Nov 18 2007 - daymobrew@users.sourceforge.net
 - Change LDFLAGS to work for gcc.

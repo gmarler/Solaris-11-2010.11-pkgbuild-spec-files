@@ -1,6 +1,7 @@
 2010-06-02 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEgimp-texturize.spec: bump to 2.1
+	* SFEgimpfx-foundry.spec: bump to 2.6-1
 
 2010-06-01  Thomas Wagner  <tom68@users.sourceforge.net>
         * SFEnasm.spec: added include/osdistro.inc, changed (Build)Requires to match 

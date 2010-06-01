@@ -7,12 +7,14 @@
 
 %define gimp_api_ver 2.0
 
-Name:                SFEgimpfx-foundry
-Summary:             Cross-platform development framework/toolkit
-Version:             20071219
-Source:              %{sf_download}/gimpfx-foundry/gimpfx-foundry-%{version}.tar.bz2
-SUNW_BaseDir:        %{_basedir}
-BuildRoot:           %{_tmppath}/%{name}-%{version}-build
+Name:		SFEgimpfx-foundry
+Summary:	Cross-platform development framework/toolkit
+Version:	2.6-1
+IPS_component_version:	2.6.1
+Group:		Applications/Graphics
+Source:		%{sf_download}/gimpfx-foundry/gimpfx-foundry-%{version}.tar.gz
+SUNW_BaseDir:	%{_basedir}
+BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 Requires: SUNWgnome-img-editor
 
@@ -35,5 +37,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gimp/%{gimp_api_ver}
 
 %changelog
+* Wed May 02 2010 - Milan Jurik
+- bump to 2.6-1
 * Wed Jan 23 2008 - laca@sun.com
 - Initial spec
