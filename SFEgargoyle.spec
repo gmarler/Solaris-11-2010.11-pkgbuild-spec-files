@@ -12,6 +12,7 @@ Name:                   SFEgargoyle
 URL:                    http://ccxvii.net/gargoyle/
 Summary:                Interactive Fiction Player
 Version:                2009.08.25
+IPS_component_version:  2009.8.25
 Source:                 http://garglk.googlecode.com/files/gargoyle-%{src_version}-sources.zip
 Patch1:                 gargoyle-01-solaris.diff
 Patch2:                 gargoyle-02-libexec.diff
@@ -20,6 +21,7 @@ SUNW_BaseDir:           %{_basedir}
 BuildRoot:              %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 BuildRequires: SFEjam
+BuildRequires: SUNWgnome-common-devel
 
 %prep
 %setup -q -c -n %{src_name}-%{version}
@@ -70,7 +72,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libexecdir}/gargoyle/*
 
 %changelog
-%define src_version     2009-08-25
+* Tue Jun 01 2010 - Milan Jurik
+- missing dependency added, IPS version
 * Tue Aug 25 2009 - brian.cameron@sun.com
 - Bump to 2009-08-25
 * Tue Dec 30 2008 - brian.cameron@sun.com

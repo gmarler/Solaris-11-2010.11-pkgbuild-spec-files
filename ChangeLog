@@ -10,6 +10,7 @@
 
 	* SFEgdbm.spec: obsolete, replaced by SUNWgnu-dbm
 	* SFEgazpacho.spec: obsolete, unmaitained by upstream for years
+	* SFEgargoyle.spec: missing dependency added, IPS version
 
 2010-06-01  Thomas Wagner  <tom68@users.sourceforge.net>
         * include/osdistro.inc: fix detection of "Solaris Next Development" (~snv_140), 
