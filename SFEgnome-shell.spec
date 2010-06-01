@@ -9,8 +9,8 @@
 %include Solaris.inc
 Name:                    SFEgnome-shell
 Summary:                 GNOME Shell
-Version:                 2.29.1
-Source:                  http://ftp.gnome.org/pub/GNOME/sources/gnome-shell/2.29/gnome-shell-%{version}.tar.bz2
+Version:                 2.31.2
+Source:                  http://ftp.gnome.org/pub/GNOME/sources/gnome-shell/2.31/gnome-shell-%{version}.tar.bz2
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 BuildRequires:           SUNWPython26-devel
@@ -82,8 +82,8 @@ rm -rf $RPM_BUILD_ROOT
 %post
 %restart_fmri desktop-mime-cache icon-cache gconf-cache
 
-%post root
-cat >> $BASEDIR/var/svc/profile/upgrade <<\EOF
+%postun
+%restart_fmri desktop-mime-cache icon-cache
 
 %files
 %defattr (-, root, bin)
@@ -114,6 +114,8 @@ cat >> $BASEDIR/var/svc/profile/upgrade <<\EOF
 %endif
 
 %changelog
+* Tue Jun 01 2010 - Brian Cameron  <brian.cameron@oracle.com>
+- Bump to 2.31.2.
 * Tue Apr 27 2010 - Brian Cameron  <brian.cameron@sun.com>
 - Bump to 2.29.1.
 * Wed Mar 10 2010 - Brian Cameron  <brian.cameron@sun.com>
