@@ -53,24 +53,23 @@ SUNW_Copyright:  bcfg2.copyright
 Requires:	runtime/python-26
 Requires: 	library/python-2/python-extra-26
 Requires:	file-monitor/gamin
-Requires:	bash
-Requires:	python-2/lxml-26
-Requires:	python-2/pyopenssl-26
-Requires:	python-2/python-twisted-26
-Requires:	python-2/python-zope-interface-26
-Requires:	python-2/simplejson-devel-26
+Requires:	shell/bash
+Requires:	library/python-2/lxml-26
+Requires:	library/python-2/pyopenssl-26
+Requires:	library/python-2/python-twisted-26
+Requires:	library/python-2/python-zope-interface-26
+Requires:	library/python-2/simplejson-devel-26
 Requires:	library/libxml2
 Requires:	SUNWpython-cherrypy
 Requires:	library/python-2/python-imaging-26
 Requires:	library/python-2/ply
-Requires:	python-2/python-gnome-libs-26
-Requires:	library/mozilla-nss
-Requires:	python-2/python-gst-26
-Requires:	library/math
+Requires:	library/python-2/python-gnome-libs-26
+Requires:	system/library/mozilla-nss
+Requires:	library/python-2/python-gst-26
+Requires:	system/library/math
 
-Requires:	ipkg
-Requires:	libsasl
-Requires:	ips/ips-incorporation
+Requires:	system/zones/brand/ipkg
+Requires:	system/library/security/libsasl
 
 %description
 Bcfg2 helps system administrators produce a consistent, reproduc
@@ -103,7 +102,25 @@ if [ -d $RPM_BUILD_ROOT%{_libdir}/python%{python_version}/site-packages ] ; then
   rmdir $RPM_BUILD_ROOT%{_libdir}/python%{python_version}/site-packages
 fi
 
+# if you install in /opt/SFE you need /opt/SFE/lib/python2.6/site-packages/vendor-packages.pth
+# and /opt/SFE/lib/python2.6/vendor-packages/Bcfg2.pth
+# vendor package is an issue from /usr
+#
+#TODO: revisit please
+#
+mkdir -p $RPM_BUILD_ROOT%{_libdir}/python%{python_version}/site-packages
+cat << EOF > $RPM_BUILD_ROOT%{_libdir}/python%{python_version}/site-packages/vendor-packages.pth
+import site
+site.addsitedir('/opt/SFE/lib/python2.6/vendor-packages')
+site.addsitedir('/usr/lib/python2.6/vendor-packages')
+EOF
 
+cat << EOF > $RPM_BUILD_ROOT%{_libdir}/python%{python_version}/vendor-packages/Bcfg2.pth
+Bcfg2
+EOF
+
+# TODO, for user; 
+# export PYTHONPATH="/opt/SFE/lib/python2.6/site-packages:/opt/SFE/lib/python2.6/vendor-packages"
 
 
 %files
@@ -111,20 +128,23 @@ fi
 %dir %attr(0755, root, bin) %{_bindir}
 %dir %attr(0755, root, bin) %{_libdir}
 %dir %attr(0755, root, bin) %{_libdir}/python%{python_version}
+#TODO: revisit please
+#
+%dir %attr(0755, root, bin) %{_libdir}/python%{python_version}/site-packages
 %dir %attr(0755, root, bin) %{_libdir}/python%{python_version}/vendor-packages
 %dir %attr(0755, root, bin) %{_libdir}/python%{python_version}/vendor-packages/Bcfg2
 %dir %attr(0755, root, bin) %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Client
 %dir %attr(0755, root, bin) %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Client/Tools
 %dir %attr(0755, root, bin) %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server
+%dir %attr(0755, root, bin) %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Admin
 %dir %attr(0755, root, bin) %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Hostbase
 %dir %attr(0755, root, bin) %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Hostbase/hostbase
 %dir %attr(0755, root, bin) %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Plugins
 %dir %attr(0755, root, bin) %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Reports
 %dir %attr(0755, root, bin) %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Reports/reports
+%dir %attr(0755, root, bin) %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Reports/reports/fixtures
 %dir %attr(0755, root, bin) %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Reports/reports/templatetags
-%dir %attr(0755, root, bin) %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite
-%dir %attr(0755, root, bin) %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/integration
-%dir %attr(0755, root, bin) %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils
+%dir %attr(0755, root, bin) %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Snapshots
 %dir %attr(0755, root, bin) %{_datadir}
 %dir %attr(0755, root, bin) %{_datadir}/bcfg2
 %dir %attr(0755, root, bin) %{_datadir}/bcfg2/Hostbase
@@ -147,12 +167,15 @@ fi
 %{_bindir}/bcfg2-build-reports
 %{_bindir}/bcfg2-info
 %{_bindir}/bcfg2-ping-sweep
-%{_bindir}/bcfg2-query
-%{_bindir}/bcfg2-remote
 %{_bindir}/bcfg2-repo-validate
 %{_bindir}/bcfg2-server
+%{_bindir}/bcfg2-reports
+#TODO: revisit please
+#
+%{_libdir}/python%{python_version}/site-packages/vendor-packages.pth
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2.pth
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2-1.0.1-py2.6.egg-info
 %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Client/Frame.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Client/Proxy.py
 %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Client/Tools/APT.py
 %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Client/Tools/Action.py
 %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Client/Tools/Blast.py
@@ -162,23 +185,40 @@ fi
 %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Client/Tools/FreeBSDPackage.py
 %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Client/Tools/POSIX.py
 %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Client/Tools/Portage.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Client/Tools/PostInstall.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Client/Tools/RPM.py
 %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Client/Tools/RPMng.py
 %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Client/Tools/RcUpdate.py
 %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Client/Tools/SMF.py
 %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Client/Tools/SYSV.py
 %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Client/Tools/YUMng.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Client/Tools/Yum.py
 %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Client/Tools/__init__.py
 %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Client/Tools/launchd.py
 %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Client/Tools/rpmtools.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Client/Tools/IPS.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Client/Tools/FreeBSDInit.py
 %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Client/XML.py
 %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Client/__init__.py
 %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Component.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Logging.py
 %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Options.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/SSLServer.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Proxy.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Logger.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Statistics.py
 %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Core.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/FileMonitor.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Admin/Compare.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Admin/Perf.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Admin/Snapshots.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Admin/Pull.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Admin/Minestruct.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Admin/Client.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Admin/Bundle.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Admin/Init.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Admin/Xcmd.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Admin/Viz.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Admin/Group.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Admin/Query.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Admin/Tidy.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Admin/__init__.py
 %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Hostbase/__init__.py
 %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Hostbase/backends.py
 %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Hostbase/hostbase/__init__.py
@@ -190,6 +230,24 @@ fi
 %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Hostbase/regex.py
 %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Hostbase/settings.py
 %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Hostbase/urls.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Plugins/NagiosGen.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Plugins/POSIXCompat.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Plugins/Properties.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Plugins/Statistics.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Plugins/Editor.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Plugins/BB.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Plugins/Probes.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Plugins/Packages.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Plugins/Ohai.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Plugins/Git.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Plugins/Trigger.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Plugins/Svn.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Plugins/GroupPatterns.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Plugins/DBStats.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Plugins/Decisions.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Plugins/Fossil.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Plugins/Bzr.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Plugins/Snapshots.py
 %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Plugin.py
 %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Plugins/Account.py
 %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Plugins/Base.py
@@ -205,85 +263,28 @@ fi
 %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Plugins/Svcmgr.py
 %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Plugins/TCheetah.py
 %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Plugins/TGenshi.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Plugins/Vhost.py
 %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Plugins/__init__.py
 %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Reports/__init__.py
 %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Reports/backends.py
 %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Reports/importscript.py
 %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Reports/manage.py
 %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Reports/nisauth.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Reports/updatefix.py
 %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Reports/reports/__init__.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Reports/reports/fixtures/initial_version.xml
 %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Reports/reports/models.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Reports/reports/models_old.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Reports/reports/models_new.py
 %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Reports/reports/templatetags/__init__.py
 %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Reports/reports/templatetags/django_templating_sigh.py
 %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Reports/reports/templatetags/syntax_coloring.py
 %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Reports/reports/views.py
 %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Reports/settings.py
 %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Reports/urls.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Statistics.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Snapshots/model.py
+%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/Snapshots/__init__.py
 %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/Server/__init__.py
 %{_libdir}/python%{python_version}/vendor-packages/Bcfg2/__init__.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/BaseDB.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/Checker.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/FileObject.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/HandshakeSettings.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/Session.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/SessionCache.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/SharedKeyDB.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/TLSConnection.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/TLSRecordLayer.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/VerifierDB.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/X509.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/X509CertChain.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/__init__.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/api.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/constants.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/errors.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/integration/AsyncStateMachine.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/integration/ClientHelper.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/integration/HTTPTLSConnection.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/integration/IMAP4_TLS.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/integration/IntegrationHelper.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/integration/POP3_TLS.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/integration/SMTP_TLS.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/integration/TLSAsyncDispatcherMixIn.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/integration/TLSSocketServerMixIn.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/integration/TLSTwistedProtocolWrapper.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/integration/XMLRPCTransport.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/integration/__init__.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/mathtls.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/messages.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/AES.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/ASN1Parser.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/Cryptlib_AES.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/Cryptlib_RC4.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/Cryptlib_TripleDES.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/OpenSSL_AES.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/OpenSSL_RC4.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/OpenSSL_RSAKey.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/OpenSSL_TripleDES.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/PyCrypto_AES.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/PyCrypto_RC4.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/PyCrypto_RSAKey.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/PyCrypto_TripleDES.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/Python_AES.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/Python_RC4.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/Python_RSAKey.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/RC4.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/RSAKey.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/TripleDES.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/__init__.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/cipherfactory.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/codec.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/compat.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/cryptomath.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/dateFuncs.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/hmac.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/jython_compat.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/keyfactory.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/prngd.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/rijndael.py
-%{_libdir}/python%{python_version}/vendor-packages/Bcfg2/tlslite/utils/xmltools.py
 %{_datadir}/bcfg2/Hostbase/repo/batchadd.tmpl
 %{_datadir}/bcfg2/Hostbase/repo/dhcpd.conf.head
 %{_datadir}/bcfg2/Hostbase/repo/dhcpd.tmpl
@@ -338,6 +339,12 @@ fi
 %{_datadir}/bcfg2/schemas/info.xsd
 %{_datadir}/bcfg2/schemas/metadata.xsd
 %{_datadir}/bcfg2/schemas/pkglist.xsd
+%{_datadir}/bcfg2/schemas/packages.xsd
+%{_datadir}/bcfg2/schemas/servicetype.xsd
+%{_datadir}/bcfg2/schemas/pkgtype.xsd
+%{_datadir}/bcfg2/schemas/pathentry.xsd
+%{_datadir}/bcfg2/schemas/grouppatterns.xsd
+%{_datadir}/bcfg2/schemas/decisions.xsd
 %{_datadir}/bcfg2/schemas/report-configuration.xsd
 %{_datadir}/bcfg2/schemas/rules.xsd
 %{_datadir}/bcfg2/schemas/services.xsd
@@ -363,8 +370,6 @@ fi
 %{_datadir}/man/man8/bcfg2-admin.8
 %{_datadir}/man/man8/bcfg2-build-reports.8
 %{_datadir}/man/man8/bcfg2-info.8
-%{_datadir}/man/man8/bcfg2-query.8
-%{_datadir}/man/man8/bcfg2-remote.8
 %{_datadir}/man/man8/bcfg2-repo-validate.8
 %{_datadir}/man/man8/bcfg2-server.8
 %changelog

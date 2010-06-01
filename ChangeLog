@@ -12,6 +12,8 @@
 
 2010-06-01  Gilles Dauphin ,dauphin@enst.fr>
 
+	* SFEbcfg2.spec: You need to set PYTHONPATH to 
+	  "/opt/SFE/lib/python2.6/site-packages:/opt/SFE/lib/python2.6/vendor-packages"
 	* SFEbcfg2.spec: init spec , configurator for installing system
 
 2010-06-01  Simon Jin <yuntong.jin@sun.com>
