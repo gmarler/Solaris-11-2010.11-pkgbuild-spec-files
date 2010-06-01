@@ -119,6 +119,7 @@
 %if %SXCE
 #no more work to do
 %define osdet299999 0
+%define osdistrelname   "SXCE"
 %endif
 
 
@@ -187,8 +188,8 @@
 %if %( egrep "OpenSolaris Develop" /etc/release > /dev/null && echo 1 || echo 0 )
 #we are on an IPS based OS distro
 %define os200911 1
-%define os2distrelnumber 200811
-%define os2distrelname   "os2008.11"
+%define osdistrelnumber 200811
+%define osdistrelname   "os2008.11"
 #this was the last check, skip all others
 %define osdet299999 0
 %else
@@ -212,6 +213,8 @@
 * May 31 2010 - Thomas Wagner
 - rename 201003/2010.03 to 201005/2010.05 (speculative)
 - change egrep for builds >=134 to match OpenSolaris Development and Solaris Next Development
+- remove typo os2distrelname -> osdistrelname
+- for SXCE %define osdistrelname   "SXCE"
 * May  5 2010 - Thomas Wagner
 - fix ifs to give echo 0 | echo 1 and not strings or exitcodes
 - lot's of fixes over time, especially %if logic is non standard in spec files...
