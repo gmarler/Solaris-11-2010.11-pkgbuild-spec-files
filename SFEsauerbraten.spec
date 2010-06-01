@@ -24,6 +24,8 @@ BuildRequires: SFEsdl-mixer-devel
 Requires: SFEsdl-mixer
 BuildRequires: SFEsdl-image-devel
 Requires: SFEsdl-image
+BuildRequires: SUNWxorg-mesa
+Requires: SUNWxorg-mesa
 
 %prep
 %setup -q -n %{src_name}
