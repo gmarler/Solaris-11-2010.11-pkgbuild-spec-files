@@ -67,6 +67,9 @@
 ### end of examples
 ### rules below need extensions with every major distro release
 
+#osdistro.inc is included --- NOTE: this variable is primarily for internal use by osdistro.inc
+%define osdistro 1
+
 %define osbuild %(uname -v | sed -e 's/[A-z_]//g')
 
 # see if we are on old SVR4 release
@@ -78,9 +81,9 @@
 # 
 # an estimate is done to tell which distro release is present
 #NEWRELEASE add to the table
-# os2008.11    os2009.06    os2009.11    os2010.03
+# os2008.11    os2009.06    os2009.11    os2010.03    os2010.05
 # corresponds to:
-# os200811     os200906     os200911     os201003
+# os200811     os200906     os200911     os201003     os201005
 
 #numbers for each major distro release are stroed in %os2nnnversion
 
@@ -88,6 +91,8 @@
 #set defaults to null - reverse order to catch youngest distro first 
 #and then used to skip the other detection rules for older releases
 #NEWRELEASE add to the table
+%define os201005 0
+#never apperared: (this variable might go away some day)
 %define os201003 0
 %define os200906 0
 %define os200902 0
@@ -139,7 +144,7 @@
 ##START build 134 and up, os2010.05 as os201005
 %if %{osdet299999}
 %if %( expr %{osbuild} '>=' 134 )
-%if %( egrep "Solaris (Next|) Develop" /etc/release > /dev/null && echo 1 || echo 0 )
+%if %( egrep 'Solaris Develop|Solaris Next Develop' /etc/release > /dev/null && echo 1 || echo 0 )
 #we are on an IPS based OS distro
 %define os2nnn   1
 %define os201005 1
