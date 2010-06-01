@@ -18,12 +18,12 @@ BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 BuildRequires: SUNWkrbu
 BuildRequires: SUNWopenssl-include
-BuildRequires: SFEgdbm-devel
+BuildRequires: SUNWgnu-dbm
 BuildRequires: SUNWmysqlu
 BuildRequires: SUNWperl584core
 Requires: SUNWkrbu
 Requires: SUNWopenssl-libraries
-Requires: SFEgdbm
+Requires: SUNWgnu-dbm
 
 Requires: %name-root
 %package root
@@ -99,5 +99,7 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Jun 01 2010 - Milan Jurik
+- SFEgdbm replaced by SUNWgnu-dbm
 * Sun 19 Aug 2007 - trisk@acm.jhu.edu
 - Initial version
