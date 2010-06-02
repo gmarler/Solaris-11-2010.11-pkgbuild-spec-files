@@ -14,7 +14,7 @@ License:	GPL v2+
 Group:		X11/Applications
 Source0:	http://dl.sourceforge.net/heroines/%{name}-%{version}-src.tar.bz2
 # Source0-md5:	e489693cf7ccc98c46cbcf8f751210c3
-#Patch0:		%{name}-system-libs.patch
+Patch0:		%{name}-01-gd.diff
 #Patch1:		%{name}-strip.patch
 #Patch2:		%{name}-fontsdir.patch
 #Patch3:		%{name}-locale_h.patch
@@ -89,7 +89,7 @@ Cinelerra was meant to be a Broadcast 2000 replacement.
 
 %prep
 %setup -q
-#%patch0 -p1
+%patch0 -p1
 #%patch1 -p1
 #%patch2 -p1
 #%patch3 -p1

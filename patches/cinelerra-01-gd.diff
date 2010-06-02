@@ -1,0 +1,157 @@
+diff -ru cinelerra-4.1.orig/cinelerra/amodule.C cinelerra-4.1/cinelerra/amodule.C
+--- cinelerra-4.1.orig/cinelerra/amodule.C	2009-09-25 22:40:14.000000000 +0200
++++ cinelerra-4.1/cinelerra/amodule.C	2010-05-27 15:48:46.068787000 +0200
+@@ -47,7 +47,7 @@
+ #include "theme.h"
+ #include "transition.h"
+ #include "transportque.h"
+-#include <string.h>
++#include <strings.h>
+ 
+ 
+ 
+diff -ru cinelerra-4.1.orig/global_config cinelerra-4.1/global_config
+--- cinelerra-4.1.orig/global_config	2008-10-13 20:31:13.000000000 +0200
++++ cinelerra-4.1/global_config	2010-05-27 15:47:43.535649000 +0200
+@@ -1,4 +1,4 @@
+-HAVE_ALSA := y
++HAVE_ALSA := n
+ HAVE_XFT := n
+ HAVE_ESOUND := y
+ HAVE_AVIFILE := n
+diff -ru cinelerra-4.1.orig/libmpeg3/Makefile cinelerra-4.1/libmpeg3/Makefile
+--- cinelerra-4.1.orig/libmpeg3/Makefile	2008-12-04 20:16:21.000000000 +0100
++++ cinelerra-4.1/libmpeg3/Makefile	2010-05-27 14:53:04.741561000 +0200
+@@ -1,7 +1,7 @@
+ CC = gcc
+ NASM = nasm
+ USE_MMX = 0
+-USE_CSS = 1
++USE_CSS = 0
+ A52DIR := $(shell expr a52dec* )
+ 
+ 
+diff -ru cinelerra-4.1.orig/libmpeg3/ifo.h cinelerra-4.1/libmpeg3/ifo.h
+--- cinelerra-4.1.orig/libmpeg3/ifo.h	2007-07-19 02:31:11.000000000 +0200
++++ cinelerra-4.1/libmpeg3/ifo.h	2010-05-27 14:59:07.572055000 +0200
+@@ -1,6 +1,10 @@
+ #ifndef __IFO_H__
+ #define __IFO_H__
+ 
++/* for solaris , GD 27/05/2010 */
++#define u_int32_t uint32_t
++#define u_int16_t uint16_t
++
+ #ifndef DVD_VIDEO_LB_LEN
+ #define DVD_VIDEO_LB_LEN 2048
+ #endif
+@@ -193,7 +197,7 @@
+ 	u_char *data[10];
+ 	
+ 	int fd;		// file descriptor
+-	__off64_t pos;	// offset of ifo file on device 
++	off64_t pos;	// offset of ifo file on device 
+ } ifo_t;
+ 
+ 
+@@ -221,7 +225,7 @@
+  * Prototypes
+  */
+ 
+-ifo_t *ifoOpen (int fd, __off64_t pos);
++ifo_t *ifoOpen (int fd, off64_t pos);
+ int ifoClose (ifo_t *ifo);
+ 
+ u_int ifoGetVOBStart	(ifo_t *ifo);
+diff -ru cinelerra-4.1.orig/libmpeg3/libmpeg3.h cinelerra-4.1/libmpeg3/libmpeg3.h
+--- cinelerra-4.1.orig/libmpeg3/libmpeg3.h	2007-07-19 02:31:11.000000000 +0200
++++ cinelerra-4.1/libmpeg3/libmpeg3.h	2010-05-27 14:34:25.947241000 +0200
+@@ -7,6 +7,9 @@
+ 
+ #include "mpeg3private.h"
+ 
++/* For Solaris gd 27/05/2010 */
++#define u_int32_t uint32_t
++
+ 
+ /* Supported color models for mpeg3_read_frame */
+ #define MPEG3_RGB565 2
+diff -ru cinelerra-4.1.orig/libmpeg3/mpeg3ifo.c cinelerra-4.1/libmpeg3/mpeg3ifo.c
+--- cinelerra-4.1.orig/libmpeg3/mpeg3ifo.c	2007-07-19 02:31:11.000000000 +0200
++++ cinelerra-4.1/libmpeg3/mpeg3ifo.c	2010-05-27 14:54:29.121885000 +0200
+@@ -1,4 +1,4 @@
+-#include <byteswap.h>
++/* #include <byteswap.h> */
+ #include <dirent.h>
+ #include <fcntl.h>
+ #include <stdlib.h>
+diff -ru cinelerra-4.1.orig/libmpeg3/mpeg3io.c cinelerra-4.1/libmpeg3/mpeg3io.c
+--- cinelerra-4.1.orig/libmpeg3/mpeg3io.c	2007-07-19 02:31:11.000000000 +0200
++++ cinelerra-4.1/libmpeg3/mpeg3io.c	2010-05-27 15:28:10.280244000 +0200
+@@ -1,7 +1,13 @@
+ #include "mpeg3private.h"
+ #include "mpeg3protos.h"
+ 
+-#include <mntent.h>
++#include <sys/mntent.h>
++#include <sys/mnttab.h>
++#define mnt_dir mnt_mountp
++#define mnt_fsname mnt_special
++#define mntent mnttab
++#define MOUNTED	"/etc/mtab"
++
+ #include <stdint.h>
+ #include <stdlib.h>
+ #include <string.h>
+@@ -216,7 +222,9 @@
+ int mpeg3io_device(char *path, char *device)
+ {
+ 	struct stat64 file_st, device_st;
+-    struct mntent *mnt;
++
++struct mnttab mmnt ;
++    struct mntent *mnt=&mmnt;
+ 	FILE *fp;
+ 
+ 	if(stat64(path, &file_st) < 0)
+@@ -225,8 +233,10 @@
+ 		return 1;
+ 	}
+ 
+-	fp = setmntent(MOUNTED, "r");
+-    while(fp && (mnt = getmntent(fp)))
++/*	fp = setmntent(MOUNTED, "r"); */
++	fp = fopen(MOUNTED, "r");
++/*     while(fp && (mnt = getmntent(fp))) */
++	while (getmntent(fp,mnt) == 0 )
+ 	{
+ 		if(stat64(mnt->mnt_fsname, &device_st) < 0) continue;
+ 		if(device_st.st_rdev == file_st.st_dev)
+@@ -235,7 +245,8 @@
+ 			break;
+ 		}
+ 	}
+-	endmntent(fp);
++	fclose(fp);
++	/* endmntent(fp); */
+ 
+ 	return 0;
+ }
+diff -ru cinelerra-4.1.orig/libmpeg3/mpeg3protos.h cinelerra-4.1/libmpeg3/mpeg3protos.h
+--- cinelerra-4.1.orig/libmpeg3/mpeg3protos.h	2008-01-11 18:55:19.000000000 +0100
++++ cinelerra-4.1/libmpeg3/mpeg3protos.h	2010-05-27 15:35:38.019149000 +0200
+@@ -1,8 +1,13 @@
+ #ifndef MPEG3PROTOS_H
+ #define MPEG3PROTOS_H
+ 
++#include <sys/byteorder.h>
++#define bswap_8  BSWAP_8
++#define bswap_16 BSWAP_16
++#define bswap_32 BSWAP_32
++#define bswap_64 BSWAP_64
+ 
+-
++#define u_int32_t uint32_t
+ 
+ 
+ #ifndef CLAMP
