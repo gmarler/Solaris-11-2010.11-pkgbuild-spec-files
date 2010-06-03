@@ -4,6 +4,7 @@
 # includes module(s): smf-grey
 #
 %include Solaris.inc
+%include osdistro.inc
 
 %define src_name	smf-grey
 
@@ -20,6 +21,25 @@ Patch2:		smf-grey-02-init.diff
 SUNW_BaseDir:	/
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
+
+#new os2nnn and starting with build 134
+%if %{os2nnn}
+%if %(expr %{osbuild} '>=' 134)
+BuildRequires:	service/network/smtp/sendmail
+%endif
+%endif
+
+#os os2nnn below build 134 (excluding)
+%if %{os2nnn}
+%if %(expr %{osbuild} '<' 134)
+BuildRequires:	SUNWsndm
+%endif
+%endif
+
+#SXCE
+%if %SXCE
+BuildRequires:	SUNWsndmu
+%endif
 
 %prep
 %setup -q -n %{src_name}-%{version}
@@ -61,8 +81,7 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 
 %actions
 group groupname="smfs"
-user ftpuser=false gcos-field="Unbound Reserved UID" username="smfs" password
-=NP group="smfs"
+user ftpuser=false gcos-field="smfs Reserved UID" username="smfs" password=NP group="smfs"
 
 %files
 %defattr (-, root, bin)
