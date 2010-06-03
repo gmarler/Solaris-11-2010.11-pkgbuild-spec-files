@@ -1,0 +1,26 @@
+--- smf-grey-2.1.0/Makefile	Thu Feb  1 19:32:42 2007
++++ smf-grey-2.1.0-patch/Makefile	Thu Jun  3 11:30:29 2010
+@@ -1,4 +1,4 @@
+-CC = gcc
++CC = cc
+ PREFIX = /usr/local
+ SBINDIR = $(PREFIX)/sbin
+ DATADIR = /var/run/smfs
+@@ -6,7 +6,7 @@
+ CONFDIR = /etc/mail/smfs
+ USER = smfs
+ GROUP = smfs
+-CFLAGS = -O2 -D_REENTRANT -fomit-frame-pointer -I/usr/local/include
++CFLAGS = -O4 -D_REENTRANT
+ 
+ # Linux
+ LDFLAGS = -lmilter -lpthread -L/usr/local/lib
+@@ -15,7 +15,7 @@
+ #LDFLAGS = -lmilter -pthread -L/usr/local/lib
+ 
+ # Solaris
+-#LDFLAGS = -lmilter -lpthread -lsocket -lnsl -lresolv
++LDFLAGS = -lmilter -lpthread -lsocket -lnsl -lresolv
+ 
+ # Sendmail v8.11
+ #LDFLAGS += -lsmutil

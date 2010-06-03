@@ -1,0 +1,17 @@
+--- smf-grey-2.1.0/init/smfgrey.solaris	Thu Jun  3 14:00:27 2010
++++ smf-grey-2.1.0-patch/init/smfgrey.solaris	Thu Jun  3 14:00:06 2010
+@@ -4,10 +4,10 @@
+ # Written for Solaris.
+ 
+ smfgrey_start() {
+-  if [ -x /usr/local/sbin/smf-grey ]; then
+-    echo -n "Starting smf-grey milter:  "
+-    echo -n "/usr/local/sbin/smf-grey "
+-    /usr/local/sbin/smf-grey
++  mkdir -p /var/run/smfs
++  chown smfs:smfs /var/run/smfs
++  if [ -x /usr/sbin/smf-grey ]; then
++    /usr/sbin/smf-grey
+   fi
+ }
+ 
