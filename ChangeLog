@@ -10,6 +10,7 @@
 	  SFElibschroedinger.spec
 	* SFEsmf-grey.spec: Initial version
 	* SFEysmv7.spec: Initial version
+	* encumbered/SFEmplayer.spec: SFElibschroedinger as optional
 
 2010-06-01  Brian Cameron  <brian.cameron@sun.com>
 

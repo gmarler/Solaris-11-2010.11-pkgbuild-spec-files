@@ -28,6 +28,7 @@
 %define with_xvid %(pkginfo -q SFExvid && echo 1 || echo 0)
 %define with_x264 %(pkginfo -q SFElibx264 && echo 1 || echo 0)
 %define with_giflib %(pkginfo -q SFEgiflib && echo 1 || echo 0)
+%define with_schroedinger %(pkginfo -q SFElibschroedinger && echo 1 || echo 0)
 
 %define SFElibsndfile   %(/usr/bin/pkginfo -q SFElibsndfile && echo 1 || echo 0)
 
@@ -124,8 +125,10 @@ BuildRequires: SFElibx264-devel
 Requires: SFEgiflib
 BuildRequires: SFEgiflib-devel
 %endif
+%if %with_schroedinger
 Requires: SFElibschroedinger
 BuildRequires: SFElibschroedinger-devel
+%endif
 
 %define x11	/usr/openwin
 %ifarch i386 amd64
@@ -229,6 +232,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/pixmaps/*
 
 %changelog
+* Thu Jun 03 2010 - Milan Jurik
+- SFElibschroedinger as optional
 * Mon May 31 2010 - Milan Jurik
 - update to rc3, cleanup in patches
 * Sun May 23 2010 - Milan Jurik
