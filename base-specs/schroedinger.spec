@@ -40,6 +40,8 @@ rm -rf $RPM_BUILD_ROOT
 %changelog
 * Apr 2010 - Gilles Dauphin
 - find pkg-config for ORC if in /opt/SFE
+* Fri Apr 09 2010 - Milan Jurik
+- initial import to SFE
 * Wed May 7 2008 Christian Schaller <christian.schaller@collabora.co.uk>
 - Added Schrovirtframe.h
 

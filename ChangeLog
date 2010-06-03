@@ -1,3 +1,8 @@
+2010-06-03 Milan Jurik <sfnet@xylab.cz>
+
+	* SFElibschroedinger.spec: rename from SFEschroedinger.spec to
+	  SFElibschroedinger.spec
+
 2010-06-01  Brian Cameron  <brian.cameron@sun.com>
 
 	* SFEmutter.spec: Bump to 2.31.2.

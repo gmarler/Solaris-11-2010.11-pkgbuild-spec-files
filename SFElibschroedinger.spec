@@ -138,6 +138,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-doc/html/schroedinger
 
 %changelog
+* Thu Jun 03 2010 - Milan Jurik
+- rename from SFEschroedinger.spec to SFElibschroedinger.spec
+* Fri Apr 09 2010 - Milan Jurik
+- initial import to SFE
 * Wed May 7 2008 Christian Schaller <christian.schaller@collabora.co.uk>
 - Added Schrovirtframe.h
 
