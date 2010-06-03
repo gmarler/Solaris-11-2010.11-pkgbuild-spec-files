@@ -9,6 +9,7 @@
 	* SFElibschroedinger.spec: rename from SFEschroedinger.spec to
 	  SFElibschroedinger.spec
 	* SFEsmf-grey.spec: Initial version
+	* SFEysmv7.spec: Initial version
 
 2010-06-01  Brian Cameron  <brian.cameron@sun.com>
 
