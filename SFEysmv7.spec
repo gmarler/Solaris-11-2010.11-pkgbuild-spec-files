@@ -37,7 +37,7 @@ fi
 
 export CC=gcc
 export CFLAGS="%{optflags} -I/usr/gnu/include"
-export LDFLAGS="%{_ldflags} -L/usr/gnu/lib -R/usr/gnu/lib -lfribidi"
+export LDFLAGS="%{_ldflags} -L/usr/gnu/lib -R/usr/gnu/lib"
 
 ./configure --prefix=%{_prefix}		\
 	    --bindir=%{_bindir}		\
