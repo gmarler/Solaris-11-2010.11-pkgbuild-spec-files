@@ -1,3 +1,9 @@
+2010-06-01  Gilles Dauphin <dauphin@enst.fr>
+
+	* SFEcinelerra.spec: init spec, work in progress
+	* SFEcinelerra-cv.spec: init spec, work in progress
+	  one of them would be finalized...
+
 2010-06-03 Milan Jurik <sfnet@xylab.cz>
 
 	* SFElibschroedinger.spec: rename from SFEschroedinger.spec to
@@ -49,7 +55,7 @@
 
 	* encumbered/SFEmplayer.spec: update to rc3, cleanup in patches
 
-2010-06-01  Gilles Dauphin ,dauphin@enst.fr>
+2010-06-01  Gilles Dauphin <dauphin@enst.fr>
 
 	* SFEbcfg2.spec: You need to set PYTHONPATH to 
 	  "/opt/SFE/lib/python2.6/site-packages:/opt/SFE/lib/python2.6/vendor-packages"
