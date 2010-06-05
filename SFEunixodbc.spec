@@ -30,7 +30,7 @@
 %{!?__cat:%define __cat /bin/cat}
 
 %define src_name unixodbc
-%define src_version 2.2.12
+%define src_version 2.2.14
 %define pkg_release 1
 #######
 # Tag definitions
@@ -104,9 +104,11 @@ This package contains static versions of unixODBC drivers and setup libraries
 %endif # build_drivers
 
 %ifarch amd64 sparcv9
+%define is64 1
 %use unixodbc64 = unixodbc-sr.spec
 %endif
 %include base.inc
+%define is64 0
 %use unixodbc = unixodbc-sr.spec
 
 %prep
@@ -114,9 +116,11 @@ rm -rf unixODBC-%{src_version}
 mkdir unixODBC-%{src_version}
 %ifarch amd64 sparcv9
 mkdir unixODBC-%{src_version}/%_arch64
+%define is64 1
 %unixodbc64.prep -d unixODBC-%{src_version}/%_arch64
 %endif
 mkdir unixODBC-%{src_version}/%{base_arch}
+%define is64 0
 %unixodbc.prep -d unixODBC-%{src_version}/%{base_arch}
 
 # and apply patch(es) if any
@@ -133,18 +137,22 @@ mkdir unixODBC-%{src_version}/%{base_arch}
 export CFLAGS=-m64
 export LDFLAGS=-m64
 export CXXFLAGS=-m64
+%define is64 1
 %unixodbc64.build -d unixODBC-%{src_version}/%_arch64
 %endif
 export LDFLAGS=
 export CFLAGS=
 export CXXFLAGS=
+%define is64 0
 %unixodbc.build -d unixODBC-%{src_version}/%{base_arch}
 
 %install
 
 %ifarch amd64 sparcv9
+%define is64 1
 %unixodbc64.install -d unixODBC-%{src_version}/%{_arch64}
 %endif
+%define is64 0
 %unixodbc.install -d unixODBC-%{src_version}/%{base_arch}
 
 %clean
@@ -215,7 +223,9 @@ fi
 %{_libdir}/libgtrtst.a
 %{_libdir}/libboundparam.la
 %{_libdir}/libboundparam.a
-%{_includedir}/*.h
+%dir %attr (0755, root, other) %{_libdir}/pkgconfig
+%{_libdir}/pkgconfig/unixODBC.pc
+%{_includedir}/odbc/*.h
 %ifarch amd64 sparcv9
 %{_libdir}/%{_arch64}/libodbcinst.la
 %{_libdir}/%{_arch64}/libodbcinst.a
@@ -227,6 +237,8 @@ fi
 %{_libdir}/%{_arch64}/libgtrtst.a
 %{_libdir}/%{_arch64}/libboundparam.la
 %{_libdir}/%{_arch64}/libboundparam.a
+%dir %attr (0755, root, other) %{_libdir}/%{_arch64}/pkgconfig
+%{_libdir}/%{_arch64}/pkgconfig/unixODBC.pc
 %endif
 
 %if %{build_gui_qt}
@@ -263,7 +275,6 @@ fi
 %{drvlibdir}/libodbcnnS.so*
 %{drvlibdir}/libodbcpsql.so*
 %{drvlibdir}/libodbcpsqlS.so*
-%{drvlibdir}/libodbctxt.so*
 %{drvlibdir}/libodbctxtS.so*
 %{drvlibdir}/liboplodbcS.so*
 %{drvlibdir}/liboraodbcS.so*
@@ -281,7 +292,6 @@ fi
 %{drvlibdir}/%{_arch64}/libodbcnnS.so*
 %{drvlibdir}/%{_arch64}/libodbcpsql.so*
 %{drvlibdir}/%{_arch64}/libodbcpsqlS.so*
-%{drvlibdir}/%{_arch64}/libodbctxt.so*
 %{drvlibdir}/%{_arch64}/libodbctxtS.so*
 %{drvlibdir}/%{_arch64}/liboplodbcS.so*
 %{drvlibdir}/%{_arch64}/liboraodbcS.so*
@@ -302,7 +312,6 @@ fi
 %{drvlibdir}/libodbcnnS.*a
 %{drvlibdir}/libodbcpsql.*a
 %{drvlibdir}/libodbcpsqlS.*a
-%{drvlibdir}/libodbctxt.*a
 %{drvlibdir}/libodbctxtS.*a
 %{drvlibdir}/liboplodbcS.*a
 %{drvlibdir}/liboraodbcS.*a
@@ -321,7 +330,6 @@ fi
 %{drvlibdir}/%{_arch64}/libodbcnnS.*a
 %{drvlibdir}/%{_arch64}/libodbcpsql.*a
 %{drvlibdir}/%{_arch64}/libodbcpsqlS.*a
-%{drvlibdir}/%{_arch64}/libodbctxt.*a
 %{drvlibdir}/%{_arch64}/libodbctxtS.*a
 %{drvlibdir}/%{_arch64}/liboplodbcS.*a
 %{drvlibdir}/%{_arch64}/liboraodbcS.*a

@@ -5,12 +5,13 @@
 #
 
 Name:		unixODBC
-Version:	2.2.12
+Version:	2.2.14
 Release:	1sr
 Summary: 	ODBC Driver Manager
 License:	LGPL
 URL:		http://www.%{name}.org/
 Source: http://www.unixodbc.org/unixODBC-%{src_version}.tar.gz
+Source1:        unixODBC.pc
 %include default-depend.inc
 %define vpkg odbc
 %{!?_sysconfdir: %define _sysconfdir /etc}
@@ -168,10 +169,35 @@ export LDFLAGS="%{_ldflags} -L%{_libdir} -R%{_libdir} $LDFLAGS"
 
 # configure autoconf package
 ./configure \
+   --prefix=%{_prefix} \
    --bindir=%{_bindir} \
+   --datadir=%{_datadir} \
+   --includedir=%{_includedir}/odbc \
+   --infodir=%{_infodir} \
    --libdir=%{_libdir} \
+   --libexecdir=%{_libexecdir} \
    --mandir=%{_mandir} \
+   --sysconfdir=%{_sysconfdir} \
+   --enable-shared \
+   --disable-static \
+   --disable-libtool-lock \
+   --disable-gui \
+   --enable-threads \
+   --disable-gnuthreads \
+   --disable-readline \
+   --enable-inicaching \
+   --enable-fdb \
+   --enable-odbctrace \
+   --enable-stats \
+   --enable-rtldgroup \
+   --disable-ltdllib \
+   --without-pth \
+   --without-pth-test \
+   --disable-ltdl-install \
+   --with-pic \
    --enable-rpath \
+   --enable-stats \
+   --enable-rtldgroup \
 %if %{build_drivers}
   --enable-drivers \
 %else
@@ -180,7 +206,7 @@ export LDFLAGS="%{_ldflags} -L%{_libdir} -R%{_libdir} $LDFLAGS"
 %if %{build_gui_qt}%{build_gui_gtk}
   --enable-gui \
 %else
-  --disable-gui --withut-x \
+  --disable-gui --without-x \
 %endif
 %if %{build_gui_qt}
   --with-qt-dir="${QTDIR}" \
@@ -222,6 +248,23 @@ done
 # (they will be created on-the-fly by the post scriptlet)
 %{__rm}	-f ${RPM_BUILD_ROOT}%{_sysconfdir}/odbcinst.ini
 %{__rm} -f ${RPM_BUILD_ROOT}%{_sysconfdir}/odbc.ini
+
+install -d $RPM_BUILD_ROOT%{_libdir}/pkgconfig
+install -c -m 0644 %{SOURCE1} $RPM_BUILD_ROOT%{_libdir}/pkgconfig
+%if %{is64}
+sed -i -e "s#SED_SIZEOF_LONG#8#g" $RPM_BUILD_ROOT%{_libdir}/pkgconfig/unixODBC.pc
+sed -i -e "s#\${prefix}/lib#\${prefix}/lib/%{_arch64}#g" $RPM_BUILD_ROOT%{_libdir}/pkgconfig/unixODBC.pc
+%else
+sed -i -e "s#SED_SIZEOF_LONG#4#g" $RPM_BUILD_ROOT%{_libdir}/pkgconfig/unixODBC.pc
+%endif
+
+if [ ! -d $RPM_BUILD_ROOT%{_includedir}/odbc ]
+then
+    install -d $RPM_BUILD_ROOT%{_includedir}/odbc
+    mv $RPM_BUILD_ROOT%{_includedir}/*.h $RPM_BUILD_ROOT%{_includedir}/odbc
+else
+    rm -f $RPM_BUILD_ROOT%{_includedir}/*.h
+fi
 
 # --- end of install scriptlet ---
 %clean

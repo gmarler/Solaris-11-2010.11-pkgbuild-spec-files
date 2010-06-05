@@ -1,3 +1,12 @@
+2010-06-05 Mark Wright <markwright@internode.on.net>
+	* SFEunixodbc.spec: bump to 2.2.14, build 64 bit, install
+	  headers in /usr/include/odbc
+	* base-specs/unixodbc-sr.spec: build 64 bit
+	* ext-sources/unixODBC.pc: supply unixODBC.pc
+	* SFEgd.spec: build 64 bit, with default fontpath patch,
+	  headers in include/gd2
+	* base-specs/gd.spec: build 64 bit
+
 2010-06-03  Gilles Dauphin <dauphin@enst.fr>
 
 	* SFEcinelerra.spec: init spec, work in progress
