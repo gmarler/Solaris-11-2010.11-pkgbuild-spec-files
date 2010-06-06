@@ -19,6 +19,7 @@ BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 BuildRequires: SUNWgnome-img-editor-devel
 Requires: SUNWgnome-img-editor
 BuildRequires: SUNWgnome-common-devel
+BuildRequires: SUNWperl-xml-parser
 
 %if %build_l10n
 %package l10n
