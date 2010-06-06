@@ -1,3 +1,7 @@
+2010-06-06 Milan Jurik <sfnet@xylab.cz>
+
+	* SFEguake.spec: Initial version
+
 2010-06-06 Mark Wright <markwright@internode.on.net>
 
 	* SFEerlang.spec, base-specs/erlang.spec: *NEW* current Erlang
