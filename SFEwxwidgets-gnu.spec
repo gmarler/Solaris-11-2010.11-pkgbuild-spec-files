@@ -7,17 +7,28 @@
 %include Solaris.inc
 %include usr-gnu.inc
 
+%define pkg_src_name	wxWidgets
+%define	src_ver 2.8.10
+%define	src_name        wxwidgets-gnu
+
 %define using_gld %(gcc -v 2>&1 | /usr/xpg4/bin/grep -q with-gnu-ld && echo 1 || echo 0)
 %define SUNWlibsdl      %(/usr/bin/pkginfo -q SUNWlibsdl && echo 1 || echo 0)
+
+%define cc_is_gcc 1
+%ifarch amd64 sparcv9
+%include arch64.inc
+%define is64 1
+%use wxwidgets_gnu_64 = wxwidgets-gnu.spec
+%endif
+%include base.inc
+%define is64 0
+%use wxwidgets_gnu = wxwidgets-gnu.spec
 
 Name:                    SFEwxwidgets-gnu
 Summary:                 wxWidgets - Cross-Platform GUI Library (g++)
 URL:                     http://wxwidgets.org/
-Version:                 2.8.10
-%define tarball_version  2.8.10
-Source:			 %{sf_download}/wxwindows/wxWidgets-%{tarball_version}.tar.bz2
-Patch1:                  wxwidgets-01-msgfmt.diff
-Patch2:                  wxwidgets-02-Tmacro.diff
+Version:                 %{src_ver}
+Source:			 %{sf_download}/wxwindows/%{pkg_src_name}-%{src_ver}.tar.bz2
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -39,6 +50,18 @@ BuildRequires: SUNWlibsdl-devel
 BuildRequires: SFEsdl-devel
 %endif
 
+%if %{is_s10}
+# There is no gtk2 on solaris 10, hence necessary to build it from the
+# KDE4 Solaris project:
+# http://techbase.kde.org/index.php?title=Projects/KDE_on_Solaris
+# Also after noticing that there are no 64 bit gtk v1 libs on solaris 10u8,
+# I gave in on trying to make it work with gtk v1 on Solaris 10u8.
+Requires:      FOSSgtk2
+Requires:      FOSSexpat
+BuildRequires: FOSSgtk2
+BuildRequires: FOSSexpat
+%endif
+
 %package devel
 Summary:		 %{summary} - development files
 SUNW_BaseDir:            %{_basedir}
@@ -54,90 +77,63 @@ Requires:                %{name}
 %endif
 
 %prep
-rm -rf %name-%version
-%setup -q -n wxWidgets-%tarball_version
-%patch1 -p1
-%patch2 -p0
-
-%build
-CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
-if test "x$CPUS" = "x" -o $CPUS = 0; then
-    CPUS=1
-fi
-
-export CPPFLAGS="-I/usr/X11/include"
-export CC=gcc
-export CFLAGS="%{gcc_optflags}"
-export CXX=g++
-export CXXFLAGS="%{gcc_cxx_optflags}"
-%if %using_gld
-  export LDFLAGS="-L%{_libdir} -L/usr/X11/lib -R%{_libdir} -R/usr/X11/lib -lm"
-  CFLAGS="$( echo $CFLAGS | sed 's/ -Xlinker -i//' )"
-  CXXFLAGS="$( echo $CXXFLAGS | sed 's/ -Xlinker -i//' )"
-%else
-  export LDFLAGS="%{_ldflags} -lm"
-  export LD_OPTIONS="-i -L%{_libdir} -L/usr/X11/lib -R%{_libdir}:/usr/X11/lib"
+rm -rf %{name}-%{version}
+mkdir %{name}-%{version}
+%ifarch amd64 sparcv9
+mkdir %{name}-%{version}/%{_arch64}
+%define is64 1
+%wxwidgets_gnu_64.prep -d %{name}-%{version}/%{_arch64}
 %endif
 
-# keep PATH from being mangled by SDL check (breaks grep -E and tr A-Z a-z)
-perl -pi -e 's,PATH=".*\$PATH",:,' configure
-./configure --prefix=%{_prefix}			\
-	    --bindir=%{_bindir}			\
-	    --includedir=%{_includedir}		\
-            --libdir=%{_libdir}			\
-            --enable-gtk2			\
-            --enable-unicode			\
-            --enable-mimetype			\
-            --enable-gui			\
-            --enable-xrc			\
-            --with-gtk				\
-            --with-subdirs			\
-            --without-expat                     \
-            --with-sdl                          \
-            --with-gnomeprint			\
-            --with-gnomevfs			\
-            --with-opengl			\
-            --without-libmspack
+mkdir %{name}-%{version}/%{base_arch}
+%define is64 0
+%wxwidgets_gnu.prep -d %{name}-%{version}/%{base_arch}
 
-make -j$CPUS
-cd contrib
-make -j$CPUS
-cd ..
-cd locale
-make allmo
-cd ..
+
+%build
+%ifarch amd64 sparcv9
+%define is64 1
+%wxwidgets_gnu_64.build -d %{name}-%{version}/%{_arch64}
+%endif
+
+%define is64 0
+%wxwidgets_gnu.build -d %{name}-%{version}/%{base_arch}
+
 
 %install
 rm -rf $RPM_BUILD_ROOT
-make install DESTDIR=$RPM_BUILD_ROOT
-cd contrib
-make install DESTDIR=$RPM_BUILD_ROOT
-cd ..
-
-cd $RPM_BUILD_ROOT%{_bindir}
-rm -f wx-config
-ln -s ../lib/wx/config/gtk2-unicode-release-* wx-config
-perl -pi -e 's,-pthreads,,' wx-config
-
-%if %build_l10n
-# Rename zh dir to zh_CN as zh is a symlink to zh_CN and causing installation
-# problems as a dir.
-cd $RPM_BUILD_ROOT%{_datadir}/locale
-mv zh zh_CN
-%else
-# REMOVE l10n FILES
-rm -rf $RPM_BUILD_ROOT%{_datadir}/locale
+%ifarch amd64 sparcv9
+%define is64 1
+%wxwidgets_gnu_64.install -d %{name}-%{version}/%{_arch64}
 %endif
 
+%define is64 0
+%wxwidgets_gnu.install -d %{name}-%{version}/%{base_arch}
+
 %clean
-rm -rf $RPM_BUILD_ROOT
+%ifarch amd64 sparcv9
+%define is64 1
+%wxwidgets_gnu_64.clean -d %{name}-%{version}/%{_arch64}
+%endif
+
+%define is64 0
+%wxwidgets_gnu.clean -d %{name}-%{version}/%{base_arch}
 
 %files
 %defattr (-, root, bin)
 %dir %attr (0755, root, bin) %{_bindir}
-%{_bindir}/*
+%{_bindir}/wx*
 %dir %attr (0755, root, bin) %{_libdir}
-%{_libdir}/*
+%{_libdir}/lib*
+%{_libdir}/wx
+
+%ifarch amd64 sparcv9
+%dir %attr (0755, root, bin) %{_bindir}/%{_arch64}
+%{_bindir}/%{_arch64}/wx*
+%dir %attr (0755, root, bin) %{_libdir}/%{_arch64}
+%{_libdir}/%{_arch64}/lib*
+%{_libdir}/%{_arch64}/wx*
+%endif
 
 %files devel
 %defattr (-, root, bin)

@@ -1,4 +1,16 @@
+2010-06-06 Mark Wright <markwright@internode.on.net>
+
+	* SFEerlang.spec, base-specs/erlang.spec: *NEW* current Erlang
+	  programming language release, SMP, HiPE, 64bit built on
+	  Solaris 10u8 with gtk2 from KDE4 Solaris
+	* patches/erlang-01-lib-wx-c_src-wxe_gl.h.diff: Fix for 64 bit
+	* base-specs/wxwidgets-gnu.spec: Build 64 bit
+	* patches/wxwidgets-05-setup.h.in.diff: Fix header for 64 bit build
+	* patches/wxwidgets-03-changeset_r61009.diff: gtk2 GSocket name clash
+	* patches/wxwidgets-04-wxFileName-ticket-4697.diff: Fix for 64 bit
+
 2010-06-05 Mark Wright <markwright@internode.on.net>
+
 	* SFEunixodbc.spec: bump to 2.2.14, build 64 bit, install
 	  headers in /usr/include/odbc
 	* base-specs/unixodbc-sr.spec: build 64 bit

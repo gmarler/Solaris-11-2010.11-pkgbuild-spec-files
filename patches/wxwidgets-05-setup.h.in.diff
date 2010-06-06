@@ -1,0 +1,60 @@
+--- wxWidgets-2.8.10-orig/setup.h.in	2009-03-06 12:10:54.000000000 +0000
++++ wxWidgets-2.8.10/setup.h.in	2010-06-06 01:04:49.534713313 +0000
+@@ -937,34 +937,57 @@
+ #undef HAVE_VSSCANF
+ 
+ /* The number of bytes in a char.  */
++#ifndef SIZEOF_CHAR
+ #undef SIZEOF_CHAR
++#endif
+ 
+ /* The number of bytes in a wchar_t.  */
++#ifndef SIZEOF_WCHAR_T
+ #undef SIZEOF_WCHAR_T
++#endif
+ 
++/* Since the sizeof stuff is different in 32 bit and 64 bit builds, it
++   is necessary to specify these SIZEOF_STUFF defines on the command line
++   when building stuff that uses wxwidgets. */
+ /* The number of bytes in a int.  */
++#ifndef SIZEOF_INT
+ #undef SIZEOF_INT
++#endif
+ 
+ /* The number of bytes in a pointer.  */
++#ifndef SIZEOF_VOID_P
+ #undef SIZEOF_VOID_P
++#endif
+ 
+ /* The number of bytes in a long.  */
++#ifndef SIZEOF_LONG
+ #undef SIZEOF_LONG
++#endif
+ 
+ /* The number of bytes in a long long.  */
++#ifndef SIZEOF_LONG_LONG
+ #undef SIZEOF_LONG_LONG
++#endif
+ 
+ /* The number of bytes in a short.  */
++#ifndef SIZEOF_SHORT
+ #undef SIZEOF_SHORT
++#endif
+ 
+ /* The number of bytes in a size_t.  */
++#ifndef SIZEOF_SIZE_T
+ #undef SIZEOF_SIZE_T
++#endif
+ 
+ /* Define if size_t on your machine is the same type as unsigned int. */
++#ifndef wxSIZE_T_IS_UINT
+ #undef wxSIZE_T_IS_UINT
++#endif
+ 
+ /* Define if size_t on your machine is the same type as unsigned long. */
++#ifndef wxSIZE_T_IS_ULONG
+ #undef wxSIZE_T_IS_ULONG
++#endif
+ 
+ /* Define if you have the dlopen function.  */
+ #undef HAVE_DLOPEN

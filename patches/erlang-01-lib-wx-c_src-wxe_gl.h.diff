@@ -1,0 +1,27 @@
+--- otp_src_R13B04-orig/lib/wx/c_src/wxe_gl.h	2009-03-12 12:25:43.000000000 +0000
++++ otp_src_R13B04/lib/wx/c_src/wxe_gl.h	2010-06-06 05:16:12.457404922 +0000
+@@ -98,20 +98,20 @@
+ #include <inttypes.h>
+ #elif defined(__sun__)
+ #include <inttypes.h>
+-#if defined(__STDC__)
++#if defined(__STDC__) && !defined(_INT64_TYPE)
+ #if defined(__arch64__)
+ typedef long int int64_t;
+ typedef unsigned long int uint64_t;
+ #else
+ typedef long long int int64_t;
+ typedef unsigned long long int uint64_t;
+-#endif /* __arch64__ */
++#endif /* __arch64__ && !_INT64_TYPE */
+ #endif /* __STDC__ */
+-#elif defined( __VMS )
++#elif defined( __VMS ) || defined(__SOL64__)
+ #include <inttypes.h>
+ #elif defined(__SCO__) || defined(__USLC__)
+ #include <stdint.h>
+-#elif defined(__UNIXOS2__) || defined(__SOL64__)
++#elif defined(__UNIXOS2__)
+ typedef long int int32_t;
+ typedef long long int int64_t;
+ typedef unsigned long long int uint64_t;
