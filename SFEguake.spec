@@ -19,20 +19,24 @@ BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 Requires:	%name-root
 BuildRequires:	SUNWgnome-common-devel
-BuildRequires:	SUNWgnome-python-desktop
-Requires:	SUNWgnome-python-desktop
-BuildRequires:	SUNWgnome-python-extras
-Requires:	SUNWgnome-python-extras
-BuildRequires:	SUNWgnome-python-libs
-Requires:	SUNWgnome-python-libs
-BuildRequires:	SUNWpython-notify
-Requires:	SUNWpython-notify
+BuildRequires:	SUNWgnome-python26-desktop
+Requires:	SUNWgnome-python26-desktop
+BuildRequires:	SUNWgnome-python26-extras
+Requires:	SUNWgnome-python26-extras
+BuildRequires:	SUNWgnome-python26-libs
+Requires:	SUNWgnome-python26-libs
+BuildRequires:	SUNWpython26-notify
+Requires:	SUNWpython26-notify
 BuildRequires:	SUNWperl-xml-parser
 BuildRequires:	SUNWgnome-config
 Requires:	SUNWgnome-config
-BuildRequires:	SUNWpython-xdg
-Requires:	SUNWpython-xdg
+BuildRequires:	SUNWpython26-xdg
+Requires:	SUNWpython26-xdg
 Requires:	SUNWpostrun
+BuildRequires:	SUNWgnome-terminal
+Requires:	SUNWgnome-terminal
+BuildRequires:	SUNWxwinc
+Requires:	SUNWxwplt
 
 
 %description
