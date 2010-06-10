@@ -1,16 +1,20 @@
 #
-# spec file for package SFElibetpan
+# spec file for package libsasl2 
 #
-# includes module(s): libetpan
 #
 %include Solaris.inc
 
-Name:                    SFElibetpan
-Summary:                 libetpan  - mail library
-Version:                 1.0
-Source:                  %{sf_download}/libetpan/libetpan-%{version}.tar.gz
-SUNW_BaseDir:            %{_basedir}
-buildRoot:               %{_tmppath}/%{name}-%{version}-build
+Name:            SFElibsasl2
+Summary:         Cyrus SASL API implentation 
+Version:         2.1.23
+License:         Carnegie Mellon University
+Group:           System Environment/Utils
+URL:             http://cyrusimap.web.cmu.edu/downloads.html#sasl
+Source:          ftp://ftp.andrew.cmu.edu/pub/cyrus-mail/cyrus-sasl-%{version}.tar.gz
+SUNW_BaseDir:    %{_basedir}
+buildRoot:       %{_tmppath}/%{name}-%{version}-build
+
+
 %include default-depend.inc
 
 %package devel
@@ -21,15 +25,14 @@ Requires: %name
 
 
 %prep
-%setup -q -n libetpan-%version
+%setup -q -n cyrus-sasl-%version
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
 if test "x$CPUS" = "x" -o $CPUS = 0; then
     CPUS=1
 fi
-export CFLAGS="%optflags"
-export LDFLAGS="%_ldflags -lsocket -lnsl"
+#export CC=/usr/sfw/bin/gcc
 
 ./configure --prefix=%{_prefix} --mandir=%{_mandir} \
             --libdir=%{_libdir}              \
@@ -50,16 +53,24 @@ rm -rf $RPM_BUILD_ROOT
 %defattr (-, root, bin)
 %dir %attr (0755, root, bin) %{_libdir}
 %{_libdir}/lib*.so*
+%dir %attr (0755, root, bin) %{_libdir}/sasl2
+%{_libdir}/sasl2/*
+%dir %attr (0755,root,bin) %{_sbindir}
+%{_sbindir}/*
+%dir %attr (0755, root, sys) %{_basedir}/share
+%dir %attr (0755, root, bin) %{_mandir}
+%dir %attr (0755, root, bin) %{_mandir}/man3
+%{_mandir}/man3/*
+%dir %attr (0755, root, bin) %{_mandir}/man8
+%{_mandir}/man8/*
 
 %files devel
 %defattr (-, root, bin)
 %dir %attr (0755, root, bin) %{_includedir}
 %{_includedir}/*
-%dir %attr (0755, root, bin) %{_bindir}
-%{_bindir}/libetpan-config
+
 
 %changelog
 * Thu Jun 10 2010 - pradhap (at) gmail.com
-- Bump to 1.0
-* Thu Oct 2 2008 - markwright@internode.on.net
-- create
+- Initial SFElibsasl2 spec file.
+

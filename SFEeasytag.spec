@@ -7,7 +7,7 @@
 # Software specific variable definitions
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 %define src_name	easytag
-%define src_version	2.1
+%define src_version	2.1.6
 %define pkg_release	1
 
 # =========================================================================== 
@@ -129,6 +129,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Thu Jun 10 2010 - pradhap (at) gmail.com
+- Bump to 2.1.6
 * Sun Feb 24 2008 - trisk@acm.jhu.edu
 - Replace patch1, update build rules
 * Mon Dec 31 2007 - markwright@internode.on.net

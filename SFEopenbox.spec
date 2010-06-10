@@ -9,7 +9,7 @@
 
 Name:                    SFEopenbox
 Summary:                 a free window manager for the X Window System
-Version:                 3.4.11
+Version:                 3.4.11.2
 Source:                  http://icculus.org/openbox/releases/openbox-%{version}.tar.gz
 URL:                     http://icculus.org/openbox/index.php/Main_Page
 
@@ -101,6 +101,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Thu Jun 10 2010 - pradhap (at) gmail.com
+- Bump to 3.4.11.2
 * Mon Feb 15 2010 - brian.cameron@sun.com
 - Bump to 3.4.11.
 * Tue Aug 04 2009 - brian.cameron@sun.com

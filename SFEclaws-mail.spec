@@ -11,7 +11,7 @@
 
 Name:                    SFEclaws-mail
 Summary:                 Claws-Mail is an e-mail client (and news reader) based on GTK+
-Version:                 3.5.0
+Version:                 3.7.6
 Source:                  %{sf_download}/sylpheed-claws/%{src_name}-%{version}.tar.bz2
 License:                 GPL
 URL:                     http://claws-mail.org/
@@ -75,6 +75,7 @@ export ASPELL="/usr/lib/aspell/aspell"
             --disable-static            \
             --enable-aspell             \
             --with-aspell-prefix=/usr   \
+            --disable-trayicon-plugin \
             --disable-ldap              \
             --disable-pgpcore-plugin
 
@@ -101,6 +102,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/claws-mail/plugins/*
 %dir %attr (0755, root, sys) %{_datadir}
 %defattr (-, root, other)
+%{_prefix}/share/locale/*
 %dir %attr (0755, root, other) %{_datadir}/doc
 %dir %attr (0755, root, other) %{_datadir}/doc/%{src_name}/
 %dir %attr (0755, root, other) %{_datadir}/doc/%{src_name}/manual
@@ -117,7 +119,14 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, other) %{_datadir}/icons/hicolor
 %dir %attr (0755, root, other) %{_datadir}/icons/hicolor/48x48
 %dir %attr (0755, root, other) %{_datadir}/icons/hicolor/48x48/apps
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/64x64
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/64x64/apps
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/128x128
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/128x128/apps
 %{_datadir}/icons/hicolor/48x48/apps/claws-mail.png
+%{_datadir}/icons/hicolor/128x128/apps/claws-mail.png
+%{_datadir}/icons/hicolor/64x64/apps/claws-mail.png
+
 %dir %attr (0755, root, other) %{_datadir}/pixmaps
 %{_datadir}/pixmaps/*.png
 %dir %attr (0755, root, other) %{_datadir}/applications
@@ -125,6 +134,9 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, bin) %{_datadir}/man
 %dir %attr (0755, root, bin) %{_datadir}/man/man1
 %{_datadir}/man/man1/claws-mail.1
+#%dir %attr (0755, root, bin) %{_datadir}/doc/claws-mail
+#%dir %attr (0755, root, bin) %{_datadir}/doc/claws-mail/de
+%{_datadir}/doc/claws-mail/manual/de/*
 
 %files devel
 %defattr (-, root, bin)
@@ -142,6 +154,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/claws-mail/etpan/*.h
 
 %changelog
+* Thu Jun 10 2010 - pradhap (at) gmail.com
+- Bump to 3.7.6
+- Fixed icons path
 * Thu Oct 2 2008 - markwright@internode.on.net
 - Detect aspell, disable pgp to avoid compiler error.
 * Thu Oct 2 2008 - markwright@internode.on.net

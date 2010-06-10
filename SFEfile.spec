@@ -9,7 +9,7 @@
 
 Name:                SFEfile
 Summary:             determine file type
-Version:             4.26
+Version:             5.04
 Source:              ftp://ftp.astron.com/pub/file/file-%{version}.tar.gz
 
 SUNW_BaseDir:        %{_basedir}
@@ -56,7 +56,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, bin) %{_libdir}
 %{_libdir}/*
 %dir %attr (0755, root, sys) %{_datadir}
-%{_datadir}/file/*
+%{_datadir}/misc/*
 %dir %attr (0755, root, bin) %{_mandir}
 %dir %attr (0755, root, bin) %{_mandir}/man1
 %{_mandir}/man1/*.1
@@ -66,6 +66,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man4/*.4
 
 %changelog
+* Thu Jun 10 2010 - pradhap (at) gmail.com
+- Bump to 5.04
 * Tue Oct 22 2008  - Pradhap Devarajan <pradhap (at) gmail.com>
 - Bump to 4.26
 * Sat Jul 15 2007 - dougs@truemail.co.th
