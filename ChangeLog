@@ -1,6 +1,7 @@
 2010-06-10 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEpython-4Suite-XML.spec: Initial version
+	* SFErubygem-dnsruby.spec: Initial version
 
 2010-06-09 Milan Jurik <sfnet@xylab.cz>
 
