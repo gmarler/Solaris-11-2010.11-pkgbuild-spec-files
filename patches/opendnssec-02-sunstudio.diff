@@ -1,0 +1,5 @@
+--- opendnssec-1.1.0/signer/tools/util.h	Thu Jun 10 11:01:21 2010
++++ opendnssec-1.1.0-patch/signer/tools/util.h	Thu Jun 10 11:02:20 2010
+@@ -36,1 +36,1 @@
+-uint32_t lookup_class(FILE* fd);
++ldns_rr_class lookup_class(FILE* fd);

@@ -1,0 +1,46 @@
+--- opendnssec-1.1.0/enforcer/utils/Makefile.am	Wed May 26 12:53:17 2010
++++ opendnssec-1.1.0-patch/enforcer/utils/Makefile.am	Thu Jun 10 10:36:46 2010
+@@ -15,1 +15,1 @@
+-AM_CFLAGS = -std=c99
++AM_CFLAGS =
+--- opendnssec-1.1.0/libhsm/checks/Makefile.am	Wed May 26 12:53:24 2010
++++ opendnssec-1.1.0-patch/libhsm/checks/Makefile.am	Thu Jun 10 10:35:42 2010
+@@ -10,1 +10,1 @@
+-AM_CFLAGS =	-std=c99
++AM_CFLAGS =
+--- opendnssec-1.1.0/libhsm/src/Makefile.am	Wed May 26 12:53:25 2010
++++ opendnssec-1.1.0-patch/libhsm/src/Makefile.am	Thu Jun 10 10:35:04 2010
+@@ -8,1 +8,1 @@
+-AM_CFLAGS =	-std=c99
++AM_CFLAGS =
+--- opendnssec-1.1.0/enforcer/utils/Makefile.in	Wed May 26 18:52:41 2010
++++ opendnssec-1.1.0-patch/enforcer/utils/Makefile.in	Thu Jun 10 10:52:21 2010
+@@ -271,1 +271,1 @@
+-AM_CFLAGS = -std=c99
++AM_CFLAGS =
+--- opendnssec-1.1.0/libhsm/checks/Makefile.in	Thu Jun 10 10:51:05 2010
++++ opendnssec-1.1.0-patch/libhsm/checks/Makefile.in	Thu Jun 10 10:53:13 2010
+@@ -237,1 +237,1 @@
+-AM_CFLAGS = -std=c99
++AM_CFLAGS =
+--- opendnssec-1.1.0/libhsm/src/Makefile.in	Thu Jun 10 10:51:05 2010
++++ opendnssec-1.1.0-patch/libhsm/src/Makefile.in	Thu Jun 10 10:55:09 2010
+@@ -254,7 +254,7 @@
+ 		-I$(srcdir)/cryptoki_compat \
+ 		@LDNS_INCLUDES@ @XML2_INCLUDES@
+ 
+-AM_CFLAGS = -std=c99
++AM_CFLAGS =
+ lib_LTLIBRARIES = libhsm.la
+ libhsm_la_SOURCES = libhsm.c compat/strlcpy.c compat/strlcat.c
+ libhsm_la_LDFLAGS = -dl -version-info @LIBTOOL_VERSION_INFO@ \
+--- opendnssec-1.1.0/signer/tools/Makefile.in	Wed May 26 18:52:52 2010
++++ opendnssec-1.1.0-patch/signer/tools/Makefile.in	Thu Jun 10 11:08:04 2010
+@@ -275,1 +275,1 @@
+-quicksorter_CFLAGS = -std=gnu99 -funsigned-char
++quicksorter_CFLAGS = -xchar=unsigned
+--- opendnssec-1.1.0/signer/tools/Makefile.am	Wed May 26 12:53:23 2010
++++ opendnssec-1.1.0-patch/signer/tools/Makefile.am	Thu Jun 10 11:07:53 2010
+@@ -17,1 +17,1 @@
+-quicksorter_CFLAGS=		-std=gnu99 -funsigned-char
++quicksorter_CFLAGS=		-xchar=unsigned

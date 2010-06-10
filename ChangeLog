@@ -2,6 +2,7 @@
 
 	* SFEpython-4Suite-XML.spec: Initial version
 	* SFErubygem-dnsruby.spec: Initial version
+	* SFEopendnssec.spec: Initial version
 
 2010-06-09 Milan Jurik <sfnet@xylab.cz>
 
