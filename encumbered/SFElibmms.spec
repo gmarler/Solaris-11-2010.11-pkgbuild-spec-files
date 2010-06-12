@@ -24,6 +24,7 @@ Requires:           SUNWgnome-base-libs
 Requires:           SUNWlibm
 BuildRequires:      SUNWgnome-base-libs-devel
 Conflicts:          SUNWmmsu
+BuildRequires:      SUNWgnome-common-devel
 
 %package devel
 Summary:       %{summary} - development files
