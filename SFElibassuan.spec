@@ -5,18 +5,27 @@
 
 %include Solaris.inc
 
-Name:                SFElibassuan
-Summary:             An IPC libbray used by GnuPG 2, GPGME etc. 
-Version:             1.0.5
-Source:              ftp://ftp.gnupg.org/gcrypt/libassuan/libassuan-%{version}.tar.bz2
-
-SUNW_BaseDir:        %{_basedir}
-BuildRoot:           %{_tmppath}/%{name}-%{version}-build
+Name:		SFElibassuan
+Summary:	An IPC libbray used by GnuPG 2, GPGME etc. 
+Version:	2.0.0
+Source:		ftp://ftp.gnupg.org/gcrypt/libassuan/libassuan-%{version}.tar.bz2
+URL:		http://www.gnupg.org/
+License:	GPLv3
+Group:		Development/Libraries
+SUNW_BaseDir:	%{_basedir}
+BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 
 BuildRequires: SUNWlibgpg-error
 Requires: SUNWlibgpg-error
 Requires: SUNWtexi
+
+%package devel
+Summary:	%{summary} - development files
+SUNW_BaseDir:	%{_basedir}
+%include default-depend.inc
+Requires:	%{name}
+
 
 %prep
 %setup -q -n libassuan-%version
@@ -31,17 +40,17 @@ export CFLAGS="%optflags"
 export LDFLAGS="%_ldflags -lsocket -lnsl"
 
 ./configure --prefix=%{_prefix}  \
-	    --with-pth=yes    \
             --mandir=%{_mandir} \
-	    --with-pth-prefix=%{_prefix} \
-            --infodir=%{_datadir}/info
+            --infodir=%{_datadir}/info \
+            --enable-shared \
+            --disable-static
 
 make -j$CPUS
 
 %install
 rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
-#rm -rf $RPM_BUILD_ROOT/usr/lib/*.a*
+rm ${RPM_BUILD_ROOT}%{_libdir}/*.la
 rm -rf $RPM_BUILD_ROOT/usr/share/info/dir
 
 %clean
@@ -70,12 +79,15 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr (-, root, bin)
+%dir %attr (0755, root, bin) %{_libdir}
+%{_libdir}/*
+
+%files devel
+%defattr (-, root, bin)
 %dir %attr (0755, root, bin) %{_bindir}
 %{_bindir}/*
 %dir %attr (0755, root, bin) %{_includedir}
 %{_includedir}/*.h
-%dir %attr (0755, root, bin) %{_libdir}
-%{_libdir}/*
 %dir %attr (0755, root, sys) %{_datadir}
 %dir %attr (0755, root, other) %{_datadir}/aclocal
 %{_datadir}/aclocal/*
@@ -83,6 +95,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/info/*
 
 %changelog
+* Sat Jun 12 2010 - Milan Jurik
+- bump to 2.0.0, make it shared only
 * Mars 25 2010 - Gilles Dauphin
 - build with pth, add --with-pth-prefix
 * Sat Jul 11 2009 - Thomas Wagner
