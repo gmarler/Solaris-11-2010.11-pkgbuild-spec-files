@@ -1,19 +1,6 @@
-diff -ur fltk-2.0.x-r5783-orig/configure fltk-2.0.x-r5783/configure
---- fltk-2.0.x-r5783-orig/configure	2007-04-27 11:00:55.000000000 +0700
-+++ fltk-2.0.x-r5783/configure	2007-04-30 10:27:54.811506346 +0700
-@@ -5891,7 +5891,7 @@
- echo "${ECHO_T}$ac_cv_func_scandir" >&6
- if test $ac_cv_func_scandir = yes; then
- 
--    if test "$uname" = SunOS -o "$uname" = QNX; then
-+    if test "$uname" = QNX; then
-         { echo "$as_me:$LINENO: WARNING: Not using $uname scandir emulation function." >&5
- echo "$as_me: WARNING: Not using $uname scandir emulation function." >&2;}
-     else
-diff -ur fltk-2.0.x-r5783-orig/configure.in fltk-2.0.x-r5783/configure.in
---- fltk-2.0.x-r5783-orig/configure.in	2007-01-03 11:06:26.000000000 +0700
-+++ fltk-2.0.x-r5783/configure.in	2007-04-30 10:27:54.812151047 +0700
-@@ -324,7 +324,7 @@
+--- fltk-2.0.x-r7513/configure.in	Fri Jul 24 01:08:12 2009
++++ fltk-2.0.x-r7513-patch/configure.in	Sat Jun 12 20:56:38 2010
+@@ -327,7 +327,7 @@
  AC_CHECK_HEADER(sys/select.h,AC_DEFINE(HAVE_SYS_SELECT_H))
  AC_CHECK_HEADER(sys/stdtypes.h,AC_DEFINE(HAVE_SYS_SELECT_H))
  AC_CHECK_FUNC(scandir,[
@@ -22,13 +9,12 @@ diff -ur fltk-2.0.x-r5783-orig/configure.in fltk-2.0.x-r5783/configure.in
          AC_MSG_WARN(Not using $uname scandir emulation function.)
      else
          AC_DEFINE(HAVE_SCANDIR)
-diff -ur fltk-2.0.x-r5783-orig/src/filename_list.cxx fltk-2.0.x-r5783/src/filename_list.cxx
---- fltk-2.0.x-r5783-orig/src/filename_list.cxx	2007-03-16 02:31:52.000000000 +0700
-+++ fltk-2.0.x-r5783/src/filename_list.cxx	2007-04-30 10:29:11.081498495 +0700
+--- fltk-2.0.x-r7513/src/filename_list.cxx	Fri Jul 24 01:08:12 2009
++++ fltk-2.0.x-r7513-patch/src/filename_list.cxx	Sat Jun 12 20:59:22 2010
 @@ -67,6 +67,9 @@
- #elif defined(__hpux) || defined(__CYGWIN__)
-   // HP-UX, Cygwin define the comparison function like this:
    int n = scandir(d, list, 0, (int(*)(const dirent **, const dirent **))sort);
+ #elif defined(__linux) || defined (__FreeBSD__) || defined (__NetBSD__)
+   int n = scandir(d, list, 0, (int(*)(const void*,const void*))sort);
 +#elif defined(sun)
 +  // Solaris
 +  int n = scandir(d, list, 0, (int(*)(const struct dirent **, const struct dirent **))sort);

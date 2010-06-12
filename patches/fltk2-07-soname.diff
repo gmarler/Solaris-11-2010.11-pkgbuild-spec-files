@@ -1,0 +1,11 @@
+--- fltk-2.0.x-r7513/configure.in	2010-06-12 23:43:05.490257556 +0200
++++ fltk-2.0.x-r7513-patch/configure.in	2010-06-12 23:43:19.114680554 +0200
+@@ -158,7 +158,7 @@
+ 	    ;;
+ 
+ 	SunOS* | UNIX_S*)
+-	    DSOCOMMAND="\$(CXX) -h \$@ \$(LDLIBS) -G $DEBUGFLAG -o"
++	    DSOCOMMAND="\$(CXX) -h \$(@F) \$(LDLIBS) -G $DEBUGFLAG -o"
+ 	    if test "$libdir" != "/usr/lib"; then
+ 		    DSOLINK="-R$libdir"
+             fi
