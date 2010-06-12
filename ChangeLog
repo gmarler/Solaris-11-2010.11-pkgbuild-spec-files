@@ -2,6 +2,7 @@
 
 	* SFEbogofilter.spec: bump to 1.2.1, add build dependencies
 	* SFEgsl.spec: bump to 1.14, removing "finite" patch
+	* encumbered/SFElibmms.spec: moved to encumbered - several MS patents
 
 2010-06-11 Albert Lee <trisk@opensolaris.org>
 
