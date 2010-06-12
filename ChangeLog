@@ -1,3 +1,19 @@
+2010-06-11 Albert Lee <trisk@opensolaris.org>
+
+	* base-specs/ffmpeg.spec: Bump to 0.5.2. Update URLs. Use -Os to avoid
+	  H.264 decoder crash.
+	* base-specs/gst-ffmpec.spec: Bump to 0.10.10. Add patch1.
+	* base-specs/gst-plugins-bad.spec: Enable libmms. Bump to 0.10.19, use
+	  0.10.17 for older GStreamer. Bring back patch6 for 0.10.17.
+	* base-specs/gst-plugins-ugly.spec: Bump to 0.10.15, use 0.10.13 for
+	  older GStreamer.
+	* base-specs/libmms.spec: Bump to 0.6. Update URLs.
+	* encumbered/SFEgnome-media-extras: Use %{_libdir}/$ISALIST to select
+	  optimised dependencies. Use libmms. Fix C++ compilation.
+	* patches/gst-ffmpeg-01-codecmap.diff: Make compatible with FFmpeg 0.5
+	  and fix ATRAC[13] cap bug.
+	* patches/gst-plugins-bad-06-apexsink.diff: Bring back apexsink fix.
+
 2010-06-10 Pradhap Devarajan <pradhap (at) gmail.com>
 
 	* SFEmairix.spec: Initial version

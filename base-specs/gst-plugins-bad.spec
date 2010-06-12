@@ -5,9 +5,16 @@
 # This file and all modifications and additions to the pristine
 # package are under the same license as the package itself.
 #
+
+%define gst_0_10_27 %(pkg-config --atleast-version=0.10.27 gstreamer-0.10 && echo 1 || echo 0)
+
 Name:           gst-plugins-bad
 License:        GPL
-Version:        0.10.18
+%if %gst_0_10_27
+Version:        0.10.19
+%else
+Version:        0.10.17
+%endif
 Release:        1
 Distribution:   Java Desktop System
 Vendor:         Sun Microsystems, Inc.
@@ -20,7 +27,11 @@ Patch2:         gst-plugins-bad-02-gstapexraop.diff
 Patch3:         gst-plugins-bad-03-xvidmain.diff
 Patch4:         gst-plugins-bad-04-equal.diff
 Patch5:         gst-plugins-bad-05-xsi_shell.diff
+%if %gst_0_10_27
 Patch6:         gst-plugins-bad-06-gstqt.diff
+%else
+Patch6:         gst-plugins-bad-06-apexsink.diff
+%endif
 Patch7:         gst-plugins-bad-07-videomeasure.diff
 BuildRoot:      %{_tmppath}/%{name}-%{version}-root
 Docdir:         %{_defaultdocdir}/doc
@@ -102,7 +113,6 @@ bash ./configure \
   --disable-jack \
   --disable-jp2k \
   --disable-lv2 \
-  --disable-libmms \
   --disable-mimic \
   --disable-mpeg2enc \
   --disable-mplex \
@@ -111,12 +121,15 @@ bash ./configure \
   --disable-nas \
   --disable-neon \
   --disable-timidity \
+  --disable-theoradec \
+  --disable-rsvg \
   --disable-spc \
   --disable-gme \
   --disable-swfdec \
   --disable-dvb \
   --disable-oss4 \
   --disable-selector \
+  --disable-zbar \
   %{gtk_doc_option}	\
   --enable-external \
   --disable-shave
@@ -174,6 +187,10 @@ GStreamer support libraries header files.
 %{_datadir}/gtk-doc
 
 %changelog
+* Thu Jun 10 2010 - Albert Lee <trisk@opensolaris.org>
+- Enable libmms
+- Bump to 0.10.19, use 0.10.17 for older GStreamer
+- Bring back patch6 for 0.10.17
 * Fri Mar 12 2010 - Brian Cameron <brian.cameron@sun.com>
 - Bump to 0.10.18.  Remove gst-plugins-bad-06-apexsink.diff and add
   gst-plugins-bad-gstqt.diff needed to build.

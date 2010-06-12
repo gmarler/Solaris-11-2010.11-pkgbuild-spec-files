@@ -16,6 +16,7 @@
 %define with_amrnb %(pkginfo -q SFEamrnb && echo 1 || echo 0)
 %define with_amrwb %(pkginfo -q SFEamrwb && echo 1 || echo 0)
 %define SFEsdl      %(/usr/bin/pkginfo -q SFEsdl && echo 1 || echo 0)
+%define NVDAgraphics %(/usr/bin/pkginfo -q NVDAgraphics && echo 1 || echo 0)
 
 %use gst_ffmpeg = gst-ffmpeg.spec
 %use gst_plugins_ugly = gst-plugins-ugly.spec
@@ -31,24 +32,13 @@ BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 
 %include default-depend.inc
 
-%if %SFElibsndfile
-BuildRequires: SFElibsndfile-devel
-Requires: SFElibsndfile
-%else
-BuildRequires:	SUNWlibsndfile
-Requires:	SUNWlibsndfile
-%endif
-
-Requires: SUNWgnome-vfs
 Requires: SUNWlibms
 Requires: SUNWlxml
-Requires: SUNWxorg-clientlibs
 Requires: SUNWzlib
 Requires: SUNWfreetype2
 BuildRequires: SUNWbison
 BuildRequires: SUNWPython
 BuildRequires: SUNWPython-extra
-BuildRequires: SUNWbzip
 BuildRequires: SUNWgtk-doc
 BuildRequires: SUNWgnome-xml-share 
 Requires: SUNWgnome-libs
@@ -66,6 +56,8 @@ BuildRequires: SUNWgnome-config-devel
 Requires: SUNWgnome-vfs
 BuildRequires: SUNWgnome-vfs-devel
 ##### for gst-ffmpeg #####
+BuildRequires: SUNWbzip
+Requires: SUNWbzip
 Requires: SFEffmpeg
 BuildRequires: SFEffmpeg-devel
 ##### for gst-plugins-ugly #####
@@ -73,28 +65,47 @@ Requires: SFEliba52
 BuildRequires: SFEliba52-devel
 Requires: SFElibcdio
 BuildRequires: SFElibcdio-devel
+Requires: SFElibdvdread
+BuildRequires: SFElibdvdread-devel
 Requires: SFElibdvdnav
 BuildRequires: SFElibdvdnav-devel
 Requires: SFElibid3tag
 BuildRequires: SFElibid3tag-devel
+Requires: SFElame
+BuildRequires: SFElame-devel
 Requires: SFElibmad
 BuildRequires: SFElibmad-devel
 Requires: SFElibmpeg2
 BuildRequires: SFElibmpeg2-devel
-Requires: SFElame
-BuildRequires: SFElame-devel
+Requires: SFElibx264
+BuildRequires: SFElibx264-devel
 ##### for gst-plugins-bad #####
+%if %SFElibsndfile
+BuildRequires: SFElibsndfile-devel
+Requires: SFElibsndfile
+%else
+BuildRequires:	SUNWlibsndfile
+Requires:	SUNWlibsndfile
+%endif
 # Notes: metadata plugin which uses libexif may be unstable
 #Requires: SUNWlibexif
 #BuildRequires: SUNWlibexif-devel
 Requires: SUNWmusicbrainz
 BuildRequires: SUNWmusicbrainz-devel
+#Requires: SUNWlibrsvg
+#BuildRequires: SUNWlibrsvg-devel
+Requires: SUNWxorg-clientlibs
+BuildRequires: SUNWxorg-clientlibs
 %if %SFEsdl
 Requires: SFEsdl
 BuildRequires: SFEsdl-devel
 %else
 Requires: SUNWlibsdl
 BuildRequires:  SUNWlibsdl-devel
+%endif
+%if %NVDAgraphics
+# VDPAU
+BuildRequires: NVDAgraphics
 %endif
 #Requires: SUNWlibtheora
 #BuildRequires: SUNWlibtheora-devel
@@ -105,15 +116,13 @@ Requires: SFEfaad2
 BuildRequires: SFEfaad2-devel
 # Note: musepack plugin doesn't compile with Studio
 #BuildRequires: SFElibmpcdec-devel
-#Requires: SFElibmms
-#BuildRequires: SFElibmms-devel
+Requires: SFElibmms
+BuildRequires: SFElibmms-devel
 Requires: SFElibofa
 Requires: SFEwildmidi
 BuildRequires: SFEwildmidi-devel
 Requires: SFExvid
 BuildRequires: SFExvid-devel
-Requires: SFElibx264
-BuildRequires: SFElibx264-devel
 Requires: SFEladspa
 BuildRequires: SFEladspa-devel
 Requires: SFEsoundtouch
@@ -182,7 +191,10 @@ export RM="/usr/bin/rm -f"
 export CFLAGS="%optflags -I%{xorg_inc} -I%{sfw_inc} -DANSICPP"
 # gstmodplug needs C99 __func__
 export CXXFLAGS="%cxx_optflags -features=extensions -I%{sfw_inc}"
-export LDFLAGS="%_ldflags %{xorg_lib_path} %{sfw_lib_path}"
+# AC_CHECK_PROG fails if $CXX is not in $PATH
+export HAVE_CXX=yes
+# double dollar sign for make, extra backslash for libtool
+export LDFLAGS="%_ldflags -R'%{_libdir}/\\\$\$ISALIST' %{xorg_lib_path} %{sfw_lib_path}"
 export ACLOCAL_FLAGS="-I %{_datadir}/aclocal"
 export PERL5LIB=%{_prefix}/perl5/site_perl/5.6.1/sun4-solaris-64int
 %gst_ffmpeg.build -d %name-%version
@@ -254,6 +266,10 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Thu Jun 10 2010 Albert Lee <trisk@opensolaris.org>
+- Use %{_libdir}/$ISALIST to select optimised dependencies
+- Use libmms
+- Fix C++ compilation
 * Sat Apr 24 2010 Milan Jurik
 - enable SDL plugin, ladspa, soundtouch and libschroedinger
 * Sat Oct 17 2009 Milan Jurik

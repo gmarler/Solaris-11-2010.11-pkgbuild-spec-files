@@ -1,0 +1,50 @@
+--- gst-ffmpeg-0.10.10.orig/ext/ffmpeg/gstffmpegcodecmap.c	2010-03-04 03:51:02.000000000 -0500
++++ gst-ffmpeg-0.10.10/ext/ffmpeg/gstffmpegcodecmap.c	2010-06-10 21:51:16.584621097 -0400
+@@ -429,7 +429,9 @@
+         maxchannels = 6;
+         break;
+       case CODEC_ID_WMAPRO:
++#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(52, 22, 0)
+       case CODEC_ID_TRUEHD:
++#endif
+         maxchannels = 8;
+         break;
+       default:
+@@ -640,19 +642,23 @@
+       caps = gst_ff_aud_caps_new (context, codec_id, "audio/x-eac3", NULL);
+       break;
+ 
++#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(52, 22, 0)
+     case CODEC_ID_TRUEHD:
+       caps = gst_ff_aud_caps_new (context, codec_id, "audio/x-true-hd", NULL);
+       break;
++#endif
+ 
++#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(52, 36, 0)
+     case CODEC_ID_ATRAC1:
+       caps =
+-          gst_ff_aud_caps_new (context, codec_id, "audio/x-vnd.sony.atrac3",
++          gst_ff_aud_caps_new (context, codec_id, "audio/x-vnd.sony.atrac1",
+           NULL);
+       break;
++#endif
+ 
+     case CODEC_ID_ATRAC3:
+       caps =
+-          gst_ff_aud_caps_new (context, codec_id, "audio/x-vnd.sony.atrac1",
++          gst_ff_aud_caps_new (context, codec_id, "audio/x-vnd.sony.atrac3",
+           NULL);
+       break;
+ 
+@@ -1482,9 +1488,11 @@
+             "samplesize", G_TYPE_INT, context->bits_per_coded_sample, NULL);
+       }
+       break;
++#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(52, 34, 0)
+     case CODEC_ID_TWINVQ:
+       caps = gst_ff_aud_caps_new (context, codec_id, "audio/x-twin-vq", NULL);
+       break;
++#endif
+     default:
+       GST_DEBUG ("Unknown codec ID %d, please add mapping here", codec_id);
+       break;

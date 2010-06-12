@@ -4,15 +4,15 @@
 # includes module(s): FFmpeg
 #
 
-%define src_version 0.5.1
+%define src_version 0.5.2
 
 Summary:                 FFmpeg - a very fast video and audio converter
 
-Version:                 0.5.1
+Version:                 0.5.2
 #Source:                  http://pkgbuild.sf.net/spec-files-extra/tarballs/ffmpeg-export-%{year}-%{month}-%{day}.tar.bz2
 #Source:                  http://electricsheep.org/ffmpeg-0.4.9-p%{year}%{month}%{day}.tar.bz2
-Source:                  http://ffmpeg.mplayerhq.hu/releases/ffmpeg-%{src_version}.tar.bz2
-URL:                     http://ffmpeg.mplayerhq.hu/index.html
+Source:                  http://www.ffmpeg.org/releases/ffmpeg-%{src_version}.tar.bz2
+URL:                     http://www.ffmpeg.org/index.html
 Patch2:                  ffmpeg-02-configure.diff
 #Patch3:                  ffmpeg-03-v4l2.diff
 Patch4:                  ffmpeg-04-options.diff
@@ -43,9 +43,9 @@ export PATH=/usr/perl5/bin:$PATH
 export CC=gcc
 # All this is necessary to free up enough registers on x86
 %ifarch i386
-export CFLAGS="%optflags -fno-rename-registers -fomit-frame-pointer -fno-PIC -UPIC -mpreferred-stack-boundary=4 -I%{xorg_inc} -I%{_includedir}"
+export CFLAGS="%optflags -Os -fno-rename-registers -fomit-frame-pointer -fno-PIC -UPIC -mpreferred-stack-boundary=4 -I%{xorg_inc} -I%{_includedir}"
 %else
-export CFLAGS="%optflags -I%{xorg_inc} -I%{_includedir}"
+export CFLAGS="%optflags -Os -I%{xorg_inc} -I%{_includedir}"
 %endif
 export LDFLAGS="%_ldflags %{xorg_lib_path} -L/usr/sfw/lib -R/usr/sfw/lib -L%{_libdir} -R%{_libdir}"
 if $( echo "%{_libdir}" | /usr/xpg4/bin/grep -q %{_arch64} ) ; then
@@ -113,6 +113,10 @@ EOM
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Fri Jun 11 2010 - Albert Lee <trisk@opensolaris.org>
+- Bump to 0.5.2
+- Update URLs
+- Use -Os to avoid H.264 decoder crash
 * Mar 12 2010 - Gilles Dauphin
 - in case of prefix=/usr/SFE
 * Sun Mar 07 2010 - Milan Jurik

@@ -5,9 +5,16 @@
 # This file and all modifications and additions to the pristine
 # package are under the same license as the package itself.
 #
+
+%define gst_0_10_26 %(pkg-config --atleast-version=0.10.26 gstreamer-0.10 && echo 1 || echo 0)
+
 Name:           gst-plugins-ugly
 License:        GPL
+%if %gst_0_10_26
+Version:        0.10.15
+%else
 Version:        0.10.13
+%endif
 Release:        1
 Distribution:   Java Desktop System
 Vendor:         Sun Microsystems, Inc.
@@ -17,7 +24,10 @@ URL:            http://gstreamer.freedesktop.org/
 Source:         http://gstreamer.freedesktop.org/src/gst-plugins-ugly/gst-plugins-ugly-%{version}.tar.bz2
 Patch1:         gst-plugins-ugly-01-gettext.diff
 Patch4:         gst-plugins-ugly-04-xsi_shell.diff
+%if %gst_0_10_26
+%else
 Patch5:		gst-plugins-ugly-05-x264.diff
+%endif
 BuildRoot:      %{_tmppath}/%{name}-%{version}-root
 Docdir:         %{_defaultdocdir}/doc
 Autoreqprov:    on
@@ -37,7 +47,10 @@ plug-ins.
 %setup -n gst-plugins-ugly-%{version} -q
 %patch1 -p1
 %patch4 -p1
+%if %gst_0_10_26
+%else
 %patch5 -p1
+%endif
 
 %build
 CFLAGS="${CFLAGS:-%optflags}" ; export CFLAGS ; \
@@ -121,6 +134,8 @@ GStreamer support libraries header files.
 %{_datadir}/gtk-doc
 
 %changelog
+* Thu Jun 10 2010 - Albert Lee <trisk@opensolaris.org>g
+- Bump to 0.10.15, use 0.10.13 for older GStreamer
 * Sun Dec 20 2009 - Milan Jurik
 - upgrade to 0.10.13
 * Wed Sep 02 2009 - Albert Lee <trisk@forkgnu.org>

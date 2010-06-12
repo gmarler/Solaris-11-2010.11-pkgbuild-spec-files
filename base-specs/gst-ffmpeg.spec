@@ -9,7 +9,7 @@
 #
 Name:           gst-ffmpeg
 License:        LGPL
-Version:        0.10.9
+Version:        0.10.10
 Release:        1
 Distribution:   Java Desktop System
 Vendor:         Sun Microsystems, Inc.
@@ -17,6 +17,7 @@ Group:          Libraries/Multimedia
 Summary:        GStreamer Streaming-media framework plug-ins - FFmpeg.
 URL:            http://gstreamer.freedesktop.org/
 Source:         http://gstreamer.freedesktop.org/src/gst-ffmpeg/gst-ffmpeg-%{version}.tar.bz2
+Patch1:         gst-ffmpeg-01-codecmap.diff
 Patch3:         gst-ffmpeg-03-xvidmain.diff
 BuildRoot:      %{_tmppath}/%{name}-%{version}-root
 Docdir:         %{_defaultdocdir}/doc
@@ -34,6 +35,7 @@ plug-ins.
 
 %prep
 %setup -n gst-ffmpeg-%{version} -q
+%patch1 -p1
 %patch3 -p1
 
 %build
@@ -111,6 +113,9 @@ GStreamer support libraries header files.
 %{_datadir}/gtk-doc
 
 %changelog
+* Thu Jun 10 2010 - Albert Lee <trisk@opensolaris.org>
+- Bump to 0.10.10
+- Add patch1
 * Sat Oct 17 2009 - Milan Jurik
 - upgrade to 0.10.9
 * Sun Jul 05 2009 - Milan Jurik

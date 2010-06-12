@@ -12,13 +12,13 @@
 Name:           libmms
 Summary:        mms stream protocol library
 Group:          Libraries/Multimedia
-Version:        0.4
+Version:        0.6
 Release:        1
 Distribution:   Java Desktop System
 Vendor:         Sun Microsystems, Inc.
-URL:            https://launchpad.net/libmms
+URL:            http://sourceforge.net/projects/libmms/
 License:      	LGPL
-Source:         http://launchpad.net/libmms/trunk/%{version}/+download/%{name}-%{version}.tar.gz
+Source:         %{sf_download}/%{name}/%{name}-%{version}.tar.gz
 # date:2008-09-02 owner:halton type:bug bugid:263864
 Patch1:         %{name}-01-solaris-uint.diff
 BuildRoot:      %{_tmppath}/%{name}-%{version}-root
@@ -97,5 +97,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/libmms.pc
 
 %changelog
+* Thu Jun 10 2010 - Albert Lee <trisk@opensolaris.org>
+- Bump to 0.6
+- Update URLs
 * Tue Sep 02 2008 - halton.huo@sun.com
 - Initial version
