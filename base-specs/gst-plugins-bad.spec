@@ -25,10 +25,12 @@ Source:         http://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins
 Patch1:         gst-plugins-bad-01-gettext.diff
 Patch2:         gst-plugins-bad-02-gstapexraop.diff
 Patch3:         gst-plugins-bad-03-xvidmain.diff
+%if %gst_0_10_27
+%else
 Patch4:         gst-plugins-bad-04-equal.diff
+%endif
 Patch5:         gst-plugins-bad-05-xsi_shell.diff
 %if %gst_0_10_27
-Patch6:         gst-plugins-bad-06-gstqt.diff
 %else
 Patch6:         gst-plugins-bad-06-apexsink.diff
 %endif
@@ -52,9 +54,15 @@ plug-ins.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%if %gst_0_10_27
+%else
 %patch4 -p1
+%endif
 %patch5 -p1
+%if %gst_0_10_27
+%else
 %patch6 -p1
+%endif
 
 %build
 CFLAGS="${CFLAGS:-%optflags}" ; export CFLAGS ; \
@@ -187,6 +195,8 @@ GStreamer support libraries header files.
 %{_datadir}/gtk-doc
 
 %changelog
+* Sat Jun 12 2010 - Albert Lee <trisk@opensolaris.org>
+- Fix patching for 0.10.19
 * Thu Jun 10 2010 - Albert Lee <trisk@opensolaris.org>
 - Enable libmms
 - Bump to 0.10.19, use 0.10.17 for older GStreamer
