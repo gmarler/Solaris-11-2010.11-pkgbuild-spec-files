@@ -5,17 +5,23 @@
 
 %include Solaris.inc
 
-Name:                SFEbogofilter
-Summary:             A Bayesian spam filter.
-Version:             1.1.5
-Source:              %{sf_download}/bogofilter/bogofilter-%{version}.tar.bz2
-URL:                 http://bogofilter.sourceforge.net/
-SUNW_BaseDir:        %{_basedir}
-BuildRoot:           %{_tmppath}/%{name}-%{version}-build
+Name:		SFEbogofilter
+Summary:	A Bayesian spam filter.
+Version:	1.2.1
+Source:		%{sf_download}/bogofilter/bogofilter-%{version}.tar.bz2
+URL:		http://bogofilter.sourceforge.net/
+License:	GPL
+Group:		Office/Email
+SUNW_BaseDir:	%{_basedir}
+BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 
 BuildRequires: SFEbdb
 Requires: SFEbdb
+BuildRequires: SFElibiconv-devel
+Requires: SFElibiconv
+BuildRequires: SFEgsl-devel
+Requires: SFEgsl
 
 Requires: %name-root
 %package root
@@ -32,8 +38,8 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
      CPUS=1
 fi
 
-export CFLAGS="%optflags"
-export LDFLAGS="%_ldflags"
+export CFLAGS="%optflags -I/usr/gnu/include"
+export LDFLAGS="%_ldflags -L/usr/gnu/lib -R/usr/gnu/lib"
 
 ./configure --prefix=%{_prefix}  \
             --mandir=%{_mandir} \
@@ -64,6 +70,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_sysconfdir}/bogofilter.cf.example
 
 %changelog
+* Sat Jun 12 2010 - Milan Jurik
+- bump to 1.2.1, add build dependencies
 * Thu Mar 29 2007 - daymobrew@users.sourceforge.net
 - Bump to 1.1.5.
 

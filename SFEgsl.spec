@@ -6,27 +6,27 @@
 
 %include Solaris.inc
 
-%define src_url     http://ftp.gnu.org/gnu/gsl
-%define src_name    gsl
+%define src_url		http://ftp.gnu.org/gnu/gsl
+%define src_name	gsl
 
-Name:                SFEgsl
-Summary:             The GNU Scientific Library is a numerical library for C and C++ programmers
-Version:             1.9
-Source:              %{src_url}/%{src_name}-%{version}.tar.gz
-Patch1:              gsl-01-math.diff
-URL:                 http://www.gnu.org/software/gsl
-SUNW_BaseDir:        %{_basedir}
-BuildRoot:           %{_tmppath}/%{name}-%{version}-build
+Name:		SFEgsl
+Summary:	The GNU Scientific Library is a numerical library for C and C++ programmers
+Version:	1.14
+Group:		Development/Libraries
+Source:		%{src_url}/%{src_name}-%{version}.tar.gz
+URL:		http://www.gnu.org/software/gsl
+License:	GPLv3
+SUNW_BaseDir:	%{_basedir}
+BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 
 %package devel
-Summary:        %{summary} - development files
-SUNW_BaseDir:   %{_basedir}
+Summary:	%{summary} - development files
+SUNW_BaseDir:	%{_basedir}
 %include default-depend.inc
 
 %prep
 %setup -q -n %{src_name}-%{version}
-%patch1 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -38,7 +38,6 @@ export CPPFLAGS="-D__sun__"
 export CFLAGS="%optflags"
 export LDFLAGS="%_ldflags"
 
-autoreconf
 ./configure --prefix=%{_prefix}			\
             --bindir=%{_bindir}			\
             --libdir=%{_libdir}         \
@@ -106,5 +105,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/*
 
 %changelog
+* Sat Jun 12 2010 - Milan Jurik
+- bump to 1.14, removing "finite" patch
 * Sun Nov 04 2007 - Ananth Shrinivas <ananth@sun.com>
 - Initial version
