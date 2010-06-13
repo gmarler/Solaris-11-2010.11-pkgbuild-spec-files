@@ -10,6 +10,7 @@
 Name:		SFEfltk2
 Summary:	A C++ user interface toolkit
 Version:	2.0.x-r7513
+IPS_component_version: 2.0.0.0.7513
 Source:		ftp://ftp.easysw.com/pub/%{src_name}/snapshots/%{src_name}-%{version}.tar.bz2
 URL:		http://www.fltk.org/
 License:	FLTK
@@ -55,7 +56,6 @@ export LDFLAGS="%{_ldflags} $X11LIB $GNULIB $EXTRALIB"
 
 ./configure --prefix=%{_prefix}  \
             --mandir=%{_mandir} \
-            --disable-static \
 	    --enable-shared
 
 make -j$CPUS
