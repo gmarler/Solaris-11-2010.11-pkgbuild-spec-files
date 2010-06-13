@@ -18,8 +18,9 @@ License:	Apache
 Source:		http://rubyforge.org/frs/download.php/70759/%{src_name}-%{version}.gem
 SUNW_BaseDir:	/
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
-
 %include default-depend.inc
+BuildRequires:	SUNWruby18
+Requires:	SUNWruby18
 
 %prep
 
