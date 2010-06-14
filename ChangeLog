@@ -1,3 +1,10 @@
+2010-06-14  Thomas Wagner  <tom68@users.sourceforge.net>
+
+	* SFEmpfr: bump to 2.4.2 - adjust location of SFEgmp, 
+                   always require SFEgmp
+        * SFEgmp:  bump to 4.3.2 - rework patch gmp-01, pause older assembly 
+                  improvements on AMD64, add patch gmp-02 extern inline
+
 2010-06-14 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEclaws-mail.spec: use SUNW packages if possible
