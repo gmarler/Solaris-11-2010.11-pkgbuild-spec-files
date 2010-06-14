@@ -4,10 +4,9 @@
 
 %include Solaris.inc
 
-%include base.inc
+%define SFEgnupg2	%(/usr/bin/pkginfo -q SFEgnupg2 && echo 1 || echo 0)
 
 %define src_name         claws-mail
-
 
 Name:                    SFEclaws-mail
 Summary:                 Claws-Mail is an e-mail client (and news reader) based on GTK+
@@ -32,9 +31,14 @@ BuildRequires: SFElibetpan-devel
 Requires: SUNWlibmsr
 Requires: SUNWgnome-base-libs
 Requires: SUNWopenssl-libraries
+%if %SFEgnupg2
 Requires: SFEpth
 Requires: SFElibassuan
 Requires: SFEgnupg2
+%else
+Requires: SUNWpth
+Requires: SUNWgnupg
+%endif
 Requires: SFEaspell
 Requires: SFEdillo
 Requires: SFEbogofilter
@@ -154,6 +158,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/claws-mail/etpan/*.h
 
 %changelog
+* Sun Jun 14 2010 - Milan Jurik
+- use SUNW packages if possible
 * Thu Jun 10 2010 - pradhap (at) gmail.com
 - Bump to 3.7.6
 - Fixed icons path

@@ -1,3 +1,7 @@
+2010-06-14 Milan Jurik <sfnet@xylab.cz>
+
+	* SFEclaws-mail.spec: use SUNW packages if possible
+
 2010-06-13 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEdillo.spec: bump to 2.2
