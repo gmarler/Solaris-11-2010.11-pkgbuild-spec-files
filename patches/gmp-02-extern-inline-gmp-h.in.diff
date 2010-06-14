@@ -1,0 +1,14 @@
+http://gmplib.org/list-archives/gmp-discuss/2010-February/004031.html
+
+fixed in some 5.x version but not yet in 4.x (if at all)
+--- gmp-4.3.2/gmp-h.in.orig	2010-01-07 21:09:02.000000000 +0100
++++ gmp-4.3.2/gmp-h.in	2010-06-06 03:31:31.740609132 +0200
+@@ -463,7 +463,7 @@
+ /* Recent enough Sun C compilers accept "extern inline" */
+ #if defined (__SUNPRO_C) && __SUNPRO_C >= 0x560 \
+   && ! defined (__GMP_EXTERN_INLINE)
+-#define __GMP_EXTERN_INLINE  extern inline
++#define __GMP_EXTERN_INLINE  inline
+ #endif
+ 
+ /* Somewhat older Sun C compilers accept "static inline" */

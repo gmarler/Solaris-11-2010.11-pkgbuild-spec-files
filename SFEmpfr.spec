@@ -18,12 +18,15 @@
 ##TODO## think on usr-gnu.inc define infodir inside /usr/gnu/share to avoid conflicts
 %define _infodir           %{_datadir}/info
 
-%define SFEgmp   %(/usr/bin/pkginfo -q SFEgmp && echo 1 || echo 0)
+#%define SFEgmp   %(/usr/bin/pkginfo -q SFEgmp && echo 1 || echo 0)
+#SFEmpfr without SFEgmp makes no sense! Make it a hard Reqirement for now
+##TODO## ##FIXME## need a clever decision here
+%define SFEgmp 1
 
 
 Name:                SFEmpfr
 Summary:             C library for multiple-precision floating-point computations
-Version:             2.4.1
+Version:             2.4.2
 Source:              http://www.mpfr.org/mpfr-current/mpfr-%{version}.tar.bz2
 SUNW_BaseDir:        %{_basedir}/%{_subdir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
@@ -32,8 +35,10 @@ BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %if %SFEgmp
 BuildRequires: SFEgmp-devel
 Requires: SFEgmp
-Conflicts: SUNWgnu-mpfr
-%define SFEgmpbasedir %(pkgparam SFEgmp BASEDIR)
+#IPS doesn't honour SUNW_BaseDir 
+##TODO## ##FIXME##
+#%define SFEgmpbasedir %(pkgparam SFEgmp BASEDIR)
+%define SFEgmpbasedir %{_prefix} 
 %else
 BuildRequires: SUNWgnu-mp
 Requires: SUNWgnu-mp
@@ -163,6 +168,8 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, bin) %{_libdir}
 %{_libdir}/lib*.so*
 %dir %attr (0755, root, sys) %{_datadir}
+%dir %attr (0755, root, other) %{_datadir}/doc
+%{_datadir}/doc/*/*
 %dir %attr(0755, root, bin) %{_infodir}
 %{_infodir}/*
 %ifarch amd64 sparcv9
@@ -176,6 +183,12 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/*
 
 %changelog
+* Sun Jun 14 2010 - Thomas Wagner
+- Bumped up the version to 2.4.2
+- where is my gmp? workaround for IPS ever setting SUNW_BaseDir "/": derive 
+  value from _prefix (/usr or /usr/gnu)
+- make SFEgmp 1 - so always Require SFEgmp (leave the rest of the logic in place)
+- removed Conflicts: SUNWgnu-mpfr (we live in /usr/gnu/)
 * Sat Mar 07 2009 - Thomas Wagner
 - Bumped up the version to 2.4.1
 - fix packaging error by adding %_datadir to configure

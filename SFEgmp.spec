@@ -29,12 +29,14 @@
 Name:                    SFEgmp
 Summary:                 GNU Multiple Presicion Arithmetic Library
 Group:                   libraries/math
-Version:                 4.2.1
+Version:                 4.3.2
 Source:                  http://ftp.sunet.se/pub/gnu/gmp/gmp-%{version}.tar.bz2
 %ifarch amd64
-Source1:                 http://www.loria.fr/~gaudry/mpn_AMD64/mpn_amd64.42.tgz
+##TODO## not longer needed? 
+#paused for 4.3.2 Source1:                 http://www.loria.fr/~gaudry/mpn_AMD64/mpn_amd64.42.tgz
 %endif
 Patch1:                  gmp-01-solaris.diff
+Patch2:                  gmp-02-extern-inline-gmp-h.in.diff
 URL:                     http://gmplib.org/
 SUNW_BaseDir:            %{_basedir}/%{_subdir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -52,11 +54,13 @@ Requires: %name
 %ifarch amd64 sparcv9
 cp -pr gmp-%{version} gmp-%{version}-64
 %endif
-%ifarch amd64
-gtar fxz %{SOURCE1}
-cd mpn_amd64.42
-./install ../gmp-%{version}-64
-%endif
+##TODO## not longer needed? 
+#paused for 4.3.2 Source1 mpn_AMD64/mpn_amd64.42.tgz
+#%ifarch amd64
+#gtar fxz %{SOURCE1}
+#cd mpn_amd64.42
+#./install ../gmp-%{version}-64
+#%endif
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -82,9 +86,12 @@ export LDFLAGS="$LDFLAGS64"
 %endif
 
 %ifarch amd64
-export CC="gcc"
+#Source1 not used, go back to cc
+#export CC="gcc"
+export CC="cc"
 export CXX=${CXX64:-$CXX}
-export CFLAGS="-mtune=opteron -m64 -O3 -fomit-frame-pointer -fPIC -DPIC"
+#Source1 not used, go back to cc
+#export CFLAGS="-mtune=opteron -m64 -O3 -fomit-frame-pointer -fPIC -DPIC"
 export CXXFLAGS="$CXXFLAGS64"
 export LDFLAGS="$LDFLAGS64"
 %endif
@@ -93,6 +100,7 @@ export LDFLAGS="$LDFLAGS64"
 %ifarch amd64 sparcv9
 cd gmp-%{version}-64
 %patch1 -p1
+%patch2 -p1
 
 libtoolize --copy --force
 aclocal $ACLOCAL_FLAGS
@@ -114,6 +122,7 @@ cd ..
 
 cd gmp-%{version}
 %patch1 -p1
+%patch2 -p1
 
 export CC=${CC32:-$CC}
 export CXX=${CXX32:-$CXX}
@@ -187,6 +196,12 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/*
 
 %changelog
+* Sun Jun  6 2010 - Thomas Wagner
+- bump to 4.3.2
+- rework patch gmp-01 for version 4.3.2
+- pause/remove Source1 for AMD64 assembly improvements (is this still needed?)
+- use SunStudio for 64bit  (was gcc used for the Source1 AMD64 assembly improvements? pls speak up if you need this again)
+- add patch2 extern inline (http://gmplib.org/list-archives/gmp-discuss/2010-February/004031.html)
 * Sat Mar 14 2009 - Thomas Wagner
 - shorten ACLOCAL flags by removing -I %{_datadir}/aclocal (fails if diry not present)
 - fix packaging error by adding %_datadir to configure
