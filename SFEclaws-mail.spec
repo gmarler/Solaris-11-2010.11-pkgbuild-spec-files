@@ -24,6 +24,8 @@ SUNW_BaseDir:            %{_basedir}
 %include default-depend.inc
 Requires: %name
 
+BuildRequires: SUNWgsed
+BuildRequires: SUNWgnome-common-devel
 BuildRequires: SUNWgnome-base-libs-devel
 BuildRequires: SUNWopenssl-include
 BuildRequires: SFEaspell-devel
