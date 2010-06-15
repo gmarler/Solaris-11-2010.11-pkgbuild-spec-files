@@ -27,7 +27,7 @@
 Name:                SFEmpfr
 Summary:             C library for multiple-precision floating-point computations
 Version:             2.4.2
-Source:              http://www.mpfr.org/mpfr-current/mpfr-%{version}.tar.bz2
+Source:              http://ftp.gnu.org/gnu/mpfr/mpfr-%{version}.tar.bz2
 SUNW_BaseDir:        %{_basedir}/%{_subdir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -183,6 +183,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/*
 
 %changelog
+* Tue Jun 15 2010 - Thomas Wagner
+- new Source URL
 * Sun Jun 14 2010 - Thomas Wagner
 - Bumped up the version to 2.4.2
 - where is my gmp? workaround for IPS ever setting SUNW_BaseDir "/": derive 

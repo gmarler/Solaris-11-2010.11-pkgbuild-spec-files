@@ -1,5 +1,9 @@
 2010-06-14  Thomas Wagner  <tom68@users.sourceforge.net>
 
+	* SFEmpfr: new source URL
+
+2010-06-14  Thomas Wagner  <tom68@users.sourceforge.net>
+
 	* SFEmpfr: bump to 2.4.2 - adjust location of SFEgmp, 
                    always require SFEgmp
         * SFEgmp:  bump to 4.3.2 - rework patch gmp-01, pause older assembly 
