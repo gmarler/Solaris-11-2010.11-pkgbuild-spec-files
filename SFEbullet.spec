@@ -19,6 +19,7 @@ BuildRoot:              %{_tmppath}/%{name}-%{version}b-build
 BuildRequires: SFEjam
 BuildRequires: SFEfreeglut-devel
 Requires: SFEfreeglut
+BuildRequires: SUNWcmake
 
 %prep
 %setup -q -n %{src_name}-%{version}
