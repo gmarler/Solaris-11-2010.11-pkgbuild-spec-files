@@ -1,6 +1,7 @@
 2010-06-15 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEunbound.spec: update to 1.4.5
+	* SFEsmartmontools.spec: bump to 5.39.1
 
 2010-06-14  Thomas Wagner  <tom68@users.sourceforge.net>
 
