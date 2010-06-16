@@ -3,20 +3,20 @@
 #
 # includes module(s): List-MoreUtils
 #
+%include Solaris.inc
 
-%define list_moreutils_version 0.21
+%define list_moreutils_version 0.22
 %define perl_version 5.8.4
 
-%include Solaris.inc
-Name:                    SFEperl-list-moreutils
-Summary:                 List-MoreUtils-%{list_moreutils_version} PERL module
-Version:                 %{perl_version}.%{list_moreutils_version}
-Source:                  http://www.cpan.org/modules/by-module/List/List-MoreUtils-%{list_moreutils_version}.tar.gz
-SUNW_BaseDir:            %{_basedir}
-BuildRoot:               %{_tmppath}/%{name}-%{version}-build
-Requires:                SUNWperl584core
-BuildRequires:           SUNWperl584core
-BuildRequires:           SUNWsfwhea
+Name:		SFEperl-list-moreutils
+Summary:	List-MoreUtils-%{list_moreutils_version} PERL module
+Version:	%{perl_version}.%{list_moreutils_version}
+Group:		Development/Libraries
+Source:		http://www.cpan.org/modules/by-module/List/List-MoreUtils-%{list_moreutils_version}.tar.gz
+SUNW_BaseDir:	%{_basedir}
+BuildRoot:	%{_tmppath}/%{name}-%{version}-build
+Requires:	SUNWperl584core
+BuildRequires:	SUNWperl584core
 
 %ifarch sparc
 %define perl_dir sun4-solaris-64int
@@ -68,5 +68,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man3/*
 
 %changelog
+* Wed Jun 16 2010 - Milan Jurik
+- bump to 0.22
 * Tue Nov 13 2007 - trisk@acm.jhu.edu
 - Initial spec

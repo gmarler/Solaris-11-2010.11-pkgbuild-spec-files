@@ -3,6 +3,7 @@
 	* base-specs/libgsm.spec: usr/include/gsm for keeping compatibility
 	  with other distros
 	* encumbered/SFEffmpeg.spec: update to 0.6
+	* SFEperl-list-moreutils.spec: bump to 0.22
 
 2010-06-15 Milan Jurik <sfnet@xylab.cz>
 
