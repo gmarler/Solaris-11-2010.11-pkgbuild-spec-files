@@ -43,7 +43,7 @@ fi
 make 
 
 %install
-mkdir -p $RPM_BUILD_ROOT{%{_bindir},%{_mandir}/man{1,3},%{_includedir},%{_libdir}}
+mkdir -p $RPM_BUILD_ROOT{%{_bindir},%{_mandir}/man{1,3},%{_includedir}/gsm,%{_libdir}}
 make install DESTDIR=$RPM_BUILD_ROOT INSTALL_ROOT=%{_prefix}
 
 if $( echo "%{_libdir}" | /usr/xpg4/bin/grep -q %{_arch64} ) ; then
@@ -51,10 +51,15 @@ if $( echo "%{_libdir}" | /usr/xpg4/bin/grep -q %{_arch64} ) ; then
 	mv $RPM_BUILD_ROOT/%{_libdir}/../libgsm.* $RPM_BUILD_ROOT/%{_libdir}
 fi
 
+# keep compatibility with other distros
+cp -r inc/*.h $RPM_BUILD_ROOT%{_includedir}/gsm
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Wed Jun 16 2010 - Milan Jurik
+- usr/include/gsm for keeping compatibility with other distros
 * March 12 2010 - Gilles Dauphin
 - update download to official site
 * Wed Mar 03 2010 - Milan Jurik

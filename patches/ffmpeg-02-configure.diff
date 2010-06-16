@@ -1,45 +1,21 @@
---- ffmpeg-0.5/configure	Mon Mar 16 21:05:16 2009
-+++ ffmpeg-0.5-patch/configure	Mon Mar 16 22:00:40 2009
-@@ -1,4 +1,4 @@
--#!/bin/sh
-+#!/bin/ksh
- #
- # FFmpeg configure script
- #
-@@ -1227,7 +1227,7 @@
-     thing=$1
-     pattern=$2
-     file=$source_path/$3
--    sed -n "s/^[^#]*$pattern.*([^,]*, *\([^,]*\)\(,.*\)*).*/\1_$thing/p" "$file"
-+    sed -n "s/^[^#]*$pattern.*([^,]*, *\([^,)]*\)[,)].*/\1_$thing/p" "$file"
- }
+--- ffmpeg-0.6/configure	Tue Jun 15 21:44:30 2010
++++ ffmpeg-0.6-patch/configure	Wed Jun 16 11:42:57 2010
+@@ -1439,7 +1439,7 @@
+ ffserver_deps="avformat ffm_muxer rtp_protocol rtsp_demuxer"
+ ffserver_extralibs='$ldl'
  
- ENCODER_LIST=$(find_things  encoder  ENC      libavcodec/allcodecs.c)
-@@ -2026,7 +2026,7 @@
-     echo
- fi
+-doc_deps="texi2html"
++doc_deps="texi2html pod2man"
  
--if enabled vhook; then
-+if enabled vhook && test "$target_os" != sunos; then
-     check_ldflags -rdynamic
-     check_ldflags -export-dynamic
- fi
-@@ -2063,7 +2063,8 @@
-     restore_flags
+ # default parameters
+ 
+@@ -2650,7 +2650,8 @@
+     check_struct SDL.h SDL_VideoInfo current_w $sdl_cflags && enable sdl_video_size
  fi
  
 -texi2html -version > /dev/null 2>&1 && enable texi2html || disable texi2html
 +(texi2html -version > /dev/null 2>&1 || texi2html /dev/null > /dev/null 2>&1) && enable texi2html || disable texi2html
 +pod2man /dev/null >/dev/null 2>&1 && enable pod2man || disable pod2man
  
- ##########################################
- # Network check
-@@ -2407,7 +2408,7 @@
-     echo "SDL_LIBS=`"${SDL_CONFIG}" --libs`" >> config.mak
-     echo "SDL_CFLAGS=`"${SDL_CONFIG}" --cflags`" >> config.mak
- fi
--if enabled texi2html; then
-+if enabled texi2html && enabled pod2man; then
-     echo "BUILD_DOC=yes" >> config.mak
- fi
- 
+ if enabled network; then
+     check_type "sys/types.h sys/socket.h" socklen_t

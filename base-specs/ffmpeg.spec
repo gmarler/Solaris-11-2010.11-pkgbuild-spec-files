@@ -4,20 +4,17 @@
 # includes module(s): FFmpeg
 #
 
-%define src_version 0.5.2
+%define src_version 0.6
 
 Summary:                 FFmpeg - a very fast video and audio converter
 
-Version:                 0.5.2
+Version:                 0.6
 #Source:                  http://pkgbuild.sf.net/spec-files-extra/tarballs/ffmpeg-export-%{year}-%{month}-%{day}.tar.bz2
 #Source:                  http://electricsheep.org/ffmpeg-0.4.9-p%{year}%{month}%{day}.tar.bz2
 Source:                  http://www.ffmpeg.org/releases/ffmpeg-%{src_version}.tar.bz2
 URL:                     http://www.ffmpeg.org/index.html
 Patch2:                  ffmpeg-02-configure.diff
-#Patch3:                  ffmpeg-03-v4l2.diff
 Patch4:                  ffmpeg-04-options.diff
-Patch5:                  ffmpeg-05-mlib.diff
-Patch7:                  ffmpeg-07-new-v4l2.diff
 Patch8:                  ffmpeg-08-versionsh.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{src_version}-build
@@ -27,10 +24,7 @@ Autoreqprov:             on
 #%setup -q -n ffmpeg-export-%{year}-%{month}-%{day}
 %setup -q -n ffmpeg-%{src_version}
 %patch2 -p1
-#%patch3 -p1
 %patch4 -p1
-%patch5 -p1
-%patch7 -p1
 %patch8 -p1
 
 %build
@@ -59,13 +53,11 @@ bash ./configure	\
     --mandir=%{_mandir}	\
     --cc=$CC		\
     %{arch_opt}		\
-    --disable-optimizations	\
     --disable-debug	\
     --enable-gpl	\
     --enable-postproc	\
     --enable-avfilter   \
     --enable-swscale	\
-    --disable-vhook	\
     --enable-libgsm	\
     --enable-libxvid	\
     --enable-libx264	\
@@ -74,8 +66,6 @@ bash ./configure	\
     --enable-libtheora	\
     --enable-libmp3lame	\
     --enable-libvorbis	\
-    --disable-libamr-nb	\
-    --disable-libamr-wb	\
     --enable-version3   \
     --enable-x11grab	\
     --enable-libspeex   \
@@ -83,6 +73,9 @@ bash ./configure	\
     --enable-libopencore-amrnb \
     --enable-libopencore-amrwb \
     --disable-static	\
+    --disable-mlib	\
+    --enable-libschroedinger \
+    --enable-libopenjpeg \
     --extra-ldflags=-mimpure-text \
     --enable-shared
 
@@ -113,6 +106,11 @@ EOM
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Wed Jun 16 2010 - Milan Jurik
+- update to 0.6
+- remove older amr codecs, add libschroedinger and openjpeg
+- remove mlib because it is broken now
+- remove Solaris V4L2 support, more work needed 
 * Fri Jun 11 2010 - Albert Lee <trisk@opensolaris.org>
 - Bump to 0.5.2
 - Update URLs

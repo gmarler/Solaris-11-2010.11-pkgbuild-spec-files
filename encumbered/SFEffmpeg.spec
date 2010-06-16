@@ -17,11 +17,11 @@
 %endif
 
 %ifarch sparc
-%define arch_opt --enable-mlib
+%define arch_opt --disable-optimizations
 %endif
 
 %ifarch i386
-%define arch_opt --disable-mmx --disable-mmx2
+%define arch_opt
 %endif
 
 %include base.inc
@@ -40,10 +40,6 @@ Autoreqprov:             on
 %include default-depend.inc
 BuildRequires: SUNWtexi
 BuildRequires: SUNWperl584usr
-%ifarch sparc
-BuildRequires: SUNWmlibh
-Requires: SUNWmlib
-%endif
 BuildRequires: SUNWxwinc
 Requires: SUNWxwrtl
 Requires: SUNWzlib
@@ -72,6 +68,11 @@ BuildRequires: SUNWspeex-devel
 Requires: SUNWspeex
 BuildRequires: SFEopencore-amr-devel
 Requires: SFEopencore-amr
+BuildRequires: SUNWgsed
+BuildRequires: SFEopenjpeg-devel
+Requires: SFEopenjpeg
+BuildRequires: SFElibschroedinger-devel
+Requires: SFElibschroedinger
 
 %package devel
 Summary:                 %{summary} - development files
@@ -130,6 +131,7 @@ rm -rf $RPM_BUILD_ROOT
 %hard %{_bindir}/ffserver
 %hard %{_bindir}/ffplay
 %hard %{_bindir}/ffmpeg
+%hard %{_bindir}/ffprobe
 %else
 %{_bindir}/*
 %endif
@@ -168,6 +170,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/libswscale
 
 %changelog
+* Wed Jun 16 2010 - Milan Jurik
+- update to 0.6
+- remove older amr codecs, add libschroedinger and openjpeg
+- remove mlib because it is broken now
+- remove Solaris V4L2 support, more work needed
 * Tue Apr 06 2010 - Milan Jurik
 - missing perl build dependency (pod2man)
 * Sun Mar 07 2010 - Milan Jurik
