@@ -6,7 +6,7 @@
 
 %include Solaris.inc
 
-%define tarball_version 1.220
+%define tarball_version 1.221
 %define perl_version 5.8.4
 
 Name:                    SFEperl-pango
@@ -67,5 +67,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man3/*
 
 %changelog
+* Thu Jun 17 2010 - Milan Jurik
+- bump to 1.221
 * Sun Jul 19 2009 - matt@greenviolet.net
 - Initial spec file

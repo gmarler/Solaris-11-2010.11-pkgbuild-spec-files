@@ -6,7 +6,7 @@
 
 %include Solaris.inc
 
-%define tarball_version 1.061
+%define tarball_version 1.070
 %define perl_version 5.8.4
 
 Name:                    SFEperl-cairo
@@ -68,6 +68,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man3/*
 
 %changelog
+* Thu Jun 17 2010 - Milan Jurik
+- bump to 1.070
 * Sat Jul 18 2009 - matt@greenviolet.net
 - Bump version to 1.061
 * Sun Jan 28 2007 - mike kiedrowski (lakeside-AT-cybrzn-DOT-com)

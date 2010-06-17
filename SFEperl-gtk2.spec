@@ -6,12 +6,13 @@
 
 %include Solaris.inc
 
-%define tarball_version 1.221
+%define tarball_version 1.222
 %define perl_version 5.8.4
 
 Name:                    SFEperl-gtk2
 Summary:                 Gtk2-%{tarball_version} PERL Module
 Version:                 %{perl_version}.%{tarball_version}
+URL:                     http://gtk2-perl.sourceforge.net/
 Source:                  %{sf_download}/gtk2-perl/Gtk2-%{tarball_version}.tar.gz
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -23,6 +24,7 @@ BuildRequires:	SFEperl-extutils-dep
 BuildRequires:	SFEperl-extutils-pkg
 BuildRequires:		SFEperl-glib
 BuildRequires:   	SFEperl-cairo
+BuildRequires:		SFEperl-pango
 
 %ifarch sparc
 %define perl_dir sun4-solaris-64int
@@ -68,6 +70,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man3/*
 
 %changelog
+* Thu Jun 17 2010 - Milan Jurik
+- bump to 1.222
 * Sat Jul 18 2009 - matt@greenviolet.net
 - Bump to version 1.221
 * Sun Jan 28 2007 - mike kiedrowski (lakeside-AT-cybrzn-DOT-com)

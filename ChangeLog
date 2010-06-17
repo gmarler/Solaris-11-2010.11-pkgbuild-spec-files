@@ -1,3 +1,10 @@
+2010-06-17 Milan Jurik <sfnet@xylab.cz>
+
+	* SFEperl-gtk2.spec: bump to 1.222
+	* SFEperl-cairo.spec: bump to 1.070
+	* SFEperl-glib.spec: bump to 1.223
+	* SFEperl-pango.spec: bump to 1.221
+
 2010-06-16 Milan Jurik <sfnet@xylab.cz>
 
 	* base-specs/libgsm.spec: usr/include/gsm for keeping compatibility

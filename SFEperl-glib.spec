@@ -6,7 +6,7 @@
 
 %include Solaris.inc
 
-%define tarball_version 1.222
+%define tarball_version 1.223
 %define perl_version 5.8.4
 
 Name:                    SFEperl-glib
@@ -67,6 +67,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man3/*
 
 %changelog
+* Thu Jun 17 2010 - Milan Jurik
+- bump to 1.223
 * Sat Jul 18 2009 - matt@greenviolet.net
 - Bump version to 1.222.
 * Sun Jan 28 2007 - mike kiedrowski (lakeside-AT-cybrzn-DOT-com)
