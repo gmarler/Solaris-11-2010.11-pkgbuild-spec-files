@@ -4,6 +4,7 @@
 	* SFEperl-cairo.spec: bump to 1.070
 	* SFEperl-glib.spec: bump to 1.223
 	* SFEperl-pango.spec: bump to 1.221
+	* SFEperl-gtk2-imageview.spec: initial import to SFE
 
 2010-06-16 Milan Jurik <sfnet@xylab.cz>
 
