@@ -7,7 +7,7 @@
 
 %define perl_version	5.8.4
 
-Name:		perl-acme-damn
+Name:		SFEperl-acme-damn
 Version:	0.04
 Summary:	Unbless Perl objects
 License:	GPL+ or Artistic

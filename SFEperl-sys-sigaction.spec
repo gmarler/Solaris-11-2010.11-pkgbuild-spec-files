@@ -7,7 +7,7 @@
 
 %define perl_version	5.8.4
 
-Name:		perl-sys-sigaction
+Name:		SFEperl-sys-sigaction
 Version:	0.11
 Summary:	Perl extension for Consistent Signal Handling
 License:	GPL+ or Artistic
