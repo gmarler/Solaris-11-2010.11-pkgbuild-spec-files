@@ -1,6 +1,6 @@
 #
 #
-#   STONG note: this is an early stage, logic and variable names *might* change
+#   Note: this is an early stage, logic and variable names *might* change, but don't expect too much changes
 #
 #
 

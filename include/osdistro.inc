@@ -1,6 +1,6 @@
 #
 #
-#   STONG note: this is an early stage, logic and variable names *might* change
+#   STRONG note: this is an early stage, logic and variable names *might* change
 #
 #
 
@@ -169,7 +169,7 @@
 #we are on an IPS based OS distro
 %define os200906 1
 %define osdistrelnumber 200906
-%define osdistrelname   "os2010.06"
+%define osdistrelname   "os2009.06"
 #this was the last check, skip all others
 %define osdet299999 0
 %else

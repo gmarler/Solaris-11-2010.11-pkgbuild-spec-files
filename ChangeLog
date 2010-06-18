@@ -1,3 +1,7 @@
+2010-06-18  Thomas Wagner  <tom68@users.sourceforge.net>
+  
+        * osdistro.inc osdistro.spec: remove typos, correct osdistrelname to 2009.06
+
 2010-06-18  Albert Lee  <trisk@opensolaris.org>
 
 	* SFEfuse-exfat.spec: *NEW* Free exFAT file system implementation
