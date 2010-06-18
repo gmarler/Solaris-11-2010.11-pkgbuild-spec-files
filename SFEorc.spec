@@ -33,6 +33,7 @@ BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 
 BuildRequires: SUNWgtk-doc
 BuildRequires: SUNWgnome-common-devel
+BuildRequires: SUNWgnome-xml
 
 %description
 Orc is a library and set of tools for compiling and executing
