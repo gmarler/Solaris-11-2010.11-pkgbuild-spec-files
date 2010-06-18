@@ -35,6 +35,7 @@ Patch5:         gst-plugins-bad-05-xsi_shell.diff
 Patch6:         gst-plugins-bad-06-apexsink.diff
 %endif
 Patch7:         gst-plugins-bad-07-videomeasure.diff
+Patch8:         gst-plugins-bad-08-gstdoc-scangobj.diff
 BuildRoot:      %{_tmppath}/%{name}-%{version}-root
 Docdir:         %{_defaultdocdir}/doc
 Autoreqprov:    on
@@ -63,6 +64,7 @@ plug-ins.
 %else
 %patch6 -p1
 %endif
+%patch8 -p1
 
 %build
 CFLAGS="${CFLAGS:-%optflags}" ; export CFLAGS ; \
@@ -195,6 +197,8 @@ GStreamer support libraries header files.
 %{_datadir}/gtk-doc
 
 %changelog
+* Fri Jun 18 2010 - brian.cameron@oracle.com
+- Add patch gst-plugins-bad-08-gstdoc-scangobj.diff.
 * Sat Jun 12 2010 - Albert Lee <trisk@opensolaris.org>
 - Fix patching for 0.10.19
 * Thu Jun 10 2010 - Albert Lee <trisk@opensolaris.org>

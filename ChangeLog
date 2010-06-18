@@ -1,3 +1,12 @@
+2010-06-09  Brian Cameron  <brian.cameron@oracle.com>
+
+	* SFEgst-plugins-bad.spec: Bump to 0.10.19.
+	* patches/gst-plugins-bad-08-gstdoc-scangobj.diff:  Add patch
+	  needed to build-gtk.docs.
+	* base-specs/gst-plugins-bad.spec:  Add new patch to this spec-file
+	  also.
+	* base-specs/orc.spec: Bump to 0.4.5.
+
 2010-06-17 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEperl-gtk2.spec: bump to 1.222
@@ -29,9 +38,9 @@
 2010-06-14  Thomas Wagner  <tom68@users.sourceforge.net>
 
 	* SFEmpfr: bump to 2.4.2 - adjust location of SFEgmp, 
-                   always require SFEgmp
+	  always require SFEgmp
         * SFEgmp:  bump to 4.3.2 - rework patch gmp-01, pause older assembly 
-                  improvements on AMD64, add patch gmp-02 extern inline
+	  improvements on AMD64, add patch gmp-02 extern inline
 
 2010-06-14 Milan Jurik <sfnet@xylab.cz>
 

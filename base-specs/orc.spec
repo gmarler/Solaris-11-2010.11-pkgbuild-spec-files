@@ -1,7 +1,7 @@
 %define src_name orc
 
 Name:		SFEorc
-Version:	0.4.4
+Version:	0.4.5
 Summary:	The Oil Run-time Compiler
 
 Group:		System Environment/Libraries
@@ -42,6 +42,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Jun 18 2010 - Brian Cameron <brian.cameron@oracle.com>
+- Bump to 0.4.5.
 * Sun Apr 11 2010 - Milan Jurik
 - do not depend on GNU find
 * Fri Apr 09 2010 - Milan Jurik

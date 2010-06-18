@@ -1,0 +1,11 @@
+--- gst-plugins-bad-0.10.19/common/gstdoc-scangobj-orig	2010-06-18 01:23:49.782779849 -0500
++++ gst-plugins-bad-0.10.19/common/gstdoc-scangobj	2010-06-18 01:24:01.349963508 -0500
+@@ -1612,7 +1612,7 @@ close OUTPUT;
+ 
+ $CC = $ENV{CC} ? $ENV{CC} : "gcc";
+ $LD = $ENV{LD} ? $ENV{LD} : $CC;
+-$CFLAGS = $ENV{CFLAGS} ? "$ENV{CFLAGS} -Wall -g" : "-Wall -g";
++$CFLAGS = $ENV{CFLAGS} ? "$ENV{CFLAGS} -g" : "-g";
+ $LDFLAGS = $ENV{LDFLAGS} ? $ENV{LDFLAGS} : "";
+ 
+ my $o_file;
