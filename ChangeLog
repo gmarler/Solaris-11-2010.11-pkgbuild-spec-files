@@ -1,6 +1,7 @@
 2010-06-18 Milan Jurik <sfnet@xylab.cz>
 
 	* base-specs/libmp4v2.spec: fix 64-bit build
+	* encumbered/SFEfaac.spec: Initial version
 
 2010-06-18  Thomas Wagner  <tom68@users.sourceforge.net>
   

@@ -1,0 +1,11 @@
+--- faac-1.28/configure.in	Thu Feb  5 01:55:38 2009
++++ faac-1.28-patch/configure.in	Thu Jun 17 16:44:48 2010
+@@ -32,7 +32,7 @@
+ AC_CHECK_DECLS([MP4Create, MP4MetadataDelete],
+                AC_CHECK_LIB(mp4v2, MP4MetadataDelete, external_mp4v2=yes,
+                             external_mp4v2=no, -lstdc++),
+-               external_mp4v2=no, [#include <mp4.h>])
++               external_mp4v2=no, [#include <mp4v2.h>])
+ 
+ if test x$external_mp4v2 = xyes; then
+   AC_MSG_NOTICE([*** Building with external mp4v2 ***])
