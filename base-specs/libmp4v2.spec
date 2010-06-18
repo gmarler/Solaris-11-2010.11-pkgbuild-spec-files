@@ -23,7 +23,12 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
     CPUS=1
 fi
 export CFLAGS="%optflags"
+export CXXFLAGS="%cxx_optflags"
 export LDFLAGS="%_ldflags" 
+
+if $( echo "%{_libdir}" | /usr/xpg4/bin/grep -q %{_arch64} ) ; then
+    export LDFLAGS="$LDFLAGS -m64"
+fi
 
 ./configure --prefix=%{_prefix} --mandir=%{_mandir} \
             --libdir=%{_libdir}              \
@@ -42,5 +47,7 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/lib*a
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Fri Jun 18 2010 - Milan Jurik
+- fix 64-bit build
 * Fri Aug 21 2009 - Milan Jurik
 - Initial base spec file
