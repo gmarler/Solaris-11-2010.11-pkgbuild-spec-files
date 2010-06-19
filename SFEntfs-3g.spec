@@ -9,6 +9,8 @@
 %define cc_is_gcc 1
 %include base.inc
 
+%define SUNWlibfuse	%(/usr/bin/pkginfo -q SUNWlibfuse && echo 1 || echo 0)
+
 Name:                    SFEntfs-3g
 Summary:                 NTFS-3G Stable Read/Write Driver
 Version:                 2010.3.6
@@ -21,16 +23,27 @@ BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 %define _execprefix %{_prefix}
 
-BuildRequires: SUNWlibfuse
-Requires: SUNWfusefs
-Requires: SUNWlibfuse
+%if %SUNWlibfuse
+BuildRequires:	SUNWlibfuse
+Requires:	SUNWfusefs
+Requires:	SUNWlibfuse
+%else
+BuildRequires:	SFElibfuse
+Requires:	SFEfusefs
+Requires:	SFElibfuse
+%endif
 
 %package devel
 Summary:                 %{summary} - development files
 SUNW_BaseDir:            %{_basedir}
 %include default-depend.inc
 Requires: %name
-Requires: SUNWlibfuse
+
+%if %SUNWlibfuse
+Requires:	SUNWlibfuse
+%else
+Requires:	SFElibfuse
+%endif
 
 %prep
 %setup -q -n ntfs-3g-%version
@@ -112,6 +125,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sat Jun 19 2010 - Milan Jurik
+- support SFEfusefs
 * Fri Mar 26 2010 - Albert Lee <trisk@opensolaris.org>
 - Bump to 2010.3.6
 - Update URL, License

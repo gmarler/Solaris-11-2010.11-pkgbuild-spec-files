@@ -1,6 +1,9 @@
 2010-06-19 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEexiv2-gpp.spec: update to 0.20
+	* SFEfusefs.spec: Initial spec
+	* SFElibfuse.spec: Initial spec
+	* SFEntfs-3g.spec: support SFEfusefs
 
 2010-06-18 Milan Jurik <sfnet@xylab.cz>
 
