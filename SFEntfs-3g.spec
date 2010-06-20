@@ -23,6 +23,8 @@ BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 %define _execprefix %{_prefix}
 
+BuildRequires:	SUNWgnome-common-devel
+
 %if %SUNWlibfuse
 BuildRequires:	SUNWlibfuse
 Requires:	SUNWfusefs
