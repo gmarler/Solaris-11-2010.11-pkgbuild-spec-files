@@ -11,8 +11,9 @@
 	* encumbered/SFEfaac.spec: Initial version
 
 2010-06-18  Thomas Wagner  <tom68@users.sourceforge.net>
-  
-        * osdistro.inc osdistro.spec: remove typos, correct osdistrelname to 2009.06
+
+	* osdistro.inc osdistro.spec: remove typos, correct osdistrelname to
+	  2009.06
 
 2010-06-18  Albert Lee  <trisk@opensolaris.org>
 
@@ -22,7 +23,7 @@
 	* patches/fuse-exfat-02-byteorder.diff: Add byteorder support for BSDs
 	  and Solaris
 
-2010-06-09  Brian Cameron  <brian.cameron@oracle.com>
+2010-06-18  Brian Cameron  <brian.cameron@oracle.com>
 
 	* SFEgst-plugins-bad.spec: Bump to 0.10.19.
 	* patches/gst-plugins-bad-08-gstdoc-scangobj.diff:  Add patch
@@ -63,7 +64,7 @@
 
 	* SFEmpfr: bump to 2.4.2 - adjust location of SFEgmp, 
 	  always require SFEgmp
-        * SFEgmp:  bump to 4.3.2 - rework patch gmp-01, pause older assembly 
+	* SFEgmp:  bump to 4.3.2 - rework patch gmp-01, pause older assembly 
 	  improvements on AMD64, add patch gmp-02 extern inline
 
 2010-06-14 Milan Jurik <sfnet@xylab.cz>
