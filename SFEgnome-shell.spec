@@ -54,6 +54,7 @@ Requires:                %{name}
 %setup -q -n gnome-shell-%version
 
 %build
+export LDFLAGS="%_ldflags -lmalloc"
 export PYTHON=/usr/bin/python%{pythonver}
 ./configure \
    --prefix=%{_prefix} \
@@ -114,6 +115,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Wed Jun 23 2010 - Lin Ma <lin.ma@sun.com>
+- Ugly build patch for gnome-shell --perf crash.
 * Tue Jun 01 2010 - Brian Cameron  <brian.cameron@oracle.com>
 - Bump to 2.31.2.
 * Tue Apr 27 2010 - Brian Cameron  <brian.cameron@sun.com>
