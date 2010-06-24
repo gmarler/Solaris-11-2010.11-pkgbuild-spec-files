@@ -106,7 +106,7 @@ cd webkit-%version
 #%patch23 -p1
 %patch24 -p1
 %patch25 -p1
-%patch26 -p1
+#%patch26 -p1
 
 %build
 #export LD=CC
