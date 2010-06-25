@@ -5,24 +5,26 @@
 #
 %include Solaris.inc
 
-
-%define SUNWlibsdl      %(/usr/bin/pkginfo -q SUNWlibsdl && echo 1 || echo 0)
+%define SFEsdl	%(/usr/bin/pkginfo -q SFEsdl && echo 1 || echo 0)
 
 %define src_name	dosbox
 Name:                   SFEdosbox
 Summary:                DOS emulator
-Version:                0.73
+Version:                0.74
+URL:			http://www.dosbox.com/
+Group:			System/Emulators/Other
+License:		GPLv2
 Source:                 %{sf_download}/%{src_name}/%{src_name}-%{version}.tar.gz
-Patch1:			dosbox-01-socket.diff
+Patch1:			dosbox-01-solaris.diff
 SUNW_BaseDir:           %{_basedir}
 BuildRoot:              %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
-%if %SUNWlibsdl
-BuildRequires: SUNWlibsdl-devel
-Requires: SUNWlibsdl
-%else
+%if %SFEsdl
 BuildRequires: SFEsdl-devel
 Requires: SFEsdl
+%else
+BuildRequires: SUNWlibsdl-devel
+Requires: SUNWlibsdl
 %endif
 BuildRequires: SFEsdl-net-devel
 Requires: SFEsdl-net
@@ -42,9 +44,8 @@ fi
 
 export ACLOCAL_FLAGS="-I %{_datadir}/aclocal"
 export CFLAGS="%{optflags}"
+export CXXFLAGS="%{cxx_optflags}"
 export LDFLAGS="%{_ldflags}"
-export CXX=/usr/sfw/bin/g++
-export CXXFLAGS="-O3 -Xlinker -i -fno-omit-frame-pointer"
 
 libtoolize 
 aclocal
@@ -81,6 +82,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}
 
 %changelog
+* Fri Jun 25 2010 - Milan Jurik
+- bump to 0.64, patch cleanup
 * Wed Jul 22 2009 - matt@greenviolet.net
 - Bump to 0.73, update patch1 to be cleaner, clean up spec file slightly
 * Mon Feb 25 2008 - trisk@acm.jhu.edu
