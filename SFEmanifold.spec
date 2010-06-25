@@ -22,10 +22,10 @@ BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 Requires: SUNWgnome-python26-libs
 Requires: SUNWPython26
-Requires: SFEpython26-genshi.spec
+Requires: SFEpython26-genshi
 BuildRequires: SUNWgnome-python26-libs-devel
 BuildRequires: SUNWPython26-devel
-BuildRequires: SFEpython26-genshi.spec
+BuildRequires: SFEpython26-genshi
 
 %description
 Manifold helps you quickly and easily create Solaris SMF manifest XML files for your services by answering a few questions about how it needs to be configured.
