@@ -4,7 +4,8 @@
 
 2010-06-24  Thomas Wagner  <tom68@users.sourceforge.net>
 
-	* SFEmanifold.spec: *new* create SMF manifests by easy question/answer cyles
+	* SFEmanifold.spec: *new* create SMF manifests by easy question/answer
+	  cyles
 	* SFEpython26-genshi.spec: *new* forked to a python2.6 version
 
 2010-06-25  Simon Jin <yuntong.jin@sun.com>
