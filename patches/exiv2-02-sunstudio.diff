@@ -1,0 +1,846 @@
+--- exiv2-0.20/xmpsdk/src/XML_Node.cpp	2010-04-13 21:10:55.000000000 +0200
++++ exiv2-0.20-patch/xmpsdk/src/XML_Node.cpp	2010-06-08 20:20:00.429614313 +0200
+@@ -11,7 +11,9 @@
+ 
+ #include <map>
+ #include <cstring>
+-#include <cstdio>
++#include <stdio.h>
++
++using namespace std;
+ 
+ // ! Can't include XMP..._Impl.hpp - used by both Core and Files.
+ #define XMP_LitNMatch(s,l,n)	(std::strncmp((s),(l),(n)) == 0)
+--- exiv2-0.20/src/basicio.cpp	2010-04-03 09:53:30.000000000 +0200
++++ exiv2-0.20-patch/src/basicio.cpp	2010-06-08 21:09:15.297848477 +0200
+@@ -47,7 +47,7 @@
+ #include <iostream>
+ #include <cstring>
+ #include <cassert>
+-#include <cstdio>                       // for remove, rename
++#include <stdio.h>                       // for remove, rename
+ #include <cstdlib>                      // for alloc, realloc, free
+ #include <sys/types.h>                  // for stat, chmod
+ #include <sys/stat.h>                   // for stat, chmod
+@@ -61,6 +61,8 @@
+ # include <unistd.h>                    // for getpid, stat
+ #endif
+ 
++using namespace std;
++
+ // MSVC doesn't provide mode_t
+ #ifdef _MSC_VER
+ typedef unsigned short mode_t;
+@@ -269,7 +271,7 @@
+         int rc = 0;
+         if (p_->pMappedArea_ != 0) {
+ #if defined EXV_HAVE_MMAP && defined EXV_HAVE_MUNMAP
+-            if (::munmap(p_->pMappedArea_, p_->mappedLength_) != 0) {
++            if (::munmap((char *)p_->pMappedArea_, p_->mappedLength_) != 0) {
+                 rc = 1;
+             }
+ #elif defined WIN32 && !defined __CYGWIN__
+--- exiv2-0.20/src/rcsid.hpp	2010-04-03 09:53:30.000000000 +0200
++++ exiv2-0.20-patch/src/rcsid.hpp	2010-06-08 21:38:12.149260007 +0200
+@@ -55,7 +55,6 @@
+ #define EXIV2_RCSID(id) \
+     namespace { \
+         inline const char* getRcsId(const char*) { return id ; } \
+-        const char* rcsId = getRcsId(rcsId); \
+     }
+ 
+ #endif // #if !defined (EXIV2_RCSID)
+--- exiv2-0.20/src/bmpimage.cpp	2010-04-03 09:53:30.000000000 +0200
++++ exiv2-0.20-patch/src/bmpimage.cpp	2010-06-08 21:39:39.046251245 +0200
+@@ -48,6 +48,8 @@
+ #include <cstring>
+ #include <iostream>
+ 
++using namespace std;
++
+ // *****************************************************************************
+ // class member definitions
+ namespace Exiv2 {
+--- exiv2-0.20/src/canonmn.cpp	Sat Apr  3 09:53:30 2010
++++ exiv2-0.20-patch/src/canonmn.cpp	Tue Jun  8 21:46:08 2010
+@@ -20,6 +20,8 @@
+  */
+ /*
+   File:      canonmn.cpp
++
++#include <ios>
+   Version:   $Rev: 2045 $
+   Author(s): Andreas Huggel (ahu) <ahuggel@gmx.net>
+              David Cannings (dc) <david@edeca.net>
+@@ -29,6 +31,8 @@
+ #include "rcsid.hpp"
+ EXIV2_RCSID("@(#) $Id: canonmn.cpp 2045 2010-04-03 07:53:30Z ahuggel $")
+ 
++#include <ios>
++
+ // *****************************************************************************
+ // included header files
+ #include "types.hpp"
+@@ -44,7 +48,7 @@
+ #include <algorithm>
+ #include <cassert>
+ #include <cstring>
+-#include <cmath>
++#include <math.h>
+ 
+ // *****************************************************************************
+ // class member definitions
+--- exiv2-0.20/src/convert.cpp	Wed Apr 14 18:17:55 2010
++++ exiv2-0.20-patch/src/convert.cpp	Tue Jun  8 21:47:41 2010
+@@ -30,6 +30,8 @@
+ #include "rcsid.hpp"
+ EXIV2_RCSID("@(#) $Id: convert.cpp 2090 2010-04-14 16:17:55Z ahuggel $")
+ 
++#include <ios>
++
+ // *****************************************************************************
+ // included header files
+ #include "types.hpp"
+@@ -54,6 +56,8 @@
+ # include <errno.h>
+ #endif
+ 
++using namespace std;
++
+ // Adobe XMP Toolkit
+ #ifdef EXV_HAVE_XMP_TOOLKIT
+ # define TXMP_STRING_TYPE std::string
+--- exiv2-0.20/src/cr2image.cpp	Mon Apr 12 12:43:24 2010
++++ exiv2-0.20-patch/src/cr2image.cpp	Tue Jun  8 21:48:39 2010
+@@ -52,6 +52,8 @@
+ #include <cassert>
+ #include <cstring>
+ 
++using namespace std;
++
+ // *****************************************************************************
+ // class member definitions
+ namespace Exiv2 {
+--- exiv2-0.20/src/crwimage.cpp	Sat Apr  3 09:53:30 2010
++++ exiv2-0.20-patch/src/crwimage.cpp	Tue Jun  8 21:49:29 2010
+@@ -29,6 +29,8 @@
+ #include "rcsid.hpp"
+ EXIV2_RCSID("@(#) $Id: crwimage.cpp 2045 2010-04-03 07:53:30Z ahuggel $")
+ 
++#include <ios>
++
+ // Define DEBUG to output debug information to std::cerr, e.g, by calling make
+ // like this: make DEFS=-DDEBUG crwimage.o
+ //#define DEBUG
+--- exiv2-0.20/src/datasets.cpp	Mon Apr 19 15:17:17 2010
++++ exiv2-0.20-patch/src/datasets.cpp	Tue Jun  8 21:50:35 2010
+@@ -29,6 +29,8 @@
+ #include "rcsid.hpp"
+ EXIV2_RCSID("@(#) $Id: datasets.cpp 2109 2010-04-19 13:17:17Z cgilles $")
+ 
++#include <ios>
++
+ // *****************************************************************************
+ // included header files
+ #include "datasets.hpp"
+@@ -42,6 +44,8 @@
+ #include <iomanip>
+ #include <sstream>
+ 
++using namespace std;
++
+ // *****************************************************************************
+ // class member definitions
+ namespace Exiv2 {
+--- exiv2-0.20/src/easyaccess.cpp	Sun May  9 18:00:30 2010
++++ exiv2-0.20-patch/src/easyaccess.cpp	Tue Jun  8 21:51:22 2010
+@@ -33,6 +33,8 @@
+ // included header files
+ #include "easyaccess.hpp"
+ 
++using namespace std;
++
+ // *****************************************************************************
+ namespace {
+ 
+--- exiv2-0.20/src/futils.cpp	Wed Apr 14 10:09:11 2010
++++ exiv2-0.20-patch/src/futils.cpp	Tue Jun  8 21:52:41 2010
+@@ -51,7 +51,7 @@
+ 
+ #include <cerrno>
+ #include <sstream>
+-#include <cstring>
++#include <string.h>
+ 
+ #if defined EXV_HAVE_STRERROR_R && !defined EXV_HAVE_DECL_STRERROR_R
+ # ifdef EXV_STRERROR_R_CHAR_P
+--- exiv2-0.20/src/gifimage.cpp	Sat Apr  3 09:53:30 2010
++++ exiv2-0.20-patch/src/gifimage.cpp	Tue Jun  8 21:53:35 2010
+@@ -48,6 +48,8 @@
+ #include <cstring>
+ #include <iostream>
+ 
++using namespace std;
++
+ // *****************************************************************************
+ // class member definitions
+ namespace Exiv2 {
+--- exiv2-0.20/src/jp2image.cpp	Sat Apr  3 09:53:30 2010
++++ exiv2-0.20-patch/src/jp2image.cpp	Tue Jun  8 21:54:21 2010
+@@ -53,6 +53,8 @@
+ #include <iostream>
+ #include <cassert>
+ 
++using namespace std;
++
+ // JPEG-2000 box types
+ const uint32_t kJp2BoxTypeJp2Header   = 0x6a703268; // 'jp2h'
+ const uint32_t kJp2BoxTypeImageHeader = 0x69686472; // 'ihdr'
+--- exiv2-0.20/src/jpgimage.cpp	Wed Apr 28 17:20:01 2010
++++ exiv2-0.20-patch/src/jpgimage.cpp	Tue Jun  8 22:07:01 2010
+@@ -48,6 +48,8 @@
+ #include <cstring>
+ #include <cassert>
+ 
++using namespace std;
++
+ // *****************************************************************************
+ // class member definitions
+ 
+@@ -782,7 +784,7 @@
+             }
+             else if (   skipApp1Exif == count
+                      || skipApp1Xmp  == count
+-                     || find(skipApp13Ps3.begin(), skipApp13Ps3.end(), count) != skipApp13Ps3.end()
++                     || std::find(skipApp13Ps3.begin(), skipApp13Ps3.end(), count) != skipApp13Ps3.end()
+                      || skipCom      == count) {
+                 --search;
+                 io_->seek(size-bufRead, BasicIo::cur);
+--- exiv2-0.20/src/makernote.cpp	Tue May 25 17:04:16 2010
++++ exiv2-0.20-patch/src/makernote.cpp	Tue Jun  8 22:08:37 2010
+@@ -28,6 +28,8 @@
+ #include "rcsid.hpp"
+ EXIV2_RCSID("@(#) $Id: makernote.cpp 2240 2010-05-25 15:04:16Z ahuggel $")
+ 
++#include <ios>
++
+ // *****************************************************************************
+ // included header files
+ #ifdef _MSC_VER
+@@ -46,6 +48,8 @@
+ #include <string>
+ #include <cstring>
+ 
++using namespace std;
++
+ // *****************************************************************************
+ namespace {
+     // Todo: Can be generalized further - get any tag as a string/long/...
+--- exiv2-0.20/src/minoltamn.cpp	Sat May 29 09:56:31 2010
++++ exiv2-0.20-patch/src/minoltamn.cpp	Tue Jun  8 22:09:49 2010
+@@ -31,6 +31,8 @@
+ #include "rcsid.hpp"
+ EXIV2_RCSID("@(#) $Id: minoltamn.cpp 2247 2010-05-29 07:56:31Z ahuggel $")
+ 
++#include <ios>
++
+ // *****************************************************************************
+ // included header files
+ #include "minoltamn.hpp"
+--- exiv2-0.20/src/mrwimage.cpp	Sat Apr  3 09:53:30 2010
++++ exiv2-0.20-patch/src/mrwimage.cpp	Tue Jun  8 22:10:34 2010
+@@ -50,6 +50,8 @@
+ #include <iostream>
+ #include <cassert>
+ 
++using namespace std;
++
+ // *****************************************************************************
+ // class member definitions
+ namespace Exiv2 {
+--- exiv2-0.20/src/nikonmn.cpp	Mon May 17 16:00:28 2010
++++ exiv2-0.20-patch/src/nikonmn.cpp	Tue Jun  8 22:12:22 2010
+@@ -34,6 +34,8 @@
+ #include "rcsid.hpp"
+ EXIV2_RCSID("@(#) $Id: nikonmn.cpp 2224 2010-05-17 14:00:28Z ahuggel $")
+ 
++#include <ios>
++
+ // *****************************************************************************
+ // included header files
+ #include "types.hpp"
+@@ -50,7 +52,7 @@
+ #include <iomanip>
+ #include <cassert>
+ #include <cstring>
+-#include <cmath>
++#include <math.h>
+ 
+ // *****************************************************************************
+ // class member definitions
+@@ -2430,8 +2432,8 @@
+         std::ostringstream oss;
+         oss.copyfmt(os);
+         char sign = value.toLong() < 0 ? '-' : '+';
+-        long h = long(abs(value.toLong())/60.0);
+-        long min = abs(value.toLong()) - h*60;
++        long h = long(abs((double)value.toLong())/60.0);
++        long min = abs((double)value.toLong()) - h*60;
+         os << std::fixed << "UTC " << sign << std::setw(2) << std::setfill('0') << h << ":" 
+            << std::setw(2) << std::setfill('0') << min;
+         os.copyfmt(oss);
+--- exiv2-0.20/src/olympusmn.cpp	Mon Apr 19 15:17:17 2010
++++ exiv2-0.20-patch/src/olympusmn.cpp	Tue Jun  8 22:13:10 2010
+@@ -32,6 +32,8 @@
+ #include "rcsid.hpp"
+ EXIV2_RCSID("@(#) $Id: olympusmn.cpp 2109 2010-04-19 13:17:17Z cgilles $")
+ 
++#include <ios>
++
+ // *****************************************************************************
+ // included header files
+ #include "types.hpp"
+--- exiv2-0.20/src/panasonicmn.cpp	Mon Apr 19 15:17:17 2010
++++ exiv2-0.20-patch/src/panasonicmn.cpp	Tue Jun  8 22:14:45 2010
+@@ -30,6 +30,8 @@
+ #include "rcsid.hpp"
+ EXIV2_RCSID("@(#) $Id: panasonicmn.cpp 2109 2010-04-19 13:17:17Z cgilles $")
+ 
++#include <ios>
++
+ // *****************************************************************************
+ // included header files
+ #include "types.hpp"
+--- exiv2-0.20/src/pgfimage.cpp	Sat Apr  3 09:53:30 2010
++++ exiv2-0.20-patch/src/pgfimage.cpp	Tue Jun  8 22:15:29 2010
+@@ -29,6 +29,8 @@
+ #include "rcsid.hpp"
+ EXIV2_RCSID("@(#) $Id: pgfimage.cpp 2045 2010-04-03 07:53:30Z ahuggel $")
+ 
++using namespace std;
++
+ // *****************************************************************************
+ 
+ #define DEBUG 1
+--- exiv2-0.20/src/pngimage.cpp	Sat Apr  3 09:53:30 2010
++++ exiv2-0.20-patch/src/pngimage.cpp	Tue Jun  8 22:19:22 2010
+@@ -56,6 +56,8 @@
+ #include <iostream>
+ #include <cassert>
+ 
++using namespace std;
++
+ // Signature from front of PNG file
+ const unsigned char pngSignature[8] = { 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A };
+ 
+--- exiv2-0.20/src/pngchunk.cpp	Sat Apr  3 09:53:30 2010
++++ exiv2-0.20-patch/src/pngchunk.cpp	Tue Jun  8 22:20:25 2010
+@@ -60,7 +60,10 @@
+ #include <iostream>
+ #include <cassert>
+ #include <cstdio>
++#include <cstdlib>
+ 
++using namespace std;
++
+ /*
+ 
+ URLs to find informations about PNG chunks :
+--- exiv2-0.20/src/preview.cpp	Wed Apr 21 16:29:37 2010
++++ exiv2-0.20-patch/src/preview.cpp	Tue Jun  8 22:21:36 2010
+@@ -640,7 +640,7 @@
+                     uint32_t offset = dataValue.toLong(i);
+                     uint32_t size = sizes.toLong(i);
+                     if (offset + size <= static_cast<uint32_t>(io.size()))
+-                        memcpy(pos, base + offset, size);
++                        std::memcpy(pos, base + offset, size);
+                     pos += size;
+                 }
+                 dataValue.setDataArea(buf.pData_, buf.size_);
+@@ -678,7 +678,7 @@
+     {
+         properties_ = rhs.properties_;
+         pData_ = new byte[rhs.size_];
+-        memcpy(pData_, rhs.pData_, rhs.size_);
++        std::memcpy(pData_, rhs.pData_, rhs.size_);
+         size_ = rhs.size_;
+     }
+ 
+@@ -690,7 +690,7 @@
+             pData_ = new byte[rhs.size_];
+         }
+         properties_ = rhs.properties_;
+-        memcpy(pData_, rhs.pData_, rhs.size_);
++        std::memcpy(pData_, rhs.pData_, rhs.size_);
+         size_ = rhs.size_;
+         return *this;
+     }
+--- exiv2-0.20/src/properties.cpp	Sat May 29 11:09:03 2010
++++ exiv2-0.20-patch/src/properties.cpp	Tue Jun  8 22:22:48 2010
+@@ -54,7 +54,7 @@
+         //! Comparison operator for key
+         bool operator==(const std::string& key) const
+         {
+-            return 0 == strcmp(key_, key.c_str());
++            return 0 == std::strcmp(key_, key.c_str());
+         }
+ 
+         const char* key_;                      //!< XMP key
+@@ -1126,7 +1126,7 @@
+         if (!pl) return 0;
+         const XmpPropertyInfo* pi = 0;
+         for (int i = 0; pl[i].name_ != 0; ++i) {
+-            if (0 == strcmp(pl[i].name_, key.tagName().c_str())) {
++            if (0 == std::strcmp(pl[i].name_, key.tagName().c_str())) {
+                 pi = pl + i;
+                 break;
+             }
+@@ -1292,7 +1292,7 @@
+         std::string::size_type pos1 = key.find('.');
+         if (pos1 == std::string::npos) throw Error(6, key);
+         std::string familyName = key.substr(0, pos1);
+-        if (0 != strcmp(familyName.c_str(), familyName_)) {
++        if (0 != std::strcmp(familyName.c_str(), familyName_)) {
+             throw Error(6, key);
+         }
+         std::string::size_type pos0 = pos1 + 1;
+--- exiv2-0.20/src/psdimage.cpp	Wed Apr 14 18:33:38 2010
++++ exiv2-0.20-patch/src/psdimage.cpp	Tue Jun  8 22:23:34 2010
+@@ -663,7 +663,7 @@
+         {
+             return false;
+         }
+-        bool matched = (memcmp(buf, PsdHeader, len) == 0);
++        bool matched = (std::memcmp(buf, PsdHeader, len) == 0);
+         if (!advance || !matched)
+         {
+             iIo.seek(-len, BasicIo::cur);
+--- exiv2-0.20/src/rafimage.cpp	Sat Apr  3 09:53:30 2010
++++ exiv2-0.20-patch/src/rafimage.cpp	Tue Jun  8 22:24:14 2010
+@@ -155,7 +155,7 @@
+         if (iIo.error() || iIo.eof()) {
+             return false;
+         }
+-        int rc = memcmp(buf, "FUJIFILM", 8);
++        int rc = std::memcmp(buf, "FUJIFILM", 8);
+         if (!advance || rc != 0) {
+             iIo.seek(-len, BasicIo::cur);
+         }
+--- exiv2-0.20/src/pentaxmn.cpp	Mon May 24 06:56:56 2010
++++ exiv2-0.20-patch/src/pentaxmn.cpp	Tue Jun  8 22:25:04 2010
+@@ -32,6 +32,8 @@
+ #include "rcsid.hpp"
+ EXIV2_RCSID("@(#) $Id: pentaxmn.cpp 2227 2010-05-24 04:56:56Z ahuggel $")
+ 
++#include <ios>
++
+ // *****************************************************************************
+ // included header files
+ #include "types.hpp"
+--- exiv2-0.20/src/tags.cpp	Tue May 25 16:53:56 2010
++++ exiv2-0.20-patch/src/tags.cpp	Tue Jun  8 22:26:49 2010
+@@ -30,6 +30,8 @@
+ #include "rcsid.hpp"
+ EXIV2_RCSID("@(#) $Id: tags.cpp 2239 2010-05-25 14:53:56Z ahuggel $")
+ 
++#include <ios>
++
+ // *****************************************************************************
+ // included header files
+ #include "types.hpp"
+@@ -70,8 +72,8 @@
+ 
+     bool TagVocabulary::operator==(const std::string& key) const
+     {
+-        if (strlen(voc_) > key.size()) return false;
+-        return 0 == strcmp(voc_, key.c_str() + key.size() - strlen(voc_));
++        if (std::strlen(voc_) > key.size()) return false;
++        return 0 == std::strcmp(voc_, key.c_str() + key.size() - std::strlen(voc_));
+     }
+ 
+     //! @cond IGNORE
+@@ -88,7 +90,7 @@
+ 
+     bool IfdInfo::operator==(const Item& item) const
+     {
+-        return 0 == strcmp(item.i_.c_str(), item_);
++        return 0 == std::strcmp(item.i_.c_str(), item_);
+     }
+ 
+     // Important: IFD item must be unique!
+@@ -1930,7 +1932,7 @@
+         const char* tn = tagName.c_str();
+         if (tn == 0) return 0;
+         for (int idx = 0; ti[idx].tag_ != 0xffff; ++idx) {
+-            if (0 == strcmp(ti[idx].name_, tn)) {
++            if (0 == std::strcmp(ti[idx].name_, tn)) {
+                 return &ti[idx];
+             }
+         }
+@@ -1941,7 +1943,7 @@
+     {
+         bool rc = false;
+         const IfdInfo* ii = find(ifdInfo_, ifdId);
+-        if (ii != 0 && 0 == strcmp(ii->name_, "Makernote")) {
++        if (ii != 0 && 0 == std::strcmp(ii->name_, "Makernote")) {
+             rc = true;
+         }
+         return rc;
+@@ -2210,7 +2212,7 @@
+         std::string::size_type pos1 = key_.find('.');
+         if (pos1 == std::string::npos) throw Error(6, key_);
+         std::string familyName = key_.substr(0, pos1);
+-        if (0 != strcmp(familyName.c_str(), familyName_)) {
++        if (0 != std::strcmp(familyName.c_str(), familyName_)) {
+             throw Error(6, key_);
+         }
+         std::string::size_type pos0 = pos1 + 1;
+--- exiv2-0.20/src/tgaimage.cpp	Sat Apr  3 09:53:30 2010
++++ exiv2-0.20-patch/src/tgaimage.cpp	Tue Jun  8 22:27:43 2010
+@@ -175,7 +175,7 @@
+             return false;
+         }
+         // some TARGA files, but not all, have a signature string at the end
+-        bool matched = (memcmp(buf + 8, "TRUEVISION-XFILE", 16) == 0);
++        bool matched = (std::memcmp(buf + 8, "TRUEVISION-XFILE", 16) == 0);
+         iIo.seek(curPos, BasicIo::beg);
+         return matched;
+     }
+--- exiv2-0.20/src/tiffcomposite.cpp	Tue May 25 16:53:56 2010
++++ exiv2-0.20-patch/src/tiffcomposite.cpp	Tue Jun  8 22:29:58 2010
+@@ -28,6 +28,8 @@
+ #include "rcsid.hpp"
+ EXIV2_RCSID("@(#) $Id: tiffcomposite.cpp 2239 2010-05-25 14:53:56Z ahuggel $")
+ 
++#include <ios>
++
+ // *****************************************************************************
+ // included header files
+ #ifdef _MSC_VER
+@@ -182,7 +184,7 @@
+ 
+     bool TiffGroupInfo::operator==(const std::string& groupName) const
+     {
+-        return 0 == strcmp(name_, groupName.c_str());
++        return 0 == std::strcmp(name_, groupName.c_str());
+     }
+ 
+     const char* tiffGroupName(uint16_t group)
+@@ -201,8 +203,8 @@
+ 
+     bool TiffMappingInfo::operator==(const TiffMappingInfo::Key& key) const
+     {
+-        return    (   0 == strcmp("*", make_)
+-                   || 0 == strncmp(make_, key.m_.c_str(), strlen(make_)))
++        return    (   0 == std::strcmp("*", make_)
++                   || 0 == std::strncmp(make_, key.m_.c_str(), std::strlen(make_)))
+                && (Tag::all == extendedTag_ || key.e_ == extendedTag_)
+                && key.g_ == group_;
+     }
+@@ -394,7 +396,7 @@
+     {
+         if (rhs.isMalloced_) {
+             pData_ = new byte[rhs.size_];
+-            memcpy(pData_, rhs.pData_, rhs.size_);
++            std::memcpy(pData_, rhs.pData_, rhs.size_);
+         }
+     }
+ 
+@@ -516,7 +518,7 @@
+         if (newSize > size_) {
+             setData(DataBuf(newSize));
+         }
+-        memset(pData_, 0x0, size_);
++        std::memset(pData_, 0x0, size_);
+         size_ = value->copy(pData_, byteOrder);
+         assert(size_ == newSize);
+         setValue(value);
+@@ -749,7 +751,7 @@
+ 
+         if (origSize_ != size) return false;
+         if (origData_ == pData) return true;
+-        memcpy(origData_, pData, origSize_);
++        std::memcpy(origData_, pData, origSize_);
+         return true;
+     }
+ 
+@@ -1280,7 +1282,7 @@
+         }
+         // c) Pointer to the next IFD
+         if (hasNext_) {
+-            memset(buf, 0x0, 4);
++            std::memset(buf, 0x0, 4);
+             if (pNext_ && sizeNext) {
+                 l2Data(buf, offset + dataIdx, byteOrder);
+             }
+@@ -1357,7 +1359,7 @@
+                                                   imageIdx);
+             assert(len <= 4);
+             if (len < 4) {
+-                memset(buf, 0x0, 4);
++                std::memset(buf, 0x0, 4);
+                 ioWrapper.write(buf, 4 - len);
+             }
+         }
+@@ -2011,7 +2013,7 @@
+     {
+         if (curr < tobe) {
+             Exiv2::DataBuf buf(tobe - curr);
+-            memset(buf.pData_, 0x0, buf.size_);
++            std::memset(buf.pData_, 0x0, buf.size_);
+             ioWrapper.write(buf.pData_, buf.size_);
+             return tobe - curr;
+         }
+--- exiv2-0.20/src/tiffimage.cpp	Fri May 28 04:17:37 2010
++++ exiv2-0.20-patch/src/tiffimage.cpp	Tue Jun  8 22:30:48 2010
+@@ -29,6 +29,8 @@
+ #include "rcsid.hpp"
+ EXIV2_RCSID("@(#) $Id: tiffimage.cpp 2243 2010-05-28 02:17:37Z ahuggel $")
+ 
++#include <ios>
++
+ // *****************************************************************************
+ // included header files
+ #ifdef _MSC_VER
+--- exiv2-0.20/src/tiffvisitor.cpp	Tue May 25 16:53:56 2010
++++ exiv2-0.20-patch/src/tiffvisitor.cpp	Tue Jun  8 22:32:12 2010
+@@ -28,6 +28,8 @@
+ #include "rcsid.hpp"
+ EXIV2_RCSID("@(#) $Id: tiffvisitor.cpp 2239 2010-05-25 14:53:56Z ahuggel $")
+ 
++#include <ios>
++
+ // *****************************************************************************
+ // included header files
+ #ifdef _MSC_VER
+@@ -64,7 +66,7 @@
+         //! Returns true if group and index match.
+         bool operator()(const Exiv2::Exifdatum& md) const
+         {
+-            return idx_ == md.idx() && 0 == strcmp(md.ifdItem().c_str(), groupName_);
++            return idx_ == md.idx() && 0 == std::strcmp(md.ifdItem().c_str(), groupName_);
+         }
+ 
+     private:
+@@ -76,8 +78,8 @@
+     Exiv2::ByteOrder stringToByteOrder(const std::string& val)
+     {
+         Exiv2::ByteOrder bo = Exiv2::invalidByteOrder;
+-        if (0 == strcmp("II", val.c_str())) bo = Exiv2::littleEndian;
+-        else if (0 == strcmp("MM", val.c_str())) bo = Exiv2::bigEndian;
++        if (0 == std::strcmp("II", val.c_str())) bo = Exiv2::littleEndian;
++        else if (0 == std::strcmp("MM", val.c_str())) bo = Exiv2::bigEndian;
+ 
+         return bo;
+     }
+@@ -587,8 +589,8 @@
+             if (rawIptc.size_ % 4 != 0) {
+                 // Pad the last unsignedLong value with 0s
+                 buf.alloc((rawIptc.size_ / 4) * 4 + 4);
+-                memset(buf.pData_, 0x0, buf.size_);
+-                memcpy(buf.pData_, rawIptc.pData_, rawIptc.size_);
++                std::memset(buf.pData_, 0x0, buf.size_);
++                std::memcpy(buf.pData_, rawIptc.pData_, rawIptc.size_);
+             }
+             else {
+                 buf = rawIptc; // Note: This resets rawIptc
+@@ -705,9 +707,9 @@
+             std::cerr << "Copying data for tag " << pTiffEntry->tag()
+                       << " to offset area.\n";
+ #endif
+-            memset(buf + 8, 0x0, 4);
+-            memcpy(buf + 8, pTiffEntry->pData(), pTiffEntry->size());
+-            memset(const_cast<byte*>(pTiffEntry->pData()), 0x0, pTiffEntry->size());
++            std::memset(buf + 8, 0x0, 4);
++            std::memcpy(buf + 8, pTiffEntry->pData(), pTiffEntry->size());
++            std::memset(const_cast<byte*>(pTiffEntry->pData()), 0x0, pTiffEntry->size());
+         }
+         return 12;
+     }
+@@ -906,9 +908,9 @@
+                 std::cerr << "Writing data area for " << key << "\n";
+ #endif
+                 DataBuf buf = object->pValue()->dataArea();
+-                memcpy(object->pDataArea_, buf.pData_, buf.size_);
++                std::memcpy(object->pDataArea_, buf.pData_, buf.size_);
+                 if (object->sizeDataArea_ - buf.size_ > 0) {
+-                    memset(object->pDataArea_ + buf.size_,
++                    std::memset(object->pDataArea_ + buf.size_,
+                            0x0, object->sizeDataArea_ - buf.size_);
+                 }
+             }
+--- exiv2-0.20/src/types.cpp	Sat Apr  3 09:53:30 2010
++++ exiv2-0.20-patch/src/types.cpp	Tue Jun  8 22:33:08 2010
+@@ -29,6 +29,8 @@
+ #include "rcsid.hpp"
+ EXIV2_RCSID("@(#) $Id: types.cpp 2045 2010-04-03 07:53:30Z ahuggel $")
+ 
++#include <ios>
++
+ // *****************************************************************************
+ // included header files
+ #include "types.hpp"
+@@ -66,7 +68,7 @@
+         //! Comparison operator for \em name
+         bool operator==(const std::string& name) const
+         {
+-            return 0 == strcmp(name_, name.c_str());
++            return 0 == std::strcmp(name_, name.c_str());
+         }
+     }; // struct TypeInfoTable
+ 
+--- exiv2-0.20/src/value.cpp	Wed Apr 14 18:17:55 2010
++++ exiv2-0.20-patch/src/value.cpp	Tue Jun  8 22:36:20 2010
+@@ -30,6 +30,8 @@
+ #include "rcsid.hpp"
+ EXIV2_RCSID("@(#) $Id: value.cpp 2090 2010-04-14 16:17:55Z ahuggel $")
+ 
++#include <ios>
++
+ // *****************************************************************************
+ // included header files
+ #include "value.hpp"
+@@ -47,6 +49,7 @@
+ #include <cstdio>
+ #include <cstdlib>
+ #include <ctype.h>
++#include <cstdlib>
+ 
+ // *****************************************************************************
+ // class member definitions
+@@ -547,15 +550,15 @@
+     const char* CommentValue::detectCharset(std::string& c) const
+     {
+         // Interpret a BOM if there is one
+-        if (0 == strncmp(c.data(), "\xef\xbb\xbf", 3)) {
++        if (0 == std::strncmp(c.data(), "\xef\xbb\xbf", 3)) {
+             c = c.substr(3);
+             return "UTF-8";
+         }
+-        if (0 == strncmp(c.data(), "\xff\xfe", 2)) {
++        if (0 == std::strncmp(c.data(), "\xff\xfe", 2)) {
+             c = c.substr(2);
+             return "UCS-2LE";
+         }
+-        if (0 == strncmp(c.data(), "\xfe\xff", 2)) {
++        if (0 == std::strncmp(c.data(), "\xfe\xff", 2)) {
+             c = c.substr(2);
+             return "UCS-2BE";
+         }
+@@ -928,7 +931,7 @@
+         // Make the buffer a 0 terminated C-string for sscanf
+         char b[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+         std::memcpy(b, reinterpret_cast<const char*>(buf), 8);
+-        int scanned = sscanf(b, "%4d%2d%2d",
++        int scanned = std::sscanf(b, "%4d%2d%2d",
+                              &date_.year, &date_.month, &date_.day);
+         if (scanned != 3) {
+ #ifndef SUPPRESS_WARNINGS
+@@ -948,7 +951,7 @@
+ #endif
+             return 1;
+         }
+-        int scanned = sscanf(buf.c_str(), "%4d-%d-%d",
++        int scanned = std::sscanf(buf.c_str(), "%4d-%d-%d",
+                              &date_.year, &date_.month, &date_.day);
+         if (scanned != 3) {
+ #ifndef SUPPRESS_WARNINGS
+@@ -971,7 +974,7 @@
+         // sprintf wants to add the null terminator, so use oversized buffer
+         char temp[9];
+ 
+-        int wrote = sprintf(temp, "%04d%02d%02d",
++        int wrote = std::sprintf(temp, "%04d%02d%02d",
+                             date_.year, date_.month, date_.day);
+         assert(wrote == 8);
+         std::memcpy(buf, temp, 8);
+@@ -1097,7 +1100,7 @@
+     {
+         int rc = 1;
+         Time t;
+-        int scanned = sscanf(buf, format, &t.hour, &t.minute, &t.second);
++        int scanned = std::sscanf(buf, format, &t.hour, &t.minute, &t.second);
+         if (   scanned  == 3
+             && t.hour   >= 0 && t.hour   < 24
+             && t.minute >= 0 && t.minute < 60
+@@ -1113,7 +1116,7 @@
+         int rc = 1;
+         Time t;
+         char plusMinus;
+-        int scanned = sscanf(buf, format, &t.hour, &t.minute, &t.second,
++        int scanned = std::sscanf(buf, format, &t.hour, &t.minute, &t.second,
+                              &plusMinus, &t.tzHour, &t.tzMinute);
+         if (   scanned    == 6
+             && t.hour     >= 0 && t.hour     < 24
+@@ -1143,10 +1146,10 @@
+         char plusMinus = '+';
+         if (time_.tzHour < 0 || time_.tzMinute < 0) plusMinus = '-';
+ 
+-        int wrote = sprintf(temp,
++        int wrote = std::sprintf(temp,
+                    "%02d%02d%02d%1c%02d%02d",
+                    time_.hour, time_.minute, time_.second,
+-                   plusMinus, abs(time_.tzHour), abs(time_.tzMinute));
++                   plusMinus, std::abs(time_.tzHour), std::abs(time_.tzMinute));
+ 
+         assert(wrote == 11);
+         std::memcpy(buf, temp, 11);
+@@ -1182,8 +1185,8 @@
+            << std::setw(2) << std::setfill('0') << time_.hour << ':'
+            << std::setw(2) << std::setfill('0') << time_.minute << ':'
+            << std::setw(2) << std::setfill('0') << time_.second << plusMinus
+-           << std::setw(2) << std::setfill('0') << abs(time_.tzHour) << ':'
+-           << std::setw(2) << std::setfill('0') << abs(time_.tzMinute);
++           << std::setw(2) << std::setfill('0') << std::abs(time_.tzHour) << ':'
++           << std::setw(2) << std::setfill('0') << std::abs(time_.tzMinute);
+     }
+ 
+     long TimeValue::toLong(long /*n*/) const
+--- exiv2-0.20/src/xmpsidecar.cpp	Sat Apr  3 09:53:30 2010
++++ exiv2-0.20-patch/src/xmpsidecar.cpp	Tue Jun  8 22:37:22 2010
+@@ -176,7 +176,7 @@
+         }
+         // Skip leading BOM
+         int32_t start = 0;
+-        if (0 == strncmp(reinterpret_cast<const char*>(buf), "\xef\xbb\xbf", 3)) {
++        if (0 == std::strncmp(reinterpret_cast<const char*>(buf), "\xef\xbb\xbf", 3)) {
+             start = 3;
+         }
+         bool rc = false;
+--- exiv2-0.20/src/exiv2.cpp	Sat Apr  3 09:53:30 2010
++++ exiv2-0.20-patch/src/exiv2.cpp	Mon Jun 14 22:19:42 2010
+@@ -52,6 +52,8 @@
+ #include <cstring>
+ #include <cassert>
+ #include <cctype>
++#include <ios>
++#include <locale.h>
+ 
+ // *****************************************************************************
+ // local declarations
+@@ -839,12 +841,12 @@
+     {
+         std::string hstr, mstr, sstr;
+         char *cts = new char[ts.length() + 1];
+-        strcpy(cts, ts.c_str());
+-        char *tmp = ::strtok(cts, ":");
++        std::strcpy(cts, ts.c_str());
++        char *tmp = std::strtok(cts, ":");
+         if (tmp) hstr = tmp;
+-        tmp = ::strtok(0, ":");
++        tmp = std::strtok(0, ":");
+         if (tmp) mstr = tmp;
+-        tmp = ::strtok(0, ":");
++        tmp = std::strtok(0, ":");
+         if (tmp) sstr = tmp;
+         delete[] cts;
+ 
+@@ -897,7 +899,7 @@
+                 break;
+             case 'p':
+             {
+-                if (strcmp(action.c_str(), "extract") == 0) {
++                if (std::strcmp(action.c_str(), "extract") == 0) {
+                     i += parsePreviewNumbers(Params::instance().previewNumbers_, optarg, i + 1);
+                     target |= Params::ctPreview;
+                     break;

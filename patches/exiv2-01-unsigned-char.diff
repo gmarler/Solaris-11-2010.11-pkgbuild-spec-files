@@ -1,0 +1,5 @@
+--- exiv2-0.20/xmpsdk/src/Makefile	Sat Apr  3 09:53:30 2010
++++ exiv2-0.20-patch/xmpsdk/src/Makefile	Tue Jun  8 20:01:57 2010
+@@ -89,1 +89,1 @@
+-CPPFLAGS += -I../include -funsigned-char -DNDEBUG=1 $(EXPAT_CPPFLAGS)
++CPPFLAGS += -I../include -xchar=unsigned -DNDEBUG=1 $(EXPAT_CPPFLAGS)

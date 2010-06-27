@@ -1,0 +1,51 @@
+--- exiv2-0.20/src/Makefile	Tue May 25 17:25:02 2010
++++ exiv2-0.20-patch/src/Makefile	Tue Jun  8 20:35:02 2010
+@@ -193,11 +193,13 @@
+ # Rules
+ $(CCOBJ): %.o: %.cpp
+ 	@$(LIBTOOL) --mode=compile $(COMPILE.cc) -DEXV_BUILDING_LIB=1 -o $@ $<
++	cp .libs/$@ .
+ 	@$(MAKEDEPEND)
+ 	@$(POSTDEPEND)
+ 
+ $(COBJ): %.o: %.c
+ 	@$(LIBTOOL) --mode=compile $(COMPILE.c) -DEXV_BUILDING_LIB=1 -o $@ $<
++	cp .libs/$@ .
+ 	@$(MAKEDEPEND)
+ 	@$(POSTDEPEND)
+ 
+--- exiv2-0.20/xmpsdk/src/Makefile	Tue Jun  8 20:33:46 2010
++++ exiv2-0.20-patch/xmpsdk/src/Makefile	Tue Jun  8 20:35:02 2010
+@@ -106,6 +106,7 @@
+ # Rules
+ $(CCOBJ): %.o: %.cpp
+ 	@$(LIBTOOL) --mode=compile $(COMPILE.cc) -o $@ $<
++	cp .libs/$@ .
+ 	@$(MAKEDEPEND)
+ 	@$(POSTDEPEND)
+ 
+--- exiv2-0.20/config/config.mk.in	Sat Apr  3 09:53:30 2010
++++ exiv2-0.20-patch/config/config.mk.in	Tue Jun  8 20:40:39 2010
+@@ -129,11 +129,11 @@
+         # dependencies. If you're not using gcc, you may need to change
+         # this to something suitable for your compiler or simply unset
+         # the variable. See the link above for suggestions.
+-	MAKEDEPEND = $(CXX) -MM $(CPPFLAGS) -o $*.d $<
++	MAKEDEPEND = $(CXX) -xM1 $(CPPFLAGS) $< > $(basename $<).d
+ 
+         # Dependency files post-process commands
+         POSTDEPEND = if test ! -d $(DEPDIR); then mkdir $(DEPDIR); fi; \
+-	        if test -e $*.d; then cp $*.d $(DEPDIR)/$*.d; \
++	        if test -f $*.d; then cp $*.d $(DEPDIR)/$*.d; \
+ 	        sed -e 's/^\#.*//' -e 's/^[^:]*: *//' -e 's/ *\\$$//' \
+                     -e '/^$$/ d' -e 's/$$/ :/' < $*.d >> $(DEPDIR)/$*.d; \
+                 $(RM) $*.d; fi
+@@ -153,7 +153,7 @@
+ COMPILE.c = $(CC) $(CFLAGS) $(CPPFLAGS) -c
+ # LINK.cc does not need $(LIBS), libtool's dark magic takes care of that
+ # when linking a binary with a libtool library.
+-LINK.cc = $(CXX) $(LDFLAGS)
++LINK.cc = $(CXX) $(CXXFLAGS) $(LDFLAGS)
+ 
+ # **********************************************************************
+ # Installation programs

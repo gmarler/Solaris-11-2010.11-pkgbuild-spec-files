@@ -6,15 +6,18 @@
 #
 
 %include Solaris.inc
-%include usr-gnu.inc
+%include stdcxx.inc
 
-Name:                SFEexiv2
-License:             GPL
-Summary:             A C++ library and CLI utility to manage image metadata.
-Version:             0.16
-URL:                 http://www.exiv2.org/
-Source:              http://www.exiv2.org/exiv2-%{version}.tar.gz
-Patch1:              exiv2-01-makefile.diff
+
+Name:		SFEexiv2
+License:	GPL
+Summary:	A C++ library and CLI utility to manage image metadata.
+Version:	0.20
+URL:		http://www.exiv2.org/
+Source:		http://www.exiv2.org/exiv2-%{version}.tar.gz
+Patch1:		exiv2-01-unsigned-char.diff 
+Patch2:		exiv2-02-sunstudio.diff
+Patch3:		exiv2-03-make.diff
 
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
@@ -45,6 +48,9 @@ Requires:                %{name}
 
 %prep
 %setup -q -n exiv2-%version
+%patch1 -p1
+%patch2 -p1
+%patch3 -p1
 
 %build
 
@@ -53,36 +59,25 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
      CPUS=1
 fi
 
-export CFLAGS="%optflags -fPIC -I%{xorg_inc} -I%{gnu_inc} -I%{sfw_inc} -D__C99FEATURES__ -D__EXTENSIONS__"
+export CFLAGS="%optflags"
 
-export CXXFLAGS="%cxx_optflags -I%{xorg_inc} -I%{gnu_inc} -I%{sfw_inc} -D__C99FEATURES__ -D__EXTENSIONS__"
+export CXXFLAGS="%cxx_optflags -library=no%Cstd -I%{stdcxx_include}"
 
-export LDFLAGS="%_ldflags %{xorg_lib_path} %{gnu_lib_path} %{sfw_lib_path} -lc -lsocket -lnsl"
-
-extra_inc="%{xorg_inc}:%{gnu_inc}:%{sfw_inc}"
+export LDFLAGS="%_ldflags -lCrun -L%{stdcxx_lib} -R%{stdcxx_lib} -Wl,-zmuldefs"
 
 ./configure --prefix=%{_prefix}	\
             --mandir=%{_mandir}	\
             --enable-shared=yes \
             --enable-static=no  \
-            --enable-final	\
-            --with-extra-includes="${extra_inc}"
+            --disable-visibility \
+            --with-pic
 
-# Fix makefiles as they assume /bin/sh is bash UGH
-for mk in `find . -name Makefile`
-do
-	[ ! -f ${mk}.orig ] && cp ${mk} ${mk}.orig
-	cat $mk | sed 's/SHELL = \/bin\/sh/SHELL = \/bin\/bash/' > ${mk}.new
-	mv ${mk}.new ${mk}
-done
-(cd src; cat %{PATCH1} | gpatch -p0)
-
-gmake
+make
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-gmake install DESTDIR=$RPM_BUILD_ROOT
+make install DESTDIR=$RPM_BUILD_ROOT
 %if %build_l10n
 %else
 rm -rf $RPM_BUILD_ROOT%{_localedir}
@@ -124,5 +119,7 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Sun Jun 27 2010 - Milan Jurik
+- update to 0.20, but it has problem with Sun Studio
 * Wed Jan 30 2008 - moinak.ghosh@sun.com
 - Initial spec.
