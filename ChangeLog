@@ -1,3 +1,8 @@
+2010-06-28  Thomas Wagner  <tom68@users.sourceforge.net>
+
+        * experimental/SFEgcc-4.4.4.spec: svn copied, bump to version 4.4.4,
+          needs new gmp/mpfr, playing with gcc related CFLAGS/LDFLAGS
+
 2010-06-27 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEexiv2.spec: update to 0.20, but it has problem with Sun Studio
