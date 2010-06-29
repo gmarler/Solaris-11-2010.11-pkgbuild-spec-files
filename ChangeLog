@@ -1,6 +1,7 @@
 2010-06-29 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEngrep.spec: bump to 1.45
+	* SFEsnort.spec: move to archive, SUNW version is newer
 
 2010-06-29  Michal Bielicki <cypromis@opensolaris.org>
 
