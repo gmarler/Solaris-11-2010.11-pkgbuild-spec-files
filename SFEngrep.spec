@@ -4,19 +4,19 @@
 # package are under the same license as the package itself.
 
 %include Solaris.inc
-%define tarball_version 1.44-1
 
-Name:                SFEngrep
-Summary:             network grep -- regexp matching against packets
-Version:             1.44
-Source:              %{sf_download}/ngrep/ngrep-%{tarball_version}.tar.bz2
-SUNW_BaseDir:        %{_basedir}
-BuildRoot:           %{_tmppath}/%{name}-%{version}-build
+Name:		SFEngrep
+Summary:	network grep -- regexp matching against packets
+Group:		Network
+Version:	1.45
+Source:		%{sf_download}/ngrep/ngrep-%{version}.tar.bz2
+URL:		http://ngrep.sourceforge.net/
+SUNW_BaseDir:	%{_basedir}
+BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 
-BuildRequires: SFElibpcap-devel
-BuildRequires: SFElibpcap
-Requires: SFElibpcap
+BuildRequires: SUNWlibpcap
+Requires: SUNWlibpcap
 
 %prep
 %setup -q -n ngrep-%version
@@ -31,7 +31,9 @@ export CFLAGS="%optflags"
 export LDFLAGS="%{_ldflags}"
 
 ./configure --prefix=%{_prefix}  \
-            --mandir=%{_mandir}
+            --mandir=%{_mandir}  \
+            --enable-ipv6        \
+            --with-pcap-includes=/usr/include/pcap
 
 make -j$CPUS
 
@@ -53,6 +55,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man8/*
 
 %changelog
-* 
+* Tue Jun 29 2010 - Milan Jurik
+- bump to 1.45 
 * Thu Nov 09 2006 - Eric Boutilier
 - Initial spec
