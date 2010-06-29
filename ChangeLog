@@ -1,3 +1,7 @@
+2010-06-29  Michal Bielicki <cypromis@opensolaris.org>
+
+	* new package SFEnetatalk
+
 2010-06-28  Thomas Wagner  <tom68@users.sourceforge.net>
 
         * experimental/SFEgcc-4.4.4.spec: svn copied, bump to version 4.4.4,
