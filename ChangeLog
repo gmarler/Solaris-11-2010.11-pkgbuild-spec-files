@@ -1,3 +1,7 @@
+2010-06-30 Milan Jurik <sfnet@xylab.cz>
+
+	* SFEsysstat.spec: bump version to 20100528, fix sparc install
+
 2010-06-30  Simon Jin <yuntong.jin@sun.com>
 
 	* SFEwebkitgtk.spec:Bump to 1.2.1 and add webkit-26-copycons-imp.diff
