@@ -1,6 +1,7 @@
 2010-06-30 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEsysstat.spec: bump version to 20100528, fix sparc install
+	* include/stdcxx.inc: fix defines
 
 2010-06-30  Simon Jin <yuntong.jin@sun.com>
 
