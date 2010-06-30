@@ -2,6 +2,7 @@
 
 	* SFEsysstat.spec: bump version to 20100528, fix sparc install
 	* include/stdcxx.inc: fix defines
+	* SFEexiv2.spec: fix 0.20 build
 
 2010-06-30  Simon Jin <yuntong.jin@sun.com>
 

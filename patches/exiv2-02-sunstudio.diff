@@ -844,3 +844,82 @@
                      i += parsePreviewNumbers(Params::instance().previewNumbers_, optarg, i + 1);
                      target |= Params::ctPreview;
                      break;
+--- exiv2-0.20/src/actions.cpp	Sat Apr  3 09:53:30 2010
++++ exiv2-0.20-patch/src/actions.cpp	Wed Jun 30 20:45:07 2010
+@@ -29,6 +29,8 @@
+ #include "rcsid.hpp"
+ EXIV2_RCSID("@(#) $Id: actions.cpp 2045 2010-04-03 07:53:30Z ahuggel $")
+ 
++#include <ios>
++
+ // *****************************************************************************
+ // included header files
+ #ifdef _MSC_VER
+@@ -691,7 +693,7 @@
+                 return;
+             }
+             bool done = false;
+-            if (0 == strcmp(md.key().c_str(), "Exif.Photo.UserComment")) {
++            if (0 == std::strcmp(md.key().c_str(), "Exif.Photo.UserComment")) {
+                 const Exiv2::CommentValue* pcv = dynamic_cast<const Exiv2::CommentValue*>(&md.value());
+                 if (pcv) {
+                     Exiv2::CommentValue::CharsetId csId = pcv->charsetId();
+@@ -716,7 +718,7 @@
+                 return;
+             }
+             bool done = false;
+-            if (0 == strcmp(md.key().c_str(), "Exif.Photo.UserComment")) {
++            if (0 == std::strcmp(md.key().c_str(), "Exif.Photo.UserComment")) {
+                 const Exiv2::CommentValue* pcv = dynamic_cast<const Exiv2::CommentValue*>(&md.value());
+                 if (pcv) {
+                     std::cout << pcv->comment(Params::instance().charset_.c_str());
+@@ -1654,7 +1656,7 @@
+         }
+         Exiv2::ExifData::const_iterator md = Exiv2::isoSpeed(exifData);
+         if (md != exifData.end()) {
+-            if (strcmp(md->key().c_str(), "Exif.Photo.ISOSpeedRatings") == 0) {
++            if (std::strcmp(md->key().c_str(), "Exif.Photo.ISOSpeedRatings") == 0) {
+                 if (Params::instance().verbose_) {
+                     std::cout << _("Standard Exif ISO tag exists; not modified\n");
+                 }
+@@ -1941,7 +1943,7 @@
+     struct String {
+         const char* s_;
+         bool operator==(const char* s) const {
+-            return 0 == strcmp(s_, s);
++            return 0 == std::strcmp(s_, s);
+         }
+     };
+ 
+@@ -2027,7 +2029,7 @@
+         }
+ 
+         // Workaround for MinGW rename which does not overwrite existing files
+-        remove(newPath.c_str());
++        std::remove(newPath.c_str());
+         if (std::rename(path.c_str(), newPath.c_str()) == -1) {
+             std::cerr << Params::instance().progname()
+                       << ": " << _("Failed to rename") << " "
+--- exiv2-0.20/src/utils.cpp	Sat Apr  3 09:53:30 2010
++++ exiv2-0.20-patch/src/utils.cpp	Wed Jun 30 20:45:28 2010
+@@ -38,6 +38,8 @@
+ 
+ #include "utils.hpp"
+ 
++#include <stdio.h>
++
+ // + standard includes
+ #include <sys/types.h>
+ #include <sys/stat.h>
+--- exiv2-0.20/src/metacopy.cpp	Wed Apr 14 18:32:55 2010
++++ exiv2-0.20-patch/src/metacopy.cpp	Wed Jun 30 20:45:48 2010
+@@ -26,6 +26,9 @@
+   Author(s): Brad Schick (brad) <brad@robotbattle.com>
+   History  : 13-Jul-04, brad: created
+  */
++
++#include <ios>
++
+ // *****************************************************************************
+ // included header files
+ #include "image.hpp"

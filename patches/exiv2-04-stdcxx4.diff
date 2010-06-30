@@ -1,0 +1,11 @@
+--- exiv2-0.20/src/Makefile	Wed Jun 30 20:46:28 2010
++++ exiv2-0.20-patch/src/Makefile	Wed Jun 30 20:46:05 2010
+@@ -244,7 +244,7 @@
+ 	@touch lib
+ 
+ path-test: path-test.o utils.o
+-	$(CXX) $(CXXFLAGS) path-test.o utils.o -o $@
++	$(CXX) $(CXXFLAGS) $(LDFLAGS) path-test.o utils.o -o $@
+ 
+ $(BINARY): %: %.o lib
+ 	@$(LIBTOOL) --mode=link $(LINK.cc) -o $@ $(LIBRARY) $@.o -rpath $(libdir)

@@ -18,6 +18,7 @@ Source:		http://www.exiv2.org/exiv2-%{version}.tar.gz
 Patch1:		exiv2-01-unsigned-char.diff 
 Patch2:		exiv2-02-sunstudio.diff
 Patch3:		exiv2-03-make.diff
+Patch4:		exiv2-04-stdcxx4.diff
 
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
@@ -51,6 +52,7 @@ Requires:                %{name}
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
 
 %build
 
@@ -63,7 +65,7 @@ export CFLAGS="%optflags"
 
 export CXXFLAGS="%cxx_optflags -library=no%Cstd -I%{stdcxx_include}"
 
-export LDFLAGS="%_ldflags -lCrun -L%{stdcxx_lib} -R%{stdcxx_lib} -Wl,-zmuldefs"
+export LDFLAGS="%_ldflags -L%{stdcxx_lib} -R%{stdcxx_lib} -lstdcxx4 -Wl,-zmuldefs"
 
 ./configure --prefix=%{_prefix}	\
             --mandir=%{_mandir}	\
@@ -82,18 +84,17 @@ make install DESTDIR=$RPM_BUILD_ROOT
 %else
 rm -rf $RPM_BUILD_ROOT%{_localedir}
 %endif
+rm -f ${RPM_BUILD_ROOT}%{_libdir}/*.la
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr (-, root, bin)
-%dir %attr (0755, root, bin) %{_prefix}
 %dir %attr (0755, root, bin) %{_bindir}
 %{_bindir}/*
 %dir %attr (0755, root, bin) %{_libdir}
 %{_libdir}/lib*.so*
-%{_libdir}/lib*.la
 
 %defattr (-, root, bin)
 %dir %attr (0755, root, sys) %{_datadir}
@@ -102,7 +103,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr (-, root, bin)
-%dir %attr (0755, root, bin) %{_prefix}
 %dir %attr (0755, root, bin) %{_includedir}
 %{_includedir}/*
 %dir %attr (0755, root, bin) %{_libdir}
@@ -112,13 +112,14 @@ rm -rf $RPM_BUILD_ROOT
 %if %build_l10n
 %files l10n
 %defattr (-, root, other)
-%dir %attr (0755, root, bin) %{_prefix}
 %dir %attr (0755, root, sys) %{_datadir}
 %dir %attr (0755, root, other) %{_datadir}/locale
 %{_datadir}/locale/*
 %endif
 
 %changelog
+* Wed Jun 30 2010 - Milan Jurik
+- fix 0.20 build
 * Sun Jun 27 2010 - Milan Jurik
 - update to 0.20, but it has problem with Sun Studio
 * Wed Jan 30 2008 - moinak.ghosh@sun.com
