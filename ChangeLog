@@ -1,3 +1,7 @@
+2010-07-2  Pradhap Devarajan <pradhap (at) gmail.com>
+
+	* SFElibsasl2: Remove duplicate spec file
+
 2010-06-30 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEsysstat.spec: bump version to 20100528, fix sparc install
