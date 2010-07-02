@@ -1,3 +1,7 @@
+2010-07-02  Simon Jin <yuntong.jin@sun.com>
+
+	* SFEpessulus.spec:using python26
+
 2010-07-2  Pradhap Devarajan <pradhap (at) gmail.com>
 
 	* SFElibsasl2: Remove duplicate spec file
