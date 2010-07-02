@@ -55,7 +55,7 @@ export CFLAGS="%optflags -xc99=all "
             --libexecdir=%{_libexecdir}/netatalk \
             --sysconfdir=%{_sysconfdir}          \
             --with-uams-path=%{_libdir}/netatalk \
-            --with-spooldir=/var/spool/netatalk  \
+            --with-spooldir=%{_localstatedir}/spool/netatalk  \
             --disable-ddp                        \
             --with-pam \
             --enable-nfsv4acls
@@ -79,14 +79,17 @@ rm -rf %name-%version
 
 %files
 %defattr(-,root,bin)
-%dir %attr (0755, root, bin) %{_bindir}
-%dir %attr (0755, root, bin) %{_libdir}
-%dir %attr (0755, root, sys) %{_sysconfdir}
+%dir %attr (-,-,-) %{_basedir}
+%dir %attr (-,-,-) %{_basedir}/share
+%dir %attr (-,-,-) %{_basedir}/share/aclocal
+%dir %attr (-,-,-) %{_bindir}
+%dir %attr (-,-,-) %{_mandir}
+%dir %attr (-,-,-) %{_localstatedir}
+%dir %attr (-,-,-) %{_libdir}
+%dir %attr (-,-,-) %{_sysconfdir}
 %dir %attr (0755, root, sys) %{_sysconfdir}/netatalk
-%dir %attr (0755, root, sys) %{_sysconfdir}/init.d
+%dir %attr (-,-,-) %{_sysconfdir}/init.d
 %dir %attr (0755, root, bin) %{_libdir}/netatalk
-%dir %attr (-,-,-) %{_datadir}
-%dir %attr (-,-,-) %{_datadir}/aclocal
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/netatalk/AppleVolumes.default
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/netatalk/AppleVolumes.system
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/netatalk/afpd.conf
@@ -129,7 +132,7 @@ rm -rf %name-%version
 %{_libdir}/netatalk/*.so*
 %{_prefix}/share/netatalk/*
 %{_prefix}/share/aclocal/*
-%dir /var/spool/netatalk
+%dir %{_localstatedir}/spool/netatalk
 
 
 %files devel
