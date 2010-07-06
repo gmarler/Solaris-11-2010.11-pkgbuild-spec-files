@@ -1,3 +1,7 @@
+2010-07-06 Milan Jurik <sfnet@xylab.cz>
+
+	* SFExerces-c.spec: fix build
+
 2010-07-02  Michal Bielicki <cypromis@opensolaris.org>
 
 	* SFEnetatalk:  trying to get rid of attribute change warnings

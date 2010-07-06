@@ -12,7 +12,7 @@ Group:        System/Libraries
 Version:      2.8.0
 %define tarball_version 2_8_0
 Summary:      Xerces-C++ - validating XML parser
-Source:       http://www.apache.org/dist/xerces/c/sources/xerces-c-src_%{tarball_version}.tar.gz
+Source:       http://www.apache.org/dist/xerces/c/2/sources/xerces-c-src_%{tarball_version}.tar.gz
 URL:          http://xerces.apache.org/index.html
 BuildRoot:    %{_tmppath}/%{name}-%{version}-build
 Docdir:	      %{_defaultdocdir}/doc
@@ -20,8 +20,8 @@ SUNW_Copyright: %{name}.copyright
 SUNW_BaseDir: %{_basedir}
 Autoreqprov:  on
 %include default-depend.inc
-BuildRequires: SFEdoxygen
-BuildRequires: SFEfindutils
+BuildRequires: SUNWdoxygen
+BuildRequires: SUNWgnu-findutils
 BuildRequires: SUNWgnu-coreutils
 
 %description
@@ -49,7 +49,7 @@ Requires:      %name
 CPUS=1
 
 # 32-bit build
-%define rcopts 32
+%define rcopts -b 32
 
 %if %cc_is_gcc
 %else
@@ -94,5 +94,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/xerces-c/samples
 
 %changelog
+* Tue Jul 06 2010 - Milan Jurik
+- fix build
 * Sun Feb 17 2008 - laca@sun.com
 - create based on xerces-c.spec distributed with Xerces-C-2.8.0
