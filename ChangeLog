@@ -1,3 +1,12 @@
+2010-07-07  Brian Cameron  <brian.cameron@oracle.com>
+
+	* archive/SUNWgnome-games.spec, base-specs/libggz.spec,
+	  base-specs/ggz-client-libs.spec, patches/ggz-client-libs-02-manpages.diff,
+	  patches/ggz-client-libs-01-fixvoid.diff, patches/ggz-client-libs-05-m4.diff,
+	  patches/ggz-client-libs-04-manpages.diff, patches/ggz-client-libs-03-po.diff,
+	  patches/libggz-01-config.diff: Migrate GGZ to SFE since it is no longer 
+	  provided with SUNWgnome-games in spec-files.
+
 2010-07-06 Milan Jurik <sfnet@xylab.cz>
 
 	* SFExerces-c.spec: fix build
@@ -35,8 +44,8 @@
 
 2010-06-28  Thomas Wagner  <tom68@users.sourceforge.net>
 
-        * experimental/SFEgcc-4.4.4.spec: svn copied, bump to version 4.4.4,
-          needs new gmp/mpfr, playing with gcc related CFLAGS/LDFLAGS
+	* experimental/SFEgcc-4.4.4.spec: svn copied, bump to version 4.4.4,
+	  needs new gmp/mpfr, playing with gcc related CFLAGS/LDFLAGS
 
 2010-06-27 Milan Jurik <sfnet@xylab.cz>
 

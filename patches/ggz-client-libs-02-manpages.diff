@@ -1,0 +1,26 @@
+--- ggz-client-libs-0.0.14.orig/man/Makefile.am	2008-02-18 11:23:18.193953805 +0000
++++ ggz-client-libs-0.0.14/man/Makefile.am	2008-02-18 11:27:28.618382567 +0000
+@@ -1,15 +1,17 @@
++if COND_GGZWRAP
++ggzwrap_man = ggzwrap.1 ggz-wrapper.6
++endif
++
+ man_MANS = \
+ 	ggz-config.6 \
+ 	ggz.modules.5 \
+ 	ggzcore_h.3 \
+ 	ggzmod_h.3 \
+-	ggz-wrapper.6 \
+-	ggzwrap.1 \
+ 	ggz.7 \
+-	ggz.6
++	ggz.6 \
++	$(ggzwrap_man)
+ 
+ EXTRA_DIST = \
+-	ggz-wrapper.6 \
+-	ggzwrap.1 \
+ 	ggz.7 \
+-	ggz.6
++	ggz.6 \
++	$(ggzwrap_man)

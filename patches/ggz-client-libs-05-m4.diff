@@ -1,0 +1,15 @@
+--- ggz-client-libs-0.0.14.1/m4/ggz/system.m4-orig	2010-05-26 14:35:02.746796832 -0500
++++ ggz-client-libs-0.0.14.1/m4/ggz/system.m4	2010-05-26 14:35:45.418836512 -0500
+@@ -108,8 +108,11 @@ AM_ICONV
+ AC_CHECK_LIB(intl, gettext, [LIB_GETTEXT="-lintl $LIBICONV"])
+ save_libs=$LIBS
+ LIBS="$LIB_GETTEXT"
++
+ save_cflags=$CFLAGS
+-CFLAGS="$CFLAGS -fno-builtin"
++if test "$GCC" = yes; then
++  CFLAGS="$CFLAGS -fno-builtin"
++fi
+ AC_CHECK_FUNCS([gettext ngettext], [], [intl=0])
+ LIBS=$save_libs
+ CFLAGS=$save_cflags

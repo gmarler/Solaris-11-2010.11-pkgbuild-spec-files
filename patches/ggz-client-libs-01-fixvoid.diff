@@ -1,0 +1,11 @@
+--- ggz-client-libs-0.0.14.1/ggzcore/game.c-orig	2008-02-25 16:00:18.321122000 -0600
++++ ggz-client-libs-0.0.14.1/ggzcore/game.c	2008-02-25 16:00:44.362869000 -0600
+@@ -240,7 +240,7 @@ int ggzcore_game_read_data(GGZGame * gam
+ void ggzcore_game_set_server_fd(GGZGame *game, unsigned int fd)
+ {
+ 	if (game)
+-		return _ggzcore_game_set_server_fd(game, fd);
++		_ggzcore_game_set_server_fd(game, fd);
+ }
+ 
+ 

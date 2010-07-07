@@ -1,0 +1,47 @@
+--- libggz-0.0.14.1/configure	2008-02-16 21:13:13.000000000 +0000
++++ libggz-0.0.14.1.modified/configure	2008-03-08 14:17:00.491894017 +0000
+@@ -21049,7 +21049,7 @@
+ { echo "$as_me:$LINENO: result: $ac_cv_lib_socket_socket" >&5
+ echo "${ECHO_T}$ac_cv_lib_socket_socket" >&6; }
+ if test $ac_cv_lib_socket_socket = yes; then
+-  LDADD="$LDADD -lsocket"
++  LIBS="$LIBS -lsocket"
+ fi
+ 
+ { echo "$as_me:$LINENO: checking for gethostbyname in -lnsl" >&5
+@@ -21114,7 +21114,7 @@
+ { echo "$as_me:$LINENO: result: $ac_cv_lib_nsl_gethostbyname" >&5
+ echo "${ECHO_T}$ac_cv_lib_nsl_gethostbyname" >&6; }
+ if test $ac_cv_lib_nsl_gethostbyname = yes; then
+-  LDADD="$LDADD -lnsl"
++  LIBS="$LIBS -lnsl"
+ fi
+ 
+ 
+@@ -21130,7 +21130,7 @@
+ 
+   if test "$MINGW32" = "yes"; then
+     LDFLAGS="$LDFLAGS -no-undefined"
+-    LDADD="$LDADD -lws2_32"
++    LIBS="$LIBS -lws2_32"
+   fi
+ 
+ 
+@@ -21677,7 +21677,7 @@
+ 
+ # Check whether --with-gcrypt was given.
+ if test "${with_gcrypt+set}" = set; then
+-  withval=$with_gcrypt; enable_gcrypt=$enableval
++  withval=$with_gcrypt; enable_gcrypt=$withval
+ else
+   enable_gcrypt=auto
+ fi
+@@ -22391,7 +22391,7 @@
+ 
+ 
+     DFLAGS="$DFLAGS DEBUG_MEM"
+-    LDADD="$LDADD -ldmalloc"
++    LIBS="$LIBS -ldmalloc"
+   fi
+ 
+   # Use -Wall if we have gcc.

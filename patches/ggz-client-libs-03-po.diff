@@ -1,0 +1,101 @@
+--- ggz-client-libs-0.0.14.1/po/ggzcore/Makefile.am.orig	2008-02-27 13:03:13.571065000 +0900
++++ ggz-client-libs-0.0.14.1/po/ggzcore/Makefile.am	2008-02-27 13:04:39.740376000 +0900
+@@ -22,6 +22,7 @@ pofiles = \
+ 	gl.po \
+ 	gu.po \
+ 	hu.po \
++	it.po \
+ 	ja.po \
+ 	ko.po \
+ 	lt.po \
+--- ggz-client-libs-0.0.14.1/po/ggzcore/it.po.orig	1970-01-01 09:00:00.000000000 +0900
++++ ggz-client-libs-0.0.14.1/po/ggzcore/it.po	2008-02-27 13:04:18.148436000 +0900
+@@ -0,0 +1,88 @@
++# This translation was merged from GNOME SVN
++# (http://svn.gnome.org/svn/gnome-games/trunk/po/it.po)
++# Italian translation for gnome-games
++# Copyright (C) 2002 Free Software Foundation, Inc.
++# Traduzione di
++#   Fabrizio Stefani <f.stef@it.gnome.org>, 1999-2002;
++#   Alessio Frusciante <algol@firenze.linux.it>. 2003.
++#   Francesco Marletta <francesco.marletta@tiscali.it>. 2002-2006.
++#   Ubuntu Italian Translators, https://launchpad.net/~ubuntu-l10n-it, 2007
++#
++#
++msgid ""
++msgstr ""
++"Project-Id-Version: gnome-games\n"
++"Report-Msgid-Bugs-To: \n"
++"POT-Creation-Date: 2007-11-11 22:00+0100\n"
++"PO-Revision-Date: 2007-07-07 16:51+0200\n"
++"Last-Translator: Milo Casagrande <milo_casagrande@yahoo.it>\n"
++"Language-Team: Italian <tp@list.linux.it>\n"
++"MIME-Version: 1.0\n"
++"Content-Type: text/plain; charset=UTF-8\n"
++"Content-Transfer-Encoding: 8bit\n"
++"Plural-Forms: nplurals=2; plural=(n != 1);\n"
++"X-Rosetta-Export-Date: 2007-05-11 20:18:13+0000\n"
++
++#: ../../ggzcore/netxml.c:1279
++msgid "Unknown error"
++msgstr "Errore sconosciuto"
++
++#: ../../ggzcore/server.c:915
++msgid "Already logged in"
++msgstr "Accesso già effettuato"
++
++#: ../../ggzcore/server.c:918
++msgid "The password was incorrect"
++msgstr "Password errata"
++
++#: ../../ggzcore/server.c:921
++msgid "Name is already taken"
++msgstr "Nome già in uso"
++
++#: ../../ggzcore/server.c:924
++msgid "This name is already registered so cannot be used by a guest"
++msgstr "Il nome è già registrato e non può essere usato da un ospite"
++
++#: ../../ggzcore/server.c:928
++msgid "No such name was found"
++msgstr "Il nome non è stato trovato"
++
++#: ../../ggzcore/server.c:931
++msgid "Name too long"
++msgstr "Nome troppo lungo"
++
++#: ../../ggzcore/server.c:942
++msgid "Missing password or other bad options."
++msgstr "Password mancante o altre opzioni errate."
++
++#: ../../ggzcore/server.c:946
++msgid "Unknown login error"
++msgstr "Errore di accesso sconosciuto"
++
++#: ../../ggzcore/server.c:968
++msgid "Room full"
++msgstr "Stanza piena"
++
++#: ../../ggzcore/server.c:971
++msgid "Can't change rooms while at a table"
++msgstr "Non puoi cambiare stanza mentre sei al tavolo"
++
++#: ../../ggzcore/server.c:975
++msgid "Can't change rooms while joining/leaving a table"
++msgstr "Non puoi cambiare stanza mentre ti unisci/esci da una stanza"
++
++#: ../../ggzcore/server.c:979
++msgid "Bad room number"
++msgstr "Numero di stanza errato"
++
++#: ../../ggzcore/server.c:982
++msgid "Insufficient permissions, room access is restricted"
++msgstr "Permessi insufficienti, l'accesso alla stanza è ristretto"
++
++#: ../../ggzcore/server.c:1177
++msgid "Unable to connect"
++msgstr "Impossibile collegarsi"
++
++#: ../../ggzcore/server.c:1421 ../../ggzcore/server.c:1438
++msgid "Protocol mismatch"
++msgstr "Protocollo sbagliato"

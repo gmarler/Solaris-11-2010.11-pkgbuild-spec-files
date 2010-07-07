@@ -1,0 +1,165 @@
+--- ggz-client-libs-0.0.14.1.orig/man/ggz.modules.5.in	2008-06-01 12:59:52.991337471 +0100
++++ ggz-client-libs-0.0.14.1/man/ggz.modules.5.in	2008-06-01 12:56:52.662907224 +0100
+@@ -96,10 +96,15 @@
+ .SH "FILES"
+ .LP 
+ \fI@ggzconfdir@/ggz.modules\fP
+-.SH "AUTHORS"
+-.LP 
+-The GGZ Development Team
+-<ggz\-dev@mail.ggzgamingzone.org>
+ .SH "SEE ALSO"
+ .LP 
+-ggz-config(6), ggz(7)
++ggz_h(3), ggzcore_h(3), ggzmod_h(3), libggz(3), libggzcore(3), libggzmod(3), 
++attributes(5), ggz.modules(5), gnome-interfaces(5), ggz(6), ggz-config(6),
++ggz(7)
++.LP 
++GGZ Gaming Zone:
++   http://www.ggzgamingzone.org/
++.SH "AUTHORS"
++.LP
++   The GGZ Development Team <ggz\-dev@mail.ggzgamingzone.org>
++   Last edited by Michal Pryc, Sun Microsystems Inc., 2008.
+--- ggz-client-libs-0.0.14.1.orig/man/ggz-config.6.in	2008-06-01 12:59:52.992076447 +0100
++++ ggz-client-libs-0.0.14.1/man/ggz-config.6.in	2008-06-01 12:56:52.664395310 +0100
+@@ -114,10 +114,15 @@
+ that could arise with an invalid \fIggz.modules\fP file.
+ .LP 
+ Probably others, too numerous to mention.
+-.SH "AUTHORS"
+-.LP 
+-The GGZ Development Team
+-<ggz\-dev@mail.ggzgamingzone.org>
+ .SH "SEE ALSO"
+ .LP 
+-ggz.modules(5), ggz(7)
++ggz_h(3), ggzcore_h(3), ggzmod_h(3), libggz(3), libggzcore(3), libggzmod(3), 
++attributes(5), ggz.modules(5), gnome-interfaces(5), ggz(6), ggz-config(6), 
++ggz(7)
++.LP 
++GGZ Gaming Zone:
++   http://www.ggzgamingzone.org/
++.SH "AUTHORS"
++.LP
++   The GGZ Development Team <ggz\-dev@mail.ggzgamingzone.org>
++   Last edited by Michal Pryc, Sun Microsystems Inc., 2008.
+--- ggz-client-libs-0.0.14.1.orig/man/ggz.6	2008-06-01 12:59:52.992537184 +0100
++++ ggz-client-libs-0.0.14.1/man/ggz.6	2008-06-01 12:56:52.662591328 +0100
+@@ -14,21 +14,20 @@
+ core client without worrying which ones are installed. The tool is useful
+ for launching GGZ core clients from other software, but it will certainly
+ also be used by experienced users who just want to connect to GGZ quickly.
+-.LP 
+-Currently, the KDE client \fBkggz\fR, the Gtk+ client \fBggz-gtk\fR and
+-the Java client \fBggz-java\fR are supported for graphical environments.
+-In text-console mode, \fBggz-txt\fR can serve as a fallback.
+ .SH "OPTIONS"
+ .LP 
+ Since the available program options varies between the core clients,
+ only the common \fIURL\fR parameter is supported. This is a connection
+ identifier of the form ggz://user@host:port and will in most cases
+ be abbreviated to user@host.
+-.LP 
+-.SH "AUTHORS"
+-.LP 
+-The GGZ Development Team
+-<ggz\-dev@mail.ggzgamingzone.org>
+ .SH "SEE ALSO"
+ .LP 
+-kggz(6), ggz-gtk(6), ggz-java(6), ggz-txt(6), ggz(7)
++ggz_h(3), ggzcore_h(3), ggzmod_h(3), libggz(3), libggzcore(3), libggzmod(3), 
++attributes(5), ggz.modules(5), gnome-interfaces(5), ggz-config(6), ggz(7)
++.LP 
++GGZ Gaming Zone:
++   http://www.ggzgamingzone.org/
++.SH "AUTHORS"
++.LP
++   The GGZ Development Team <ggz\-dev@mail.ggzgamingzone.org>
++   Last edited by Michal Pryc, Sun Microsystems Inc., 2008.
+--- ggz-client-libs-0.0.14.1.orig/man/ggz.7	2008-06-01 12:59:52.991476324 +0100
++++ ggz-client-libs-0.0.14.1/man/ggz.7	2008-06-01 12:56:52.664549590 +0100
+@@ -7,8 +7,6 @@
+ The GGZ Gaming Zone is a standards-conforming online gaming infrastructure
+ which provides many applications and games to people who like to play
+ on the internet or in local networks.
+-GGZ, how the (recursive) acronym is called, is available for many computer
+-systems. This document focuses on the installations on Linux, BSD and Unix.
+ .SH "APPLICATIONS"
+ .LP
+ There isn't a single executable named ggz, instead a multitude of programs
+@@ -16,51 +14,27 @@
+ are used by developers and administrators.
+ Users will most likely want to connect to a GGZ server on the internet,
+ such as \fIggz://live.ggzgamingzone.org\fR, to play games against other people.
+-\fICore clients\fR are used to perform this task. Functional clients exist
+-in the form of \fBkggz\fR for the K Desktop Environment (KDE), \fBggz-gnome\fR
+-and \fBggz-gtk\fR for GNOME or XFCE users, and \fBggz-txt\fR for people who
+-prefer command-line applications. Of course, the clients are not bound to a
+-specific desktop, but the choices above will likely be influenced by the level
+-of integration.
+-A client under development is the SDL-based \fBvíbora\fR.
+-.LP
+-Special clients exist in the form of \fBggzap\fR, a quick-launcher for the
+-KDE panel, and \fBggz-wrapper\fR which is used for launching GGZ games from
+-instant messenger applications.
++\fICore clients\fR are used to perform this task.
+ .SH "GAMES"
+ .LP
+ Games are usually launched by the GGZ server, with corresponding game clients
+ running on the user's desktop. Plenty of games are available for GGZ, most
+ of them coming from the GGZ project itself but several independent game projects
+ do now provide GGZ support.
+-Game clients are implemented using multiple toolkits, some of which stem from
+-certain desktop environments. However, all games work equally well under all
+-desktops, it's just a matter of personal choice which of them are to be
+-installed - having all of them is just fine.
+ .LP
+ While some GGZ game clients are suited for online gaming only, others also run
+ locally like normal games happen to do. Those will be found in the desktop's
+ application menu.
+ .SH "FILES"
+-.LP
+-The following layout can vary from site to site, depending on the completeness
+-of a GGZ installation and the operating system distribution in use.
+-It adheres to the File Hierarchy Standard (FHS) as much as possible.
+ .TP
+ /usr/bin
+ GGZ applications, tools, and the games which provide single player mode.
+ .TP
+-/usr/lib/ggz(d)
+-GGZ game clients and servers.
++/usr/lib(d)
++GGZ game client and server libraries.
+ .TP
+ /usr/share/ggz(d)
+ Data files for game clients and servers.
+-.TP
+-/etc/ggz.modules
+-Game module registry for game clients.
+-.TP
+-/etc/ggzd
+-Configuration for the GGZ server, including rooms and game types.
+ .SH "CONFORMING TO"
+ .LP
+ \fIGGZ Design Document and Protocol Reference\fR, available at
+@@ -78,10 +52,14 @@
+ .LP
+ File Hierarchy Standard for unix-derived operating systems, at
+ \fIhttp://www.pathname.com/fhs/\fR
+-.SH "AUTHORS"
+-.LP
+-The GGZ Development Team
+-<ggz\-dev@mail.ggzgamingzone.org>
+ .SH "SEE ALSO"
++.LP 
++ggz_h(3), ggzcore_h(3), ggzmod_h(3), libggz(3), libggzcore(3), libggzmod(3), 
++attributes(5), ggz.modules(5), gnome-interfaces(5), ggz(6), ggz-config(6)
++.LP 
++GGZ Gaming Zone:
++   http://www.ggzgamingzone.org/
++.SH "AUTHORS"
+ .LP
+-kggz(6), ggz-gtk(6), ggz-txt(6), ggz-java(6)
++   The GGZ Development Team <ggz\-dev@mail.ggzgamingzone.org>
++   Last edited by Michal Pryc, Sun Microsystems Inc., 2008.
