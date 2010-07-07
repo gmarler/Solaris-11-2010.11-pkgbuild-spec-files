@@ -1,8 +1,8 @@
-# spec file for package SUNWgnome-games
+# spec file for package SUNWlibggz
 #
-# includes module(s): gnome-games, libggz, ggz-client-libs
+# includes module(s): libggz, ggz-client-libs
 #
-# Copyright 2009 Sun Microsystems, Inc.
+# Copyright 2010 Sun Microsystems, Inc.
 # This file and all modifications and additions to the pristine
 # package are under the same license as the package itself.
 #
@@ -11,18 +11,15 @@
 %include Solaris.inc
 
 %define makeinstall make install DESTDIR=$RPM_BUILD_ROOT
-%use gnome_games = gnome-games.spec
 %use libggz = libggz.spec
 %use ggz_client_libs = ggz-client-libs.spec
 
-Name:                    SUNWgnome-games
-IPS_package_name:        games/gnome-games
+Name:                    SUNWlibggz
+IPS_package_name:        games/libggz
 Meta(info.classification): %{classification_prefix}:Applications/Games
-Summary:                 GNOME games
+Summary:                 GGZ Gaming Zone
 Version:                 %{default_pkg_version}
-Source:                  %{name}-manpages-0.1.tar.gz
 SUNW_BaseDir:            %{_basedir}
-SUNW_Copyright:          %{name}.copyright
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 
 %include default-depend.inc
@@ -33,20 +30,16 @@ BuildRequires: SUNWpython26-setuptools
 BuildRequires: SUNWgnome-libs-devel
 BuildRequires: SUNWgnome-vfs-devel
 BuildRequires: SUNWgnome-config-devel
-BuildRequires: SUNWgnome-python26-desktop-devel
 BuildRequires: SUNWlibsdl-devel
 BuildRequires: SUNWgnome-media-devel
 Requires: SUNWgtk2
 Requires: SUNWgnome-libs
 Requires: SUNWgnome-config
 Requires: SUNWlibms
-Requires: SUNWgnome-python26-desktop
 Requires: SUNWlibrsvg
 Requires: SUNWPython26
 Requires: SUNWdesktop-cache
 Requires: SUNWgnome-media
-Requires: SUNWclutter
-Requires: SUNWclutter-gtk
 Requires: %{name}-root
 
 %if %build_l10n
@@ -73,9 +66,7 @@ rm -rf %name-%version
 mkdir %name-%version
 %libggz.prep -d %name-%version
 %ggz_client_libs.prep -d %name-%version
-%gnome_games.prep -d %name-%version
 cd %{_builddir}/%name-%version
-gzcat %SOURCE0 | tar xf -
 
 %build
 %define libggz_build_dir %{_builddir}/%name-%version/libggz-%{libggz.version}
@@ -101,32 +92,18 @@ export XGETTEXT
 
 %libggz.build -d %name-%version
 %ggz_client_libs.build -d %name-%version
-%gnome_games.build -d %name-%version
 
 %install
 rm -rf $RPM_BUILD_ROOT
 rm -rf $RPM_BUILD_ROOT%{_mandir}
 %libggz.install -d %name-%version
 %ggz_client_libs.install -d %name-%version
-%gnome_games.install -d %name-%version
 
-rm -rf $RPM_BUILD_ROOT%{_localstatedir}/lib/games
-rmdir $RPM_BUILD_ROOT%{_localstatedir}/lib
-rmdir $RPM_BUILD_ROOT%{_localstatedir}
 # Delete the include files as we're not delivering a devel package. It's not
 # useful.
 #rm -rf $RPM_BUILD_ROOT%{_includedir}
 rm $RPM_BUILD_ROOT%{_libdir}/*.a
 rm $RPM_BUILD_ROOT%{_libdir}/*.la
-
-# /etc/ggz.modules is created by gnect game when it finds /usr/bin/ggz-config.
-# This happens when the module is built but already installed, not on 1st build.
-if [ -f $RPM_BUILD_ROOT%{_sysconfdir}/ggz.modules ]; then
- rm $RPM_BUILD_ROOT%{_sysconfdir}/ggz.modules
-fi
-
-cd %{_builddir}/%name-%version/sun-manpages
-make install DESTDIR=$RPM_BUILD_ROOT
 
 %if %build_l10n
 %else
@@ -143,15 +120,7 @@ rm -rf $RPM_BUILD_ROOT%{_datadir}/omf/*/*latin.omf
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post
-%restart_fmri desktop-mime-cache gconf-cache
-
-%postun
-%restart_fmri desktop-mime-cache
-
 %files
-%doc -d gnome-games-%{gnome_games.version} MAINTAINERS README gnome-sudoku/README gnotski/README gnomine/README gtali/README glchess/README gnotravex/README COPYING COPYING-DOCS AUTHORS gnome-sudoku/AUTHORS glines/AUTHORS gnotski/AUTHORS gnomine/AUTHORS gnect/AUTHORS gtali/AUTHORS gnobots2/AUTHORS gnotravex/AUTHORS gnibbles/AUTHORS iagno/AUTHORS
-%doc(bzip2) -d gnome-games-%{gnome_games.version} NEWS ChangeLog
 %doc libggz-%{libggz.version}/AUTHORS
 %doc libggz-%{libggz.version}/README
 %doc libggz-%{libggz.version}/README.GGZ
@@ -170,23 +139,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/*
 
 %dir %attr (0755, root, bin) %{_libdir}
-%{_libdir}/gnome-games
 %{_libdir}/libggz*
-%{_libdir}/python?.?/vendor-packages
-
 %dir %attr (0755, root, sys) %{_datadir}
 %dir %attr (0755, root, other) %{_datadir}/doc
-%dir %attr (0755, root, other) %{_datadir}/applications
-%{_datadir}/applications/*
-%dir %attr (0755, root, other) %{_datadir}/gnome
-%{_datadir}/gnome/help/*/C
-%{_datadir}/glchess
-%{_datadir}/gnome-games
-%{_datadir}/gnome-sudoku
-%attr (-, root, other) %{_datadir}/icons
 %{_datadir}/desktop-directories
-%{_datadir}/omf/*/*-C.omf
-
 %dir %attr(0755, root, bin) %{_mandir}
 %dir %attr(0755, root, bin) %{_mandir}/man1
 %dir %attr(0755, root, bin) %{_mandir}/man5
@@ -211,7 +167,6 @@ rm -rf $RPM_BUILD_ROOT
 %files root
 %defattr (-, root, sys)
 %attr(0755, root, sys) %dir %{_sysconfdir}
-%{_sysconfdir}/gconf/schemas/*.schemas
 %{_sysconfdir}/xdg
 
 %files devel
@@ -224,6 +179,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man3/*
 
 %changelog
+* Wed Jul 07 2010 - brian.cameron@oracle.com
+- Convert into SFElibggz.spec file.
 * Thu Apr 22 2010 - christian.kelly@oracle.com
 - Fix %files.
 * Mon Mar 22 2010 - christian.kelly@sun.com
