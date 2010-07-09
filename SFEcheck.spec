@@ -15,6 +15,7 @@ SUNW_BaseDir:   %{_basedir}
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 Requires:       SUNWlibC
+BuildRequires:	SUNWgsed
 
 %package devel
 Summary:       %{summary} - development files
@@ -81,6 +82,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*
 
 %changelog
+* Fri Jul 09 2010 - Milan Jurik
+- fix build deps
 * Mon Oct 19 2009 - brian.cameron@sun.com
 - Bump to 0.9.8.  Remove check-01-ansi.diff patch since it is no longer needed.
 * Wed Jan 07 2008 - halton.huo@sun.com
