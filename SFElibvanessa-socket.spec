@@ -6,14 +6,14 @@
 
 #note: "_" instead of "-" for later package name
 %define src_name vanessa_socket
-%define perditionparentversion 1.17.1
+%include perditionparentversion.inc
 
 %include Solaris.inc
 
 Name:                    SFElibvanessa-socket
 Summary:                 vanessa-socket - TCP socket interface library to support perdition imap/pop3 proxy/loadbalancer
 URL:                     http://www.vergenet.net/linux/perdition/
-Version:                 0.0.7
+Version:                 0.0.10
 Source:                  http://www.vergenet.net/linux/perdition/download/%{perditionparentversion}/vanessa_socket-%{version}.tar.gz
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -73,5 +73,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Jul  9 2010 - Thomas Wagner
+- %include perditionparentversion.inc
+- bump to 0.0.10
 * Sat Jul 18 2009 - Thomas Wagner
 - Initial spec
