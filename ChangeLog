@@ -1,3 +1,7 @@
+2010-07-09 Milan Jurik <sfnet@xylab.cz>
+
+	* SFEexiv2.spec: fix build deps
+
 2010-07-07  Brian Cameron  <brian.cameron@oracle.com>
 
 	* SFElibggz.spec: Moved from archive/SUNWgnome-games.spec and now

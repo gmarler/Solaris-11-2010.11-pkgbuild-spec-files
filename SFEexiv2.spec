@@ -32,6 +32,14 @@ Requires: SUNWjpg
 BuildRequires: SUNWjpg-devel
 Requires: SUNWgnome-libs
 BuildRequires: SUNWgnome-libs-devel
+Requires: SUNWlibstdcxx4
+BuildRequires: SUNWlibstdcxx4
+Requires: SUNWlexpt
+BuildRequires: SUNWlexpt
+BuildRequires: SUNWgnome-common-devel
+BuildRequires: SUNWlxsl
+BuildRequires: SUNWlxsl-devel
+BuildRequires: SFEgraphviz
 
 %package devel
 Summary:                 %{summary} - development files
@@ -118,6 +126,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Fri Jul 09 2010 - Milan Jurik
+- fix build deps
 * Wed Jun 30 2010 - Milan Jurik
 - fix 0.20 build
 * Sun Jun 27 2010 - Milan Jurik
