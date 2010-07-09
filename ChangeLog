@@ -1,3 +1,13 @@
+2010-07-09  Thomas Wagner  <tom68@users.sourceforge.net>
+
+	* experimental/SFEperdition.spec: bump to 1.18, add include/perditionparentversion.inc
+        for perdition and SFElibvanessa-* as include, make "-rc1" versions IPS proof,
+        try build with mysql (broken), fix %files (no includes), add LDFLAGS -lsocket -lxnet
+        because missing symbol inet_*
+        * SFElibvanessa-socket.spec: bump to 0.0.10, add %include perditionparentversion.inc
+        * SFElibvanessa-adt.spec:    bump to 0.0.8,  add %include perditionparentversion.inc
+        * SFElibvanessa-logger.spec: bump to 0.0.8,  add %include perditionparentversion.inc
+
 2010-07-09 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEexiv2.spec: fix build deps
