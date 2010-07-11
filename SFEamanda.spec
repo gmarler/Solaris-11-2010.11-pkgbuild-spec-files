@@ -27,6 +27,8 @@ Buildrequires:	SUNWgnu-readline
 Requires:	SUNWgnuplot
 Requires:	SUNWgnu-readline
 #Requires:	SUNWmtx
+BuildRequires:	SUNWperl584usr
+Requires:	SUNWperl584usr
 
 %description 
 AMANDA, the Advanced Maryland Automatic Network Disk Archiver, is a
