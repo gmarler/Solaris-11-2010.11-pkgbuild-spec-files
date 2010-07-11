@@ -41,7 +41,7 @@ rm -rf $RPM_BUILD_ROOT
 %ifarch sparc
 make install PROC=sparcv7 PREFIX=$RPM_BUILD_ROOT%{_prefix}
 %else
-make install PREFIX=$RPM_BUILD_ROOT%{_prefix}
+make install PROC=i86 PREFIX=$RPM_BUILD_ROOT%{_prefix}
 %endif
 
 %clean
