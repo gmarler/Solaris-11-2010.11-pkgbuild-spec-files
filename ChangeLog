@@ -1,6 +1,7 @@
 2010-07-11 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEasciidoc.spec: update to 8.5.3
+	* SFEamanda.spec: Initial spec based on Fedora
 
 2010-07-09  Thomas Wagner  <tom68@users.sourceforge.net>
 
