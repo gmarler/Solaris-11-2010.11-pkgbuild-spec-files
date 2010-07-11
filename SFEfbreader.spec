@@ -21,6 +21,15 @@ SUNW_BaseDir:	%{_basedir}
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 
+BuildRequires:	SFElibfribidi-devel
+Requires:	SFElibfribidi
+BuildRequires:	SFEliblinebreak-devel
+Requires:	SFEliblinebreak
+BuildRequires:	SUNWcurl
+Requires:	SUNWcurl
+BuildRequires:	SUNWperl-xml-parser
+Requires:	SUNWperl-xml-parser
+
 %description
 FBReader is an e-book reader for various platforms.
 
