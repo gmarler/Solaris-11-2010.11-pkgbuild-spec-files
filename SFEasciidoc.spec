@@ -8,7 +8,9 @@
 
 Name:                    SFEasciidoc
 Summary:                 AsciiDoc - Text based document generation
-Version:                 8.2.7
+Group:                   Tools
+License:                 GPLv2
+Version:                 8.5.3
 URL:                     http://www.methods.co.nz/asciidoc/
 Source:                  %{sf_download}/asciidoc/asciidoc-%{version}.tar.gz
 SUNW_BaseDir:            %{_basedir}
@@ -27,16 +29,17 @@ rm -rf %name-%version
 %setup -q -n asciidoc-%version
 
 %build
-perl -pi -e 's,^BINDIR=.*,BINDIR=%{buildroot}%{_bindir},' install.sh
-perl -pi -e 's,^MANDIR=.*,MANDIR=%{buildroot}%{_mandir},' install.sh
-perl -pi -e 's,^CONFDIR=.*,CONFDIR=%{buildroot}%{_sysconfdir}/asciidoc,' install.sh
+./configure --prefix=%{_prefix}	\
+	--sysconfdir=%{_sysconfdir}
+
+make
+# Disabled because of docbook problem
+#python a2x.py -f manpage doc/asciidoc.1.txt
+#python a2x.py -f manpage doc/a2x.1.txt
 
 %install
 rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT%{_bindir}
-mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}
-mkdir -p $RPM_BUILD_ROOT%{_mandir}/man1
-bash ./install.sh
+make install DESTDIR=$RPM_BUILD_ROOT
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -56,6 +59,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_sysconfdir}/asciidoc
 
 %changelog
+* Sun Jul 11 2010 - Milan Jurik
+- update to 8.5.3
 * Sat Aug 16 2008 - nonsea@users.sourceforge.net
 - Bump to 8.2.7
 * Mon May 05 2008 - brian.cameron@sun.com
