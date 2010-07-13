@@ -1,3 +1,7 @@
+2010-07-13  Simon Jin <yuntong.jin@sun.com>
+
+	* SFEsabayon.spec: create user account sabayon when install the package
+
 2010-07-12  Simon Jin <yuntong.jin@sun.com>
 
 	* SFEsabayon.spec:Init spec file

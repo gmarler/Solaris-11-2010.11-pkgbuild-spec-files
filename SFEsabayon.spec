@@ -32,12 +32,8 @@ default behaviour of the GNOME desktop.
 Summary:	Graphical tools for Sabayon profile management
 Group:		Applications/System
 
-# this is virtual for shadow and pwdutils
-#Requires:	shadow
-#Requires:	xorg-xserver-Xnest
 
 ##OSOL Requres
-#Requires:       FSWxorg-client-programs
 Requires:       SFEpessulus
 Requires:       SUNWgnome-python-libs
 Requires:       SUNWgnome-python26-libs
@@ -78,8 +74,6 @@ autoconf
 	    --mandir=%{_mandir}			\
 	    --with-distro=debian
 
-            #--with-prototype-user=sabayon \
-
 make -j $CPUS
 
 %install
@@ -105,9 +99,9 @@ mv $RPM_BUILD_ROOT%{_libdir}/python%{python_version}/site-packages/* \
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-#%pre admin
-#groupadd -g 225 sabayon
-#useradd -u 225 -d %{_datadir}/empty -c "Sabayon user" -g sabayon sabayon
+%pre admin
+groupadd -g 225 sabayon
+useradd -u 225 -d %{_datadir}/empty -c "Sabayon user" -g sabayon sabayon
 
 %post admin
 %restart_fmri desktop-mime-cache gconf-cache
