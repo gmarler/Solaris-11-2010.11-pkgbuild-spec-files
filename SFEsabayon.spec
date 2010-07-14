@@ -2,15 +2,19 @@
 # spec file for package sabayon
 #
 # Copyright (c) 2010 Sun Microsystems, Inc.
+#
 # This file and all modifications and additions to the pristine
 # package are under the same license as the package itself.
 #
 %define owner jouby 
 #
+%include Solaris.inc
+%include default-depend.inc
 
-Summary:	Tool to maintain user profiles in a GNOME desktop
+%define python_version 2.6
 
 Name:		sabayon
+Summary:	Tool to maintain user profiles in a GNOME desktop
 Version:	2.30.0
 Release:	2
 Distribution:	Java Desktop System
@@ -19,8 +23,8 @@ License:	GPLv2+
 Group:		Applications/System
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/sabayon/2.30/%{name}-%{version}.tar.bz2
 URL:		http://www.gnome.org/projects/sabayon
+SUNW_BaseDir:   /
 
-%define python_version 2.6
 
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 
@@ -29,6 +33,8 @@ Sabayon is a tool to help sysadmins and user change and maintain the
 default behaviour of the GNOME desktop.
 
 %package admin
+%include default-depend.inc
+SUNW_BaseDir:   %{_basedir} 
 Summary:	Graphical tools for Sabayon profile management
 Group:		Applications/System
 
@@ -38,7 +44,6 @@ Requires:       SFEpessulus
 Requires:       SUNWgnome-python-libs
 Requires:       SUNWgnome-python26-libs
 #Requires:       xorg-x11-server-Xephyr 
-#BuildRequires:  xorg-x11-xinit 
 
 %description admin
 The sabayon-admin package contains the graphical tools which a
@@ -107,27 +112,31 @@ useradd -u 225 -d %{_datadir}/empty -c "Sabayon user" -g sabayon sabayon
 %restart_fmri desktop-mime-cache gconf-cache
 
 %postun admin
-%restart_fmri desktop-mime-cache
+%restart_fmri desktop-mime-cache gconf-cache
 
 if [ "$1" -eq 0 ]; then
-	%userremove sabayon
-	%groupremove sabayon
+	userdel sabayon
+	groupdel sabayon
 fi
 
 %files 
 #%files apply -f sabayon.lang 
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog NEWS README TODO ISSUES sabayon.schema
+
+%defattr (-, root, sys)
+%attr (0755, root, sys) %dir %{_sysconfdir}
 %config(noreplace) %{_sysconfdir}/gconf/2/local-defaults.path
 %config(noreplace) %{_sysconfdir}/gconf/2/local-mandatory.path
+
 %attr(755,root,root) %{_sbindir}/sabayon-apply
+%attr(755,root,root) %{_sysconfdir}/sabayon
 
 %files admin
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/sabayon
 %attr(755,root,root) %{_libexecdir}/sabayon-session
 
-%attr(755,root,root) %{_sysconfdir}/sabayon
 
 %dir %attr (0755, root, bin) %{_libdir}
 %dir %attr (0755, root, bin) %{_libdir}/python%{python_version}
