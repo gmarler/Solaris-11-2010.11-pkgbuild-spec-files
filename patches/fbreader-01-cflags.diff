@@ -1,7 +1,8 @@
 --- fbreader-0.12.10/makefiles/arch/unix.mk	Thu Apr  1 15:14:24 2010
 +++ fbreader-0.12.10-patch/makefiles/arch/unix.mk	Sun Jul 11 21:10:23 2010
-@@ -1,0 +1,1 @@
+@@ -1,0 +1,2 @@
 +CFLAGS = -DDO_ICONV_CAST
++ZLSHARED = no
 --- fbreader-0.12.10/makefiles/arch/desktop.mk	Thu Apr  1 15:14:24 2010
 +++ fbreader-0.12.10-patch/makefiles/arch/desktop.mk	Sun Jul 11 21:10:34 2010
 @@ -10,7 +10,7 @@

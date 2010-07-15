@@ -29,6 +29,7 @@ BuildRequires:	SUNWcurl
 Requires:	SUNWcurl
 BuildRequires:	SUNWperl-xml-parser
 Requires:	SUNWperl-xml-parser
+BuildRequires:	SUNWgnome-common-devel
 
 %description
 FBReader is an e-book reader for various platforms.
@@ -56,7 +57,6 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-, root, bin)
 %{_bindir}/FBReader
-%{_libdir}
 %dir %attr (0755, root, sys) %{_datadir}
 %{_datadir}/FBReader
 %dir %attr (0755, root, other) %{_datadir}/applications
@@ -67,5 +67,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/zlibrary
 
 %changelog
+* Thu Jul 15 2010 - Milan Jurik
+- fix build and disable dynamic loading of UI module because of problem with libnspr4.so
 * Sun Jul 11 2010 - Milan Jurik
 - Initial spec

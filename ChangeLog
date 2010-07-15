@@ -1,3 +1,8 @@
+2010-07-15 Milan Jurik <sfnet@xylab.cz>
+
+	* SFEfbreader.spec: fix build and disable dynamic loading of UI module
+	  because of problem with libnspr4.so
+
 2010-07-14  Simon Jin <yuntong.jin@sun.com>
 
 	* SFEsabayon.spec:Polish spec file
