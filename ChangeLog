@@ -2,6 +2,7 @@
 
 	* SFEfbreader.spec: fix build and disable dynamic loading of UI module
 	  because of problem with libnspr4.so
+	* SFElensfun.spec: Initial spec based on Fedora
 
 2010-07-14  Simon Jin <yuntong.jin@sun.com>
 
