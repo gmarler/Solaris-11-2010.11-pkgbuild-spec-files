@@ -10,7 +10,7 @@
 
 Name:                    SFEwebkitgtk
 Summary:                 WetKit, an open source web browser engine that's used by Safari, Dashboard, Mail, and many other OS X applications.
-Version:                 1.2.1
+Version:                 1.2.3
 Source:                  http://www.webkitgtk.org/webkit-%{version}.tar.gz
 URL:                     http://www.webkitgtk.org/
 
@@ -127,6 +127,8 @@ fi
 autoconf 
 ./configure --prefix=%{_prefix}			\
             --disable-jit                       \
+	    --disable-fast-malloc               \
+	    --disable-optimizations             \
 	    --libdir=%{_libdir}                 \
             --sysconfdir=%{_sysconfdir}         \
 	    --mandir=%{_mandir}                 \
@@ -175,8 +177,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Jul 16 2010 - yuntong.jin@sun.com
+- Bump to 1.2.3  
 * Tue Jun 30 2010 - yuntong.jin@sun.com
-* Bump to 1.2.1 and add hack pactch webkit-26-copycons-imp.diff
+- Bump to 1.2.1 and add hack pactch webkit-26-copycons-imp.diff
 * Tue May 19 2010 - yuntong.jin@sun.com
 - Bump to 1.2.0
 * Mon May 18 2010 - yuntong.jin@sun.com
