@@ -6,6 +6,7 @@
 %include Solaris.inc
 
 %define python_version 2.6
+%define perl_version 5.8.4
 
 %define SFEfreetype %(/usr/bin/pkginfo -q SFEfreetype && echo 1 || echo 0)
 
@@ -62,11 +63,12 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
      CPUS=1
 fi
 
-libtoolize --copy --force
-aclocal $ACLOCAL_FLAGS
-autoheader
-automake -a -c -f
-autoconf
+# Not needed and generated version of libtool has some parsing problems
+#libtoolize --copy --force
+#-aclocal $ACLOCAL_FLAGS
+#autoheader
+#automake -a -c -f
+#autoconf
 ./configure --prefix=%{_prefix}  \
             --mandir=%{_mandir} \
             --enable-static=no \
@@ -112,7 +114,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/python%{python_version}/*
 %dir %attr (0755, root, bin) %{_libdir}/tcl8.4
 %{_libdir}/tcl8.4/*
-
+%{_prefix}/perl5/vendor_perl/%{perl_version}/*
 
 %files devel
 %defattr (-, root, bin)
@@ -126,6 +128,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/graphviz/*
 
 %changelog
+* Sat Jul 17 2010 - Milan Jurik
+- fix build and packaging
 * Sun Apr 11 2010 - Milan Jurik
 - resurrect it from archive because it was not integrated
 - update to 2.26.3
