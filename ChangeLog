@@ -1,6 +1,7 @@
 2010-07-17 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEgraphviz.spec: fix build and packaging
+	* SFEgosm.spec: Initial spec file
 
 2010-07-16  Simon Jin <yuntong.jin@sun.com>
 

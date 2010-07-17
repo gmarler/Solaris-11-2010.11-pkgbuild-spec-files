@@ -1,0 +1,19 @@
+--- gosm/poi/RTree/gammavol.c	Sat Oct  3 16:04:42 2009
++++ gosm-patch/poi/RTree/gammavol.c	Sat Jul 17 13:22:18 2010
+@@ -10,7 +10,7 @@
+ 
+ #define EP .0000000001
+ 
+-const double log_pi = log(M_PI);
++double log_pi;
+ 
+ double sphere_volume(double dimension)
+ {
+@@ -24,6 +24,7 @@
+ int main()
+ {
+ 	double dim=0, delta=1;
++	log_pi = log(M_PI);
+ 	while(ABS(delta) > EP)
+ 		if(sphere_volume(dim + delta) > sphere_volume(dim))
+ 			dim += delta;

@@ -1,0 +1,13 @@
+--- gosm/Makefile	Sat Oct 31 16:24:15 2009
++++ gosm-patch/Makefile	Sat Jul 17 13:19:08 2010
+@@ -130,9 +130,8 @@
+ widget/gtk_rollup_button.o \
+ gosm.o
+ 
+-CC  = /usr/bin/gcc
+ DEPENDFILE = .depend
+-CFLAGS  = -D BUILD=0 -g\
++CFLAGS  = -xc99 -D_XOPEN_SOURCE=600 -D BUILD=0 -g\
+  `pkg-config --cflags --libs gtk+-2.0 gdk-2.0 pango cairo glib-2.0 gthread-2.0 libpng webkit-1.0` \
+  `curl-config --cflags --libs`
+ LDFLAGS = -lm -lpthread -lexpat -lbz2\
