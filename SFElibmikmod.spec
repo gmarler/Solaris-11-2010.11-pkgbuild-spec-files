@@ -12,6 +12,8 @@ Name:                    SFElibmikmod
 Summary:                 libmikmod  - a portable sound library for Unix and other systems.
 Version:                 3.2.0.0.2
 Source:                  http://mikmod.raphnet.net/files/libmikmod-%{src_version}.tar.bz2
+Patch1:                  libmikmod-01-cve-2009-3995.diff
+Patch2:                  libmikmod-02-cve-2009-3996.diff 
 URL:                     http://mikmod.raphnet.net/
 License:                 LGPL
 SUNW_BaseDir:            %{_basedir}
@@ -32,6 +34,8 @@ Requires: %name
 
 %prep
 %setup -q -n libmikmod-%src_version
+%patch1 -p1
+%patch2 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -79,6 +83,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/aclocal/*
 
 %changelog
+* Mon Jul 19 2010 - Milan Jurik
+- CVE-2009-3995 and CVE-2009-3996 patches added based on Debian
 * Sun May 09 2010 - Milan Jurik
 - oss dependency cleanup
 * Thu May 29 2008 - river@wikimedia.org
