@@ -1,3 +1,8 @@
+2010-07-19 Pradhap Devarajan <pradhap (at) gmail.com>
+
+	* SFEdictd.spec: Fixed URL
+	* SFEscreen.spec: Enable telnet and color
+
 2010-07-19 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEproftpd.spec: bump to 1.3.3a

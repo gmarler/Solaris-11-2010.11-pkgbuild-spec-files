@@ -8,7 +8,7 @@
 Name:                    SFEdictd
 Summary:                 Dictd Server and Client
 Version:                 1.9.15
-Source:                  ftp://ftp.dict.org/pub/dict/dictd-%{version}.tar.gz
+Source:                 ftp://ftp.dict.org/dict/dictd-%{version}.tar.gz
 URL:                     http://dict.org
 #SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -61,6 +61,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_sysconfdir}/*
 
 %changelog
+* Jun 19 2010 - pradhap (at) gmail.com
+- Fixed URL
 * Mar 29 2008 - pradhap (at) gmail.com
 - Initial dictd spec file.
 

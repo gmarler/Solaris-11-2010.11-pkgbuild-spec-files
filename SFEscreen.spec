@@ -29,6 +29,8 @@ export LDFLAGS="%_ldflags"
 
 ./configure --prefix=%{_prefix}  \
             --mandir=%{_mandir} \
+            --enable-telnet \
+            --enable-colors256 \
             --infodir=%{_datadir}/info
 
 # Invocation of setenv in misc.c source file is coded to
@@ -68,6 +70,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/screen/*
 
 %changelog
+* Mon Jul 19 2010 - pradhap (at) gmail.com
+- Enable telnet and color
 * Mon Jan 17 2007 - daymobrew@users.sourceforge.net
 - Add pkgbuild_postprocess step.
 * Wed Nov 08 2006 - Eric Boutilier
