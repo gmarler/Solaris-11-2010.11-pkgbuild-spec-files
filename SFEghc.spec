@@ -46,6 +46,7 @@ Requires:	library/mpfr
 Requires:	library/readline 
 Requires:	library/ncurses
 Requires:	archiver/gnu-tar
+BuildRequires:	text/gnu-sed
 %else
 Requires: 	SFEgcc
 
