@@ -17,15 +17,19 @@
 %define _datadir %{_prefix}/%{src_name}/share
 %define _includedir %{_prefix}/%{src_name}/include
 
+%define	src_version	1.3.3a
+%define	gss_version	1.3.3
+
 Name:		SFEproftpd
 Summary:	Highly configurable FTP server
-Version:	1.3.3
+Version:	%{src_version}
+IPS_component_version: 1.3.3.0.1
 License:	GPL
 Group:		Applications/Internet
 URL:		http://www.proftpd.org/
-Source:		ftp://ftp.proftpd.org/distrib/source/%{src_name}-%{version}.tar.gz
+Source:		ftp://ftp.proftpd.org/distrib/source/%{src_name}-%{src_version}.tar.gz
 Source1:	proftpd.xml
-Source2:	%{sf_download}/gssmod/mod_gss-%{version}.tar.gz
+Source2:	%{sf_download}/gssmod/mod_gss-%{gss_version}.tar.gz
 SUNW_BaseDir:	%{_basedir}
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -65,12 +69,12 @@ export LDFLAGS="%_ldflags"
 export install_user=$LOGNAME
 export install_group=`groups | awk '{print $1}'`
 
-pushd mod_gss-%{version}
+pushd mod_gss-%{gss_version}
 ./configure
 popd
 
-cp mod_gss-%{version}/mod_gss.h include
-cp mod_gss-%{version}/mod_gss.c contrib
+cp mod_gss-%{gss_version}/mod_gss.h include
+cp mod_gss-%{gss_version}/mod_gss.c contrib
 
 ./configure --prefix=%{_prefix}/%{src_name}  \
             --bindir=%{_bindir} \
@@ -95,11 +99,11 @@ rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
 
 cp -r doc ${RPM_BUILD_ROOT}%{_docdir}
-cp mod_gss-%{version}/README.mod_auth_gss ${RPM_BUILD_ROOT}%{_docdir}/contrib
-cp mod_gss-%{version}/README.mod_gss ${RPM_BUILD_ROOT}%{_docdir}/contrib
-cp mod_gss-%{version}/mod_gss.html ${RPM_BUILD_ROOT}%{_docdir}/contrib
-cp mod_gss-%{version}/rfc1509.txt ${RPM_BUILD_ROOT}%{_docdir}/rfc
-cp mod_gss-%{version}/rfc2228.txt ${RPM_BUILD_ROOT}%{_docdir}/rfc
+cp mod_gss-%{gss_version}/README.mod_auth_gss ${RPM_BUILD_ROOT}%{_docdir}/contrib
+cp mod_gss-%{gss_version}/README.mod_gss ${RPM_BUILD_ROOT}%{_docdir}/contrib
+cp mod_gss-%{gss_version}/mod_gss.html ${RPM_BUILD_ROOT}%{_docdir}/contrib
+cp mod_gss-%{gss_version}/rfc1509.txt ${RPM_BUILD_ROOT}%{_docdir}/rfc
+cp mod_gss-%{gss_version}/rfc2228.txt ${RPM_BUILD_ROOT}%{_docdir}/rfc
 
 install -d 0755 %{buildroot}%/var/svc/manifest/site
 install -m 0644 %{SOURCE1} %{buildroot}%/var/svc/manifest/site
@@ -159,6 +163,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Jul 19 2010 - Milan Jurik
+- bump to 1.3.3a
 * Sun May 23 2010 - Milan Jurik
 - shaper module build
 - Kerberos module added
