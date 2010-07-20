@@ -1,3 +1,7 @@
+2010-07-20 Milan Jurik <sfnet@xylab.cz>
+
+	* SFEopenttd.spec: update to 1.0.2
+
 2010-07-20 Mark Wright <markwright@internode.on.net>
 
         * SFEcoq.spec: *NEW* Coq proof assistant

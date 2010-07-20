@@ -4,17 +4,19 @@
 %include Solaris.inc
 
 %define src_name openttd
-%define src_version 1.0.1
+%define src_version 1.0.2
 
 Name:           SFEopenttd
-Version:        1.0.1
+Version:        1.0.2
 Summary:        Transport system simulation game
 Source:         http://binaries.openttd.org/releases/%{src_version}/%{src_name}-%{src_version}-source.tar.bz2
-Source1:	http://bundles.openttdcoop.org/opengfx/releases/opengfx-0.2.2.zip
-Source2:	http://bundles.openttdcoop.org/opensfx/releases/opensfx-0.2.2.zip
+Source1:	http://bundles.openttdcoop.org/opengfx/releases/opengfx-0.2.4.zip
+Source2:	http://bundles.openttdcoop.org/opensfx/releases/opensfx-0.2.3.zip
 Source3:	http://bundles.openttdcoop.org/openmsx/releases/openmsx-0.2.1.zip
-Patch1:         openttd-01-makedependlimit.diff
-URL:            http://www.openttd.org/
+Patch1:		openttd-01-makedependlimit.diff
+URL:		http://www.openttd.org/
+Group:		Amusements/Games
+License:	GPLv2
 SUNW_BaseDir:   %{_basedir}
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-build
 
@@ -96,7 +98,7 @@ desktop-file-install --dir=$RPM_BUILD_ROOT%{_datadir}/applications \
         media/openttd.desktop
 
 cd $RPM_BUILD_ROOT%{_datadir}/openttd/data && unzip %SOURCE1 && unzip %SOURCE2 && unzip %SOURCE3
-chmod  555  $RPM_BUILD_ROOT%{_datadir}/openttd/data/open*-0.2*
+chmod 755  $RPM_BUILD_ROOT%{_datadir}/openttd/data/open*-0.2*
 chmod og+r $RPM_BUILD_ROOT%{_datadir}/openttd/data/open*-0.2*/*
 
 %clean
@@ -138,6 +140,8 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 %{_datadir}/openttd/*
 
 %changelog
+* Tue Jul 20 2010 - Milan Jurik
+- update to 1.0.2
 * Fri May 07 2010 - Milan Jurik
 - update to 1.0.1
 * Thu Apr 01 2010 - Milan Jurik
