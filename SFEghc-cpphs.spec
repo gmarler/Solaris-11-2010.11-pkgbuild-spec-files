@@ -11,7 +11,7 @@
 %define cc_is_gcc 1
 %include base.inc
 
-%define ghc_version 6.12.1
+%define ghc_version 6.12.3
 
 Name:                    cpphs
 Summary:                 cpphs - A liberalised re-implementation of cpp, the C pre-processor.
@@ -33,9 +33,14 @@ Requires: SFEghc
 Requires: SFEghc-haskell-platform
 
 %description
-Cpphs is a re-implementation of the C pre-processor that is both more compatible with Haskell, and itself written in Haskell so that it can be distributed with compilers. 
+Cpphs is a re-implementation of the C pre-processor that is both more
+compatible with Haskell, and itself written in Haskell so that it can
+be distributed with compilers.
 
-This version of the C pre-processor is pretty-much feature-complete and compatible with traditional (K&R) pre-processors. Additional features include: a plain-text mode; an option to unlit literate code files; and an option to turn off macro-expansion.
+This version of the C pre-processor is pretty-much feature-complete
+and compatible with traditional (K&R) pre-processors. Additional
+features include: a plain-text mode; an option to unlit literate code
+files; and an option to turn off macro-expansion.
 
 %package -n SFEghc-cpphs-prof
 Summary:                 %{summary} - profiling libraries
@@ -88,7 +93,7 @@ export LD_LIBRARY_PATH='/usr/gnu/lib'
 export LD_OPTIONS='-L/usr/gnu/lib -R/usr/gnu/lib'
 %endif
 runghc ./Setup.hs build ${VERBOSE}
-runghc ./Setup.hs haddock ${VERBOSE} --executables --hoogle --hyperlink-source
+runghc ./Setup.hs haddock ${VERBOSE} --hoogle --hyperlink-source
 
 %install
 export LD_LIBRARY_PATH=/usr/gnu/lib:$LD_LIBRARY_PATH
@@ -108,11 +113,11 @@ install -c -m 755 %{name}-%{version}.conf ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{
 cd %{_builddir}/%{name}-%{version}
 find $RPM_BUILD_ROOT -type f -name "*.p_hi" > pkg-prof.files
 find $RPM_BUILD_ROOT -type f -name "*_p.a" >> pkg-prof.files
-find $RPM_BUILD_ROOT/usr/bin $RPM_BUILD_ROOT/usr/lib -type f -name "*" > pkg-all.files
+find $RPM_BUILD_ROOT%{_bindir} $RPM_BUILD_ROOT%{_libdir} -type f -name "*" > pkg-all.files
 sort pkg-prof.files > pkg-prof-sort.files
 sort pkg-all.files > pkg-all-sort.files
 comm -23 pkg-all-sort.files pkg-prof-sort.files > pkg.files
-find $RPM_BUILD_ROOT/usr/share -type f -name "*" > pkg-doc.files
+find $RPM_BUILD_ROOT%{_datadir} -type f -name "*" > pkg-doc.files
 sort pkg-doc.files > pkg-doc-sort.files
 # Clean up syntax for %files section
 cat pkg.files | sed 's:'"$RPM_BUILD_ROOT"'::' > TEMP && mv TEMP pkg.files
@@ -135,7 +140,7 @@ cd %{_docdir}/ghc/html/libraries && [ -x "./gen_contents_index" ] && ./gen_conte
 /usr/bin/ghc-pkg unregister --global --force %{name}-%{version}
 
 %postun -n SFEghc-cpphs-doc
-if [ "$1" -eq 0 ] ; then
+if [ "$1" -eq 0 ] && [ -x %{_docdir}/ghc/html/libraries/gen_contents_index ] ; then
   cd %{_docdir}/ghc/html/libraries && [ -x "./gen_contents_index" ] && ./gen_contents_index
 fi
 
@@ -155,5 +160,7 @@ fi
 %dir %attr (0755, root, bin) %{_docdir}/ghc/html/libraries/%{name}-%{version}
 
 %changelog
+* Tue July 20 2010 - markwright@internode.on.net
+- Fix postun to work if SFEghc has been uninstalled. Compile with ghc 6.12.3.
 * Thu Apr 8 2010 - markwright@internode.on.net
 - Initial Solaris version

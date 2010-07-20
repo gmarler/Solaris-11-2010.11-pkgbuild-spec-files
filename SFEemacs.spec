@@ -7,9 +7,9 @@
 
 Name:                    SFEemacs
 Summary:                 GNU Emacs - an operating system in a text editor
-Version:                 23.1
-%define emacs_version    23.1
-Source:                  http://ftp.gnu.org/pub/gnu/emacs/emacs-%{emacs_version}.tar.gz
+Version:                 23.2
+%define emacs_version    23.2
+Source:                  http://ftp.gnu.org/pub/gnu/emacs/emacs-%{emacs_version}.tar.bz2
 URL:                     http://www.gnu.org/software/emacs/emacs.html
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -131,6 +131,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_localstatedir}/games/emacs/*
 
 %changelog
+* Mon Jul 19 2010 - markwright@internode.on.net
+- Bump to 23.2
 * Tue Aug 04 2009 - jedy.wang@sun.com
 - Bump to 23.1
 * Thu Oct 2 2008 - markwright@internode.on.net

@@ -176,7 +176,7 @@ cd %{_builddir}/%name-%version
 #touch ghc-extra.files ghc-extra-prof.files ghc-extra-all.files
 find $RPM_BUILD_ROOT -type f -name "*.p_hi" > ghc-extra-prof.files
 find $RPM_BUILD_ROOT -type f -name "*_p.a" >> ghc-extra-prof.files
-find $RPM_BUILD_ROOT/usr/lib -type f -name "*" > ghc-extra-all.files
+find $RPM_BUILD_ROOT%{_libdir} -type f -name "*" > ghc-extra-all.files
 sort ghc-extra-prof.files > ghc-extra-prof-sort.files
 sort ghc-extra-all.files > ghc-extra-all-sort.files
 comm -23 ghc-extra-all-sort.files ghc-extra-prof-sort.files > ghc-extra.files
@@ -215,5 +215,7 @@ ghc-pkg unregister --force utf8-string
 %defattr (-, root, bin)
 
 %changelog
+* Tue July 20 2010 - markwright@internode.on.net
+- Fix postun to work if SFEghc has been uninstalled. Compile with ghc 6.12.3.
 * Sun Sep 6 2009 - jchoi42@pha.jhu.edu
 - Initial spec

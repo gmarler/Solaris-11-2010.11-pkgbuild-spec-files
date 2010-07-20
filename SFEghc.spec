@@ -14,20 +14,28 @@
 %define bootstrap 6.10.4
 %include base.inc
 
+%define is_amd64        %( test "`isalist | cut -d' ' -f1`" = "amd64" && echo 1 || echo 0 )
+
+%define is_s10		%( test "`uname -r`" = "5.10" && echo 1 || echo 0 )
+%if %{is_s10}
+%define osbuild "10"
+%else
 %define osbuild %(uname -v | sed -e 's/[A-z_]//g')
+%endif
 
 # WARNING: you need a lot of diskspace to build this spec!
 
 Name:                    SFEghc 
 Summary:                 ghc - The Glasglow Haskell Compiler (g++-built)
-Version:                 6.12.1
+Version:                 6.12.3
 Release:                 1
 License:                 BSD
 Group:                   Development/Languages/Haskell
 Distribution:            Java Desktop System
 Vendor:                  Sun Microsystems, Inc.
 URL:                     http://www.haskell.org/ghc
-Source:                  http://www.haskell.org/ghc/dist/%{version}/ghc-%{version}-src.tar.bz2
+Source:                  http://darcs.haskell.org/download/dist/%{version}/ghc-%{version}-src.tar.bz2
+# Source:                http://www.haskell.org/ghc/dist/%{version}/ghc-%{version}-src.tar.bz2
 Source1:                 http://www.haskell.org/ghc/dist/%{bootstrap}/maeder/ghc-%{bootstrap}-i386-unknown-solaris2.tar.bz2
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -94,9 +102,6 @@ Summary:                 %{summary} - developer files
 SUNW_BaseDir:            %{_basedir}
 %include default-depend.inc
 Requires: %{name}
-
-%define is_s10		%( test "`uname -r`" = "5.10" && echo 1 || echo 0 )
-%define is_amd64        %( test "`isalist | cut -d' ' -f1`" = "amd64" && echo 1 || echo 0 )
 
 %if %{is_s10}
 %define gnu_tar /usr/sfw/bin/gtar
@@ -244,6 +249,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/doc/*
 
 %changelog
+* Mon July 19 2010 - markwright@internode.on.net
+- Bump to 6.12.3
 * May 3 2010 - Gilles Dauphin
 - Get ready for next release
 - find in _libdir

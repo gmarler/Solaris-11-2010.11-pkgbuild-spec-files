@@ -6,6 +6,12 @@
 
 %include Solaris.inc
 
+# SFEocaml, SFEcamlp5, SFEhevea compiles with Sun Studio 12u1 cc,
+# and I guess SFElablgtk and SFEunison do as well.
+# However SFEcoq wants SFEocaml to be compiled with gcc, to enable
+# the THREADED_CODE define in /usr/lib/ocaml/caml/config.h
+%define cc_is_gcc 1
+
 Name:         SFElablgtk
 Summary:      LablGTK - objective caml bindings for gtk+
 Version:      2.6.0
@@ -38,6 +44,7 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
     CPUS=1
 fi
 
+export CC=gcc
 export CFLAGS="%optflags"
 export LDFLAGS="%_ldflags"
 

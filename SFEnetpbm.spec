@@ -21,14 +21,19 @@ Distribution:            OpenSolaris
 Vendor:                  OpenSolaris Community
 %if %{?_with_svn_code:0}%{?!_with_svn_code:1}
 # stable tarball build
-Version:                 10.26.63
+Version:                 10.35.76
 Source:                  http://downloads.sourceforge.net/netpbm/%{src_name}-%{version}.tgz
 %else
 # svn code
 Version:                 10.35
 %endif
 
+%if %is_s10
+Source1:		 netpbm-s10-Makefile.conf
+%else
+# FIXME: consider adding PNGLIB like in netpbm-s10-Makefile.conf to build pngtopnm
 Source1:		 netpbm-Makefile.conf
+%endif
 
 Patch1:			 netpbm-01-strings.diff
 Patch2:			 netpbm-02-no-XDefs.diff
@@ -41,13 +46,18 @@ SUNW_Copyright:          %{src_name}.copyright
 %include default-depend.inc
 
 BuildRequires:  SUNWbtool
-BuildRequires:  SUNWgnu-coreutils
 BuildRequires:  SUNWgmake
 BuildRequires:  SUNWflexlex
-BuildRequires:  web/wget
 
 Requires: SUNWlibC
+%if %is_s10
+# Ghostscript for s10 http://techbase.kde.org/index.php?title=Projects/KDE_on_Solaris
+Requires:       FOSSghostscript
+%else
+BuildRequires:  SUNWgnu-coreutils
+BuildRequires:  web/wget
 Requires: print/filter/ghostscript
+%endif
 
 # OpenSolaris IPS Manifest Fields
 Meta(info.upstream):            Bryan Henderson<bryanh@giraffe-data.com>
@@ -91,8 +101,8 @@ CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
 if test "x$CPUS" = "x" -o $CPUS = 0; then
     CPUS=1
 fi
-export CFLAGS="%optflags"
-export LDFLAGS="-lz"
+export CFLAGS="%optflags -xc99"
+export LDFLAGS="%_ldflags -lz"
 
 %if %{?_with_svn_code:1}%{?!_with_svn_code:0}
 # svn code
@@ -148,10 +158,13 @@ mkdir netpbmdoc
 pushd netpbmdoc
 wget --recursive --relative http://netpbm.sourceforge.net/doc/
 cd netpbm.sourceforge.net/doc
+#19th July 2010 these files are 0 length, remove them from the makefile
+sed -i -e '/giftopnm/d' -e '/g3topbm/d' -e '/ppmtopict/d' -e '/pbmminkowski/d' -e '/liberror/d' ../../../buildtools/Makefile.manpage
 make -f ../../../buildtools/Makefile.manpage manpages
 mkdir -p $RPM_BUILD_ROOT%{_mandir}/man1
 mkdir -p $RPM_BUILD_ROOT%{_mandir}/man3
 mkdir -p $RPM_BUILD_ROOT%{_mandir}/man5
+
 make -f ../../../buildtools/Makefile.manpage MANDIR=$RPM_BUILD_ROOT%{_mandir} installman
 popd
 rm -rf netpbmdoc
@@ -161,6 +174,10 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr (-, root, bin)
+%dir %attr (0755, root, sys) /usr
+%dir %attr (0755, root, sys) %{_datadir}
+%dir %attr (0755, root, other) %{_docdir}
+%dir %attr (0755, root, sys) %{_sysconfdir}
 %doc /%{_pkg_docdir}-%{version}/README
 %doc /%{_pkg_docdir}-%{version}/COPYRIGHT.PATENT 
 %doc /%{_pkg_docdir}-%{version}/copyright_summary 
@@ -187,6 +204,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/*
 
 %changelog
+* Mon July 19 2010 - markwright@internode.on.net
+- bump to 10.35.76
 * May 2010 - Gilles dauphin
 - Name is SFE...
 - import from jucr

@@ -11,11 +11,11 @@
 %define cc_is_gcc 1
 %include base.inc
 
-%define ghc_version 6.12.1
+%define ghc_version 6.12.3
 
 Name:                    hlint
 Summary:                 hlint - Source code suggestions
-Version:                 1.6.21
+Version:                 1.7.2
 Release:                 1
 License:                 GPL
 Group:                   Development/Languages/Haskell
@@ -72,8 +72,8 @@ GHC_PKG=/usr/bin/ghc-pkg
 HSC2HS=/usr/bin/hsc2hs
 VERBOSE=--verbose=3
 
-sed -i -e 's,haskell-src-exts == 1.8.* && >= 1.8.2,haskell-src-exts >= 1.8.2 \&\& < 2.0,' hlint.cabal
-sed -i -e 's,OptionPragma,ModulePragma,g' src/HSE/Util.hs src/Hint/Pragma.hs
+sed -i -e 's,hscolour == 1.16.\*,hscolour >= 1.16,' hlint.cabal
+
 chmod a+x ./Setup.hs
 runghc ./Setup.hs configure --prefix=%{_prefix} \
     --libdir=%{_cxx_libdir} \
@@ -110,11 +110,11 @@ install -c -m 755 %{name}-%{version}.conf ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{
 cd %{_builddir}/%{name}-%{version}
 find $RPM_BUILD_ROOT -type f -name "*.p_hi" > pkg-prof.files
 find $RPM_BUILD_ROOT -type f -name "*_p.a" >> pkg-prof.files
-find $RPM_BUILD_ROOT/usr/bin $RPM_BUILD_ROOT/usr/lib -type f -name "*" > pkg-all.files
+find $RPM_BUILD_ROOT%{_bindir} $RPM_BUILD_ROOT%{_libdir} -type f -name "*" > pkg-all.files
 sort pkg-prof.files > pkg-prof-sort.files
 sort pkg-all.files > pkg-all-sort.files
 comm -23 pkg-all-sort.files pkg-prof-sort.files > pkg.files
-find $RPM_BUILD_ROOT/usr/share -type f -name "*" > pkg-doc.files
+find $RPM_BUILD_ROOT%{_datadir} -type f -name "*" > pkg-doc.files
 sort pkg-doc.files > pkg-doc-sort.files
 # Clean up syntax for %files section
 cat pkg.files | sed 's:'"$RPM_BUILD_ROOT"'::' > TEMP && mv TEMP pkg.files
@@ -137,12 +137,12 @@ cd %{_docdir}/ghc/html/libraries && [ -x "./gen_contents_index" ] && ./gen_conte
 /usr/bin/ghc-pkg unregister --global --force %{name}-%{version}
 
 %postun
-if [ "$1" -eq 0 ] ; then
+if [ "$1" -eq 0 ] && [ -x %{_docdir}/ghc/html/libraries/gen_contents_index ] ; then
   cd %{_docdir}/ghc/html/libraries && [ -x "./gen_contents_index" ] && ./gen_contents_index
 fi
 
 %postun -n SFEghc-hlint-doc
-if [ "$1" -eq 0 ] ; then
+if [ "$1" -eq 0 ] && [ -x %{_docdir}/ghc/html/libraries/gen_contents_index ] ; then
   cd %{_docdir}/ghc/html/libraries && [ -x "./gen_contents_index" ] && ./gen_contents_index
 fi
 
@@ -162,5 +162,8 @@ fi
 %dir %attr (0755, root, bin) %{_docdir}/ghc/html/libraries/%{name}-%{version}
 
 %changelog
+* Tue July 20 2010 - markwright@internode.on.net
+- Fix postun to work if SFEghc has been uninstalled. Compile with ghc 6.12.3.
+- Bump from 1.6.21 to 1.7.2.
 * Thu May 27 2010 - markwright@internode.on.net
 - Initial Solaris version 1.6.21

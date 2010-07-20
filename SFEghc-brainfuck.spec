@@ -1,5 +1,5 @@
 #
-# spec file for package SFEghc-parallel
+# spec file for package SFEghc-brainfuck
 #
 # Copyright 2010 Sun Microsystems, Inc.
 # This file and all modifications and additions to the pristine
@@ -11,19 +11,19 @@
 %define cc_is_gcc 1
 %include base.inc
 
-%define ghc_version 6.12.1
+%define ghc_version 6.12.3
 
-Name:                    parallel
-Summary:                 parallel - parallel programming library
-Version:                 1.1.0.1
+Name:                    brainfuck
+Summary:                 brainfuck - Brainfuck interpreter
+Version:                 0.1
 Release:                 1
-License:                 BSD
+License:                 GPL
 Group:                   Development/Languages/Haskell
 Distribution:            Java Desktop System
 Vendor:                  Sun Microsystems, Inc.
 URL:                     http://hackage.haskell.org/platform/
 Source:                  http://hackage.haskell.org/packages/archive/%{name}/%{version}/%{name}-%{version}.tar.gz
-SUNW_Pkg:		 SFEghc-parallel
+SUNW_Pkg:		 SFEghc-brainfuck
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 
@@ -33,19 +33,20 @@ Requires: SFEghc
 Requires: SFEghc-haskell-platform
 
 %description
-This package provides a library for parallel programming.
+This is an interpreter of the brainf*ck language, written in the pure,
+lazy, functional language Haskell.
 
-%package -n SFEghc-parallel-prof
+%package -n SFEghc-brainfuck-prof
 Summary:                 %{summary} - profiling libraries
 SUNW_BaseDir:            %{_basedir}
 %include default-depend.inc
-Requires: SFEghc-parallel
+Requires: SFEghc-brainfuck
 
-%package -n SFEghc-parallel-doc
+%package -n SFEghc-brainfuck-doc
 Summary:                 %{summary} - doc files
 SUNW_BaseDir:            %{_basedir}
 %include default-depend.inc
-Requires: SFEghc-parallel
+Requires: SFEghc-brainfuck
 
 %prep
 %setup -q -n %{name}-%{version}
@@ -86,7 +87,7 @@ export LD_LIBRARY_PATH='/usr/gnu/lib'
 export LD_OPTIONS='-L/usr/gnu/lib -R/usr/gnu/lib'
 %endif
 runghc ./Setup.hs build ${VERBOSE}
-runghc ./Setup.hs haddock ${VERBOSE} --executables --hoogle --hyperlink-source
+runghc ./Setup.hs haddock ${VERBOSE} --hoogle --hyperlink-source
 
 %install
 export LD_LIBRARY_PATH=/usr/gnu/lib:$LD_LIBRARY_PATH
@@ -106,11 +107,11 @@ install -c -m 755 %{name}-%{version}.conf ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{
 cd %{_builddir}/%{name}-%{version}
 find $RPM_BUILD_ROOT -type f -name "*.p_hi" > pkg-prof.files
 find $RPM_BUILD_ROOT -type f -name "*_p.a" >> pkg-prof.files
-find $RPM_BUILD_ROOT/usr/lib -type f -name "*" > pkg-all.files
+find $RPM_BUILD_ROOT%{_bindir} $RPM_BUILD_ROOT%{_libdir} -type f -name "*" > pkg-all.files
 sort pkg-prof.files > pkg-prof-sort.files
 sort pkg-all.files > pkg-all-sort.files
 comm -23 pkg-all-sort.files pkg-prof-sort.files > pkg.files
-find $RPM_BUILD_ROOT/usr/share -type f -name "*" > pkg-doc.files
+find $RPM_BUILD_ROOT%{_datadir} -type f -name "*" > pkg-doc.files
 sort pkg-doc.files > pkg-doc-sort.files
 # Clean up syntax for %files section
 cat pkg.files | sed 's:'"$RPM_BUILD_ROOT"'::' > TEMP && mv TEMP pkg.files
@@ -125,25 +126,25 @@ rm -rf $RPM_BUILD_ROOT
 # We need to register the package with ghc-pkg for ghc to find it
 /usr/bin/ghc-pkg register --global --force %{_cxx_libdir}/ghc-%{ghc_version}/%{name}-%{version}/%{name}-%{version}.conf
 
-%post -n SFEghc-parallel-doc
+%post -n SFEghc-brainfuck-doc
 cd %{_docdir}/ghc/html/libraries && [ -x "./gen_contents_index" ] && ./gen_contents_index
 
 %preun
 # Need to unregister the package with ghc-pkg for the rebuild of the spec file to work
 /usr/bin/ghc-pkg unregister --global --force %{name}-%{version}
 
-%postun -n SFEghc-parallel-doc
-if [ "$1" -eq 0 ] ; then
+%postun -n SFEghc-brainfuck-doc
+if [ "$1" -eq 0 ] && [ -x %{_docdir}/ghc/html/libraries/gen_contents_index ] ; then
   cd %{_docdir}/ghc/html/libraries && [ -x "./gen_contents_index" ] && ./gen_contents_index
 fi
 
 %files -f pkg.files
 %defattr (-, root, bin)
 
-%files -n SFEghc-parallel-prof -f pkg-prof.files
+%files -n SFEghc-brainfuck-prof -f pkg-prof.files
 %defattr (-, root, bin)
 
-%files  -n SFEghc-parallel-doc -f pkg-doc.files
+%files  -n SFEghc-brainfuck-doc -f pkg-doc.files
 %defattr(-,root,root,-)
 %dir %attr (0755, root, sys) %{_datadir}
 %dir %attr (0755, root, other) %{_docdir}
@@ -153,5 +154,7 @@ fi
 %dir %attr (0755, root, bin) %{_docdir}/ghc/html/libraries/%{name}-%{version}
 
 %changelog
-* Thu Apr 8 2010 - markwright@internode.on.net
-- Initial Solaris version
+* Tue July 20 2010 - markwright@internode.on.net
+- Fix postun to work if SFEghc has been uninstalled. Compile with ghc 6.12.3.
+* Fri July 2 2010 - markwright@internode.on.net
+- Initial Solaris version 0.1

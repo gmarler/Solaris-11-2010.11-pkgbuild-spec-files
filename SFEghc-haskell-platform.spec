@@ -11,18 +11,45 @@
 %define cc_is_gcc 1
 %include base.inc
 
-%define ghc_version 6.12.1
+%define ghc_version 6.12.3
+
+%define GLUT_version 2.1.2.1
+%define HTTP_version 4000.0.9
+%define HUnit_version 1.2.2.1
+%define OpenGL_version 2.2.3.0
+%define QuickCheck_version 2.1.1.1
+%define alex_version 2.3.3
+%define cabal_install_version 0.8.2
+%define cgi_version 3001.1.7.3
+%define deepseq_version 1.1.0.0
+%define fgl_version 5.4.2.3
+%define happy_version 1.18.5
+%define haskell_src_version 1.0.1.3
+%define html_version 1.0.1.2
+%define mtl_version 1.1.0.2
+%define network_version 2.2.1.7
+%define parallel_version 2.2.0.1
+%define parsec_version 2.1.0.1
+%define regex_base_version 0.93.2
+%define regex_compat_version 0.93.1
+%define regex_posix_version 0.94.2
+%define stm_version 2.1.2.1
+%define xhtml_version 3000.2.0.1
+%define zlib_version 0.5.2.0
 
 Name:                    haskell-platform
 Summary:                 Haskell-Platform
-Version:                 2010.1.0.0
+Version:                 2010.2.0.0
 Release:                 1
 License:                 BSD
 Group:                   Development/Languages/Haskell
 Distribution:            Java Desktop System
 Vendor:                  Sun Microsystems, Inc.
 URL:                     http://hackage.haskell.org/platform/
-Source:                  http://hackage.haskell.org/platform/%{version}/haskell-platform-%{version}.tar.gz
+# Note: currently this is a release candidate
+# TODO delete the next line and uncomment the second line when it is released
+Source:                  http://www.galois.com/~dons/tmp/hp/haskell-platform-%{version}.tar.gz
+# Source:                  http://hackage.haskell.org/platform/%{version}/haskell-platform-%{version}.tar.gz
 SUNW_Pkg:		 SFEghc-haskell-platform
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -119,41 +146,41 @@ echo "  exit 2" >>unregister-haskell-platform.sh
 echo "}" >>unregister-haskell-platform.sh
 echo "" >>unregister-haskell-platform.sh
 
-install -d ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}/haskell-platform-2010.1.0.0
+install -d ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}/haskell-platform-%{version}
 gmake install
-install -c -m 755 register-haskell-platform.sh ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}/haskell-platform-2010.1.0.0
-install -c -m 755 unregister-haskell-platform.sh ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}/haskell-platform-2010.1.0.0
+install -c -m 755 register-haskell-platform.sh ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}/haskell-platform-%{version}
+install -c -m 755 unregister-haskell-platform.sh ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}/haskell-platform-%{version}
 
-install -c -m 755 packages/GLUT-2.1.2.1/GLUT-2.1.2.1.conf ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}/GLUT-2.1.2.1/GLUT-2.1.2.1.conf
-install -c -m 755 packages/HTTP-4000.0.9/HTTP-4000.0.9.conf ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}/HTTP-4000.0.9/HTTP-4000.0.9.conf
-install -c -m 755 packages/HUnit-1.2.2.1/HUnit-1.2.2.1.conf ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}/HUnit-1.2.2.1/HUnit-1.2.2.1.conf
-install -c -m 755 packages/OpenGL-2.2.3.0/OpenGL-2.2.3.0.conf ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}/OpenGL-2.2.3.0/OpenGL-2.2.3.0.conf
-install -c -m 755 packages/QuickCheck-2.1.0.3/QuickCheck-2.1.0.3.conf ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}/QuickCheck-2.1.0.3/QuickCheck-2.1.0.3.conf
-install -c -m 755 packages/cgi-3001.1.7.2/cgi-3001.1.7.2.conf ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}/cgi-3001.1.7.2/cgi-3001.1.7.2.conf
-install -c -m 755 packages/deepseq-1.1.0.0/deepseq-1.1.0.0.conf ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}/deepseq-1.1.0.0/deepseq-1.1.0.0.conf
-install -c -m 755 packages/fgl-5.4.2.2/fgl-5.4.2.2.conf ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}/fgl-5.4.2.2/fgl-5.4.2.2.conf
-install -c -m 755 packages/haskell-platform-2010.1.0.0/haskell-platform-2010.1.0.0.conf ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}/haskell-platform-2010.1.0.0/haskell-platform-2010.1.0.0.conf
-install -c -m 755 packages/haskell-src-1.0.1.3/haskell-src-1.0.1.3.conf ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}/haskell-src-1.0.1.3/haskell-src-1.0.1.3.conf
-install -c -m 755 packages/html-1.0.1.2/html-1.0.1.2.conf ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}/html-1.0.1.2/html-1.0.1.2.conf
-install -c -m 755 packages/mtl-1.1.0.2/mtl-1.1.0.2.conf ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}/mtl-1.1.0.2/mtl-1.1.0.2.conf
-install -c -m 755 packages/network-2.2.1.7/network-2.2.1.7.conf ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}/network-2.2.1.7/network-2.2.1.7.conf
-install -c -m 755 packages/parallel-2.2.0.1/parallel-2.2.0.1.conf ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}/parallel-2.2.0.1/parallel-2.2.0.1.conf
-install -c -m 755 packages/parsec-2.1.0.1/parsec-2.1.0.1.conf ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}/parsec-2.1.0.1/parsec-2.1.0.1.conf
-install -c -m 755 packages/regex-base-0.93.1/regex-base-0.93.1.conf ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}/regex-base-0.93.1/regex-base-0.93.1.conf
-install -c -m 755 packages/regex-compat-0.92/regex-compat-0.92.conf ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}/regex-compat-0.92/regex-compat-0.92.conf
-install -c -m 755 packages/regex-posix-0.94.1/regex-posix-0.94.1.conf ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}/regex-posix-0.94.1/regex-posix-0.94.1.conf
-install -c -m 755 packages/stm-2.1.1.2/stm-2.1.1.2.conf ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}/stm-2.1.1.2/stm-2.1.1.2.conf
-install -c -m 755 packages/xhtml-3000.2.0.1/xhtml-3000.2.0.1.conf ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}/xhtml-3000.2.0.1/xhtml-3000.2.0.1.conf
-install -c -m 755 packages/zlib-0.5.2.0/zlib-0.5.2.0.conf ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}/zlib-0.5.2.0/zlib-0.5.2.0.conf
+install -c -m 755 packages/GLUT-%{GLUT_version}/GLUT-%{GLUT_version}.conf ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}/GLUT-%{GLUT_version}/GLUT-%{GLUT_version}.conf
+install -c -m 755 packages/HTTP-%{HTTP_version}/HTTP-%{HTTP_version}.conf ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}/HTTP-%{HTTP_version}/HTTP-%{HTTP_version}.conf
+install -c -m 755 packages/HUnit-%{HUnit_version}/HUnit-%{HUnit_version}.conf ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}/HUnit-%{HUnit_version}/HUnit-%{HUnit_version}.conf
+install -c -m 755 packages/OpenGL-%{OpenGL_version}/OpenGL-%{OpenGL_version}.conf ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}/OpenGL-%{OpenGL_version}/OpenGL-%{OpenGL_version}.conf
+install -c -m 755 packages/QuickCheck-%{QuickCheck_version}/QuickCheck-%{QuickCheck_version}.conf ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}/QuickCheck-%{QuickCheck_version}/QuickCheck-%{QuickCheck_version}.conf
+install -c -m 755 packages/cgi-%{cgi_version}/cgi-%{cgi_version}.conf ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}/cgi-%{cgi_version}/cgi-%{cgi_version}.conf
+install -c -m 755 packages/deepseq-%{deepseq_version}/deepseq-%{deepseq_version}.conf ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}/deepseq-%{deepseq_version}/deepseq-%{deepseq_version}.conf
+install -c -m 755 packages/fgl-%{fgl_version}/fgl-%{fgl_version}.conf ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}/fgl-%{fgl_version}/fgl-%{fgl_version}.conf
+install -c -m 755 packages/haskell-platform-%{version}/haskell-platform-%{version}.conf ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}/haskell-platform-%{version}/haskell-platform-%{version}.conf
+install -c -m 755 packages/haskell-src-%{haskell_src_version}/haskell-src-%{haskell_src_version}.conf ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}/haskell-src-%{haskell_src_version}/haskell-src-%{haskell_src_version}.conf
+install -c -m 755 packages/html-%{html_version}/html-%{html_version}.conf ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}/html-%{html_version}/html-%{html_version}.conf
+install -c -m 755 packages/mtl-%{mtl_version}/mtl-%{mtl_version}.conf ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}/mtl-%{mtl_version}/mtl-%{mtl_version}.conf
+install -c -m 755 packages/network-%{network_version}/network-%{network_version}.conf ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}/network-%{network_version}/network-%{network_version}.conf
+install -c -m 755 packages/parallel-%{parallel_version}/parallel-%{parallel_version}.conf ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}/parallel-%{parallel_version}/parallel-%{parallel_version}.conf
+install -c -m 755 packages/parsec-%{parsec_version}/parsec-%{parsec_version}.conf ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}/parsec-%{parsec_version}/parsec-%{parsec_version}.conf
+install -c -m 755 packages/regex-base-%{regex_base_version}/regex-base-%{regex_base_version}.conf ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}/regex-base-%{regex_base_version}/regex-base-%{regex_base_version}.conf
+install -c -m 755 packages/regex-compat-%{regex_compat_version}/regex-compat-%{regex_compat_version}.conf ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}/regex-compat-%{regex_compat_version}/regex-compat-%{regex_compat_version}.conf
+install -c -m 755 packages/regex-posix-%{regex_posix_version}/regex-posix-%{regex_posix_version}.conf ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}/regex-posix-%{regex_posix_version}/regex-posix-%{regex_posix_version}.conf
+install -c -m 755 packages/stm-%{stm_version}/stm-%{stm_version}.conf ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}/stm-%{stm_version}/stm-%{stm_version}.conf
+install -c -m 755 packages/xhtml-%{xhtml_version}/xhtml-%{xhtml_version}.conf ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}/xhtml-%{xhtml_version}/xhtml-%{xhtml_version}.conf
+install -c -m 755 packages/zlib-%{zlib_version}/zlib-%{zlib_version}.conf ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}/zlib-%{zlib_version}/zlib-%{zlib_version}.conf
 
 # Prepare lists of files for packaging
 find $RPM_BUILD_ROOT -type f -name "*.p_hi" > pkg-prof.files
 find $RPM_BUILD_ROOT -type f -name "*_p.a" >> pkg-prof.files
-find $RPM_BUILD_ROOT/usr/bin $RPM_BUILD_ROOT/usr/lib -type f -name "*" > pkg-all.files
+find $RPM_BUILD_ROOT%{_bindir} $RPM_BUILD_ROOT%{_libdir} -type f -name "*" > pkg-all.files
 sort pkg-prof.files > pkg-prof-sort.files
 sort pkg-all.files > pkg-all-sort.files
 comm -23 pkg-all-sort.files pkg-prof-sort.files > pkg.files
-find $RPM_BUILD_ROOT/usr/share -type f -name "*" > pkg-doc.files
+find $RPM_BUILD_ROOT%{_datadir} -type f -name "*" > pkg-doc.files
 sort pkg-doc.files > pkg-doc-sort.files
 # Clean up syntax for %files section
 cat pkg.files | sed 's:'"$RPM_BUILD_ROOT"'::' > TEMP && mv TEMP pkg.files
@@ -167,7 +194,7 @@ rm -rf $RPM_BUILD_ROOT
 # The %install section above will only install files
 # We need to register the package with ghc-pkg for ghc to find it
 cd %{_cxx_libdir}/ghc-%{ghc_version}
-%{_cxx_libdir}/ghc-%{ghc_version}/haskell-platform-2010.1.0.0/register-haskell-platform.sh
+%{_cxx_libdir}/ghc-%{ghc_version}/haskell-platform-%{version}/register-haskell-platform.sh
 
 %post -n SFEghc-haskell-platform-doc
 cd %{_docdir}/ghc/html/libraries && [ -x "./gen_contents_index" ] && ./gen_contents_index
@@ -175,10 +202,10 @@ cd %{_docdir}/ghc/html/libraries && [ -x "./gen_contents_index" ] && ./gen_conte
 %preun
 # Need to unregister the package with ghc-pkg for the rebuild of the spec file to work
 cd %{_cxx_libdir}/ghc-%{ghc_version}
-%{_cxx_libdir}/ghc-%{ghc_version}/haskell-platform-2010.1.0.0/unregister-haskell-platform.sh
+%{_cxx_libdir}/ghc-%{ghc_version}/haskell-platform-%{version}/unregister-haskell-platform.sh
 
 %postun -n SFEghc-haskell-platform-doc
-if [ "$1" -eq 0 ] ; then
+if [ "$1" -eq 0 ] && [ -x %{_docdir}/ghc/html/libraries/gen_contents_index ] ; then
   cd %{_docdir}/ghc/html/libraries && [ -x "./gen_contents_index" ] && ./gen_contents_index
 fi
 
@@ -198,5 +225,8 @@ fi
 %dir %attr (0755, root, bin) %{_docdir}/ghc/html/libraries/%{name}-%{version}
 
 %changelog
+* Tue July 20 2010 - markwright@internode.on.net
+- Fix postun to work if SFEghc has been uninstalled. Compile with ghc 6.12.3.
+- Bump to 2010.2.0.0 RC
 * Thu Apr 8 2010 - markwright@internode.on.net
 - Initial Solaris version

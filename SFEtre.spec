@@ -7,7 +7,7 @@
 
 %define src_name	tre
 %define src_url		http://laurikari.net/tre
-%define src_version	0.7.5
+%define src_version	0.8.0
 %define pkg_release	1
 
 SUNW_Pkg: SFE%{src_name}
@@ -16,7 +16,7 @@ SUNW_BaseDir:	%{_basedir}
 
 Name:                   SFEtre
 Summary:                TRE - Lightweight, Robust, and Efficient POSIX compliant regexp matching library 
-Version:                0.7.5
+Version:                %{src_version}
 Source:                 %{src_url}/%{src_name}-%{version}.tar.bz2
 SUNW_BaseDir:           %{_basedir}
 BuildRoot:              %{_tmppath}/%{name}-%{version}-build
@@ -62,6 +62,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/*
 
 %changelog
+* Tue July 20 2010 - markwright@internode.on.net
+- bump to 0.8.0
 * Sun Oct 14 2007 - laca@sun.com
 - fix some directory attributes
 * Sat Aug 11 2007 - ananth@sun.com

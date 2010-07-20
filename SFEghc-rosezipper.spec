@@ -11,11 +11,11 @@
 %define cc_is_gcc 1
 %include base.inc
 
-%define ghc_version 6.12.1
+%define ghc_version 6.12.3
 
 Name:                    rosezipper
 Summary:                 rosezipper - Generic zipper implementation for Data.Tree
-Version:                 0.1
+Version:                 0.2
 Release:                 1
 License:                 BSD
 Group:                   Development/Languages/Haskell
@@ -70,8 +70,8 @@ GHC_PKG=/usr/bin/ghc-pkg
 HSC2HS=/usr/bin/hsc2hs
 VERBOSE=--verbose=3
 
-chmod a+x ./Setup.lhs
-runghc ./Setup.lhs configure --prefix=%{_prefix} \
+chmod a+x ./Setup.hs
+runghc ./Setup.hs configure --prefix=%{_prefix} \
     --libdir=%{_cxx_libdir} \
     --docdir=%{_docdir}/%{name}-%{version} \
     --htmldir=%{_docdir}/ghc/html/libraries/%{name}-%{version} \
@@ -85,8 +85,8 @@ export LD_LIBRARY_PATH='/usr/gnu/lib'
 %if %{is_s10}
 export LD_OPTIONS='-L/usr/gnu/lib -R/usr/gnu/lib'
 %endif
-runghc ./Setup.lhs build ${VERBOSE}
-runghc ./Setup.lhs haddock ${VERBOSE} --executables --hoogle --hyperlink-source
+runghc ./Setup.hs build ${VERBOSE}
+runghc ./Setup.hs haddock ${VERBOSE} --executables --hoogle --hyperlink-source
 
 %install
 export LD_LIBRARY_PATH=/usr/gnu/lib:$LD_LIBRARY_PATH
@@ -96,8 +96,8 @@ export LD_OPTIONS='-L/usr/gnu/lib -R/usr/gnu/lib'
 rm -rf $RPM_BUILD_ROOT
 
 install -d ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}
-runghc ./Setup.lhs register ${VERBOSE} --gen-pkg-config=%{name}-%{version}.conf
-runghc ./Setup.lhs copy ${VERBOSE} --destdir=${RPM_BUILD_ROOT}
+runghc ./Setup.hs register ${VERBOSE} --gen-pkg-config=%{name}-%{version}.conf
+runghc ./Setup.hs copy ${VERBOSE} --destdir=${RPM_BUILD_ROOT}
 
 install -d ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}/%{name}-%{version}/
 install -c -m 755 %{name}-%{version}.conf ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}/%{name}-%{version}/%{name}-%{version}.conf
@@ -106,11 +106,11 @@ install -c -m 755 %{name}-%{version}.conf ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{
 cd %{_builddir}/%{name}-%{version}
 find $RPM_BUILD_ROOT -type f -name "*.p_hi" > pkg-prof.files
 find $RPM_BUILD_ROOT -type f -name "*_p.a" >> pkg-prof.files
-find $RPM_BUILD_ROOT/usr/lib -type f -name "*" > pkg-all.files
+find $RPM_BUILD_ROOT%{_libdir} -type f -name "*" > pkg-all.files
 sort pkg-prof.files > pkg-prof-sort.files
 sort pkg-all.files > pkg-all-sort.files
 comm -23 pkg-all-sort.files pkg-prof-sort.files > pkg.files
-find $RPM_BUILD_ROOT/usr/share -type f -name "*" > pkg-doc.files
+find $RPM_BUILD_ROOT%{_datadir} -type f -name "*" > pkg-doc.files
 sort pkg-doc.files > pkg-doc-sort.files
 # Clean up syntax for %files section
 cat pkg.files | sed 's:'"$RPM_BUILD_ROOT"'::' > TEMP && mv TEMP pkg.files
@@ -133,7 +133,7 @@ cd %{_docdir}/ghc/html/libraries && [ -x "./gen_contents_index" ] && ./gen_conte
 /usr/bin/ghc-pkg unregister --global --force %{name}-%{version}
 
 %postun -n SFEghc-rosezipper-doc
-if [ "$1" -eq 0 ] ; then
+if [ "$1" -eq 0 ] && [ -x %{_docdir}/ghc/html/libraries/gen_contents_index ] ; then
   cd %{_docdir}/ghc/html/libraries && [ -x "./gen_contents_index" ] && ./gen_contents_index
 fi
 
@@ -153,5 +153,8 @@ fi
 %dir %attr (0755, root, bin) %{_docdir}/ghc/html/libraries/%{name}-%{version}
 
 %changelog
+* Tue July 20 2010 - markwright@internode.on.net
+- Fix postun to work if SFEghc has been uninstalled. Compile with ghc 6.12.3.
+- Bump from 0.1 to 0.2.
 * Thu Apr 8 2010 - markwright@internode.on.net
 - Initial Solaris version

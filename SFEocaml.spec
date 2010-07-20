@@ -5,6 +5,14 @@
 #
 
 %include Solaris.inc
+
+# SFEocaml, SFEcamlp5, SFEhevea compiles with Sun Studio 12u1 cc,
+# and I guess SFElablgtk and SFEunison do as well.
+# However SFEcoq wants SFEocaml to be compiled with gcc, to enable
+# the THREADED_CODE define in /usr/lib/ocaml/caml/config.h
+%define cc_is_gcc 1
+%include base.inc
+
 %define with_emacs %(pkginfo -q SFEemacs && echo 1 || echo 0)
 
 Name:         SFEocaml
@@ -72,7 +80,14 @@ export CFLAGS="%optflags"
 # for <X11/Xlib.h>
 export CFLAGS="$CFLAGS -I/usr/X11/include"
 %endif
+
+%if %{cc_is_gcc}
+export CC=gcc
+export LDFLAGS="%_ldflags -L/usr/gnu/lib -R/usr/gnu/lib"
+export LD_OPTIONS="-L/usr/gnu/lib -R/usr/gnu/lib"
+%else
 export LDFLAGS="%_ldflags"
+%endif
 
 ./configure                     \
        -verbose                 \
@@ -89,6 +104,7 @@ export LDFLAGS="%_ldflags"
 #make -j$CPUS world.opt LIBS="-lsocket -lnsl"
 make world
 make opt
+make opt.opt
 
 %install
 rm -rf $RPM_BUILD_ROOT
