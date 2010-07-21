@@ -1,0 +1,30 @@
+--- xmobar-0.11.1-orig/StatFS.hsc	2010-05-17 20:17:50.000000000 +1000
++++ xmobar-0.11.1/StatFS.hsc	2010-07-21 22:38:52.755410000 +1000
+@@ -27,8 +27,14 @@
+ # include <sys/param.h>
+ # include <sys/mount.h>
+ #else
++#if defined(__sun) && defined(__SVR4)
++#include <sys/types.h>
++#include <sys/statvfs.h>
++#define statfs statvfs
++#else
+ #include <sys/vfs.h>
+ #endif
++#endif
+ 
+ data FileSystemStats = FileSystemStats {
+   fsStatBlockSize :: Integer
+@@ -50,8 +56,12 @@
+ #if defined(__FreeBSD__)
+ foreign import ccall unsafe "sys/mount.h statfs"
+ #else
++#if defined(__sun) && defined(__SVR4)
++foreign import ccall unsafe "sys/statvfs.h statfs"
++#else
+ foreign import ccall unsafe "sys/vfs.h statfs64"
+ #endif
++#endif
+   c_statfs :: CString -> Ptr CStatfs -> IO CInt
+ 
+ toI :: CLong -> Integer

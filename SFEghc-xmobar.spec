@@ -1,5 +1,5 @@
 #
-# spec file for package SFEghc-pureMD5
+# spec file for package SFEghc-xmobar
 #
 # Copyright 2010 Sun Microsystems, Inc.
 # This file and all modifications and additions to the pristine
@@ -13,9 +13,9 @@
 
 %define ghc_version 6.12.3
 
-Name:                    pureMD5
-Summary:                 pureMD5 - MD5 implementations that should become part of a ByteString Crypto package.
-Version:                 1.1.0.0
+Name:                    xmobar
+Summary:                 xmobar - A Minimalistic Text Based Status Bar
+Version:                 0.11.1
 Release:                 1
 License:                 BSD
 Group:                   Development/Languages/Haskell
@@ -23,34 +23,44 @@ Distribution:            Java Desktop System
 Vendor:                  Sun Microsystems, Inc.
 URL:                     http://hackage.haskell.org/platform/
 Source:                  http://hackage.haskell.org/packages/archive/%{name}/%{version}/%{name}-%{version}.tar.gz
-SUNW_Pkg:		 SFEghc-pureMD5
+SUNW_Pkg:		 SFEghc-xmobar
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
+
+Patch1:                  ghc-xmobar-01-StatFS.hsc.diff
 
 %include default-depend.inc
 Requires: SFEgcc
 Requires: SFEghc
 Requires: SFEghc-haskell-platform
-Requires: SFEghc-binary
-Requires: SFEghc-cereal
+BuildRequires: SUNWgzip
+Requires: SUNWxorg-clientlibs
+Requires: SUNWxorg-headers
+Requires: SFExmonad
+Requires: SFEghc-X11
 
 %description
-An unrolled implementation of MD5 purely in Haskell.
+Xmobar is a minimalistic text based status bar.
 
-%package -n SFEghc-pureMD5-prof
+Inspired by the Ion3 status bar, it supports similar features, like
+dynamic color management, output templates, and extensibility through
+plugins.
+
+%package -n SFEghc-xmobar-prof
 Summary:                 %{summary} - profiling libraries
 SUNW_BaseDir:            %{_basedir}
 %include default-depend.inc
-Requires: SFEghc-pureMD5
+Requires: SFEghc-xmobar
 
-%package -n SFEghc-pureMD5-doc
+%package -n SFEghc-xmobar-doc
 Summary:                 %{summary} - doc files
 SUNW_BaseDir:            %{_basedir}
 %include default-depend.inc
-Requires: SFEghc-pureMD5
+Requires: SFEghc-xmobar
 
 %prep
 %setup -q -n %{name}-%{version}
+%patch1 -p1
 export LD_LIBRARY_PATH=/usr/gnu/lib:$LD_LIBRARY_PATH
 
 # Need to use same gcc as we used to build ghc (gcc 4.x)
@@ -98,18 +108,13 @@ export LD_OPTIONS='-L/usr/gnu/lib -R/usr/gnu/lib'
 %endif
 rm -rf $RPM_BUILD_ROOT
 
-install -d ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}
-runghc ./Setup.lhs register ${VERBOSE} --gen-pkg-config=%{name}-%{version}.conf
 runghc ./Setup.lhs copy ${VERBOSE} --destdir=${RPM_BUILD_ROOT}
-
-install -d ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}/%{name}-%{version}/
-install -c -m 755 %{name}-%{version}.conf ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}/%{name}-%{version}/%{name}-%{version}.conf
 
 # Prepare lists of files for packaging
 cd %{_builddir}/%{name}-%{version}
 find $RPM_BUILD_ROOT -type f -name "*.p_hi" > pkg-prof.files
 find $RPM_BUILD_ROOT -type f -name "*_p.a" >> pkg-prof.files
-find $RPM_BUILD_ROOT%{_libdir} -type f -name "*" > pkg-all.files
+find $RPM_BUILD_ROOT%{_bindir} -type f -name "*" > pkg-all.files
 sort pkg-prof.files > pkg-prof-sort.files
 sort pkg-all.files > pkg-all-sort.files
 comm -23 pkg-all-sort.files pkg-prof-sort.files > pkg.files
@@ -123,19 +128,10 @@ cat pkg-doc-sort.files | sed 's:'"$RPM_BUILD_ROOT"'::' > TEMP && mv TEMP pkg-doc
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post
-# The %install section above will only install files
-# We need to register the package with ghc-pkg for ghc to find it
-/usr/bin/ghc-pkg register --global --force %{_cxx_libdir}/ghc-%{ghc_version}/%{name}-%{version}/%{name}-%{version}.conf
-
-%post -n SFEghc-pureMD5-doc
+%post -n SFEghc-xmobar-doc
 cd %{_docdir}/ghc/html/libraries && [ -x "./gen_contents_index" ] && ./gen_contents_index
 
-%preun
-# Need to unregister the package with ghc-pkg for the rebuild of the spec file to work
-/usr/bin/ghc-pkg unregister --global --force %{name}-%{version}
-
-%postun -n SFEghc-pureMD5-doc
+%postun -n SFEghc-xmobar-doc
 if [ "$1" -eq 0 ] && [ -x %{_docdir}/ghc/html/libraries/gen_contents_index ] ; then
   cd %{_docdir}/ghc/html/libraries && [ -x "./gen_contents_index" ] && ./gen_contents_index
 fi
@@ -143,10 +139,10 @@ fi
 %files -f pkg.files
 %defattr (-, root, bin)
 
-%files -n SFEghc-pureMD5-prof -f pkg-prof.files
+%files -n SFEghc-xmobar-prof -f pkg-prof.files
 %defattr (-, root, bin)
 
-%files  -n SFEghc-pureMD5-doc -f pkg-doc.files
+%files  -n SFEghc-xmobar-doc -f pkg-doc.files
 %defattr(-,root,root,-)
 %dir %attr (0755, root, sys) %{_datadir}
 %dir %attr (0755, root, other) %{_docdir}
@@ -156,7 +152,5 @@ fi
 %dir %attr (0755, root, bin) %{_docdir}/ghc/html/libraries/%{name}-%{version}
 
 %changelog
-* Tue July 20 2010 - markwright@internode.on.net
-- Fix postun to work if SFEghc has been uninstalled. Compile with ghc 6.12.3.
-* Thu Apr 8 2010 - markwright@internode.on.net
-- Initial Solaris version
+* Wed July 21 2010 - markwright@internode.on.net
+- Initial spec

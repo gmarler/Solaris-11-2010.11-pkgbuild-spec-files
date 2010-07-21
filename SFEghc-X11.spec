@@ -1,5 +1,5 @@
 #
-# spec file for package SFEghc-pureMD5
+# spec file for package SFEghc-X11
 #
 # Copyright 2010 Sun Microsystems, Inc.
 # This file and all modifications and additions to the pristine
@@ -13,9 +13,9 @@
 
 %define ghc_version 6.12.3
 
-Name:                    pureMD5
-Summary:                 pureMD5 - MD5 implementations that should become part of a ByteString Crypto package.
-Version:                 1.1.0.0
+Name:                    X11
+Summary:                 X11 - A binding to the X11 graphics library
+Version:                 1.5.0.0
 Release:                 1
 License:                 BSD
 Group:                   Development/Languages/Haskell
@@ -23,7 +23,7 @@ Distribution:            Java Desktop System
 Vendor:                  Sun Microsystems, Inc.
 URL:                     http://hackage.haskell.org/platform/
 Source:                  http://hackage.haskell.org/packages/archive/%{name}/%{version}/%{name}-%{version}.tar.gz
-SUNW_Pkg:		 SFEghc-pureMD5
+SUNW_Pkg:		 SFEghc-X11
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 
@@ -31,23 +31,27 @@ BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 Requires: SFEgcc
 Requires: SFEghc
 Requires: SFEghc-haskell-platform
-Requires: SFEghc-binary
-Requires: SFEghc-cereal
+BuildRequires: SUNWgzip
+Requires: SUNWxorg-clientlibs
+Requires: SUNWxorg-headers
 
 %description
-An unrolled implementation of MD5 purely in Haskell.
+A Haskell binding to the X11 graphics library. The binding is a direct
+translation of the C binding; for documentation of these calls, refer
+to The Xlib Programming Manual, available online at
+http://tronche.com/gui/x/xlib/.
 
-%package -n SFEghc-pureMD5-prof
+%package -n SFEghc-X11-prof
 Summary:                 %{summary} - profiling libraries
 SUNW_BaseDir:            %{_basedir}
 %include default-depend.inc
-Requires: SFEghc-pureMD5
+Requires: SFEghc-X11
 
-%package -n SFEghc-pureMD5-doc
+%package -n SFEghc-X11-doc
 Summary:                 %{summary} - doc files
 SUNW_BaseDir:            %{_basedir}
 %include default-depend.inc
-Requires: SFEghc-pureMD5
+Requires: SFEghc-X11
 
 %prep
 %setup -q -n %{name}-%{version}
@@ -72,8 +76,10 @@ GHC_PKG=/usr/bin/ghc-pkg
 HSC2HS=/usr/bin/hsc2hs
 VERBOSE=--verbose=3
 
-chmod a+x ./Setup.lhs
-runghc ./Setup.lhs configure --prefix=%{_prefix} \
+sed -i -e 's,#! /bin/sh,#! /bin/bash,' configure
+
+chmod a+x ./Setup.hs
+runghc ./Setup.hs configure --prefix=%{_prefix} \
     --libdir=%{_cxx_libdir} \
     --docdir=%{_docdir}/%{name}-%{version} \
     --htmldir=%{_docdir}/ghc/html/libraries/%{name}-%{version} \
@@ -88,8 +94,8 @@ export LD_LIBRARY_PATH='/usr/gnu/lib'
 %if %{is_s10}
 export LD_OPTIONS='-L/usr/gnu/lib -R/usr/gnu/lib'
 %endif
-runghc ./Setup.lhs build ${VERBOSE}
-runghc ./Setup.lhs haddock ${VERBOSE} --executables --hoogle --hyperlink-source
+runghc ./Setup.hs build ${VERBOSE}
+runghc ./Setup.hs haddock ${VERBOSE} --executables --hoogle --hyperlink-source
 
 %install
 export LD_LIBRARY_PATH=/usr/gnu/lib:$LD_LIBRARY_PATH
@@ -99,8 +105,8 @@ export LD_OPTIONS='-L/usr/gnu/lib -R/usr/gnu/lib'
 rm -rf $RPM_BUILD_ROOT
 
 install -d ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}
-runghc ./Setup.lhs register ${VERBOSE} --gen-pkg-config=%{name}-%{version}.conf
-runghc ./Setup.lhs copy ${VERBOSE} --destdir=${RPM_BUILD_ROOT}
+runghc ./Setup.hs register ${VERBOSE} --gen-pkg-config=%{name}-%{version}.conf
+runghc ./Setup.hs copy ${VERBOSE} --destdir=${RPM_BUILD_ROOT}
 
 install -d ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}/%{name}-%{version}/
 install -c -m 755 %{name}-%{version}.conf ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}/%{name}-%{version}/%{name}-%{version}.conf
@@ -128,14 +134,14 @@ rm -rf $RPM_BUILD_ROOT
 # We need to register the package with ghc-pkg for ghc to find it
 /usr/bin/ghc-pkg register --global --force %{_cxx_libdir}/ghc-%{ghc_version}/%{name}-%{version}/%{name}-%{version}.conf
 
-%post -n SFEghc-pureMD5-doc
+%post -n SFEghc-X11-doc
 cd %{_docdir}/ghc/html/libraries && [ -x "./gen_contents_index" ] && ./gen_contents_index
 
 %preun
 # Need to unregister the package with ghc-pkg for the rebuild of the spec file to work
 /usr/bin/ghc-pkg unregister --global --force %{name}-%{version}
 
-%postun -n SFEghc-pureMD5-doc
+%postun -n SFEghc-X11-doc
 if [ "$1" -eq 0 ] && [ -x %{_docdir}/ghc/html/libraries/gen_contents_index ] ; then
   cd %{_docdir}/ghc/html/libraries && [ -x "./gen_contents_index" ] && ./gen_contents_index
 fi
@@ -143,10 +149,10 @@ fi
 %files -f pkg.files
 %defattr (-, root, bin)
 
-%files -n SFEghc-pureMD5-prof -f pkg-prof.files
+%files -n SFEghc-X11-prof -f pkg-prof.files
 %defattr (-, root, bin)
 
-%files  -n SFEghc-pureMD5-doc -f pkg-doc.files
+%files  -n SFEghc-X11-doc -f pkg-doc.files
 %defattr(-,root,root,-)
 %dir %attr (0755, root, sys) %{_datadir}
 %dir %attr (0755, root, other) %{_docdir}
@@ -156,7 +162,8 @@ fi
 %dir %attr (0755, root, bin) %{_docdir}/ghc/html/libraries/%{name}-%{version}
 
 %changelog
-* Tue July 20 2010 - markwright@internode.on.net
-- Fix postun to work if SFEghc has been uninstalled. Compile with ghc 6.12.3.
-* Thu Apr 8 2010 - markwright@internode.on.net
-- Initial Solaris version
+* Wed July 21 2010 - markwright@internode.on.net
+- Replace SFEghc-xmonad.spec with SFEghc-X11.spec.  Some of the xmonad
+- pre-requisite packages are now in SFEghc-haskell-platform.spec.
+* Sun Sep 6 2009 - jchoi42@pha.jhu.edu
+- Initial spec

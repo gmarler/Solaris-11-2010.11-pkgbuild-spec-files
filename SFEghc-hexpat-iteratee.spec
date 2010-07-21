@@ -96,6 +96,7 @@ runghc ./Setup.lhs configure --prefix=%{_prefix} \
     --libsubdir='$compiler/$pkgid' \
     --with-compiler=${GHC} --with-hc-pkg=${GHC_PKG} --with-hsc2hs=${HSC2HS} \
     --haddock-option="--html" \
+    --enable-library-profiling \
     ${VERBOSE}
 
 %build

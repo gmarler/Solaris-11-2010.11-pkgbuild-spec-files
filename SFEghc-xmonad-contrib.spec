@@ -1,5 +1,5 @@
 #
-# spec file for package SFEghc-pureMD5
+# spec file for package SFEghc-xmonad-contrib
 #
 # Copyright 2010 Sun Microsystems, Inc.
 # This file and all modifications and additions to the pristine
@@ -13,9 +13,9 @@
 
 %define ghc_version 6.12.3
 
-Name:                    pureMD5
-Summary:                 pureMD5 - MD5 implementations that should become part of a ByteString Crypto package.
-Version:                 1.1.0.0
+Name:                    xmonad-contrib
+Summary:                 xmonad-contrib - Third party extensions for xmonad
+Version:                 0.9.1
 Release:                 1
 License:                 BSD
 Group:                   Development/Languages/Haskell
@@ -23,7 +23,7 @@ Distribution:            Java Desktop System
 Vendor:                  Sun Microsystems, Inc.
 URL:                     http://hackage.haskell.org/platform/
 Source:                  http://hackage.haskell.org/packages/archive/%{name}/%{version}/%{name}-%{version}.tar.gz
-SUNW_Pkg:		 SFEghc-pureMD5
+SUNW_Pkg:		 SFEghc-xmonad-contrib
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 
@@ -31,23 +31,38 @@ BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 Requires: SFEgcc
 Requires: SFEghc
 Requires: SFEghc-haskell-platform
-Requires: SFEghc-binary
-Requires: SFEghc-cereal
+BuildRequires: SUNWgzip
+Requires: SUNWxorg-clientlibs
+Requires: SUNWxorg-headers
+Requires: SFEghc-utf8-string
+Requires: SFEghc-X11
+Requires: SFExmonad
 
 %description
-An unrolled implementation of MD5 purely in Haskell.
+Third party tiling algorithms, configurations and scripts to xmonad, a
+tiling window manager for X.
 
-%package -n SFEghc-pureMD5-prof
+For an introduction to building, configuring and using xmonad
+extensions, see XMonad.Doc. In particular:
+
+XMonad.Doc.Configuring, a guide to configuring xmonad
+
+XMonad.Doc.Extending, using the contributed extensions library
+
+XMonad.Doc.Developing, introduction to xmonad internals and writing
+your own extensions.
+
+%package -n SFEghc-xmonad-contrib-prof
 Summary:                 %{summary} - profiling libraries
 SUNW_BaseDir:            %{_basedir}
 %include default-depend.inc
-Requires: SFEghc-pureMD5
+Requires: SFEghc-xmonad-contrib
 
-%package -n SFEghc-pureMD5-doc
+%package -n SFEghc-xmonad-contrib-doc
 Summary:                 %{summary} - doc files
 SUNW_BaseDir:            %{_basedir}
 %include default-depend.inc
-Requires: SFEghc-pureMD5
+Requires: SFEghc-xmonad-contrib
 
 %prep
 %setup -q -n %{name}-%{version}
@@ -128,14 +143,14 @@ rm -rf $RPM_BUILD_ROOT
 # We need to register the package with ghc-pkg for ghc to find it
 /usr/bin/ghc-pkg register --global --force %{_cxx_libdir}/ghc-%{ghc_version}/%{name}-%{version}/%{name}-%{version}.conf
 
-%post -n SFEghc-pureMD5-doc
+%post -n SFEghc-xmonad-contrib-doc
 cd %{_docdir}/ghc/html/libraries && [ -x "./gen_contents_index" ] && ./gen_contents_index
 
 %preun
 # Need to unregister the package with ghc-pkg for the rebuild of the spec file to work
 /usr/bin/ghc-pkg unregister --global --force %{name}-%{version}
 
-%postun -n SFEghc-pureMD5-doc
+%postun -n SFEghc-xmonad-contrib-doc
 if [ "$1" -eq 0 ] && [ -x %{_docdir}/ghc/html/libraries/gen_contents_index ] ; then
   cd %{_docdir}/ghc/html/libraries && [ -x "./gen_contents_index" ] && ./gen_contents_index
 fi
@@ -143,10 +158,10 @@ fi
 %files -f pkg.files
 %defattr (-, root, bin)
 
-%files -n SFEghc-pureMD5-prof -f pkg-prof.files
+%files -n SFEghc-xmonad-contrib-prof -f pkg-prof.files
 %defattr (-, root, bin)
 
-%files  -n SFEghc-pureMD5-doc -f pkg-doc.files
+%files  -n SFEghc-xmonad-contrib-doc -f pkg-doc.files
 %defattr(-,root,root,-)
 %dir %attr (0755, root, sys) %{_datadir}
 %dir %attr (0755, root, other) %{_docdir}
@@ -156,7 +171,5 @@ fi
 %dir %attr (0755, root, bin) %{_docdir}/ghc/html/libraries/%{name}-%{version}
 
 %changelog
-* Tue July 20 2010 - markwright@internode.on.net
-- Fix postun to work if SFEghc has been uninstalled. Compile with ghc 6.12.3.
-* Thu Apr 8 2010 - markwright@internode.on.net
-- Initial Solaris version
+* Wed July 21 2010 - markwright@internode.on.net
+- Initial spec

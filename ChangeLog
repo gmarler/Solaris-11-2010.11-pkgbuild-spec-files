@@ -1,3 +1,17 @@
+2010-07-21 Mark Wright <markwright@internode.on.net>
+
+	* SFEghc-xmobar.spec, patches/ghc-xmobar-01-StatFS.hsc.diff,
+	SFEghc-xmonad-contrib.spec, SFEghc-xmonad-utils.spec,
+	SFEghc-xmonad-extras.spec: *NEW* xmonad tiling window manager packages
+	* SFEghc-X11.spec: rename SFEghc-xmonad to SFEghc-X11, only provide
+	Haskell X11 Windows bindings, most of the other dependencies that were
+	in SFEghc-xmonad are now in SFEghc-haskell-platform
+	* SFEghc-*.spec: add --enable-library-profiling option
+	* SFEghc-xmonad.spec: replaced by SFEghc-X11.spec and
+	SFEghc-haskell-platform.spec
+	* SFExmonad.spec: bump to 0.9.1
+	* SFEghc-parsec.spec: bump 3.1.0
+
 2010-07-20 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEopenttd.spec: update to 1.0.2

@@ -13,11 +13,11 @@
 %define cc_is_gcc 1
 %include base.inc
 
-%define ghc_version 6.10.4
+%define ghc_version 6.12.3
 
-Name:                    SFExmonad 
+Name:                    xmonad 
 Summary:                 XMonad - a tiling window manager
-Version:                 0.8.1
+Version:                 0.9.1
 Release:                 1
 License:                 BSD
 Group:                   Window Manager
@@ -27,26 +27,29 @@ URL:                     http://www.xmonad.org/
 Source:                  http://hackage.haskell.org/packages/archive/xmonad/%{version}/xmonad-%{version}.tar.gz
 Source10:		 xmonad.desktop
 SUNW_BaseDir:            %{_basedir}
+SUNW_Pkg:		 SFExmonad
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 
 %include default-depend.inc
 Requires: SFEgcc
 Requires: SFEghc
-Requires: SFEghc-xmonad
+Requires: SFEghc-haskell-platform
+Requires: SFEghc-X11
 Requires: SUNWxorg-clientlibs
 Requires: SUNWxorg-headers
+Requires: SFEghc-utf8-string
 
-%package prof
+%package -n SFExmonad-prof
 Summary:                 %{summary} - profiling libraries
 SUNW_BaseDir:            %{_basedir}
 %include default-depend.inc
-Requires: %name
+Requires: SFExmonad
 
-%package devel
-Summary:                 %{summary} - developer files
+%package -n SFExmonad-doc
+Summary:                 %{summary} - doc files
 SUNW_BaseDir:            %{_basedir}
 %include default-depend.inc
-Requires: %name
+Requires: SFExmonad
 
 %prep
 %setup -q -n xmonad-%version
@@ -58,39 +61,66 @@ export CXX=/usr/gnu/bin/g++
 export CXXFLAGS="%{gcc_cxx_optflags}"
 export CFLAGS="%optflags"
 export PKG_CONFIG_PATH="%{_cxx_libdir}/pkgconfig"
+%if %{is_s10}
+export LD_OPTIONS='-L/usr/gnu/lib -R/usr/gnu/lib'
+export LDFLAGS='-L/usr/gnu/lib -R/usr/gnu/lib'
+%else
 export LDFLAGS="-L%{_cxx_libdir} -R%{_cxx_libdir}"
+%endif
+export PERL="/usr/perl5/bin/perl"
 
-runhaskell Setup.lhs configure --ghc --enable-library-profiling \
-                --prefix='/usr' \
-                --libdir=%{_cxx_libdir}/ghc-%{ghc_version}/
+GHC=/usr/bin/ghc
+GHC_PKG=/usr/bin/ghc-pkg
+HSC2HS=/usr/bin/hsc2hs
+VERBOSE=--verbose=3
+
+chmod a+x ./Setup.lhs
+runghc ./Setup.lhs configure --prefix=%{_prefix} \
+    --libdir=%{_cxx_libdir} \
+    --docdir=%{_docdir}/%{name}-%{version} \
+    --htmldir=%{_docdir}/ghc/html/libraries/%{name}-%{version} \
+    --libsubdir='$compiler/$pkgid' \
+    --with-compiler=${GHC} --with-hc-pkg=${GHC_PKG} --with-hsc2hs=${HSC2HS} \
+    --haddock-option="--html" \
+    --enable-library-profiling \
+    ${VERBOSE}
 
 %build
-export LD_LIBRARY_PATH=/usr/gnu/lib:$LD_LIBRARY_PATH
-
-runhaskell Setup.lhs build
+export LD_LIBRARY_PATH='/usr/gnu/lib'
+%if %{is_s10}
+export LD_OPTIONS='-L/usr/gnu/lib -R/usr/gnu/lib'
+%endif
+runghc ./Setup.lhs build ${VERBOSE}
+runghc ./Setup.lhs haddock ${VERBOSE} --executables --hoogle --hyperlink-source
 
 %install
 export LD_LIBRARY_PATH=/usr/gnu/lib:$LD_LIBRARY_PATH
+%if %{is_s10}
+export LD_OPTIONS='-L/usr/gnu/lib -R/usr/gnu/lib'
+%endif
 rm -rf $RPM_BUILD_ROOT
 
-runhaskell Setup.lhs copy --destdir=$RPM_BUILD_ROOT
+install -d ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}
+runghc ./Setup.lhs register ${VERBOSE} --gen-pkg-config=%{name}-%{version}.conf
+runghc ./Setup.lhs copy ${VERBOSE} --destdir=${RPM_BUILD_ROOT}
 
-# Generate the script to register the package with ghc-pkg
-runhaskell Setup.lhs register --gen-script
-#runhaskell Setup.lhs unregister --gen-script
-cp register.sh $RPM_BUILD_ROOT%{_cxx_libdir}/ghc-%ghc_version/xmonad-%version/ghc-%{ghc_version}
+install -d ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}/%{name}-%{version}/
+install -c -m 755 %{name}-%{version}.conf ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}/%{name}-%{version}/%{name}-%{version}.conf
 
 # Prepare lists of files for packaging
 #cd %{_builddir}/%name-%version
 find $RPM_BUILD_ROOT -type f -name "*.p_hi" > pkg-prof.files
 find $RPM_BUILD_ROOT -type f -name "*_p.a" >> pkg-prof.files
-find $RPM_BUILD_ROOT/usr/lib -type f -name "*" > pkg-all.files
+find $RPM_BUILD_ROOT%{_libdir} -type f -name "*" > pkg-all.files
 sort pkg-prof.files > pkg-prof-sort.files
 sort pkg-all.files > pkg-all-sort.files
 comm -23 pkg-all-sort.files pkg-prof-sort.files > pkg.files
+find $RPM_BUILD_ROOT%{_datadir} -type f -name "*" > pkg-doc.files
+sort pkg-doc.files > pkg-doc-sort.files
 # Clean up syntax for %files section
-cat pkg.files | sed 's:'"$RPM_BUILD_ROOT"'::' > TEMP && mv TEMP xmonad.files
-cat pkg-prof-sort.files | sed 's:'"$RPM_BUILD_ROOT"'::' > TEMP && mv TEMP xmonad-prof.files
+cat pkg.files | sed 's:'"$RPM_BUILD_ROOT"'::' > TEMP && mv TEMP pkg.filess
+cat pkg-prof-sort.files | sed 's:'"$RPM_BUILD_ROOT"'::' > TEMP && mv TEMP pkg-prof.files
+cat pkg-doc-sort.files | sed 's:'"$RPM_BUILD_ROOT"'::' > TEMP && mv TEMP pkg-doc.files
 
 # Add XMonad to gdm chooser list
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/xsessions
@@ -103,33 +133,43 @@ rm -rf $RPM_BUILD_ROOT
 %post
 # The %install section above will only install files
 # We need to register the package with ghc-pkg for ghc to find it
-cd %{_cxx_libdir}/ghc-%{ghc_version}/xmonad-%version/ghc-%{ghc_version}
-./register.sh
+/usr/bin/ghc-pkg register --global --force %{_cxx_libdir}/ghc-%{ghc_version}/%{name}-%{version}/%{name}-%{version}.conf
+
+%post -n SFExmonad-doc
+cd %{_docdir}/ghc/html/libraries && [ -x "./gen_contents_index" ] && ./gen_contents_index
 
 %preun
-# Need to use --force or unregister will fail on any dependent ghc pkgs
-# We presume SFE will maintain the dependencies from now
-ghc-pkg unregister --force xmonad
+# Need to unregister the package with ghc-pkg for the rebuild of the spec file to work
+/usr/bin/ghc-pkg unregister --global --force %{name}-%{version}
 
+%postun -n SFExmonad-doc
+if [ "$1" -eq 0 ] && [ -x %{_docdir}/ghc/html/libraries/gen_contents_index ] ; then
+  cd %{_docdir}/ghc/html/libraries && [ -x "./gen_contents_index" ] && ./gen_contents_index
+fi
 
-%files -f xmonad.files
+%files -f pkg.filess
 %defattr (-, root, bin)
 %dir %attr(0755, root, bin) %{_bindir}
 %{_bindir}/*
 #%{_mandir}/*
 %dir %attr (0755, root, sys) %{_datadir}
-%dir %attr (0755, root, bin) %{_datadir}/xsessions
+%dir %attr (0755, root, other) %{_datadir}/xsessions
 %{_datadir}/xsessions/*
 
-%files prof -f xmonad-prof.files
+%files -n SFExmonad-prof -f pkg-prof.files
 %defattr (-, root, bin)
 
-%files devel
-%defattr (-, root, bin)
+%files  -n SFExmonad-doc -f pkg-doc.files
+%defattr(-,root,root,-)
 %dir %attr (0755, root, sys) %{_datadir}
-%dir %attr (0755, root, other) %{_datadir}/doc
-%{_datadir}/doc/*
+%dir %attr (0755, root, other) %{_docdir}
+%dir %attr (0755, root, bin) %{_docdir}/ghc
+%dir %attr (0755, root, bin) %{_docdir}/ghc/html
+%dir %attr (0755, root, bin) %{_docdir}/ghc/html/libraries
+%dir %attr (0755, root, bin) %{_docdir}/ghc/html/libraries/%{name}-%{version}
 
 %changelog
+* Wed July 21 2010 - markwright@internode.on.net
+- Bump from 0.8.1 to 0.9.1
 * Sun Sep 6 2009 - jchoi42@pha.jhu.edu
 - Initial Solaris version

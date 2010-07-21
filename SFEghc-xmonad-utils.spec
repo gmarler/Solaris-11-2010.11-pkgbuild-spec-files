@@ -1,5 +1,5 @@
 #
-# spec file for package SFEghc-pureMD5
+# spec file for package SFEghc-xmonad-utils
 #
 # Copyright 2010 Sun Microsystems, Inc.
 # This file and all modifications and additions to the pristine
@@ -13,9 +13,9 @@
 
 %define ghc_version 6.12.3
 
-Name:                    pureMD5
-Summary:                 pureMD5 - MD5 implementations that should become part of a ByteString Crypto package.
-Version:                 1.1.0.0
+Name:                    xmonad-utils
+Summary:                 xmonad-utils - Third party extensions for xmonad with wacky dependencies
+Version:                 0.1.2
 Release:                 1
 License:                 BSD
 Group:                   Development/Languages/Haskell
@@ -23,7 +23,7 @@ Distribution:            Java Desktop System
 Vendor:                  Sun Microsystems, Inc.
 URL:                     http://hackage.haskell.org/platform/
 Source:                  http://hackage.haskell.org/packages/archive/%{name}/%{version}/%{name}-%{version}.tar.gz
-SUNW_Pkg:		 SFEghc-pureMD5
+SUNW_Pkg:		 SFEghc-xmonad-utils
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 
@@ -31,23 +31,25 @@ BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 Requires: SFEgcc
 Requires: SFEghc
 Requires: SFEghc-haskell-platform
-Requires: SFEghc-binary
-Requires: SFEghc-cereal
+BuildRequires: SUNWgzip
+Requires: SUNWxorg-clientlibs
+Requires: SUNWxorg-headers
+Requires: SFEghc-X11
 
 %description
-An unrolled implementation of MD5 purely in Haskell.
+Third party extensions for xmonad with wacky dependencies
 
-%package -n SFEghc-pureMD5-prof
+%package -n SFEghc-xmonad-utils-prof
 Summary:                 %{summary} - profiling libraries
 SUNW_BaseDir:            %{_basedir}
 %include default-depend.inc
-Requires: SFEghc-pureMD5
+Requires: SFEghc-xmonad-utils
 
-%package -n SFEghc-pureMD5-doc
+%package -n SFEghc-xmonad-utils-doc
 Summary:                 %{summary} - doc files
 SUNW_BaseDir:            %{_basedir}
 %include default-depend.inc
-Requires: SFEghc-pureMD5
+Requires: SFEghc-xmonad-utils
 
 %prep
 %setup -q -n %{name}-%{version}
@@ -72,6 +74,10 @@ GHC_PKG=/usr/bin/ghc-pkg
 HSC2HS=/usr/bin/hsc2hs
 VERBOSE=--verbose=3
 
+%if %{is_s10}
+sed -i -e 's,crypt,crypt_d,' xmonad-utils.cabal
+%endif
+
 chmod a+x ./Setup.lhs
 runghc ./Setup.lhs configure --prefix=%{_prefix} \
     --libdir=%{_cxx_libdir} \
@@ -89,7 +95,7 @@ export LD_LIBRARY_PATH='/usr/gnu/lib'
 export LD_OPTIONS='-L/usr/gnu/lib -R/usr/gnu/lib'
 %endif
 runghc ./Setup.lhs build ${VERBOSE}
-runghc ./Setup.lhs haddock ${VERBOSE} --executables --hoogle --hyperlink-source
+runghc ./Setup.lhs haddock ${VERBOSE} --hoogle --hyperlink-source
 
 %install
 export LD_LIBRARY_PATH=/usr/gnu/lib:$LD_LIBRARY_PATH
@@ -98,18 +104,13 @@ export LD_OPTIONS='-L/usr/gnu/lib -R/usr/gnu/lib'
 %endif
 rm -rf $RPM_BUILD_ROOT
 
-install -d ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}
-runghc ./Setup.lhs register ${VERBOSE} --gen-pkg-config=%{name}-%{version}.conf
 runghc ./Setup.lhs copy ${VERBOSE} --destdir=${RPM_BUILD_ROOT}
-
-install -d ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}/%{name}-%{version}/
-install -c -m 755 %{name}-%{version}.conf ${RPM_BUILD_ROOT}%{_cxx_libdir}/ghc-%{ghc_version}/%{name}-%{version}/%{name}-%{version}.conf
 
 # Prepare lists of files for packaging
 cd %{_builddir}/%{name}-%{version}
 find $RPM_BUILD_ROOT -type f -name "*.p_hi" > pkg-prof.files
 find $RPM_BUILD_ROOT -type f -name "*_p.a" >> pkg-prof.files
-find $RPM_BUILD_ROOT%{_libdir} -type f -name "*" > pkg-all.files
+find $RPM_BUILD_ROOT%{_bindir} -type f -name "*" > pkg-all.files
 sort pkg-prof.files > pkg-prof-sort.files
 sort pkg-all.files > pkg-all-sort.files
 comm -23 pkg-all-sort.files pkg-prof-sort.files > pkg.files
@@ -123,19 +124,10 @@ cat pkg-doc-sort.files | sed 's:'"$RPM_BUILD_ROOT"'::' > TEMP && mv TEMP pkg-doc
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post
-# The %install section above will only install files
-# We need to register the package with ghc-pkg for ghc to find it
-/usr/bin/ghc-pkg register --global --force %{_cxx_libdir}/ghc-%{ghc_version}/%{name}-%{version}/%{name}-%{version}.conf
-
-%post -n SFEghc-pureMD5-doc
+%post -n SFEghc-xmonad-utils-doc
 cd %{_docdir}/ghc/html/libraries && [ -x "./gen_contents_index" ] && ./gen_contents_index
 
-%preun
-# Need to unregister the package with ghc-pkg for the rebuild of the spec file to work
-/usr/bin/ghc-pkg unregister --global --force %{name}-%{version}
-
-%postun -n SFEghc-pureMD5-doc
+%postun -n SFEghc-xmonad-utils-doc
 if [ "$1" -eq 0 ] && [ -x %{_docdir}/ghc/html/libraries/gen_contents_index ] ; then
   cd %{_docdir}/ghc/html/libraries && [ -x "./gen_contents_index" ] && ./gen_contents_index
 fi
@@ -143,20 +135,14 @@ fi
 %files -f pkg.files
 %defattr (-, root, bin)
 
-%files -n SFEghc-pureMD5-prof -f pkg-prof.files
+%files -n SFEghc-xmonad-utils-prof -f pkg-prof.files
 %defattr (-, root, bin)
 
-%files  -n SFEghc-pureMD5-doc -f pkg-doc.files
+%files  -n SFEghc-xmonad-utils-doc -f pkg-doc.files
 %defattr(-,root,root,-)
 %dir %attr (0755, root, sys) %{_datadir}
 %dir %attr (0755, root, other) %{_docdir}
-%dir %attr (0755, root, bin) %{_docdir}/ghc
-%dir %attr (0755, root, bin) %{_docdir}/ghc/html
-%dir %attr (0755, root, bin) %{_docdir}/ghc/html/libraries
-%dir %attr (0755, root, bin) %{_docdir}/ghc/html/libraries/%{name}-%{version}
 
 %changelog
-* Tue July 20 2010 - markwright@internode.on.net
-- Fix postun to work if SFEghc has been uninstalled. Compile with ghc 6.12.3.
-* Thu Apr 8 2010 - markwright@internode.on.net
-- Initial Solaris version
+* Wed July 21 2010 - markwright@internode.on.net
+- Initial spec

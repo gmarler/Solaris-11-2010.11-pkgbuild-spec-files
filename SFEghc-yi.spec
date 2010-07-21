@@ -106,6 +106,7 @@ runghc ./Setup.hs configure --prefix=%{_prefix} \
     --with-compiler=${GHC} --with-hc-pkg=${GHC_PKG} --with-hsc2hs=${HSC2HS} \
     --haddock-option="--html" \
     -fvty \
+    --enable-library-profiling \
     ${VERBOSE}
 
 %build
