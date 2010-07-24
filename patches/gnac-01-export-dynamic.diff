@@ -1,0 +1,72 @@
+--- gnac-0.2.2/src/Makefile.am	Wed Jun  9 21:56:29 2010
++++ gnac-0.2.2-patch/src/Makefile.am	Sat Jul 24 12:09:15 2010
+@@ -73,8 +73,7 @@
+ 	$(UNIQUE_CFLAGS) \
+ 	$(GSTREAMER_CFLAGS) \
+ 	$(WARN_CFLAGS) \
+-	$(AM_CFLAGS) \
+-	-Wl,--export-dynamic
++	$(AM_CFLAGS)
+ 		
+ gnac_LDADD = \
+ 	$(top_builddir)/libgnac/libgnac.la \
+@@ -84,5 +83,4 @@
+ 	$(GSTREAMER_LIBS)
+ 
+ gnac_LDFLAGS = \
+-	-Wl,--export-dynamic \
+ 	$(AM_LDFLAGS)
+--- gnac-0.2.2/libgnac/Makefile.am	Thu May 20 19:17:06 2010
++++ gnac-0.2.2-patch/libgnac/Makefile.am	Sat Jul 24 12:10:05 2010
+@@ -30,7 +30,6 @@
+ 	$(WARN_CFLAGS) \
+ 	$(GSTREAMER_CFLAGS) \
+ 	$(UI_CFLAGS) \
+-	-Wl,--export-dynamic \
+ 	$(AM_CFLAGS)
+ 
+ libgnac_la_LIBADD = \
+@@ -38,5 +37,4 @@
+ 	$(UI_LIBS)
+ 
+ libgnac_la_LDFLAGS = \
+-	-Wl,--export-dynamic \
+ 	$(AM_LDFLAGS)
+--- gnac-0.2.2/src/Makefile.in	Thu Jul  1 20:48:55 2010
++++ gnac-0.2.2-patch/src/Makefile.in	Sat Jul 24 12:14:23 2010
+@@ -390,8 +390,7 @@
+ 	$(UNIQUE_CFLAGS) \
+ 	$(GSTREAMER_CFLAGS) \
+ 	$(WARN_CFLAGS) \
+-	$(AM_CFLAGS) \
+-	-Wl,--export-dynamic
++	$(AM_CFLAGS)
+ 
+ gnac_LDADD = \
+ 	$(top_builddir)/libgnac/libgnac.la \
+@@ -401,7 +400,6 @@
+ 	$(GSTREAMER_LIBS)
+ 
+ gnac_LDFLAGS = \
+-	-Wl,--export-dynamic \
+ 	$(AM_LDFLAGS)
+ 
+ all: all-recursive
+--- gnac-0.2.2/libgnac/Makefile.in	Thu Jul  1 20:48:55 2010
++++ gnac-0.2.2-patch/libgnac/Makefile.in	Sat Jul 24 12:14:57 2010
+@@ -294,7 +294,6 @@
+ 	$(WARN_CFLAGS) \
+ 	$(GSTREAMER_CFLAGS) \
+ 	$(UI_CFLAGS) \
+-	-Wl,--export-dynamic \
+ 	$(AM_CFLAGS)
+ 
+ libgnac_la_LIBADD = \
+@@ -302,7 +301,6 @@
+ 	$(UI_LIBS)
+ 
+ libgnac_la_LDFLAGS = \
+-	-Wl,--export-dynamic \
+ 	$(AM_LDFLAGS)
+ 
+ all: all-am

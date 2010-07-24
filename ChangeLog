@@ -1,6 +1,7 @@
 2010-07-24 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEsauerbraten.spec:  Bumped to Justice Edition (2010_07_21)
+	* SFEgnac.spec: Initial spec
 
 2010-07-21 Mark Wright <markwright@internode.on.net>
 
