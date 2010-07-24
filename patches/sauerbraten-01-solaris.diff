@@ -67,17 +67,3 @@
      
      void clear() { head = tail = len = 0; }
  
-@@ -764,6 +764,13 @@
- template<class T> inline void bigswap(T *buf, int len) { if(*(const uchar *)&islittleendian) endianswap(buf, len); }
- #endif
- 
-+#ifdef getchar
-+#undef getchar
-+#endif
-+#ifdef putchar
-+#undef putchar
-+#endif
-+
- struct stream
- {
-     virtual ~stream() {}

@@ -7,12 +7,12 @@
 
 %define src_name	sauerbraten
 %define src_url		http://nchc.dl.sourceforge.net/sourceforge/sauerbraten
-%define src_edition	trooper_edition_linux
+%define src_edition	justice_edition_linux
 
 Name:                   SFEsauerbraten
 Summary:                Sauerbraten game engine
-Version:                2009_05_04
-IPS_component_version:	20090504
+Version:                2010_07_21
+IPS_component_version:	20100721
 Source:                 %{src_url}/%{src_name}_%{version}_%{src_edition}.tar.bz2
 Patch1:			sauerbraten-01-solaris.diff
 Patch2:			sauerbraten-02-startup.diff
@@ -59,7 +59,7 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
 fi
 
 cd src
-export CXX=/usr/gnu/bin/g++
+export CXX=/usr/gcc/4.3/bin/g++
 export CXXOPTFLAGS="-O3 -fno-omit-frame-pointer"
 export LD_OPTIONS="-i %{xorg_lib_path} %{gnu_lib_path}"
 make -j $CPUS install
@@ -82,6 +82,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/sauerbraten
 
 %changelog
+* Sat Jul 24 2010 - Milan Jurik
+- Bumped to Justice Edition (2010_07_21)
 * Tue Sep  8 2009 - drdoug007@gmail.com
 - Bumped to Trooper Edition (2009_05_04)
 * Tue Jun  5 2007 - dougs@truemail.co.th

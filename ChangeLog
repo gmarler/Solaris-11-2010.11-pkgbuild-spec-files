@@ -1,3 +1,7 @@
+2010-07-24 Milan Jurik <sfnet@xylab.cz>
+
+	* SFEsauerbraten.spec:  Bumped to Justice Edition (2010_07_21)
+
 2010-07-21 Mark Wright <markwright@internode.on.net>
 
 	* SFEghc-xmobar.spec, patches/ghc-xmobar-01-StatFS.hsc.diff,
