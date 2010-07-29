@@ -1,3 +1,7 @@
+2010-07-29  Brian Cameron  <brian.cameron@oracle.com>
+
+	* SFElibxcb.spec, SFExcb-proto.spec:  Add new spec files.
+
 2010-07-24 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEsauerbraten.spec:  Bumped to Justice Edition (2010_07_21)
