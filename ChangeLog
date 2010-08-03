@@ -1,5 +1,9 @@
 2010-08-03  Brian Cameron  <brian.cameron@oracle.com>
 
+	* SFEperl-uri.spec: Remove "BuildRequires: SUNWsfwhea".
+
+2010-08-03  Brian Cameron  <brian.cameron@oracle.com>
+
 	* SFElibpthread-stubs.spec:  Add new spec file.
 	* SFEwebkitgtk.spec: Remove "Requires: SUNWopenssl".
 
