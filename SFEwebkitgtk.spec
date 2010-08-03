@@ -47,7 +47,6 @@ BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 
 Requires: SUNWcurl
 Requires: SUNWgnome-spell
-Requires: SUNWopenssl
 Requires: SUNWgnu-idn
 Requires: SUNWgnome-base-libs
 Requires: SUNWicu

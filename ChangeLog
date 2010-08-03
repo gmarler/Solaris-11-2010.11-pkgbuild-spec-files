@@ -1,5 +1,10 @@
 2010-07-29  Brian Cameron  <brian.cameron@oracle.com>
 
+	* SFElibpthread-stubs.spec:  Add new spec file.
+	* SFEwebkitgtk.spec: Remove "Requires: SUNWopenssl".
+
+2010-07-29  Brian Cameron  <brian.cameron@oracle.com>
+
 	* SFElibxcb.spec, SFExcb-proto.spec:  Add new spec files.
 
 2010-07-24 Milan Jurik <sfnet@xylab.cz>
