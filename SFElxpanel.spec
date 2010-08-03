@@ -9,7 +9,7 @@
 
 Name:                    SFElxpanel
 Summary:                 LXDE desktop panel
-Version:                 0.5.5
+Version:                 0.5.6
 Source:                  http://downloads.sourceforge.net/lxde/lxpanel-%{version}.tar.gz
 URL:                     http://sourceforge.net/projects/lxde/
 Requires: SFEmenu-cache
@@ -18,6 +18,7 @@ BuildRequires: SFEmenu-cache
 # owner:alfred date:2009-03-16 type:bug
 Patch1:                  lxpanel-01-solaris.diff
 Patch2:                  lxpanel-02-ifhwaddr.diff
+Patch3:                  lxpanel-03-batt.diff
 
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -35,6 +36,7 @@ Requires:                %{name}
 %setup -q -n lxpanel-%version
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -89,6 +91,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Tue Aug 03 2010 - brian.cameron@oracle.com
+- Bump to 0.5.6.  Add lxpanel-03-batt.diff
 * Fri Mar 05 2010 - brian.cameron@sun.com
 - Bump to 0.5.5.
 * Mon Feb 15 2010 - brian.cameron@sun.com

@@ -1,5 +1,10 @@
 2010-08-03  Brian Cameron  <brian.cameron@oracle.com>
 
+	* SFElxpanel.spec, patches/lxpanel-03-batt.diff: Bump to 0.5.6.
+	* SFElxterminal.spec: Bump to 0.1.8.
+
+2010-08-03  Brian Cameron  <brian.cameron@oracle.com>
+
 	* SFEperl-uri.spec: Remove "BuildRequires: SUNWsfwhea".
 
 2010-08-03  Brian Cameron  <brian.cameron@oracle.com>

@@ -1,0 +1,29 @@
+--- lxpanel-0.5.6/src/plugins/batt/batt.c-orig	2010-08-03 15:48:07.950377590 -0500
++++ lxpanel-0.5.6/src/plugins/batt/batt.c	2010-08-03 15:52:54.288782824 -0500
+@@ -95,7 +95,7 @@ typedef struct {
+ typedef struct {
+     char *command;
+     sem_t *lock;
+-} alarm;
++} battalarm;
+ 
+ static void destructor(Plugin *p);
+ static void update_display(lx_battery *lx_b, gboolean repaint);
+@@ -103,7 +103,7 @@ static void update_display(lx_battery *l
+ /* alarmProcess takes the address of a dynamically allocated alarm struct (which
+    it must free). It ensures that alarm commands do not run concurrently. */
+ static void * alarmProcess(void *arg) {
+-    alarm *a = (alarm *) arg;
++    battalarm *a = (battalarm *) arg;
+ 
+     sem_wait(a->lock);
+     system(a->command);
+@@ -157,7 +157,7 @@ void update_display(lx_battery *lx_b, gb
+ 	/* Run the alarm command if it isn't already running */
+ 	if (alarmCanRun) {
+ 	    
+-	    alarm *a = (alarm *) malloc(sizeof(alarm));
++	    battalarm *a = (battalarm *) malloc(sizeof(battalarm));
+ 	    a->command = lx_b->alarmCommand;
+ 	    a->lock = &(lx_b->alarmProcessLock);
+ 	    
