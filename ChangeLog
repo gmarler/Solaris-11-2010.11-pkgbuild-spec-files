@@ -1,5 +1,9 @@
 2010-08-04  Simon Jin <yuntong.jin@sun.com>
 
+	* patches/webkit-27-gtk-deprive.diff:Remove upstreamed patch
+
+2010-08-04  Simon Jin <yuntong.jin@sun.com>
+
 	* SFEwebkitgtk.spec:modify buildrequire 
 
 2010-08-03  Brian Cameron  <brian.cameron@oracle.com>
