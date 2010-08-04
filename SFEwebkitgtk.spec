@@ -12,6 +12,7 @@ Name:                    SFEwebkitgtk
 Summary:                 WetKit, an open source web browser engine that's used by Safari, Dashboard, Mail, and many other OS X applications.
 Version:                 1.2.3
 Source:                  http://www.webkitgtk.org/webkit-%{version}.tar.gz
+# Source-md5:	22af6591b124610a8df55c7a87989349
 URL:                     http://www.webkitgtk.org/
 
 Patch1:                 webkit-01-configure-and-makefile.diff
@@ -46,22 +47,22 @@ BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 
 Requires: SUNWcurl
-Requires: SUNWgnome-spell
-Requires: SUNWgnu-idn
-Requires: SUNWgnome-base-libs
-Requires: SUNWicu
-Requires: SUNWlxml
-Requires: SUNWsqlite3
-Requires: SUNWzlib
 Requires: SUNWlibsoup
-Requires: SUNWgnome-media
+Requires: SUNWgtk2
 
+BuildRequires: SUNWgnome-spell
+BuildRequires: SUNWgnu-idn
+BuildRequires: SUNWgnome-base-libs
+BuildRequires: SUNWicu
+BuildRequires: SUNWlxml
+BuildRequires: SUNWsqlite3
+BuildRequires: SUNWzlib
+BuildRequires: SUNWgnome-media
 BuildRequires: SUNWicud
 BuildRequires: SUNWgnu-gettext
 BuildRequires: SUNWgnu-gperf
 BuildRequires: SUNWgnome-common-devel
 BuildRequires: SUNWgnome-media
-BuildRequires: developer/gcc-3
 
 %if %OS2nnn
 Requires: SUNWopenssl
