@@ -12,7 +12,7 @@ Summary:        Transport system simulation game
 Source:         http://binaries.openttd.org/releases/%{src_version}/%{src_name}-%{src_version}-source.tar.bz2
 Source1:	http://bundles.openttdcoop.org/opengfx/releases/opengfx-0.2.4.zip
 Source2:	http://bundles.openttdcoop.org/opensfx/releases/opensfx-0.2.3.zip
-Source3:	http://bundles.openttdcoop.org/openmsx/releases/openmsx-0.2.1.zip
+Source3:	http://bundles.openttdcoop.org/openmsx/releases/0.3.0/openmsx-0.3.0.zip
 Patch1:		openttd-01-makedependlimit.diff
 URL:		http://www.openttd.org/
 Group:		Amusements/Games
