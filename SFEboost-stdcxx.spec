@@ -29,6 +29,7 @@ Patch1:              boost-01-studio.diff
 Patch2:              boost-02-gcc34.diff
 #Patch3:              boost-03-fixinclude.diff
 #Patch4:              boost-04-fixthread.diff
+Patch5:              boost-05-bjam-stdcxx.diff
 URL:                 http://www.boost.org/
 
 SUNW_BaseDir:        %{_basedir}
@@ -51,6 +52,7 @@ SUNW_BaseDir:   %{_basedir}
 %patch2 -p1
 #%patch3 -p1
 #%patch4 -p1
+%patch5 -p1
 
 %build
 
@@ -59,7 +61,7 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
      CPUS=1
 fi
 
-export CXXFLAGS="%cxx_optflags -library=%none -staticlib=%none -norunpath -features=tmplife -features=tmplrefstatic -L%{stdcxx_lib} -R%{stdcxx_lib} -I%{stdcxx_include} -lstd -lm -UBOOST_DISABLE_THREADS -DBOOST_HAS_THREADS=1 -DBOOST_HAS_PTHREADS=1 -UBOOST_NO_STD_ITERATOR_TRAITS -UBOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION -DHAVE_ICU=1 -DBOOST_HAS_ICU=1 -UBOOST_NO_STDC_NAMESPACE -DSUNPROCC_BOOST_COMPILE=1 -UBOOST_NO_STDC_NAMESPACE -DSUNPROCC_BOOST_COMPILE=1 -DPy_TRACE_REFS -DPy_USING_UNICODE"
+export CXXFLAGS="%cxx_optflags -library=%none -staticlib=%none -norunpath -features=tmplife -features=tmplrefstatic -L%{stdcxx_lib} -R%{stdcxx_lib} -I%{stdcxx_include} -lstdcxx -lm -UBOOST_DISABLE_THREADS -DBOOST_HAS_THREADS=1 -DBOOST_HAS_PTHREADS=1 -UBOOST_NO_STD_ITERATOR_TRAITS -UBOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION -DHAVE_ICU=1 -DBOOST_HAS_ICU=1 -UBOOST_NO_STDC_NAMESPACE -DSUNPROCC_BOOST_COMPILE=1 -UBOOST_NO_STDC_NAMESPACE -DSUNPROCC_BOOST_COMPILE=1 -DPy_TRACE_REFS -DPy_USING_UNICODE"
 export LDFLAGS="-library=%none -staticlib=%none -L%{stdcxx_dir} -R%{stdcxx_dir}"
 
 BOOST_ROOT=`pwd`
@@ -140,6 +142,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_docdir}/boost-%{version}/*
 
 %changelog
+* Sat Aug 07 2010 - sobotkap@gmail.com
+- Add patch to not link with stlport4
 * Sun May 16 2010 - sobotkap@gmail.com
 - Bump version to 1.43
 * Wed Nov 04 2009 - sobotkap@gmail.com

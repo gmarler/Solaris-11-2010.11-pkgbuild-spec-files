@@ -1,3 +1,8 @@
+2010-08-07  Petr Sobotka  <sobotkap@gmail.com>
+
+	* SFEboost-stdcxx.spec: Add patch to not link with stlport4
+	* patches/boost-05-bjam-stdcxx.diff:
+
 2010-08-07 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEopenttd.spec: update to 1.0.3
