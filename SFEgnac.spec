@@ -22,6 +22,7 @@ SUNW_BaseDir:	%{_basedir}
 Requires:	SUNWgnome-media
 BuildRequires:	SUNWgnome-media-devel
 BuildRequires:	SUNWgnome-common-devel
+BuildRequires:	SUNWperl-xml-parser
 
 %description
 Gnac is an easy to use audio conversion program for the Gnome desktop.
