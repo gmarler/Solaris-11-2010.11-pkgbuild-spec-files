@@ -12,7 +12,7 @@ Name:                    SFEpython26-decorator
 
 Summary:                 Python Decorator
 URL:                     http://pypi.python.org/pypi/decorator/
-Version:                 3.1.2
+Version:                 3.2.0
 Source:                  http://pypi.python.org/packages/source/d/decorator/decorator-%{version}.tar.gz
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -51,5 +51,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/python%{python_version}/vendor-packages/*
 
 %changelog
+* Sat Aug 07 2010 - brian.cameron@oracle.com
+- Bump to 3.2.0.
 * Tue Feb 02 2010 - brian.cameron@sun.com
 - Created with version 3.1.2.

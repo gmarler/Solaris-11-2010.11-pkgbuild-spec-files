@@ -11,7 +11,7 @@
 Name:                    SFEpython26-telepathy
 
 Summary:                 Telepathy Python Bindings
-Version:                 0.15.15
+Version:                 0.15.18
 Source:                  http://telepathy.freedesktop.org/releases/telepathy-python/telepathy-python-%{version}.tar.gz
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -54,5 +54,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/python%{python_version}/vendor-packages/*
 
 %changelog
+* Sat Aug 07 2010 - brian.cameron@oracle.com
+- Bump to 0.15.18.
 * Tue Feb 02 2010 - brian.cameron@sun.com
 - Created with version 0.15.15.

@@ -21,9 +21,9 @@
  #include <cstdio>
 --- HippoDraw-1.21.3/axes/Range.cxx-orig	2009-07-06 07:02:52.910899000 -0500
 +++ HippoDraw-1.21.3/axes/Range.cxx	2009-07-06 08:32:03.956554000 -0500
-@@ -18,8 +18,10 @@ $Id: Range.cxx,v 1.57 2007/05/08 18:47:2
+@@ -20,8 +20,10 @@ $Id: Range.cxx,v 1.59 2008/06/07 22:28:1
  
- #include <algorithm>
+ #include <ostream>
  
 +#include <math.h>
  #include <cassert>
@@ -123,7 +123,7 @@
  
 --- HippoDraw-1.21.3/reps/AxisRepBase.cxx-orig	2009-07-06 08:30:49.085904000 -0500
 +++ HippoDraw-1.21.3/reps/AxisRepBase.cxx	2009-07-06 08:31:40.107426000 -0500
-@@ -28,6 +28,9 @@ $Id: AxisRepBase.cxx,v 1.100 2007/07/02 
+@@ -28,6 +28,9 @@ $Id: AxisRepBase.cxx,v 1.101 2009/06/12 
  #include "pattern/string_convert.h"
  #include "transforms/PeriodicBinaryTransform.h"
  
@@ -132,7 +132,7 @@
 +#include <ieeefp.h>
  #include <cmath>
  #include <cassert>
- 
+ #include <cstdio>
 --- HippoDraw-1.21.3/reps/ColorBoxPointRep.cxx-orig	2009-07-06 08:40:02.445776000 -0500
 +++ HippoDraw-1.21.3/reps/ColorBoxPointRep.cxx	2009-07-06 08:40:10.607755000 -0500
 @@ -25,6 +25,7 @@ $Id: ColorBoxPointRep.cxx,v 1.118 2007/0
@@ -391,14 +391,3 @@
  #include <cmath>
  
  #include <cassert>
---- HippoDraw-1.21.3/aclocal.m4-orig	2009-07-08 10:03:57.429569000 -0500
-+++ HippoDraw-1.21.3/aclocal.m4	2009-07-08 10:04:16.653555000 -0500
-@@ -3881,7 +3881,7 @@ solaris*)
-     # Adding this requires a known-good setup of shared libraries for
-     # Sun compiler versions before 5.6, else PIC objects from an old
-     # archive will be linked into the output, leading to subtle bugs.
--    _LT_AC_TAGVAR(postdeps,$1)='-lCstd -lCrun'
-+    #_LT_AC_TAGVAR(postdeps,$1)='-lCstd -lCrun'
-     ;;
-   esac
-   ;;

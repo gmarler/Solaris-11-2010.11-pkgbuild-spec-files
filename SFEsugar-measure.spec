@@ -10,7 +10,7 @@
 Name:                    SFEsugar-measure
 Summary:                 Sugar Measure
 URL:                     http://www.sugarlabs.org/
-Version:                 29 
+Version:                 31 
 Source:                  http://download.sugarlabs.org/sources/honey/Measure/Measure-%{version}.tar.bz2
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -74,5 +74,7 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Sat Aug 07 2010 - Brian Cameron  <brian.cameron@oracle.com>
+- Bump to 31.
 * Tue Feb 02 2010 - Brian Cameron  <brian.cameron@sun.com>
 - Created with 29.

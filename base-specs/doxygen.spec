@@ -8,11 +8,10 @@
 
 Name:           doxygen
 License:        GPL
-Version:        1.5.6
+Version:        1.7.1
 URL:            http://www.doxygen.org/
 Summary:        Doxygen is a documentation system for various programming languages
-#Source:         http://ftp.stack.nl/pub/users/dimitri/%{name}-%{version}.src.tar.gz
-Source:         http://gd.tuwien.ac.at/softeng/%{name}/%{name}-%{version}.src.tar.gz
+Source:         %{sf_download}/doxygen/doxygen-%{version}.src.tar.gz
 Patch1:         doxygen-01-solaris-pkgtool.diff
 %ifarch sparc
 Patch2:		doxygen-02-solaris-tmake-sparc.diff
@@ -63,7 +62,7 @@ export CXX="$CXX -norunpath"
 	    --release			\
 	    --shared
 
-make -j $CPUS CC="$CC" CXX="$CXX"
+make CC="$CC" CXX="$CXX"
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -75,21 +74,23 @@ find $RPM_BUILD_ROOT -type f -name "*.a" -exec rm -f {} ';'
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Sat Aug 07 2010 - brian.cameron@oracle.com
+- Bump to 1.7.1.
 * Sat Aug 16 2008 - nonsea@users.sourceforge.net
-- Bump to 1.5.6
+- Bump to 1.5.6.
 - Use a live Source URL.
-- Add solaris-pkgtool.diff
-- Add solaris-tmake-sparc.diff and solaris-tmake-i386.diff
-- Remove solaris-sparc.diff and solaris-i386.diff and reorder
+- Add solaris-pkgtool.diff.
+- Add solaris-tmake-sparc.diff and solaris-tmake-i386.diff.
+- Remove solaris-sparc.diff and solaris-i386.diff and reorder.
 * Sun Feb 17 2008 - laca@sun.com
-- build using the C/C++ compiler specified by the CC/CXX env variables
+- build using the C/C++ compiler specified by the CC/CXX env variables.
 * Fri Jan 18 2008 - moinak.ghosh@sun.com
-- Bump version to 1.5.4
-- Change build configuration to solaris-g++ since SUN Studio compiled doxygen
+- Bump version to 1.5.4.
+- Change build configuration to solaris-g++ since SUN Studio compiled doxygen.
 - dumps core while building documentation for SFEcppunit.
 - Add patch for solaris-g++ config to include /usr/gnu/lib.
 - Update nameconflict patch to remove additional conflicts.
 * Mon Jul 30 2007 - markwright@internode.on.net
 - bump to 1.5.3, remove patch1 as already applied, bump patch3.
 * Sat Apr 21 2007 - dougs@truemail.co.th
-- Initial version
+- Initial version.

@@ -64,6 +64,8 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, bin) %{_libdir}
 %dir %attr (0755, root, sys) %{_datadir}
 %{_libdir}/lib*.so*
+%{_libdir}/girepository-1.0/*
+%{_datadir}/gir-1.0/*
 %{_datadir}/gtk-doc/*/*/*
 %doc(bzip2) telepathy-glib-%{telepathy_glib.version}/COPYING
 %doc(bzip2) telepathy-glib-%{telepathy_glib.version}/NEWS

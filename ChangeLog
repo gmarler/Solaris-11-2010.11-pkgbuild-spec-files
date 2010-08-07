@@ -1,3 +1,41 @@
+2010-08-07  Brian Cameron  <brian.cameron@oracle.com>
+
+	* SFEgjs.spec, patches/gjs-01-solaris.diff: Bump to 0.7.1.  Rework
+	  patch.
+	* SFEmutter.spec: Bump to 2.31.5.
+	* patches/mutter-01-compile.diff: Add new patch needed to compile.
+	* patches/mutter-01-suncc-xc99.diff: Remove patch no longer needed.
+	* SFEhippodraw.spec, patches/hippodraw-01-solaris.diff: Bump to 1.22.0
+	  and rework patch.
+	* SFEpython26-telepathy.spec: Bump to 0.15.18.
+	* SUNWtelepathy-glib.spec, base-specs/telepathy-glib.spec,
+	  patches/telepathy-glib-01-void.diff: Bump to 0.11.11.  Add patch
+	  needed to compile.
+	* base-specs/libtelepathy.spec: Add calls to autotools.
+	* SFExapian-core.spec, SFExapian-bindings.spec,
+	  SFExapian-omega.spec: Bump to 1.0.21.
+	* SFEpython26-decorator.spec: Bump to 3.1.2.
+	* base-specs/doxygen.spec, patches/doxygen-01-solaris-pkgtool.diff:
+	  Bump to 1.7.1 and remove upstream ptach.
+	* base-specs/abiword.spec: Bump to 2.8.6.
+	* base-specs/boost.spec: Bump to 1.43.0.
+	* SFEsugar.spec, SFEsugar-datastore.spec, SFEsugar-artwork.spec: Bump
+	  to 0.89.2.
+	* SFEsugar-toolkit.spec: Bump to 0.89.1.
+	* SFEsugar-turtleart.spec: Bump to 93.
+	* SFEsugar-pippy.spec: Bump to 37.
+	* SFEsugar-ruler.spec: Bump to 7.
+	* SFEsugar-measure.spec: Bump to 31.
+	* SFEsugar-moon.spec: Bump to 11.
+	* SFEsugar-visualmatch.spec: Bump to 24.
+	* SFEpython26-dateutil.spec: Bump to 1.5.
+	* SFEsugar-sliderule.spec: Bump to 10.
+	* SFEsugar-physics.spec: Bumpt to 5.
+	* SFEsugar-calculate.spec: Bump to 32.
+	* SFEsugar-jukebox.spec: Bump to 18.
+	* SFEsugar-flipsticks.spec: Bump to 6.
+	* SFEsugar-memorize.spec: Bump to 34.
+
 2010-08-07  Petr Sobotka  <sobotkap@gmail.com>
 
 	* SFEboost-stdcxx.spec: Add patch to not link with stlport4

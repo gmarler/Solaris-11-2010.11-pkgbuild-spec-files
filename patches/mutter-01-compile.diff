@@ -1,0 +1,41 @@
+--- mutter-2.31.5/src/tools/mutter-mag.c-orig	2010-08-07 17:29:46.549817761 -0500
++++ mutter-2.31.5/src/tools/mutter-mag.c	2010-08-07 17:33:35.904955188 -0500
+@@ -20,7 +20,6 @@
+  */
+ 
+ #define _GNU_SOURCE
+-#define _XOPEN_SOURCE 600 /* C99 -- for rint() */
+ 
+ #include <gtk/gtk.h>
+ #include <gdk/gdkx.h>
+--- mutter-2.31.5/src/ui/preview-widget.c-orig	2010-08-07 17:31:34.591940644 -0500
++++ mutter-2.31.5/src/ui/preview-widget.c	2010-08-07 17:33:45.324737639 -0500
+@@ -22,7 +22,6 @@
+  */
+ 
+ #define _GNU_SOURCE
+-#define _XOPEN_SOURCE 600 /* for the maths routines over floats */
+ 
+ #include <math.h>
+ #include <gtk/gtk.h>
+--- mutter-2.31.5/src/core/display.c-orig	2010-08-07 17:32:35.955360723 -0500
++++ mutter-2.31.5/src/core/display.c	2010-08-07 17:33:53.905587543 -0500
+@@ -30,8 +30,6 @@
+  * The display is represented as a MetaDisplay struct.
+  */
+ 
+-#define _XOPEN_SOURCE 600 /* for gethostname() */
+-
+ #include <config.h>
+ #include "display-private.h"
+ #include "util.h"
+--- mutter-2.31.5/src/core/util.c-orig	2010-08-07 17:31:11.651850618 -0500
++++ mutter-2.31.5/src/core/util.c	2010-08-07 17:33:59.125012838 -0500
+@@ -23,7 +23,6 @@
+  */
+ 
+ #define _GNU_SOURCE
+-#define _POSIX_C_SOURCE 200112L /* for fdopen() */
+ 
+ #include <config.h>
+ #include "common.h"

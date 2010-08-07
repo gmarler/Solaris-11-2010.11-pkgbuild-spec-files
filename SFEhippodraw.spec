@@ -11,7 +11,7 @@
 Name:                SFEhippodraw
 Summary:             Highly interactive data analysis environment
 URL:                 http://www.slac.stanford.edu/grp/ek/hippodraw/
-Version:             1.21.3
+Version:             1.22.0
 Source:              ftp://ftp.slac.stanford.edu/users/pfkeb/hippodraw/HippoDraw-%{version}.tar.gz
 Patch1:              hippodraw-01-solaris.diff
 Patch2:              hippodraw-02-numpy.diff
@@ -50,6 +50,7 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
 fi
 
 aclocal $ACLOCAL_FLAGS -I config/m4
+libtoolize --force
 autoheader
 automake -a -c -f
 autoconf
@@ -97,5 +98,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/HippoDraw/*
 
 %changelog
+* Wed Aug 04 2010 - Brian Cameron  <brian.cameron@oracle.com>
+- Bump to 1.22.0.
 * Mon Jul 09 2009 - Brian Cameron  <brian.cameron@sun.com>
 - Initial spec based on 1.21.3.

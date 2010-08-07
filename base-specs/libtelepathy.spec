@@ -53,6 +53,11 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
 fi
 
 CFLAGS="$RPM_OPT_FLAGS"			           \
+libtoolize --force
+aclocal $ACLOCAL_FLAGS -I m4
+autoheader
+automake -a -c -f
+autoconf
 ./configure --prefix=%{_prefix}        \
             --mandir=%{_mandir}         \
             --libdir=%{_libdir}         \

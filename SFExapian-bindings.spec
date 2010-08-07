@@ -10,12 +10,12 @@
 %include base.inc
 
 %define	src_name xapian-bindings
-%define	src_url	http://www.oligarchy.co.uk/xapian/1.0.19
+%define	src_url	http://www.oligarchy.co.uk/xapian/1.0.21
 
 Name:                SFExapian-bindings
 Summary:             Xapian bindings
 Group:               System/Libraries
-Version:             1.0.19
+Version:             1.0.21
 Source:              %{src_url}/%{src_name}-%{version}.tar.gz
 SUNW_BaseDir:        %{_basedir}
 SUNW_Copyright:       %{name}.copyright
@@ -78,6 +78,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_prefix}/ruby
 
 %changelog
+* Sat Aug 07 2010 - brian.cameron@oracle.com
+- Bump to 1.0.21.
 * Tue Apr 27 2010 - brian.cameron@sun.com
 - Bump to 1.0.19.
 * Wed Mar 10 2010 - brian.cameron@sun.com

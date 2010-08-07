@@ -1,0 +1,13 @@
+--- telepathy-glib-0.11.11/telepathy-glib/channel-manager.c-orig	2010-08-07 11:28:25.582615934 -0500
++++ telepathy-glib-0.11.11/telepathy-glib/channel-manager.c	2010-08-07 11:28:45.798911479 -0500
+@@ -612,8 +612,9 @@ tp_channel_manager_foreach_channel_class
+     {
+       ForeachAdaptor adaptor = { manager, func, user_data };
+ 
+-      return tp_channel_manager_type_foreach_channel_class (
++      tp_channel_manager_type_foreach_channel_class (
+           G_TYPE_FROM_INSTANCE (manager), foreach_adaptor, &adaptor);
++      return;
+     }
+ }
+ 

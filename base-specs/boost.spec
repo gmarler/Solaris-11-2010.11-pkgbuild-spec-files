@@ -9,7 +9,7 @@
 #
 
 %define        major      1
-%define        minor      42
+%define        minor      43
 %define        patchlevel 0
 %define        ver_boost  %{major}_%{minor}_%{patchlevel}
 
@@ -107,6 +107,8 @@ $BJAM --v2 -d+2 -q -j$CPUS -sBUILD="release <threading>single/multi" \
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Wed Aug 04 2010 - Brian Cameron <brian.cameron@oracle.com>
+- Bump to 1.43.
 * Fri Mar 05 2010 - Brian Cameron <brian.cameron@sun.com>
 - Bump to 1.42.
 * Fri Jan 29 2010 - Brian Cameron <brian.cameron@sun.com>
