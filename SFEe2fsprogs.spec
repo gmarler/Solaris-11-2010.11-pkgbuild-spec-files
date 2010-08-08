@@ -14,9 +14,10 @@
 Name:                SFEe2fsprogs
 License:             GPL
 Summary:             Ext2 Filesystems Utilities
-Version:             1.41.11
+Version:             1.41.12
 URL:                 http://e2fsprogs.sourceforge.net/
 Source:              %{sf_download}/e2fsprogs/e2fsprogs-%{version}.tar.gz
+Group:               System/Utilities
 Source1:             ext2fs.pc
 Patch1:              e2fsprogs-01-rpathlink.diff
 Patch2:              e2fsprogs-02-siocgifhwaddr.diff
@@ -196,6 +197,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*
 
 %changelog
+* Sun Aug 08 2010 - Milan Jurik
+- bump to 1.41.12
 * Sun Mar 28 2010 - Milan Jurik
 - update to 1.41.11
 - fixing some missing build dependecies
