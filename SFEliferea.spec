@@ -1,5 +1,5 @@
 #
-# spec file for package SUNWliferea.spec
+# spec file for package SFEliferea.spec
 #
 # includes module(s): liferea
 #
@@ -7,14 +7,12 @@
 
 Name:		SFEliferea
 Summary:	Liferea - aggregator for online news feeds
-Version:	1.6.3
+Version:	1.6.4
 Source:		%{sf_download}/liferea/liferea-%{version}.tar.gz
 URL:		http://liferea.sourceforge.net/
 Group:		Applications/Internet
 License:	GPLv2
 Patch3:		liferea-03-no-unix03.diff
-Patch4:		liferea-04-htmlview.c.diff
-Patch5:		liferea-05-itemview.c.diff
 SUNW_BaseDir:	%{_basedir}
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -52,8 +50,6 @@ Requires:                %{name}
 %prep
 %setup -q -n liferea-%version
 %patch3 -p1
-%patch4 -p1
-%patch5 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -173,6 +169,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Sun Aug 08 2010 - Milan Jurik
+- bump to 1.6.4, remove upstream patches
 * Fri May 21 2010 - Milan Jurik
 - update to 1.6.3, dependency on webkit
 * Mon Jun 23 2008 - river@wikimedia.org

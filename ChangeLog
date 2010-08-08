@@ -5,6 +5,7 @@
 	* SFEclamav.spec: bump to 0.96.1
 	* SFEe2fsprogs.spec: bump to 1.41.12
 	* SFEunclutter.spec: initial spec
+	* SFEliferea.spec: bump to 1.6.4, remove upstream patches
 
 2010-08-07  Brian Cameron  <brian.cameron@oracle.com>
 
