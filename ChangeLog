@@ -1,5 +1,12 @@
 2010-08-07  Brian Cameron  <brian.cameron@oracle.com>
 
+	* SFEsugar-artwork.spec, patches/sugar-artwork-01-makefile.diff,
+	  patches/sugar-artwork-01-wall.diff:  Remove the patch
+	  sugar-artwork-01-makefile.diff and replace it with
+	  sugar-artwork-01-wall.diff.
+
+2010-08-07  Brian Cameron  <brian.cameron@oracle.com>
+
 	* SFEgjs.spec, patches/gjs-01-solaris.diff: Bump to 0.7.1.  Rework
 	  patch.
 	* SFEmutter.spec: Bump to 2.31.5.

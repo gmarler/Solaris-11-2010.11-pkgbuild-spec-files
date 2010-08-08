@@ -12,7 +12,7 @@ Summary:                 Sugar Artwork
 URL:                     http://www.sugarlabs.org/
 Version:                 0.89.2
 Source:                  http://download.sugarlabs.org/sources/sucrose/glucose/sugar-artwork/sugar-artwork-%{version}.tar.bz2
-Patch1:                  sugar-artwork-01-makefile.diff
+Patch1:                  sugar-artwork-01-wall.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 

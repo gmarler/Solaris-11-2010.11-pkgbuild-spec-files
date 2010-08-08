@@ -1,0 +1,13 @@
+--- sugar-artwork-0.89.2/configure.ac-orig	2010-08-07 19:19:24.808417671 -0500
++++ sugar-artwork-0.89.2/configure.ac	2010-08-07 19:19:36.799862745 -0500
+@@ -11,10 +11,6 @@ AM_DISABLE_STATIC
+ 
+ PKG_PROG_PKG_CONFIG([0.19])
+ 
+-dnl These catch plenty of subtle bugs and miscompilation problems
+-WARN_CFLAGS="-Wall -W -Werror=implicit-function-declaration"
+-AC_SUBST(WARN_CFLAGS)
+-
+ AC_PROG_CC
+ AC_HEADER_STDC
+ AC_PROG_LIBTOOL
