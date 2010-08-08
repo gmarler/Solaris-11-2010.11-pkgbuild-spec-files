@@ -1,0 +1,20 @@
+--- unclutter-1.09/Imakefile	Sun Aug  8 21:32:44 2010
++++ unclutter-1.09-patch/Imakefile	Sun Aug  8 21:32:14 2010
+@@ -5,11 +5,11 @@
+ # The following additions have been made to support package building of
+ # unclutter for the blastwave.org site.  Adjust as required.
+ 
+-BINDIR  = $(INSTALL_ROOT)/opt/csw/bin
+-MANDIR  = $(INSTALL_ROOT)/opt/csw/man
++BINDIR  = $(INSTALL_ROOT)/usr/bin
++MANDIR  = $(INSTALL_ROOT)/usr/share/man
+ 
+ install-csw: unclutter unclutter.man
+-	install -d -o root -g bin -m 755 $(BINDIR)
+-	install -d -o root -g bin -m 755 $(MANDIR)/man1
+-	install -s -o root -g bin -m 755 unclutter     $(BINDIR)
+-	install -c -o root -g bin -m 644 unclutter.man $(MANDIR)/man1/unclutter.1
++	install -d -m 755 $(BINDIR)
++	install -d -m 755 $(MANDIR)/man1
++	install -s -m 755 unclutter     $(BINDIR)
++	install -c -m 644 unclutter.man $(MANDIR)/man1/unclutter.1

@@ -4,6 +4,7 @@
 	* SFEcabextract.spec: bump to 1.3 to fix CVE-2010-2801
 	* SFEclamav.spec: bump to 0.96.1
 	* SFEe2fsprogs.spec: bump to 1.41.12
+	* SFEunclutter.spec: initial spec
 
 2010-08-07  Brian Cameron  <brian.cameron@oracle.com>
 
