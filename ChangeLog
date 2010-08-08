@@ -1,5 +1,10 @@
 2010-08-07  Brian Cameron  <brian.cameron@oracle.com>
 
+	* SFEsugar-abacus.spec, SFEsugar-pukllanapac.spec:  Add new spec
+	  files.
+
+2010-08-07  Brian Cameron  <brian.cameron@oracle.com>
+
 	* SFEsugar-artwork.spec, patches/sugar-artwork-01-makefile.diff,
 	  patches/sugar-artwork-01-wall.diff:  Remove the patch
 	  sugar-artwork-01-makefile.diff and replace it with
