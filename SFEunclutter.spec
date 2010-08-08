@@ -17,6 +17,8 @@ SUNW_BaseDir:	%{_basedir}
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 
 Requires:	SUNWxwplt
+BuildRequires:	SUNWxwinc
+BuildRequires:	SUNWxwopt
 
 %description
 Unclutter hides the mouse cursor image from the screen so that it does not
