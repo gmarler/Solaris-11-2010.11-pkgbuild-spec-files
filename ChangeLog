@@ -1,7 +1,7 @@
 2010-08-07  Brian Cameron  <brian.cameron@oracle.com>
 
-	* SFEsugar-abacus.spec, SFEsugar-pukllanapac.spec:  Add new spec
-	  files.
+	* SFEsugar-abacus.spec, SFEsugar-pukllanapac.spec,
+	  SFEsugar-infoslicer.spec:  Add new spec files.
 
 2010-08-07  Brian Cameron  <brian.cameron@oracle.com>
 
