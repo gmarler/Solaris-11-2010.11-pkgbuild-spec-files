@@ -2,6 +2,7 @@
 
 	* SFEunbound.spec: update to 1.4.6
 	* SFEcabextract.spec: bump to 1.3 to fix CVE-2010-2801
+	* SFEclamav.spec: bump to 0.96.1
 
 2010-08-07  Brian Cameron  <brian.cameron@oracle.com>
 
