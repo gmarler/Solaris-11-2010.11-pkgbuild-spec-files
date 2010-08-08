@@ -10,8 +10,11 @@
 
 Name:                   SFEcabextract
 Summary:                CAB file extractor
-Version:                1.2
+Version:                1.3
+Group:			System/Utilities
+URL:			http://www.cabextract.org.uk
 Source:                 %{src_url}/%{src_name}-%{version}.tar.gz
+License:		GPLv3
 SUNW_BaseDir:           %{_basedir}
 BuildRoot:              %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -52,6 +55,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}
 
 %changelog
+* Sun Aug 08 2010 - Milan Jurik
+- bump to 1.3 to fix CVE-2010-2801
 * Tue Feb 11 2008 - pradhap (at) gmail.com
 - Fixed links
 * Tue Apr 24 2006 - dougs@truemail.co.th

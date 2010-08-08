@@ -1,6 +1,7 @@
 2010-08-08 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEunbound.spec: update to 1.4.6
+	* SFEcabextract.spec: bump to 1.3 to fix CVE-2010-2801
 
 2010-08-07  Brian Cameron  <brian.cameron@oracle.com>
 
