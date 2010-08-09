@@ -1,3 +1,7 @@
+2010-08-09 Milan Jurik <sfnet@xylab.cz>
+
+	* SFElibmikmod.spec: CVE-2010-2546, added missing patches
+
 2010-08-08 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEunbound.spec: update to 1.4.6
