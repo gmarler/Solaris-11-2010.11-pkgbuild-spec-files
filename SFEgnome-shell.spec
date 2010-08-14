@@ -54,7 +54,7 @@ Requires:                %{name}
 %setup -q -n gnome-shell-%version
 
 %build
-export LDFLAGS="%_ldflags -lmalloc"
+#export LDFLAGS="%_ldflags -lmalloc"
 export PYTHON=/usr/bin/python%{pythonver}
 ./configure \
    --prefix=%{_prefix} \

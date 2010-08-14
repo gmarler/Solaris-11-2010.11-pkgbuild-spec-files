@@ -1,3 +1,14 @@
+2010-08-14  Brian Cameron  <brian.cameron@oracle.com>
+
+	* SFEgnome-shell.spec:  Revert Lin Ma's fix on 2010-06-23 since it
+	  is causing the build to crash for me when building St.gir.
+	* SFEmutter.spec: Unbump to 2.31.2 since gnome-shell 2.31.5 depends on
+	  GTK3, which I cannot get to build.  Until the build issues are
+	  resolved, revert back to the latest version that compiles.
+	* patches/mutter-01-suncc-xc99.diff:  Add back old patch.
+	* patches/mutter-2-31-5-compile.diff: Rename so it is more clear this
+	  patch is needed when we update.
+
 2010-08-09 Milan Jurik <sfnet@xylab.cz>
 
 	* SFElibmikmod.spec: CVE-2010-2546, added missing patches
