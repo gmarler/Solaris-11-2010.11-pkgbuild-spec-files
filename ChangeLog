@@ -1,5 +1,10 @@
 2010-08-14  Brian Cameron  <brian.cameron@oracle.com>
 
+	* SFEgjs.spec, patches/gjs-01-solaris.diff: Backport to 0.7 since 
+	  the new 0.7.1 version does not work with gnome-shell 2.31.2.
+
+2010-08-14  Brian Cameron  <brian.cameron@oracle.com>
+
 	* SFEgnome-shell.spec:  Revert Lin Ma's fix on 2010-06-23 since it
 	  is causing the build to crash for me when building St.gir.
 	* SFEmutter.spec: Unbump to 2.31.2 since gnome-shell 2.31.5 depends on
