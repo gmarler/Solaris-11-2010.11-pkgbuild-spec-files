@@ -9,6 +9,9 @@
           stop and exit 1 if the link /usr/gnu/bin/cc exists. 
           search ld-wrapper from PATH 
           workaround IPS bug that ever prints BASEdir as "/"  for SFEgmp and SFEmpfr 
+        * encumbered/SFEmplayer-snap.spec:  rename configure switch 
+          --enable-faad-external to --enable-faad. Use gmake in %build 
+          instead make (makefile syntax error)
 
 2010-08-14  Brian Cameron  <brian.cameron@oracle.com>
 
