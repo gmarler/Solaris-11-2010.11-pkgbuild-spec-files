@@ -9,6 +9,7 @@
 
 Name:		SFEcowsay
 Version:	3.03
+IPS_component_version: 3.0.3
 Summary:	Configurable speaking/thinking cow
 Group:		Amusements/Games
 License:	GPLv2+ or Artistic
