@@ -5,7 +5,7 @@
 #
 %include Solaris.inc
 
-%define with_faad %(pkginfo -q SFEfaad && echo 1 || echo 0)
+%define with_faad %(pkginfo -q SFEfaad2 && echo 1 || echo 0)
 %define with_fribidi %(pkginfo -q SFElibfribidi && echo 1 || echo 0)
 %define with_ladspa %(pkginfo -q SFEladspa && echo 1 || echo 0)
 %define with_openal %(pkginfo -q SFEopenal && echo 1 || echo 0)
@@ -151,7 +151,7 @@ bash ./configure				\
             --extra-libs='-lBasicUsageEnvironment -lUsageEnvironment -lgroupsock -lliveMedia -lstdc++ -liconv' \
             --codecsdir=%{_libdir}/mplayer/codecs \
 %if %with_faad
-            --enable-faad-external		\
+            --enable-faad		\
 %endif
             --enable-live			\
             --enable-network			\
@@ -161,7 +161,7 @@ bash ./configure				\
             --enable-dynamic-plugins            \
 	    $dbgflag
 
-make -j$CPUS 
+gmake -j$CPUS 
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -202,6 +202,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/pixmaps/*
 
 %changelog
+* Wed Aug 18 2010 - Thomas Wagner
+- rename configure switch --enable-faad-external to --enable-faad   
+- use gmake in %build instead make (might have solved makefile syntax error)
 * Fri May 21 2010 - Milan Jurik
 - openjpeg and giflib support
 * Thu Aug 20 2009 - Milan Jurik
