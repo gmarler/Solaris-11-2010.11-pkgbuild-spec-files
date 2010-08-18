@@ -1,3 +1,11 @@
+2010-08-18  Thomas Wagner  <tom68@users.sourceforge.net>
+
+        * experimental/SFEgcc-4.4.4.spec: try (Build)Requires SUNWbinutils
+          SUNWgnu-mp SUNWgnu-mpfr as default.
+          stop and exit 1 if the link /usr/gnu/bin/cc exists. 
+          search ld-wrapper from PATH 
+          workaround IPS bug that ever prints BASEdir as "/"  for SFEgmp and SFEmpfr 
+
 2010-08-14  Brian Cameron  <brian.cameron@oracle.com>
 
 	* SFEgjs.spec, patches/gjs-01-solaris.diff: Backport to 0.7 since 
