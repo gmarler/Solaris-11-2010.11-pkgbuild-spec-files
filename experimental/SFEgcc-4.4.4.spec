@@ -4,6 +4,9 @@
 # includes module(s): GNU gcc
 #
 
+# check for /usr/gnu/bin/cc an bail out
+%define compat_link_usr_gnu_bin_cc %( test -r /usr/gnu/bin/cc && echo 1 || echo 0 )
+
 # to more widely test if this change causes regressions, by default off:
 # want this? compile with: --with-handle_pragma_pack_push_pop
 %define with_handle_pragma_pack_push_pop %{?_with_handle_pragma_pack_push_pop:1}%{?!_with_handle_pragma_pack_push_pop:0}
@@ -23,28 +26,41 @@
 %endif
 
 
+#default to SUNWbinutils
+##TODO## if necessary add osbuild numbers to decide SUNW/SFE version
 %define SUNWbinutils    %(/usr/bin/pkginfo -q SUNWbinutils && echo 1 || echo 0)
+%define SFEbinutils     %(/usr/bin/pkginfo -q SFEbinutils && echo 1 || echo 0)
 #reverse logic, we *need for 4.4.4 a fresh gmp/mpfr
 #default to SUNWgnu-mp
-#%define SFEgmp          %(/usr/bin/pkginfo -q SUNWgnu-mp && echo 0 || echo 1)
+#%define SFEgmp          %(/usr/bin/pkginfo -q SUNWgnu-mp && echo 1 || echo 0)
 #default to SFEgmp
 %define SFEgmp          %(/usr/bin/pkginfo -q SFEgmp && echo 1 || echo 0)
 #default to SUNWgnu-mpfr
-#%define SFEmpfr         %(/usr/bin/pkginfo -q SUNWgnu-mpfr && echo 0 || echo 1)
+#%define SFEmpfr         %(/usr/bin/pkginfo -q SUNWgnu-mpfr && echo 1 || echo 0)
 #default to SFEmpfr
 %define SFEmpfr         %(/usr/bin/pkginfo -q SFEmpfr && echo 1 || echo 0)
+
+# force using SFEbinutils
+#if SFEbinutils is not present, force it by the commandline switch --with_SFEbinutils
+%define with_SFEbinutils %{?_with_SFEbinutils:1}%{?!_with_SFEbinutils:0}
+%if %with_SFEbinutils
+%define SFEbinutils 1
+%define SUNWbinutils 0
+%endif
 
 # force using gmp | mpfr
 #if SFEgmp is not present, force them as required by the commandline switch --with_SFEgmp
 %define with_SFEgmp %{?_with_SFEgmp:1}%{?!_with_SFEgmp:0}
 %if %with_SFEgmp
 %define SFEgmp 1
+%define SUNWgnu-mp 0
 %endif
 
 #if SFEgmp is not present, force them as required by the commandline switch --with_SFEmpfr
 %define with_SFEmpfr %{?_with_SFEmpfr:1}%{?!_with_SFEmpfr:0}
 %if %with_SFEmpfr
 %define SFEmpfr 1
+%define SUNWgnu-mpfr 0
 %endif
 
 
@@ -69,7 +85,8 @@ BuildRequires: SUNWbash
 %if %SFEgmp
 BuildRequires: SFEgmp-devel
 Requires: SFEgmp
-%define SFEgmpbasedir %(pkgparam SFEgmp BASEDIR)
+#workaround on IPS which is wrong with BASEdir as "/" -> then assume /usr/gnu
+%define SFEgmpbasedir %(pkgparam SFEgmp BASEDIR | sed -e 's+^/$+/usr/gnu+')
 %else
 BuildRequires: SUNWgnu-mp
 Requires: SUNWgnu-mp
@@ -78,20 +95,19 @@ Requires: SUNWgnu-mp
 %if %SFEmpfr
 BuildRequires: SFEmpfr-devel
 Requires: SFEmpfr
-%define SFEmpfrbasedir %(pkgparam SFEmpfr BASEDIR)
+#workaround on IPS which is wrong with BASEdir as "/" -> then assume /usr/gnu
+%define SFEmpfrbasedir %(pkgparam SFEmpfr BASEDIR | sed -e 's+^/$+/usr/gnu+')
 %else
 BuildRequires: SUNWgnu-mpfr
 Requires: SUNWgnu-mpfr
 %endif
 
-#chicken-egg-problem
-#also add configure switch below
-%if %SUNWbinutils
-BuildRequires: SUNWbinutils
-Requires: SUNWbinutils
-%else
+%if %SFEbinutils
 BuildRequires: SFEbinutils
 Requires: SFEbinutils
+%else
+BuildRequires: SUNWbinutils
+Requires: SUNWbinutils
 %endif
 
 Requires: SUNWpostrun
@@ -119,13 +135,6 @@ BuildRequires: SUNWgnu-mpfr
 Requires: SUNWgnu-mpfr
 %endif
 
-%if %SUNWbinutils
-BuildRequires: SUNWbinutils
-Requires: SUNWbinutils
-%else
-BuildRequires: SFEbinutils
-Requires: SFEbinutils
-%endif
 Requires: SUNWpostrun
 
 
@@ -138,6 +147,13 @@ Requires:                %{name}
 %endif
 
 %prep
+%if %{compat_link_usr_gnu_bin_cc}
+echo "bailing out (%name). Consider renaming this link /usr/gnu/bin/cc to gcc by"
+echo "    pfexec mv /usr/gnu/bin/cc /usr/gnu/bin/gcc"
+echo "I don't know if creating that symlink was a good idea."
+exit 1
+%endif
+
 %setup -q -c -n %{name}-%version
 mkdir gcc
 #with 4.3.3 in new directory libjava/classpath/
@@ -211,7 +227,7 @@ export LD="/usr/gnu/bin/ld"
 	--with-ld=/usr/gnu/bin/ld		\
 	--with-gnu-ld				\
 %else
-	--with-ld=/opt/dtbld/bin/ld-wrapper     \
+	--with-ld=`which ld-wrapper`     \
 	--without-gnu-ld			\
 %endif
 	--enable-languages=c,c++,fortran,objc	\
@@ -323,6 +339,14 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Wed Aug 18 2010 - Thomas Wagner
+- try with defaults to SUNWbinutils SUNWgnu-mp SUNWgnu-mpfr
+  this might break gcc compile on older osbuild versions
+- stop and exit 1 if the link /usr/gnu/bin/cc exists. Give user hint to 
+  remove this problematic symlink of gcc to cc
+- search ld-wrapper from PATH (e.g. /opt/jdsbld/bin or /opt/dtbld/bin)
+- workaround IPS bug that ever prints BASEdir as "/" even if it presents 
+  "/usr/gnu" to have configure find SFEgmp and SFEmpfr in case it should 
 * Sun Jun  6 2010 - Thomas Wagner
 - bump to 4.4.4
 - add switches to force SFEgmp and SFEmpfr
