@@ -1,3 +1,7 @@
+2010-08-09 Milan Jurik <sfnet@xylab.cz>
+
+	* SFEcowsay.spec: initial spec
+
 2010-08-18  Thomas Wagner  <tom68@users.sourceforge.net>
 
         * experimental/SFEgcc-4.4.4.spec: try (Build)Requires SUNWbinutils

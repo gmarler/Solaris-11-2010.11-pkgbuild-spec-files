@@ -1,0 +1,10 @@
+--- cowsay-3.03/cowsay	Wed Aug 18 23:30:56 2010
++++ cowsay-3.03-patch/cowsay	Wed Aug 18 23:30:18 2010
+@@ -19,1 +19,1 @@
+-$cowpath = $ENV{'COWPATH'} || '%PREFIX%/share/cows';
++$cowpath = $ENV{'COWPATH'} || 'PREFIX%/share/cows';
+--- cowsay-3.03/cowsay.1	Wed Aug 18 23:30:56 2010
++++ cowsay-3.03-patch/cowsay.1	Wed Aug 18 23:30:27 2010
+@@ -157,1 +157,1 @@
+-.B %PREFIX%/share/cows
++.B PREFIX%/share/cows
