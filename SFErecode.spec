@@ -14,6 +14,7 @@ BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 Patch1:		     recode.01.diff
 %include default-depend.inc
 Requires: SUNWpostrun
+BuildRequires:	SUNWtexi
 
 %if %build_l10n
 %package l10n
