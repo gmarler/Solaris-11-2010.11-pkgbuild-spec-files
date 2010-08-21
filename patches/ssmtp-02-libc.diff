@@ -1,0 +1,27 @@
+--- a/ssmtp.c	2010-08-20 09:35:28.970260921 +0200
++++ b/ssmtp.c	2010-08-20 11:39:03.979814324 +0200
+@@ -97,6 +97,24 @@
+ 
+ ssize_t outbytes;
+ 
++#if !defined (strndup)
++/*
++ * strndup() -- Backport from the Solaris libc.
++ * onnv-gate rev 13093:48f2dbca79a2, CR 6901783, target snv_147
++ * Create a copy of string s, but only duplicate the first n bytes.
++ * Return NULL if the new string can't be allocated.
++ */
++char *
++strndup(const char *s1, size_t n)
++{
++    char *s2;
++    n = strnlen(s1, n);
++    if ((s2 = malloc(n + 1)) != NULL)
++	(void) strlcpy(s2, s1, n + 1);
++    return (s2);
++}
++#endif
++
+ /*
+ log_event() -- Write event to syslog (or log file if defined)
+ */
