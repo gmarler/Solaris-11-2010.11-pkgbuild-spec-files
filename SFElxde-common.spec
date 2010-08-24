@@ -10,6 +10,7 @@ Summary:                 the default settings configuration file for LXDE
 Version:                 0.5.0
 Source:                  http://downloads.sourceforge.net/lxde/lxde-common-%{version}.tar.gz
 Patch1:                  lxde-common-01-startlxde.diff
+Patch2:                  lxde-common-02-config.diff
 URL:                     http://sourceforge.net/projects/lxde/
 
 SUNW_BaseDir:            %{_basedir}
@@ -24,6 +25,7 @@ SUNW_BaseDir:            /
 %prep
 %setup -q -n lxde-common-%version
 %patch1 -p1
+%patch2 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -67,6 +69,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_sysconfdir}/xdg/*
 
 %changelog
+* Thu Aug 19 2010 - brian.cameron@oracle.com
+- Add patch lxde-common-02-config.diff to set up configuration so the icons
+  show up in the menus.
 * Mon Feb 15 2010 - brian.cameron@sun.com
 - Bump to 0.5.0.
 * Thu Aug 06 2009 - brian.cameron@sun.com

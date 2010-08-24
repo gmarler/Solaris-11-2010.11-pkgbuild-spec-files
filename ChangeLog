@@ -1,3 +1,12 @@
+2010-08-23  Brian Cameron  <brian.cameron@oracle.com>
+
+	* SFEbzr.spec: Bump to 2.2.0.
+	* SFElxde-common.spec, patches/lxde-common-02-config.diff:  Add patch
+	  to set up default icon configuration so that icons show up in the
+	  panel menus.
+	* SFElxinput.spec, patches/lxinput-01-Werror.diff: Bump to 0.3.0 and
+	  add patch needed for building.
+
 2010-08-21 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEssmtp.spec: fix of permissions, included in SFE repository
@@ -12,7 +21,8 @@
           SUNWgnu-mp SUNWgnu-mpfr as default.
           stop and exit 1 if the link /usr/gnu/bin/cc exists. 
           search ld-wrapper from PATH 
-          workaround IPS bug that ever prints BASEdir as "/"  for SFEgmp and SFEmpfr 
+          workaround IPS bug that ever prints BASEdir as "/"  for SFEgmp and
+	  SFEmpfr 
         * encumbered/SFEmplayer-snap.spec:  rename configure switch 
           --enable-faad-external to --enable-faad. Use gmake in %build 
           instead make (makefile syntax error)

@@ -1,0 +1,11 @@
+--- lxde-common-0.5.0/desktop.conf-orig	2010-08-19 11:45:03.885190852 -0500
++++ lxde-common-0.5.0/desktop.conf	2010-08-19 11:46:04.232481247 -0500
+@@ -3,7 +3,7 @@ window_manager=openbox-lxde
+ 
+ [GTK]
+ sNet/ThemeName=Clearlooks
+-sNet/IconThemeName=nuoveXT2
++sNet/IconThemeName=gnome
+ sGtk/FontName=Sans 10
+ iGtk/ToolbarStyle=3
+ iGtk/ButtonImages=1

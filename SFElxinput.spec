@@ -7,7 +7,7 @@
 
 Name:                    SFElxinput
 Summary:                 LXInput (Kbd & mouse config)
-Version:                 0.1.1
+Version:                 0.3.0
 Source:                  http://nchc.dl.sourceforge.net/sourceforge/lxde/lxinput-%{version}.tar.gz
 URL:                     http://sourceforge.net/projects/lxde/
 
@@ -78,6 +78,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Tue Aug 17 2010 - brian.cameron@oracle.com
+- Bump to 0.3.0.
 * Tue Aug 04 2009 - brian.cameron@sun.com
 - Bump to 0.1.1
 * Wed May 27 2009 - alfred.peng@sun.com
