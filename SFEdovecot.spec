@@ -20,7 +20,7 @@ Name:                    SFEdovecot
 Summary:                 dovecot - A Maildir based pop3/imap email daemon
 URL:                     http://www.dovecot.org
 #note: see downloadversion above
-Version:                 1.2.12
+Version:                 1.2.13
 Source:                  http://dovecot.org/releases/%{downloadversion}/%{src_name}-%{version}.tar.gz
 Source2:		dovecot.xml
 
@@ -120,6 +120,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Aug 24 2010 - Milan Jurik
+- bump to 1.2.13
 * Mon Jun 29 2010 - Thomas Wagner
 - bump to 1.2.12
 * Wed May 19 2010 - Thomas Wagner
