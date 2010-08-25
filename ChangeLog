@@ -1,3 +1,7 @@
+2010-08-25 Milan Jurik <sfnet@xylab.cz>
+
+	* SFEofflineimap.spec: bump to 6.2.0.2
+
 2010-08-24 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEdovecot.spec: bump to 1.2.13
