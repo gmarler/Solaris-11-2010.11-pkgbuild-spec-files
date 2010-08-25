@@ -16,7 +16,6 @@ SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 Requires:                SUNWperl584core
 BuildRequires:           SUNWperl584core
-BuildRequires:           SUNWsfwhea
 
 %ifarch sparc
 %define perl_dir sun4-solaris-64int

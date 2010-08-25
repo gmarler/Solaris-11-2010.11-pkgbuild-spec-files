@@ -17,7 +17,6 @@ BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 Requires:                SUNWperl584core
 Requires:                SFEperl-locale-mt-simple
 BuildRequires:           SUNWperl584core
-BuildRequires:           SUNWsfwhea
 
 %ifarch sparc
 %define perl_dir sun4-solaris-64int

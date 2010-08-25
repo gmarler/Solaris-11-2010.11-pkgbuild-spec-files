@@ -1,6 +1,8 @@
 2010-08-25 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEofflineimap.spec: bump to 6.2.0.2
+	* SFEperl-locale-mt-simple.spec: remove SUNWsfwhea
+	* SFEperl-term-readkey.spec: remove SUNWsfwhea
 
 2010-08-24 Milan Jurik <sfnet@xylab.cz>
 
