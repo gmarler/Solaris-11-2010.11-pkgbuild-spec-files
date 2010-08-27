@@ -1,0 +1,25 @@
+--- libldmgreeter/language.c	2010-07-31 08:08:36 +0000
++++ libldmgreeter/language.c	2010-08-05 09:20:38 +0000
+@@ -73,7 +73,11 @@
+     {
+         char *current = setlocale(LC_ALL, NULL);
+         setlocale(LC_ALL, language->priv->code);
++/*
+         language->priv->name = g_strdup (nl_langinfo (_NL_IDENTIFICATION_LANGUAGE));
++*/
++        language->priv->name = g_strdup_printf ("%s", language->priv->code);
++
+         setlocale(LC_ALL, current);
+     }
+ 
+@@ -95,7 +99,10 @@
+     {
+         char *current = setlocale(LC_ALL, NULL);
+         setlocale(LC_ALL, language->priv->code);
++/*
+         language->priv->territory = g_strdup (nl_langinfo (_NL_IDENTIFICATION_TERRITORY));
++*/
++        language->priv->name = g_strdup_printf ("%s", language->priv->code);
+         setlocale(LC_ALL, current);
+     }
+ 

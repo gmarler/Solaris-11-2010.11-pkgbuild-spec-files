@@ -49,7 +49,6 @@ SUNW_BaseDir:            /
 %include default-depend.inc
 Requires: SUNWpostrun-root
 
-
 %prep
 rm -rf %name-%version
 mkdir -p %name-%version
@@ -72,8 +71,8 @@ rm -rf $RPM_BUILD_ROOT%{_datadir}/gtk-doc
 %else
 # REMOVE l10n FILES
 rm -rf $RPM_BUILD_ROOT%{_datadir}/locale
+rm -r $RPM_BUILD_ROOT%{_datadir}/gnome/help/*/[a-z]*
 %endif
-
 
 %clean
 rm -rf $RPM_BUILD_ROOT

@@ -1,0 +1,26 @@
+=== modified file 'src/display-manager.c'
+--- src/display-manager.c	2010-08-05 00:24:13 +0000
++++ src/display-manager.c	2010-08-05 09:21:26 +0000
+@@ -496,7 +496,7 @@
+         g_free (xserver_command);
+ 
+         if (manager->priv->test_mode)
+-            xserver_set_command (xserver, "Xephyr");
++            xserver_set_command (xserver, "pfexec Xephyr");
+ 
+         display_start (display, xserver, default_user, user_timeout);
+         g_object_unref (xserver);
+
+=== modified file 'src/display.c'
+--- src/display.c	2010-08-05 00:26:44 +0000
++++ src/display.c	2010-08-13 08:28:42 +0000
+@@ -266,7 +266,7 @@
+         if (!session_command)
+             g_warning ("No command in session file %s", path);
+         if (session_command)
+-            command = g_strdup_printf ("/etc/X11/Xsession %s", session_command);
++            command = g_strdup_printf ("/etc/gdm/Xsession %s", session_command);
+         g_free (session_command);
+ 
+         if (command)
+

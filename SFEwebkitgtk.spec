@@ -49,6 +49,7 @@ BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 Requires: SUNWcurl
 Requires: SUNWlibsoup
 Requires: SUNWgtk2
+Requires: SUNWflexlex
 
 BuildRequires: SUNWgnome-spell
 BuildRequires: SUNWgnu-idn
@@ -63,6 +64,7 @@ BuildRequires: SUNWgnu-gettext
 BuildRequires: SUNWgnu-gperf
 BuildRequires: SUNWgnome-common-devel
 BuildRequires: SUNWgnome-media
+BuildRequires: SUNWflexlex
 
 %if %OS2nnn
 Requires: SUNWopenssl
@@ -177,6 +179,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Aug 26 2010 - brian.cameron@oracle.com
+- Add flex dependency.
 * Fri Jul 16 2010 - yuntong.jin@sun.com
 - Bump to 1.2.3  
 * Tue Jun 30 2010 - yuntong.jin@sun.com

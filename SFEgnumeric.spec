@@ -7,11 +7,11 @@
 Name:		SFEgnumeric
 Summary:	gnumeric - Spreadsheet for GNOME
 URL:		http://www.gnome.org/projects/gnumeric/
-Version:	1.10.4
+Version:	1.10.9
 Group:		Applications/Spreadsheet
 License:	GPLv2
 Source:		http://ftp.gnome.org/pub/GNOME/sources/gnumeric/1.10/gnumeric-%{version}.tar.gz
-Patch1:		gnumeric-01-solaris.diff
+Patch1:		gnumeric-01-numtheory.diff
 SUNW_BaseDir:	%{_basedir}
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -159,7 +159,7 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 %dir %attr (0755, root, bin) %{_libdir}
 %{_libdir}/*.so
 %{_libdir}/gnumeric
-%{_libdir}/goffice/0.8.3/plugins/gnumeric/*
+%{_libdir}/goffice/*/plugins/gnumeric/*
 
 %files root
 %defattr (-, root, sys)
@@ -185,6 +185,8 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 
 
 %changelog
+* Thu Aug 26 2010 - Brian Cameron  <brian.cameron@oracle.com>
+- Bump to 1.10.9.  Fix packaging.
 * Thu May 27 2010 - Milan Jurik
 - bump to 1.10.4
 * Mon Apr 14 2008 - trisk@acm.jhu.edu

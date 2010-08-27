@@ -19,7 +19,9 @@ BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 SUNW_BaseDir:            %{_basedir}
 
 Requires: SFExcb-proto
+Requires: SFElibpthread-stubs
 BuildRequires: SFExcb-proto-devel
+BuildRequires: SFElibpthread-stubs
 
 %include default-depend.inc
 

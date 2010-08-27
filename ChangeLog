@@ -1,3 +1,18 @@
+2010-08-26  Brian Cameron  <brian.cameron@oracle.com>
+
+	* SFElightdm.spec, patches/lightdm-01-branding.diff,
+	  patches/lightdm-02-solaris.diff: Add spec file for LightDM.
+	* SFElibxklavier.spec, patches/libxklavier-01-compile-makefile.diff,
+	  patches/libxklavier-02-fixcrash.diff: Add spec file for
+	  libxklavier.
+	* SFElibxcb.spec: Add Requires on SFElibpthread-stubs.
+	* SFEgnumeric.spec: Bump to 1.10.9.
+	* SFEwebkitgtk.spec: Add Requires on SUNWflexlex.
+	* SFElibgda.spec, libgda.spec: Bump to 4.1.7.
+	* patches/gnumeric-01-solaris.diff: Remove upstream patch.
+	* patches/gnumeric-01-numtheory.diff: Add new patch needed for
+	  building.
+
 2010-08-25 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEofflineimap.spec: bump to 6.2.0.2
@@ -27,15 +42,15 @@
 
 2010-08-18  Thomas Wagner  <tom68@users.sourceforge.net>
 
-        * experimental/SFEgcc-4.4.4.spec: try (Build)Requires SUNWbinutils
-          SUNWgnu-mp SUNWgnu-mpfr as default.
-          stop and exit 1 if the link /usr/gnu/bin/cc exists. 
-          search ld-wrapper from PATH 
-          workaround IPS bug that ever prints BASEdir as "/"  for SFEgmp and
+	* experimental/SFEgcc-4.4.4.spec: try (Build)Requires SUNWbinutils
+	  SUNWgnu-mp SUNWgnu-mpfr as default.
+	  stop and exit 1 if the link /usr/gnu/bin/cc exists. 
+	  search ld-wrapper from PATH 
+	  workaround IPS bug that ever prints BASEdir as "/"  for SFEgmp and
 	  SFEmpfr 
-        * encumbered/SFEmplayer-snap.spec:  rename configure switch 
-          --enable-faad-external to --enable-faad. Use gmake in %build 
-          instead make (makefile syntax error)
+	* encumbered/SFEmplayer-snap.spec:  rename configure switch 
+	  --enable-faad-external to --enable-faad. Use gmake in %build 
+	  instead make (makefile syntax error)
 
 2010-08-14  Brian Cameron  <brian.cameron@oracle.com>
 
@@ -159,14 +174,14 @@
 2010-07-21 Mark Wright <markwright@internode.on.net>
 
 	* SFEghc-xmobar.spec, patches/ghc-xmobar-01-StatFS.hsc.diff,
-	SFEghc-xmonad-contrib.spec, SFEghc-xmonad-utils.spec,
-	SFEghc-xmonad-extras.spec: *NEW* xmonad tiling window manager packages
+	  SFEghc-xmonad-contrib.spec, SFEghc-xmonad-utils.spec,
+	  SFEghc-xmonad-extras.spec: *NEW* xmonad tiling window manager packages
 	* SFEghc-X11.spec: rename SFEghc-xmonad to SFEghc-X11, only provide
-	Haskell X11 Windows bindings, most of the other dependencies that were
-	in SFEghc-xmonad are now in SFEghc-haskell-platform
+	  Haskell X11 Windows bindings, most of the other dependencies that were
+	  in SFEghc-xmonad are now in SFEghc-haskell-platform
 	* SFEghc-*.spec: add --enable-library-profiling option
 	* SFEghc-xmonad.spec: replaced by SFEghc-X11.spec and
-	SFEghc-haskell-platform.spec
+	  SFEghc-haskell-platform.spec
 	* SFExmonad.spec: bump to 0.9.1
 	* SFEghc-parsec.spec: bump 3.1.0
 
@@ -176,66 +191,67 @@
 
 2010-07-20 Mark Wright <markwright@internode.on.net>
 
-        * SFEcoq.spec: *NEW* Coq proof assistant
+	* SFEcoq.spec: *NEW* Coq proof assistant
 	* SFEocaml.spec: compile with gcc, required for Coq
 	* SFEcamlp5.spec, SFEhevea.spec: *NEW* ocaml programming language
-	packages
+	  packages
 	* SFElablgtk.spec - compile with gcc
-        * SFEpolyml.spec: *NEW* Standard ML programming language
-        * SFEMpc.spec, base-specs/Mpc.spec: *NEW* C library for the
-	arithmetic of complex numbers
+	* SFEpolyml.spec: *NEW* Standard ML programming language
+	* SFEMpc.spec, base-specs/Mpc.spec: *NEW* C library for the
+	  arithmetic of complex numbers
 	* experimental/SFEgcc-4.5.0.spec: *NEW* gcc 4.5.0 compiler
-        * SFEemacs.spec: bump to 23.2
-        * SFEnetpbm.spec, ext-sources/netpbm-Makefile.conf,
-	ext-sources/netpbm-s10-Makefile.conf, patches/netpbm-Makefile.conf:
-	bump to 10.35.76
+	* SFEemacs.spec: bump to 23.2
+	* SFEnetpbm.spec, ext-sources/netpbm-Makefile.conf,
+	  ext-sources/netpbm-s10-Makefile.conf, patches/netpbm-Makefile.conf:
+	  bump to 10.35.76
 	* SFEghc: bump to 6.12.3
 	* SFEghc-haskell-platform.spec: bump to 2010.2.0.0
 	* SFEghc-parallel.spec: delete for the moment, the only package that
-	might require it is SFEghc-vty.spec, which fails to compile now
-	anyway.  parallel 2.x is included in haskell platform.
+	  might require it is SFEghc-vty.spec, which fails to compile now
+	  anyway.  parallel 2.x is included in haskell platform.
 	* SFEghc-oeis.spec, SFEghc-safe.spec, SFEghc-hoogle.spec,
-	SFEghc-fclabels.spec, SFEghc-utf8-string.spec, SFEghc-brainfuck.spec,
-	SFEghc-smallcheck.spec, SFEghc-readline.spec, SFEghc-unlambda.spec:
+	  SFEghc-fclabels.spec, SFEghc-utf8-string.spec, SFEghc-brainfuck.spec,
+	  SFEghc-smallcheck.spec, SFEghc-readline.spec, SFEghc-unlambda.spec:
 	*NEW* Haskell packages
 	* SFEghc-yi.spec, SFEghc-vty: fail to compile currently after ghc,
-	haskell platform and package bumps
+	  haskell platform and package bumps
 	* SFEtre.spec - bump to 0.8.0
 	* SFEghc-parsec.spec, SFEghc-hxt.spec, SFEghc-monads-tf.spec,
-	SFEghc-control-monad-attempt.spec, SFEghc-regex-tdfa.spec,
-	SFEghc-control-monad-exception-mtl.spec, SFEghc-curl.spec,
-	SFEghc-uu-parsinglib.spec, SFEghc-monadloc.spec,
-	SFEghc-dyre.spec, SFEghc-List.spec,
-	SFEghc-control-monad-exception-monadstf.spec,
-	SFEghc-control-monad-failure.spec,
-	SFEghc-xdg-basedir.spec, SFEghc-hexpat.spec, SFEghc-dataenc.spec,
-	SFEghc-control-monad-exception.spec, SFEghc-hscolour.spec,
-	SFEghc-uniplate.spec, SFEghc-xmonad.spec, SFEghc-split.spec,
-	SFEghc-HStringTemplate.spec, SFEghc-darcs.spec, SFEghc-language-c.spec
-	SFEghc-SyntaxMacros.spec, SFEghc-Diff.spec, SFEghc-hlint.spec,
-	SFEghc-utility-ht.spec, SFEghc-TTTAS.spec, SFEghc-Boolean.spec,
-	SFEghc-hexpat-iteratee.spec, SFEghc-pureMD5.spec,
-	SFEghc-fingertree.spec, SFEghc-pointedlist.spec,
-	SFEghc-data-accessor-monads-fd.spec, SFEghc-terminfo.spec,
-	SFEghc-unix-compat.spec, SFEghc-attoparsec-iteratee.spec,
-	SFEghc-haskeline.spec, SFEghc-monads-fd.spec, SFEghc-attempt.spec,
-	SFEghc-binary-strict.spec, SFEghc-ghc-paths.spec, SFEghc-encoding.spec,
-	SFEghc-vector-space.spec, SFEghc-control-monad-failure-mtl.spec,
-	SFEghc-attoparsec.spec, SFEghc-AspectAG.spec, SFEghc-tagsoup.spec,
-	SFEghc-failure.spec, SFEghc-control-monad-exception-monadsfd.spec,
-	SFEghc-io-storage.spec, SFEghc-text.spec, SFEghc-mmap.spec,
-	SFEghc-dlist.spec, SFEghc-uulib.spec, SFEghc-hashed-storage.spec,
-	SFEghc-rosezipper.spec, SFEghc-cpphs.spec, SFEghc-HList.spec,
-	SFEghc-haskell-src-exts.spec, SFEghc-ListLike.spec,
-	SFEghc-executable-path.spec, SFEghc-cereal.spec, SFEghc-HaXml.spec,
-	SFEghc-data-accessor.spec, SFEghc-ChristmasTree.spec,
-	SFEghc-derive.spec, SFEghc-c2hs.spec, SFEghc-safe-failure.spec,
-	SFEghc-bindings-DSL.spec, SFEghc-polyparse.spec,
-	SFEghc-data-accessor-template.spec, SFEghc-binary.spec,
-	SFEghc-iteratee.spec, SFEghc-MemoTrie.spec, SFEghc-transformers.spec,
-	SFEghc-cautious-file.spec: Compile with ghc 6.12.3 and haskell
-	platform 2010.2.0.0, bumped most packages to current version,
-	fix postun to work if SFEghc has been uninstalled.
+	  SFEghc-control-monad-attempt.spec, SFEghc-regex-tdfa.spec,
+	  SFEghc-control-monad-exception-mtl.spec, SFEghc-curl.spec,
+	  SFEghc-uu-parsinglib.spec, SFEghc-monadloc.spec,
+	  SFEghc-dyre.spec, SFEghc-List.spec,
+	  SFEghc-control-monad-exception-monadstf.spec,
+	  SFEghc-control-monad-failure.spec,
+	  SFEghc-xdg-basedir.spec, SFEghc-hexpat.spec, SFEghc-dataenc.spec,
+	  SFEghc-control-monad-exception.spec, SFEghc-hscolour.spec,
+	  SFEghc-uniplate.spec, SFEghc-xmonad.spec, SFEghc-split.spec,
+	  SFEghc-HStringTemplate.spec, SFEghc-darcs.spec, SFEghc-language-c.spec
+	  SFEghc-SyntaxMacros.spec, SFEghc-Diff.spec, SFEghc-hlint.spec,
+	  SFEghc-utility-ht.spec, SFEghc-TTTAS.spec, SFEghc-Boolean.spec,
+	  SFEghc-hexpat-iteratee.spec, SFEghc-pureMD5.spec,
+	  SFEghc-fingertree.spec, SFEghc-pointedlist.spec,
+	  SFEghc-data-accessor-monads-fd.spec, SFEghc-terminfo.spec,
+	  SFEghc-unix-compat.spec, SFEghc-attoparsec-iteratee.spec,
+	  SFEghc-haskeline.spec, SFEghc-monads-fd.spec, SFEghc-attempt.spec,
+	  SFEghc-binary-strict.spec, SFEghc-ghc-paths.spec,
+	  SFEghc-encoding.spec, SFEghc-vector-space.spec,
+	  SFEghc-control-monad-failure-mtl.spec, SFEghc-attoparsec.spec,
+	  SFEghc-AspectAG.spec, SFEghc-tagsoup.spec, SFEghc-failure.spec,
+	  SFEghc-control-monad-exception-monadsfd.spec, SFEghc-io-storage.spec,
+	  SFEghc-text.spec, SFEghc-mmap.spec, SFEghc-dlist.spec,
+ 	  SFEghc-uulib.spec, SFEghc-hashed-storage.spec,
+	  SFEghc-rosezipper.spec, SFEghc-cpphs.spec, SFEghc-HList.spec,
+	  SFEghc-haskell-src-exts.spec, SFEghc-ListLike.spec,
+	  SFEghc-executable-path.spec, SFEghc-cereal.spec, SFEghc-HaXml.spec,
+	  SFEghc-data-accessor.spec, SFEghc-ChristmasTree.spec,
+	  SFEghc-derive.spec, SFEghc-c2hs.spec, SFEghc-safe-failure.spec,
+	  SFEghc-bindings-DSL.spec, SFEghc-polyparse.spec,
+	  SFEghc-data-accessor-template.spec, SFEghc-binary.spec,
+	  SFEghc-iteratee.spec, SFEghc-MemoTrie.spec, SFEghc-transformers.spec,
+	  SFEghc-cautious-file.spec: Compile with ghc 6.12.3 and haskell
+	  platform 2010.2.0.0, bumped most packages to current version,
+	  fix postun to work if SFEghc has been uninstalled.
 
 2010-07-19 Pradhap Devarajan <pradhap (at) gmail.com>
 
@@ -1193,7 +1209,7 @@
 
 	* base-specs/gnome-screensaver.spec: Bump to 2.30
 	* patches/gnome-screensaver-02-unlock-first.diff: Updated to make it
-	work for 2.30.
+	  work for 2.30.
 
 2010-04-20  Albert Lee  <trisk@opensolaris.org>
 

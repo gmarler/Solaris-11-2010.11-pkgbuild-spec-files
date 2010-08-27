@@ -12,7 +12,7 @@
 Name:		libgda
 License:        LGPLv2
 Group:		Development/Libraries
-Version:	4.1.5
+Version:	4.1.7
 Release:	1
 Distribution:   Java Desktop System
 Vendor:         Sun Microsystems, Inc.
@@ -126,6 +126,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*
 
 %changelog
+* Thu Aug 26 2010 - brian.cameron@oracle.com
+- Bump to 4.1.7.
 * Mon May 10 2010 - halton.huo@sun.com
 - Bump to 4.1.5
 * Tue Apr 06 2010 - halton.huo@sun.com

@@ -1,0 +1,24 @@
+diff -ruN libxklavier-4.0.orig/libxklavier/Makefile.am libxklavier-4.0/libxklavier/Makefile.am
+--- libxklavier-4.0.orig/libxklavier/Makefile.am	2009-09-04 07:56:11.602730100 -0400
++++ libxklavier-4.0/libxklavier/Makefile.am	2009-09-04 07:56:57.725249529 -0400
+@@ -15,7 +15,7 @@
+   ENABLE_XMODMAP_SUPPORT_CFLAG = -DDISABLE_XMODMAP_SUPPORT=1
+ endif
+ 
+-AM_CFLAGS=-Wall -DDATA_DIR=\"$(datadir)/$(PACKAGE)\" \
++AM_CFLAGS= -DDATA_DIR=\"$(datadir)/$(PACKAGE)\" \
+   -I. -I$(top_srcdir) $(X_CFLAGS) \
+   $(XML_CFLAGS) $(GLIB_CFLAGS) $(XINPUT_CFLAGS) \
+   $(LIBXKBFILE_PRESENT_CFLAG) \
+diff -ruN libxklavier-4.0.orig/tests/Makefile.am libxklavier-4.0/tests/Makefile.am
+--- libxklavier-4.0.orig/tests/Makefile.am	2009-09-04 07:56:11.600291898 -0400
++++ libxklavier-4.0/tests/Makefile.am	2009-09-04 07:57:53.790079387 -0400
+@@ -4,7 +4,7 @@
+ 
+ test_monitor_SOURCES=test_monitor.c
+ 
+-AM_CFLAGS=-Wall -Werror -I$(top_srcdir) $(X_CFLAGS) $(GLIB_CFLAGS)
++AM_CFLAGS=-I$(top_srcdir) $(X_CFLAGS) $(GLIB_CFLAGS)
+ 
+ LDADD=$(top_builddir)/libxklavier/libxklavier.la $(X_LIBS) $(GLIB_LIBS)
+ 

@@ -1,0 +1,119 @@
+--- gnumeric-1.10.9/plugins/fn-numtheory/numtheory.c-orig	2010-08-26 22:21:00.688371013 -0500
++++ gnumeric-1.10.9/plugins/fn-numtheory/numtheory.c	2010-08-26 22:22:53.747146100 -0500
+@@ -38,7 +38,7 @@ GNM_PLUGIN_MODULE_HEADER;
+  * represented in a gnm_float _and_ in a guint64.  (For regular "double",
+  * the latter part is irrelevant.)
+  */
+-static const double bit_max = MIN (1 / GNM_EPSILON, (gnm_float)G_MAXUINT64);
++#define GNUMERIC_BIT_MAX ((double)(MIN (1 / GNM_EPSILON, (gnm_float)G_MAXUINT64)))
+ 
+ /* ------------------------------------------------------------------------- */
+ 
+@@ -237,7 +237,7 @@ gnumeric_phi (GnmFuncEvalInfo *ei, GnmVa
+ 	guint64 phi = 1;
+ 	gnm_float n = gnm_floor (value_get_as_float (args[0]));
+ 
+-	if (n < 1 || n > bit_max)
++	if (n < 1 || n > GNUMERIC_BIT_MAX)
+ 		return value_new_error_NUM (ei->pos);
+ 
+ 	if (walk_factorization ((guint64)n, &phi, walk_for_phi))
+@@ -277,7 +277,7 @@ gnumeric_nt_mu (GnmFuncEvalInfo *ei, Gnm
+ 	int mu = 1;
+ 	gnm_float n = gnm_floor (value_get_as_float (args[0]));
+ 
+-	if (n < 1 || n > bit_max)
++	if (n < 1 || n > GNUMERIC_BIT_MAX)
+ 		return value_new_error_NUM (ei->pos);
+ 
+ 	if (walk_factorization ((guint64)n, &mu, walk_for_mu))
+@@ -310,7 +310,7 @@ gnumeric_d (GnmFuncEvalInfo *ei, GnmValu
+ 	int d = 1;
+ 	gnm_float n = gnm_floor (value_get_as_float (args[0]));
+ 
+-	if (n < 1 || n > bit_max)
++	if (n < 1 || n > GNUMERIC_BIT_MAX)
+ 		return value_new_error_NUM (ei->pos);
+ 
+ 	if (walk_factorization ((guint64)n, &d, walk_for_d))
+@@ -344,7 +344,7 @@ gnumeric_sigma (GnmFuncEvalInfo *ei, Gnm
+ 	guint64 sigma = 1;
+ 	gnm_float n = gnm_floor (value_get_as_float (args[0]));
+ 
+-	if (n < 1 || n > bit_max)
++	if (n < 1 || n > GNUMERIC_BIT_MAX)
+ 		return value_new_error_NUM (ei->pos);
+ 
+ 	if (walk_factorization ((guint64)n, &sigma, walk_for_sigma))
+@@ -399,7 +399,7 @@ gnumeric_isprime (GnmFuncEvalInfo *ei, G
+ 
+ 	if (i < 0)
+ 		yesno = 0;
+-	else if (i > bit_max)
++	else if (i > GNUMERIC_BIT_MAX)
+ 		yesno = -1;
+ 	else
+ 		yesno = isprime ((guint64)i);
+@@ -455,7 +455,7 @@ gnumeric_pfactor (GnmFuncEvalInfo *ei, G
+ 
+ 	if (n < 2)
+ 		return value_new_error_VALUE (ei->pos);
+-	if (n > bit_max)
++	if (n > GNUMERIC_BIT_MAX)
+ 		p = 0;
+ 	else
+ 		p = prime_factor ((guint64)n);
+@@ -486,7 +486,7 @@ gnumeric_nt_pi (GnmFuncEvalInfo *ei, Gnm
+ 
+ 	if (n < 0)
+ 		pi = 0;
+-	else if (n > bit_max)
++	else if (n > GNUMERIC_BIT_MAX)
+ 		pi = -1;
+ 	else
+ 		pi = compute_nt_pi ((guint64)n);
+@@ -515,7 +515,7 @@ func_bitor (GnmFuncEvalInfo *ei, GnmValu
+ 	gnm_float l = value_get_as_float (argv[0]);
+ 	gnm_float r = value_get_as_float (argv[1]);
+ 
+-	if (l < 0 || l > bit_max || r < 0 || r > bit_max)
++	if (l < 0 || l > GNUMERIC_BIT_MAX || r < 0 || r > GNUMERIC_BIT_MAX)
+ 		return value_new_error_NUM (ei->pos);
+ 
+         return value_new_float ((guint64)l | (guint64)r);
+@@ -539,7 +539,7 @@ func_bitxor (GnmFuncEvalInfo *ei, GnmVal
+ 	gnm_float l = value_get_as_float (argv[0]);
+ 	gnm_float r = value_get_as_float (argv[1]);
+ 
+-	if (l < 0 || l > bit_max || r < 0 || r > bit_max)
++	if (l < 0 || l > GNUMERIC_BIT_MAX || r < 0 || r > GNUMERIC_BIT_MAX)
+ 		return value_new_error_NUM (ei->pos);
+ 
+         return value_new_float ((guint64)l ^ (guint64)r);
+@@ -564,7 +564,7 @@ func_bitand (GnmFuncEvalInfo *ei, GnmVal
+ 	gnm_float l = value_get_as_float (argv[0]);
+ 	gnm_float r = value_get_as_float (argv[1]);
+ 
+-	if (l < 0 || l > bit_max || r < 0 || r > bit_max)
++	if (l < 0 || l > GNUMERIC_BIT_MAX || r < 0 || r > GNUMERIC_BIT_MAX)
+ 		return value_new_error_NUM (ei->pos);
+ 
+         return value_new_float ((guint64)l & (guint64)r);
+@@ -589,7 +589,7 @@ func_bitlshift (GnmFuncEvalInfo *ei, Gnm
+ 	gnm_float l = value_get_as_float (argv[0]);
+ 	gnm_float r = gnm_floor (value_get_as_float (argv[1]));
+ 
+-	if (l < 0 || l > bit_max)
++	if (l < 0 || l > GNUMERIC_BIT_MAX)
+ 		return value_new_error_NUM (ei->pos);
+ 
+ 	if (r >= 64 || r <= -64)
+@@ -619,7 +619,7 @@ func_bitrshift (GnmFuncEvalInfo *ei, Gnm
+ 	gnm_float l = value_get_as_float (argv[0]);
+ 	gnm_float r = gnm_floor (value_get_as_float (argv[1]));
+ 
+-	if (l < 0 || l > bit_max)
++	if (l < 0 || l > GNUMERIC_BIT_MAX)
+ 		return value_new_error_NUM (ei->pos);
+ 
+ 	if (r >= 64 || r <= -64)
