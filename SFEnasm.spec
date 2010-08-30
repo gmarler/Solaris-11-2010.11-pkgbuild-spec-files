@@ -6,11 +6,11 @@
 %include Solaris.inc
 %include osdistro.inc
 
-%define src_version 2.08.01
+%define src_version 2.09
 
 Name:                SFEnasm
 Summary:             Portable, modular 80x86 assembler
-Version:             2.8.1
+Version:             2.9
 Source:              http://www.nasm.us/pub/nasm/releasebuilds/%{src_version}/nasm-%{src_version}.tar.bz2
 License:             2-BSD
 SUNW_BaseDir:        %{_basedir}
@@ -89,6 +89,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/doc/nasm/*
 
 %changelog
+* Mon Aug 30 2010 - Milan Jurik
+- bump to 2.09
 * May 30 2010 - Thomas Wagner
 - added include/osdistro.inc
 - changes to (Build)Requires to match SXCE, OS20nn build <134 => 134 (the time the packages got new names)
