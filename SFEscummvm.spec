@@ -10,7 +10,8 @@
 
 Name:                    SFEscummvm
 Summary:                 ScummVM - emulator for classic graphical games
-Version:                 1.1.0
+Version:                 1.1.1
+Group:                   System/Emulators/Other
 Source:                  %{sf_download}/scummvm/scummvm-%{version}.tar.bz2
 URL:                     http://www.scummvm.org/
 License:                 GPLv2
@@ -91,6 +92,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man6/*
 
 %changelog
+* Mon Aug 30 2010 - Milan Jurik
+- bump to 1.1.1
 * May 02 2010 - Gilles Dauphin
 - search in %{_basedir} if in /opt/SFE (ligmpeg2 is in)
 * Fri Apr 30 2010 - Milan Jurik
