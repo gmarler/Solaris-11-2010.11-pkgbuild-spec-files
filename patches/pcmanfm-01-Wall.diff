@@ -1,0 +1,22 @@
+--- pcmanfm-0.9.7/configure.ac-orig	2010-08-30 02:05:19.545165544 -0500
++++ pcmanfm-0.9.7/configure.ac	2010-08-30 02:05:26.960841128 -0500
+@@ -3,7 +3,7 @@
+ 
+ AC_PREREQ([2.63])
+ AC_INIT([pcmanfm], [0.9.7], [http://pcmanfm.sf.net/])
+-AM_INIT_AUTOMAKE([-Wall -Werror foreign])
++AM_INIT_AUTOMAKE()
+ 
+ AC_CONFIG_HEADERS([config.h])
+ 
+--- pcmanfm-0.9.7/src/Makefile.am-orig	2010-08-30 02:08:23.190752970 -0500
++++ pcmanfm-0.9.7/src/Makefile.am	2010-08-30 02:09:01.927018958 -0500
+@@ -31,8 +31,6 @@ pcmanfm_CFLAGS = \
+ 	$(FM_CFLAGS) \
+ 	$(MENU_CACHE_CFLAGS) \
+ 	$(G_CAST_CHECKS) \
+-	-Wall \
+-	-Werror-implicit-function-declaration \
+ 	$(NULL)
+ 
+ pcmanfm_LDADD = \

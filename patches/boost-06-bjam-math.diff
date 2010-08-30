@@ -1,0 +1,11 @@
+--- boost_1_44_0/libs/math/build/Jamfile.v2-orig	2010-08-27 00:09:53.218095667 -0500
++++ boost_1_44_0/libs/math/build/Jamfile.v2	2010-08-27 00:12:34.284872207 -0500
+@@ -13,7 +13,7 @@ project  
+       #<toolset>intel-linux:<pch>off
+       <toolset>intel-darwin:<pch>off
+       <toolset>msvc-7.1:<pch>off
+-      <toolset>gcc:<cxxflags>-fvisibility=hidden
++      #<toolset>gcc:<cxxflags>-fvisibility=hidden
+       <toolset>intel-linux:<cxxflags>-fvisibility=hidden
+       <toolset>sun:<cxxflags>-xldscope=hidden
+     ;

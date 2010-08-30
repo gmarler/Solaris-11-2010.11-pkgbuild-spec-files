@@ -24,14 +24,14 @@ Requires:                SUNWglib2
 Requires:                SUNWgtk2
 Requires:                SUNWdbus-glib
 Requires:                SUNWgnome-python26-libs
+Requires:                SUNWvala
 Requires:                SFEgjs
-Requires:                SFEvala
 BuildRequires:           SUNWglib2-devel
 BuildRequires:           SUNWgtk2-devel
 BuildRequires:           SUNWdbus-glib-devel
 BuildRequires:           SUNWgnome-python26-libs-devel
+BuildRequires:           SUNWvala-devel
 BuildRequires:           SFEgjs-devel
-BuildRequires:           SFEvala-devel
 
 %package devel
 Summary:                 %{summary} - development files

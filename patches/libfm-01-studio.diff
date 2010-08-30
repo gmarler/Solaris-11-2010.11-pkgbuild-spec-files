@@ -1,0 +1,55 @@
+--- libfm-0.1.12/configure.ac-orig	2010-08-27 00:22:58.277160931 -0500
++++ libfm-0.1.12/configure.ac	2010-08-27 00:23:21.588493826 -0500
+@@ -3,7 +3,7 @@
+ 
+ AC_PREREQ([2.63])
+ AC_INIT([libfm], [0.1.12], [http://libfm.sf.net/])
+-AM_INIT_AUTOMAKE([-Wall -Werror foreign])
++AM_INIT_AUTOMAKE()
+ 
+ AC_CONFIG_HEADERS([config.h])
+ 
+--- libfm-0.1.12/src/Makefile.am-orig	2010-08-27 00:38:47.380412379 -0500
++++ libfm-0.1.12/src/Makefile.am	2010-08-27 00:38:59.923612592 -0500
+@@ -153,7 +153,6 @@ libfm_la_SOURCES = \
+ libfm_la_CFLAGS = \
+ 	$(GIO_CFLAGS) \
+ 	$(MENU_CACHE_CFLAGS) \
+-	-Werror-implicit-function-declaration \
+ 	$(NULL)
+ 
+ libfm_la_LIBADD = \
+@@ -178,8 +177,7 @@ libfm_gtk_la_CFLAGS = \
+ 	$(MENU_CACHE_CFLAGS) \
+ 	-I$(srcdir) \
+ 	-I$(srcdir)/base \
+-	-I$(srcdir)/job \
+-	-Werror-implicit-function-declaration
++	-I$(srcdir)/job
+ 
+ libfm_gtk_la_LIBADD = \
+ 	$(GTK_LIBS) \
+@@ -204,7 +202,6 @@ libfm_pref_apps_CFLAGS = \
+ 	$(GTK_CFLAGS) \
+ 	$(GIO_CFLAGS) \
+ 	$(MENU_CACHE_CFLAGS) \
+-	-Werror-implicit-function-declaration \
+ 	$(NULL)
+ 
+ libfm_pref_apps_LDADD = \
+@@ -225,7 +222,6 @@ libfm_demo_SOURCES = \
+ libfm_demo_CFLAGS = \
+ 	$(GTK_CFLAGS) \
+ 	$(MENU_CACHE_CFLAGS) \
+-	-Werror-implicit-function-declaration \
+ 	$(NULL)
+ 
+ libfm_demo_LDADD = \
+@@ -314,7 +310,6 @@ gnome_terminal_SOURCES = \
+ 
+ gnome_terminal_CFLAGS = \
+ 	$(GLIB_CFLAGS) \
+-	-Werror-implicit-function-declaration \
+ 	$(NULL)
+ 
+ gnome_terminal_LDADD = \

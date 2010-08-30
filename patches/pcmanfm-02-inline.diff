@@ -1,0 +1,11 @@
+--- pcmanfm-0.9.7/src/desktop.c-orig	2010-08-30 02:11:49.191245684 -0500
++++ pcmanfm-0.9.7/src/desktop.c	2010-08-30 02:11:59.314596361 -0500
+@@ -1174,7 +1174,7 @@ FmDesktopItem* get_nearest_item(FmDeskto
+     return ret;
+ }
+ 
+-inline FmDesktopItem* desktop_item_new(GtkTreeIter* it)
++static inline FmDesktopItem* desktop_item_new(GtkTreeIter* it)
+ {
+     FmDesktopItem* item = g_slice_new0(FmDesktopItem);
+     item->it = *it;

@@ -9,7 +9,7 @@
 #
 
 %define        major      1
-%define        minor      43
+%define        minor      44
 %define        patchlevel 0
 %define        ver_boost  %{major}_%{minor}_%{patchlevel}
 
@@ -31,6 +31,7 @@ Patch2:       boost-02-gcc34.diff
 # date:2009-11-04 owner:sobi
 Patch3:       boost-03-xmlparser.diff
 Patch4:       boost-04-compiler.diff
+Patch6:       boost-06-bjam-math.diff
 
 URL:          http://www.boost.org/
 BuildRoot:    %{_tmppath}/%{name}-%{version}-build
@@ -41,6 +42,7 @@ BuildRoot:    %{_tmppath}/%{name}-%{version}-build
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
+%patch6 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -107,6 +109,8 @@ $BJAM --v2 -d+2 -q -j$CPUS -sBUILD="release <threading>single/multi" \
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Thu Aug 26 2010 - Brian Cameron <brian.cameron@oracle.com
+- Bump to 1.44.
 * Wed Aug 04 2010 - Brian Cameron <brian.cameron@oracle.com>
 - Bump to 1.43.
 * Fri Mar 05 2010 - Brian Cameron <brian.cameron@sun.com>

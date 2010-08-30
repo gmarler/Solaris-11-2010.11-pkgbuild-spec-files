@@ -9,22 +9,17 @@
 
 Name:                    SFEpcmanfm
 Summary:                 LXDE lightweight file manager
-Version:                 0.5.1
-Source:                  http://downloads.sourceforge.net/pcmanfm/pcmanfm-%{version}.tar.bz2
+Version:                 0.9.7
+Source:                  http://downloads.sourceforge.net/pcmanfm/pcmanfm-%{version}.tar.gz
+Patch1:                  pcmanfm-01-Wall.diff
+Patch2:                  pcmanfm-02-inline.diff
 URL:                     http://sourceforge.net/projects/pcmanfm/
-
-# owner:alfred date:2009-03-16 type:bug bugid:2688199
-Patch1:                  pcmanfm-01-mnttab.diff
-
-# owner:alfred date:2009-03-16 type:bug
-Patch2:                  pcmanfm-02-Werror.diff
-
-# owner:alfred date:2009-03-16 type:bug
-Patch3:                  pcmanfm-03-union-struct-naming.diff
-
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
+
+Requires: SFElibfm
+BuildRequires: SFElibfm-devel
 
 %if %build_l10n
 %package l10n
@@ -38,7 +33,6 @@ Requires:                %{name}
 %setup -q -n pcmanfm-%version
 %patch1 -p1
 %patch2 -p1
-%patch3 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -49,6 +43,10 @@ fi
 export LDFLAGS="-lsocket"
 
 export GMSGFMT=/usr/bin/gmsgfmt
+libtoolize --force
+aclocal $ACLOCAL_FLAGS
+autoheader
+automake -a -c -f
 autoconf
 ./configure --prefix=%{_prefix} --libdir=%{_libdir}
 make -j$CPUS 
@@ -73,11 +71,6 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, sys) %{_datadir}
 %dir %attr (0755, root, other) %{_datadir}/applications
 %{_datadir}/applications/*
-%dir %attr (0755, root, other) %{_datadir}/pixmaps
-%{_datadir}/pixmaps/*
-%dir %attr (0755, root, root) %{_datadir}/mime
-%dir %attr (0755, root, root) %{_datadir}/mime/*
-%{_datadir}/mime/*/*
 %dir %attr (0755, root, other) %{_datadir}/pcmanfm
 %{_datadir}/pcmanfm/*
 

@@ -1,3 +1,22 @@
+2010-08-30  Brian Cameron  <brian.cameron@oracle.com>
+
+	* SFEpcmanfm.spec, patches/pcmanfm-01-Wall.diff,
+	  patches/pcmanfm-02-inline.diff: Bump to 0.9.7 and add patches
+	  needed for building.
+	* patches/pcmanfm-01-mnttab.diff, patches/pcmanfm-02-Werror.diff,
+	  patches/pcmanfm-03-union-struct-naming.diff: Remove upstream
+	  patches.
+	* SFElibfm.spec, patches/libfm-01-studio.diff,
+	  patches/libfm-02-inline.diff:  Add new spec file with version
+	  0.1.12.
+	* SFEimlib2.spec: Bump to 1.4.4.
+	* SFEenlightenment.spec: Bump to 1.0.4.
+	* SFEethos.spec:  Add BuildRequires on vala.
+	* SFEpywebkitgtk.spec: Remove .la/.a files.
+	* base-specs/boost.spec, patches/boost-06-bjam-math.diff: Bump to
+	  1.44.
+	* base-specs/liblouis.spec: Bump to 2.1.1.
+
 2010-08-26  Brian Cameron  <brian.cameron@oracle.com>
 
 	* SFElightdm.spec, patches/lightdm-01-branding.diff,

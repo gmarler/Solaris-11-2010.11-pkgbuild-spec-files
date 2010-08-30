@@ -42,7 +42,8 @@ make PYGTK_CODEGEN=pygobject-codegen-2.0
 %install
 rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
-find $RPM_BUILD_ROOT \( -name \*.la -o -name \*.a \) -exec rm {} \;
+find $RPM_BUILD_ROOT%{_libdir} -type f -name "*.la" -exec rm -f {} ';'
+find $RPM_BUILD_ROOT%{_libdir} -type f -name "*.a" -exec rm -f {} ';'
 
 %clean
 rm -rf $RPM_BUILD_ROOT

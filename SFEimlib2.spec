@@ -7,7 +7,7 @@
 
 Name:                SFEimlib2
 Summary:             general Image loading and rendering library
-Version:             1.4.2
+Version:             1.4.4
 Source:              %{sf_download}/enlightenment/imlib2-%{version}.tar.gz
 
 SUNW_BaseDir:        %{_basedir}
@@ -72,6 +72,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/*
 
 %changelog
+* Thu Aug 26 2010 - brian.cameron@oracle.com
+- Bump to 1.4.4.
 * Mon Jan 05 2008 - brian.cameron@sun.com
 - Bump to 1.4.2.
 * Thu Nov 15 2007 - daymobrew@users.sourceforge.net

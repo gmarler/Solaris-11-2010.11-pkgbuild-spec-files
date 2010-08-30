@@ -11,7 +11,7 @@
 # Software specific variable definitions
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 %define src_name	e16-1
-%define src_version	0.2
+%define src_version	0.4
 %define pkg_release	1
 # %{_topdir} is by default set to RPM_BUILD_ROOT
 # Default path for RPM_BUILD_ROOT is /var/tmp/pkgbuild-{username}
@@ -121,6 +121,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/*
 
 %changelog
+* Thu Aug 26 2010 - brian.cameron@oracle.com
+- Bump to 1.0.4.
 * Wed Mar 10 2010 - brian.cameron@sun.com
 - Bump to 1.0.2.
 * Thu Sep 24 2009 - brian.cameron@sun.com
