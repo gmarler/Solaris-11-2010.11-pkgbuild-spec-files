@@ -1,3 +1,8 @@
+2010-08-31  Brian Cameron  <brian.cameron@oracle.com>
+
+	* ext-sources/lightdm.xml, ext-sources/svc-lightdm: Add SMF files
+	  for lightDM.
+
 2010-08-31  Knut Anders Hatlen  <knut.hatlen@oracle.com>
 
 	* SFEofflineimap.spec, patches/offlineimap-01-multiresponse.diff:
