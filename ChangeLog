@@ -1,3 +1,9 @@
+2010-08-31  Knut Anders Hatlen  <knut.hatlen@oracle.com>
+
+	* SFEofflineimap.spec, patches/offlineimap-01-multiresponse.diff:
+	  Add patch
+	  http://article.gmane.org/gmane.mail.imap.offlineimap.general/1841
+
 2010-08-30 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEnasm.spec: bump to 2.09

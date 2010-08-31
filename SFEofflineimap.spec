@@ -11,6 +11,7 @@ Version:	6.2.0.2
 Group:		Applications/Internet
 #Source:	http://github.com/jgoerzen/offlineimap/tarball/debian/%{version}
 Source:		http://ftp.de.debian.org/debian/pool/main/o/offlineimap/offlineimap_%{version}.orig.tar.gz
+Patch1:		offlineimap-01-multiresponse.diff
 URL:		http://wiki.github.com/jgoerzen/offlineimap/
 License:	GPLv2
 SUNW_BaseDir:	%{_basedir}
@@ -22,6 +23,7 @@ Requires: SUNWPython
 
 %prep
 %setup -q -n offlineimap-%{version}
+%patch1 -p1
 
 %build
 python setup.py build
@@ -41,6 +43,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/*
 
 %changelog
+* Tue Aug 31 2010 - Knut Anders Hatlen
+- Add patch http://article.gmane.org/gmane.mail.imap.offlineimap.general/1841
 * Wed Aug 25 2010 - Milan Jurik
 - bump to 6.2.0.2 
 * Sat Mar 31 2007 - Eric Boutilier
