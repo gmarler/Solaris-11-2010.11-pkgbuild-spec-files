@@ -19,7 +19,7 @@ BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 BuildRequires:	SUNWperl584core
 Requires:	SUNWperl584core
-
+BuildRequires:	SUNWgsed
 
 %description
 This module provides perl routines that simplify a sockets connection 
