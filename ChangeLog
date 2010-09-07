@@ -1,3 +1,7 @@
+2010-09-07 Milan Jurik <sfnet@xylab.cz>
+
+	* SFElibev.spec: Initial spec based on Fedora
+
 2010-09-07  Simon Jin <yuntong.jin@sun.com>
 
 	* SFEseed.spec:
