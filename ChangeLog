@@ -3,6 +3,7 @@
 	* SFElibev.spec: Initial spec based on Fedora
 	* SFEc-ares.spec: bump to 1.7.3
 	* SFEnodejs.spec: initial spec
+	* SFEclamav.spec: bump to 0.96.2
 
 2010-09-07  Simon Jin <yuntong.jin@sun.com>
 
