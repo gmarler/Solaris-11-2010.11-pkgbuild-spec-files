@@ -1,0 +1,22 @@
+diff -r b0b1a74405d9 modules/gettext/seed-gettext.c
+--- a/modules/gettext/seed-gettext.c	Tue Sep 07 13:33:11 2010 +0800
++++ b/modules/gettext/seed-gettext.c	Tue Sep 07 13:34:09 2010 +0800
+@@ -313,12 +313,12 @@
+ 	DEFINE_ENUM_MEMBER(ns_ref, LC_MONETARY);
+ 	DEFINE_ENUM_MEMBER(ns_ref, LC_MESSAGES);
+ 	DEFINE_ENUM_MEMBER(ns_ref, LC_ALL);
+-	DEFINE_ENUM_MEMBER(ns_ref, LC_PAPER);
+-	DEFINE_ENUM_MEMBER(ns_ref, LC_NAME);
+-	DEFINE_ENUM_MEMBER(ns_ref, LC_ADDRESS);
+-	DEFINE_ENUM_MEMBER(ns_ref, LC_TELEPHONE);
+-	DEFINE_ENUM_MEMBER(ns_ref, LC_MEASUREMENT);
+-	DEFINE_ENUM_MEMBER(ns_ref, LC_IDENTIFICATION);
++	//DEFINE_ENUM_MEMBER(ns_ref, LC_PAPER);
++	//DEFINE_ENUM_MEMBER(ns_ref, LC_NAME);
++	//DEFINE_ENUM_MEMBER(ns_ref, LC_ADDRESS);
++	//DEFINE_ENUM_MEMBER(ns_ref, LC_TELEPHONE);
++	//DEFINE_ENUM_MEMBER(ns_ref, LC_MEASUREMENT);
++	//DEFINE_ENUM_MEMBER(ns_ref, LC_IDENTIFICATION);
+ 	DEFINE_ENUM_MEMBER(ns_ref, LC_CTYPE);
+ 
+ 	return ns_ref;

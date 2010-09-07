@@ -1,0 +1,81 @@
+diff -r 0f7b6a29f3d0 configure.ac
+--- a/configure.ac	Tue Sep 07 11:40:25 2010 +0800
++++ b/configure.ac	Tue Sep 07 11:44:37 2010 +0800
+@@ -333,10 +333,9 @@
+ 
+ if test "x$enable_debug" = "xyes"; then
+ 	SEED_DEBUG_CFLAGS="-DSEED_ENABLE_DEBUG -g"
+-	CFLAGS="-O0 -Wall"
++	CFLAGS="-O0 "
+ else
+ 	SEED_DEBUG_CFLAGS="-DG_DISABLE_ASSERT -DG_DISABLE_CHECKS -DG_DISABLE_CAST_CHECKS"
+-	CFLAGS="-Wall"
+ 	
+ 	if test "x$need_debug" = "xyes"; then
+ 		AC_MSG_ERROR([debug must be enabled in order to enable profiling.])
+diff -r aacdb4c5821d libseed/Makefile.am
+--- a/libseed/Makefile.am	Tue Sep 07 11:55:56 2010 +0800
++++ b/libseed/Makefile.am	Tue Sep 07 12:50:21 2010 +0800
+@@ -26,7 +26,6 @@
+ 	seed-path.h
+ 
+ libseed_la_CFLAGS = \
+-	-Wall \
+ 	$(GOBJECT_INTROSPECTION_CFLAGS) \
+ 	$(WEBKIT_CFLAGS) \
+ 	$(SEED_OSX_CFLAGS) \
+diff -r aacdb4c5821d modules/cairo/Makefile.am
+--- a/modules/cairo/Makefile.am	Tue Sep 07 11:55:56 2010 +0800
++++ b/modules/cairo/Makefile.am	Tue Sep 07 12:50:21 2010 +0800
+@@ -23,7 +23,6 @@
+ 	seed-cairo-enums.c 
+ 
+ libseed_cairo_la_CFLAGS = \
+-	-Wall \
+ 	$(GOBJECT_INTROSPECTION_CFLAGS) \
+ 	-I@top_srcdir@/libseed/ \
+ 	$(CAIRO_CFLAGS) \
+diff -r aacdb4c5821d modules/dbus/Makefile.am
+--- a/modules/dbus/Makefile.am	Tue Sep 07 11:55:56 2010 +0800
++++ b/modules/dbus/Makefile.am	Tue Sep 07 12:50:21 2010 +0800
+@@ -26,7 +26,6 @@
+ 
+ 
+ libseed_dbusnative_la_CFLAGS = \
+-	-Wall \
+ 	-I@top_srcdir@/libseed/ \
+ 	$(GOBJECT_INTROSPECTION_CFLAGS) \
+ 	$(DBUS_CFLAGS) \
+diff -r aacdb4c5821d modules/ffi/Makefile.am
+--- a/modules/ffi/Makefile.am	Tue Sep 07 11:55:56 2010 +0800
++++ b/modules/ffi/Makefile.am	Tue Sep 07 12:50:21 2010 +0800
+@@ -16,7 +16,6 @@
+ 
+ libseed_ffi_la_CFLAGS = \
+ 	-I@top_srcdir@/libseed/ \
+-	-Wall \
+ 	$(GOBJECT_INTROSPECTION_CFLAGS) \
+ 	$(SEED_DEBUG_CFLAGS) \
+ 	$(SEED_PROFILE_CFLAGS) \
+diff -r aacdb4c5821d src/Makefile.am
+--- a/src/Makefile.am	Tue Sep 07 11:55:56 2010 +0800
++++ b/src/Makefile.am	Tue Sep 07 12:50:21 2010 +0800
+@@ -10,7 +10,6 @@
+ 	-DPACKAGE_LOCALE_DIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
+ 	-DPACKAGE_SRC_DIR=\""$(srcdir)"\" \
+ 	-DPACKAGE_DATA_DIR=\""$(datadir)"\" \
+-	-Wall \
+ 	$(SEED_DEBUG_CFLAGS) \
+ 	$(SEED_PROFILE_CFLAGS) \
+ 	$(GOBJECT_INTROSPECTION_CFLAGS) \
+diff -r aacdb4c5821d tests/c/Makefile.am
+--- a/tests/c/Makefile.am	Tue Sep 07 11:55:56 2010 +0800
++++ b/tests/c/Makefile.am	Tue Sep 07 12:50:21 2010 +0800
+@@ -13,7 +13,6 @@
+ 	test-common.h
+ 	
+ test_CFLAGS = \
+-	-Wall \
+ 	$(GOBJECT_INTROSPECTION_CFLAGS)
+ 
+ test_LDFLAGS = \

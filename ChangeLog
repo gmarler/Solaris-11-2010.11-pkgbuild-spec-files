@@ -1,5 +1,13 @@
 2010-09-07  Simon Jin <yuntong.jin@sun.com>
 
+	* SFEseed.spec:
+	* patches/seed-01-wall.diff:
+	* patches/seed-02-gettext.diff:
+	* patches/seed-03-util.diff:
+	* patches/seed-04-seed.diff:Init spec
+
+2010-09-07  Simon Jin <yuntong.jin@sun.com>
+
 	* SFEgnome-js-common.spec:Init spec
 
 2010-09-02 Milan Jurik <sfnet@xylab.cz>

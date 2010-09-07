@@ -1,0 +1,11 @@
+diff -r a51519fc4cf3 modules/os/Makefile.am
+--- a/modules/os/Makefile.am	Tue Sep 07 13:53:55 2010 +0800
++++ b/modules/os/Makefile.am	Tue Sep 07 13:54:44 2010 +0800
+@@ -17,7 +17,6 @@
+ libseed_os_la_LDFLAGS = \
+ 	-module -avoid-version \
+ 	$(GOBJECT_INTROSPECTION_LDFLAGS) \
+-	-lutil \
+ 	$(SEED_DEBUG_LDFLAGS) \
+ 	$(SEED_PROFILE_LIBS)
+ 
