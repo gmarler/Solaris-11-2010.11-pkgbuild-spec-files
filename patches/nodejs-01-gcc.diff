@@ -1,0 +1,11 @@
+--- node-v0.2.0/deps/v8/SConstruct	Fri Aug 20 10:53:08 2010
++++ node-v0.2.0-patch/deps/v8/SConstruct	Tue Sep  7 22:00:52 2010
+@@ -657,7 +657,7 @@
+   elif 'msvc' in tools:
+     return 'msvc'
+   else:
+-    return None
++    return 'gcc'
+ 
+ 
+ OS_GUESS = utils.GuessOS()
