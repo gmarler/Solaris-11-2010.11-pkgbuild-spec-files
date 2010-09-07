@@ -1,6 +1,7 @@
 2010-09-07 Milan Jurik <sfnet@xylab.cz>
 
 	* SFElibev.spec: Initial spec based on Fedora
+	* SFEc-ares.spec: bump to 1.7.3
 
 2010-09-07  Simon Jin <yuntong.jin@sun.com>
 
