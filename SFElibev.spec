@@ -18,6 +18,7 @@ Source1:	%{src_name}.pc.in
 SUNW_BaseDir:	%{_basedir}
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
+BuildRequires:	SUNWgsed
 
 %description
 Libev is modelled (very losely) after libevent and the Event perl
