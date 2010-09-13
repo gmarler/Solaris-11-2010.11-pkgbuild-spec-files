@@ -23,7 +23,7 @@ BuildRequires: SUNWjpg-devel
 Requires: SUNWjpg
 BuildRequires: SUNWTiff-devel
 Requires: SUNWTiff
-BuildRequires: SFEgawk
+BuildRequires: SUNWgawk
 
 %prep
 %setup -q -n %{src_name}-%version
@@ -88,5 +88,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}
 
 %changelog
+* Tue Sep 14 2010 - Milan Jurik
+- fix SFEgawk dependency
 * Mon Jul 30 2007 - dougs@truemail.co.th
 - Initial spec
