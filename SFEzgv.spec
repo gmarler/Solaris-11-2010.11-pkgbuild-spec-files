@@ -23,7 +23,10 @@ BuildRequires: SUNWjpg-devel
 Requires: SUNWjpg
 BuildRequires: SUNWTiff-devel
 Requires: SUNWTiff
+BuildRequires: SUNWlibsdl-devel
+Requires: SUNWlibsdl
 BuildRequires: SUNWgawk
+BuildRequires: SUNWtexi
 
 %prep
 %setup -q -n %{src_name}-%version
