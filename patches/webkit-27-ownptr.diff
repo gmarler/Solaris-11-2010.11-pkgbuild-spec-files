@@ -1,0 +1,344 @@
+diff -r 04a37a283ded WebCore/bindings/js/JSDOMWindowCustom.cpp
+--- a/WebCore/bindings/js/JSDOMWindowCustom.cpp	Fri Sep 10 23:06:30 2010 +0800
++++ b/WebCore/bindings/js/JSDOMWindowCustom.cpp	Sat Sep 11 00:57:06 2010 +0800
+@@ -914,7 +914,8 @@
+ 
+ JSValue JSDOMWindow::setTimeout(ExecState* exec, const ArgList& args)
+ {
+-    OwnPtr<ScheduledAction> action = ScheduledAction::create(exec, args, currentWorld(exec));
++    OwnPtr<ScheduledAction> action;
++    action = ScheduledAction::create(exec, args, currentWorld(exec));
+     if (exec->hadException())
+         return jsUndefined();
+     int delay = args.at(1).toInt32(exec);
+@@ -928,7 +929,8 @@
+ 
+ JSValue JSDOMWindow::setInterval(ExecState* exec, const ArgList& args)
+ {
+-    OwnPtr<ScheduledAction> action = ScheduledAction::create(exec, args, currentWorld(exec));
++    OwnPtr<ScheduledAction> action ;
++    action = ScheduledAction::create(exec, args, currentWorld(exec));
+     if (exec->hadException())
+         return jsUndefined();
+     int delay = args.at(1).toInt32(exec);
+diff -r 04a37a283ded WebCore/bindings/js/JSWorkerContextCustom.cpp
+--- a/WebCore/bindings/js/JSWorkerContextCustom.cpp	Fri Sep 10 23:06:30 2010 +0800
++++ b/WebCore/bindings/js/JSWorkerContextCustom.cpp	Sat Sep 11 00:57:06 2010 +0800
+@@ -143,7 +143,8 @@
+ 
+ JSValue JSWorkerContext::setTimeout(ExecState* exec, const ArgList& args)
+ {
+-    OwnPtr<ScheduledAction> action = ScheduledAction::create(exec, args, currentWorld(exec));
++    OwnPtr<ScheduledAction> action ;
++    action = ScheduledAction::create(exec, args, currentWorld(exec));
+     if (exec->hadException())
+         return jsUndefined();
+     int delay = args.at(1).toInt32(exec);
+@@ -152,7 +153,8 @@
+ 
+ JSValue JSWorkerContext::setInterval(ExecState* exec, const ArgList& args)
+ {
+-    OwnPtr<ScheduledAction> action = ScheduledAction::create(exec, args, currentWorld(exec));
++    OwnPtr<ScheduledAction> action ;
++    action = ScheduledAction::create(exec, args, currentWorld(exec));
+     if (exec->hadException())
+         return jsUndefined();
+     int delay = args.at(1).toInt32(exec);
+diff -r 04a37a283ded WebCore/dom/MessagePort.cpp
+--- a/WebCore/dom/MessagePort.cpp	Fri Sep 10 23:06:30 2010 +0800
++++ b/WebCore/dom/MessagePort.cpp	Sat Sep 11 00:57:06 2010 +0800
+@@ -170,7 +170,8 @@
+ 
+     OwnPtr<MessagePortChannel::EventData> eventData;
+     while (m_entangledChannel && m_entangledChannel->tryGetMessageFromRemote(eventData)) {
+-        OwnPtr<MessagePortArray> ports = MessagePort::entanglePorts(*m_scriptExecutionContext, eventData->channels());
++        OwnPtr<MessagePortArray> ports ;
++	ports = MessagePort::entanglePorts(*m_scriptExecutionContext, eventData->channels());
+         RefPtr<Event> evt = MessageEvent::create(ports.release(), eventData->message());
+ 
+         ExceptionCode ec = 0;
+@@ -212,7 +213,8 @@
+     // Passed-in ports passed validity checks, so we can disentangle them.
+     MessagePortChannelArray* portArray = new MessagePortChannelArray(ports->size());
+     for (unsigned int i = 0 ; i < ports->size() ; ++i) {
+-        OwnPtr<MessagePortChannel> channel = (*ports)[i]->disentangle(ec);
++        OwnPtr<MessagePortChannel> channel ;
++	channel = (*ports)[i]->disentangle(ec);
+         ASSERT(!ec); // Can't generate exception here if passed above checks.
+         (*portArray)[i] = channel.release();
+     }
+diff -r 04a37a283ded WebCore/page/DOMWindow.cpp
+--- a/WebCore/page/DOMWindow.cpp	Fri Sep 10 23:06:30 2010 +0800
++++ b/WebCore/page/DOMWindow.cpp	Sat Sep 11 00:57:06 2010 +0800
+@@ -96,7 +96,8 @@
+ 
+     PassRefPtr<MessageEvent> event(ScriptExecutionContext* context)
+     {
+-        OwnPtr<MessagePortArray> messagePorts = MessagePort::entanglePorts(*context, m_channels.release());
++        OwnPtr<MessagePortArray> messagePorts ;
++	messagePorts = MessagePort::entanglePorts(*context, m_channels.release());
+         return MessageEvent::create(messagePorts.release(), m_message, m_origin, "", m_source);
+     }
+     SecurityOrigin* targetOrigin() const { return m_targetOrigin.get(); }
+@@ -673,7 +674,8 @@
+         }
+     }
+ 
+-    OwnPtr<MessagePortChannelArray> channels = MessagePort::disentanglePorts(ports, ec);
++    OwnPtr<MessagePortChannelArray> channels ;
++    channels = MessagePort::disentanglePorts(ports, ec);
+     if (ec)
+         return;
+ 
+diff -r 04a37a283ded WebCore/platform/graphics/GeneratedImage.cpp
+--- a/WebCore/platform/graphics/GeneratedImage.cpp	Fri Sep 10 23:06:30 2010 +0800
++++ b/WebCore/platform/graphics/GeneratedImage.cpp	Sat Sep 11 00:57:06 2010 +0800
+@@ -56,7 +56,8 @@
+     m_generator->adjustParametersForTiledDrawing(adjustedSize, adjustedSrcRect);
+ 
+     // Create a BitmapImage and call drawPattern on it.
+-    OwnPtr<ImageBuffer> imageBuffer = ImageBuffer::create(adjustedSize);
++    OwnPtr<ImageBuffer> imageBuffer;
++    imageBuffer = ImageBuffer::create(adjustedSize);
+     ASSERT(imageBuffer.get());
+ 
+     // Fill with the gradient.
+diff -r 04a37a283ded WebCore/platform/graphics/cairo/FontCairo.cpp
+--- a/WebCore/platform/graphics/cairo/FontCairo.cpp	Fri Sep 10 23:06:30 2010 +0800
++++ b/WebCore/platform/graphics/cairo/FontCairo.cpp	Sat Sep 11 00:57:06 2010 +0800
+@@ -98,7 +98,8 @@
+         GraphicsContext::calculateShadowBufferDimensions(shadowBufferSize, shadowRect, kernelSize, rect, shadowSize, shadowBlur);
+ 
+         // Draw shadow into a new ImageBuffer
+-        OwnPtr<ImageBuffer> shadowBuffer = ImageBuffer::create(shadowBufferSize);
++        OwnPtr<ImageBuffer> shadowBuffer;
++	shadowBuffer = ImageBuffer::create(shadowBufferSize);
+         GraphicsContext* shadowContext = shadowBuffer->context();
+         cairo_t* shadowCr = shadowContext->platformContext();
+ 
+diff -r 04a37a283ded WebCore/platform/graphics/cairo/GraphicsContextCairo.cpp
+--- a/WebCore/platform/graphics/cairo/GraphicsContextCairo.cpp	Fri Sep 10 23:06:30 2010 +0800
++++ b/WebCore/platform/graphics/cairo/GraphicsContextCairo.cpp	Sat Sep 11 00:57:06 2010 +0800
+@@ -183,7 +183,8 @@
+     GraphicsContext::calculateShadowBufferDimensions(shadowBufferSize, shadowRect, kernelSize, rect, shadowSize, shadowBlur);
+ 
+     // Create suitably-sized ImageBuffer to hold the shadow.
+-    OwnPtr<ImageBuffer> shadowBuffer = ImageBuffer::create(shadowBufferSize);
++    OwnPtr<ImageBuffer> shadowBuffer ;
++    shadowBuffer = ImageBuffer::create(shadowBufferSize);
+ 
+     // Draw shadow into a new ImageBuffer.
+     cairo_t* shadowContext = shadowBuffer->context()->platformContext();
+@@ -572,7 +573,8 @@
+     GraphicsContext::calculateShadowBufferDimensions(shadowBufferSize, shadowRect, kernelSize, rect, shadowSize, shadowBlur);
+ 
+     // Draw shadow into a new ImageBuffer
+-    OwnPtr<ImageBuffer> shadowBuffer = ImageBuffer::create(shadowBufferSize);
++    OwnPtr<ImageBuffer> shadowBuffer ;
++    shadowBuffer = ImageBuffer::create(shadowBufferSize);
+     GraphicsContext* shadowContext = shadowBuffer->context();
+     shadowContext->fillRect(FloatRect(FloatPoint(kernelSize, kernelSize), rect.size()), rectColor, DeviceColorSpace);
+ 
+diff -r 04a37a283ded WebCore/platform/graphics/cairo/ImageCairo.cpp
+--- a/WebCore/platform/graphics/cairo/ImageCairo.cpp	Fri Sep 10 23:06:30 2010 +0800
++++ b/WebCore/platform/graphics/cairo/ImageCairo.cpp	Sat Sep 11 00:57:06 2010 +0800
+@@ -145,7 +145,8 @@
+         shadowColor = colorWithOverrideAlpha(shadowColor.rgb(), (shadowColor.alpha() *  context->getAlpha()) / 255.f);
+ 
+         //draw shadow into a new ImageBuffer
+-        OwnPtr<ImageBuffer> shadowBuffer = ImageBuffer::create(shadowBufferSize);
++        OwnPtr<ImageBuffer> shadowBuffer ;
++	shadowBuffer = ImageBuffer::create(shadowBufferSize);
+         cairo_t* shadowContext = shadowBuffer->context()->platformContext();
+         cairo_set_source(shadowContext, pattern);
+         cairo_translate(shadowContext, -dstRect.x(), -dstRect.y());
+@@ -185,7 +186,8 @@
+     context->save();
+ 
+     IntRect imageSize = enclosingIntRect(tileRect);
+-    OwnPtr<ImageBuffer> imageSurface = ImageBuffer::create(imageSize.size());
++    OwnPtr<ImageBuffer> imageSurface ;
++    imageSurface = ImageBuffer::create(imageSize.size());
+ 
+     if (!imageSurface)
+         return;
+diff -r 04a37a283ded WebCore/rendering/RenderBoxModelObject.cpp
+--- a/WebCore/rendering/RenderBoxModelObject.cpp	Fri Sep 10 23:06:30 2010 +0800
++++ b/WebCore/rendering/RenderBoxModelObject.cpp	Sat Sep 11 00:57:06 2010 +0800
+@@ -503,7 +503,8 @@
+         maskRect.intersect(paintInfo.rect);
+         
+         // Now create the mask.
+-        OwnPtr<ImageBuffer> maskImage = ImageBuffer::create(maskRect.size());
++        OwnPtr<ImageBuffer> maskImage;
++	maskImage = ImageBuffer::create(maskRect.size());
+         if (!maskImage)
+             return;
+         
+diff -r 04a37a283ded WebCore/storage/Database.cpp
+--- a/WebCore/storage/Database.cpp	Fri Sep 10 23:06:30 2010 +0800
++++ b/WebCore/storage/Database.cpp	Sat Sep 11 00:57:06 2010 +0800
+@@ -274,7 +274,8 @@
+ 
+     bool success = false;
+     DatabaseTaskSynchronizer synchronizer;
+-    OwnPtr<DatabaseOpenTask> task = DatabaseOpenTask::create(this, &synchronizer, e, success);
++    OwnPtr<DatabaseOpenTask> task ;
++    task = DatabaseOpenTask::create(this, &synchronizer, e, success);
+ 
+     m_scriptExecutionContext->databaseThread()->scheduleImmediateTask(task.release());
+     synchronizer.waitForTaskCompletion();
+@@ -385,7 +386,8 @@
+     m_scriptExecutionContext->databaseThread()->unscheduleDatabaseTasks(this);
+ 
+     DatabaseTaskSynchronizer synchronizer;
+-    OwnPtr<DatabaseCloseTask> task = DatabaseCloseTask::create(this, &synchronizer);
++    OwnPtr<DatabaseCloseTask> task ;
++    task = DatabaseCloseTask::create(this, &synchronizer);
+ 
+     m_scriptExecutionContext->databaseThread()->scheduleImmediateTask(task.release());
+     synchronizer.waitForTaskCompletion();
+@@ -648,7 +650,8 @@
+     }
+ 
+     if (transaction && m_scriptExecutionContext->databaseThread()) {
+-        OwnPtr<DatabaseTransactionTask> task = DatabaseTransactionTask::create(transaction);
++        OwnPtr<DatabaseTransactionTask> task ;
++	task = DatabaseTransactionTask::create(transaction);
+         LOG(StorageAPI, "Scheduling DatabaseTransactionTask %p for transaction %p\n", task.get(), task->transaction());
+         m_transactionInProgress = true;
+         m_scriptExecutionContext->databaseThread()->scheduleTask(task.release());
+@@ -661,7 +664,8 @@
+     if (!m_scriptExecutionContext->databaseThread())
+         return;
+ 
+-    OwnPtr<DatabaseTransactionTask> task = DatabaseTransactionTask::create(transaction);
++    OwnPtr<DatabaseTransactionTask> task ;
++    task = DatabaseTransactionTask::create(transaction);
+     LOG(StorageAPI, "Scheduling DatabaseTransactionTask %p for the transaction step\n", task.get());
+     if (immediately)
+         m_scriptExecutionContext->databaseThread()->scheduleImmediateTask(task.release());
+@@ -756,7 +760,8 @@
+         return result;
+ 
+     DatabaseTaskSynchronizer synchronizer;
+-    OwnPtr<DatabaseTableNamesTask> task = DatabaseTableNamesTask::create(this, &synchronizer, result);
++    OwnPtr<DatabaseTableNamesTask> task ;
++    task = DatabaseTableNamesTask::create(this, &synchronizer, result);
+ 
+     m_scriptExecutionContext->databaseThread()->scheduleImmediateTask(task.release());
+     synchronizer.waitForTaskCompletion();
+diff -r 04a37a283ded WebCore/svg/SVGPatternElement.cpp
+--- a/WebCore/svg/SVGPatternElement.cpp	Fri Sep 10 23:06:30 2010 +0800
++++ b/WebCore/svg/SVGPatternElement.cpp	Sat Sep 11 00:57:06 2010 +0800
+@@ -247,7 +247,8 @@
+     IntSize imageSize(lroundf(patternBoundariesIncludingOverflow.width()), lroundf(patternBoundariesIncludingOverflow.height()));
+     clampImageBufferSizeToViewport(document()->view(), imageSize);
+ 
+-    OwnPtr<ImageBuffer> patternImage = ImageBuffer::create(imageSize);
++    OwnPtr<ImageBuffer> patternImage ;
++    patternImage = ImageBuffer::create(imageSize);
+ 
+     if (!patternImage)
+         return;
+diff -r 04a37a283ded WebCore/svg/graphics/SVGPaintServerPattern.cpp
+--- a/WebCore/svg/graphics/SVGPaintServerPattern.cpp	Fri Sep 10 23:06:30 2010 +0800
++++ b/WebCore/svg/graphics/SVGPaintServerPattern.cpp	Sat Sep 11 00:57:06 2010 +0800
+@@ -118,7 +118,8 @@
+         // Draw the first cell of the pattern manually to support overflow="visible" on all platforms.
+         int tileWidth = static_cast<int>(patternBoundaries().width() + 0.5f);
+         int tileHeight = static_cast<int>(patternBoundaries().height() + 0.5f);
+-        OwnPtr<ImageBuffer> tileImage = ImageBuffer::create(IntSize(tileWidth, tileHeight));
++        OwnPtr<ImageBuffer> tileImage ;
++	tileImage = ImageBuffer::create(IntSize(tileWidth, tileHeight));
+   
+         GraphicsContext* tileImageContext = tileImage->context();
+ 
+diff -r 04a37a283ded WebCore/svg/graphics/filters/SVGFETile.cpp
+--- a/WebCore/svg/graphics/filters/SVGFETile.cpp	Fri Sep 10 23:06:30 2010 +0800
++++ b/WebCore/svg/graphics/filters/SVGFETile.cpp	Sat Sep 11 00:57:06 2010 +0800
+@@ -70,7 +70,8 @@
+         tileRect = enclosingIntRect(filterRegion);
+     }
+ 
+-    OwnPtr<ImageBuffer> tileImage = ImageBuffer::create(tileRect.size());
++    OwnPtr<ImageBuffer> tileImage;
++    tileImage = ImageBuffer::create(tileRect.size());
+     GraphicsContext* tileImageContext = tileImage->context();
+     tileImageContext->drawImage(m_in->resultImage()->image(), DeviceColorSpace, IntPoint());
+     RefPtr<Pattern> pattern = Pattern::create(tileImage->image(), true, true);
+diff -r 04a37a283ded WebCore/workers/DedicatedWorkerContext.cpp
+--- a/WebCore/workers/DedicatedWorkerContext.cpp	Fri Sep 10 23:06:30 2010 +0800
++++ b/WebCore/workers/DedicatedWorkerContext.cpp	Sat Sep 11 00:57:06 2010 +0800
+@@ -65,7 +65,8 @@
+     if (isClosing())
+         return;
+     // Disentangle the port in preparation for sending it to the remote context.
+-    OwnPtr<MessagePortChannelArray> channels = MessagePort::disentanglePorts(ports, ec);
++    OwnPtr<MessagePortChannelArray> channels ;
++    channels = MessagePort::disentanglePorts(ports, ec);
+     if (ec)
+         return;
+     thread()->workerObjectProxy().postMessageToWorkerObject(message, channels.release());
+diff -r 04a37a283ded WebCore/workers/SharedWorker.cpp
+--- a/WebCore/workers/SharedWorker.cpp	Fri Sep 10 23:06:30 2010 +0800
++++ b/WebCore/workers/SharedWorker.cpp	Sat Sep 11 00:57:06 2010 +0800
+@@ -47,7 +47,8 @@
+ {
+     RefPtr<MessageChannel> channel = MessageChannel::create(scriptExecutionContext());
+     m_port = channel->port1();
+-    OwnPtr<MessagePortChannel> remotePort = channel->port2()->disentangle(ec);
++    OwnPtr<MessagePortChannel> remotePort ;
++    remotePort = channel->port2()->disentangle(ec);
+     ASSERT(!ec);
+ 
+     KURL scriptUrl = resolveURL(url, ec);
+diff -r 04a37a283ded WebCore/workers/Worker.cpp
+--- a/WebCore/workers/Worker.cpp	Fri Sep 10 23:06:30 2010 +0800
++++ b/WebCore/workers/Worker.cpp	Sat Sep 11 00:57:06 2010 +0800
+@@ -91,7 +91,8 @@
+ void Worker::postMessage(PassRefPtr<SerializedScriptValue> message, const MessagePortArray* ports, ExceptionCode& ec)
+ {
+     // Disentangle the port in preparation for sending it to the remote context.
+-    OwnPtr<MessagePortChannelArray> channels = MessagePort::disentanglePorts(ports, ec);
++    OwnPtr<MessagePortChannelArray> channels ;
++    channels = MessagePort::disentanglePorts(ports, ec);
+     if (ec)
+         return;
+     m_contextProxy->postMessageToWorkerContext(message, channels.release());
+diff -r 04a37a283ded WebCore/workers/WorkerRunLoop.cpp
+--- a/WebCore/workers/WorkerRunLoop.cpp	Fri Sep 10 23:06:30 2010 +0800
++++ b/WebCore/workers/WorkerRunLoop.cpp	Sat Sep 11 00:57:06 2010 +0800
+@@ -150,7 +150,8 @@
+ 
+     double absoluteTime = (predicate.isDefaultMode() && m_sharedTimer->isActive()) ? m_sharedTimer->fireTime() : MessageQueue<Task>::infiniteTime();
+     MessageQueueWaitResult result;
+-    OwnPtr<WorkerRunLoop::Task> task = m_messageQueue.waitForMessageFilteredWithTimeout(result, predicate, absoluteTime);
++    OwnPtr<WorkerRunLoop::Task> task ;
++    task = m_messageQueue.waitForMessageFilteredWithTimeout(result, predicate, absoluteTime);
+ 
+     // If the context is closing, don't execute any further JavaScript tasks (per section 4.1.1 of the Web Workers spec).  However, there may be implementation cleanup tasks in the queue, so keep running through it.
+ 
+diff -r 959f90b84d7c WebCore/workers/WorkerMessagingProxy.cpp
+--- a/WebCore/workers/WorkerMessagingProxy.cpp	Thu Sep 09 02:08:48 2010 +0800
++++ b/WebCore/workers/WorkerMessagingProxy.cpp	Sat Sep 11 01:01:02 2010 +0800
+@@ -62,7 +62,8 @@
+     {
+         ASSERT(scriptContext->isWorkerContext());
+         DedicatedWorkerContext* context = static_cast<DedicatedWorkerContext*>(scriptContext);
+-        OwnPtr<MessagePortArray> ports = MessagePort::entanglePorts(*scriptContext, m_channels.release());
++        OwnPtr<MessagePortArray> ports ;
++	ports = MessagePort::entanglePorts(*scriptContext, m_channels.release());
+         context->dispatchEvent(MessageEvent::create(ports.release(), m_message));
+         context->thread()->workerObjectProxy().confirmMessageFromWorkerObject(context->hasPendingActivity());
+     }
+@@ -93,7 +94,8 @@
+         if (!workerObject || m_messagingProxy->askedToTerminate())
+             return;
+ 
+-        OwnPtr<MessagePortArray> ports = MessagePort::entanglePorts(*scriptContext, m_channels.release());
++        OwnPtr<MessagePortArray> ports ;
++	ports = MessagePort::entanglePorts(*scriptContext, m_channels.release());
+         workerObject->dispatchEvent(MessageEvent::create(ports.release(), m_message));
+     }
+ 

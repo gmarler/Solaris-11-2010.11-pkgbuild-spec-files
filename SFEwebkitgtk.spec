@@ -40,6 +40,7 @@ Patch22:                 webkit-22-not-reinterpretcast.diff
 Patch24:                 webkit-24-MathExtras.diff 
 Patch25:                 webkit-25-misc.diff
 Patch26:                  webkit-26-copycons-imp.diff
+Patch27:                  webkit-27-ownptr.diff
 
 SUNW_BaseDir:            %{_basedir}
 SUNW_Copyright:          SFEwebkit.copyright
@@ -109,11 +110,12 @@ cd webkit-%version
 %patch24 -p1
 %patch25 -p1
 %patch26 -p1
-
+%patch27 -p1
+%
 %build
 #export LD=CC
 #export CPPFLAGS="-D__FUNCTION__=__func__"
-export CPPFLAGS="-DUSE_SYSTEM_MALLOC"
+#export CPPFLAGS="-DUSE_SYSTEM_MALLOC"
 export CXXFLAGS="%cxx_optflags -features=extensions"
 #export  LDFLAGS="%_ldflags -Wl,-zmuldefs"
 cd webkit-%version
@@ -129,8 +131,6 @@ fi
 autoconf 
 ./configure --prefix=%{_prefix}			\
             --disable-jit                       \
-	    --disable-fast-malloc               \
-	    --disable-optimizations             \
 	    --libdir=%{_libdir}                 \
             --sysconfdir=%{_sysconfdir}         \
 	    --mandir=%{_mandir}                 \
