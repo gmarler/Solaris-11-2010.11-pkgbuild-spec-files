@@ -1,3 +1,7 @@
+2010-09-14  Brian Cameron  <brian.cameron@oracle.com>
+
+	* SFElxterminal.spec: Bump to 0.1.9.
+
 2010-09-13  Simon Jin <yuntong.jin@sun.com>
 
 	* SFEwebkitgtk.spec:
@@ -307,7 +311,7 @@
 	  SFEghc-AspectAG.spec, SFEghc-tagsoup.spec, SFEghc-failure.spec,
 	  SFEghc-control-monad-exception-monadsfd.spec, SFEghc-io-storage.spec,
 	  SFEghc-text.spec, SFEghc-mmap.spec, SFEghc-dlist.spec,
- 	  SFEghc-uulib.spec, SFEghc-hashed-storage.spec,
+	  SFEghc-uulib.spec, SFEghc-hashed-storage.spec,
 	  SFEghc-rosezipper.spec, SFEghc-cpphs.spec, SFEghc-HList.spec,
 	  SFEghc-haskell-src-exts.spec, SFEghc-ListLike.spec,
 	  SFEghc-executable-path.spec, SFEghc-cereal.spec, SFEghc-HaXml.spec,
