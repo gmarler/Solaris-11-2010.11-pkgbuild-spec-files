@@ -4,10 +4,10 @@
 %include Solaris.inc
 
 %define src_name openttd
-%define src_version 1.0.3
+%define src_version 1.0.4
 
 Name:           SFEopenttd
-Version:        1.0.3
+Version:        1.0.4
 Summary:        Transport system simulation game
 Source:         http://binaries.openttd.org/releases/%{src_version}/%{src_name}-%{src_version}-source.tar.bz2
 Source1:	http://bundles.openttdcoop.org/opengfx/releases/opengfx-0.2.4.zip
@@ -140,6 +140,8 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 %{_datadir}/openttd/*
 
 %changelog
+* Wed Sep 15 2010 - Milan Jurik
+- bump to 1.0.4
 * Sat Aug 07 2010 - Milan Jurik
 - update to 1.0.3
 * Tue Jul 20 2010 - Milan Jurik

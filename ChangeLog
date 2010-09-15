@@ -1,3 +1,7 @@
+2010-09-15 Milan Jurik <sfnet@xylab.cz>
+
+	* SFEopenttd.spec: bump to 1.0.4
+
 2010-09-15  Knut Anders Hatlen  <knut.hatlen@oracle.com>
 
 	* SFEemacs.spec: Add missing dependencies.
