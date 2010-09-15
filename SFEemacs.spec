@@ -17,6 +17,7 @@ BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 
 %define _with_gtk 1
 
+BuildRequires: SUNWgnome-common-devel
 Requires: SUNWTiff
 Requires: SUNWpng
 Requires: SUNWjpg
@@ -37,6 +38,8 @@ Requires: SUNWxwrtl
 Requires: SUNWxwplt
 Requires: SUNWxwice
 %endif
+BuildRequires: SFEgiflib-devel
+Requires: SFEgiflib
 
 %package root
 Summary:                 %{summary} - root
@@ -131,6 +134,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_localstatedir}/games/emacs/*
 
 %changelog
+* Wed Sep 15 2010 - knut.hatlen@oracle.com
+- Add missing dependencies.
 * Mon Jul 19 2010 - markwright@internode.on.net
 - Bump to 23.2
 * Tue Aug 04 2009 - jedy.wang@sun.com
