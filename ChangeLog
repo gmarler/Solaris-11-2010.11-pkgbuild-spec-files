@@ -4,6 +4,7 @@
           write proxy.
           with second commit bump to 2.5 (fix pcre compile/link,
           rename example cfg file, tested only "pound -c")
+          with third commit fix %files for example configfile
 
 2010-09-15 Milan Jurik <sfnet@xylab.cz>
 

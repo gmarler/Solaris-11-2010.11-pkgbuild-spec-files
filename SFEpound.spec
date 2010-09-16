@@ -6,6 +6,8 @@
 #
 #
 
+##TODO## make SMF manifest more nice, check for /etc/pound.cfg present
+
 %include Solaris.inc
 
 Name:           SFEpound
@@ -109,7 +111,8 @@ rm -rf %{buildroot}
 %attr(0444, root, bin) %{_mandir}/man8/poundctl.8
 
 %dir %attr(755,root,sys) /etc
-%config(noreplace) %attr(644,root,root) /etc/%{name}.cfg
+#%config(noreplace) %attr(644,root,root) /etc/*
+/etc/*
 
 %dir %attr (0755, root, sys) /var
 %dir %attr (0755, root, sys) %{svcdir}
@@ -123,6 +126,7 @@ rm -rf %{buildroot}
 - bump version to 2.5
 - re-enable IPS manifest informations, change maintainer
 - name the example config file /etc/pound.cfg.example
+- fix %files globbing for config file, pound.cfg.example is no longer editable
 * Thu Nov 26 2009 - Thomas Wagner
 - ported to SFE
 * Wed Aug 12 2009 - Robert Milkowski
