@@ -10,7 +10,7 @@
 
 Name:           SFEpound
 Summary:        The Pound program is a reverse proxy, load balancer and HTTPS front-end for Web server(s)
-Version:        2.4.5
+Version:        2.5
 License:        GPLv3
 URL:            http://www.apsis.ch/pound/
 Source:         http://www.apsis.ch/pound/Pound-%{version}.tgz
@@ -21,9 +21,9 @@ Distribution:	OpenSolaris
 Vendor:		OpenSolaris Community
 
 # OpenSolaris IPS Manifest Fields
-#Meta(info.upstream): Robert Segall <roseg@apsis.ch>
-#Meta(info.maintainer): Robert Milkowski <milek@wp.pl>
-#Meta(info.classification): org.opensolaris.category.2008:Applications/Internet
+Meta(info.upstream): Robert Segall <roseg@apsis.ch>
+Meta(info.maintainer): Thomas Wagner <tom68@users.sourceforge.net>
+Meta(info.classification): org.opensolaris.category.2008:Applications/Internet
 
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
@@ -62,12 +62,14 @@ servers that do not offer it natively.
 %build
 export CC=cc
 export LDFLAGS="%_ldflags -L/usr/sfw/lib -R/usr/sfw/lib -lmtmalloc"
-export CFLAGS="%{optflags} -I/usr/sfw/include"
+export CFLAGS="%{optflags} -I/usr/sfw/include -I/usr/include/pcre"
 ./configure --prefix=%{_prefix} --sysconfdir=/etc || (cat config.log; false)
 
 # regexec() in libpcreposix behaves differently than in libc
 # libc version works properly with pound
-perl -pi -e 's/-lpcreposix//g' Makefile
+#perl -pi -e 's/-lpcreposix//g' Makefile
+#change hard-coded "gcc" binary to the  
+perl -pi -e 's/gcc/\${CC}/g' Makefile
 
 make
 
@@ -78,7 +80,7 @@ make install DESTDIR=$RPM_BUILD_ROOT
 
 #Install example config file
 mkdir "${RPM_BUILD_ROOT}/etc/"
-cp "%{SOURCE2}" "${RPM_BUILD_ROOT}/etc/"
+cp "%{SOURCE2}" "${RPM_BUILD_ROOT}/etc/pound.cfg.example"
 
 #Install manifest
 %define svcdir /var/svc/manifest/application/proxy
@@ -117,10 +119,13 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Thr Sep 16 2010 - Thomas Wagner
+- bump version to 2.5
+- re-enable IPS manifest informations, change maintainer
+- name the example config file /etc/pound.cfg.example
 * Thu Nov 26 2009 - Thomas Wagner
 - ported to SFE
 * Wed Aug 12 2009 - Robert Milkowski
 - spec changes after jucr update
 * Thu May 05 2009 - Robert Milkowski
 - initial version
-## Re-build 24/09/09

@@ -1,6 +1,9 @@
 2010-08-18  Thomas Wagner  <tom68@users.sourceforge.net>
 
-        * SFEpound.spec: initial spec - http load balancer / rewrite proxy
+        * SFEpound.spec: initial spec - http load balancer / re-
+          write proxy.
+          with second commit bump to 2.5 (fix pcre compile/link,
+          rename example cfg file, tested only "pound -c")
 
 2010-09-15 Milan Jurik <sfnet@xylab.cz>
 
