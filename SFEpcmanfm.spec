@@ -13,6 +13,7 @@ Version:                 0.9.7
 Source:                  http://downloads.sourceforge.net/pcmanfm/pcmanfm-%{version}.tar.gz
 Patch1:                  pcmanfm-01-Wall.diff
 Patch2:                  pcmanfm-02-inline.diff
+Patch3:                  pcmanfm-03-state.diff
 URL:                     http://sourceforge.net/projects/pcmanfm/
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -33,6 +34,7 @@ Requires:                %{name}
 %setup -q -n pcmanfm-%version
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -82,6 +84,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Thu Sep 16 2010 - brian.cameron@oracle.com
+- Add patch pcmanfm-03-state.diff so that it builds with older compilers.
 * Tue Aug 04 2009 - brian.cameron@sun.com
 - Bump to 0.5.1
 * Mon May 25 2009 - alfred.peng@sun.com

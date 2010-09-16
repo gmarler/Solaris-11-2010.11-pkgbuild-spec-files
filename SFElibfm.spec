@@ -13,6 +13,7 @@ Version:                 0.1.12
 Source:                  http://downloads.sourceforge.net/pcmanfm/libfm-%{version}.tar.gz
 Patch1:                  libfm-01-studio.diff
 Patch2:                  libfm-02-inline.diff
+Patch3:                  libfm-03-fixcompile.diff
 URL:                     http://sourceforge.net/projects/pcmanfm/
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -43,6 +44,7 @@ Requires:                %{name}
 %setup -q -n libfm-%version
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -121,6 +123,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Thu Sep 16 2010 - brian.cameron@oracle.com
+- Add patch libfm-03-fixcompile.diff so that it builds with older compilers. 
 * Tue Aug 04 2009 - brian.cameron@sun.com
 - Bump to 0.5.1
 * Mon May 25 2009 - alfred.peng@sun.com

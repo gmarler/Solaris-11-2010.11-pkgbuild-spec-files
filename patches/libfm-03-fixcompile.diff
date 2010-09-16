@@ -1,0 +1,337 @@
+--- libfm-0.1.12/src/base/fm-file-info.h-orig	2010-09-15 21:47:24.710222215 -0700
++++ libfm-0.1.12/src/base/fm-file-info.h	2010-09-15 21:47:38.430077618 -0700
+@@ -58,7 +58,7 @@ struct _FmFileInfo
+     union {
+         const char* fs_id;
+         dev_t dev;
+-    };
++    } data;
+     uid_t uid;
+     gid_t gid;
+     goffset size;
+--- libfm-0.1.12/src/base/fm-file-info.c-orig	2010-09-15 21:47:53.877275479 -0700
++++ libfm-0.1.12/src/base/fm-file-info.c	2010-09-15 21:48:26.497717339 -0700
+@@ -167,12 +167,12 @@ void fm_file_info_set_from_gfileinfo(FmF
+ 
+     if(fm_path_is_native(fi->path))
+     {
+-        fi->dev = g_file_info_get_attribute_uint32(inf, G_FILE_ATTRIBUTE_UNIX_DEVICE);
++        fi->data.dev = g_file_info_get_attribute_uint32(inf, G_FILE_ATTRIBUTE_UNIX_DEVICE);
+     }
+     else
+     {
+         tmp = g_file_info_get_attribute_string(inf, G_FILE_ATTRIBUTE_ID_FILESYSTEM);
+-        fi->fs_id = g_intern_string(tmp);
++        fi->data.fs_id = g_intern_string(tmp);
+     }
+ 
+     fi->mtime = g_file_info_get_attribute_uint64(inf, G_FILE_ATTRIBUTE_TIME_MODIFIED);
+@@ -304,9 +304,9 @@ void fm_file_info_copy(FmFileInfo* fi, F
+ 
+     fi->mode = src->mode;
+     if(fm_path_is_native(fi->path))
+-        fi->dev = src->dev;
++        fi->data.dev = src->data.dev;
+     else
+-        fi->fs_id = src->fs_id;
++        fi->data.fs_id = src->data.fs_id;
+     fi->uid = src->uid;
+     fi->gid = src->gid;
+     fi->size = src->size;
+@@ -557,12 +557,12 @@ gboolean fm_file_info_list_is_same_fs(Fm
+                 return FALSE;
+             if( is_native )
+             {
+-                if( fi->dev != fi2->dev )
++                if( fi->data.dev != fi2->data.dev )
+                     return FALSE;
+             }
+             else
+             {
+-                if( fi->fs_id != fi2->fs_id )
++                if( fi->data.fs_id != fi2->data.fs_id )
+                     return FALSE;
+             }
+ 		}
+--- libfm-0.1.12/src/gtk/fm-places-view.c-orig	2010-09-15 21:52:59.390356474 -0700
++++ libfm-0.1.12/src/gtk/fm-places-view.c	2010-09-15 21:54:46.263136683 -0700
+@@ -63,7 +63,7 @@ typedef struct _PlaceItem
+     {
+         GVolume* vol;
+         FmBookmarkItem* bm_item;
+-    };
++    } data;
+ }PlaceItem;
+ 
+ static void fm_places_view_finalize  			(GObject *object);
+@@ -201,7 +201,7 @@ static void place_item_free(PlaceItem* i
+     switch(item->type)
+     {
+     case PLACE_VOL:
+-        g_object_unref(item->vol);
++        g_object_unref(item->data.vol);
+         break;
+     }
+     fm_file_info_unref(item->fi);
+@@ -288,15 +288,15 @@ static void update_vol(PlaceItem* item, 
+     GdkPixbuf* pix;
+     GMount* mount;
+ 
+-    name = g_volume_get_name(item->vol);
++    name = g_volume_get_name(item->data.vol);
+     if(item->fi->icon)
+         fm_icon_unref(item->fi->icon);
+-    gicon = g_volume_get_icon(item->vol);
++    gicon = g_volume_get_icon(item->data.vol);
+     icon = fm_icon_from_gicon(gicon);
+     item->fi->icon = icon;
+     g_object_unref(gicon);
+ 
+-    mount = g_volume_get_mount(item->vol);
++    mount = g_volume_get_mount(item->data.vol);
+     if(mount)
+     {
+         if(!item->fi->path)
+@@ -335,7 +335,7 @@ static void add_vol(GVolume* vol, FmFile
+     item = g_slice_new0(PlaceItem);
+     item->fi = fm_file_info_new();
+     item->type = PLACE_VOL;
+-    item->vol = (GVolume*)g_object_ref(vol);
++    item->data.vol = (GVolume*)g_object_ref(vol);
+     gtk_list_store_insert_before(model, &it, &sep_it);
+     gtk_list_store_set(model, &it, COL_INFO, item, -1);
+     update_vol(item, &it);
+@@ -353,7 +353,7 @@ static PlaceItem* find_vol(GVolume* vol,
+             PlaceItem* item;
+             gtk_tree_model_get(GTK_TREE_MODEL(model), &it, COL_INFO, &item, -1);
+ 
+-            if(item && item->type == PLACE_VOL && item->vol == vol)
++            if(item && item->type == PLACE_VOL && item->data.vol == vol)
+             {
+                 *_it = it;
+                 return item;
+@@ -446,7 +446,7 @@ static void add_bookmarks(FmFileInfoJob*
+             item->fi->icon = fm_icon_ref(remote_icon);
+             pix = remote_pix;
+         }
+-        item->bm_item = bm;
++        item->data.bm_item = bm;
+         gtk_list_store_append(model, &it);
+         gtk_list_store_set(model, &it, COL_ICON, pix, COL_LABEL, bm->name, COL_INFO, item, -1);
+     }
+@@ -692,13 +692,13 @@ void activate_row(FmPlacesView* view, gu
+         case PLACE_VOL:
+         {
+             GFile* gf;
+-            GMount* mnt = g_volume_get_mount(item->vol);
++            GMount* mnt = g_volume_get_mount(item->data.vol);
+             if(!mnt)
+             {
+                 GtkWindow* parent = GTK_WINDOW(gtk_widget_get_toplevel(GTK_WIDGET(view)));
+-                if(!fm_mount_volume(parent, item->vol, TRUE))
++                if(!fm_mount_volume(parent, item->data.vol, TRUE))
+                     return;
+-                mnt = g_volume_get_mount(item->vol);
++                mnt = g_volume_get_mount(item->data.vol);
+                 if(!mnt)
+                 {
+                     g_debug("GMount is invalid after successful g_volume_mount().\nThis is quite possibly a gvfs bug.\nSee https://bugzilla.gnome.org/show_bug.cgi?id=552168");
+@@ -761,7 +761,7 @@ GtkWidget* place_item_get_menu(PlaceItem
+     /* FIXME: merge with FmFileMenu when possible */
+     if(item->type == PLACE_PATH)
+     {
+-        if(item->bm_item)
++        if(item->data.bm_item)
+         {
+             gtk_action_group_add_actions(act_grp, bm_menu_actions, G_N_ELEMENTS(bm_menu_actions), item);
+             gtk_ui_manager_add_ui_from_string(ui, bookmark_menu_xml, -1, NULL);
+@@ -779,7 +779,7 @@ GtkWidget* place_item_get_menu(PlaceItem
+         gtk_action_group_add_actions(act_grp, vol_menu_actions, G_N_ELEMENTS(vol_menu_actions), item);
+         gtk_ui_manager_add_ui_from_string(ui, vol_menu_xml, -1, NULL);
+ 
+-        mnt = g_volume_get_mount(item->vol);
++        mnt = g_volume_get_mount(item->data.vol);
+         if(mnt) /* mounted */
+         {
+             g_object_unref(mnt);
+@@ -792,7 +792,7 @@ GtkWidget* place_item_get_menu(PlaceItem
+             gtk_action_set_sensitive(act, FALSE);
+         }
+ 
+-        if(g_volume_can_eject(item->vol))
++        if(g_volume_can_eject(item->data.vol))
+             act = gtk_action_group_get_action(act_grp, "Unmount");
+         else
+             act = gtk_action_group_get_action(act_grp, "Eject");
+@@ -852,10 +852,10 @@ gboolean on_button_press(GtkWidget* view
+ void on_mount(GtkAction* act, gpointer user_data)
+ {
+     PlaceItem* item = (PlaceItem*)user_data;
+-    GMount* mnt = g_volume_get_mount(item->vol);
++    GMount* mnt = g_volume_get_mount(item->data.vol);
+     if(!mnt)
+     {
+-        if(!fm_mount_volume(NULL, item->vol, TRUE))
++        if(!fm_mount_volume(NULL, item->data.vol, TRUE))
+             return;
+     }
+     else
+@@ -865,7 +865,7 @@ void on_mount(GtkAction* act, gpointer u
+ void on_umount(GtkAction* act, gpointer user_data)
+ {
+     PlaceItem* item = (PlaceItem*)user_data;
+-    GMount* mnt = g_volume_get_mount(item->vol);
++    GMount* mnt = g_volume_get_mount(item->data.vol);
+     if(mnt)
+     {
+         fm_unmount_mount(NULL, mnt, TRUE);
+@@ -876,25 +876,25 @@ void on_umount(GtkAction* act, gpointer 
+ void on_eject(GtkAction* act, gpointer user_data)
+ {
+     PlaceItem* item = (PlaceItem*)user_data;
+-    fm_eject_volume(NULL, item->vol, TRUE);
++    fm_eject_volume(NULL, item->data.vol, TRUE);
+ }
+ 
+ void on_remove_bm(GtkAction* act, gpointer user_data)
+ {
+     PlaceItem* item = (PlaceItem*)user_data;
+-    fm_bookmarks_remove(bookmarks, item->bm_item);
++    fm_bookmarks_remove(bookmarks, item->data.bm_item);
+ }
+ 
+ void on_rename_bm(GtkAction* act, gpointer user_data)
+ {
+     PlaceItem* item = (PlaceItem*)user_data;
+     char* new_name = fm_get_user_input(NULL, _("Rename Bookmark Item"),
+-                                        _("Enter a new name:"), item->bm_item->name);
++                                        _("Enter a new name:"), item->data.bm_item->name);
+     if(new_name)
+     {
+-        if(strcmp(new_name, item->bm_item->name))
++        if(strcmp(new_name, item->data.bm_item->name))
+         {
+-            fm_bookmarks_rename(bookmarks, item->bm_item, new_name);
++            fm_bookmarks_rename(bookmarks, item->data.bm_item, new_name);
+         }
+         g_free(new_name);
+     }
+--- libfm-0.1.12/src/gtk/fm-file-menu.c-orig	2010-09-15 21:55:04.318139746 -0700
++++ libfm-0.1.12/src/gtk/fm-file-menu.c	2010-09-15 21:55:10.577165483 -0700
+@@ -251,7 +251,7 @@ FmFileMenu* fm_file_menu_new_for_files(F
+             }
+             else
+             {
+-                g_debug("%s", fi->fs_id);
++                g_debug("%s", fi->data.fs_id);
+             }
+         }
+     }
+--- libfm-0.1.12/src/gtk/fm-dnd-dest.c-orig	2010-09-15 21:56:19.402737048 -0700
++++ libfm-0.1.12/src/gtk/fm-dnd-dest.c	2010-09-15 21:56:55.005094569 -0700
+@@ -236,9 +236,9 @@ gboolean fm_dnd_dest_query_info(FmDndDes
+             if(dd->src_dev || dd->src_fs_id)
+             {
+                 if(fm_path_is_native(path))
+-                    same_fs = dd->src_dev && (dd->src_dev == dd->dest_file->dev);
++                    same_fs = dd->src_dev && (dd->src_dev == dd->dest_file->data.dev);
+                 else /* FIXME: can we use direct comparison here? */
+-                    same_fs = dd->src_fs_id && (0 == g_strcmp0(dd->src_fs_id, dd->dest_file->fs_id));
++                    same_fs = dd->src_fs_id && (0 == g_strcmp0(dd->src_fs_id, dd->dest_file->data.fs_id));
+             }
+             else
+                 same_fs = FALSE;
+@@ -328,9 +328,9 @@ gboolean cache_src_file_infos(FmDndDest*
+             {
+                 FmFileInfo* fi = (FmFileInfo*)fm_list_peek_head(dd->src_files);
+                 if(fm_path_is_native(fi->path))
+-                    dd->src_dev = fi->dev;
++                    dd->src_dev = fi->data.dev;
+                 else
+-                    dd->src_fs_id = fi->fs_id;
++                    dd->src_fs_id = fi->data.fs_id;
+             }
+         }
+     }
+--- libfm-0.1.12/src/job/fm-file-ops-job.c-orig	2010-09-15 21:49:23.682810313 -0700
++++ libfm-0.1.12/src/job/fm-file-ops-job.c	2010-09-15 21:50:07.938165945 -0700
+@@ -188,7 +188,7 @@ void fm_file_ops_job_set_chown(FmFileOps
+ 
+ void fm_file_ops_job_set_recursive(FmFileOpsJob* job, gboolean recursive)
+ {
+-    job->recursive = recursive;
++    job->data.recursive = recursive;
+ }
+ 
+ static void emit_cur_file(FmFileOpsJob* job, const char* cur_file)
+--- libfm-0.1.12/src/job/fm-file-ops-job.h-orig	2010-09-15 21:49:50.967458307 -0700
++++ libfm-0.1.12/src/job/fm-file-ops-job.h	2010-09-15 21:49:58.175575048 -0700
+@@ -93,7 +93,7 @@ struct _FmFileOpsJob
+     {
+         gboolean recursive; /* used by chmod/chown only */
+         gboolean skip_dir_content; /* used by _fm_file_ops_job_copy_file */
+-    };
++    } data;
+ 
+     /* for chmod and chown */
+     guint32 uid;
+--- libfm-0.1.12/src/job/fm-file-info-job.c-orig	2010-09-15 21:50:33.649060826 -0700
++++ libfm-0.1.12/src/job/fm-file-info-job.c	2010-09-15 21:50:46.238096986 -0700
+@@ -215,7 +215,7 @@ _retry:
+         fi->mtime = st.st_mtime;
+         fi->atime = st.st_atime;
+         fi->size = st.st_size;
+-        fi->dev = st.st_dev;
++        fi->data.dev = st.st_dev;
+         fi->uid = st.st_uid;
+         fi->gid = st.st_gid;
+ 
+--- libfm-0.1.12/src/job/fm-file-ops-job-xfer.c-orig	2010-09-15 21:51:01.659456019 -0700
++++ libfm-0.1.12/src/job/fm-file-ops-job-xfer.c	2010-09-15 21:51:22.522028302 -0700
+@@ -115,7 +115,7 @@ _retry_query_src_info:
+                         /* when a dir is skipped, we need to know its total size to calculate correct progress */
+                         job->finished += size;
+                         fm_file_ops_job_emit_percent(job);
+-                        job->skip_dir_content = TRUE;
++                        job->data.skip_dir_content = TRUE;
+                         ret = FALSE;
+                         break;
+                     case FM_FILE_OP_OVERWRITE:
+@@ -179,7 +179,7 @@ _retry_query_src_info:
+                         if( inf )
+                         {
+                             /* don't overwrite dir content, only calculate progress. */
+-                            if(G_UNLIKELY(job->skip_dir_content))
++                            if(G_UNLIKELY(job->data.skip_dir_content))
+                             {
+                                 job->finished += g_file_info_get_size(inf);
+                                 fm_file_ops_job_emit_percent(job);
+@@ -240,7 +240,7 @@ _retry_query_src_info:
+                         goto _retry_enum_children;
+                 }
+             }
+-            job->skip_dir_content = FALSE;
++            job->data.skip_dir_content = FALSE;
+ 		}
+ 		break;
+ 
+--- libfm-0.1.12/src/job/fm-file-ops-job-change-attr.c-orig	2010-09-15 21:51:57.775757519 -0700
++++ libfm-0.1.12/src/job/fm-file-ops-job-change-attr.c	2010-09-15 21:52:08.136660268 -0700
+@@ -143,7 +143,7 @@ _retry_chmod:
+     if(changed && job->src_folder_mon)
+         g_file_monitor_emit_event(job->src_folder_mon, gf, NULL, G_FILE_MONITOR_EVENT_ATTRIBUTE_CHANGED);
+ 
+-    if( !fm_job_is_cancelled(FM_JOB(job)) && job->recursive && type == G_FILE_TYPE_DIRECTORY)
++    if( !fm_job_is_cancelled(FM_JOB(job)) && job->data.recursive && type == G_FILE_TYPE_DIRECTORY)
+     {
+         GFileMonitor* old_mon = job->src_folder_mon;
+ 		GFileEnumerator* enu;
+@@ -208,7 +208,7 @@ gboolean _fm_file_ops_job_change_attr_ru
+ {
+ 	GList* l;
+ 	/* prepare the job, count total work needed with FmDeepCountJob */
+-    if(job->recursive)
++    if(job->data.recursive)
+     {
+         FmDeepCountJob* dc = fm_deep_count_job_new(job->srcs, FM_DC_JOB_DEFAULT);
+         fm_job_run_sync(FM_JOB(dc));

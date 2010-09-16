@@ -1,0 +1,11 @@
+--- pcmanfm-0.9.7/src/desktop.c-orig	2010-09-15 22:05:22.670723652 -0700
++++ pcmanfm-0.9.7/src/desktop.c	2010-09-15 22:05:30.885493786 -0700
+@@ -1411,7 +1411,7 @@ void paint_item(FmDesktop* self, FmDeskt
+     pango_layout_set_text(self->pl, NULL, 0);
+ 
+     if(item == self->focus && gtk_widget_has_focus(widget) )
+-        gtk_paint_focus(style, window, gtk_widget_get_state(widget),
++        gtk_paint_focus(style, window, GTK_WIDGET_STATE(widget),
+                         expose_area, widget, "icon_view",
+                         item->text_rect.x, item->text_rect.y, item->text_rect.width, item->text_rect.height);
+ 
