@@ -13,6 +13,7 @@ Version:                 0.4.4
 Source:                  http://nchc.dl.sourceforge.net/sourceforge/lxde/lxsession-%{version}.tar.gz
 Patch1:                  lxsession-01-Werror.diff
 Patch2:                  lxsession-02-fixcrash.diff
+Patch3:                  lxsession-03-reboot.diff
 URL:                     http://sourceforge.net/projects/lxde/
 
 SUNW_BaseDir:            %{_basedir}
@@ -31,6 +32,7 @@ Requires:                %{name}
 %setup -q -n lxsession-%version
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -78,6 +80,9 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Fri Sep 17 2010 - brian.cameron@oracle.com
+- Add patch lxsession-03-reboot.diff so that HAL is not checked to see if
+  reboot/shutdown is available.
 * Tue Apr 27 2010 - brian.cameron@sun.com
 - Bump to 0.4.4.
 * Mon Feb 15 2010 - brian.cameron@sun.com

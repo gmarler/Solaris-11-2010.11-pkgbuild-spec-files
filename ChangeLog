@@ -1,5 +1,15 @@
 2010-09-16  Brian Cameron  <brian.cameron@oracle.com>
 
+	* SFElxsession.spec, patches/lxsession-03-reboot.diff:  Fix the LXDE
+	  logout dialog so that it only checks ConsoleKit whether th euser
+	  has the authority to do shutdown/reboot.  The HAL fallback interfaces
+	  are incorrectly returning TRUE even when the user does not have
+	  authority.  So this patch fixes the logout dialog to only use the
+	  ConsoleKit interfaces and this correctly only shows the shutdown and
+	  reboot buttons if the user has solaris.system.shutdown authority.
+
+2010-09-16  Brian Cameron  <brian.cameron@oracle.com>
+
 	* SFElibfm.spec, SFEpcmanfm.spec, patches/libfm-03-fixcompile.diff,
 	  patches/pcmanfm-03-state.diff:  Add patches so these modules can
 	  be built with older versions of the Sun Studio compiler.
