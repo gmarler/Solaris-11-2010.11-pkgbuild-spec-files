@@ -1,5 +1,5 @@
 #
-# spec file for package SUNWgnugetopt
+# spec file for package SFEgnugetopt
 #
 # includes module(s): getopt
 #
@@ -9,16 +9,15 @@
 %include Solaris.inc
 %include usr-gnu.inc
  
-Name:                    SUNWgnugetopt
-Summary:                 getopt - a GNU getopt(3) compatible getopt utility
-Version:                 1.1.4
-URL:                     http://software.frodo.looijaard.name/getopt/
-#Source:		 http://software.frodo.looijaard.name/getopt/files/getopt-%{version}.tar.gz
-Source:			 http://pkgbuild.sf.net/spec-files-extra/tarballs/getopt-%{version}.tar.gz
-Patch1:                  getopt-01-locale.h.diff
-SUNW_BaseDir:            %{_basedir}
-SUNW_Copyright:          %{name}.copyright
-BuildRoot:               %{_tmppath}/%{name}-%{version}-build
+Name:                   SFEgnugetopt
+Summary:                getopt - a GNU getopt(3) compatible getopt utility
+Version:                1.1.4
+Group:			Utility
+URL:                    http://software.frodo.looijaard.name/getopt/
+Source:			http://software.frodo.looijaard.name/getopt/files/getopt-%{version}.tar.gz
+Patch1:                 getopt-01-locale.h.diff
+SUNW_BaseDir:           %{_basedir}
+BuildRoot:              %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 
 %prep
@@ -51,9 +50,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/*
 %doc Changelog README
 %doc(bzip2) COPYING
-%dir %attr (0755, root, other) %{_datadir}/doc
+%dir %attr (0755, root, other) %{_docdir}
 
 %changelog
+* Sun Sep 19 2010 - Milan Jurik
+- reintroducing as SFEgnugetopt
 * Tue Oct 14 2008 - michal.bielicki@halokwadrat.de
 - Recreated into SFE archive
 * Wed Sep 17 2008 - matt.keenn@sun.com

@@ -1,3 +1,7 @@
+2010-09-19 Milan Jurik <sfnet@xylab.cz>
+
+	* SFEgnugetopt.spec: reintroducing as SFEgnugetopt
+
 2010-09-16  Brian Cameron  <brian.cameron@oracle.com>
 
 	* SFElxsession.spec, patches/lxsession-03-reboot.diff:  Fix the LXDE
