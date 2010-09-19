@@ -1,6 +1,7 @@
 2010-09-19 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEgnugetopt.spec: reintroducing as SFEgnugetopt
+	* SFExmlto.spec: bump to 0.0.23
 
 2010-09-16  Brian Cameron  <brian.cameron@oracle.com>
 

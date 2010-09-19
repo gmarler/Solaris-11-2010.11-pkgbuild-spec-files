@@ -9,15 +9,3 @@
      do
        if [ "$source" = "$FORMAT_DIR" ]; then continue; fi
  
---- xmlto-0.0.20/Makefile.am.orig	2008-06-17 19:00:18.998237000 +0800
-+++ xmlto-0.0.20/Makefile.am	2008-06-17 19:37:04.027445000 +0800
-@@ -27,8 +27,7 @@
-   format/fo/mif \
-   format/fo/pcl \
-   format/fo/svg \
--  format/fo/txt \
--	xmlto.mak
-+  format/fo/txt 
- 
- EXTRA_DIST = xmlto.spec \
- 	FAQ \
