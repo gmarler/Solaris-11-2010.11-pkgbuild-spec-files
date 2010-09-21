@@ -6,7 +6,7 @@
 2010-09-16  Brian Cameron  <brian.cameron@oracle.com>
 
 	* SFElxsession.spec, patches/lxsession-03-reboot.diff:  Fix the LXDE
-	  logout dialog so that it only checks ConsoleKit whether th euser
+	  logout dialog so that it only checks ConsoleKit whether the user
 	  has the authority to do shutdown/reboot.  The HAL fallback interfaces
 	  are incorrectly returning TRUE even when the user does not have
 	  authority.  So this patch fixes the logout dialog to only use the
