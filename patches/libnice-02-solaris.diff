@@ -1,0 +1,64 @@
+--- libnice-0.0.13.orig/configure.ac	2010-07-20 17:56:56.000000000 -0400
++++ libnice-0.0.13/configure.ac	2010-09-21 20:10:59.960332261 -0400
+@@ -55,7 +55,9 @@
+ AC_HEADER_ASSERT
+ AC_HEADER_STDBOOL
+ AC_DEFINE([_FORTIFY_SOURCE], [2], [Define to `2' to get GNU/libc warnings.])
++AC_DEFINE([_XPG4_2], [ ], [Use XPG4.2 struct msghdr, but don't require C99.])
+ AC_DEFINE([NICEAPI_EXPORT], [ ], [Public library function implementation])
++AC_CHECK_HEADERS([sys/sockio.h])
+ AC_CHECK_HEADERS([arpa/inet.h net/in.h ifaddrs.h], \
+ 		      [AC_DEFINE(HAVE_GETIFADDRS, [1], \
+ 		       [Whether getifaddrs() is available on the system])])
+@@ -71,8 +92,12 @@
+ 
+ # Checks for libraries.
+ AC_CHECK_LIB(rt, clock_gettime, [LIBRT="-lrt"], [LIBRT=""])
++AC_CHECK_LIB(socket, socket, [LIBSOCKET="-lsocket"], [LIBSOCKET=""])
++AC_CHECK_LIB(nsl, getaddrinfo, [LIBNSL="-lnsl"], [LIBNSL=""])
+ AC_CHECK_FUNCS([poll])
+ AC_SUBST(LIBRT)
++AC_SUBST(LIBSOCKET)
++AC_SUBST(LIBNSL)
+ 
+ PKG_CHECK_MODULES(GLIB, [dnl
+ 	glib-2.0 >= 2.10 dnl
+--- libnice-0.0.13.orig/agent/interfaces.c	2010-07-20 17:54:40.000000000 -0400
++++ libnice-0.0.13/agent/interfaces.c	2010-09-21 20:09:24.623604051 -0400
+@@ -46,6 +46,10 @@
+  #include <ifaddrs.h>
+ #endif
+ 
++#ifdef HAVE_SYS_SOCKIO_H
++ #include <sys/sockio.h>
++#endif
++
+ #include <net/if.h>
+ #include <net/if_arp.h>
+ #include <arpa/inet.h>
+--- libnice-0.0.13.orig/stun/tools/Makefile.am	2009-08-14 18:46:12.000000000 -0400
++++ libnice-0.0.13/stun/tools/Makefile.am	2010-09-21 19:55:27.473601046 -0400
+@@ -16,10 +16,10 @@
+ check_PROGRAMS = stund
+ 
+ stund_SOURCES = stund.c stund.h
+-stund_LDADD = $(top_builddir)/stun/libstun.la
++stund_LDADD = $(top_builddir)/stun/libstun.la $(LIBSOCKET)
+ 
+ stunbdc_SOURCES = stunbdc.c 
+ 
+-stunbdc_LDADD = $(top_builddir)/stun/libstun.la
++stunbdc_LDADD = $(top_builddir)/stun/libstun.la $(LIBSOCKET) $(LIBNSL)
+ 
+ 
+--- libnice-0.0.13.orig/stun/Makefile.am	2009-08-14 18:46:12.000000000 -0400
++++ libnice-0.0.13/stun/Makefile.am	2010-09-21 12:26:22.892182282 -0400
+@@ -31,7 +31,7 @@
+ 	usages/turn.c usages/turn.h \
+ 	usages/timer.c usages/timer.h
+ 
+-libstun_la_LIBADD = $(LIBRT)
++libstun_la_LIBADD = $(LIBRT) $(LIBSOCKET)
+ 
+ EXTRA_DIST = win32_common.h
+ 

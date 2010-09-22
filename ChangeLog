@@ -1,3 +1,10 @@
+2010-09-21  Albert Lee  <trisk@opensolaris.org>
+
+	* SFElibnice.spec, base-specs/libnice.spec,
+	  patches/libnice-01-nogcc.diff, patches/libnice-02-solaris.diff: *NEW*
+	  Implementation of the IETF's Interactive Connectivity Establishment
+	  (ICE) standard
+
 2010-09-19 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEgnugetopt.spec: reintroducing as SFEgnugetopt
