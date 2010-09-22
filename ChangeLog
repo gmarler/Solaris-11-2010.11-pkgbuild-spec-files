@@ -4,6 +4,8 @@
 	  patches/libnice-01-nogcc.diff, patches/libnice-02-solaris.diff: *NEW*
 	  Implementation of the IETF's Interactive Connectivity Establishment
 	  (ICE) standard
+	* SFElibnice.spec: Fix %files, %install, and dependencies
+	* base-specs/libnice.spec: Add libtoolize
 
 2010-09-19 Milan Jurik <sfnet@xylab.cz>
 

@@ -32,7 +32,12 @@ Glib-free library, libstun as well as GStreamer elements.
 
 %include default-depend.inc
 
-BuildRequires:  SUNWgnome-media-devel
+Requires: SUNWlxml
+Requires: SUNWglib2
+Requires: SUNWgnome-media
+BuildRequires: SUNWgtk-doc
+BuildRequires: SUNWglib2-devel
+BuildRequires: SUNWgnome-media-devel
 
 %package devel
 Summary:                 %{summary} - development files
@@ -69,34 +74,51 @@ rm -rf $RPM_BUILD_ROOT
 
 %libnice.install -d %name-%version/%base_arch
 
+%if %{!?_without_gtk_doc:0}%{?_without_gtk_doc:1}
+rm -rf $RPM_BUILD_ROOT%{_datadir}/gtk-doc
+%endif
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,bin)
+%dir %attr (0755, root, bin) %{_bindir}
+%{_bindir}/stunbdc
+%{_bindir}/stund
 %dir %attr (0755, root, bin) %{_libdir}
-%{_libdir}/libnice-1.0.so.*
+%{_libdir}/libnice.so.*
+%{_libdir}/gstreamer-*/*.so
 %ifarch amd64 sparcv9
 %dir %attr (0755, root, bin) %{_libdir}/%{_arch64}
-%{_libdir}/%{_arch64}/libnice-1.0.so.*
+%{_libdir}/%{_arch64}/libnice.so.*
+%{_libdir}/%{_arch64}/gstreamer-*/*.so
 %endif
 
 %files devel
 %defattr(-,root,bin)
 %dir %attr (0755, root, bin) %{_libdir}
 %dir %attr (0755, root, other) %{_libdir}/pkgconfig
-%{_libdir}/pkgconfig/libnice-1.0.pc
+%{_libdir}/pkgconfig/nice.pc
 %ifarch amd64 sparcv9
 %dir %attr (0755, root, other) %{_libdir}/%{_arch64}/pkgconfig
-%{_libdir}/%{_arch64}/pkgconfig/*.pc
+%{_libdir}/%{_arch64}/pkgconfig/nice.pc
 %endif
-%{_libdir}/libnice-1.0.so
+%{_libdir}/libnice.so
 %ifarch amd64 sparcv9
 %dir %attr (0755, root, bin) %{_libdir}/%{_arch64}
-%{_libdir}/%{_arch64}/libnice-1.0.so
+%{_libdir}/%{_arch64}/libnice.so
 %endif
-%{_includedir}/nice-1.0/*
+%dir %attr (0755, root, bin) %{_includedir}
+%{_includedir}/stun
+%{_includedir}/nice
+%if %{!?_without_gtk_doc:1}%{?_without_gtk_doc:0}
+%dir %attr (0755, root, sys) %{_datadir}
+%{_datadir}/gtk-doc
+%endif
 
 %changelog
+* Tue Sep 21 2010 - Albert Lee <trisk@opensolaris.org>
+- Fix %files, %install, and dependencies
 * Mon Sep 20 2010 - Albert Lee <trisk@opensolaris.org>
 - Initial spec

@@ -28,6 +28,7 @@ fi
 
 export PKG_CONFIG_PATH="%{_prefix}/lib/pkgconfig"
 
+libtoolize -f -c
 aclocal --force
 autoheader
 automake -a -c
@@ -51,5 +52,7 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/gstreamer-0.10/*.{a,la}
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Tue Sep 21 2010 - Albert Lee <trisk@opensolaris.org.
+- Add libtoolize
 * Mon Sep 20 2010 - Albert Lee <trisk@opensolaris.org>
-Initial spec.
+- Initial spec
