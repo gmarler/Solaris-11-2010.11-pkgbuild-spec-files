@@ -12,14 +12,13 @@
 Name:                    SFEfreeciv
 Summary:                 freeciv - a multiplayer strategy game
 URL:                     http://freeciv.wikia.com/
-Version:                 2.1.8
+Version:                 2.2.3
+Group:                   Amusements/Games
 Source:                  http://%{sf_mirror}/freeciv/freeciv-%{version}.tar.bz2
-# date:2008-12-23 type:bug owner:halton bugid:40659
-Patch1:                  freeciv-01-solaris-sh.diff
-# date:2008-12-23 type:bug owner:halton bugid:40660
-Patch2:                  freeciv-02-suncc-enum-array.diff
 # date:2008-12-23 type:bug owner:halton bugid:40661
 Patch3:                  freeciv-03-strlcpy.diff
+Patch4:                  freeciv-04-nothing.diff
+Patch5:                  freeciv-05-return.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -44,9 +43,9 @@ Requires: SUNWpostrun-root
 
 %prep
 %setup -q -n freeciv-%version
-%patch1 -p1
-%patch2 -p1
 %patch3 -p1
+%patch4 -p1
+%patch5 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -76,6 +75,8 @@ make -j$CPUS
 %install
 make install DESTDIR=$RPM_BUILD_ROOT
 
+rm $RPM_BUILD_ROOT%{_libdir}/*.la
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -84,6 +85,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}
 %dir %attr (0755, root, sys) %{_datadir}
 %{_datadir}/freeciv
+%{_libdir}/*
 %dir %attr (0755, root, other) %{_datadir}/applications
 %{_datadir}/applications/*
 %dir %attr (0755, root, other) %{_datadir}/pixmaps
@@ -103,6 +105,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_sysconfdir}/ggz.modules
 
 %changelog
+* Thu Sep 23 2010 - Milan Jurik
+- bump to 2.2.3
 * Thu Jan 15 2009 - halton.huo@sun.com
 - Bump to 2.1.8
 - Remove unused patch signedchar.diff

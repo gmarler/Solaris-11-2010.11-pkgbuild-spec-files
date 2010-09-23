@@ -1,0 +1,26 @@
+--- freeciv-2.2.3/client/climisc.c	2010-09-12 22:17:04.000000000 +0200
++++ freeciv-2.2.3-patch/client/climisc.c	2010-09-23 17:11:45.884748550 +0200
+@@ -326,9 +326,10 @@
+ **************************************************************************/
+ void global_warming_scaled(int *chance, int *rate, int max)
+ {
+-  return catastrophe_scaled(chance, rate, max,
++  catastrophe_scaled(chance, rate, max,
+                             game.info.heating, game.info.globalwarming,
+                             game.info.warminglevel);
++  return;
+ }
+ 
+ /**************************************************************************
+@@ -336,9 +337,10 @@
+ **************************************************************************/
+ void nuclear_winter_scaled(int *chance, int *rate, int max)
+ {
+-  return catastrophe_scaled(chance, rate, max,
++  catastrophe_scaled(chance, rate, max,
+                             game.info.cooling, game.info.nuclearwinter,
+                             game.info.coolinglevel);
++  return;
+ }
+ 
+ /**************************************************************************

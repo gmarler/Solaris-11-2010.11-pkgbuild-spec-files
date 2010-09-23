@@ -2,6 +2,7 @@
 
 	* base-specs/ggz-gtk-client.spec: fix Sun Studio build
 	* SFEldns.spec: bump to 1.6.6
+	* SFEfreeciv.spec: bump to 2.2.3
 
 2010-09-21  Albert Lee  <trisk@opensolaris.org>
 
