@@ -18,6 +18,7 @@ Vendor:         Sun Microsystems, Inc.
 URL:            http://www.ggzgamingzone.org/
 Summary:        Gtk+ client libraries for GGZ gaming zone
 Source:         http://mirrors.ibiblio.org/pub/mirrors/ggzgamingzone/ggz/%{version}/%{name}-%{version}.tar.gz
+Patch1:		ggz-gtk-client-01-m4.diff
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Docdir:         %{_defaultdocdir}/doc
@@ -48,6 +49,7 @@ developing applications that use %{name}.
 
 %prep
 %setup -q
+%patch1 -p1
 
 %build
 %ifos linux
@@ -109,5 +111,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/ggz-*.h
 
 %changelog
+* Thu Sep 23 2010 - Milan Jurik
+- fix Sun Studio build
 * Thu Jan 15 2009 - halton.huo@sun.com
 - Initial version

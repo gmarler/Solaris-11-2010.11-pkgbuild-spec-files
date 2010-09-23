@@ -1,3 +1,7 @@
+2010-09-23 Milan Jurik <sfnet@xylab.cz>
+
+	* base-specs/ggz-gtk-client.spec: fix Sun Studio build
+
 2010-09-21  Albert Lee  <trisk@opensolaris.org>
 
 	* SFElibnice.spec, base-specs/libnice.spec,
