@@ -1,6 +1,7 @@
 2010-09-23 Milan Jurik <sfnet@xylab.cz>
 
 	* base-specs/ggz-gtk-client.spec: fix Sun Studio build
+	* SFEldns.spec: bump to 1.6.6
 
 2010-09-21  Albert Lee  <trisk@opensolaris.org>
 
