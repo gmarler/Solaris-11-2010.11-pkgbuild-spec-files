@@ -12,10 +12,10 @@
 Name:		SFErubygem-dnsruby
 URL:		http://rubyforge.org/projects/dnsruby
 Summary:	Dnsruby is a pure Ruby DNS client library
-Version:	1.47
+Version:	1.50
 Group:		Development/Languages/Ruby
 License:	Apache
-Source:		http://rubyforge.org/frs/download.php/70759/%{src_name}-%{version}.gem
+Source:		http://rubyforge.org/frs/download.php/72505/%{src_name}-%{version}.gem
 SUNW_BaseDir:	/
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -41,5 +41,7 @@ rm -rf $RPM_BUILD_ROOT
 %{gemdir}
 
 %changelog
+* Fri Sep 24 2010 - Milan Jurik
+- bump to 1.50
 * Thu Jan 10 2010 - Milan Jurik
 - Initial version

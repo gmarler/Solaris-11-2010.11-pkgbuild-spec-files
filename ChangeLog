@@ -1,3 +1,7 @@
+2010-09-24 Milan Jurik <sfnet@xylab.cz>
+
+	* SFErubygem-dnsruby.spec: bump to 1.50
+
 2010-09-23 Milan Jurik <sfnet@xylab.cz>
 
 	* base-specs/ggz-gtk-client.spec: fix Sun Studio build
