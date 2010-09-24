@@ -2,6 +2,7 @@
 
 	* SFErubygem-dnsruby.spec: bump to 1.50
 	* SFEopendnssec.spec: bump to 1.1.3
+	* SFEclamav.spec: bump to 0.96.3
 
 2010-09-23 Milan Jurik <sfnet@xylab.cz>
 
