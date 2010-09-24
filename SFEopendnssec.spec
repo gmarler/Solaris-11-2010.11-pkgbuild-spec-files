@@ -10,7 +10,7 @@
 Name:		SFEopendnssec
 URL:		http://www.opendnssec.org/
 Summary:	OpenDNSSEC secures zone data just before it is published in an authoritative name server
-Version:	1.1.0
+Version:	1.1.3
 Group:		Applications/System 
 License:	BSD
 Source:		http://www.opendnssec.org/files/source/%{src_name}-%{version}.tar.gz 
@@ -140,5 +140,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}
 
 %changelog
+* Fri Sep 24 2010 - Milan Jurik
+- bump to 1.1.3
 * Sun Jun 10 2010 - Milan Jurik
 - Initial version
