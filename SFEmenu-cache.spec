@@ -18,6 +18,9 @@ Patch2:                  menu-cache-02-fixcrash.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
+BuildRequires:           SUNWglib2-devel
+Requires:                SUNWglib2
+BuildRequires:           SUNWgnome-common-devel
 
 %prep
 %setup -q -n menu-cache-%version
