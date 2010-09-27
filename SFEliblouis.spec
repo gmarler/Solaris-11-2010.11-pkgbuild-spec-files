@@ -39,6 +39,9 @@ export PYTHON="/usr/bin/python%{pythonver}"
 %liblouis.install -d %name-%liblouis.version
 rm $RPM_BUILD_ROOT/%{_infodir}/dir
 
+find $RPM_BUILD_ROOT%{_libdir} -type f -name "*.a" -exec rm -f {} ';'
+find $RPM_BUILD_ROOT%{_libdir} -type f -name "*.la" -exec rm -f {} ';'
+
 %{?pkgbuild_postprocess: %pkgbuild_postprocess -v -c "%{liblouis.version}:%{jds_version}:%{name}:$RPM_ARCH:%(date +%%Y-%%m-%%d):%{support_level}" $RPM_BUILD_ROOT}
 
 %clean
@@ -97,6 +100,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/liblouis/*
 
 %changelog
+* Fri Sep 24 2010 - Brian Cameron  <brian.cameron@oracle.com>
+- Remove all .la files.
 * Mon Jan 11 2010 - Willie Walker
 - Update to use python 2.6 and use %{pythonver}.
 * Tue Aug 25 2009 - Willie Walker

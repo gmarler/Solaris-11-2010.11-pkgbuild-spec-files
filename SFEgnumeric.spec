@@ -77,7 +77,8 @@ make
 %install
 rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
-rm $RPM_BUILD_ROOT%{_libdir}/*.la
+
+find $RPM_BUILD_ROOT%{_libdir} -type f -name "*.la" -exec rm -f {} ';'
 
 %if %{build_l10n}
 %else
@@ -185,6 +186,8 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 
 
 %changelog
+* Fri Sep 24 2010 - Brian Cameron  <brian.cameron@oracle.com>
+- Remove all .la files.
 * Thu Aug 26 2010 - Brian Cameron  <brian.cameron@oracle.com>
 - Bump to 1.10.9.  Fix packaging.
 * Thu May 27 2010 - Milan Jurik

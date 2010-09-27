@@ -1,3 +1,7 @@
+2010-09-24  Brian Cameron  <brian.cameron@oracle.com>
+
+        * SFEgnumeric.spec, SFEliblouis.spec: Remove .la and .a files.
+
 2010-09-24 Milan Jurik <sfnet@xylab.cz>
 
 	* SFErubygem-dnsruby.spec: bump to 1.50
