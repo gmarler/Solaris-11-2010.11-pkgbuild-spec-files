@@ -11,6 +11,7 @@
 %use libnice_64 = libnice.spec
 %endif
 
+%include base.inc
 %use libnice = libnice.spec
 
 Name:           SFElibnice
