@@ -1,5 +1,11 @@
 2010-09-29  Jeff Cai <jeff.cai@sun.com>
 
+	* SUNWmission-control.spec: Change the version
+	* base-specs/telepathy-idle.spec: Bump to 0.1.6
+	* patches/telepathy-idle-01-misc.diff: Upstreamed
+
+2010-09-29  Jeff Cai <jeff.cai@sun.com>
+
 	* SUNWmission-control.spec:
 	* base-specs/telepathy-mission-control.spec:
 	* patches/telepathy-mission-control-01-branding.diff:
