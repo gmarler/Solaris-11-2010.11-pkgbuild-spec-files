@@ -1,0 +1,38 @@
+diff --git a/mission-control-plugins/account.c b/mission-control-plugins/account.c
+index a52dcee..721bfb5 100644
+--- a/mission-control-plugins/account.c
++++ b/mission-control-plugins/account.c
+@@ -149,7 +149,7 @@ mcp_account_manager_parameter_make_secret (const McpAccountManager *mcpa,
+   g_return_if_fail (iface->make_secret != NULL);
+ 
+   g_debug ("%s.%s should be secret", account, key);
+-  return iface->make_secret (mcpa, account, key);
++  iface->make_secret (mcpa, account, key);
+ }
+ 
+ /**
+diff --git a/src/mcd-account.c b/src/mcd-account.c
+index 74af728..0a7f3ef 100644
+--- a/src/mcd-account.c
++++ b/src/mcd-account.c
+@@ -1864,7 +1864,7 @@ void
+ mcd_account_delete (McdAccount *account, McdAccountDeleteCb callback,
+                     gpointer user_data)
+ {
+-    return MCD_ACCOUNT_GET_CLASS (account)->delete (account, callback, user_data);
++    MCD_ACCOUNT_GET_CLASS (account)->delete (account, callback, user_data);
+ }
+ 
+ typedef struct
+diff --git a/src/mcd-manager.c b/src/mcd-manager.c
+index 1f21bc8..13cffca 100644
+--- a/src/mcd-manager.c
++++ b/src/mcd-manager.c
+@@ -35,7 +35,6 @@
+  * FIXME
+  */
+ 
+-#define _POSIX_C_SOURCE 200112L  /* for strtok_r() */
+ #include "config.h"
+ #include "mcd-manager.h"
+ #include "mcd-manager-priv.h"

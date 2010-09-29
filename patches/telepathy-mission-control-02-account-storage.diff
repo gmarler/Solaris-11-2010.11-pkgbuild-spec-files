@@ -1,0 +1,22 @@
+diff --git a/mission-control-plugins/account-storage.h b/mission-control-plugins/account-storage.h
+index 829a983..46f6c88 100644
+--- a/mission-control-plugins/account-storage.h
++++ b/mission-control-plugins/account-storage.h
+@@ -25,6 +25,8 @@
+ #error Use <mission-control-plugins/mission-control-plugins.h> instead
+ #endif
+ 
++#include <telepathy-glib/telepathy-glib.h>
++
+ G_BEGIN_DECLS
+ 
+ #define MCP_ACCOUNT_STORAGE_PLUGIN_PRIO_READONLY -1
+@@ -171,7 +173,7 @@ GHashTable *mcp_account_storage_get_additional_info (
+     const McpAccountStorage *storage,
+     const gchar *account);
+ 
+-guint mcp_account_storage_get_restrictions (const McpAccountStorage *storage,
++TpStorageRestrictionFlags mcp_account_storage_get_restrictions (const McpAccountStorage *storage,
+     const gchar *account);
+ 
+ const gchar *mcp_account_storage_name (const McpAccountStorage *storage);

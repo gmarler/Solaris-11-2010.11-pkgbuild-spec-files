@@ -7,7 +7,6 @@
 # This file and all modifications and additions to the pristine
 # package are under the same license as the package itself.
 #
-# Owner: elaine
 #
 %include Solaris.inc
 
@@ -63,8 +62,9 @@ rm -rf $RPM_BUILD_ROOT
 %defattr (-, root, bin)
 %dir %attr (0755, root, bin) %{_libdir}
 %{_bindir}/*
-%{_libdir}/lib*.so*
-%{_libexecdir}/mission-control
+%{_libdir}/lib*
+%{_libdir}/mission-control-5
+%{_libdir}/mission-control-plugins.0
 %dir %attr (0755, root, sys) %{_datadir}
 %{_datadir}/gtk-doc/*/*/*
 %{_datadir}/dbus-1/*
@@ -74,17 +74,19 @@ rm -rf $RPM_BUILD_ROOT
 %doc telepathy-mission-control-%{mission_control.version}/AUTHORS
 %doc telepathy-mission-control-%{mission_control.version}/README
 %dir %attr (0755, root, other) %{_datadir}/doc
+%dir %attr (0755, root, bin) %{_mandir}
+%{_mandir}/*
 
 %files devel
 %defattr(-, root, bin)
 %dir %attr (0755, root, other) %{_libdir}/pkgconfig
-%dir %attr (0755, root, bin) %{_includedir}
 %{_libdir}/pkgconfig/*.pc
-%attr(755, root, root) %{_includedir}/libmcclient
-%attr(755, root, root) %{_includedir}/libmissioncontrol
-%attr(755, root, root) %{_includedir}/mission-control
+%dir %attr (0755, root, bin) %{_includedir}
+%{_includedir}/*
 
 %changelog
+* Mon Sep 29 2010 - jeff.cai@oracle.com
+- Bump to 5.6.0, change %files
 * Thu Mar 12 2009 - elaine.xiong@sun.com
 - Move from spec-files/trunk.
 * Fri Jan 16 2009 - christian.kelly@sun.com
