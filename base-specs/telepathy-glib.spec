@@ -5,13 +5,13 @@
 # This file and all modifications and additions to the pristine
 # package are under the same license as the package itself.
 #
-# Owner: elaine
+# Owner: 
 #
 
 Name:			telepathy-glib
 License:		GPL
 Group:			Applications/Internet
-Version:		0.11.11
+Version:		0.13.0
 Release:	 	1
 Distribution:		Java Desktop System
 Vendor:			Sun Microsystems, Inc.
@@ -52,16 +52,13 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
   CPUS=1
 fi
 
-rm -rf m4/lt*.m4
-rm -rf m4/libtool.m4
-
 CFLAGS="$RPM_OPT_FLAGS"			            \
-./autogen.sh --prefix=%{_prefix}        \
+./configure --prefix=%{_prefix}        \
             --mandir=%{_mandir}         \
             --libdir=%{_libdir}         \
             --sysconfdir=%{_sysconfdir}
 
-make -j $CPUS
+make -j$CPUS
 
 %install
 make install DESTDIR=$RPM_BUILD_ROOT
@@ -88,6 +85,8 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755, root, root) %{_includedir}/telepathy-1.0/*
 
 %changelog
+* Wed Sep 29 2010 - jeff.cai@oracle.com
+- Bump to 0.13.0
 * Sat Aug 07 2010 - brian.cameron@oracle.com
 - Bump to 0.11.11.
 * Tue Feb 02 2010 - brian.cameron@sun.com

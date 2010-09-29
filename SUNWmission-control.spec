@@ -17,7 +17,7 @@ Name:                SUNWmission-control
 Summary:             A telepathy mission control component
 Version:             %{default_pkg_version}
 SUNW_BaseDir:        %{_basedir}
-SUNW_Copyright:      %{name}.copyright
+#SUNW_Copyright:      %{name}.copyright
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 
 %include default-depend.inc
