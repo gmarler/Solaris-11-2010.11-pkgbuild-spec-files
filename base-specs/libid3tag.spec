@@ -1,18 +1,18 @@
 #
-# spec file for package libmad
+# spec file for package libid3tag
 #
-# includes module(s): libmad
+# includes module(s): libid3tag
 #
 
-Name:                    libmad
-Summary:                 A high-quality MPEG audio decoder
+Name:                    libid3tag
+Summary:                 ID3 tag reading library from the MAD project
 Version:                 0.15.1.2
 %define tarball_version  0.15.1b
-Source:                  %{sf_download}/mad/libmad-%{tarball_version}.tar.gz
+Source:                  %{sf_download}/mad/libid3tag-%{tarball_version}.tar.gz
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 
 %prep
-%setup -q -n libmad-%tarball_version
+%setup -q -n libid3tag-%tarball_version
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -51,18 +51,18 @@ gmake
 %install
 gmake install DESTDIR=$RPM_BUILD_ROOT
 rm -f $RPM_BUILD_ROOT%{_libdir}/lib*a
-# Generate pkgconfig mad.pc file
+# Generate pkgconfig id3tag.pc file
 mkdir $RPM_BUILD_ROOT%{_libdir}/pkgconfig
-cat > $RPM_BUILD_ROOT%{_libdir}/pkgconfig/mad.pc << EOF
+cat > $RPM_BUILD_ROOT%{_libdir}/pkgconfig/id3tag.pc << EOF
 prefix=%{_prefix}
 exec_prefix=\${prefix}
 libdir=\${exec_prefix}/lib
 includedir=\${prefix}/include/
 
-Name: libMAD
-Description: A high-quality MPEG audio decoder
-Version: 0.15.2b
-Libs: -L\${libdir} -lmad
+Name: libid3tag
+Description: ID3 tag reading library from the MAD project
+Version: 0.15.1b
+Libs: -L\${libdir} -lid3tag
 Cflags: -I\${includedir}
 EOF
 
@@ -70,7 +70,5 @@ EOF
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
-* Fri Apr 02 2010 - Milan Jurik
-- fix problem with OpenSolaris assembler (2874859)
-* Fri Aug 21 2009 - Milan Jurik
-- Initial base spec file
+* Sun Sep 26 2010 - Alex Viskovatoff
+- Initial base spec file, based on libmad.spec

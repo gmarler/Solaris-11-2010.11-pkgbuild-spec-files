@@ -16,11 +16,10 @@
 %include Solaris.inc
 
 %define srcname mpd
-%define SUNWid3lib      %(/usr/bin/pkginfo -q SUNWid3lib && echo 1 || echo 0)
 
 Name:                SFEmpd
 Summary:             Daemon for remote access music playing & managing playlists
-Version:             0.15.6
+Version:             0.15.12
 Source:              http://downloads.sourceforge.net/musicpd/%{srcname}-%{version}.tar.bz2
 
 SUNW_BaseDir:        %{_basedir}
@@ -40,6 +39,8 @@ BuildRequires: SFElibshout-devel
 #TODO# BuildRequires: SFElibpulse-devel
 #BuildRequires: SFEavahi-devel
 BuildRequires: SUNWavahi-bridge-dsd-devel
+## MPD INSTALL file says AO "should be used only if there is no native plugin
+## available or if the native plugin doesn't work."
 Requires: SFElibao
 Requires: SFElibmpcdec
 Requires: SFElibmad
@@ -53,15 +54,6 @@ Requires: SFElibshout
 #TODO# Requires: SFElibpulse
 #Requires: SFEavahi
 Requires: SUNWavahi-bridge-dsd
-
-#collect special cases / conditional (Build-)Requires
-%if %SUNWid3lib
-BuildRequires: SUNWid3lib-devel
-Requires: SUNWid3lib
-%else
-BuildRequires: SFEid3lib-devel
-Requires: SFEid3lib
-%endif
 
 %description
 Music Daemon to play common audio fileformats to audio devices or 
@@ -97,12 +89,12 @@ export LDFLAGS="%{_ldflags}"
             # --with-zeroconf=no   \
 	        # --enable-pulse
 
-make -j$CPUS
+gmake -j$CPUS
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-make install DESTDIR=$RPM_BUILD_ROOT
+gmake install DESTDIR=$RPM_BUILD_ROOT
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -129,6 +121,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/doc/*
 
 %changelog
+* Sun Oct  3 2010 - Alex Viskovatoff
+- Bump to 0.15.12; use gmake.
+- mpd does not use id3lib (only faad2 does): remove the dependency.
 * Thu Nov 19 2009 - oliver.mauras@gmail.com
 - Version bump to 0.15.6
 * Thu Jul 30 2009 - oliver.mauras@gmail.com

@@ -50,10 +50,10 @@ export CFLAGS="%optflags"
             --enable-shared		     \
 	    --disable-static
 
-make -j$CPUS 
+gmake -j$CPUS 
 
 %install
-make install DESTDIR=$RPM_BUILD_ROOT
+gmake install DESTDIR=$RPM_BUILD_ROOT
 rm -f $RPM_BUILD_ROOT%{_libdir}/lib*a
 
 %clean
@@ -70,6 +70,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/*
 
 %changelog
+* Sun Sep  3 2010 - Alex Viskovatoff
+- Use gmake.
 * Tue Feb 17 2009 - Thomas Wagner
 - make (Build-)Requires conditional SUNWlibsndfile|SFElibsndfile(-devel)
 * Fri May 23 2008 - michal.bielicki@voiceworks.pl

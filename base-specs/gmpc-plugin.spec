@@ -4,7 +4,9 @@
 # use gcc to compile
 #
 
-%define gmpcmainversion 0.15.5
+%include Solaris.inc
+%define cc_is_gcc 1
+
 
 %if %{!?plugindownloadname:0}%{?plugindownloadname:1}
 %else
@@ -13,13 +15,14 @@
 
 Name:			gmpc-plugin-%{pluginname}
 URL:                     http://sarine.nl/gmpc
-Version:                 0.15.5.0
-#Source:                  http://download.sarine.nl/gmpc-%{gmpcmainversion}/plugins/gmpc-%{pluginname}-%{version}.tar.gz
-#Source:			 http://download.qballcow.nl/gmpc-%{gmpcmainversion}/gmpc-%{pluginname}-%{version}.tar.gz
-Source:			 http://download.qballcow.nl/gmpc-%{gmpcmainversion}/gmpc-%{plugindownloadname}-%{version}.tar.gz
+Version:                 0.20.0
+Source:			 http://download.sarine.nl/Programs/gmpc/%{version}/gmpc-%{plugindownloadname}-%{version}.tar.gz
 
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
+
+BuildRequires: SUNWgcc
+Requires: SUNWgccruntime
 
 %include default-depend.inc
 
@@ -36,7 +39,7 @@ export LDFLAGS="-lX11"
 export CC=/usr/sfw/bin/gcc
 export CXX=/usr/sfw/bin/g++
 
-CC=/usr/sfw/bin/gcc CXX=/usr/sfw/bin/g++ ./configure --prefix=%{_prefix} \
+CC=$CC CXX=$CXX XGETTEXT=/bin/gxgettext MSGFMT=/bin/gmsgfmt ./configure --prefix=%{_prefix} \
 	--mandir=%{_mandir} \
 	--libdir=%{_libdir}              \
 	--libexecdir=%{_libexecdir}      \
@@ -44,29 +47,35 @@ CC=/usr/sfw/bin/gcc CXX=/usr/sfw/bin/g++ ./configure --prefix=%{_prefix} \
 
   
 
-make -j$CPUS
+gmake -j$CPUS
 
 %install
 rm -rf $RPM_BUILD_ROOT
-make install DESTDIR=$RPM_BUILD_ROOT
+gmake install DESTDIR=$RPM_BUILD_ROOT
 #rm -f $RPM_BUILD_ROOT%{_libdir}/gmpc/plugins/*.la
-find $RPM_BUILD_ROOT -name \*.la -exec rm {} \;
+gfind $RPM_BUILD_ROOT -name \*.la -exec rm {} \;
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+#NOTE: below %files, is not used in this include system.
 %files
 %defattr(-, root, bin)
 %doc README ChangeLog CREDITS COPYING INSTALL NEWS AUTHORS TODO ABOUT-NLS
-%dir %attr (0755, root, sys) %{_datadir}
-%dir %attr (0755, root, other) %{_datadir}/gmpc
-%dir %attr (0755, root, other) %{_datadir}/gmpc/plugins
-%{_datadir}/gmpc/plugins/*.so
+%dir %attr (0755, root, sys) %{_prefix}
+%dir %attr (0755, root, bin) %{_libdir}
+%dir %attr (0755, root, bin) %{_libdir}/gmpc
+%dir %attr (0755, root, bin) %{_libdir}/gmpc/plugins
+%{_libdir}/gmpc/plugins/*.so
 
 
 %changelog
+* Wed Oct  6 2010 - Alex Viskovatoff
+- bump to 0.20.0; use gmake, gfind, gxgettext, gmsgfmt
+* Sun Sep 27 2009 - Thomas Wagner
+- bump to 0.19.0, remove sub version strings, new Download-URL
 * Sat Feb 21 2009 - Thomas Wagner
-- moveed (Build-)Requiremens SFEgmpc(-devel) over to the plugin specs to be effective
+- moved (Build-)Requirements SFEgmpc(-devel) over to the plugin specs to be effective
 - add case for last.fm isn't lastfm -> plugindownloadname which defaults to pluginname
 * Sun Dec 02 2007 - Thomas Wagner
 - initial base-spec for gmpc-plugin

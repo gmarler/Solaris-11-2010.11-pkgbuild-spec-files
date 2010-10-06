@@ -30,16 +30,18 @@ export LDFLAGS="%_ldflags"
             --mandir=%{_mandir} \
             --enable-static=no
 
-make -j$CPUS 
+gmake -j$CPUS 
 
 %install
-make install DESTDIR=$RPM_BUILD_ROOT
+gmake install DESTDIR=$RPM_BUILD_ROOT
 rm -f $RPM_BUILD_ROOT%{_libdir}/*.la
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Sun Oct 03 2010 - Alex Viskovatoff
+- Use gmake.
 * Tue Feb 24 2009 - brian.cameron@sun.com
 - Bump to 0.1.7.
 * Fri Jan 20 2009 - Thomas Wagner

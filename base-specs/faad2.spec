@@ -47,15 +47,17 @@ autoreconf --install
             --enable-shared		     \
 	    --disable-static
 
-make -j$CPUS
+gmake -j$CPUS
 
 %install
-make install DESTDIR=$RPM_BUILD_ROOT
+gmake install DESTDIR=$RPM_BUILD_ROOT
 rm -f $RPM_BUILD_ROOT%{_libdir}/lib*a
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Sun Oct  3 2010 - Alex Viskovatoff
+- Use gmake.
 * Fri Aug 21 2009 - Milan Jurik
 - Initial base spec file

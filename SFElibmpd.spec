@@ -15,9 +15,9 @@
 
 Name:                SFElibmpd
 Summary:             libmpd for gmpc
-Version:             0.15.0
+Version:             0.20.0
 #needed for download-URL:
-%define gmpc_version 0.15.5
+%define gmpc_version 0.20.0
 Source:              http://download.sarine.nl/Programs/gmpc/%{gmpc_version}/libmpd-%{version}.tar.gz
 
 SUNW_BaseDir:        %{_basedir}
@@ -55,12 +55,12 @@ CC=/usr/sfw/bin/gcc CXX=/usr/sfw/bin/g++ ./configure --prefix=%{_prefix} \
 
             
 
-make -j$CPUS 
+gmake -j$CPUS 
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-make install DESTDIR=$RPM_BUILD_ROOT
+gmake install DESTDIR=$RPM_BUILD_ROOT
 
 rm -f $RPM_BUILD_ROOT%{_libdir}/*.la
 
@@ -83,6 +83,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sat Oct  2 2010 - Alex Viskovatoff
+- bump to 0.20.0; use gmake
 * Sat Dec 20 2008 - Thomas Wagner
 - adjust download URL
 - add LDFLAGS for network libs

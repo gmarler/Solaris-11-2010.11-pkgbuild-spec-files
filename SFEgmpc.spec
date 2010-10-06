@@ -7,32 +7,22 @@
 # works: snv96  / pkgbuild 1.3.1
 
 
-%define version_sub 0
-
 %include Solaris.inc
 
 
-%define SUNWcurl      %(/usr/bin/pkginfo -q SUNWcurl   && echo 1 || echo 0)
 %define SUNWgtkmm     %(/usr/bin/pkginfo -q SUNWgtkmm  && echo 1 || echo 0)
 
 Name:                    SFEgmpc
 Summary:                 gmpc - A gnome frontend for the mpd daemon
 URL:                     http://sarine.nl/gmpc/
-Version:                 0.15.5
-Source:                  http://download.sarine.nl/Programs/gmpc/%{version}/gmpc-%{version}.%{version_sub}.tar.gz
+Version:                 0.20.0
+Source:                  http://download.sarine.nl/Programs/gmpc/%{version}/gmpc-%{version}.tar.gz
 SUNW_BaseDir:            %{_basedir}
-BuildRoot:               %{_tmppath}/%{name}-%{version}.%{version_sub}-build
+BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 BuildRequires:		 SFElibmpd-devel
 #test#BuildRequires:           SFEavahi-devel
-Requires:		 SFElibmpd
-
-%if %SUNWcurl
-BuildRequires:		SUNWcurl
-Requires:		SUNWcurl
-%else
-BuildRequires:		 SFEcurl-devel
-Requires:		 SFEcurl
-%endif
+Requires:		SFElibmpd
+Requires:		SUNWzlib
 
 %if %SUNWgtkmm
 BuildRequires:		SUNWgtkmm-devel
@@ -67,7 +57,7 @@ Requires:                %{name}
 %endif
 
 %prep
-%setup -q -n gmpc-%version.%{version_sub}
+%setup -q -n gmpc-%version
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -75,7 +65,7 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
   CPUS=1
 fi
 
-export LDFLAGS="%_ldflags -lnsl -lsocket -lresolv"
+export LDFLAGS="%_ldflags -lnsl -lsocket -lz"
 
 export CC=/usr/sfw/bin/gcc
 export CXX=/usr/sfw/bin/g++
@@ -84,19 +74,15 @@ export CFLAGS="$CFLAGS -I/usr/gnu/include -L/usr/gnu/lib -R/usr/gnu/lib -lintl"
 %endif
 
 #TODO: check --disable-sm 
-CC=$CC CXX=$CXX CFLAGS="$CFLAGS" ./configure --prefix=%{_prefix} \
-%if %SUNWcurl
-            --with-curl=/usr \
-%else
-            --with-curl=/usr/gnu \
-%endif
+CC=$CC CXX=$CXX CFLAGS="$CFLAGS" XGETTEXT=/bin/gxgettext MSGFMT=/bin/gmsgfmt \
+./configure --prefix=%{_prefix} \
             #--disable-sm
-make -j$CPUS
+gmake -j$CPUS
 
 %install
 rm -rf $RPM_BUILD_ROOT
-make install DESTDIR=$RPM_BUILD_ROOT
-#in case old pkgbuild does not automaticly place %doc files there
+gmake install DESTDIR=$RPM_BUILD_ROOT
+#in case old pkgbuild does not automatically place %doc files there
 test -d $RPM_BUILD_ROOT%{_docdir} || mkdir $RPM_BUILD_ROOT%{_docdir}
 
 %if %{build_l10n}
@@ -119,11 +105,12 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/applications/*
 %dir %attr (0755, root, other) %{_datadir}/gmpc
 %{_datadir}/gmpc/*
-%dir %attr (0755, root, other) %{_datadir}/pixmaps
-%{_datadir}/pixmaps/*
+%dir %attr (0755, root, other) %{_datadir}/icons
+%{_datadir}/icons/*
 %dir %attr (0755, root, bin) %{_libdir}
 %dir %attr (0755, root, other) %{_libdir}/pkgconfig
 %{_libdir}/pkgconfig/*
+%_mandir
 
 
 
@@ -142,9 +129,15 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Oct  6 2010 - Alex Viskovatoff
+- Bump to version 0.20.0; use gmake
+- Fix icon and man packaging
+- Add Requires SUNWlibz; add -lz to LDFLAGS
+* Sun Dec 27 2009 - Thomas Wagner
+- remove SFEcurl|SUNWcurl - no longer used by gmpc
 * Mon Dec 22 2008 - Thomas Wagner
 - add nice and clean conditional (Build-)Requires: %if %SUNWgtkmm ... %else ... SFEgtkmm(-devel)
-- create %{_docdir} in case old pkgbuild doesn't
+- create %{_docdir} in case old pkgbuild does not
 * Sat Dec 20 2008 - Thomas Wagner
 - adjust download URL
 - add nice and clean conditional (Build-)Requires: %if %SUNWcurl ... %else ... SFEcurl(-devel)

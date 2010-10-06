@@ -66,12 +66,12 @@ export LDFLAGS="%_ldflags"
             --enable-shared             \
             --disable-static            \
 
-make -j$CPUS 
+gmake -j$CPUS 
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-make install DESTDIR=$RPM_BUILD_ROOT
+gmake install DESTDIR=$RPM_BUILD_ROOT
 
 rm -f $RPM_BUILD_ROOT%{_libdir}/*.la
 rmdir $RPM_BUILD_ROOT%{_bindir}
@@ -103,6 +103,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sun Oct  3 2010 - Alex Viskovatoff
+- Use gmake.
 * Tue Jul 28 2009 - oliver.mauras@gmail.com
 - fix that empty bindir and missing pkgconfig
 * Sat Dec 20 2008 - Thomas Wagner

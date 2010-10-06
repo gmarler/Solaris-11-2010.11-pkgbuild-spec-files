@@ -5,7 +5,7 @@
 #
 
 %define src_name libsndfile
-%define src_url http://www.mega-nerd.com/%{src_name}
+%define src_url http://www.mega-nerd.com/%{src_name}/files
 Name:		libsndfile
 Summary:	libsndfile  - a library of C routines for reading and writing files containing sampled audio data
 Version:	1.0.19
@@ -45,16 +45,18 @@ export CXX="${CXX} -norunpath"
             --enable-shared		\
 	    --disable-static
 
-make -j$CPUS 
+gmake -j$CPUS 
 
 %install
-make install DESTDIR=$RPM_BUILD_ROOT
+gmake install DESTDIR=$RPM_BUILD_ROOT
 rm -f $RPM_BUILD_ROOT%{_libdir}/lib*a
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Sun Sep 26 2010 - Alex Viskovatoff
+- Update download pathname; use gmake.
 * Sat May 09 2009 - Thomas Wagner
 - submitting changes suggested by Srirama Sharma:
 - add log note about removal of obsoleted libsndfile-01-flac-1.1.3.diff (removal on behalf Srirama Sharma)
