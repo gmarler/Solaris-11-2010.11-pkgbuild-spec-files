@@ -4,7 +4,7 @@
 Summary:	Support for contracted braille
 Name:		liblouis
 Version:	2.1.1
-License:	GPL V3
+License:	LGPLv3 for library, GPLv3 for binaries
 Group:		Libraries
 Source: 	http://liblouis.googlecode.com/files/%{name}-%{version}.tar.gz
 
