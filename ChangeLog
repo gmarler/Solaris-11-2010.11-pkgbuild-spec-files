@@ -1,3 +1,8 @@
+2010-10-06  Brian Cameron  <brian.cameron@oracle.com>
+
+	* SFEliblouisxml.spec, base-specs/liblouisxml.spec:  Add new spec
+	  files.
+
 2010-09-29  Jeff Cai <jeff.cai@sun.com>
 
 	* SUNWmission-control.spec: Change the version
@@ -11,7 +16,7 @@
 	* patches/telepathy-mission-control-01-branding.diff:
 	* patches/telepathy-mission-control-01-void.diff:
 	* patches/telepathy-mission-control-02-account-storage.diff:
-	Bump to 5.6.0, change the patches.
+	  Bump to 5.6.0, change the patches.
 
 2010-09-29  Jeff Cai <jeff.cai@sun.com>
 
