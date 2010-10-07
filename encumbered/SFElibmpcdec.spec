@@ -70,7 +70,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/*
 
 %changelog
-* Sun Sep  3 2010 - Alex Viskovatoff
+* Sun Oct  3 2010 - Alex Viskovatoff
 - Use gmake.
 * Tue Feb 17 2009 - Thomas Wagner
 - make (Build-)Requires conditional SUNWlibsndfile|SFElibsndfile(-devel)

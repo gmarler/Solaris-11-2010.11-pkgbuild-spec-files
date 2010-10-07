@@ -70,6 +70,8 @@ EOF
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Sun Oct 03 2010 - Alex Viskovatoff
+- Use gmake
 * Fri Apr 02 2010 - Milan Jurik
 - fix problem with OpenSolaris assembler (2874859)
 * Fri Aug 21 2009 - Milan Jurik

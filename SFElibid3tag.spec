@@ -18,7 +18,7 @@ Version:                 %{libid3tag.version}
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
-Requires:     library/zlib
+Requires:     SUNWzlib
 
 %package devel
 Summary:                 %{summary} - development files

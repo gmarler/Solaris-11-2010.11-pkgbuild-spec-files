@@ -3,6 +3,24 @@
 	* SFEliblouisxml.spec, base-specs/liblouisxml.spec:  Add new spec
 	  files.
 
+2010-10-06  Alex Viskovatoff  <viskovatoff@imap.cc>
+
+        * encumbered/SFEmpd.spec: bump to 0.15.12; use gmake
+	* SFElibid3tag.spec: add multiarch support
+	* base-specs/libid3tag.spec (new)
+	* base-specs/libmad.spec: use gmake
+	* encumbered/SFElibmpcdec.spec: use gmake
+	* base-specs/faad2.spec: use gmake
+	* base-specs/libsamplerate.spec: use gmake
+	* base-specs/libsndfile.spec: update download pathname; use gmake
+	* SFElibshout.spec: use gmake
+	* SFEgmpc: update to 0.20.0; use gmake
+	* SFElibmpd: bump to 0.20.0; use gmake
+	* base-specs/gmpc-plugin.spec: bump to 0.20.0; use gmake etc.
+	* SFEgmpc-plugin-albumview.spec (new)
+	* SFEgmpc-plugin-lastfm.spec: update to 0.20.0
+	* SFEgmpc-plugin-discogs (new)
+
 2010-09-29  Jeff Cai <jeff.cai@sun.com>
 
 	* SUNWmission-control.spec: Change the version
