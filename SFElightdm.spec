@@ -9,7 +9,7 @@
 %include Solaris.inc
 Name:                    SFElightdm
 License:                 GPL v3
-Version:                 0.1.1
+Version:                 0.1.2
 Source:                  http://people.ubuntu.com/~robert-ancell/lightdm/releases/lightdm-%version.tar.gz
 Source1:                 lightdm.xml
 Source2:                 svc-lightdm
@@ -37,7 +37,6 @@ BuildRequires:           SUNWgtk2-devel
 BuildRequires:           SUNWdbus-glib-devel
 BuildRequires:           SFElibxklavier-devel
 BuildRequires:           SFEwebkitgtk-devel
-BuildRequires:           SFEwebkitgtk-devel
 BuildRequires:           SFElibxcb-devel
 BuildRequires:           SFExcb-proto-devel
 BuildRequires:           SFElibpthread-stubs
@@ -54,8 +53,8 @@ SUNW_BaseDir:            %{_basedir}
 
 %prep
 %setup -q -n lightdm-%version
-%patch1 -p0
-%patch2 -p0
+%patch1 -p1
+%patch2 -p1
 
 %build
 libtoolize --force
@@ -117,6 +116,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, bin) %{_sysconfdir}/dbus-1
 %dir %attr (0755, root, bin) %{_sysconfdir}/dbus-1/system.d
 %{_sysconfdir}/dbus-1/system.d/*
+%{_sysconfdir}/init/lightdm.conf
 %{_sysconfdir}/lightdm.conf
 # SVC method file
 %dir %attr (0755, root, bin) /lib
@@ -137,5 +137,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*
 
 %changelog
+* Sat Oct 09 2010 - Simon Jin      <yun-tong.jin@oracle.com>
+- Bump to 0.1.2, reorder the patches.
 * Thu Aug 26 2010 - Brian Cameron  <brian.cameron@oracle.com>
 - Created with version 0.1.1.

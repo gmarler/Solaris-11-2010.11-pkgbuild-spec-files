@@ -1,3 +1,9 @@
+2010-10-10  Simon Jin <yuntong.jin@sun.com>
+
+	* SFElightdm.spec:Bump lightdm to 0.1.2
+	* patches/lightdm-01-branding.diff:
+	* patches/lightdm-02-compile.diff:
+
 2010-10-09  Jeff Cai <jeff.cai@sun.com>
 
 	* SFEempathy.spec:

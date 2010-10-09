@@ -1,25 +1,23 @@
---- libldmgreeter/language.c	2010-07-31 08:08:36 +0000
-+++ libldmgreeter/language.c	2010-08-05 09:20:38 +0000
-@@ -73,7 +73,11 @@
+diff -r f267f5e67d56 libldmgreeter/language.c
+--- a/libldmgreeter/language.c	Sun Oct 10 01:37:08 2010 +0800
++++ b/libldmgreeter/language.c	Sun Oct 10 01:40:10 2010 +0800
+@@ -73,7 +73,8 @@
      {
          char *current = setlocale(LC_ALL, NULL);
          setlocale(LC_ALL, language->priv->code);
-+/*
-         language->priv->name = g_strdup (nl_langinfo (_NL_IDENTIFICATION_LANGUAGE));
-+*/
-+        language->priv->name = g_strdup_printf ("%s", language->priv->code);
-+
+-        language->priv->name = g_strdup (nl_langinfo (_NL_IDENTIFICATION_LANGUAGE));
++        //language->priv->name = g_strdup (nl_langinfo (_NL_IDENTIFICATION_LANGUAGE));
++	language->priv->name = g_strdup_printf ("%s", language->priv->code);
          setlocale(LC_ALL, current);
      }
  
-@@ -95,7 +99,10 @@
+@@ -95,7 +96,8 @@
      {
          char *current = setlocale(LC_ALL, NULL);
          setlocale(LC_ALL, language->priv->code);
-+/*
-         language->priv->territory = g_strdup (nl_langinfo (_NL_IDENTIFICATION_TERRITORY));
-+*/
-+        language->priv->name = g_strdup_printf ("%s", language->priv->code);
+-        language->priv->territory = g_strdup (nl_langinfo (_NL_IDENTIFICATION_TERRITORY));
++        //language->priv->territory = g_strdup (nl_langinfo (_NL_IDENTIFICATION_TERRITORY));
++	language->priv->name = g_strdup_printf ("%s", language->priv->code);
          setlocale(LC_ALL, current);
      }
  
