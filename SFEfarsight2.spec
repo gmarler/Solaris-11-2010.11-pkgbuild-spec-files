@@ -6,12 +6,17 @@
 # Owner:jefftsai
 #
 %include Solaris.inc
+%ifarch amd64 sparcv9
+%include arch64.inc
+%use farsight264 = farsight2.spec
+%endif
 
+%include base.inc
 %use farsight2= farsight2.spec
 
 Name:                    SFEfarsight2
 Summary:                 A library that binds farsight to the Connection Manager
-Version:                 %{default_pkg_version}
+Version:                 %{farsight2.version}
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 
@@ -28,9 +33,13 @@ Requires: %name
 
 %prep
 rm -rf %name-%version
-mkdir %name-%version
-%farsight2.prep -d %name-%version
-cd %{_builddir}/%name-%version
+%ifarch amd64 sparcv9
+mkdir -p %name-%version/%_arch64
+%farsight264.prep -d %name-%version/%_arch64
+%endif
+    
+mkdir -p %name-%version/%base_arch
+%farsight2.prep -d %name-%version/%base_arch
 
 %build
 export CFLAGS="%optflags -DBSD_COMP"
@@ -38,12 +47,20 @@ export LDFLAGS="%_ldflags -lsocket -lnsl"
 export RPM_OPT_FLAGS="$CFLAGS"
 export ACLOCAL_FLAGS="-I %{_datadir}/aclocal"
 
-%farsight2.build -d %name-%version
+%ifarch amd64 sparcv9
+%farsight264.build -d %name-%version/%_arch64
+%endif
+    
+%farsight2.build -d %name-%version/%base_arch
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%farsight2.install -d %name-%version
+%ifarch amd64 sparcv9
+%farsight264.install -d %name-%version/%_arch64
+%endif
+ 
+%farsight2.install -d %name-%version/%base_arch
 
 %{?pkgbuild_postprocess: %pkgbuild_postprocess -v -c "%{version}:%{jds_version}:%{name}:$RPM_ARCH:%(date +%%Y-%%m-%%d):%{support_level}" $RPM_BUILD_ROOT}
 
@@ -51,16 +68,18 @@ rm -rf $RPM_BUILD_ROOT
 rm -rf $RPM_BUILD_ROOT
 
 %files
-%doc farsight2-%{farsight2.version}/COPYING
-%doc farsight2-%{farsight2.version}/NEWS
-%doc farsight2-%{farsight2.version}/ChangeLog
-%doc farsight2-%{farsight2.version}/AUTHORS
-%doc farsight2-%{farsight2.version}/README
+%doc -d %{base_arch}/farsight2-%{farsight2.version} COPYING NEWS 
+%doc -d %{base_arch}/farsight2-%{farsight2.version} ChangeLog AUTHORS README
 %defattr (-, root, bin)
-%dir %attr (0755, root, bin) %{_libexecdir}
-%{_libexecdir}/lib*.so*
-%{_libexecdir}/farsight2-0.0/lib*.so*
-%{_libexecdir}/gstreamer-0.10/lib*.so*
+%dir %attr (0755, root, bin) %{_libdir}
+%ifarch amd64 sparcv9
+%{_libdir}/%{_arch64}/lib*.so*
+%{_libdir}/%{_arch64}/farsight2-0.0/lib*.so*
+%{_libdir}/%{_arch64}/gstreamer-0.10/lib*.so*
+%endif
+%{_libdir}/lib*.so*
+%{_libdir}/farsight2-0.0/lib*.so*
+%{_libdir}/gstreamer-0.10/lib*.so*
 %dir %attr (0755, root, sys) %{_datadir}
 %dir %attr (0755, root, other) %{_datadir}/doc
 %dir %attr (0755, root, bin) %{_datadir}/gtk-doc
@@ -68,6 +87,10 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr (-, root, bin)
+%ifarch sparcv9 amd64
+%dir %attr (0755, root, other) %{_libdir}/%{_arch64}/pkgconfig
+%{_libdir}/%{_arch64}/pkgconfig/*
+%endif
 %dir %attr (0755, root, other) %{_libdir}/pkgconfig
 %dir %attr (0755, root, bin) %{_includedir}
 %{_includedir}/*

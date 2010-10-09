@@ -48,7 +48,7 @@ fi
 CFLAGS="$RPM_OPT_FLAGS"			        \
 ./configure --prefix=%{_prefix}         \
             --mandir=%{_mandir}         \
-            --libexecdir=%{_libexecdir} \
+            --libdir=%{_libdir} \
             --sysconfdir=%{_sysconfdir}
 
 make -j$CPUS

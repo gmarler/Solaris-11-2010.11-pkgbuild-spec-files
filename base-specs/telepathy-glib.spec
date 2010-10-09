@@ -62,8 +62,8 @@ make -j$CPUS
 
 %install
 make install DESTDIR=$RPM_BUILD_ROOT
-rm -rf $RPM_BUILD_ROOT%{_libdir}/*.la
-rm -rf $RPM_BUILD_ROOT%{_libdir}/*.a
+find $RPM_BUILD_ROOT -type f -name "*.la" -exec rm -f {} ';'
+find $RPM_BUILD_ROOT -type f -name "*.a" -exec rm -f {} ';'
 rm -rf $RPM_BUILD_ROOT/usr/bin
 rm -rf $RPM_BUILD_ROOT/usr/libexec
 rm -rf $RPM_BUILD_ROOT/usr/share/dbus-1
