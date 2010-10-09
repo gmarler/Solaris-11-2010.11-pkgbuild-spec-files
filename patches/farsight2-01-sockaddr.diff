@@ -1,0 +1,20 @@
+--- farsight2-0.0.21/gst-libs/gst/farsight/fs-interfaces.c.orig	2010-10-08 18:11:05.465975628 +0800
++++ farsight2-0.0.21/gst-libs/gst/farsight/fs-interfaces.c	2010-10-08 18:14:34.451426294 +0800
+@@ -327,7 +327,7 @@
+ fs_interfaces_get_ip_for_interface (gchar *interface_name)
+ {
+   union  {
+-    struct sockaddr  s_addr;
++    struct sockaddr  addr;
+     struct sockaddr_in sin_addr;
+   } sockaddr_union;
+   struct ifreq ifr;
+@@ -351,7 +351,7 @@
+   }
+ 
+   close (sockfd);
+-  sockaddr_union.s_addr = ifr.ifr_addr;
++  sockaddr_union.addr = ifr.ifr_addr;
+   GST_DEBUG ("Address for %s: %s", interface_name,
+       inet_ntoa (sockaddr_union.sin_addr.sin_addr));
+   return g_strdup (inet_ntoa (sockaddr_union.sin_addr.sin_addr));

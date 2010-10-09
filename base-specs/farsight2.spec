@@ -1,34 +1,37 @@
 #
-# spec file for package telepathy-haze
+# spec file for package farsight2
 #
-# Owner:alfred
+# Owner:elaine_sun
 #
 
-Name:           telepathy-haze
+Name:           farsight2
 License:        GPL
 Group:          Applications/Internet
-Version:        0.4.0
+Version:        0.0.21
 Release:        1
 Distribution:   Java Desktop System
-Vendor:         Sun Microsystems, Inc.
-Summary:        IM backend
-Source:			http://telepathy.freedesktop.org/releases/%{name}/%{name}-%{version}.tar.gz
-# date:2009-02-11 owner:alfred type:bug
-Patch1:	        telepathy-haze-01-configure.diff
-URL:            http://developer.pidgin.im/wiki/Telepathy
+Vendor:         Oracle, Inc.
+Summary:        A library that binds Farsigh to the Connection Manager
+Source:	        http://farsight.freedesktop.org/releases/%{name}/%{name}-%{version}.tar.gz
+URL:            http://farsight.freedesktop.org/wiki
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
-Docdir:         %{_defaultdocdir}/telepathy-haze
+Docdir:         %{_defaultdocdir}/farsight2
+
 
 Autoreqprov: on
 Prereq:      /sbin/ldconfig
 
+# date:2010-10-08 owner:jefftsai type:bug bugzilla:xxx
+Patch1:       farsight2-01-sockaddr.diff
+
 %description
-A connection manager based on libpurple, bringing support for Pidgin's IM
-protocols to the Telepathy framework.
+This library binds Farsight to the Empathy Connection Manager via D-Bus
+and the Telepathy Media Stream Spec and is used for all their streaming
+requirements.
 
 %prep
 %setup -q
-#%patch1 -p1
+%patch1 -p1
 
 %build
 %ifos linux
@@ -52,6 +55,8 @@ make -j$CPUS
 
 %install
 make install DESTDIR=$RPM_BUILD_ROOT
+find $RPM_BUILD_ROOT -name "*.la"|xargs rm -rf 
+find $RPM_BUILD_ROOT -name "*.a"|xargs rm -rf 
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -65,5 +70,5 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/doc/*
 
 %changelog
-* Wed Feb 11 2009 - alfred.peng@sun.com
+* Fri Oct 08 2010 - jeff.cai@oracle.com
 - created

@@ -103,13 +103,10 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 %defattr (-, root, bin)
 %dir %attr (0755, root, bin) %{_bindir}
 %{_bindir}/*
-%dir %attr (0755, root, bin) %{_libdir}
-%{_libdir}/lib*.so*
 %dir %attr (0755, root, sys) %{_datadir}
 %dir %attr (0755, root, other) %{_datadir}/applications
 %{_datadir}/applications/*
 %{_datadir}/empathy/*
-%{_datadir}/mission-control/*
 %dir %attr (-, root, other) %{_datadir}/icons
 %dir %attr (-, root, other) %{_datadir}/icons/hicolor
 %dir %attr (-, root, other) %{_datadir}/icons/hicolor/16x16
@@ -133,34 +130,26 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 %dir %attr (0755, root, bin) %{_datadir}/man
 %dir %attr (0755, root, bin) %{_datadir}/man/man1
 %{_datadir}/man/man1/*
-%dir %attr (0755, root, bin) %{_datadir}/gtk-doc
-%dir %attr (0755, root, bin) %{_datadir}/gtk-doc/html
-%attr(755, root, root) %{_datadir}/gtk-doc/html/libempathy/*
-%attr(755, root, root) %{_datadir}/gtk-doc/html/libempathy-gtk/*
 %dir %attr (0755, root, other) %{_datadir}/gnome
 %dir %attr (0755, root, bin) %{_datadir}/gnome/help
 %attr(755, root, root) %{_datadir}/gnome/help/empathy/C
-%dir %attr (0755, root, bin) %{_datadir}/omf
-%attr(755, root, root) %{_datadir}/omf/empathy/*-C.omf
 %doc(bzip2) empathy-%{empathy.version}/COPYING
 %doc(bzip2) empathy-%{empathy.version}/NEWS
 %doc(bzip2) empathy-%{empathy.version}/ChangeLog
 %doc empathy-%{empathy.version}/AUTHORS
 %doc empathy-%{empathy.version}/README
 %dir %attr (0755, root, other) %{_datadir}/doc
+%dir %attr (0755, root, bin) %{_datadir}/dbus-1
+%dir %attr (0755, root, bin) %{_datadir}/dbus-1/services
+%{_datadir}/dbus-1/services/*
+%dir %attr (0755, root, bin) %{_datadir}/telepathy
+%dir %attr (0755, root, bin) %{_datadir}/telepathy/clients
+%{_datadir}/telepathy/clients/*
 
 %files root
 %defattr(-, root, sys)
 %attr(0755, root, sys) %dir %{_sysconfdir}
 %{_sysconfdir}/gconf/schemas/*
-
-%files devel
-%defattr (-, root, bin)
-%dir %attr (0755, root, other) %{_libdir}/pkgconfig
-%dir %attr (0755, root, bin) %{_includedir}
-%{_libdir}/pkgconfig/*.pc
-%attr(755, root, root) %{_includedir}/libempathy/*
-%attr(755, root, root) %{_includedir}/libempathy-gtk/*
 
 %if %build_l10n
 %files l10n

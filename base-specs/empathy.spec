@@ -11,15 +11,15 @@
 Name:            empathy
 License:         GPL
 Group:           Applications/Internet
-Version:         2.25.2
+Version:         2.30.3
 Release:         1
 Distribution:    Java Desktop System
 Vendor:          Sun Microsystems, Inc.
 Summary:         A Gnome IM/voice/video client
-Source:          http://download.gnome.org/sources/empathy/2.25/%{name}-%{version}.tar.gz
+Source:          http://download.gnome.org/sources/empathy/2.30/%{name}-%{version}.tar.gz
 
-# date:2008-06-04 owner:rickju type:branding
-Patch1:         empathy-01-branding.diff
+# date:2010-10-00 owner:jefftsai type:bug
+Patch1:         empathy-01-debug-key.diff
 
 URL:            http://live.gnome.org/Empathy
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
@@ -52,26 +52,18 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
   CPUS=1
 fi
 
-rm -rf m4/lt*.m4
-rm -rf m4/libtool.m4
-
 CFLAGS="$RPM_OPT_FLAGS"                   \
-./autogen.sh --prefix=%{_prefix}          \
+./configure   --prefix=%{_prefix}          \
               --mandir=%{_mandir}         \
               --libdir=%{_libdir}         \
               --libexecdir=%{_libexecdir} \
               --sysconfdir=%{_sysconfdir} \
-              --enable-megaphone=no       \
-              --enable-python=no          \
-              --enable-nothere=no         \
               --disable-tests
 
 make -j $CPUS
 
 %install
 make install DESTDIR=$RPM_BUILD_ROOT
-rm -rf $RPM_BUILD_ROOT%{_libdir}/*.la
-rm -rf $RPM_BUILD_ROOT%{_libdir}/*.a
 
 %clean
 rm -rf $RPM_BUILD_ROOT

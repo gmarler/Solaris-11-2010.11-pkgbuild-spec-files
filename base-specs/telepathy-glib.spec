@@ -11,7 +11,7 @@
 Name:			telepathy-glib
 License:		GPL
 Group:			Applications/Internet
-Version:		0.13.0
+Version:		0.13.1
 Release:	 	1
 Distribution:		Java Desktop System
 Vendor:			Sun Microsystems, Inc.
@@ -85,8 +85,8 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755, root, root) %{_includedir}/telepathy-1.0/*
 
 %changelog
-* Wed Sep 29 2010 - jeff.cai@oracle.com
-- Bump to 0.13.0
+* Oct 09 2010 - jeff.cai@oracle.com
+- Bump to 0.13.1
 * Sat Aug 07 2010 - brian.cameron@oracle.com
 - Bump to 0.11.11.
 * Tue Feb 02 2010 - brian.cameron@sun.com

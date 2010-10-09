@@ -1,3 +1,17 @@
+2010-10-09  Jeff Cai <jeff.cai@sun.com>
+
+	* SFEempathy.spec:
+	* SFEfarsight2.spec: Added
+	* SFEtelepathy-farsight.spec: Added
+	* SUNWtelepathy-glib.spec: Updated to new version
+	* base-specs/empathy.spec: Bump to 2.30.3
+	* base-specs/farsight2.spec: New
+	* base-specs/telepathy-farsight.spec: New
+	* base-specs/telepathy-glib.spec: Bump to 0.13.1
+	* base-specs/telepathy-haze.spec: Bump to 0.4.0
+	* patches/empathy-01-branding.diff: Upstreamed
+	* patches/farsight2-01-sockaddr.diff: Added
+
 2010-10-06  Brian Cameron  <brian.cameron@oracle.com>
 
 	* SFEliblouisxml.spec, base-specs/liblouisxml.spec:  Add new spec
