@@ -1,90 +1,30 @@
---- solaris/Makefile.orig	2007-07-13 16:24:23.820393299 +0700
-+++ solaris/Makefile	2007-07-13 16:28:48.836400512 +0700
-@@ -10,18 +10,11 @@
- #
- 
- # Paths
--# BeOS wants the libs and headers in /boot/home/config
--ifeq (BeOS,$(shell uname -s))
--prefix=/boot/home/config
--else
--prefix=/usr/local
--endif
-+prefix=$(PREFIX)
- libdir=$(prefix)/lib
- includedir=$(prefix)/include/matroska
- 
- # Programs
--CXX=g++
--LD=$(CXX)
- AR = ar rcvu
- RANLIB = ranlib
- INSTALL = install
-@@ -50,7 +43,7 @@
- TAG_SRC_DIR=$(CWD)/../../test/tags/
- 
- # Librarires
--INCLUDE=-I$(CWD)/../.. -I$(LIBEBML_INCLUDE_DIR)
-+INCLUDE=-I$(CWD)/../..
- LIBS=
- MUX_LIBS=-lmatroska -lebml $(LIBICONV)
- 
-@@ -72,7 +65,7 @@
- 
- WARNINGFLAGS=-Wall -Wno-unknown-pragmas -ansi -fno-gnu-keywords -D_GNU_SOURCE \
- 		-Wshadow
--COMPILEFLAGS=$(DEBUGFLAGS) $(CXXFLAGS) $(CPPFLAGS) $(WARNINGFLAGS) $(INCLUDE)
-+COMPILEFLAGS=$(DEBUGFLAGS) $(CXXFLAGS) $(CPPFLAGS) $(INCLUDE)
+--- libmatroska-1.0.0/make/linux/Makefile.orig	Fri Jun  4 04:46:29 2010
++++ libmatroska-1.0.0/make/linux/Makefile	Sat Oct  9 16:24:08 2010
+@@ -72,6 +72,9 @@
+ COMPILEFLAGS=$(DEBUGFLAGS) $(CXXFLAGS) $(CPPFLAGS) $(WARNINGFLAGS) $(INCLUDE)
  LINKFLAGS=-L. -L$(LIBEBML_LIB_DIR) $(LDFLAGS)
  DEPENDFLAGS  = $(CXXFLAGS) $(INCLUDE)
++LOFLAGS=-fPIC
++ARFLAGS=rcvu
++LIBSOFLAGS=-Wl,-soname,
  
-@@ -95,14 +88,14 @@
+ ifeq (Darwin,$(shell uname -s))
+ all: staticlib
+@@ -92,14 +95,14 @@
  	$(CXX) -c $(COMPILEFLAGS) -o $@ $<
  
  %.lo: %$(EXTENSION)
 -	$(CXX) -c $(COMPILEFLAGS) -fPIC -o $@ $<
-+	$(CXX) -c $(COMPILEFLAGS) -KPIC -o $@ $<
++	$(CXX) -c $(COMPILEFLAGS) $(LOFLAGS) -o $@ $<
  
  $(LIBRARY): $(objects)
- 	$(AR) $@ $(objects)
+-	$(AR) rcvu $@ $(objects)
++	$(AR) $(ARFLAGS) $@ $(objects)
  	$(RANLIB) $@
  
  $(LIBRARY_SO): $(objects_so)
 -	$(CXX) -shared -Wl,-soname,$(LIBRARY_SO_VER) -o $(LIBRARY_SO_VER) $(objects_so) -lebml
-+	$(CXX) -G -h $(LIBRARY_SO_VER) -o $(LIBRARY_SO_VER) $(objects_so) $(LDFLAGS) -lebml
++	$(CXX) -shared $(LIBSOFLAGS)$(LIBRARY_SO_VER) -o $(LIBRARY_SO_VER) $(objects_so) -lebml
  	rm -f $(LIBRARY_SO)
  	ln -s $(LIBRARY_SO_VER) $(LIBRARY_SO)
  
-@@ -156,23 +149,23 @@
- endif
- 
- install_headers:
--	$(INSTALL) $(INSTALL_DIR_OPTS) -d $(includedir)
-+	$(INSTALL) $(INSTALL_DIR_OPTS) -d $(DESTDIR)$(includedir)
- 	for i in $(INCLUDE_DIR)/*.h; do \
--		$(INSTALL) $(INSTALL_OPTS) $$i $(includedir) ; \
-+		$(INSTALL) $(INSTALL_OPTS) $$i $(DESTDIR)$(includedir) ; \
- 	done
--	$(INSTALL) $(INSTALL_DIR_OPTS) -d $(includedir)/c
-+	$(INSTALL) $(INSTALL_DIR_OPTS) -d $(DESTDIR)$(includedir)/c
- 	for i in $(INCLUDE_DIR)/c/*.h; do \
--		$(INSTALL) $(INSTALL_OPTS) $$i $(includedir)/c ; \
-+		$(INSTALL) $(INSTALL_OPTS) $$i $(DESTDIR)$(includedir)/c ; \
- 	done
- 
- install_staticlib: $(LIBRARY)
--	$(INSTALL) $(INSTALL_DIR_OPTS) -d $(libdir)
--	$(INSTALL) $(INSTALL_OPTS_LIB) $(LIBRARY) $(libdir)
-+	$(INSTALL) $(INSTALL_DIR_OPTS) -d $(DESTDIR)$(libdir)
-+	$(INSTALL) $(INSTALL_OPTS_LIB) $(LIBRARY) $(DESTDIR)$(libdir)
- 
- install_sharedlib: $(LIBRARY_SO)
--	$(INSTALL) $(INSTALL_DIR_OPTS) -d $(libdir)
--	$(INSTALL) $(INSTALL_OPTS_LIB) $(LIBRARY_SO_VER) $(libdir)
--	ln -fs $(LIBRARY_SO_VER) $(libdir)/$(LIBRARY_SO)
-+	$(INSTALL) $(INSTALL_DIR_OPTS) -d $(DESTDIR)$(libdir)
-+	$(INSTALL) $(INSTALL_OPTS_LIB) $(LIBRARY_SO_VER) $(DESTDIR)$(libdir)
-+	( cd $(DESTDIR)$(libdir) ; ln -s $(LIBRARY_SO_VER) $(LIBRARY_SO) )
- 
- ifneq ($(wildcard .depend),)
- include .depend

@@ -1,3 +1,9 @@
+2010-10-10  Alex Viskovatoff <viskovatoff@imap.cc>
+
+	* experimental/SFEmkvtoolnix.spec: Added
+	* SFElibebml.spec: Updated to 1.0.0
+	* SFElibmatroska.spec: Updated to 1.0.0
+
 2010-10-09  Jeff Cai <jeff.cai@sun.com>
 
 	* SFEfarsight2.spec:

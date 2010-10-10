@@ -1,0 +1,73 @@
+diff -u mkvtoolnix-4.3.0/lib/librmff.orig/librmff.h mkvtoolnix-4.3.0/lib/librmff/librmff.h
+--- mkvtoolnix-4.3.0/lib/librmff.orig/librmff.h	2010-09-04 16:04:59.000000000 -0400
++++ mkvtoolnix-4.3.0/lib/librmff/librmff.h	2010-09-28 15:36:41.143116718 -0400
+@@ -379,8 +379,14 @@
+ 
+ #if defined(COMP_MSC)
+ #pragma pack(push,1)
++#elif defined(__SUNPRO_C)
++#pragma pack(1)
++#endif
++#if defined(__SUNPRO_C)
++  typedef struct real_video_props_t {
++#else
++  typedef struct PACKED_STRUCTURE real_video_props_t {
+ #endif
+-typedef struct PACKED_STRUCTURE real_video_props_t {
+   uint32_t size;
+   uint32_t fourcc1;
+   uint32_t fourcc2;
+@@ -393,7 +399,11 @@
+   uint32_t type2;
+ } real_video_props_t;
+ 
++#if defined(__SUNPRO_C)
++typedef struct real_audio_v4_props_t {
++#else
+ typedef struct PACKED_STRUCTURE real_audio_v4_props_t {
++#endif
+   uint32_t fourcc1;             /* '.', 'r', 'a', 0xfd */
+   uint16_t version1;            /* 4 or 5 */
+   uint16_t unknown1;            /* 00 00 */
+@@ -416,7 +426,11 @@
+   uint16_t channels;
+ } real_audio_v4_props_t;
+ 
++#if defined(__SUNPRO_C)
++typedef struct real_audio_v5_props_t {
++#else
+ typedef struct PACKED_STRUCTURE real_audio_v5_props_t {
++#endif
+   uint32_t fourcc1;             /* '.', 'r', 'a', 0xfd */
+   uint16_t version1;            /* 4 or 5 */
+   uint16_t unknown1;            /* 00 00 */
+@@ -443,6 +457,8 @@
+ } real_audio_v5_props_t;
+ #if defined(COMP_MSC)
+ #pragma pack(pop)
++#elif defined(__SUNPRO_C)
++#pragma pack()
+ #endif
+ 
+ typedef struct rmff_index_entry_t {
+diff -u mkvtoolnix-4.3.0/lib/librmff.orig/rmff.c mkvtoolnix-4.3.0/lib/librmff/rmff.c
+--- mkvtoolnix-4.3.0/lib/librmff.orig/rmff.c	2010-09-04 16:04:59.000000000 -0400
++++ mkvtoolnix-4.3.0/lib/librmff/rmff.c	2010-10-07 18:47:49.365835394 -0400
+@@ -1629,7 +1629,7 @@
+   return RMFF_ERR_OK;
+ }
+ 
+-inline uint16_t
++static inline uint16_t
+ data_get_uint16_be(unsigned char **data,
+                    int *len) {
+   (*data) += 2;
+@@ -1638,7 +1638,7 @@
+ }
+ 
+ inline unsigned char
+-data_get_uint8(unsigned char **data,
++static data_get_uint8(unsigned char **data,
+                int *len) {
+   (*data)++;
+   (*len)--;

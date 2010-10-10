@@ -3,17 +3,22 @@
 #
 # includes module(s): libmatroska
 #
+
+# NOTE: This must be built using Solaris Studio 12.2, since the compiler
+# option "=-library=stdcxx4" used by the spec is new to that release.
+
 %include Solaris.inc
 
 Name:		SFElibmatroska
 License:	LGPL
-Summary:        Matroska Video Container
-Group:          System Environment/Libraries
-URL:            http://www.matroska.org/
-Vendor:         Moritz Bunkus <moritz@bunkus.org>
-Version:	0.8.1
+Summary:	Matroska Video Container
+Group:		System Environment/Libraries
+URL:		http://www.matroska.org
+Vendor:		Moritz Bunkus <moritz@bunkus.org>
+Version:	1.0.0
 Source:		http://dl.matroska.org/downloads/libmatroska/libmatroska-%{version}.tar.bz2
 Patch1:		libmatroska-01-makefile.diff
+
 SUNW_BaseDir:	%{_basedir}
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -27,6 +32,7 @@ significantly because it is based on  EBML (Extensible Binary Meta
 Language), a binary derivative of XML. EBML enables the Matroska
 Development Team to gain significant advantages in terms of future
 format extensibility, without breaking file support in old parsers.
+These libraries are used by mkvtoolnix.
 
 %package devel
 Summary:	%{summary} - development files
@@ -36,10 +42,7 @@ Requires: %name
 
 %prep
 %setup -q -n libmatroska-%version
-cd make
-mkdir solaris
-cp linux/Makefile solaris
-%patch1 -p0
+%patch1 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -47,34 +50,37 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
     CPUS=1
 fi
 export CFLAGS="%optflags -I%{_includedir}"
-export CXXFLAGS="%optflags -I%{_includedir}"
+export CXXFLAGS="-library=stdcxx4 %optflags -I%{_includedir}"
 export ACLOCAL_FLAGS="-I/usr/share/aclocal -I %{_datadir}/aclocal"
 export MSGFMT="/usr/bin/msgfmt"
-export LDFLAGS="-R%{_libdir} -L%{_libdir}"
+export LDFLAGS="-library=stdcxx4 -R%{_libdir} -L%{_libdir}"
 
-cd make/solaris
-make -j$CPUS PREFIX=%{_prefix}
+cd make/linux
+gmake -j$CPUS  CXX=CC AR=CC  DEBUGFLAGS=-g WARNINGFLAGS="" \
+ARFLAGS="-xar -o" LOFLAGS=-Kpic LIBSOFLAGS="-G -h "
 
 %install
 rm -rf $RPM_BUILD_ROOT
-cd make/solaris
-make install_headers DESTDIR=$RPM_BUILD_ROOT PREFIX=%{_prefix}
-make install_sharedlib DESTDIR=$RPM_BUILD_ROOT PREFIX=%{_prefix}
+cd make/linux
+gmake install prefix=$RPM_BUILD_ROOT%{_prefix} INSTALL=ginstall
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr (-, root, bin)
-%dir %attr (0755, root, bin) %{_libdir}
 %{_libdir}/lib*.so*
+%{_libdir}/lib*.a
 
 %files devel
 %defattr (-, root, bin)
-%dir %attr (0755, root, bin) %{_includedir}
-%{_includedir}/*
+%{_includedir}
 
 %changelog
+* Fri Oct  1 2010 - Alex Viskovatoff
+- Update to 1.0.0; use stdcxx (requires Solaris Studio 12.2)
+- Patch linux Makefile so that it works with Linux and Solaris
+- instead of creating a new Makefile for Solaris.
 * Mar 2010  - Gilles Dauphin
 - look at install dir. Exemple search for /usr/SFE/include
 - idem for _libdir
