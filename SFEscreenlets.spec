@@ -15,7 +15,6 @@ Requires:	python-pyxdg
 
 %{?!pythonver:%define pythonver 2.6}
 
-#BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 
 %description
@@ -53,6 +52,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc CHANGELOG README TODO
+%dir %attr (0755, root, bin) %{_bindir}
 %{_bindir}/screenlets*
 
 %dir %attr (0755, root, bin) %{_libdir}
@@ -76,5 +76,4 @@ rm -rf $RPM_BUILD_ROOT
 %changelog
 * Mon Oct 11 2010 - yun-tong.jin@oracle.com
 - Init spec with version 0.1.2
-
 
