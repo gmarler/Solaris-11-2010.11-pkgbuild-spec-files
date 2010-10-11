@@ -1,0 +1,11 @@
+--- empathy-2.30.3/libempathy/empathy-debug.c.orig	Sat Oct  9 14:01:49 2010
++++ empathy-2.30.3/libempathy/empathy-debug.c	Sat Oct  9 14:02:01 2010
+@@ -94,7 +94,7 @@
+ 
+       for (i = 0; keys[i].value; i++)
+         {
+-          GDebugKey key = (GDebugKey) keys[i];
++          GDebugKey key = keys[i];
+           g_hash_table_insert (flag_to_keys, GUINT_TO_POINTER (key.value),
+               g_strdup (key.key));
+         }

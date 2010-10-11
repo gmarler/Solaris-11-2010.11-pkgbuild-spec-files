@@ -1,3 +1,8 @@
+2010-10-11  Jeff Cai <jeff.cai@oracle.com>
+
+	* SFEempathy.spec: Add BuildRequire for farsight
+	* patches/empathy-01-debug-key.diff: Added
+
 2010-10-11  Jeff Cai <jeff.cai@sun.com>
 
 	* SFEtelepathy-farsight.spec:

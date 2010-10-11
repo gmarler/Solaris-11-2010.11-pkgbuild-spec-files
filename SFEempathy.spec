@@ -24,12 +24,16 @@ BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 Requires:            SUNWtelepathy-glib
 Requires:            SUNWlibtelepathy
 Requires:            SUNWmission-control
+Requires:            SFEfarsight2
+Requires:            SFEtelepathy-farsight
 BuildRequires:       SUNWtelepathy-glib
 BuildRequires:       SUNWtelepathy-glib-devel
 BuildRequires:       SUNWlibtelepathy
 BuildRequires:       SUNWlibtelepathy-devel
 BuildRequires:       SUNWmission-control
 BuildRequires:       SUNWmission-control-devel
+BuildRequires:       SFEfarsight2-devel
+BuildRequires:       SFEtelepathy-farsight-devel
 
 %package root
 Summary:             %{summary} - / filesystem
