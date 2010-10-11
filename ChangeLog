@@ -1,3 +1,8 @@
+2010-10-11  Jeff Cai <jeff.cai@sun.com>
+
+	* SFEtelepathy-farsight.spec:
+	* base-specs/telepathy-farsight.spec: Add 64 bit support
+
 2010-10-11  Simon Jin <yuntong.jin@sun.com>
 
 	* SFEscreenlets.spec:Fix /usr/bin/screenlets attr issue

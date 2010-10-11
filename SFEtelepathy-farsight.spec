@@ -7,6 +7,13 @@
 #
 %include Solaris.inc
 
+%include Solaris.inc
+%ifarch amd64 sparcv9
+%include arch64.inc
+%use telepathy_farsight64 = telepathy-farsight.spec
+%endif
+
+%include base.inc
 %use telepathy_farsight = telepathy-farsight.spec
 
 Name:                    SFEtelepathy-farsight
@@ -27,9 +34,14 @@ Requires: %name
 
 %prep
 rm -rf %name-%version
-mkdir %name-%version
-%telepathy_farsight.prep -d %name-%version
-cd %{_builddir}/%name-%version
+
+%ifarch amd64 sparcv9
+mkdir -p %name-%version/%_arch64
+%telepathy_farsight64.prep -d %name-%version/%_arch64
+%endif
+
+mkdir -p %name-%version/%base_arch
+%telepathy_farsight.prep -d %name-%version/%base_arch
 
 %build
 export CFLAGS="%optflags"
@@ -37,12 +49,20 @@ export LDFLAGS="%_ldflags"
 export RPM_OPT_FLAGS="$CFLAGS"
 export ACLOCAL_FLAGS="-I %{_datadir}/aclocal"
 
-%telepathy_farsight.build -d %name-%version
+%ifarch amd64 sparcv9
+%telepathy_farsight64.build -d %name-%version/%_arch64
+%endif
+    
+%telepathy_farsight.build -d %name-%version/%base_arch
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%telepathy_farsight.install -d %name-%version
+%ifarch amd64 sparcv9
+%telepathy_farsight64.install  -d %name-%version/%_arch64
+%endif
+    
+%telepathy_farsight.install -d %name-%version/%base_arch
 
 %{?pkgbuild_postprocess: %pkgbuild_postprocess -v -c "%{version}:%{jds_version}:%{name}:$RPM_ARCH:%(date +%%Y-%%m-%%d):%{support_level}" $RPM_BUILD_ROOT}
 
@@ -50,14 +70,14 @@ rm -rf $RPM_BUILD_ROOT
 rm -rf $RPM_BUILD_ROOT
 
 %files
-%doc telepathy-farsight-%{telepathy_farsight.version}/COPYING
-%doc telepathy-farsight-%{telepathy_farsight.version}/NEWS
-%doc telepathy-farsight-%{telepathy_farsight.version}/ChangeLog
-%doc telepathy-farsight-%{telepathy_farsight.version}/AUTHORS
-%doc telepathy-farsight-%{telepathy_farsight.version}/README
+%doc -d %{base_arch}/telepathy-farsight-%{telepathy_farsight.version} COPYING NEWS ChangeLog AUTHORS README
 %defattr (-, root, bin)
-%dir %attr (0755, root, bin) %{_libexecdir}
-%{_libexecdir}/lib*.so*
+%dir %attr (0755, root, bin) %{_libdir}
+
+%ifarch amd64 sparcv9
+%{_libdir}/%{_arch64}/lib*.so*
+%endif
+%{_libdir}/lib*.so*
 %dir %attr (0755, root, sys) %{_datadir}
 %dir %attr (0755, root, other) %{_datadir}/doc
 %dir %attr (0755, root, bin) %{_datadir}/gtk-doc
@@ -67,6 +87,10 @@ rm -rf $RPM_BUILD_ROOT
 %defattr (-, root, bin)
 %dir %attr (0755, root, other) %{_libdir}/pkgconfig
 %dir %attr (0755, root, bin) %{_includedir}
+%ifarch sparcv9 amd64
+%dir %attr (0755, root, other) %{_libdir}/%{_arch64}/pkgconfig
+%{_libdir}/%{_arch64}/pkgconfig/*
+%endif
 %{_libdir}/pkgconfig/*.pc
 %{_libdir}/python2.6/*
 %attr(755, root, bin) %{_includedir}/telepathy-1.0/*
