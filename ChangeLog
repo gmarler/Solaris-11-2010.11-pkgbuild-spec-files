@@ -1,3 +1,7 @@
+2010-10-11  Simon Jin <yuntong.jin@sun.com>
+
+	* SFEscreenlets.spec:Init spec file
+
 2010-10-10  Alex Viskovatoff <viskovatoff@imap.cc>
 
 	* experimental/SFEmkvtoolnix.spec: Added
