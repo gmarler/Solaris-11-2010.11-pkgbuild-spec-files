@@ -1,3 +1,7 @@
+2010-10-12  Knut Anders Hatlen  <knut.hatlen@oracle.com>
+
+	* SFEdovecot.spec: Bump to 1.2.15.
+
 2010-10-11  Jeff Cai <jeff.cai@oracle.com>
 
 	* SFEtelepathy-gabble.spec:
