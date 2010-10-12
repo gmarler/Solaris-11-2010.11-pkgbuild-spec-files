@@ -1,5 +1,12 @@
 2010-10-11  Jeff Cai <jeff.cai@oracle.com>
 
+	* SFEtelepathy-gabble.spec:
+	* base-specs/telepathy-gabble.spec:
+	* patches/telepathy-gabble-01-compatible.diff:
+	Added new spec
+
+2010-10-11  Jeff Cai <jeff.cai@oracle.com>
+
 	* SFEempathy.spec: Add BuildRequire for farsight
 	* patches/empathy-01-debug-key.diff: Added
 

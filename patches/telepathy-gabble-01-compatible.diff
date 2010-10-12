@@ -1,0 +1,57 @@
+--- telepathy-gabble-0.10.3/lib/gibber/gibber-transport.c.orig	2010-10-12 14:00:35.050341158 +0800
++++ telepathy-gabble-0.10.3/lib/gibber/gibber-transport.c	2010-10-12 14:00:44.880464519 +0800
+@@ -232,7 +232,7 @@
+ gibber_transport_disconnect (GibberTransport *transport)
+ {
+   GibberTransportClass *cls = GIBBER_TRANSPORT_GET_CLASS (transport);
+-  return cls->disconnect (transport);
++  cls->disconnect (transport);
+ }
+ 
+ void
+--- telepathy-gabble-0.10.3/lib/gibber/gibber-util.c.orig	2010-10-12 14:01:06.402777867 +0800
++++ telepathy-gabble-0.10.3/lib/gibber/gibber-util.c	2010-10-12 14:01:41.201615061 +0800
+@@ -38,8 +38,8 @@
+   if (s6->sin6_family == AF_INET6 && IN6_IS_ADDR_V4MAPPED (&(s6->sin6_addr)))
+     {
+       /* Normalize to ipv4 address */
+-      u_int32_t addr_big_endian;
+-      u_int16_t port;
++      unsigned int addr_big_endian;
++      unsigned short port;
+ 
+       memcpy (&addr_big_endian, s6->sin6_addr.s6_addr + 12, 4);
+       port = s6->sin6_port;
+--- telepathy-gabble-0.10.3/src/jingle-transport-iface.c.orig	2010-10-12 14:03:55.383838473 +0800
++++ telepathy-gabble-0.10.3/src/jingle-transport-iface.c	2010-10-12 14:04:09.757752430 +0800
+@@ -48,7 +48,7 @@
+     GABBLE_JINGLE_TRANSPORT_IFACE_GET_CLASS (self)->parse_candidates;
+ 
+   g_assert (virtual_method != NULL);
+-  return virtual_method (self, node, error);
++  virtual_method (self, node, error);
+ }
+ 
+ /* Takes in a list of slice-allocated JingleCandidate structs */
+--- telepathy-gabble-0.10.3/src/debug.c.orig	2010-10-12 14:02:41.237616511 +0800
++++ telepathy-gabble-0.10.3/src/debug.c	2010-10-12 14:02:53.851212062 +0800
+@@ -92,7 +92,7 @@
+ 
+       for (i = 0; keys[i].value; i++)
+         {
+-          GDebugKey key = (GDebugKey) keys[i];
++          GDebugKey key = keys[i];
+           gchar *val;
+ 
+           val = g_strdup_printf ("%s/%s", G_LOG_DOMAIN, key.key);
+--- telepathy-gabble-0.10.3/src/roster.c.orig	Tue Oct 12 14:25:16 2010
++++ telepathy-gabble-0.10.3/src/roster.c	Tue Oct 12 14:26:41 2010
+@@ -985,7 +985,7 @@
+ 
+ static GabbleRosterChannel *
+ _gabble_roster_get_channel (GabbleRoster *roster,
+-                            guint handle_type,
++                            TpHandleType handle_type,
+                             TpHandle handle,
+                             gboolean *created,
+                             gpointer request_token)
