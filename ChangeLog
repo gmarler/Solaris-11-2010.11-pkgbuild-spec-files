@@ -1,3 +1,8 @@
+2010-10-13  Smin Jin  <yun-tong.jin@oracle.com>
+
+	* SFEwebkitgtk.spec:
+	* patches/webkit-28-png.diff: Bug 17147 - webkitgtk 1.2.3 crash on b148
+
 2010-10-12  Knut Anders Hatlen  <knut.hatlen@oracle.com>
 
 	* SFEdovecot.spec: Bump to 1.2.15.

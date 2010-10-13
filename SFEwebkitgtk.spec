@@ -41,6 +41,7 @@ Patch24:                 webkit-24-MathExtras.diff
 Patch25:                 webkit-25-misc.diff
 Patch26:                  webkit-26-copycons-imp.diff
 Patch27:                  webkit-27-ownptr.diff
+Patch28:                 webkit-28-png.diff
 
 SUNW_BaseDir:            %{_basedir}
 SUNW_Copyright:          SFEwebkit.copyright
@@ -111,7 +112,8 @@ cd webkit-%version
 %patch25 -p1
 %patch26 -p1
 %patch27 -p1
-%
+%patch28 -p1
+
 %build
 #export LD=CC
 #export CPPFLAGS="-D__FUNCTION__=__func__"
