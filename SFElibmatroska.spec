@@ -22,6 +22,7 @@ Patch1:		libmatroska-01-makefile.diff
 SUNW_BaseDir:	%{_basedir}
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
+BuildRequires: SUNWgmake
 BuildRequires: SFElibebml-devel
 Requires: SFElibebml
 

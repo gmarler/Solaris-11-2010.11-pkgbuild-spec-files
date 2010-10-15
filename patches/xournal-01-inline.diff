@@ -1,0 +1,11 @@
+--- xournal-0.4.5/src/xo-shapes.c.orig	2009-10-02 03:17:00.000000000 -0400
++++ xournal-0.4.5/src/xo-shapes.c	2010-10-12 23:46:34.247187603 -0400
+@@ -92,7 +92,7 @@
+   return sqrt(ixx+iyy);
+ }
+ 
+-inline double I_det(struct Inertia s)
++static inline double I_det(struct Inertia s)
+ {
+   double ixx = I_xx(s), iyy = I_yy(s), ixy = I_xy(s);
+   if (s.mass <= 0.) return 0.;

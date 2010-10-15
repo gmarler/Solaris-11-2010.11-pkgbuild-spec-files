@@ -9,7 +9,7 @@
 %define src_name vorbis-tools
 
 Name:		SFEvorbis-tools
-Version:	1.2.0
+Version:	1.4.0
 Release:	1
 Summary:	Several Ogg Vorbis Tools
 
@@ -82,6 +82,8 @@ make DESTDIR=$RPM_BUILD_ROOT install
 
 
 %changelog
+* Tue Oct 12 2010 - Alex Viskovatoff
+- bump to 1.4.0
 * Tue Mar 02 2010 Milan Jurik
 - SFE port
 * Tue Jan 25 2008 Ivo Emanuel Goncalves <justivo@gmail.com>

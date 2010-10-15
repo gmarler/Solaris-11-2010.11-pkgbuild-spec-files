@@ -7,7 +7,7 @@
 
 Name:                ncurses
 Summary:             Emulation of SVR4 curses with wide character support
-Version:             5.6
+Version:             5.7
 Source:              http://ftp.gnu.org/pub/gnu/%{name}/%{name}-%{version}.tar.gz
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
@@ -62,6 +62,8 @@ rm -fr ${RPM_BUILD_ROOT}%{_datadir}
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Fri Oct 15 2010 - Alex Viskovatoff
+- Bump to 5.7.
 * Sun Aug 10 2008 - andras.barna@gmail.com
 - copied from ncurses.spec
 * Sat Nov 3 2007 - markwright@internode.on.net

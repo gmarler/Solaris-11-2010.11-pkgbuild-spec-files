@@ -1,7 +1,7 @@
 #
-# Copyright (c) 2006 Sun Microsystems, Inc.
-# This file and all modifications and additions to the pristine
-# package are under the same license as the package itself.
+# spec file for package SFEmkvtoolnix
+#
+# includes module: mkvtoolnix
 #
 
 ################################################################################
@@ -94,8 +94,7 @@ export OPTIMIZATION_CFLAGS=""
 export USER_LDFLAGS=-library=stdcxx4 
 
 CXXFLAGS=$USER_CXXFLAGS LDFLAGS=$USER_LDFLAGS ./configure --prefix=%{_prefix}
-#./drake -j$CPUS
-./drake -j1
+./drake -j$CPUS
 
 %install
 rm -rf $RPM_BUILD_ROOT

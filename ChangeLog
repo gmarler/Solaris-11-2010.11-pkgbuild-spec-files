@@ -1,3 +1,10 @@
+2010-10-15  Alex Viskovatoff <viskovatoff@imap.cc>
+
+	* SFEhunspell.spec: Added
+	* SFExournal.spec: Added
+	* base-specs/ncursesw.spec: Bump to 5.7.
+	* SFEvorbis-tools.spec: Bump to 1.4.0
+
 2010-10-13  Smin Jin  <yun-tong.jin@oracle.com>
 
 	* SFEwebkitgtk.spec:
