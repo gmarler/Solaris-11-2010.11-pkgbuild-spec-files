@@ -1,3 +1,7 @@
+2010-10-16 Milan Jurik <sfnet@xylab.cz>
+
+	* SFEnodejs.spec: bump to 0.2.3
+
 2010-10-15  Alex Viskovatoff <viskovatoff@imap.cc>
 
 	* SFEhunspell.spec: Added
