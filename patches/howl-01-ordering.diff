@@ -1,0 +1,15 @@
+--- old/howl-1.0.0/src/lib/howl/Posix/posix_interface.c	Thu Oct 14 02:11:10 2010
++++ howl-1.0.0/src/lib/howl/Posix/posix_interface.c	Thu Oct 14 02:08:15 2010
+@@ -29,11 +29,11 @@
+ #include "posix_interface.h"
+ #include <salt/debug.h>
+ #include <salt/interface.h>
++#include <sys/socket.h>
+ #include <net/if.h> 
+ #include <arpa/inet.h>
+ #include <errno.h>
+ #include <sys/ioctl.h>
+-#include <sys/socket.h>
+ #include <stdio.h>
+ 
+ #if defined(__linux__)

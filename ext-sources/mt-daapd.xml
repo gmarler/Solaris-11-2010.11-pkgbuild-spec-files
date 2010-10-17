@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!DOCTYPE service_bundle SYSTEM "/usr/share/lib/xml/dtd/service_bundle.dtd.1">
+<service_bundle type="manifest" name="mt-daapd">
+    <service name="network/mt-daapd" type="service" version="1">
+        <dependency name="network" grouping="require_all" restart_on="none" type="service">
+            <service_fmri value="svc:/milestone/network:default"/>
+        </dependency>
+        <exec_method type="method" name="start" exec="/usr/bin/mt-daapd -y -c %{mt-daapd/conffile}" timeout_seconds="10" />
+        <exec_method type="method" name="refresh" exec=":kill -HUP" timeout_seconds="10" />
+        <exec_method type="method" name="stop" exec=":kill" timeout_seconds="10" />
+        <instance name="default" enabled="false">
+            <property_group name='config' type='application'>
+                <propval name='conffile' type='astring' value='/etc/mt-daapd.conf' />
+            </property_group>
+        </instance>
+        <stability value="Evolving"/>
+        <template>
+            <common_name>
+                <loctext xml:lang="C">Firefly Media Server</loctext>
+            </common_name>
+            <documentation>
+                <doc_link name="Firefly Media Server homepage" uri="http://fireflymediaserver.org"/>
+            </documentation>
+        </template>
+    </service>
+</service_bundle>

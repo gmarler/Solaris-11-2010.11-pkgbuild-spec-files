@@ -1,3 +1,13 @@
+2010-10-17  James Choi  <jchoi42@pha.jhu.edu>
+
+	* SFEhowl.spec: initial spec
+	* base-specs/howl.spec: initial spec
+	* patches/howl-01-ordering.diff: header order net/if.h
+	* patches/howl-02-ifreq.diff: if_hwaddr depreciated in Solaris
+	* SFEmt-daapd.spec: (aka firefly) Initial spec
+	* base-specs/mt-daapd.spec: initial spec
+	* ext-sources/mt-daapd.spec: SMF manifest by Peter Woodman
+
 2010-10-17  Albert Lee  <trisk@opensolaris.org>
 
 	* SFEboost-gpp.spec: Remove SUNWicu* dependencies added in error.

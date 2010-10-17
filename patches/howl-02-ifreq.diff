@@ -1,0 +1,39 @@
+--- old/howl-1.0.0/src/lib/howl/Posix/posix_interface.c	2010-10-14 17:43:29.366790584 -0400
++++ howl-1.0.0/src/lib/howl/Posix/posix_interface.c	2010-10-14 17:45:57.048458250 -0400
+@@ -367,17 +367,10 @@
+ 	sw_debug(SW_LOG_VERBOSE, "got ip address: %s\n", tmpname);
+ 
+ 	/* mac address */
+-#if defined(SIOCGIFHWADDR)
+-	res = ioctl(sock, SIOCGIFHWADDR, &ifr);
+-	err = sw_translate_error(res == 0, errno);
+-	sw_check_okay_log(err, exit);
+-	sw_memcpy(nif->m_super.m_mac_address.m_id, (sw_uint8*)(ifr.ifr_hwaddr.sa_data), sizeof(sw_mac_address)); 
+-#elif defined(SIOCGENADDR)
+ 	res = ioctl(sock, SIOCGENADDR, &ifr);
+ 	err = sw_translate_error(res == 0, errno);
+ 	sw_check_okay_log(err, exit);
+ 	sw_memcpy(nif->m_super.m_mac_address.m_id, (sw_uint8*)(ifr.ifr_ifru.ifru_enaddr), sizeof(sw_mac_address)); 
+-#endif
+ 
+ 	/* index */
+ 	nif->m_super.m_index = if_nametoindex(ifr.ifr_name);
+@@ -436,18 +429,10 @@
+ 	sw_ipv4_address_init_from_saddr(&(nif->m_super.m_netmask), ((struct sockaddr_in*) &ifr->ifr_addr )->sin_addr.s_addr );
+ #endif
+ 
+-#if defined(SIOCGIFHWADDR)
+-	/* mac address */
+-	res = ioctl(sock, SIOCGIFHWADDR, ifr);
+-	err = sw_translate_error(res != -1, errno);
+-	sw_check_okay_log(err, exit);
+-	sw_memcpy(nif->m_super.m_mac_address.m_id, (sw_uint8*)(ifr->ifr_hwaddr.sa_data), sizeof(sw_mac_address)); 
+-#elif defined(SIOCGENADDR)
+ 	res = ioctl(sock, SIOCGENADDR, ifr);
+ 	err = sw_translate_error(res != -1, errno);
+ 	sw_check_okay_log(err, exit);
+ 	sw_memcpy(nif->m_super.m_mac_address.m_id, (sw_uint8*)(ifr->ifr_ifru.ifru_enaddr), sizeof(sw_mac_address)); 
+-#endif
+ 
+ 	/* initialize link status field */
+ 	sw_network_interface_link_status(&nif->m_super, &(nif->m_super.m_linked));
