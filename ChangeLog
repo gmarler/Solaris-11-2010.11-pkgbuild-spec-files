@@ -21,7 +21,6 @@
 	* base-specs/ncursesw.spec: Bump to 5.7.
 	* SFEvorbis-tools.spec: Bump to 1.4.0
 
->>>>>>> .r2964
 2010-10-13  Smin Jin  <yun-tong.jin@oracle.com>
 
 	* SFEwebkitgtk.spec:
@@ -62,7 +61,6 @@
 	* SFElibebml.spec: Updated to 1.0.0
 	* SFElibmatroska.spec: Updated to 1.0.0
 
->>>>>>> .r2962
 2010-10-09  Jeff Cai <jeff.cai@sun.com>
 
 	* SFEfarsight2.spec:
@@ -139,7 +137,6 @@
 
         * SFEgnumeric.spec, SFEliblouis.spec: Remove .la and .a files.
 
->>>>>>> .r2954
 2010-09-24 Milan Jurik <sfnet@xylab.cz>
 
 	* SFErubygem-dnsruby.spec: bump to 1.50
