@@ -9,14 +9,13 @@
 %include base.inc
 
 %define SFEscons         %(/usr/bin/pkg info scons >/dev/null 2>&1 && echo 0 || echo 1)
+%define SUNWlibfuse      %(/usr/bin/pkginfo -q SUNWlibfuse && echo 1 || echo 0)
 
 Name:                    SFEfuse-exfat
 Summary:                 Free exFAT file system implementation
-Version:                 0.9.1
+Version:                 0.9.2
 License:                 GPLv3
 Source:			 http://exfat.googlecode.com/files/fuse-exfat-%{version}.tar.gz
-Patch1:                  fuse-exfat-01-sconstruct.diff
-Patch2:                  fuse-exfat-02-byteorder.diff
 Url:                     http://code.google.com/p/exfat/
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -26,14 +25,19 @@ BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %if %SFEscons
 BuildRequires: SFEscons
 %endif
-BuildRequires: SUNWlibfuse
-Requires: SUNWfusefs
-Requires: SUNWlibfuse
+
+%if %SUNWlibfuse
+BuildRequires:  SUNWlibfuse
+Requires:       SUNWfusefs
+Requires:       SUNWlibfuse
+%else
+BuildRequires:  SFElibfuse
+Requires:       SFEfusefs
+Requires:       SFElibfuse
+%endif
 
 %prep
 %setup -q -n fuse-exfat-%version
-%patch1 -p1
-%patch2 -p1
 
 %build
 
@@ -67,5 +71,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/fs/exfat/*
 
 %changelog
+* Fri Sep 21 2010 - Albert Lee <trisk@opensolaris.org>
+- Bump to 0.9.2, drop upstreamed patches
+- Support SFEfusefs
 * Fri Jun 18 2010 - Albert Lee <trisk@opensolaris.org>
 - Initial spec

@@ -1,0 +1,29 @@
+--- ettercap-NG-0.7.3.orig/configure.in	2005-01-13 04:24:28.000000000 -0500
++++ ettercap-NG-0.7.3/configure.in	2010-07-20 09:54:26.671584378 -0400
+@@ -328,17 +328,23 @@
+ [ case "$enableval" in
+    yes)
+       AC_DEFINE(DEBUG, 1)
+-      DEBUG_FLAGS="-g -ggdb -Wmissing-prototypes -Wno-uninitialized -Werror -Wformat-security -Wsign-compare -Wall"
++      if test "x$GCC" = xyes; then
++          DEBUG_FLAGS="-g -ggdb -Wmissing-prototypes -Wno-uninitialized -Werror -Wformat-security -Wsign-compare -Wall"
++      fi
+       AC_MSG_RESULT(yes)
+       ac_ec_debug=yes
+       ;;
+    no)  AC_MSG_RESULT(no)
+-      DEBUG_FLAGS="-O2 -funroll-loops -fomit-frame-pointer -Wall"
++      if test "x$GCC" = xyes; then
++          DEBUG_FLAGS="-O2 -funroll-loops -fomit-frame-pointer -Wall"
++      fi
+       ac_ec_debug=no
+       ;;
+ esac ],
+    AC_MSG_RESULT(no)
+-   DEBUG_FLAGS="-O2 -funroll-loops -fomit-frame-pointer -Wall"
++   if test "x$GCC" = xyes; then
++       DEBUG_FLAGS="-O2 -funroll-loops -fomit-frame-pointer -Wall"
++   fi
+    ac_ec_debug=no
+ )
+ 

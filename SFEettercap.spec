@@ -13,20 +13,30 @@ Name:                SFEettercap
 Summary:             MITM LAN attack prevention suite; includes graphical (gtk) support
 Version:             0.7.3
 Source:              %{sf_download}/ettercap/ettercap-NG-%{version}.tar.gz
+Patch1:              patches/ettercap-NG-01-nogcc.diff
+Patch2:              patches/ettercap-NG-02-debian-521857.diff
 
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 
-BuildRequires: SUNWGtku
-BuildRequires: SUNWxwxft
-BuildRequires: SFElibpcap-devel
-# Note: Apparently libnet is incapable of producing a shared lib...
-BuildRequires: SFElibnet-devel
+BuildRequires: SUNWgtk2-devel
+BuildRequires: SUNWxwinc
+BuildRequires: SUNWncurses-devel
+BuildRequires: SUNWlibpcap
+BuildRequires: SUNWlibnet
+BuildRequires: SUNWopenssl-include
+BuildRequires: SUNWzlib
+BuildRequires: SUNWltdl
 #
-Requires: SUNWGtku
-Requires: SUNWxwxft
-Requires: SFElibpcap
+Requires: SUNWgtk2
+Requires: SUNWxwplt
+Requires: SUNWncurses
+Requires: SUNWlibpcap
+Requires: SUNWlibnet
+Requires: SUNWopenssl-libraries
+Requires: SUNWzlib
+Requires: SUNWltdl
 Requires: %name-root
 
 %package root
@@ -36,20 +46,22 @@ SUNW_BaseDir:            /
 
 %prep
 %setup -q -n ettercap-NG-%version
+%patch1 -p1
+%patch2 -p1
+# fix struct initialisers
+find  plug-ins -name '*.c' -exec perl -pi -e 's, (ettercap_version|name|info|version|init|fini): ( *),.\1 = \2,' {} ';'
 
 %build
-
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
 if test "x$CPUS" = "x" -o $CPUS = 0; then
      CPUS=1
 fi
 
-# This source is gcc-centric, therefore...
-export CC=/usr/sfw/bin/gcc
-# export CFLAGS="%optflags"
-export CFLAGS="-O4 -fPIC -DPIC -Xlinker -i -fno-omit-frame-pointer"
-
-export LDFLAGS="%_ldflags"
+autoconf
+export CFLAGS="%optflags"
+# Workaround for bad check in libnet/libnet-types.h: #if (__sun__ && __svr4__)
+export CPPFLAGS="-I%{xorg_inc} -D__sun__=1 -D__svr4__=1"
+export LDFLAGS="%_ldflags %{xorg_lib_path} %{gnu_lib_path}"
 
 ./configure --prefix=%{_prefix}		\
             --bindir=%{_bindir}		\
@@ -57,12 +69,8 @@ export LDFLAGS="%_ldflags"
             --datadir=%{_datadir}	\
             --libexecdir=%{_libexecdir}	\
             --mandir=%{_mandir}		\
-	    --enable-gtk		\
-            --sysconfdir=%{_sysconfdir}
-
-# I'm pretty sure that if ncurses and/or pcre are installed,
-# those features will be automatically enabled at build-time.
-# (not tested though.)
+            --sysconfdir=%{_sysconfdir}	\
+	    --enable-gtk
 
 make -j$CPUS
 
@@ -71,7 +79,7 @@ rm -rf $RPM_BUILD_ROOT
 
 make install DESTDIR=$RPM_BUILD_ROOT
 
-rm $RPM_BUILD_ROOT%{_libdir}/ettercap/*.la
+find $RPM_BUILD_ROOT%{_libdir} -type f -name "*.a" -exec rm -f {} ';'
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -90,6 +98,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_sysconfdir}/*
 
 %changelog
+* Tue Jul 20 2010 - Albert Lee <trisk@opensolaris.org>
+- Update dependencies
+- Do not require gcc
+- Add patch1, patch2
 * Sat Apr 21 2007 - dougs@truemail.co.th
 - Added %{_libdir} to %files
 * Mon Mar 19 2007 - dougs@truemail.co.th

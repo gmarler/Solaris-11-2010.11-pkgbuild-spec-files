@@ -17,9 +17,7 @@ SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 
 %include default-depend.inc
-BuildRequires: SUNWicud
 BuildRequires: SUNWPython
-Requires: SUNWicu
 
 %package devel
 Summary:        %{summary} - development files
@@ -73,6 +71,8 @@ rm -rf $RPM_BUILD_ROOT
 %{sfw_inc}/c++/%{_gpp_version}/boost
 
 %changelog
+* Mon May 17 2010 - Albert Lee <trisk@opensolaris.org>
+- Remove SUNWicu* dependencies added in error
 * Sat Jan 30 2010 - Brian Cameron <brian.cameron@sun.com>
 - Install header files, so it isn't necessary to install the Sun Studio
   version of boost to access these.
