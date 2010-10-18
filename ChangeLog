@@ -1,3 +1,9 @@
+2010-10-18  Alex Viskovatoff <viskovatoff@imap.cc>
+
+	* SFEqt4.spec: update to 4.5.3; use stdcxx by default
+	* patches/qt4-01-libpng.diff: added: qt4 uses obsolete libpng names
+	* SFEsmplayer.spec: added
+
 2010-10-17  James Choi  <jchoi42@pha.jhu.edu>
 
 	* SFEhowl.spec: initial spec

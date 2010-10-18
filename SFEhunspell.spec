@@ -61,7 +61,7 @@ BuildRequires:	SUNWgmake
 BuildRequires:	SUNWaconf
 BuildRequires:	SUNWgnu-automake-19
 Requires:	SFEncursesw
-Requires:	library/readline
+Requires:	SUNWgnu-readline
 
 %package devel
 Summary:	%{summary} - development files
@@ -104,7 +104,7 @@ rm -rf $RPM_BUILD_ROOT
 %_libdir/*a
 %_libdir/*.so*
 %dir %attr (-, root, other) %_libdir/pkgconfig
-%_libdir/pkgconfig/hunspell.pc
+%_libdir/pkgconfig/%{srcname}.pc
 %dir %attr (-, root, sys) %_datadir
 %dir %attr (-, root, other) %_datadir/locale
 %attr (-, root, other) %_datadir/locale/*

@@ -19,11 +19,11 @@ Patch:		xournal-01-inline.diff
 SUNW_BaseDir:	%{_basedir}
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
-BuildRequires: gnu-make
-BuildRequires: autoconf
-Requires: gtk2
-Requires: libgnomecanvas
-Requires: glib2
+BuildRequires: SFEgmake
+BuildRequires: SUNWaconf
+Requires: SUNWgtk2
+Requires: SUNWlibgnomecanvas
+Requires: SUNWglib2
 
 %description
 Xournal is an application for notetaking, sketching, keeping a journal using a

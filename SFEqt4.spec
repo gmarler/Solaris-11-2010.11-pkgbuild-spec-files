@@ -3,23 +3,33 @@
 # This file and all modifications and additions to the pristine
 # package are under the same license as the package itself.
 
+# NOTE: If you want Qt4 to link against stlport4 instead of stdcxx
+# (the Apache Standard C++ Library), compile with
+# pkgtool --with-stlport build <specfile>
+%define use_stdcxx %{?_with_stlport:0}%{?!_with_stlport:1}
+
+# NOTE: Use of stdcxx requires Solaris Studio 12.2.  (The spec file could
+# be modified so that SS 12u1 could be used as well, but that would make
+# the spec more complicated, since SS 12u1 doesn't understand the
+# -library=stdcxx4 option.)
+
 %include Solaris.inc
+%define srcname qt-x11-opensource-src
 
 Name:                SFEqt4
 Summary:             Cross-platform development framework/toolkit
 URL:                 http://trolltech.com/products/qt
-License:             GPL v2
-Version:             4.4.3
-Source:              ftp://ftp.trolltech.com/qt/source/qt-x11-opensource-src-%{version}.tar.bz2
-Source1:             qt4-solaris-cc-ss12
-Patch1:              qt-01-use_bash.diff
-Patch2:              qt4-02-misc_CC.diff
-
+License:             LGPLv2
+Version:             4.5.3
+Source:              ftp://ftp.trolltech.com/qt/source/%{srcname}-%{version}.tar.gz
+Patch:               qt4-01-libpng.diff
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 
-Requires: SUNWgccruntime
+%if %use_stdcxx
+Requires: SUNWlibstdcxx4
+%endif
 #FIXME: Requires: SUNWxorg-mesa
 # Guarantee X/freetype environment concisely (hopefully):
 Requires: SUNWGtku
@@ -35,14 +45,11 @@ SUNW_BaseDir:   %{_basedir}
 Requires: %name
 
 %prep
-%setup -q -n qt-x11-opensource-src-%version
-%patch1 -p10
-cd ..
-%patch2 -p0
-cd qt-x11-opensource-src-%version
-cd mkspecs
-cp -rp solaris-cc solaris-cc-ss12
-cp %{SOURCE1}  solaris-cc-ss12/qmake.conf
+%setup -q -n %{srcname}-%version
+
+# In libpng-1.4, the "trans" and "trans_values" fields have been renamed to
+# "trans_alpha" and "trans_color", respectively.
+%patch0 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -50,16 +57,20 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
      CPUS=1
 fi
 
-##TODO## this might be omitted, if pkgbuild/environment was installed with SunStudio as default compiler
-export CC=cc
-export CXX=CC
 ##TODO## check build flags if they better be jds cbe default and make sure they are honored by configure
-export CFLAGS=""
-export CXXFLAGS="-library=stlport4"
-export LDFLAGS="%_ldflags"
+export CFLAGS="%optflags"
+
+%if %use_stdcxx
+export CXXFLAGS=-library=stdcxx4
+export LDFLAGS="%_ldflags -library=stdcxx4"
+%else
+export CXXFLAGS=-library=stlport4
+export LDFLAGS="%_ldflags -library=stlport4"
+%endif
 
 echo yes | ./configure -prefix %{_prefix} \
-           -platform solaris-cc-ss12 \
+           -platform solaris-cc \
+           -opensource \
            -docdir %{_docdir}/qt \
            -headerdir %{_includedir}/qt \
            -plugindir %{_libdir}/qt/plugins \
@@ -70,12 +81,13 @@ echo yes | ./configure -prefix %{_prefix} \
            -no-exceptions \
            -sysconfdir %{_sysconfdir}
 
-make -j$CPUS
+# configure says: "Qt is now configured for building. Just run 'gmake'."
+gmake -j$CPUS
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-make install INSTALL_ROOT=$RPM_BUILD_ROOT
+gmake install INSTALL_ROOT=$RPM_BUILD_ROOT
 
 rm ${RPM_BUILD_ROOT}%{_libdir}/*.la
 rm ${RPM_BUILD_ROOT}%{_libdir}/*.a
@@ -109,6 +121,15 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/doc/*
 
 %changelog
+* Oct 16 2010 - Alex Viskovatoff
+- Fix broken use of stlport: if -library=stlport4 is passed to the compiler,
+  it must also be passed to the linker
+- Update to version 4.5.3, obviating the need for the existing patches
+- Add a patch to make the package build if it is built on a system with
+  libpng installed
+- Use stdcxx instead of stlport, while allowing use of the deprecated
+  stlport as an option. (BionicMutton uses stdcxx.)
+- Remove dependency on SUNWgccruntime
 * Mar 07 2009 - Thomas Wagner
 - rework shared patch qt-01-use_bash.diff (to be more independent of qt version SFEqt SFEqt4 in verison 4.x / 4.5)
 * Wed Mar 04 2009 - Thomas Wagner
