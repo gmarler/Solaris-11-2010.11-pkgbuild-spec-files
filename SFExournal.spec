@@ -21,9 +21,12 @@ BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 BuildRequires: SUNWgmake
 BuildRequires: SUNWaconf
+BuildRequires: SUNWgnome-pdf-viewer-devel
+BuildRequires: SUNWgnome-common-devel
 Requires: SUNWgtk2
 Requires: SUNWlibgnomecanvas
 Requires: SUNWglib2
+Requires: SUNWgnome-pdf-viewer
 
 %description
 Xournal is an application for notetaking, sketching, keeping a journal using a
