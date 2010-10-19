@@ -19,7 +19,7 @@ Patch:		xournal-01-inline.diff
 SUNW_BaseDir:	%{_basedir}
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
-BuildRequires: SFEgmake
+BuildRequires: SUNWgmake
 BuildRequires: SUNWaconf
 Requires: SUNWgtk2
 Requires: SUNWlibgnomecanvas
