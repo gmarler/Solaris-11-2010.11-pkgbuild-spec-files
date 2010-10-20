@@ -20,7 +20,6 @@ SUNW_Copyright:          %{name}.copyright
 Group:			 Audio
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
-BuildRequires: SFEgcc
 
 %package devel
 Summary:                 %{summary} - development files
@@ -90,6 +89,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Wed Oct 20 2010 - Milan Jurik
+- bump to 1.0.23
 * Fri Aug 15 2008 - glynn.foster@sun.com
 - Add license and group
 * Sat Sep 22 2007 - dougs@truemail.co.th

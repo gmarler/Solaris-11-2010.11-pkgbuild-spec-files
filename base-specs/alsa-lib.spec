@@ -8,7 +8,7 @@
 
 Name:                    alsa-lib
 Summary:                 ALSA Library
-Version:                 1.0.14a
+Version:                 1.0.23
 Source:                  %{src_url}/%{src_name}-%{version}.tar.bz2
 Source1:		 byteswap-compat.h
 Source2:		 endian-compat.h
@@ -35,7 +35,7 @@ cp %{SOURCE2} include
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
-%patch5 -p1
+#%patch5 -p1
 %patch6 -p1
 %patch7 -p1
 %patch8 -p1
@@ -54,8 +54,8 @@ fi
 # /usr/bin/sed is busted. Find a better one :)
 export PATH=/usr/gnu/bin:/usr/xpg4/bin:$PATH
 
-CC=/usr/gnu/bin/gcc
-export LD=/usr/gnu/bin/ld
+CC=/usr/gcc/4.3/bin/gcc
+#export LD=/usr/gnu/bin/ld
 export CPPFLAGS="-D_POSIX_SOURCE -D__EXTENSIONS__ -D_XPG4_2"
 
 %if %debug_build
@@ -66,7 +66,7 @@ export CFLAGS="-O4"
 dbgopt=-disable-debug
 %endif
 
-LDFLAGS="$( echo %_ldflags | sed 's/ -Wl,-Bdirect/-Wl,-Bsymbolic/' )"
+#LDFLAGS="$( echo %_ldflags | sed 's/ -Wl,-Bdirect/ -Wl,-Bsymbolic/' )"
 
 if $( echo "%{_libdir}" | /usr/xpg4/bin/grep -q amd64 ) ; then
 	export CFLAGS="$CFLAGS -m64"
@@ -104,6 +104,8 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/alsa-lib/*/*la
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Wed Oct 20 2010 - Milan Jurik
+- bump to 1.0.23
 * Sat Sep 22 2007 - dougs@truemail.co.th
 - Changed to build with SFEgcc
 * Sun Aug 12 2007 - dougs@truemail.co.th

@@ -36,56 +36,6 @@ diff -ur alsa-lib-1.0.14a.orig/src/control/control_hw.c alsa-lib-1.0.14a/src/con
  	fd = snd_open_device(filename, fmode);
  	if (fd < 0) {
  		snd_card_load(card);
-diff -ur alsa-lib-1.0.14a.orig/src/pcm/pcm_hw.c alsa-lib-1.0.14a/src/pcm/pcm_hw.c
---- alsa-lib-1.0.14a.orig/src/pcm/pcm_hw.c	2007-06-11 15:53:13.000000000 +0700
-+++ alsa-lib-1.0.14a/src/pcm/pcm_hw.c	2007-08-11 16:30:29.928834321 +0700
-@@ -174,6 +174,7 @@
- 	snd_pcm_hw_t *hw = pcm->private_data;
- 	int fd = hw->fd, err;
- 
-+#ifdef HAVE_FCNTL_ASYNC
- 	if ((flags = fcntl(fd, F_GETFL)) < 0) {
- 		err = -errno;
- 		SYSMSG("F_GETFL failed");
-@@ -188,13 +189,16 @@
- 		SYSMSG("F_SETFL for O_ASYNC failed");
- 		return err;
- 	}
-+#endif /* HAVE_FCNTL_ASYNC */
- 	if (sig < 0)
- 		return 0;
-+#if !defined(sun)
- 	if (fcntl(fd, F_SETSIG, (long)sig) < 0) {
- 		err = -errno;
- 		SYSMSG("F_SETSIG failed");
- 		return err;
- 	}
-+#endif /* sun */
- 	if (fcntl(fd, F_SETOWN, (long)pid) < 0) {
- 		err = -errno;
- 		SYSMSG("F_SETOWN failed");
-@@ -1095,8 +1099,10 @@
- 	mode = 0;
- 	if (fmode & O_NONBLOCK)
- 		mode |= SND_PCM_NONBLOCK;
-+#ifdef HAVE_FCNTL_ASYNC
- 	if (fmode & O_ASYNC)
- 		mode |= SND_PCM_ASYNC;
-+#endif /* HAVE_FCNTL_ASYNC */
- 
- #if 0
- 	/*
-@@ -1232,8 +1238,10 @@
- 	fmode = O_RDWR;
- 	if (mode & SND_PCM_NONBLOCK)
- 		fmode |= O_NONBLOCK;
-+#ifdef HAVE_FCNTL_ASYNC
- 	if (mode & SND_PCM_ASYNC)
- 		fmode |= O_ASYNC;
-+#endif /* HAVE_FCNTL_ASYNC */
- 	if (mode & SND_PCM_APPEND)
- 		fmode |= O_APPEND;
- 	fd = snd_open_device(filename, fmode);
 diff -ur alsa-lib-1.0.14a.orig/src/timer/timer_hw.c alsa-lib-1.0.14a/src/timer/timer_hw.c
 --- alsa-lib-1.0.14a.orig/src/timer/timer_hw.c	2007-06-11 15:53:14.000000000 +0700
 +++ alsa-lib-1.0.14a/src/timer/timer_hw.c	2007-08-11 16:32:13.850322154 +0700
@@ -113,3 +63,52 @@ diff -ur alsa-lib-1.0.14a.orig/src/timer/timer_hw.c alsa-lib-1.0.14a/src/timer/t
  	if (fcntl(fd, F_SETOWN, (long)pid) < 0) {
  		SYSERR("F_SETOWN failed");
  		return -errno;
+--- alsa-lib-1.0.23.orig/src/pcm/pcm_hw.c	Sun Sep 19 11:32:12 2010
++++ alsa-lib-1.0.23/src/pcm/pcm_hw.c	Sun Sep 19 11:36:07 2010
+@@ -223,6 +223,7 @@
+ 	snd_pcm_hw_t *hw = pcm->private_data;
+ 	int fd = hw->fd, err;
+ 
++#ifdef HAVE_FCNTL_ASYNC
+ 	if ((flags = fcntl(fd, F_GETFL)) < 0) {
+ 		err = -errno;
+ 		SYSMSG("F_GETFL failed (%i)", err);
+@@ -237,13 +238,16 @@
+ 		SYSMSG("F_SETFL for O_ASYNC failed (%i)", err);
+ 		return err;
+ 	}
++#endif /* HAVE_FCNTL_ASYNC */
+ 	if (sig < 0)
+ 		return 0;
++#if !defined(sun)
+ 	if (fcntl(fd, F_SETSIG, (long)sig) < 0) {
+ 		err = -errno;
+ 		SYSMSG("F_SETSIG failed (%i)", err);
+ 		return err;
+ 	}
++#endif /* sun */
+ 	if (fcntl(fd, F_SETOWN, (long)pid) < 0) {
+ 		err = -errno;
+ 		SYSMSG("F_SETOWN failed (%i)", err);
+@@ -1143,8 +1147,10 @@
+ 	mode = 0;
+ 	if (fmode & O_NONBLOCK)
+ 		mode |= SND_PCM_NONBLOCK;
++#ifdef HAVE_FCNTL_ASYNC
+ 	if (fmode & O_ASYNC)
+ 		mode |= SND_PCM_ASYNC;
++#endif /* HAVE_FCNTL_ASYNC */
+ 
+ 	if (ioctl(fd, SNDRV_PCM_IOCTL_PVERSION, &ver) < 0) {
+ 		ret = -errno;
+@@ -1289,8 +1289,10 @@
+ 	fmode = O_RDWR;
+ 	if (mode & SND_PCM_NONBLOCK)
+ 		fmode |= O_NONBLOCK;
++#ifdef HAVE_FCNTL_ASYNC
+ 	if (mode & SND_PCM_ASYNC)
+ 		fmode |= O_ASYNC;
++#endif /* HAVE_FCNTL_ASYNC */
+ 	if (mode & SND_PCM_APPEND)
+ 		fmode |= O_APPEND;
+ 	fd = snd_open_device(filename, fmode);

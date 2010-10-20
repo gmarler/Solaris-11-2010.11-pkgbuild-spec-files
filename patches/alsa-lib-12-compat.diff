@@ -1,13 +1,12 @@
-diff -ur alsa-lib-1.0.14a.orig/include/Makefile.am alsa-lib-1.0.14a/include/Makefile.am
---- alsa-lib-1.0.14a.orig/include/Makefile.am	2007-06-11 15:53:13.000000000 +0700
-+++ alsa-lib-1.0.14a/include/Makefile.am	2007-08-11 18:30:28.178039422 +0700
-@@ -10,7 +10,8 @@
- 		      seq_event.h seq.h seqmid.h seq_midi_event.h \
- 		      conv.h instr.h iatomic.h \
- 		      alisp.h pcm_external.h pcm_ioplug.h pcm_extplug.h \
--		      pcm_rate.h control_external.h
-+		      pcm_rate.h control_external.h byteswap-compat.h \
+--- alsa-lib-1.0.23.orig/include/Makefile.am	Sun Sep 19 11:59:31 2010
++++ alsa-lib-1.0.23/include/Makefile.am	Sun Sep 19 12:09:43 2010
+@@ -5,7 +5,8 @@
+ 
+ alsainclude_HEADERS = asoundlib.h asoundef.h \
+ 		      version.h global.h input.h output.h error.h \
+-		      conf.h control.h iatomic.h
++		      conf.h control.h iatomic.h byteswap-compat.h \
 +		      endian-compat.h
  
- noinst_HEADERS = alsa sys.h search.h list.h aserver.h local.h alsa-symbols.h
- 
+ if BUILD_CTL_PLUGIN_EXT
+ alsainclude_HEADERS += control_external.h

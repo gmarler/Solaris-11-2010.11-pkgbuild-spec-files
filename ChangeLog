@@ -1,3 +1,7 @@
+2010-10-23 Milan Jurik <sfnet@xylab.cz>
+
+	* SFEalsa-lib.spec: bump to 1.0.23
+
 2010-10-18  Alex Viskovatoff <viskovatoff@imap.cc>
 
 	* SFEqt4.spec: update to 4.5.3; use stdcxx by default

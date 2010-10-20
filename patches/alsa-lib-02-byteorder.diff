@@ -1,18 +1,3 @@
-diff -ur alsa-lib-1.0.14a.orig/include/asoundlib.h alsa-lib-1.0.14a/include/asoundlib.h
---- alsa-lib-1.0.14a.orig/include/asoundlib.h	2007-06-11 15:53:13.000000000 +0700
-+++ alsa-lib-1.0.14a/include/asoundlib.h	2007-08-11 14:03:01.837329447 +0700
-@@ -34,7 +34,11 @@
- #include <string.h>
- #include <fcntl.h>
- #include <assert.h>
-+#ifdef HAVE_ENDIAN_H
- #include <endian.h>
-+#else
-+#include <alsa/endian-compat.h>
-+#endif
- #include <sys/poll.h>
- #include <errno.h>
- #include <stdarg.h>
 diff -ur alsa-lib-1.0.14a.orig/include/local.h alsa-lib-1.0.14a/include/local.h
 --- alsa-lib-1.0.14a.orig/include/local.h	2007-06-11 15:53:13.000000000 +0700
 +++ alsa-lib-1.0.14a/include/local.h	2007-08-11 14:03:17.933790724 +0700
@@ -109,36 +94,6 @@ diff -ur alsa-lib-1.0.14a.orig/src/pcm/pcm_copy.c alsa-lib-1.0.14a/src/pcm/pcm_c
  #include "pcm_local.h"
  #include "pcm_plugin.h"
  
-diff -ur alsa-lib-1.0.14a.orig/src/pcm/pcm_dmix_generic.c alsa-lib-1.0.14a/src/pcm/pcm_dmix_generic.c
---- alsa-lib-1.0.14a.orig/src/pcm/pcm_dmix_generic.c	2007-06-11 15:53:13.000000000 +0700
-+++ alsa-lib-1.0.14a/src/pcm/pcm_dmix_generic.c	2007-08-11 14:04:42.919412616 +0700
-@@ -124,7 +124,11 @@
- 	(1ULL << SND_PCM_FORMAT_S16_BE) | (1ULL << SND_PCM_FORMAT_S32_BE) |
- 	(1ULL << SND_PCM_FORMAT_S24_3LE);
- 
-+#ifdef HAVE_BYTESWAP_H
- #include <byteswap.h>
-+#else
-+#include <alsa/byteswap-compat.h>
-+#endif
- 
- static void mix_areas1_native(unsigned int size,
- 			      volatile signed short *dst, signed short *src,
-diff -ur alsa-lib-1.0.14a.orig/src/pcm/pcm_file.c alsa-lib-1.0.14a/src/pcm/pcm_file.c
---- alsa-lib-1.0.14a.orig/src/pcm/pcm_file.c	2007-06-11 15:53:13.000000000 +0700
-+++ alsa-lib-1.0.14a/src/pcm/pcm_file.c	2007-08-11 14:05:52.848965270 +0700
-@@ -26,7 +26,11 @@
-  *
-  */
-   
-+#ifdef HAVE_BYTESWAP_H
- #include <byteswap.h>
-+#else
-+#include <alsa/byteswap-compat.h>
-+#endif
- #include <ctype.h>
- #include "pcm_local.h"
- #include "pcm_plugin.h"
 diff -ur alsa-lib-1.0.14a.orig/src/pcm/pcm_iec958.c alsa-lib-1.0.14a/src/pcm/pcm_iec958.c
 --- alsa-lib-1.0.14a.orig/src/pcm/pcm_iec958.c	2007-06-11 15:53:13.000000000 +0700
 +++ alsa-lib-1.0.14a/src/pcm/pcm_iec958.c	2007-08-11 14:05:45.112882542 +0700
@@ -304,3 +259,50 @@ diff -ur alsa-lib-1.0.14a.orig/src/pcm/pcm_softvol.c alsa-lib-1.0.14a/src/pcm/pc
  #include <math.h>
  #include "pcm_local.h"
  #include "pcm_plugin.h"
+--- alsa-lib-1.0.23.orig/src/pcm/pcm_file.c	Sun Sep 19 11:26:17 2010
++++ alsa-lib-1.0.23/src/pcm/pcm_file.c	Sun Sep 19 11:24:58 2010
+@@ -26,8 +26,16 @@
+  *
+  */
+   
++#ifdef HAVE_ENDIAN_H
+ #include <endian.h>
++#else
++#include <alsa/endian-compat.h>
++#endif
++#ifdef HAVE_BYTESWAP_H
+ #include <byteswap.h>
++#else
++#include <alsa/byteswap-compat.h>
++#endif
+ #include <ctype.h>
+ #include <string.h>
+ #include "pcm_local.h"
+--- alsa-lib-1.0.23.orig/src/pcm/pcm_dmix_generic.c	Sun Sep 19 11:26:17 2010
++++ alsa-lib-1.0.23/src/pcm/pcm_dmix_generic.c	Sun Sep 19 11:23:19 2010
+@@ -125,7 +125,11 @@
+ 	 (1ULL << SND_PCM_FORMAT_S24_LE) | (1ULL << SND_PCM_FORMAT_S24_3LE) | \
+ 	 (1ULL << SND_PCM_FORMAT_U8))
+ 
++#ifdef HAVE_BYTESWAP_H
+ #include <byteswap.h>
++#else
++#include <alsa/byteswap-compat.h>
++#endif
+ 
+ static void generic_mix_areas_16_native(unsigned int size,
+ 					volatile signed short *dst,
+--- alsa-lib-1.0.23.orig/include/asoundlib-head.h	Fri Apr 16 13:11:05 2010
++++ alsa-lib-1.0.23/include/asoundlib-head.h	Sun Sep 19 12:57:28 2010
+@@ -34,7 +34,11 @@
+ #include <string.h>
+ #include <fcntl.h>
+ #include <assert.h>
++#ifdef HAVE_ENDIAN_H
+ #include <endian.h>
++#else
++#include <alsa/endian-compat.h>
++#endif
+ #include <sys/poll.h>
+ #include <errno.h>
+ #include <stdarg.h>
