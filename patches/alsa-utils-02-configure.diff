@@ -1,6 +1,6 @@
---- alsa-utils-1.0.14/configure.in.orig	2007-08-11 23:45:19.106647289 +0700
-+++ alsa-utils-1.0.14/configure.in	2007-08-11 23:45:23.730817885 +0700
-@@ -95,6 +95,24 @@
+--- alsa-utils-1.0.23.orig/configure.in	Sun Sep 19 13:44:56 2010
++++ alsa-utils-1.0.23/configure.in	Sun Sep 19 22:43:45 2010
+@@ -261,6 +261,23 @@
  dnl Enable largefile support
  AC_SYS_LARGEFILE
  
@@ -21,7 +21,6 @@
 +  AC_DEFINE([HAVE_LIBSOCKET], 1, [Have libsocket])
 +fi
 +
-+
  SAVE_UTIL_VERSION
  
- AC_OUTPUT(Makefile alsactl/Makefile alsamixer/Makefile amidi/Makefile amixer/Makefile \
+ AC_SUBST(LIBRT)

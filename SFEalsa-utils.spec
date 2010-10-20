@@ -7,7 +7,7 @@
 
 Name:                    SFEalsa-utils
 Summary:                 alsa-utils
-Version:                 1.0.14
+Version:                 1.0.23
 Source:                  ftp://ftp.alsa-project.org/pub/utils/alsa-utils-%{version}.tar.bz2
 Patch1:			 alsa-utils-01-endian.diff
 Patch2:			 alsa-utils-02-configure.diff
@@ -18,6 +18,15 @@ BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 BuildRequires: SFEalsa-lib-devel
 Requires: SFEalsa-lib
+BuildRequires: SFExmlto
+
+%if %build_l10n
+%package l10n
+Summary:		%{summary} - l10n files
+SUNW_BaseDir:		%{_basedir}
+%include default-depend.inc
+Requires:		%{name}
+%endif
 
 %prep
 %setup -q -n alsa-utils-%version
@@ -65,6 +74,12 @@ make -j$CPUS
 rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
 
+%if %build_l10n
+%else
+# REMOVE l10n FILES
+rm -rf $RPM_BUILD_ROOT%{_datadir}/locale
+%endif
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -77,7 +92,16 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/sounds
 %{_mandir}
 
+%if %build_l10n
+%files l10n
+%defattr (-, root, other)
+%dir %attr (0755, root, sys) %{_datadir}
+%{_datadir}/locale
+%endif
+
 %changelog
+* Wed Oct 20 2010 - Milan Jurik
+- bump to 1.0.23
 * Tue Oct 21 2008  - Pradhap Devarajan <pradhap (at) gmail.com>
 - Fix comments
 * Fri Aug 15 2008 - glynn.foster@sun.com

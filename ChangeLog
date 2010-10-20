@@ -2,6 +2,7 @@
 
 	* SFEalsa-lib.spec: bump to 1.0.23
 	* SFEalsa-plugins.spec: bump to 1.0.23
+	* SFEalsa-utils.spec: bump to 1.0.23
 
 2010-10-18  Alex Viskovatoff <viskovatoff@imap.cc>
 

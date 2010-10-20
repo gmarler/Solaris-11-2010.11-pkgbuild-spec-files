@@ -19,13 +19,12 @@ diff -ur alsa-utils-1.0.14.orig/aplay/formats.h alsa-utils-1.0.14/aplay/formats.
  
  /* Definitions for .VOC files */
  
-diff -ur alsa-utils-1.0.14.orig/speaker-test/speaker-test.c alsa-utils-1.0.14/speaker-test/speaker-test.c
---- alsa-utils-1.0.14.orig/speaker-test/speaker-test.c	2007-05-31 15:07:21.000000000 +0700
-+++ alsa-utils-1.0.14/speaker-test/speaker-test.c	2007-08-11 23:50:14.606172227 +0700
-@@ -47,7 +47,11 @@
- #ifdef ENABLE_NLS
- #include <locale.h>
- #endif
+--- alsa-utils-1.0.23.orig/speaker-test/speaker-test.c	Sun Sep 19 13:44:56 2010
++++ alsa-utils-1.0.23/speaker-test/speaker-test.c	Sun Sep 19 13:45:36 2010
+@@ -44,7 +44,11 @@
+ #include <getopt.h>
+ #include <inttypes.h>
+ #include <ctype.h>
 +#if defined(HAVE_BYTESWAP_H)
  #include <byteswap.h>
 +#else
