@@ -12,6 +12,8 @@
 %include base.inc
 %use alsa = alsa-plugins.spec
 
+%define oss      %(/usr/bin/pkginfo -q oss && echo 1 || echo 0)
+
 Name:                    SFEalsa-plugins
 Summary:                 %{alsa.summary}
 Version:                 %{alsa.version}
@@ -20,7 +22,11 @@ SUNW_Copyright:          %{name}.copyright
 Group: 			 Audio
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
-Requires: oss
+%if %oss
+BuildRequires: oss
+%else
+BuildRequires: SUNWaudh
+%endif
 BuildRequires: SUNWdbus-devel
 Requires: SUNWdbus
 BuildRequires: SFEalsa-lib-devel
@@ -72,6 +78,8 @@ rm -rf $RPM_BUILD_ROOT
 %config %{_sysconfdir}/asound.conf
 
 %changelog
+* Wed Oct 20 2010 - Milan Jurik
+- bump to 1.0.23
 * Fri Aug 15 2008 - glynn.foster@sun.com
 - Add license and grouping
 * Sun Aug 12 2007 - dougs@truemail.co.th

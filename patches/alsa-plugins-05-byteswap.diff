@@ -1,0 +1,14 @@
+--- SFEalsa-plugins-1.0.23/amd64/alsa-plugins-1.0.23/usb_stream/pcm_usb_stream.c	Fri Apr 16 13:11:10 2010
++++ alsa-plugins-1.0.23/usb_stream/pcm_usb_stream.c	Mon Sep 20 00:14:21 2010
+@@ -18,7 +18,11 @@
+  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+  */
+ 
++#ifdef HAVE_BYTESWAP_H
+ #include <byteswap.h>
++#else
++#include <byteswap-compat.h>
++#endif
+ #define _GNU_SOURCE
+ #include <sys/mman.h>
+ #include <sys/shm.h>

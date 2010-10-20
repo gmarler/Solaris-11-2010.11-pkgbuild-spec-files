@@ -1,0 +1,8 @@
+--- alsa-plugins-1.0.23.orig/Makefile.am	Fri Apr 16 13:11:10 2010
++++ alsa-plugins-1.0.23/Makefile.am	Mon Sep 20 00:26:51 2010
+@@ -1,4 +1,4 @@
+-SUBDIRS = oss mix usb_stream arcam-av doc
++SUBDIRS = oss mix arcam-av doc
+ if HAVE_JACK
+ SUBDIRS += jack
+ endif
