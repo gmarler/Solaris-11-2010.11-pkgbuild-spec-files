@@ -1,0 +1,80 @@
+--- Box2D-2.0.2b1/Box2D/Dynamics/Contacts/b2PolyAndEdgeContact.cpp-orig	2010-10-23 07:25:15.733330332 -0500
++++ Box2D-2.0.2b1/Box2D/Dynamics/Contacts/b2PolyAndEdgeContact.cpp	2010-10-23 07:25:23.163768720 -0500
+@@ -25,6 +25,7 @@
+ 
+ #include <new>
+ #include <cstring>
++#include "string.h"
+ 
+ b2Contact* b2PolyAndEdgeContact::Create(b2Shape* shape1, b2Shape* shape2, b2BlockAllocator* allocator)
+ {
+--- Box2D-2.0.2b1/Box2D/Dynamics/Contacts/b2EdgeAndCircleContact.cpp-orig	2010-10-23 07:24:40.966214664 -0500
++++ Box2D-2.0.2b1/Box2D/Dynamics/Contacts/b2EdgeAndCircleContact.cpp	2010-10-23 07:24:48.874682124 -0500
+@@ -24,6 +24,7 @@
+ 
+ #include <new>
+ #include <cstring>
++#include "string.h"
+ 
+ b2Contact* b2EdgeAndCircleContact::Create(b2Shape* shape1, b2Shape* shape2, b2BlockAllocator* allocator)
+ {
+--- Box2D-2.0.2b1/Box2D/Dynamics/Contacts/b2PolyAndCircleContact.cpp-orig	2010-10-23 07:24:06.706588494 -0500
++++ Box2D-2.0.2b1/Box2D/Dynamics/Contacts/b2PolyAndCircleContact.cpp	2010-10-23 07:24:15.169948747 -0500
+@@ -23,6 +23,7 @@
+ 
+ #include <new>
+ #include <cstring>
++#include "string.h"
+ 
+ b2Contact* b2PolyAndCircleContact::Create(b2Shape* shape1, b2Shape* shape2, b2BlockAllocator* allocator)
+ {
+--- Box2D-2.0.2b1/Box2D/Dynamics/Contacts/b2CircleContact.cpp-orig	2010-10-23 07:22:20.376066358 -0500
++++ Box2D-2.0.2b1/Box2D/Dynamics/Contacts/b2CircleContact.cpp	2010-10-23 07:22:41.359549092 -0500
+@@ -23,6 +23,7 @@
+ 
+ #include <new>
+ #include <cstring>
++#include "string.h"
+ 
+ b2Contact* b2CircleContact::Create(b2Shape* shape1, b2Shape* shape2, b2BlockAllocator* allocator)
+ {
+--- Box2D-2.0.2b1/Box2D/Dynamics/Contacts/b2PolyContact.cpp-orig	2010-10-23 07:23:10.258908067 -0500
++++ Box2D-2.0.2b1/Box2D/Dynamics/Contacts/b2PolyContact.cpp	2010-10-23 07:23:26.448708835 -0500
+@@ -24,6 +24,7 @@
+ #include <memory>
+ #include <new>
+ #include <cstring>
++#include "string.h"
+ 
+ b2Contact* b2PolygonContact::Create(b2Shape* shape1, b2Shape* shape2, b2BlockAllocator* allocator)
+ {
+--- Box2D-2.0.2b1/Box2D/Common/b2Math.h-orig	2010-10-23 07:20:47.432722267 -0500
++++ Box2D-2.0.2b1/Box2D/Common/b2Math.h	2010-10-23 07:21:06.021879250 -0500
+@@ -20,6 +20,7 @@
+ #define B2_MATH_H
+ 
+ #include "b2Settings.h"
++#include <ieeefp.h>
+ 
+ #ifdef TARGET_OS_IPHONE
+ #include "math.h"
+--- Box2D-2.0.2b1/Box2D/Common/b2Settings.cpp-orig	2010-10-23 07:25:49.550918737 -0500
++++ Box2D-2.0.2b1/Box2D/Common/b2Settings.cpp	2010-10-23 07:26:48.613383111 -0500
+@@ -18,6 +18,7 @@
+ 
+ #include "b2Settings.h"
+ #include <cstdlib>
++#include "stdlib.h"
+ 
+ b2Version b2_version = {2, 0, 2};
+ 
+--- Box2D-2.0.2b1/Box2D/Common/b2BlockAllocator.cpp-orig	2010-10-23 07:29:37.707922330 -0500
++++ Box2D-2.0.2b1/Box2D/Common/b2BlockAllocator.cpp	2010-10-23 07:31:29.068758266 -0500
+@@ -20,6 +20,7 @@
+ #include <cstdlib>
+ #include <memory>
+ #include <climits>
++#include "string.h"
+ 
+ #include <cstring>
+ 

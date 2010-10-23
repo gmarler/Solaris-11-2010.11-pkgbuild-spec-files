@@ -1,17 +1,20 @@
 #
-# spec file for package SFEgdata-python26
+# spec file for package SFEpybox2d
 #
-# includes module(s): gdata-python
+# includes module(s): pybox2d
 #
 
 %include Solaris.inc
-Name:                    SFEgdata-python26
-Summary:                 Google Data API provide a simple protocol for reading and writing data on the web
-URL:                     http://code.google.com/p/gdata-python-client/
-Version:                 2.0.12
-Source:                  http://gdata-python-client.googlecode.com/files/gdata-%{version}.tar.gz
+Name:                    SFEpybox2d
+Summary:                 2D physics library for Python
+URL:                     http://code.google.com/p/pybox2d/
+Version:                 2.0.2
+Source:                  http://pybox2d.googlecode.com/files/Box2D-%{version}b1.zip
+Patch1:                  pybox2d-01-sun.diff
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
+BuildRequires:           SFEbox2d-devel
+Requires:                SFEbox2d
 Requires:                SUNWPython26
 
 %include default-depend.inc
@@ -19,9 +22,12 @@ Requires:                SUNWPython26
 %define pythonver 2.6
 
 %prep
-%setup -q -n gdata-%version
+/bin/rm -fR Box2D-%{version}b1
+%setup -q -n Box2D-%{version}b1
+%patch1 -p1
 
 %build
+export CC="CC"
 python%{pythonver} setup.py build
 
 %install
@@ -44,16 +50,4 @@ rm -rf $RPM_BUILD_ROOT
 
 %changelog
 * Sat Oct 23 2010 - brian.cameron@oracle.com
-- Bump to 2.0.12.
-* Mon Aug 10 2009 - matt@greenviolet.net
-- Initial spec, based on SFEgdata-python.spec
-* Mon Jun 08 2009 - brian.cameron@sun.com
-- Bump to 1.3.3.
-* Mon Mar 17 2009 - alfred.peng@sun.com
-- Bump to 1.2.4
-* Mon Jun 16 2008 - brian.cameron@sun.com
-- Bump to 1.1.1
-* Fri Jun 06 2008 - brian.cameron@sun.com
-- Bump to 1.0.13
-* Tue Apr 29 2008 - brian.cameron@sun.com
-- Created
+- Created with version 2.0.2

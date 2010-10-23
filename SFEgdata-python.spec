@@ -8,7 +8,7 @@
 Name:                    SFEgdata-python
 Summary:                 Google Data API provide a simple protocol for reading and writing data on the web
 URL:                     http://code.google.com/p/gdata-python-client/
-Version:                 2.0.1
+Version:                 2.0.12
 Source:                  http://gdata-python-client.googlecode.com/files/gdata-%{version}.tar.gz
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -44,6 +44,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/python%{pythonver}/vendor-packages/gdata/*
 
 %changelog
+* Sat Oct 23 2010 - brian.cameron@oracle.com
+- Bump to 2.0.12.
 * Mon Aug 10 2009 - matt@greenviolet.net
 - Bump to 2.0.1
 - Ensure proper python version is called
