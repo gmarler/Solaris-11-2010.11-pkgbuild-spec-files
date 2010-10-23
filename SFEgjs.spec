@@ -6,7 +6,7 @@
 %include Solaris.inc
 Name:                    SFEgjs
 Summary:                 GNOME JavaScript bindings
-Version:                 0.7
+Version:                 0.7.4
 Source:                  http://ftp.gnome.org/pub/GNOME/sources/gjs/0.7/gjs-%{version}.tar.bz2
 # see b.g.o 619721 and 595447
 Patch1:                  gjs-01-solaris.diff
@@ -69,6 +69,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/*
 
 %changelog
+* Fri Oct 22 2010 - Brian Cameron <brian.cameron@oracle.com>
+- Bump to 0.7.4.
 * Wed May 26 2010 - Erwann Cheneed <erwann.chenede@sun.com>
 - Bumped to 0.7 + fix for 619721
 * Tue Apr 27 2010 - Brian Cameron  <brian.cameron@sun.com>

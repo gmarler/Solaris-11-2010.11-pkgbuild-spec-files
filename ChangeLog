@@ -1,3 +1,7 @@
+2010-10-23  Brian Cameron  <brian.cameron@oracle.com>
+
+	* SFEgjs.spec, patches/gjs-01-solaris.diff: Bump to 0.7.4.
+
 2010-10-23 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEalsa-lib.spec: bump to 1.0.23
