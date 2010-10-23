@@ -9,8 +9,8 @@
 %include Solaris.inc
 Name:                    SFEgnome-shell
 Summary:                 GNOME Shell
-Version:                 2.31.2
-Source:                  http://ftp.gnome.org/pub/GNOME/sources/gnome-shell/2.31/gnome-shell-%{version}.tar.bz2
+Version:                 2.91.0
+Source:                  http://ftp.gnome.org/pub/GNOME/sources/gnome-shell/2.91/gnome-shell-%{version}.tar.bz2
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 BuildRequires:           SUNWPython26-devel
@@ -20,10 +20,8 @@ BuildRequires:           SUNWgnome-media-devel
 BuildRequires:           SUNWgnome-panel-devel
 BuildRequires:           SUNWlibrsvg-devel
 BuildRequires:           SUNWclutter-devel
-BuildRequires:           SUNWgir-repository
 BuildRequires:           SUNWgobject-introspection-devel
 BuildRequires:           SFEgjs-devel
-BuildRequires:           SFEmutter-devel
 Requires:                SUNWPython26
 Requires:                SUNWdbus-glib
 Requires:                SUNWgnome-base-libs
@@ -31,7 +29,6 @@ Requires:                SUNWgnome-media
 Requires:                SUNWgnome-panel
 Requires:                SUNWlibrsvg
 Requires:                SUNWclutter
-Requires:                SUNWgir-repository
 Requires:                SUNWgobject-introspection
 Requires:                SFEgjs
 Requires:                SFEmutter
@@ -115,6 +112,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Fri Oct 22 2010 - Brian Cameron <brian.cameron@oracle.com>
+- Bump to 2.91.0.
 * Wed Jun 23 2010 - Lin Ma <lin.ma@sun.com>
 - Ugly build patch for gnome-shell --perf crash.
 * Tue Jun 01 2010 - Brian Cameron  <brian.cameron@oracle.com>

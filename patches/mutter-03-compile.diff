@@ -1,0 +1,11 @@
+--- mutter-2.91.0/src/core/delete.c-orig	2010-10-22 20:15:34.860168118 -0500
++++ mutter-2.91.0/src/core/delete.c	2010-10-22 20:17:19.897735691 -0500
+@@ -22,8 +22,6 @@
+  * 02111-1307, USA.
+  */
+ 
+-#define _XOPEN_SOURCE /* for kill() */
+-
+ #include <config.h>
+ #include "util.h"
+ #include "window-private.h"
