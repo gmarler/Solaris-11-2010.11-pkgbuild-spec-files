@@ -10,7 +10,7 @@
 Name:                    SFEsugar-log
 Summary:                 Sugar Log
 URL:                     http://www.sugarlabs.org/
-Version:                 23 
+Version:                 24 
 Source:                  http://download.sugarlabs.org/sources/sucrose/fructose/Log/Log-%{version}.tar.bz2
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -74,5 +74,7 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Sat Oct 23 2010 - Brian Cameron  <brian.cameron@oracle.com>
+- Bump to 24.
 * Tue Feb 02 2010 - Brian Cameron  <brian.cameron@sun.com>
 - Created with 23.

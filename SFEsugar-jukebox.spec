@@ -10,7 +10,7 @@
 Name:                    SFEsugar-jukebox
 Summary:                 Sugar Jukebox
 URL:                     http://www.sugarlabs.org/
-Version:                 19 
+Version:                 20 
 Source:                  http://download.sugarlabs.org/sources/sucrose/fructose/Jukebox/Jukebox-%{version}.tar.bz2
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -74,6 +74,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Sat Oct 23 2010 - Brian Cameron  <brian.cameron@oracle.com>
+- Bump to 20.
 * Sat Aug 07 2010 - Brian Cameron  <brian.cameron@oracle.com>
 - Bump to 19.
 * Wed Mar 10 2010 - Brian Cameron  <brian.cameron@sun.com>

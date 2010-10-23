@@ -10,7 +10,7 @@
 Name:                    SFEsugar-chat
 Summary:                 Sugar Chat
 URL:                     http://www.sugarlabs.org/
-Version:                 66
+Version:                 68
 Source:                  http://download.sugarlabs.org/sources/sucrose/fructose/Chat/Chat-%{version}.tar.bz2
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -74,5 +74,7 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Sat Oct 23 2010 - Brian Cameron  <brian.cameron@sun.com>
+- Bump to 68.
 * Tue Feb 02 2010 - Brian Cameron  <brian.cameron@sun.com>
 - Created with 66.

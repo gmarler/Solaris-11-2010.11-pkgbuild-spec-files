@@ -10,7 +10,7 @@
 Name:                    SFEsugar-visualmatch
 Summary:                 Sugar Visualmatch
 URL:                     http://www.sugarlabs.org/
-Version:                 24 
+Version:                 26 
 Source:                  http://download.sugarlabs.org/sources/honey/Visualmatch/VisualMatch-%{version}.tar.bz2
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -74,6 +74,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Sat Oct 23 2010 - Brian Cameron  <brian.cameron@oracle.com>
+- Bump to 26.
 * Sat Aug 07 2010 - Brian Cameron  <brian.cameron@oracle.com>
 - Bump to 24.
 * Wed Mar 10 2010 - Brian Cameron  <brian.cameron@sun.com>

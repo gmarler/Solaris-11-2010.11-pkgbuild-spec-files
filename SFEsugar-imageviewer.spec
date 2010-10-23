@@ -10,7 +10,7 @@
 Name:                    SFEsugar-imageviewer
 Summary:                 Sugar ImageViewer
 URL:                     http://www.sugarlabs.org/
-Version:                 14 
+Version:                 15 
 Source:                  http://download.sugarlabs.org/sources/sucrose/fructose/ImageViewer/ImageViewer-%{version}.tar.bz2
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -74,5 +74,7 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Sat Oct 23 2010 - Brian Cameron  <brian.cameron@oracle.com>
+- Bump to 15.
 * Tue Feb 02 2010 - Brian Cameron  <brian.cameron@sun.com>
 - Created with 14.

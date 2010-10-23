@@ -10,7 +10,7 @@
 Name:                    SFEsugar-abacus
 Summary:                 Sugar Abacus
 URL:                     http://www.sugarlabs.org/
-Version:                 17 
+Version:                 19 
 Source:                  http://download.sugarlabs.org/sources/honey/Abacus/Abacus-%{version}.tar.bz2
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -74,5 +74,7 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Sat Oct 23 2010 - Brian Cameron  <brian.cameron@oracle.com>
+- Bump to 19.
 * Sat Aug 07 2010 - Brian Cameron  <brian.cameron@oracle.com>
 - Created with 17.

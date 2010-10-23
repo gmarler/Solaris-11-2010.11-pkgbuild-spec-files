@@ -10,7 +10,7 @@
 Name:                    SFEsugar-memorize
 Summary:                 Sugar Memorize
 URL:                     http://www.sugarlabs.org/
-Version:                 34 
+Version:                 35 
 Source:                  http://download.sugarlabs.org/sources/honey/Memorize/Memorize-%{version}.tar.bz2
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -74,6 +74,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Sat Oct 23 2010 - Brian Cameron  <brian.cameron@oracle.com>
+- Bump to 35.
 * Sat Aug 07 2010 - Brian Cameron  <brian.cameron@oracle.com>
 - Bump to 34.
 * Tue Feb 02 2010 - Brian Cameron  <brian.cameron@sun.com>
