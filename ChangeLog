@@ -1,5 +1,29 @@
 2010-10-23  Brian Cameron  <brian.cameron@oracle.com>
 
+	* SFEsugar.spec: Bump to 0.90.3.
+	* SFEsugar-artwork.spec: Bump to 0.90.0.
+	* SFEsugar-base.spec: Bump to 0.90.1.
+	* SFEsugar-datastore.spec: Bump to 0.90.0.
+	* SFEsugar-presence-service.spec: Bump to 0.90.1.
+	* SFEsugar-toolkit.spec: Bump to 0.90.2.
+	* SFEsugar-abacus.spec: Bump to 19.
+	* SFEsugar-calculate.spec: Bump to 34.
+	* SFEsugar-chat.spec: Bump to 68.
+	* SFEsugar-flipsticks.spec: Bump to 8.
+	* SFEsugar-imageviewer.spec: Bump to 15.
+	* SFEsugar-jukebox.spec: Bump to 20.
+	* SFEsugar-log.spec: Bump to 24.
+	* SFEsugar-measure.spec: Bump to 31.
+	* SFEsugar-memorize.spec: Bump to 35.
+	* SFEsugar-physics.spec: Bump to 7.
+	* SFEsugar-pukllanapac.spec: bump to 5.
+	* SFEsugar-sliderule.spec: Bump to 22.
+	* SFEsugar-turtleart.spec: Bump to 100.
+	* SFEsugar-visualmatch.spec: Bump to 26.
+	* SFEsugar-write.spec: Bump to 72.
+
+2010-10-23  Brian Cameron  <brian.cameron@oracle.com>
+
 	* SFEmutter.spec, patches/mutter-01-suncc-x99.diff: Bump to 2.91.0.
 	  Rework patch.
 	* patches/mutter-03-compile.diff:  Add new patch needed for
