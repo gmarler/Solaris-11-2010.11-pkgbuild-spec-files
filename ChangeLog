@@ -1,5 +1,10 @@
 2010-10-23  Brian Cameron  <brian.cameron@oracle.com>
 
+	* SFElxappearance.spec,
+	  patches/lxappearance-01-makefile.diff: Bump to 0.5.0.
+
+2010-10-23  Brian Cameron  <brian.cameron@oracle.com>
+
 	* SFEgdata-python.spec, SFEgdata-python26.spec: Bump to 2.0.12.
 	* SFEbox2d.spec: New spec file.
 	* patches/box2d-01-sun.diff: Patch needed to build.

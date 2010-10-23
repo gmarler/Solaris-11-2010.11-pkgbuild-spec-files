@@ -7,7 +7,7 @@
 
 Name:                    SFElxappearance
 Summary:                 LXDE theme switcher
-Version:                 0.4.0
+Version:                 0.5.0
 Source:                  http://downloads.sourceforge.net/lxde/lxappearance-%{version}.tar.gz
 Patch1:                  lxappearance-01-makefile.diff
 URL:                     http://sourceforge.net/projects/lxde/
@@ -63,14 +63,15 @@ rm -rf $RPM_BUILD_ROOT
 %defattr (-, root, bin)
 %dir %attr (0755, root, bin) %{_bindir}
 %{_bindir}/*
+%dir %attr (0755, root, bin) %{_includedir}
+%{_includedir}/*
+%dir %attr (0755, root, other) %{_libdir}/pkgconfig
+%{_libdir}/pkgconfig/*
 %dir %attr (0755, root, sys) %{_datadir}
 %dir %attr (0755, root, other) %{_datadir}/applications
 %{_datadir}/applications/*
 %dir %attr (0755, root, other) %{_datadir}/lxappearance
 %{_datadir}/lxappearance/*
-%dir %attr(0755, root, bin) %{_mandir}
-%dir %attr(0755, root, bin) %{_mandir}/man1
-%{_mandir}/man1/*
 
 %if %build_l10n
 %files l10n
@@ -80,6 +81,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Sat Oct 23 2010 - brian.cameron@oracle.com
+- bump to 0.5.0.
 * Mon Feb 15 2010 - brian.cameron@sun.co
 - Bump to 0.4.0.
 * Tue Aug 04 2009 - brian.cameron@sun.com
