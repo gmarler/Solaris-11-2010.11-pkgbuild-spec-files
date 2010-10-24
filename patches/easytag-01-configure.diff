@@ -1,0 +1,20 @@
+--- easytag-2.1.6/configure.orig	Sat Jul 12 10:57:44 2008
++++ easytag-2.1.6/configure	Mon Oct 18 02:59:49 2010
+@@ -22080,7 +22080,7 @@
+   return 0;
+ }
+ _ACEOF
+-for ac_lib in '' "id3" "id3 -lstdc++" "id3 -lz" "id3 -lz -lstdc++"; do
++for ac_lib in '' "id3" "id3 -lz"; do
+   if test -z "$ac_lib"; then
+     ac_res="none required"
+   else
+@@ -22139,7 +22139,7 @@
+ fi
+ 
+ 
+-                LIBS="-lz -lstdc++ $LIBS"
++                LIBS="-lz $LIBS"
+ 
+                 ID3LIB_MAJOR=3
+         ID3LIB_MINOR=8

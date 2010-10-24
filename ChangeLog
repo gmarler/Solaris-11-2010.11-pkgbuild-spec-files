@@ -1,3 +1,9 @@
+2010-10-24  Alex Viskovatoff <viskovatoff@imap.cc>
+
+	* SFEncmpcpp.spec: Added
+	* SFEeasytag.spec: Avoid running autoconf, which breaks
+	  build.  Patch configure instead of configure.in.
+
 2010-10-23  Brian Cameron  <brian.cameron@oracle.com>
 
 	* SFEsugar.spec: Bump to 0.90.3.

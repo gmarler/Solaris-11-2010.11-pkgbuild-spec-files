@@ -68,6 +68,18 @@ rm -rf $RPM_BUILD_ROOT
 %_mandir
 %_datadir/%srcname
 %attr (-, root, other) %_datadir/icons/hicolor
+%dir %attr (-, root, other) %_datadir/icons/hicolor/16x16
+%dir %attr (-, root, other) %_datadir/icons/hicolor/16x16/apps
+%_datadir/icons/hicolor/16x16/apps/smplayer.png
+%dir %attr (-, root, other) %_datadir/icons/hicolor/22x22
+%dir %attr (-, root, other) %_datadir/icons/hicolor/22x22/apps
+%_datadir/icons/hicolor/22x22/apps/smplayer.png
+%dir %attr (-, root, other) %_datadir/icons/hicolor/32x32
+%dir %attr (-, root, other) %_datadir/icons/hicolor/32x32/apps
+%_datadir/icons/hicolor/32x32/apps/smplayer.png
+%dir %attr (-, root, other) %_datadir/icons/hicolor/64x64
+%dir %attr (-, root, other) %_datadir/icons/hicolor/64x64/apps
+%_datadir/icons/hicolor/64x64/apps/smplayer.png
 
 
 %changelog

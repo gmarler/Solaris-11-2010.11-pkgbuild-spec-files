@@ -8,7 +8,7 @@
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 %define src_name	easytag
 %define src_version	2.1.6
-%define pkg_release	1
+%define pkg_release	2
 
 # =========================================================================== 
 #                    SVR4 required definitions
@@ -27,7 +27,7 @@ Release:      	%{pkg_release}
 License:      	GPL
 Group:          Entertainment
 Source:         %{sf_download}/easytag/%{src_name}-%{version}.tar.bz2
-Patch1:        	easytag-01-solaris.diff
+Patch1:        	easytag-01-configure.diff
 Vendor:       	http://easytag.sourceforge.net
 URL:            http://easytag.sourceforge.net
 Packager:     	Shivakumar GN
@@ -70,11 +70,10 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
 fi
 
 export CFLAGS="%optflags"
-export LDFLAGS="%{_ldflags}"
+export LDFLAGS="%{_ldflags} -lnsl"
 %if %option_with_gnu_iconv
 export CFLAGS="$CFLAGS -I/usr/gnu/include -L/usr/gnu/lib -R/usr/gnu/lib -lintl"
 %endif
-autoconf
 
 ./configure --prefix=%{_prefix} \
             --mandir=%{_mandir} \
@@ -129,6 +128,10 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Sun Oct 17 2010 - Alex Viskovatoff
+- Do not run autoconf: that breaks the build and is not required for tarballs
+- Patch configure instead of configure.in, just removing references to stdc++
+- Add -lnsl to LDFLAGS
 * Thu Jun 10 2010 - pradhap (at) gmail.com
 - Bump to 2.1.6
 * Sun Feb 24 2008 - trisk@acm.jhu.edu
