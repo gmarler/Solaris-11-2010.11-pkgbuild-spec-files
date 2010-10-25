@@ -1,0 +1,22 @@
+--- mod_gnutls-0.5.6/src/Makefile.in	2010-03-24 08:09:06.000000000 +0100
++++ mod_gnutls-0.5.6-patch/src/Makefile.in	2010-10-25 16:05:13.586063700 +0200
+@@ -258,7 +258,7 @@
+ CLEANFILES = .libs/libmod_gnutls *~
+ libmod_gnutls_la_SOURCES = mod_gnutls.c gnutls_io.c gnutls_cache.c gnutls_config.c gnutls_hooks.c 
+ #gnutls_lua.c
+-libmod_gnutls_la_CFLAGS = -Wall ${MODULE_CFLAGS} ${LUA_CFLAGS}
++libmod_gnutls_la_CFLAGS = ${MODULE_CFLAGS} ${LUA_CFLAGS}
+ libmod_gnutls_la_LDFLAGS = -rpath ${AP_LIBEXECDIR} -module -avoid-version ${MODULE_LIBS} ${LUA_LIBS}
+ lib_LTLIBRARIES = libmod_gnutls.la
+ all: all-am
+--- mod_gnutls-0.5.6/src/Makefile.am	2008-02-20 20:36:35.000000000 +0100
++++ mod_gnutls-0.5.6-patch/src/Makefile.am	2010-10-25 16:05:07.377119150 +0200
+@@ -2,7 +2,7 @@
+ 
+ libmod_gnutls_la_SOURCES = mod_gnutls.c gnutls_io.c gnutls_cache.c gnutls_config.c gnutls_hooks.c 
+ #gnutls_lua.c
+-libmod_gnutls_la_CFLAGS = -Wall ${MODULE_CFLAGS} ${LUA_CFLAGS}
++libmod_gnutls_la_CFLAGS = ${MODULE_CFLAGS} ${LUA_CFLAGS}
+ libmod_gnutls_la_LDFLAGS = -rpath ${AP_LIBEXECDIR} -module -avoid-version ${MODULE_LIBS} ${LUA_LIBS}
+ 
+ lib_LTLIBRARIES = libmod_gnutls.la

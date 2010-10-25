@@ -1,0 +1,10 @@
+--- mod_gnutls-0.5.6/include/mod_gnutls.h.in	2009-06-30 19:10:42.000000000 +0200
++++ mod_gnutls-0.5.6-patch/include/mod_gnutls.h.in	2010-10-25 16:04:56.137827150 +0200
+@@ -29,7 +29,6 @@
+ 
+ #include <gcrypt.h>
+ #include <gnutls/gnutls.h>
+-#include <gnutls/extra.h>
+ #include <gnutls/openpgp.h>
+ #include <gnutls/x509.h>
+ 
