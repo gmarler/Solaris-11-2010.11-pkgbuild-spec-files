@@ -99,6 +99,7 @@ cat >> $BASEDIR/var/svc/profile/upgrade <<\EOF
 %{_bindir}/*
 %dir %attr (0755, root, bin) %{_libdir}
 %{_libdir}/mutter
+%{_libdir}/lib*.so*
 %dir %attr (0755, root, sys) %{_datadir}
 %dir %attr (0755, root, other) %{_datadir}/applications
 %{_datadir}/applications/*
