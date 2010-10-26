@@ -20,6 +20,8 @@ Requires:                SFEsugar
 BuildRequires:           SFEsugar
 Requires:                SFEpygame
 BuildRequires:           SFEpygame
+Requires:                SFEpybox2d
+BuildRequires:           SFEpybox2d
 
 %if %build_l10n
 %package l10n

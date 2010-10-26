@@ -22,6 +22,8 @@ Requires:                SFEpygame
 BuildRequires:           SFEpygame
 Requires:                SFEpython26-olpcgames
 BuildRequires:           SFEpython26-olpcgames
+Requires:		 SFEpybox2d
+BuildRequires:		 SFEpybox2d
 
 %if %build_l10n
 %package l10n
