@@ -8,6 +8,7 @@
 # option "=-library=stdcxx4" used by the spec is new to that release.
 
 %include Solaris.inc
+%define srcname libmatroska
 
 Name:		SFElibmatroska
 License:	LGPL
@@ -16,7 +17,7 @@ Group:		System Environment/Libraries
 URL:		http://www.matroska.org
 Vendor:		Moritz Bunkus <moritz@bunkus.org>
 Version:	1.0.0
-Source:		http://dl.matroska.org/downloads/libmatroska/libmatroska-%{version}.tar.bz2
+Source:		http://dl.matroska.org/downloads/%srcname/%{srcname}-%{version}.tar.bz2
 Patch1:		libmatroska-01-makefile.diff
 
 SUNW_BaseDir:	%{_basedir}
@@ -81,7 +82,7 @@ rm -rf $RPM_BUILD_ROOT
 * Fri Oct  1 2010 - Alex Viskovatoff
 - Update to 1.0.0; use stdcxx (requires Solaris Studio 12.2)
 - Patch linux Makefile so that it works with Linux and Solaris
-- instead of creating a new Makefile for Solaris.
+  instead of creating a new Makefile for Solaris.
 * Mar 2010  - Gilles Dauphin
 - look at install dir. Exemple search for /usr/SFE/include
 - idem for _libdir

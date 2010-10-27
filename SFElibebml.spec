@@ -8,6 +8,7 @@
 # option "=-library=stdcxx4" used by the spec is new to that release.
 
 %include Solaris.inc
+%define srcname libebml
 
 Name:		SFElibebml
 License:	LGPL
@@ -16,18 +17,18 @@ Group:		System Environment/Libraries
 URL:		http://ebml.sourceforge.net
 Vendor:		Moritz Bunkus <moritz@bunkus.org>
 Version:	1.0.0
-Source:		http://dl.matroska.org/downloads/libebml/libebml-%{version}.tar.bz2
+Source:		http://dl.matroska.org/downloads/%srcname/%{srcname}-%{version}.tar.bz2
 Patch1:		libebml-01-makefile.diff
 Patch2:		libebml-02-headers.diff
 SUNW_BaseDir:	%{_basedir}
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 
-BuildRequires: SUNWgmake
-BuildRequires: gnu-coreutils
-BuildRequires: text/locale
+BuildRequires:	SUNWgmake
+BuildRequires:	SUNWgnu-coreutils
+BuildRequires:	SUNWloc
 
-Requires:	stdcxx
+Requires:	SUNWlibstdcxx4
 
 %package devel
 Summary:	%{summary} - development files

@@ -1,3 +1,8 @@
+2010-10-27  Alex Viskovatoff <viskovatoff@imap.cc>
+
+	* SFEmkvtoolnix.spec: add patch fixing runtime bug provided by
+	  the developer.  Move out of experimental.
+
 2010-10-25  Brian Cameron  <brian.cameron@oracle.com>
 
 	* SFEjson-glib.spec: Bump to 0.12.0.
