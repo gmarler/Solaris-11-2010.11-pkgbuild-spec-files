@@ -8,7 +8,7 @@
 # option "-library=stdcxx4" used by the spec is new to that release.
 
 # NOTE: The current version of the boost-stdcxx spec file must be modified to
-# to use Boost 1.44.  This is because with version 1.43, the filessystem library
+# use Boost 1.44.  This is because with version 1.43, the filessystem library
 # does not get built.
 # The reason SFEboost-stdcxx is used instead of SFEboost is that the filesystem
 # library is apparently broken when it is linked against stlport.

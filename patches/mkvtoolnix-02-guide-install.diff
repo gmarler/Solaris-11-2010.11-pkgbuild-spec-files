@@ -1,4 +1,75 @@
-Sending        ChangeLog
-Sending        SFElibebml.spec
-Sending        SFElibmatroska.spec
-Adding         SFEmkvtoolnix.spec
+--- Rakefile.orig	Thu Oct 21 18:01:36 2010
++++ Rakefile	Thu Oct 21 18:05:03 2010
+@@ -73,7 +73,7 @@
+ 
+   $build_tools           ||=  c?(:TOOLS)
+ 
+-  cflags_common            = "-Wall -Wno-comment #{c(:OPTIMIZATION_CFLAGS)} -D_FILE_OFFSET_BITS=64 #{c(:EXTRA_CFLAGS)} #{c(:DEBUG_CFLAGS)} #{c(:PROFILING_CFLAGS)} #{c(:MATROSKA_CFLAGS)} #{c(:EBML_CFLAGS)} #{c(:USER_CPPFLAGS)} -DPACKAGE=\\\"#{c(:PACKAGE)}\\\" -DVERSION=\\\"#{c(:VERSION)}\\\" -DMTX_LOCALE_DIR=\\\"#{c(:localedir)}\\\" -DMTX_PKG_DATA_DIR=\\\"#{c(:pkgdatadir)}\\\""
++  cflags_common            = "#{c(:OPTIMIZATION_CFLAGS)} -D_FILE_OFFSET_BITS=64 #{c(:EXTRA_CFLAGS)} #{c(:DEBUG_CFLAGS)} #{c(:PROFILING_CFLAGS)} #{c(:MATROSKA_CFLAGS)} #{c(:EBML_CFLAGS)} #{c(:USER_CPPFLAGS)} -DPACKAGE=\\\"#{c(:PACKAGE)}\\\" -DVERSION=\\\"#{c(:VERSION)}\\\" -DMTX_LOCALE_DIR=\\\"#{c(:localedir)}\\\" -DMTX_PKG_DATA_DIR=\\\"#{c(:pkgdatadir)}\\\" -DMTX_PKG_DOC_DIR=\\\"#{c(:pkgdocdir)}\\\""
+   ldflags_extra            = c?(:MINGW) ? '' : "-Wl,--enable-auto-import"
+   $flags                   = {
+     :cflags                => "#{cflags_common} #{c(:USER_CFLAGS)}",
+@@ -342,11 +342,11 @@
+     end
+ 
+     task :guides do
+-      install_dir :pkgdatadir, $languages[:guides].collect { |language| "#{c(:pkgdatadir)}/guide/#{language}/images" }
++      install_dir :pkgdocdir, $languages[:guides].collect { |language| "#{c(:pkgdocdir)}/guide/#{language}/images" }
+ 
+       $languages[:guides].each do |language|
+-        install_data "#{c(:pkgdatadir)}/guide/#{language}/",        FileList[ "#{$top_srcdir}/doc/guide/#{language}/mkvmerge-gui.*" ]
+-        install_data "#{c(:pkgdatadir)}/guide/#{language}/images/", FileList[ "#{$top_srcdir}/doc/guide/#{language}/images/*.gif"   ]
++        install_data "#{c(:pkgdocdir)}/guide/#{language}/",        FileList[ "#{$top_srcdir}/doc/guide/#{language}/mkvmerge-gui.*" ]
++        install_data "#{c(:pkgdocdir)}/guide/#{language}/images/", FileList[ "#{$top_srcdir}/doc/guide/#{language}/images/*.gif"   ]
+       end
+     end
+   end
+Index: build-config.in
+===================================================================
+--- build-config.in.orig
++++ build-config.in
+@@ -16,6 +16,7 @@ sbindir = @sbindir@
+ libexecdir = @libexecdir@
+ datarootdir = @datarootdir@
+ datadir = @datadir@
++docdir = @docdir@
+ sysconfdir = @sysconfdir@
+ sharedstatedir = @sharedstatedir@
+ localstatedir = @localstatedir@
+@@ -26,6 +27,7 @@ man1dir = $(mandir)/man1
+ includedir = @includedir@
+ oldincludedir = /usr/include
+ pkgdatadir = $(datadir)/@PACKAGE@
++pkgdocdir = $(docdir)
+ pkglibdir = $(libdir)/@PACKAGE@
+ pkgincludedir = $(includedir)/@PACKAGE@
+ top_builddir = .
+Index: src/mmg/mmg_dialog.cpp
+===================================================================
+--- src/mmg/mmg_dialog.cpp.orig
++++ src/mmg/mmg_dialog.cpp
+@@ -626,23 +626,7 @@ mmg_dialog::display_help(int id) {
+       potential_help_paths.push_back(installation_path + wxT("/doc"));
+ 
+ #else
+-    // Debian, probably others
+-    potential_help_paths.push_back(wxT("/usr/share/doc/mkvtoolnix"));
+-    potential_help_paths.push_back(wxT("/usr/share/doc/mkvtoolnix/doc"));
+-    potential_help_paths.push_back(wxT("/usr/share/doc/mkvtoolnix-gui"));
+-    // SuSE
+-    potential_help_paths.push_back(wxT("/usr/share/doc/packages/mkvtoolnix"));
+-    // Fedora Core
+-    potential_help_paths.push_back(wxT("/usr/share/doc/mkvtoolnix-" VERSION));
+-    potential_help_paths.push_back(wxT("/usr/share/doc/mkvtoolnix-gui-" VERSION));
+-    // (Almost the) same for /usr/local
+-    potential_help_paths.push_back(wxT("/usr/local/share/doc/mkvtoolnix"));
+-    potential_help_paths.push_back(wxT("/usr/local/share/doc/packages/mkvtoolnix"));
+-    potential_help_paths.push_back(wxT("/usr/local/share/doc/mkvtoolnix-" VERSION));
+-    potential_help_paths.push_back(wxT("/usr/local/share/doc/mkvtoolnix-gui-" VERSION));
+-    // New location
+-    potential_help_paths.push_back(wxT(MTX_PKG_DATA_DIR));
+-    potential_help_paths.push_back(wxT(MTX_PKG_DATA_DIR "-" VERSION));
++    potential_help_paths.push_back(wxT(MTX_PKG_DOC_DIR));
+ #endif
+ 
+     wxConfigBase *cfg = wxConfigBase::Get();
