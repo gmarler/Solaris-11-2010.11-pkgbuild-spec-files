@@ -52,11 +52,11 @@ export LDFLAGS="%{_ldflags}"
 	    %{gtk_doc_option}		\
 	    --disable-static
 
-make -j $CPUS
+gmake -j $CPUS
 
 %install
 rm -rf $RPM_BUILD_ROOT
-make install DESTDIR=$RPM_BUILD_ROOT
+gmake install DESTDIR=$RPM_BUILD_ROOT
 rm -f $RPM_BUILD_ROOT%{_libdir}/lib*.*a
 
 %if %{!?_without_gtk_doc:0}%{?_without_gtk_doc:1}
