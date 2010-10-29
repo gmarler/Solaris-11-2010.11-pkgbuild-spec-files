@@ -25,11 +25,19 @@ BuildRequires:		print/filter/ghostscript
 %endif
 %endif
 
-#os os2nnn below build 134 (excluding)
 %if %{os2nnn}
+%if %(expr %{osbuild} '>=' 100)
 %if %(expr %{osbuild} '<' 134)
 BuildRequires:       SUNWtexi
 BuildRequires:       SUNWghostscript
+%endif
+%endif
+%endif
+
+%if %{os2nnn}
+%if %(expr %{osbuild} '<' 100)
+BuildRequires:       SUNWtexi
+BuildRequires:       SUNWgscr
 %endif
 %endif
 
@@ -89,6 +97,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/doc/nasm/*
 
 %changelog
+* Fri Oct 29 2010 - Thomas Wagner
+- cleaned up / adjusted BuildRequires to match various osbuilds and IPS/SVR4 
 * Mon Aug 30 2010 - Milan Jurik
 - bump to 2.09
 * May 30 2010 - Thomas Wagner
