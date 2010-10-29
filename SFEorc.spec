@@ -3,6 +3,7 @@
 #
 
 %include Solaris.inc
+%include osdistro.inc
 
 %ifarch amd64 sparcv9
 %include arch64.inc
@@ -31,9 +32,47 @@ URL:		%{orc.url}
 SUNW_BaseDir:	%{_basedir}
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 
+%if %{os2nnn}
+%if %(expr %{osbuild} '>=' 134)
+buildRequires: library/desktop/gtk1
+BuildRequires: developer/documentation-tool/gtk-doc
+BuildRequires: developer/gnome/gettext
+BuildRequires: data/docbook
+%endif
+%endif
+
+%if %{os2nnn}
+%if %(expr %{osbuild} '>=' 116)
+%if %(expr %{osbuild} '<' 134)
+#library/desktop/gtk1
+# >=75 <= 133
+BuildRequires: SUNWGtk 
+#developer/documentation-tool/gtk-doc
+# >=116 <=133
 BuildRequires: SUNWgtk-doc
+#developer/gnome/gettext
 BuildRequires: SUNWgnome-common-devel
+#data/docbook
 BuildRequires: SUNWgnome-xml
+%endif
+%endif
+%endif
+
+# note build versions in %{os2nnn} before 116 aren't covered
+
+
+#SXCE
+%if %SXCE
+%if %(expr %{osbuild} '<=' 130)
+BuildRequires: SUNWGtku
+BuildRequires: SUNWGtkr
+BuildRequires: SUNWgtk-doc
+# BuildRequires: data/docbook
+BuildRequires: SUNWgnome-xml-root
+BuildRequires: SUNWgnome-xml-share
+%endif
+%endif
+
 
 %description
 Orc is a library and set of tools for compiling and executing
@@ -144,6 +183,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sat Oct 20 2010 - Thomas Wagner
+- make (Build)Requires dependend of the osbuild version
 * Fri Apr 09 2010 - Milan Jurik
 - multiarch support
 * Thu Apr 08 2010 - Milan Jurik

@@ -13,6 +13,7 @@ BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 
 %prep
 %setup -q -n %{src_name}-%{version}
+perl -i.orig -lpe 'if ($. == 1){s/^.*$/#!\/bin\/bash/}' configure
 
 %build
 export CFLAGS="%optflags"
@@ -42,6 +43,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Jul 13 2010 - Thomas Wagner
+- change shell of configure to be real bash
 * Fri Jun 18 2010 - Brian Cameron <brian.cameron@oracle.com>
 - Bump to 0.4.5.
 * Sun Apr 11 2010 - Milan Jurik
