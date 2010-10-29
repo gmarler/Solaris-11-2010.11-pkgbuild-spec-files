@@ -41,8 +41,8 @@ Fluendo.
 
 %include default-depend.inc
 
+BuildRequires:  SFEorc-devel
 Requires: SFEorc
-BuildRequires:  SFEorc
 BuildRequires:  SUNWgtk-doc
 BuildRequires:  SUNWliboil
 BuildRequires:  SUNWgnome-media-devel
@@ -138,6 +138,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-doc/html/schroedinger
 
 %changelog
+* Fri Oct 29 2010 - Thomas Wagner
+- rename BuildRequires to SFEorc-devel. NOTE: dependency resolving  by pkgbuild --autodeps 
+  doesn't work. For now you *must* run pkgbuild build SFEorc SFElibschroedinger   in that order
 * Thu Jun 03 2010 - Milan Jurik
 - rename from SFEschroedinger.spec to SFElibschroedinger.spec
 * Fri Apr 09 2010 - Milan Jurik

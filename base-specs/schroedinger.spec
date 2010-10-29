@@ -9,6 +9,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
 %prep
 %setup -q -n schroedinger-%{version}
+perl -i.orig -lpe 'if ($. == 1){s/^.*$/#!\/bin\/bash/}' configure
 
 %build
 export CFLAGS="%optflags"
@@ -38,6 +39,8 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/gstreamer-0.10/*.{a,la}
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Tue Jul 13 2010 - Thomas Wagner
+- change shell of configure to be real bash
 * Apr 2010 - Gilles Dauphin
 - find pkg-config for ORC if in /opt/SFE
 * Fri Apr 09 2010 - Milan Jurik
