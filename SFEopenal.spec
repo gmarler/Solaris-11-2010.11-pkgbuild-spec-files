@@ -8,17 +8,18 @@
 %include Solaris.inc
 
 %define src_name	openal-soft
-%define src_url		http://connect.creativelabs.com/openal/Downloads
+#%define src_url		http://connect.creativelabs.com/openal/Downloads
+%define src_url		http://kcat.strangesoft.net/openal-releases/
 
 %define SFEcmake	%(/usr/bin/pkginfo -q SFEcmake && echo 1 || echo 0)
 %define with_libaudioio	%(pkginfo -q SFElibaudioio && echo 1 || echo 0)
 
 Name:                   SFEopenal
 Summary:                OpenAL is a cross-platform 3D audio API
-Version:                1.11.753
-Source:                 %{src_url}/%{src_name}-%{version}.bz2
+Version:                1.12.854
+Source:                 %{src_url}/%{src_name}-%{version}.tar.bz2
 URL:			http://connect.creativelabs.com/openal/
-Patch1:			openal-new-01.diff
+#Patch1:			openal-new-01.diff
 Patch2:			openal-cmake-02.diff
 SUNW_BaseDir:           %{_basedir}
 # GPL now
@@ -54,7 +55,7 @@ SUNW_BaseDir:            %{_prefix}
 rm -rf openal-soft*
 bzcat %{SOURCE} | gtar xf -
 cd openal-soft*
-%patch1 -p1
+#%patch1 -p1
 %patch2 -p1
 cd ..
 
@@ -97,6 +98,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*
 
 %changelog
+* Fri Oct 29 2010 - Thomas Wagner
+- bump to 1.12.854
+- new Download Source
+- remove patch1 openal-new-01.diff
 * Fri May 14 2010 - Milan Jurik
 - use OSS/Boomer as main audio interface
 * Sun Apr 11 2010 - Milan Jurik
