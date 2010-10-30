@@ -39,7 +39,7 @@
 
 
 # usage/examples:
-# if you depend on a package wich for instance got some day a rename:
+# if you depend on a package which for instance got some day a rename:
 # (or dissapeared, newly introduced, merged into another package
 # this is not limited to these examples (think of switching off SVR4 package
 # scripting, ...).
@@ -85,7 +85,7 @@
 # corresponds to:
 # os200811     os200906     os200911     os201003     os201005
 
-#numbers for each major distro release are stroed in %os2nnnversion
+#numbers for each major distro release are stored in %os2nnnversion
 
 #Flags - who knows what that's worth for
 #set defaults to null - reverse order to catch youngest distro first 
@@ -97,14 +97,18 @@
 %define os200906 0
 %define os200902 0
 %define os200811 0
+#note: OI names subject to change, just start with something: oi<buildnumber>
+%define oi147 0
 
 
 # one of the IPS style OpenSolaris distro releases is present if os2nnn set to "1"
-# set default to "0" with is good
+# set default to "0" which is good
+# includes OI
 %define os2nnn        0
 
 # make your logic work with the major distro number  %if %( expr %os2nnndistro '>=' 200906 )
-# set default to "0" with is good
+# set default to "0" which is good
+# includes OI
 %define osdistrelnumber 0
 
 # set readable name for this os distribution  (not for SXCE)
@@ -141,6 +145,31 @@
 #note: build 140 does read "Solaris Next Development"
 #note: build 134 does read "OpenSolaris Development"
 #below probably release of 2010.05 (was 2010.03 or whatever name)
+
+
+##START build 147 and up, OpenIndiana oi2010.05 as os201005
+#NOTE: we try to set a resonable opensolaris/solaris express release
+# name as well, they should behave similar. Remaining issues to be fixed
+# in consuming spec file!
+%if %{osdet299999}
+%if %( expr %{osbuild} '>=' 147 )
+%if %( egrep 'OpenIndiana Development' /etc/release > /dev/null && echo 1 || echo 0 )
+#we are on an IPS based OS distro
+%define os2nnn   1
+#below: subject to change!
+%define oi147 1
+%define osdistrelnumber 147
+#below: subject to change!
+%define osdistrelname   "OI147"
+#this was the last check, skip all others
+%define osdet299999 0
+%else
+%endif
+%else
+%endif
+%else
+%endif
+##END
 
 ##START build 134 and up, os2010.05 as os201005
 %if %{osdet299999}
@@ -210,6 +239,8 @@
 
 
 %changelog
+* Sat Oct 20 2010 - Thomas Wagner
+- add OI 147 to the mix
 * May 31 2010 - Thomas Wagner
 - rename 201003/2010.03 to 201005/2010.05 (speculative)
 - change egrep for builds >=134 to match OpenSolaris Development and Solaris Next Development
