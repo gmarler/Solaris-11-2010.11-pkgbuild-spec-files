@@ -33,12 +33,6 @@ URL:            %{schroedinger.url}
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-build
 
-%description
-Library for decoding and encoding video in the Dirac format. It is implemented
-in ANSI C and optimized through the us of liboil. libschro is written as a
-collaboration between the BBC Research and Development, David Schleef and
-Fluendo.
-
 %include default-depend.inc
 
 BuildRequires:  SFEorc-devel
@@ -52,6 +46,12 @@ Summary:                 %{summary} - development files
 SUNW_BaseDir:            %{_basedir}
 %include default-depend.inc
 Requires: %name
+
+%description
+Library for decoding and encoding video in the Dirac format. It is implemented
+in ANSI C and optimized through the us of liboil. libschro is written as a
+collaboration between the BBC Research and Development, David Schleef and
+Fluendo.
 
 %prep
 rm -rf %name-%version
@@ -138,6 +138,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-doc/html/schroedinger
 
 %changelog
+* Sat Oct 30 2010 - Thomas Wagner
+- relocate %description area to workaround catching all Statements
+  below like (Build)Requires SFEorc(-devel), until the next 
+  line with %prep.  %description is now last section before %prep
 * Fri Oct 29 2010 - Thomas Wagner
 - rename BuildRequires to SFEorc-devel. NOTE: dependency resolving  by pkgbuild --autodeps 
   doesn't work. For now you *must* run pkgbuild build SFEorc SFElibschroedinger   in that order
