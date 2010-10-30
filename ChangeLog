@@ -1,3 +1,23 @@
+2010-10-30  Thomas Wagner  <tom68@users.sourceforge.net>
+     
+        * SFElibschroedinger.spec: relocate %description down to no longer
+          catch statements, this repairs dependency on SFEorc 
+          (pkgtool --autodeps buildorder ... )
+
+2010-10-29  Thomas Wagner  <tom68@users.sourceforge.net>
+
+        * SFEopenal.spec:  bump to 1.12.854, new Download Source, 
+          remove patch1 openal-new-01.diff
+        * SFElibschroedinger.spec base-specs/schroedinger.spec: change configure
+          shell to real bash, rename BuildRequires to SFEorc-devel. 
+          NOTE: dependency resolving  by pkgbuild --autodeps or build-order 
+          doesn't work for unknown reason. For now you *must* run 
+          pkgbuild build SFEorc SFElibschroedinger   in that order
+        * SFEnasm.spec: cleaned up / adjusted BuildRequires to match various 
+          osbuilds and IPS/SVR4
+        * SFEorc.spec base-specs/orc.spec: make (Build)Requires dependend of the 
+          osbuild version, use real bash for configure
+
 2010-10-27  Alex Viskovatoff <viskovatoff@imap.cc>
 
 	* SFEmkvtoolnix.spec: add patch fixing runtime bug provided by
