@@ -3,6 +3,9 @@
         * SFElibschroedinger.spec: relocate %description down to no longer
           catch statements, this repairs dependency on SFEorc 
           (pkgtool --autodeps buildorder ... )
+        * include/osdistro.inc: add oi147
+        * include/packagenamemacros.inc and sub includes: add package name
+          resolving macros. for demo *read* the spec files base-specs/package*spec 
 
 2010-10-29  Thomas Wagner  <tom68@users.sourceforge.net>
 
