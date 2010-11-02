@@ -1,3 +1,9 @@
+2010-11-02  Brian Cameron  <brian.cameron@oracle.com>
+
+	* SFEcodeina.spec, patches/codeina-01-fixpython.diff:  Add spec-file
+	  for codeina.
+	* SFElibggz.spec: Remove unused setting of PKG_CONFIG_PATH.
+
 2010-11-02  Simon Jin <yuntong.jin@sun.com>
 
 	* SFErox-CLib2.spec:polish spec
@@ -12,27 +18,28 @@
 	* SFErox-Mail.spec:Init spec file
 
 2010-10-30  Thomas Wagner  <tom68@users.sourceforge.net>
-     
-        * SFElibschroedinger.spec: relocate %description down to no longer
-          catch statements, this repairs dependency on SFEorc 
-          (pkgtool --autodeps buildorder ... )
-        * include/osdistro.inc: add oi147
-        * include/packagenamemacros.inc and sub includes: add package name
-          resolving macros. for demo *read* the spec files base-specs/package*spec 
+
+	* SFElibschroedinger.spec: relocate %description down to no longer
+	  catch statements, this repairs dependency on SFEorc 
+	  (pkgtool --autodeps buildorder ... )
+	* include/osdistro.inc: add oi147
+	* include/packagenamemacros.inc and sub includes: add package name
+	  resolving macros. for demo *read* the spec files
+	  base-specs/package*spec 
 
 2010-10-29  Thomas Wagner  <tom68@users.sourceforge.net>
 
-        * SFEopenal.spec:  bump to 1.12.854, new Download Source, 
-          remove patch1 openal-new-01.diff
-        * SFElibschroedinger.spec base-specs/schroedinger.spec: change configure
-          shell to real bash, rename BuildRequires to SFEorc-devel. 
-          NOTE: dependency resolving  by pkgbuild --autodeps or build-order 
-          doesn't work for unknown reason. For now you *must* run 
-          pkgbuild build SFEorc SFElibschroedinger   in that order
-        * SFEnasm.spec: cleaned up / adjusted BuildRequires to match various 
-          osbuilds and IPS/SVR4
-        * SFEorc.spec base-specs/orc.spec: make (Build)Requires dependend of the 
-          osbuild version, use real bash for configure
+	* SFEopenal.spec:  bump to 1.12.854, new Download Source, 
+	  remove patch1 openal-new-01.diff
+	* SFElibschroedinger.spec base-specs/schroedinger.spec: change
+	  configure shell to real bash, rename BuildRequires to SFEorc-devel. 
+	  NOTE: dependency resolving  by pkgbuild --autodeps or build-order 
+	  doesn't work for unknown reason. For now you *must* run 
+	  pkgbuild build SFEorc SFElibschroedinger   in that order
+	* SFEnasm.spec: cleaned up / adjusted BuildRequires to match various 
+	  osbuilds and IPS/SVR4
+	* SFEorc.spec base-specs/orc.spec: make (Build)Requires dependend of
+	  the osbuild version, use real bash for configure
 
 2010-10-27  Alex Viskovatoff <viskovatoff@imap.cc>
 
@@ -162,7 +169,7 @@
 	* SFEtelepathy-gabble.spec:
 	* base-specs/telepathy-gabble.spec:
 	* patches/telepathy-gabble-01-compatible.diff:
-	Added new spec
+	  Added new spec
 
 2010-10-11  Jeff Cai <jeff.cai@oracle.com>
 
@@ -195,7 +202,7 @@
 	* SUNWtelepathy-glib.spec:
 	* base-specs/farsight2.spec:
 	* base-specs/telepathy-glib.spec:
-	Add support for 64 bits.
+	  Add support for 64 bits.
 
 2010-10-10  Simon Jin <yuntong.jin@sun.com>
 
@@ -224,7 +231,7 @@
 
 2010-10-06  Alex Viskovatoff  <viskovatoff@imap.cc>
 
-        * encumbered/SFEmpd.spec: bump to 0.15.12; use gmake
+	* encumbered/SFEmpd.spec: bump to 0.15.12; use gmake
 	* SFElibid3tag.spec: add multiarch support
 	* base-specs/libid3tag.spec (new)
 	* base-specs/libmad.spec: use gmake
@@ -262,7 +269,7 @@
 
 2010-09-24  Brian Cameron  <brian.cameron@oracle.com>
 
-        * SFEgnumeric.spec, SFEliblouis.spec: Remove .la and .a files.
+	* SFEgnumeric.spec, SFEliblouis.spec: Remove .la and .a files.
 
 2010-09-24 Milan Jurik <sfnet@xylab.cz>
 
@@ -4746,7 +4753,7 @@
 	* SFEwine.spec: fix Requires, disable patch2 (needs rework?)
 	* patches/pidgin-musictracker-01-solaris.diff: rework
 
-2009-03-22  Petr Sobotka 	<sobotkap@gmail.com>
+2009-03-22  Petr Sobotka <sobotkap@gmail.com>
 
 	* SFEwesnoth-dev.spec: Bump to 1.6a version, which is new stable
 	  release.  But because there were several bug sunCC problems, I'll

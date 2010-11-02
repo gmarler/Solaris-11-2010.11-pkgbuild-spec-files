@@ -1,0 +1,83 @@
+--- codeina-0.10.2.1/bin/codeina.bin-orig	2008-04-24 18:53:31.231400000 -0500
++++ codeina-0.10.2.1/bin/codeina.bin	2008-04-24 18:53:37.282456000 -0500
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python2.5
++#!/usr/bin/python2.6
+ # -*- Mode: Python -*-
+ # -*- coding: utf-8 -*-
+ # vi:si:et:sw=4:sts=4:ts=4
+--- codeina-0.10.6/common/m4/as-python.m4-orig	2009-10-12 18:58:40.307344552 -0500
++++ codeina-0.10.6/common/m4/as-python.m4	2009-10-12 18:59:10.554318148 -0500
+@@ -40,7 +40,7 @@ AC_DEFUN([AS_PATH_PYTHON],
+   dnl in 1.5, and I don't want to maintain that logic.
+ 
+   dnl should we do the version check?
+-  PYTHON_CANDIDATES="python python2.2 python2.1 python2.0 python2 \
++  PYTHON_CANDIDATES="python2.6 python python2.2 python2.1 python2.0 python2 \
+                      python1.6 python1.5"
+   ifelse([$1],[],
+          [AC_PATH_PROG(PYTHON, $PYTHON_CANDIDATES)],
+--- codeina-0.10.6/codeina/extern/which.py-orig	2009-10-27 17:21:38.956709576 -0500
++++ codeina-0.10.6/codeina/extern/which.py	2009-10-27 17:22:40.999961099 -0500
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/python2.6
+ # Copyright (c) 2002-2005 ActiveState Corp.
+ # See LICENSE.txt for license details.
+ # Author:
+--- codeina-0.10.6/codeina/httpdownload.py-orig	2009-10-27 17:21:51.047863926 -0500
++++ codeina-0.10.6/codeina/httpdownload.py	2009-10-27 17:22:28.750278481 -0500
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/python2.6
+ 
+ import os.path
+ import os
+--- codeina-0.10.6/codeina/events.py-orig	2009-10-27 17:21:27.387668519 -0500
++++ codeina-0.10.6/codeina/events.py	2009-10-27 17:22:20.205088299 -0500
+@@ -1,4 +1,4 @@
+-#! /usr/bin/env python
++#! /usr/bin/python2.6
+ 
+ """ This is the event system. It is distinct from pygame's event
+ system, because this one is truly and entirely callback-driven.
+--- codeina-0.10.6/common/scangobj-merge.py-orig	2009-10-27 17:28:13.905349708 -0500
++++ codeina-0.10.6/common/scangobj-merge.py	2009-10-27 17:28:23.710599367 -0500
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python2.6
+ # -*- Mode: Python -*-
+ # vi:si:et:sw=4:sts=4:ts=4
+ 
+--- codeina-0.10.6/misc/coverage-orig	2009-10-27 17:27:53.848614266 -0500
++++ codeina-0.10.6/misc/coverage	2009-10-27 17:27:58.177846483 -0500
+@@ -1,4 +1,4 @@
+-#! /usr/bin/python
++#! /usr/bin/python2.6
+ 
+ import os
+ import sys
+--- codeina-0.10.6/providers/get_mandriva_rpms-orig	2009-10-27 17:26:34.778437006 -0500
++++ codeina-0.10.6/providers/get_mandriva_rpms	2009-10-27 17:27:19.664315860 -0500
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python2.6
+ 
+ from ftplib import FTP
+ 
+--- codeina-0.10.6/providers/get_plf_rpms-orig	2009-10-27 17:26:52.735988707 -0500
++++ codeina-0.10.6/providers/get_plf_rpms	2009-10-27 17:27:24.734966180 -0500
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python2.6
+ 
+ from ftplib import FTP
+ 
+--- codeina-0.10.6/providers/merge_yaml2xml-orig	2009-10-27 17:27:06.298478653 -0500
++++ codeina-0.10.6/providers/merge_yaml2xml	2009-10-27 17:27:37.189058022 -0500
+@@ -1,4 +1,4 @@
+-#! /usr/bin/python
++#! /usr/bin/python2.6
+ import xml.dom.minidom
+ 
+ doc = xml.dom.minidom.Document()

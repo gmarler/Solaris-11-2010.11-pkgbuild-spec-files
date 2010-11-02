@@ -72,7 +72,6 @@ cd %{_builddir}/%name-%version
 %define libggz_build_dir %{_builddir}/%name-%version/libggz-%{libggz.version}
 %define ggzclient_build_dir %{_builddir}/%name-%version/ggz-client-libs-%{ggz_client_libs.version}
 
-export PKG_CONFIG_PATH=%{_pkg_config_path}:/usr/lib/python%{default_python_version}/pkgconfig
 export CFLAGS="%optflags -I%{_includedir} -I/usr/sfw/include -xc99 -I%{libggz_build_dir}/src -I%{ggzclient_build_dir}/ggzmod -I%{ggzclient_build_dir}/ggzcore"
 export RPM_OPT_FLAGS="$CFLAGS"
 export LDFLAGS="%_ldflags -lX11 -L/usr/sfw/lib -lexpat -L%{libggz_build_dir}/src/.libs -L%{ggzclient_build_dir}/ggzmod/.libs -L%{ggzclient_build_dir}/ggzcore/.libs"
