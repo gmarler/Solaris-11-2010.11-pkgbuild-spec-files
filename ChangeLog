@@ -1,5 +1,10 @@
 2010-11-02  Simon Jin <yuntong.jin@sun.com>
 
+	* SFErox-CLib2.spec:Init spec file
+	* patches/rox-CLib2-01.diff:
+
+2010-11-02  Simon Jin <yuntong.jin@sun.com>
+
 	* SFErox-Mail.spec:Init spec file
 
 2010-10-30  Thomas Wagner  <tom68@users.sourceforge.net>

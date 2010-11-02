@@ -1,0 +1,11 @@
+--- a/src/xattr.c	2010-11-02 21:47:16.642562499 +0800
++++ b/src/xattr.c	2010-11-02 21:48:03.869778479 +0800
+@@ -307,7 +307,7 @@
+     DIR *dir=fdopendir(fd);
+     struct dirent ent;
+ 
+-    while(readdir_r(dir, &ent)) {
++    while(readdir_r(dir, &ent,NULL)) {
+       if(strcmp(ent.d_name, ".")==0 || strcmp(ent.d_name, "..")==0)
+ 	continue;
+ 
