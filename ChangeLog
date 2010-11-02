@@ -1,5 +1,9 @@
 2010-11-02  Simon Jin <yuntong.jin@sun.com>
 
+	* SFErox-CLib2.spec:polish spec
+
+2010-11-02  Simon Jin <yuntong.jin@sun.com>
+
 	* SFErox-CLib2.spec:Init spec file
 	* patches/rox-CLib2-01.diff:
 
