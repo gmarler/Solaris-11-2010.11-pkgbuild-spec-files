@@ -18,12 +18,12 @@ SUNW_BaseDir:	%{_basedir}
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 
-#%include build-depend.inc   # Not in repository yet
 BuildRequires: SUNWgmake
 BuildRequires: SUNWgnu-coreutils
 BuildRequires: SUNWgtar
+BuildRequires: SFEqt4-devel
 
-Requires: SFE-qt4
+Requires: SFEqt4
 Requires: SUNWzlib
 
 
@@ -67,7 +67,6 @@ rm -rf $RPM_BUILD_ROOT
 %_docdir/%srcname
 %_mandir
 %_datadir/%srcname
-%attr (-, root, other) %_datadir/icons/hicolor
 %dir %attr (-, root, other) %_datadir/icons/hicolor/16x16
 %dir %attr (-, root, other) %_datadir/icons/hicolor/16x16/apps
 %_datadir/icons/hicolor/16x16/apps/smplayer.png

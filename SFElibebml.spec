@@ -59,7 +59,8 @@ ARFLAGS="-xar -o" LOFLAGS=-Kpic LIBSOFLAGS="-G -h "
 %install
 rm -rf $RPM_BUILD_ROOT
 cd make/linux
-gmake install prefix=$RPM_BUILD_ROOT%{_prefix} INSTALL=ginstall
+gmake install_headers prefix=$RPM_BUILD_ROOT%{_prefix} INSTALL=ginstall
+gmake install_sharedlib prefix=$RPM_BUILD_ROOT%{_prefix} INSTALL=ginstall
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -67,7 +68,6 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr (-, root, bin)
 %{_libdir}/lib*.so*
-%{_libdir}/lib*.a*
 
 %files devel
 %defattr (-, root, bin)
@@ -77,6 +77,6 @@ rm -rf $RPM_BUILD_ROOT
 * Fri Oct  1 2010 - Alex Viskovatoff
 - Update to 1.0.0; use stdcxx (requires Solaris Studio 12.2)
 - Patch linux Makefile so that it works with Linux and Solaris
-- instead of creating a new Makefile for Solaris.
+  instead of creating a new Makefile for Solaris.
 * Fri Jul 13 2007 - dougs@truemail.co.th
 - Initial version

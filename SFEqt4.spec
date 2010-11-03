@@ -8,10 +8,8 @@
 # pkgtool --with-stlport build <specfile>
 %define use_stdcxx %{?_with_stlport:0}%{?!_with_stlport:1}
 
-# NOTE: Use of stdcxx requires Solaris Studio 12.2.  (The spec file could
-# be modified so that SS 12u1 could be used as well, but that would make
-# the spec more complicated, since SS 12u1 doesn't understand the
-# -library=stdcxx4 option.)
+# NOTE: Use of stdcxx requires Solaris Studio 12.1 or newer, because of the
+# spec's use of the -library=stdcxx4 option.
 
 %include Solaris.inc
 %define srcname qt-x11-opensource-src
@@ -47,9 +45,11 @@ Requires: %name
 %prep
 %setup -q -n %{srcname}-%version
 
+%if %( expr %{osbuild} '>=' 147 )
 # In libpng-1.4, the "trans" and "trans_values" fields have been renamed to
 # "trans_alpha" and "trans_color", respectively.
 %patch0 -p1
+%endif
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -61,10 +61,10 @@ fi
 export CFLAGS="%optflags"
 
 %if %use_stdcxx
-export CXXFLAGS=-library=stdcxx4
+export CXXFLAGS="cxx_optflags -library=stdcxx4"
 export LDFLAGS="%_ldflags -library=stdcxx4"
 %else
-export CXXFLAGS=-library=stlport4
+export CXXFLAGS="cxx_optflags -library=stlport4"
 export LDFLAGS="%_ldflags -library=stlport4"
 %endif
 
@@ -121,12 +121,14 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/doc/*
 
 %changelog
+* Nov  3 2010 - Alex Viskovatoff
+- Add patch by Milan Jurik to use new libpng names only for osbuild >= 147
+- Use cxx_optflags
 * Oct 16 2010 - Alex Viskovatoff
 - Fix broken use of stlport: if -library=stlport4 is passed to the compiler,
   it must also be passed to the linker
 - Update to version 4.5.3, obviating the need for the existing patches
-- Add a patch to make the package build if it is built on a system with
-  libpng installed
+- Add a patch to use changed field names in libpng-1.4
 - Use stdcxx instead of stlport, while allowing use of the deprecated
   stlport as an option. (BionicMutton uses stdcxx.)
 - Remove dependency on SUNWgccruntime
