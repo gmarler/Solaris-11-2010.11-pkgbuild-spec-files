@@ -69,6 +69,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}
 
 %changelog
+* Thu Nov 4 2010 - Alex Viskovatoff
+- Update to 1.1.0
 * Wed Jun 2 2008 - oboril.lukas@gmail.com
 - bump to 0.7.1
 - remove CFLAGS, LDFLAGS, use wihtout optim flags is
