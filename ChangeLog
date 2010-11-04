@@ -1,3 +1,8 @@
+2010-11-04  Alex Viskovatoff <viskovatoff@imap.cc>
+
+	* SFEqt4.spec:  Add %include osdistro.inc
+	* SFEyasm.spec: Update to 1.1.0
+
 2010-11-04 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEscons.spec: bump to 2.0.1

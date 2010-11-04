@@ -12,6 +12,7 @@
 # spec's use of the -library=stdcxx4 option.
 
 %include Solaris.inc
+%include osdistro.inc
 %define srcname qt-x11-opensource-src
 
 Name:                SFEqt4
@@ -45,6 +46,7 @@ Requires: %name
 %prep
 %setup -q -n %{srcname}-%version
 
+##TODO##  Verify that build 147 really is the correct build number for this change
 %if %( expr %{osbuild} '>=' 147 )
 # In libpng-1.4, the "trans" and "trans_values" fields have been renamed to
 # "trans_alpha" and "trans_color", respectively.
@@ -121,6 +123,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/doc/*
 
 %changelog
+* Nov  4 2010 - Alex Viskovatoff
+- Spec needs "%include osdistro.inc" (pointed out by Thomas Wagner)
 * Nov  3 2010 - Alex Viskovatoff
 - Add patch by Milan Jurik to use new libpng names only for osbuild >= 147
 - Use cxx_optflags

@@ -1,6 +1,6 @@
---- yasm-0.7.1.orig/configure	2008-05-14 21:40:34.000000000 -0400
-+++ yasm-0.7.1/configure	2008-06-27 14:25:12.095991000 -0400
-@@ -10448,12 +10448,6 @@
+--- yasm-1.1.0/configure.orig	Sat Aug  7 12:38:19 2010
++++ yasm-1.1.0/configure	Thu Nov  4 16:02:23 2010
+@@ -7676,12 +7676,6 @@
  # Add some more CFLAGS for various options.
  #
  

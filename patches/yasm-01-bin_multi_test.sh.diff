@@ -1,8 +1,8 @@
---- yasm-0.7.1.orig/modules/objfmts/bin/tests/multisect/bin_multi_test.sh	2008-05-14 21:34:59.000000000 -0400
-+++ yasm-0.7.1/modules/objfmts/bin/tests/multisect/bin_multi_test.sh	2008-06-27 14:13:43.721320000 -0400
+--- yasm-1.1.0/modules/objfmts/bin/tests/bin_test.sh.orig	Sat Aug  7 12:34:33 2010
++++ yasm-1.1.0/modules/objfmts/bin/tests/bin_test.sh	Thu Nov  4 15:45:26 2010
 @@ -1,4 +1,4 @@
 -#! /bin/sh
 +#! /bin/bash
- # $Id: bin_multi_test.sh 2010 2007-11-14 08:33:32Z peter $
- 
- YASM_TEST_SUITE=1
+ # $Id: bin_test.sh 1137 2004-09-04 01:24:57Z peter $
+ ${srcdir}/out_test.sh bin_test modules/objfmts/bin/tests "bin objfmt" "-f bin" ""
+ exit $?
