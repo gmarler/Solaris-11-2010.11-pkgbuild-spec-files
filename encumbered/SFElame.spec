@@ -107,17 +107,8 @@ rm -rf $RPM_BUILD_ROOT
 mkdir $RPM_BUILD_ROOT%{_bindir}/%{base_isa}
 mv $RPM_BUILD_ROOT%{_bindir}/lame $RPM_BUILD_ROOT%{_bindir}/%{base_isa}
 mv $RPM_BUILD_ROOT%{_bindir}/toolame $RPM_BUILD_ROOT%{_bindir}/%{base_isa}
-%endif
-
-%{?pkgbuild_postprocess: %pkgbuild_postprocess -v -c "%{version}:%{jds_version}:%{name}:$RPM_ARCH:%(date +%%Y-%%m-%%d):%{support_level}" $RPM_BUILD_ROOT}
-
-%if %can_isaexec
-%post
-ln ${BASEDIR}/lib/isaexec ${BASEDIR}/bin/lame
-ln ${BASEDIR}/lib/isaexec ${BASEDIR}/bin/toolame
-installf $PKGINST %{_bindir}/lame || exit 2
-installf $PKGINST %{_bindir}/toolame || exit 2
-installf -f $PKGINST || exit 2
+cd $RPM_BUILD_ROOT%{_bindir} && ln -s ../lib/isaexec lame
+cd $RPM_BUILD_ROOT%{_bindir} && ln -s ../lib/isaexec toolame
 %endif
 
 %clean
@@ -128,6 +119,8 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, bin) %{_bindir}
 %if %can_isaexec
 %{_bindir}/%{base_isa}
+%hard %{_bindir}/lame
+%hard %{_bindir}/toolame
 %else
 %{_bindir}/lame
 %{_bindir}/toolame
@@ -154,6 +147,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/doc/*
 
 %changelog
+* Thu Nov 04 2010 - Milan Jurik
+- fix isaexec
 * Wed Mar 24 2010 - Milan Jurik
 - update for 3.98.4
 * Wed Mar 03 2010 - Milan Jurik

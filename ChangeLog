@@ -1,6 +1,7 @@
 2010-11-04 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEscons.spec: bump to 2.0.1
+	* encumbered/SFElame.spec: fix isaexec
 
 2010-11-03  Alex Viskovatoff <viskovatoff@imap.cc>
 
