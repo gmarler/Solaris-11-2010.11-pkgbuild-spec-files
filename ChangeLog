@@ -1,6 +1,7 @@
 2010-11-07 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEpyqt.spec: bump to 4.8.1 (qt4 support)
+	* SFEgraphicsmagick.spec: bump to 1.3.12, add Jasper to deps
 
 2010-11-06 Milan Jurik <sfnet@xylab.cz>
 

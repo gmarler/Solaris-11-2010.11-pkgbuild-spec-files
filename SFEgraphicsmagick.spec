@@ -12,12 +12,22 @@
 
 Name:                   SFEgraphicsmagick
 Summary:                GraphicsMagick - Image Manipulation Utilities and Libraries
-Version:                1.3.7
+Version:                1.3.12
+URL:			http://www.graphicsmagick.org/
 Source:                 %{sf_download}/graphicsmagick/GraphicsMagick-%{version}.tar.bz2
 SUNW_BaseDir:           %{_basedir}
 BuildRoot:              %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 %include perl-depend.inc
+
+BuildRequires:		SFEjasper-devel
+Requires:		SFEjasper
+BuildRequires:		SUNWdcraw
+Requires:		SUNWdcraw
+BuildRequires:		SUNWgnome-img-editor-devel
+Requires:		SUNWgnome-img-editor
+BuildRequires:		SUNWsane-backend
+Requires:		SUNWsane-backend
 
 %package devel
 Summary:                 %{summary} - development files
@@ -48,6 +58,8 @@ export CFLAGS="%optflags -xCC"
             --datadir=%{_datadir}	\
             --libexecdir=%{_libexecdir} \
             --sysconfdir=%{_sysconfdir} \
+            --with-perl			\
+            --with-modules		\
             --enable-shared		\
 	    --disable-static
 
@@ -58,9 +70,10 @@ rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
 rm $RPM_BUILD_ROOT%{_libdir}/lib*.*a
 find $RPM_BUILD_ROOT%{_libdir} -name lib\*.\*a -exec rm {} \;
-site_perl=$RPM_BUILD_ROOT/usr/perl5/site_perl
-vendor_perl=$RPM_BUILD_ROOT/usr/perl5/vendor_perl
-mv $site_perl $vendor_perl
+# PerlMagic is broken
+#site_perl=$RPM_BUILD_ROOT/usr/perl5/site_perl
+#vendor_perl=$RPM_BUILD_ROOT/usr/perl5/vendor_perl
+#mv $site_perl $vendor_perl
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -73,9 +86,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/GraphicsMagick-%{version}
 %dir %attr (0755,root,sys) %{_datadir}
 %{_datadir}/GraphicsMagick-%{version}
-%dir %attr (0755,root,other) %{_datadir}/GraphicsMagick
 %{_mandir}
-%{_prefix}/perl5
+%dir %attr (0755, root, other) %{_docdir}
+%{_docdir}/GraphicsMagick
+# PerlMagic is broken
+#%{_prefix}/perl5
 
 %files devel
 %defattr (-, root, bin)
@@ -85,6 +100,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*
 
 %changelog
+* Sun Nov 07 2010 - Milan Jurik
+- bump to 1.3.12, add Jasper to deps, disable PerlMagic because build is broken
 * Tue Nov 17 2009 - bfriesen@simple.dallas.tx.us
 - Update for GraphicsMagick 1.3.7.  Removed use of Solaris umem library.
 * Thu Jan 24 2008 - bfriesen@simple.dallas.tx.us
