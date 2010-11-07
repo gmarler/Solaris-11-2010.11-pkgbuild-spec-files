@@ -1,3 +1,7 @@
+2010-11-07 Milan Jurik <sfnet@xylab.cz>
+
+	* SFEpyqt.spec: bump to 4.8.1 (qt4 support)
+
 2010-11-06 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEsip.spec: bump to 4.11.2
