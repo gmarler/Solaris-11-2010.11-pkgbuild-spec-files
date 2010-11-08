@@ -10,7 +10,7 @@
 Name:		SFEldns
 URL:		http://www.nlnetlabs.nl/projects/ldns/
 Summary:	ldns library for DNS programming
-Version:	1.6.6
+Version:	1.6.7
 Group:		System/Libraries
 License:	BSD
 Source:		http://www.nlnetlabs.nl/downloads/%{src_name}/%{src_name}-%{version}.tar.gz 
@@ -35,7 +35,8 @@ Requires: %name
 %build
 ./configure --prefix=%{_prefix}	\
 	--sysconfdir=%{_sysconfdir} \
-	--disable-static 
+	--disable-static \
+	--disable-gost
 
 make
 
@@ -60,6 +61,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man3/*
 
 %changelog
+* Mon Nov 08 2010 - Milan Jurik
+- bump to 1.6.7
+- disable GOST because of old OpenSSL
 * Thu Sep 23 2010 - Milan Jurik
 - bump to 1.6.6
 * Wed Jun 09 2010 - Milan Jurik
