@@ -7,7 +7,7 @@
 
 Summary:	Validating, recursive, and caching DNS resolver
 Name:		SFEunbound
-Version:	1.4.6
+Version:	1.4.7
 License:	BSD
 URL:		http://www.nlnetlabs.nl/unbound/
 Source:		http://www.unbound.net/downloads/unbound-%{version}.tar.gz
@@ -18,6 +18,8 @@ SUNW_BaseDir:	/
 BuildRequires: SUNWflexlex
 BuildRequires: SUNWopenssl-include
 Requires: SUNWopenssl-libraries
+BuildRequires: SUNWlexpt
+Requires: SUNWlexpt
 
 %description
 Unbound is a validating, recursive, and caching DNS resolver.
@@ -45,6 +47,7 @@ LDFLAGS="-lsocket -lnsl" \
 	--enable-sha2 \
 	--with-solaris-threads \
 	--without-pthreads \
+	--disable-gost \
 	--with-conf-file=%{_sysconfdir}/unbound/unbound.conf \
 	--with-pidfile=%{_localstatedir}/run/unbound.pid
 
@@ -125,6 +128,9 @@ user ftpuser=false gcos-field="Unbound Reserved UID" username="unbound" password
 %{_libdir}/libunbound*
 
 %changelog
+* Mon Nov 08 2010 - Milan Jurik
+- bump to 1.4.7
+- disable GOST because of old OpenSSL
 * Sun Aug 08 2010 - Milan Jurik
 - update to 1.4.6
 * Tue Jun 15 2010 - Milan Jurik
