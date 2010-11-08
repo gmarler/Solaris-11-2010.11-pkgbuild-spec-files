@@ -60,8 +60,10 @@ BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 BuildRequires:	SUNWgmake
 BuildRequires:	SUNWaconf
 BuildRequires:	SUNWgnu-automake-19
+BuildRequires:	SFElibiconv-devel
 Requires:	SFEncursesw
 Requires:	SUNWgnu-readline
+Requires:	SFElibiconv
 
 %package devel
 Summary:	%{summary} - development files
@@ -116,5 +118,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/*
 
 %changelog
+* Mon Nov 08 2010 - Milan Jurik
+- add missing build dep
 * Thu Oct 14 2010 - Alex Viskovatoff
 - Initial spec

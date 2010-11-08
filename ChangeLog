@@ -2,6 +2,7 @@
 
 	* SFEldns.spec: bump to 1.6.7
 	* SFEunbound.spec: bump to 1.4.7
+	* SFEhunspell.spec: add missing build dep
 
 2010-11-07 Milan Jurik <sfnet@xylab.cz>
 
