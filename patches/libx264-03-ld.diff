@@ -1,6 +1,6 @@
---- x264-snapshot-20090208-2245/Makefile	ne úno  8 22:45:10 2009
-+++ x264-snapshot-20090208-2245-patch/Makefile	so úno 14 17:52:59 2009
-@@ -121,7 +121,7 @@ libx264.a: .depend $(OBJS) $(OBJASM)
+--- x264-snapshot-20101029-2245/Makefile.orig	Fri Oct 29 16:45:07 2010
++++ x264-snapshot-20101029-2245/Makefile	Fri Oct 29 22:46:48 2010
+@@ -133,7 +133,7 @@
  	$(RANLIB) libx264.a
  
  $(SONAME): .depend $(OBJS) $(OBJASM) $(OBJSO)
@@ -8,4 +8,4 @@
 +	ld -G -B dynamic -o $@ $(OBJS) $(OBJASM) $(OBJSO) $(SOFLAGS) $(LDFLAGS)
  
  x264$(EXE): $(OBJCLI) libx264.a
- 	$(CC) -o $@ $+ $(LDFLAGS) $(LDFLAGSCLI)
+ 	$(CC) -o $@ $+ $(LDFLAGSCLI) $(LDFLAGS)

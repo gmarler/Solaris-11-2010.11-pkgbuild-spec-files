@@ -4,7 +4,15 @@
 # includes module(s): libx264
 #
 
+##TODO##  Make x264 executable link to SFEffmpeg
+
 %include Solaris.inc
+
+# To enable the x264 executable to create mp4 files, GPAC is required: use
+#   pkgtool build --with-mp4 <spec>
+# But x264 can create Matroska files, and mp4 has no advantages over
+# Matroska whereas Matroska has features mp4 lacks.
+%define with_gpac %{?_with_mp4:1}%{?!_with_mp4:0}
 
 %define cc_is_gcc 1 
 %ifarch amd64 sparcv9
@@ -23,6 +31,11 @@ BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 %ifarch i386 amd64
 BuildRequires: SFEyasm
+%endif
+
+%if %with_gpac
+BuildRequires: SFEgpac-devel
+Requires: SFEgpac
 %endif
 
 %package devel
@@ -102,6 +115,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Nov 10 2010 - Alex Viskovatoff
+- add optional (Build)Requires: SFEgpac(-devel)
 * Fri Apr 09 - Milan Jurik
 - yasm is only for x86, not SPARC
 * Mar 2010 - Gilles Dauphin

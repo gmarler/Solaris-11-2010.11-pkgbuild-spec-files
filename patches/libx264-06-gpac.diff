@@ -1,11 +1,11 @@
---- x264-snapshot-20090314-2245.orig/configure	Sun Mar 15 11:42:09 2009
-+++ x264-snapshot-20090314-2245/configure	Sun Mar 15 11:42:26 2009
-@@ -456,7 +456,7 @@ if [ "$ffms_input" = "auto" ] ; then
-     [ -n "$LAVF_CFLAGS" ] && CFLAGS="$CFLAGS $LAVF_CFLAGS"
+--- x264-snapshot-20101029-2245/configure.orig	2010-10-29 22:45:07.000000000 +0200
++++ x264-snapshot-20101029-2245/configure	2010-11-10 01:08:46.594994930 +0100
+@@ -640,7 +640,7 @@
+     CFLAGS="$CFLAGS $SWSCALE_CFLAGS"
  fi
  
--MP4_LDFLAGS="-lgpac_static"
-+MP4_LDFLAGS="-lgpac"
+-GPAC_LIBS="-lgpac_static"
++GPAC_LIBS="-lgpac"
  if [ $SYS = MINGW ]; then
-     MP4_LDFLAGS="$MP4_LDFLAGS -lwinmm"
+     GPAC_LIBS="$GPAC_LIBS -lwinmm"
  fi
