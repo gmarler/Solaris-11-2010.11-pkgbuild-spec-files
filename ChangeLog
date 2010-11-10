@@ -1,6 +1,11 @@
 2010-11-10  Alex Viskovatoff
 
-	* SFElibx264.spec base-spec/x264.spec: update tarball, reworking
+	* SFEmplayer-snap.spec: use fixed (constant) tarball by default,
+	  restore cpu detection patch, make gui optional, format man page
+
+2010-11-10  Alex Viskovatoff
+
+	* SFElibx264.spec base-specs/x264.spec: update tarball, reworking
 	  patches; add optional (Build)Requires: SFEgpac(-devel)
 
 2010-11-10  Alex Viskovatoff

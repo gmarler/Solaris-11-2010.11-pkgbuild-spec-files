@@ -1,0 +1,10 @@
+--- mplayer-export/configure.orig2	Sun Oct 31 23:01:19 2010
++++ mplayer-export/configure	Sun Oct 31 23:03:27 2010
+@@ -3100,7 +3100,6 @@
+ 
+ echocheck "mkstemp"
+ cat > $TMPC << EOF
+-#define _XOPEN_SOURCE 500
+ #include <stdlib.h>
+ int main(void) { mkstemp(""); return 0; }
+ EOF

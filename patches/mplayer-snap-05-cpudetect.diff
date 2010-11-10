@@ -1,0 +1,32 @@
+--- mplayer-export/cpudetect.c.orig	Fri Oct  1 14:29:35 2010
++++ mplayer-export/cpudetect.c	Mon Nov  1 13:14:29 2010
+@@ -45,6 +45,8 @@
+ #include <os2.h>
+ #elif defined(__AMIGAOS4__)
+ #include <proto/exec.h>
++#elif __sun
++#include <sys/utsname.h>
+ #endif
+ 
+ /* Thanks to the FreeBSD project for some of this cpuid code, and
+@@ -124,6 +126,20 @@
+ #if ARCH_X86_64
+     gCpuCaps.hasSSE=1;
+     gCpuCaps.hasSSE2=1;
++#elif defined(__sun)
++    struct utsname solname;
++    long major, minor = 0;
++    char *radix;
++
++    if (uname(&solname) > 0) {
++       major = strtol(solname.release, &radix, 10);
++       if (*radix != '\0')
++          minor = strtol(++radix, NULL, 10);
++       if (!(major >= 5 && minor >= 9))
++          gCpuCaps.hasSSE=0;
++    } else {
++       gCpuCaps.hasSSE=0;
++    }
+ #elif defined(__FreeBSD__) || defined(__FreeBSD_kernel__) || defined(__DragonFly__) || defined(__APPLE__)
+     int has_sse=0, ret;
+     size_t len=sizeof(has_sse);
