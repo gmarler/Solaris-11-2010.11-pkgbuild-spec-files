@@ -34,11 +34,11 @@ Requires: %name
 rm -rf %name-%version
 mkdir %name-%version
 
-# 64-bit binaries are of no benefit
-#%ifarch amd64 sparcv9
-#mkdir %name-%version/%_arch64
-#%ncursesw_64.prep -d %name-%version/%_arch64
-#%endif
+export LDFLAGS="%_ldflags"
+%ifarch amd64 sparcv9
+mkdir %name-%version/%_arch64
+%ncursesw_64.prep -d %name-%version/%_arch64
+%endif
 
 mkdir %name-%version/%{base_arch}
 %ncursesw.prep -d %name-%version/%{base_arch}
@@ -51,17 +51,22 @@ else
         FLAG64="-m64"
 fi
 
-# 64-bit binaries are of no benefit
-#%ifarch amd64 sparcv9
-#export LDFLAGS="$FLAG64"
-#%ncursesw_64.build -d %name-%version/%_arch64
-#%endif
+%ifarch amd64 sparcv9
+export LDFLAGS="$FLAG64"
+%ncursesw_64.build -d %name-%version/%_arch64
+%endif
 
 export LDFLAGS=
 %ncursesw.build -d %name-%version/%{base_arch}
 
 %install
 rm -rf $RPM_BUILD_ROOT
+
+%ifarch amd64 sparcv9
+%ncursesw_64.install -d %name-%version/%_arch64
+# 64-bit binaries are of no benefit
+rm -rf $RPM_BUILD_ROOT%{_bindir}/%_arch64
+%endif
 
 %ncursesw.install -d %name-%version/%{base_arch}
 
