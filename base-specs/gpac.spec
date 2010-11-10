@@ -33,8 +33,8 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
      CPUS=1
 fi
 
-export CFLAGS="%optflags -I%{_includedir}"
-export CXXFLAGS="%cxx_optflags -I%{_includedir}"
+export CFLAGS="%optflags -I%{_includedir}/libpng12 -I%{_includedir}"
+export CXXFLAGS="%cxx_optflags -I%{_includedir}/libpng12 -I%{_includedir}"
 # search for freeglut in /usr/SFE
 export LDFLAGS="%_ldflags $CFLAGS -L%{_libdir} -R%{_libdir}"
 
@@ -89,6 +89,8 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/lib*.*a
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Wed Nov 10 2010  - Thomas Wagner
+- png14 misses symbol png_infopp_NULL but png12 hasit, add CFLAGS/CXXFLAGS -I%{_includedir}/libpng12
 * Mar 12 2010 - Gilles dauphin
 - misssing lib/amd64
 - minor patch for _T macro and new wxWidget
