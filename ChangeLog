@@ -1,3 +1,9 @@
+2010-11-10  Alex Viskovatoff
+
+	* SFEhunspell.spec: find dicts without using environment variable
+	* SFEncursesw.spec: get version number from base spec
+	* SFExz: update to 5.0.0
+
 2010-11-08 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEldns.spec: bump to 1.6.7

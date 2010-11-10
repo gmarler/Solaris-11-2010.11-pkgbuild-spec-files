@@ -4,12 +4,7 @@
 # includes module: hunspell
 #
 
-# To use, make sure that library/myspell/dictionary/en, for example, is
-# installed, and that you have in .bashrc
-# export DICPATH=/usr/share/spell/myspell
-# export DICTIONARY=en_US
-
-####			   USING WITH EMACS				    ####
+####				USING WITH EMACS			    ####
 #
 # NOTE: To use Hunspell under Emacs, at least Emacs 23 is required.
 # NOTE: For some reason, unless Emacs is started from the command line, hunspell
@@ -53,6 +48,7 @@ Vendor:		László Németh
 Version:	1.2.12
 License:	MPL 1.1/GPL 2.0/LGPL 2.1
 Source:		http://downloads.sourceforge.net/%{srcname}/%{srcname}-%{version}.tar.gz
+Patch1:		hunspell-01-dict-path.diff
 
 %include default-depend.inc
 SUNW_BaseDir:	%{_basedir}
@@ -61,9 +57,11 @@ BuildRequires:	SUNWgmake
 BuildRequires:	SUNWaconf
 BuildRequires:	SUNWgnu-automake-19
 BuildRequires:	SFElibiconv-devel
+BuildRequires:	SFEncursesw-devel
 Requires:	SFEncursesw
 Requires:	SUNWgnu-readline
 Requires:	SFElibiconv
+Requires:	SUNWmyspell-dictionary-en
 
 %package devel
 Summary:	%{summary} - development files
@@ -74,6 +72,7 @@ Requires:	SFEhunspell
 
 %prep
 %setup -q -n %srcname-%version
+%patch1 -p1
 
 %build
 
@@ -85,7 +84,7 @@ export CFLAGS="%optflags"
 
 export CXXFLAGS="%cxx_optflags -I/usr/gnu/include/ncursesw"
 export LIBS="-lsocket -lpthread -lCrun"
-export LDFLAGS="-L/usr/gnu/lib -R/usr/gnu/lib"
+export LDFLAGS="%_ldflags %gnu_lib_path"
 ./configure --prefix=%_prefix --enable-threads=solaris --with-ui --with-readline
 
 
@@ -96,6 +95,8 @@ rm -rf $RPM_BUILD_ROOT
 
 gmake install DESTDIR=$RPM_BUILD_ROOT
 
+rm -f $RPM_BUILD_ROOT%_libdir/lib*a
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -103,7 +104,6 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr (-, root, bin)
 %_bindir/*
-%_libdir/*a
 %_libdir/*.so*
 %dir %attr (-, root, other) %_libdir/pkgconfig
 %_libdir/pkgconfig/%{srcname}.pc
@@ -118,6 +118,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/*
 
 %changelog
+* Wed Nov 10 2010 - Alex Viskovatoff
+- add another missing build dep; do not package static lib
+- add patch to make Hunspell find dictionaries without depending on DICPATH
 * Mon Nov 08 2010 - Milan Jurik
 - add missing build dep
 * Thu Oct 14 2010 - Alex Viskovatoff

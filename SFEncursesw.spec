@@ -16,7 +16,7 @@
 
 Name:                SFEncursesw
 Summary:             Emulation of SVR4 curses with wide-character support
-Version:             5.6
+Version:             %{ncursesw.version}
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -34,11 +34,11 @@ Requires: %name
 rm -rf %name-%version
 mkdir %name-%version
 
-export LDFLAGS="%_ldflags"
-%ifarch amd64 sparcv9
-mkdir %name-%version/%_arch64
-%ncursesw_64.prep -d %name-%version/%_arch64
-%endif
+# 64-bit binaries are of no benefit
+#%ifarch amd64 sparcv9
+#mkdir %name-%version/%_arch64
+#%ncursesw_64.prep -d %name-%version/%_arch64
+#%endif
 
 mkdir %name-%version/%{base_arch}
 %ncursesw.prep -d %name-%version/%{base_arch}
@@ -51,22 +51,17 @@ else
         FLAG64="-m64"
 fi
 
-%ifarch amd64 sparcv9
-export LDFLAGS="$FLAG64"
-%ncursesw_64.build -d %name-%version/%_arch64
-%endif
+# 64-bit binaries are of no benefit
+#%ifarch amd64 sparcv9
+#export LDFLAGS="$FLAG64"
+#%ncursesw_64.build -d %name-%version/%_arch64
+#%endif
 
 export LDFLAGS=
 %ncursesw.build -d %name-%version/%{base_arch}
 
 %install
 rm -rf $RPM_BUILD_ROOT
-
-%ifarch amd64 sparcv9
-%ncursesw_64.install -d %name-%version/%_arch64
-# 64-bit binaries are of no benefit
-rm -rf $RPM_BUILD_ROOT%{_bindir}/%_arch64
-%endif
 
 %ncursesw.install -d %name-%version/%{base_arch}
 
@@ -86,6 +81,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/*
 
 %changelog
+* Wed Nov 10 2010 - Alex Viskovatoff
+- get version number from base spec
 * jul 27 2009 - Gilles Dauphin
 - s/SFEncurses/SUNWncurses/
 - s/SFEncurses-data/SUNWncurses-devel/
