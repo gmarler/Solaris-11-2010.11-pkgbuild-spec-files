@@ -1,3 +1,10 @@
+2010-11-11  Brian Cameron  <brian.cameron@oracle.com>
+
+	* SFEqt.spec, patches/qt-02-libpng.diff: Add new patch needed to build.
+	* patches/qt-01-use-bash.diff: Update so it applies with -p1 instead
+	  of -p10.
+	* patches/qt-02-temp-removal-of-getresuid.diff: Remove unused patch.
+
 2010-11-10  Alex Viskovatoff
 
 	* SFEmplayer-snap.spec: use fixed (constant) tarball by default,

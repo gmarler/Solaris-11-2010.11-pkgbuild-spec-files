@@ -14,6 +14,7 @@ License:             GPL v2
 Version:             4.4.3
 Source:              ftp://ftp.trolltech.com/qt/source/qt-x11-opensource-src-%{version}.tar.bz2
 Patch1:              qt-01-use_bash.diff
+Patch2:              qt-02-libpng.diff
 
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
@@ -36,7 +37,8 @@ Requires: %name
 
 %prep
 %setup -q -n qt-x11-opensource-src-%version
-%patch1 -p10
+%patch1 -p1
+%patch2 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`

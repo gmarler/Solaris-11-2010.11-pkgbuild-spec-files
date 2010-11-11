@@ -1,84 +1,84 @@
-diff -ur /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/config.tests/mac/dwarf2.test /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/config.tests/mac/dwarf2.test
---- /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/config.tests/mac/dwarf2.test	2008-09-27 10:58:41.000000000 +0200
-+++ /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/config.tests/mac/dwarf2.test	2008-11-24 09:02:33.253802603 +0100
+diff -ur qt-x11-opensource-src-4.4.3/config.tests/mac/dwarf2.test qt-x11-opensource-src-4.4.3/config.tests/mac/dwarf2.test
+--- qt-x11-opensource-src-4.4.3/config.tests/mac/dwarf2.test	2008-09-27 10:58:41.000000000 +0200
++++ qt-x11-opensource-src-4.4.3/config.tests/mac/dwarf2.test	2008-11-24 09:02:33.253802603 +0100
 @@ -1,1 +1,1 @@
 -#!/bin/sh
 +#!/bin/bash
-diff -ur /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/config.tests/unix/bsymbolic_functions.test /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/config.tests/unix/bsymbolic_functions.test
---- /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/config.tests/unix/bsymbolic_functions.test	2008-09-27 10:58:41.000000000 +0200
-+++ /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/config.tests/unix/bsymbolic_functions.test	2008-11-24 09:02:33.333810266 +0100
+diff -ur qt-x11-opensource-src-4.4.3/config.tests/unix/bsymbolic_functions.test qt-x11-opensource-src-4.4.3/config.tests/unix/bsymbolic_functions.test
+--- qt-x11-opensource-src-4.4.3/config.tests/unix/bsymbolic_functions.test	2008-09-27 10:58:41.000000000 +0200
++++ qt-x11-opensource-src-4.4.3/config.tests/unix/bsymbolic_functions.test	2008-11-24 09:02:33.333810266 +0100
 @@ -1,1 +1,1 @@
 -#!/bin/sh
 +#!/bin/bash
-diff -ur /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/config.tests/unix/compile.test /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/config.tests/unix/compile.test
---- /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/config.tests/unix/compile.test	2008-09-27 10:58:41.000000000 +0200
-+++ /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/config.tests/unix/compile.test	2008-11-24 09:02:33.342654826 +0100
+diff -ur qt-x11-opensource-src-4.4.3/config.tests/unix/compile.test qt-x11-opensource-src-4.4.3/config.tests/unix/compile.test
+--- qt-x11-opensource-src-4.4.3/config.tests/unix/compile.test	2008-09-27 10:58:41.000000000 +0200
++++ qt-x11-opensource-src-4.4.3/config.tests/unix/compile.test	2008-11-24 09:02:33.342654826 +0100
 @@ -1,1 +1,1 @@
 -#!/bin/sh
 +#!/bin/bash
-diff -ur /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/config.tests/unix/doubleformat.test /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/config.tests/unix/doubleformat.test
---- /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/config.tests/unix/doubleformat.test	2008-09-27 10:58:41.000000000 +0200
-+++ /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/config.tests/unix/doubleformat.test	2008-11-24 09:02:33.298452923 +0100
+diff -ur qt-x11-opensource-src-4.4.3/config.tests/unix/doubleformat.test qt-x11-opensource-src-4.4.3/config.tests/unix/doubleformat.test
+--- qt-x11-opensource-src-4.4.3/config.tests/unix/doubleformat.test	2008-09-27 10:58:41.000000000 +0200
++++ qt-x11-opensource-src-4.4.3/config.tests/unix/doubleformat.test	2008-11-24 09:02:33.298452923 +0100
 @@ -1,1 +1,1 @@
 -#!/bin/sh
 +#!/bin/bash
-diff -ur /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/config.tests/unix/endian.test /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/config.tests/unix/endian.test
---- /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/config.tests/unix/endian.test	2008-09-27 10:58:41.000000000 +0200
-+++ /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/config.tests/unix/endian.test	2008-11-24 09:02:33.307157996 +0100
+diff -ur qt-x11-opensource-src-4.4.3/config.tests/unix/endian.test qt-x11-opensource-src-4.4.3/config.tests/unix/endian.test
+--- qt-x11-opensource-src-4.4.3/config.tests/unix/endian.test	2008-09-27 10:58:41.000000000 +0200
++++ qt-x11-opensource-src-4.4.3/config.tests/unix/endian.test	2008-11-24 09:02:33.307157996 +0100
 @@ -1,1 +1,1 @@
 -#!/bin/sh
 +#!/bin/bash
-diff -ur /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/config.tests/unix/fvisibility.test /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/config.tests/unix/fvisibility.test
---- /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/config.tests/unix/fvisibility.test	2008-09-27 10:58:41.000000000 +0200
-+++ /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/config.tests/unix/fvisibility.test	2008-11-24 09:02:33.288763411 +0100
+diff -ur qt-x11-opensource-src-4.4.3/config.tests/unix/fvisibility.test qt-x11-opensource-src-4.4.3/config.tests/unix/fvisibility.test
+--- qt-x11-opensource-src-4.4.3/config.tests/unix/fvisibility.test	2008-09-27 10:58:41.000000000 +0200
++++ qt-x11-opensource-src-4.4.3/config.tests/unix/fvisibility.test	2008-11-24 09:02:33.288763411 +0100
 @@ -1,1 +1,1 @@
 -#!/bin/sh
 +#!/bin/bash
-diff -ur /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/config.tests/unix/makeabs /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/config.tests/unix/makeabs
---- /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/config.tests/unix/makeabs	2008-09-27 10:58:41.000000000 +0200
-+++ /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/config.tests/unix/makeabs	2008-11-24 09:02:33.271326461 +0100
+diff -ur qt-x11-opensource-src-4.4.3/config.tests/unix/makeabs qt-x11-opensource-src-4.4.3/config.tests/unix/makeabs
+--- qt-x11-opensource-src-4.4.3/config.tests/unix/makeabs	2008-09-27 10:58:41.000000000 +0200
++++ qt-x11-opensource-src-4.4.3/config.tests/unix/makeabs	2008-11-24 09:02:33.271326461 +0100
 @@ -1,1 +1,1 @@
 -#!/bin/sh
 +#!/bin/bash
-diff -ur /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/config.tests/unix/objcopy.test /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/config.tests/unix/objcopy.test
---- /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/config.tests/unix/objcopy.test	2008-09-27 10:58:41.000000000 +0200
-+++ /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/config.tests/unix/objcopy.test	2008-11-24 09:02:33.324931256 +0100
+diff -ur qt-x11-opensource-src-4.4.3/config.tests/unix/objcopy.test qt-x11-opensource-src-4.4.3/config.tests/unix/objcopy.test
+--- qt-x11-opensource-src-4.4.3/config.tests/unix/objcopy.test	2008-09-27 10:58:41.000000000 +0200
++++ qt-x11-opensource-src-4.4.3/config.tests/unix/objcopy.test	2008-11-24 09:02:33.324931256 +0100
 @@ -1,1 +1,1 @@
 -#!/bin/sh
 +#!/bin/bash
-diff -ur /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/config.tests/unix/padstring /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/config.tests/unix/padstring
---- /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/config.tests/unix/padstring	2008-09-27 10:58:41.000000000 +0200
-+++ /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/config.tests/unix/padstring	2008-11-24 09:02:33.351450722 +0100
+diff -ur qt-x11-opensource-src-4.4.3/config.tests/unix/padstring qt-x11-opensource-src-4.4.3/config.tests/unix/padstring
+--- qt-x11-opensource-src-4.4.3/config.tests/unix/padstring	2008-09-27 10:58:41.000000000 +0200
++++ qt-x11-opensource-src-4.4.3/config.tests/unix/padstring	2008-11-24 09:02:33.351450722 +0100
 @@ -1,1 +1,1 @@
 -#!/bin/sh
 +#!/bin/bash
-diff -ur /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/config.tests/unix/precomp.test /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/config.tests/unix/precomp.test
---- /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/config.tests/unix/precomp.test	2008-09-27 10:58:41.000000000 +0200
-+++ /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/config.tests/unix/precomp.test	2008-11-24 09:02:33.315708268 +0100
+diff -ur qt-x11-opensource-src-4.4.3/config.tests/unix/precomp.test qt-x11-opensource-src-4.4.3/config.tests/unix/precomp.test
+--- qt-x11-opensource-src-4.4.3/config.tests/unix/precomp.test	2008-09-27 10:58:41.000000000 +0200
++++ qt-x11-opensource-src-4.4.3/config.tests/unix/precomp.test	2008-11-24 09:02:33.315708268 +0100
 @@ -1,1 +1,1 @@
 -#!/bin/sh
 +#!/bin/bash
-diff -ur /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/config.tests/unix/ptrsize.test /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/config.tests/unix/ptrsize.test
---- /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/config.tests/unix/ptrsize.test	2008-09-27 10:58:41.000000000 +0200
-+++ /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/config.tests/unix/ptrsize.test	2008-11-24 09:02:33.359890415 +0100
+diff -ur qt-x11-opensource-src-4.4.3/config.tests/unix/ptrsize.test qt-x11-opensource-src-4.4.3/config.tests/unix/ptrsize.test
+--- qt-x11-opensource-src-4.4.3/config.tests/unix/ptrsize.test	2008-09-27 10:58:41.000000000 +0200
++++ qt-x11-opensource-src-4.4.3/config.tests/unix/ptrsize.test	2008-11-24 09:02:33.359890415 +0100
 @@ -1,1 +1,1 @@
 -#!/bin/sh
 +#!/bin/bash
-diff -ur /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/config.tests/unix/which.test /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/config.tests/unix/which.test
---- /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/config.tests/unix/which.test	2008-09-27 10:58:41.000000000 +0200
-+++ /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/config.tests/unix/which.test	2008-11-24 09:02:33.279702219 +0100
+diff -ur qt-x11-opensource-src-4.4.3/config.tests/unix/which.test qt-x11-opensource-src-4.4.3/config.tests/unix/which.test
+--- qt-x11-opensource-src-4.4.3/config.tests/unix/which.test	2008-09-27 10:58:41.000000000 +0200
++++ qt-x11-opensource-src-4.4.3/config.tests/unix/which.test	2008-11-24 09:02:33.279702219 +0100
 @@ -1,1 +1,1 @@
 -#!/bin/sh
 +#!/bin/bash
-diff -ur /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/config.tests/x11/notype.test /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/config.tests/x11/notype.test
---- /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/config.tests/x11/notype.test	2008-09-27 10:58:41.000000000 +0200
-+++ /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/config.tests/x11/notype.test	2008-11-24 09:02:33.262332934 +0100
+diff -ur qt-x11-opensource-src-4.4.3/config.tests/x11/notype.test qt-x11-opensource-src-4.4.3/config.tests/x11/notype.test
+--- qt-x11-opensource-src-4.4.3/config.tests/x11/notype.test	2008-09-27 10:58:41.000000000 +0200
++++ qt-x11-opensource-src-4.4.3/config.tests/x11/notype.test	2008-11-24 09:02:33.262332934 +0100
 @@ -1,1 +1,1 @@
 -#!/bin/sh
 +#!/bin/bash
-diff -ur /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/configure /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/configure
---- /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/configure	2008-09-27 10:58:41.000000000 +0200
-+++ /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/configure	2008-11-24 09:02:33.377355914 +0100
+diff -ur qt-x11-opensource-src-4.4.3/configure qt-x11-opensource-src-4.4.3/configure
+--- qt-x11-opensource-src-4.4.3/configure	2008-09-27 10:58:41.000000000 +0200
++++ qt-x11-opensource-src-4.4.3/configure	2008-11-24 09:02:33.377355914 +0100
 @@ -1,4 +1,4 @@
 -#!/bin/sh
 +#!/bin/bash
@@ -103,126 +103,126 @@ diff -ur /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/S
      echo "if [ \"\$#\" -gt 0 ]; then" >> "$outpath/config.status"
      echo "  $CONFIG_STATUS \"\$@\"" >> "$outpath/config.status"
      echo "else" >> "$outpath/config.status"
-diff -ur /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/autogen.sh /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/autogen.sh
---- /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/autogen.sh	2008-09-27 10:58:44.000000000 +0200
-+++ /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/autogen.sh	2008-11-24 09:02:33.140634197 +0100
+diff -ur qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/autogen.sh qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/autogen.sh
+--- qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/autogen.sh	2008-09-27 10:58:44.000000000 +0200
++++ qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/autogen.sh	2008-11-24 09:02:33.140634197 +0100
 @@ -1,1 +1,1 @@
 -#!/bin/sh
 +#!/bin/bash
  
  # Copyright 2005, 2006, 2007 by
  # David Turner, Robert Wilhelm, and Werner Lemberg.
-diff -ur /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/builds/unix/config.guess /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/builds/unix/config.guess
---- /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/builds/unix/config.guess	2008-09-27 10:58:44.000000000 +0200
-+++ /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/builds/unix/config.guess	2008-11-24 09:02:33.208987503 +0100
+diff -ur qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/builds/unix/config.guess qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/builds/unix/config.guess
+--- qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/builds/unix/config.guess	2008-09-27 10:58:44.000000000 +0200
++++ qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/builds/unix/config.guess	2008-11-24 09:02:33.208987503 +0100
 @@ -1,1 +1,1 @@
 -#! /bin/sh
 +#! /bin/bash
-diff -ur /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/builds/unix/config.sub /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/builds/unix/config.sub
---- /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/builds/unix/config.sub	2008-09-27 10:58:44.000000000 +0200
-+++ /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/builds/unix/config.sub	2008-11-24 09:02:33.198106789 +0100
+diff -ur qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/builds/unix/config.sub qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/builds/unix/config.sub
+--- qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/builds/unix/config.sub	2008-09-27 10:58:44.000000000 +0200
++++ qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/builds/unix/config.sub	2008-11-24 09:02:33.198106789 +0100
 @@ -1,1 +1,1 @@
 -#! /bin/sh
 +#! /bin/bash
-diff -ur /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/builds/unix/configure /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/builds/unix/configure
---- /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/builds/unix/configure	2008-09-27 10:58:44.000000000 +0200
-+++ /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/builds/unix/configure	2008-11-24 09:02:33.186318744 +0100
+diff -ur qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/builds/unix/configure qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/builds/unix/configure
+--- qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/builds/unix/configure	2008-09-27 10:58:44.000000000 +0200
++++ qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/builds/unix/configure	2008-11-24 09:02:33.186318744 +0100
 @@ -1,1 +1,1 @@
 -#! /bin/sh
 +#! /bin/bash
-diff -ur /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/builds/unix/freetype-config.in /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/builds/unix/freetype-config.in
---- /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/builds/unix/freetype-config.in	2008-09-27 10:58:44.000000000 +0200
-+++ /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/builds/unix/freetype-config.in	2008-11-24 09:02:33.218018602 +0100
+diff -ur qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/builds/unix/freetype-config.in qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/builds/unix/freetype-config.in
+--- qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/builds/unix/freetype-config.in	2008-09-27 10:58:44.000000000 +0200
++++ qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/builds/unix/freetype-config.in	2008-11-24 09:02:33.218018602 +0100
 @@ -1,1 +1,1 @@
 -#! /bin/sh
 +#! /bin/bash
-diff -ur /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/builds/unix/install-sh /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/builds/unix/install-sh
---- /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/builds/unix/install-sh	2008-09-27 10:58:44.000000000 +0200
-+++ /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/builds/unix/install-sh	2008-11-24 09:02:33.150200976 +0100
+diff -ur qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/builds/unix/install-sh qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/builds/unix/install-sh
+--- qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/builds/unix/install-sh	2008-09-27 10:58:44.000000000 +0200
++++ qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/builds/unix/install-sh	2008-11-24 09:02:33.150200976 +0100
 @@ -1,1 +1,1 @@
 -#!/bin/sh
 +#!/bin/bash
-diff -ur /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/builds/unix/mkinstalldirs /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/builds/unix/mkinstalldirs
---- /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/builds/unix/mkinstalldirs	2008-09-27 10:58:44.000000000 +0200
-+++ /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/builds/unix/mkinstalldirs	2008-11-24 09:02:33.158972305 +0100
+diff -ur qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/builds/unix/mkinstalldirs qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/builds/unix/mkinstalldirs
+--- qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/builds/unix/mkinstalldirs	2008-09-27 10:58:44.000000000 +0200
++++ qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/builds/unix/mkinstalldirs	2008-11-24 09:02:33.158972305 +0100
 @@ -1,1 +1,1 @@
 -#! /bin/sh
 +#! /bin/bash
-diff -ur /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/configure /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/configure
---- /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/configure	2008-09-27 10:58:44.000000000 +0200
-+++ /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/configure	2008-11-24 09:02:33.131796789 +0100
+diff -ur qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/configure qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/configure
+--- qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/configure	2008-09-27 10:58:44.000000000 +0200
++++ qt-x11-opensource-src-4.4.3/src/3rdparty/freetype/configure	2008-11-24 09:02:33.131796789 +0100
 @@ -1,1 +1,1 @@
 -#!/bin/sh
 +#!/bin/bash
-diff -ur /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/harfbuzz/autogen.sh /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/harfbuzz/autogen.sh
---- /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/harfbuzz/autogen.sh	2008-09-27 10:58:44.000000000 +0200
-+++ /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/harfbuzz/autogen.sh	2008-11-24 09:02:33.087773395 +0100
+diff -ur qt-x11-opensource-src-4.4.3/src/3rdparty/harfbuzz/autogen.sh qt-x11-opensource-src-4.4.3/src/3rdparty/harfbuzz/autogen.sh
+--- qt-x11-opensource-src-4.4.3/src/3rdparty/harfbuzz/autogen.sh	2008-09-27 10:58:44.000000000 +0200
++++ qt-x11-opensource-src-4.4.3/src/3rdparty/harfbuzz/autogen.sh	2008-11-24 09:02:33.087773395 +0100
 @@ -1,1 +1,1 @@
 -#!/bin/sh
 +#!/bin/bash
-diff -ur /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/kdelibs/phonon/preprocessandextract.sh /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/kdelibs/phonon/preprocessandextract.sh
---- /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/kdelibs/phonon/preprocessandextract.sh	2008-09-27 10:58:44.000000000 +0200
-+++ /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/kdelibs/phonon/preprocessandextract.sh	2008-11-24 09:02:32.964675528 +0100
+diff -ur qt-x11-opensource-src-4.4.3/src/3rdparty/kdelibs/phonon/preprocessandextract.sh qt-x11-opensource-src-4.4.3/src/3rdparty/kdelibs/phonon/preprocessandextract.sh
+--- qt-x11-opensource-src-4.4.3/src/3rdparty/kdelibs/phonon/preprocessandextract.sh	2008-09-27 10:58:44.000000000 +0200
++++ qt-x11-opensource-src-4.4.3/src/3rdparty/kdelibs/phonon/preprocessandextract.sh	2008-11-24 09:02:32.964675528 +0100
 @@ -1,1 +1,1 @@
 -#!/bin/sh
 +#!/bin/bash
-diff -ur /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/libpng/configure /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/libpng/configure
---- /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/libpng/configure	2008-09-27 10:58:44.000000000 +0200
-+++ /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/libpng/configure	2008-11-24 09:02:32.955400176 +0100
+diff -ur qt-x11-opensource-src-4.4.3/src/3rdparty/libpng/configure qt-x11-opensource-src-4.4.3/src/3rdparty/libpng/configure
+--- qt-x11-opensource-src-4.4.3/src/3rdparty/libpng/configure	2008-09-27 10:58:44.000000000 +0200
++++ qt-x11-opensource-src-4.4.3/src/3rdparty/libpng/configure	2008-11-24 09:02:32.955400176 +0100
 @@ -1,1 +1,1 @@
 -#!/bin/sh
 +#!/bin/bash
-diff -ur /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/libpng/scripts/libpng-config-head.in /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/libpng/scripts/libpng-config-head.in
---- /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/libpng/scripts/libpng-config-head.in	2008-09-27 10:58:44.000000000 +0200
-+++ /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/libpng/scripts/libpng-config-head.in	2008-11-24 09:02:32.946702882 +0100
+diff -ur qt-x11-opensource-src-4.4.3/src/3rdparty/libpng/scripts/libpng-config-head.in qt-x11-opensource-src-4.4.3/src/3rdparty/libpng/scripts/libpng-config-head.in
+--- qt-x11-opensource-src-4.4.3/src/3rdparty/libpng/scripts/libpng-config-head.in	2008-09-27 10:58:44.000000000 +0200
++++ qt-x11-opensource-src-4.4.3/src/3rdparty/libpng/scripts/libpng-config-head.in	2008-11-24 09:02:32.946702882 +0100
 @@ -1,1 +1,1 @@
 -#! /bin/sh
 +#! /bin/bash
-diff -ur /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/libpng/scripts/libpng-config.in /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/libpng/scripts/libpng-config.in
---- /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/libpng/scripts/libpng-config.in	2008-09-27 10:58:44.000000000 +0200
-+++ /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/libpng/scripts/libpng-config.in	2008-11-24 09:02:32.938212197 +0100
+diff -ur qt-x11-opensource-src-4.4.3/src/3rdparty/libpng/scripts/libpng-config.in qt-x11-opensource-src-4.4.3/src/3rdparty/libpng/scripts/libpng-config.in
+--- qt-x11-opensource-src-4.4.3/src/3rdparty/libpng/scripts/libpng-config.in	2008-09-27 10:58:44.000000000 +0200
++++ qt-x11-opensource-src-4.4.3/src/3rdparty/libpng/scripts/libpng-config.in	2008-11-24 09:02:32.938212197 +0100
 @@ -1,1 +1,1 @@
 -#! /bin/sh
 +#! /bin/bash
-diff -ur /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/autogen.sh /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/autogen.sh
---- /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/autogen.sh	2008-09-27 10:58:44.000000000 +0200
-+++ /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/autogen.sh	2008-11-24 09:02:33.043075526 +0100
+diff -ur qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/autogen.sh qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/autogen.sh
+--- qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/autogen.sh	2008-09-27 10:58:44.000000000 +0200
++++ qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/autogen.sh	2008-11-24 09:02:33.043075526 +0100
 @@ -1,1 +1,1 @@
 -#!/bin/sh
 +#!/bin/bash
-diff -ur /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/config/compile /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/config/compile
---- /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/config/compile	2008-09-27 10:58:44.000000000 +0200
-+++ /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/config/compile	2008-11-24 09:02:32.974245808 +0100
+diff -ur qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/config/compile qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/config/compile
+--- qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/config/compile	2008-09-27 10:58:44.000000000 +0200
++++ qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/config/compile	2008-11-24 09:02:32.974245808 +0100
 @@ -1,1 +1,1 @@
 -#! /bin/sh
 +#! /bin/bash
-diff -ur /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/config/config.guess /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/config/config.guess
---- /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/config/config.guess	2008-09-27 10:58:44.000000000 +0200
-+++ /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/config/config.guess	2008-11-24 09:02:33.034069805 +0100
+diff -ur qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/config/config.guess qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/config/config.guess
+--- qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/config/config.guess	2008-09-27 10:58:44.000000000 +0200
++++ qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/config/config.guess	2008-11-24 09:02:33.034069805 +0100
 @@ -1,1 +1,1 @@
 -#! /bin/sh
 +#! /bin/bash
-diff -ur /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/config/config.sub /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/config/config.sub
---- /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/config/config.sub	2008-09-27 10:58:44.000000000 +0200
-+++ /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/config/config.sub	2008-11-24 09:02:32.994937427 +0100
+diff -ur qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/config/config.sub qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/config/config.sub
+--- qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/config/config.sub	2008-09-27 10:58:44.000000000 +0200
++++ qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/config/config.sub	2008-11-24 09:02:32.994937427 +0100
 @@ -1,1 +1,1 @@
 -#! /bin/sh
 +#! /bin/bash
-diff -ur /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/config/depcomp /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/config/depcomp
---- /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/config/depcomp	2008-09-27 10:58:44.000000000 +0200
-+++ /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/config/depcomp	2008-11-24 09:02:33.014195475 +0100
+diff -ur qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/config/depcomp qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/config/depcomp
+--- qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/config/depcomp	2008-09-27 10:58:44.000000000 +0200
++++ qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/config/depcomp	2008-11-24 09:02:33.014195475 +0100
 @@ -1,1 +1,1 @@
 -#! /bin/sh
 +#! /bin/bash
-diff -ur /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/config/install-sh /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/config/install-sh
---- /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/config/install-sh	2008-09-27 10:58:44.000000000 +0200
-+++ /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/config/install-sh	2008-11-24 09:02:33.023778896 +0100
+diff -ur qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/config/install-sh qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/config/install-sh
+--- qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/config/install-sh	2008-09-27 10:58:44.000000000 +0200
++++ qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/config/install-sh	2008-11-24 09:02:33.023778896 +0100
 @@ -1,1 +1,1 @@
 -#!/bin/sh
 +#!/bin/bash
-diff -ur /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/config/missing /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/config/missing
---- /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/config/missing	2008-09-27 10:58:44.000000000 +0200
-+++ /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/config/missing	2008-11-24 09:02:33.004261846 +0100
+diff -ur qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/config/missing qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/config/missing
+--- qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/config/missing	2008-09-27 10:58:44.000000000 +0200
++++ qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/config/missing	2008-11-24 09:02:33.004261846 +0100
 @@ -1,4 +1,4 @@
 -#! /bin/sh
 +#! /bin/bash
@@ -238,15 +238,15 @@ diff -ur /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/S
  	echo "# Created by GNU Automake missing as a replacement of"
  	echo "#  $ $@"
  	echo "exit 0"
-diff -ur /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/config/mkinstalldirs /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/config/mkinstalldirs
---- /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/config/mkinstalldirs	2008-09-27 10:58:44.000000000 +0200
-+++ /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/config/mkinstalldirs	2008-11-24 09:02:32.983340474 +0100
+diff -ur qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/config/mkinstalldirs qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/config/mkinstalldirs
+--- qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/config/mkinstalldirs	2008-09-27 10:58:44.000000000 +0200
++++ qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/config/mkinstalldirs	2008-11-24 09:02:32.983340474 +0100
 @@ -1,1 +1,1 @@
 -#! /bin/sh
 +#! /bin/bash
-diff -ur /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/configure /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/configure
---- /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/configure	2008-09-27 10:58:44.000000000 +0200
-+++ /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/configure	2008-11-24 09:02:33.078569342 +0100
+diff -ur qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/configure qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/configure
+--- qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/configure	2008-09-27 10:58:44.000000000 +0200
++++ qt-x11-opensource-src-4.4.3/src/3rdparty/libtiff/configure	2008-11-24 09:02:33.078569342 +0100
 @@ -1,1 +1,1 @@
 -#! /bin/sh
 +#! /bin/bash
@@ -268,51 +268,51 @@ diff -ur /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/S
    echo  "exit 0"   >>conf$$.sh
    chmod +x conf$$.sh
    if (PATH="/nonexistent;."; conf$$.sh) >/dev/null 2>&1; then
-diff -ur /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/webkit/JavaScriptCore/make-generated-sources.sh /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/webkit/JavaScriptCore/make-generated-sources.sh
---- /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/webkit/JavaScriptCore/make-generated-sources.sh	2008-09-27 10:58:45.000000000 +0200
-+++ /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/webkit/JavaScriptCore/make-generated-sources.sh	2008-11-24 09:02:33.096504351 +0100
+diff -ur qt-x11-opensource-src-4.4.3/src/3rdparty/webkit/JavaScriptCore/make-generated-sources.sh qt-x11-opensource-src-4.4.3/src/3rdparty/webkit/JavaScriptCore/make-generated-sources.sh
+--- qt-x11-opensource-src-4.4.3/src/3rdparty/webkit/JavaScriptCore/make-generated-sources.sh	2008-09-27 10:58:45.000000000 +0200
++++ qt-x11-opensource-src-4.4.3/src/3rdparty/webkit/JavaScriptCore/make-generated-sources.sh	2008-11-24 09:02:33.096504351 +0100
 @@ -1,1 +1,1 @@
 -#!/bin/sh
 +#!/bin/bash
-diff -ur /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/webkit/WebCore/make-generated-sources.sh /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/webkit/WebCore/make-generated-sources.sh
---- /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/webkit/WebCore/make-generated-sources.sh	2008-09-27 10:58:46.000000000 +0200
-+++ /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/webkit/WebCore/make-generated-sources.sh	2008-11-24 09:02:33.114238243 +0100
+diff -ur qt-x11-opensource-src-4.4.3/src/3rdparty/webkit/WebCore/make-generated-sources.sh qt-x11-opensource-src-4.4.3/src/3rdparty/webkit/WebCore/make-generated-sources.sh
+--- qt-x11-opensource-src-4.4.3/src/3rdparty/webkit/WebCore/make-generated-sources.sh	2008-09-27 10:58:46.000000000 +0200
++++ qt-x11-opensource-src-4.4.3/src/3rdparty/webkit/WebCore/make-generated-sources.sh	2008-11-24 09:02:33.114238243 +0100
 @@ -1,1 +1,1 @@
 -#!/bin/sh
 +#!/bin/bash
-diff -ur /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/webkit/WebCore/move-js-headers.sh /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/webkit/WebCore/move-js-headers.sh
---- /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/webkit/WebCore/move-js-headers.sh	2008-09-27 10:58:46.000000000 +0200
-+++ /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/webkit/WebCore/move-js-headers.sh	2008-11-24 09:02:33.105567198 +0100
+diff -ur qt-x11-opensource-src-4.4.3/src/3rdparty/webkit/WebCore/move-js-headers.sh qt-x11-opensource-src-4.4.3/src/3rdparty/webkit/WebCore/move-js-headers.sh
+--- qt-x11-opensource-src-4.4.3/src/3rdparty/webkit/WebCore/move-js-headers.sh	2008-09-27 10:58:46.000000000 +0200
++++ qt-x11-opensource-src-4.4.3/src/3rdparty/webkit/WebCore/move-js-headers.sh	2008-11-24 09:02:33.105567198 +0100
 @@ -1,1 +1,1 @@
 -#!/bin/sh
 +#!/bin/bash
-diff -ur /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/zlib/configure /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/zlib/configure
---- /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/zlib/configure	2008-09-27 10:58:46.000000000 +0200
-+++ /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/3rdparty/zlib/configure	2008-11-24 09:02:33.123219985 +0100
+diff -ur qt-x11-opensource-src-4.4.3/src/3rdparty/zlib/configure qt-x11-opensource-src-4.4.3/src/3rdparty/zlib/configure
+--- qt-x11-opensource-src-4.4.3/src/3rdparty/zlib/configure	2008-09-27 10:58:46.000000000 +0200
++++ qt-x11-opensource-src-4.4.3/src/3rdparty/zlib/configure	2008-11-24 09:02:33.123219985 +0100
 @@ -1,1 +1,1 @@
 -#!/bin/sh
 +#!/bin/bash
-diff -ur /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/corelib/xml/make-parser.sh /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/corelib/xml/make-parser.sh
---- /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/corelib/xml/make-parser.sh	2008-09-27 10:58:47.000000000 +0200
-+++ /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/corelib/xml/make-parser.sh	2008-11-24 09:02:33.236683174 +0100
+diff -ur qt-x11-opensource-src-4.4.3/src/corelib/xml/make-parser.sh qt-x11-opensource-src-4.4.3/src/corelib/xml/make-parser.sh
+--- qt-x11-opensource-src-4.4.3/src/corelib/xml/make-parser.sh	2008-09-27 10:58:47.000000000 +0200
++++ qt-x11-opensource-src-4.4.3/src/corelib/xml/make-parser.sh	2008-11-24 09:02:33.236683174 +0100
 @@ -1,1 +1,1 @@
 -#!/bin/sh
 +#!/bin/bash
-diff -ur /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/opengl/util/glsl_to_include.sh /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/opengl/util/glsl_to_include.sh
---- /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/opengl/util/glsl_to_include.sh	2008-09-27 10:58:47.000000000 +0200
-+++ /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/opengl/util/glsl_to_include.sh	2008-11-24 09:02:32.929003012 +0100
+diff -ur qt-x11-opensource-src-4.4.3/src/opengl/util/glsl_to_include.sh qt-x11-opensource-src-4.4.3/src/opengl/util/glsl_to_include.sh
+--- qt-x11-opensource-src-4.4.3/src/opengl/util/glsl_to_include.sh	2008-09-27 10:58:47.000000000 +0200
++++ qt-x11-opensource-src-4.4.3/src/opengl/util/glsl_to_include.sh	2008-11-24 09:02:32.929003012 +0100
 @@ -1,1 +1,1 @@
 -#! /bin/sh
 +#! /bin/bash
-diff -ur /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/tools/moc/util/generate.sh /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/tools/moc/util/generate.sh
---- /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/tools/moc/util/generate.sh	2008-09-27 10:58:48.000000000 +0200
-+++ /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/tools/moc/util/generate.sh	2008-11-24 09:02:33.245212242 +0100
+diff -ur qt-x11-opensource-src-4.4.3/src/tools/moc/util/generate.sh qt-x11-opensource-src-4.4.3/src/tools/moc/util/generate.sh
+--- qt-x11-opensource-src-4.4.3/src/tools/moc/util/generate.sh	2008-09-27 10:58:48.000000000 +0200
++++ qt-x11-opensource-src-4.4.3/src/tools/moc/util/generate.sh	2008-11-24 09:02:33.245212242 +0100
 @@ -1,1 +1,1 @@
 -#!/bin/sh
 +#!/bin/bash
-diff -ur /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/xmlpatterns/environment/createReportContext.sh /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/xmlpatterns/environment/createReportContext.sh
---- /zones/build/root/.zfs/snapshot/qt-original/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/xmlpatterns/environment/createReportContext.sh	2008-09-27 10:58:48.000000000 +0200
-+++ /zones/build/root/export/home/user/packages/SOURCES/qt-x11-opensource-src-4.4.3/src/xmlpatterns/environment/createReportContext.sh	2008-11-24 09:02:33.227441886 +0100
+diff -ur qt-x11-opensource-src-4.4.3/src/xmlpatterns/environment/createReportContext.sh qt-x11-opensource-src-4.4.3/src/xmlpatterns/environment/createReportContext.sh
+--- qt-x11-opensource-src-4.4.3/src/xmlpatterns/environment/createReportContext.sh	2008-09-27 10:58:48.000000000 +0200
++++ qt-x11-opensource-src-4.4.3/src/xmlpatterns/environment/createReportContext.sh	2008-11-24 09:02:33.227441886 +0100
 @@ -1,1 +1,1 @@
 -#!/bin/sh
 +#!/bin/bash
