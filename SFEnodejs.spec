@@ -5,11 +5,11 @@
 #
 %include Solaris.inc
 
-%define	src_version 0.2.3
+%define	src_version 0.2.4
 
 Summary:	Asynchronous JavaScript Engine  
 Name:		SFEnodejs  
-Version:	0.2.3
+Version:	0.2.4
 License:	BSD  
 Group:		Libraries  
 URL:		http://nodejs.org/  
@@ -81,6 +81,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/node/wafadmin/  
 
 %changelog  
+* Fri Nov 12 2010 - Milan Jurik
+- bump to 0.2.4
 * Sat Oct 16 2010 - Milan Jurik
 - bump to 0.2.3
 * Thu Sep 07 2010 - Milan Jurik
