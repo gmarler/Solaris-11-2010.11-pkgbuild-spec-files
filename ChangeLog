@@ -7,6 +7,7 @@
 
 	* SFEctags.spec: use exctags as name, to be compatible with OpenSolaris
 	  distro and avoid clash
+	* SFElibev.spec: bump to 4.01
 
 2010-11-11  Alex Viskovatoff
 

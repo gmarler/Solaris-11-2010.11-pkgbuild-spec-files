@@ -6,14 +6,15 @@
 %include Solaris.inc
 
 %define	src_name libev
+%define	src_version 4.01
 
 Name:		SFElibev
-Version:	3.9
+Version:	4.0.0.1
 Summary:	High-performance event loop/event model with lots of features
 Group:		System Environment/Libraries
 License:	BSD or GPLv2+
 URL:		http://software.schmorp.de/pkg/libev.html
-Source:		http://dist.schmorp.de/libev/Attic/%{src_name}-%{version}.tar.gz
+Source:		http://dist.schmorp.de/libev/Attic/%{src_name}-%{src_version}.tar.gz
 Source1:	%{src_name}.pc.in
 SUNW_BaseDir:	%{_basedir}
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
@@ -37,7 +38,7 @@ module, but is faster, scales better and is more correct, and also more
 featureful. And also smaller. Development libraries.
 
 %prep
-%setup -q -n %{src_name}-%{version}
+%setup -q -n %{src_name}-%{src_version}
 
 # Add pkgconfig support
 cp -p %{SOURCE1} .
@@ -67,8 +68,8 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-, root, bin)
 %doc Changes LICENSE README
-%{_libdir}/%{src_name}.so.3
-%{_libdir}/%{src_name}.so.3.0.0
+%{_libdir}/%{src_name}.so.4
+%{_libdir}/%{src_name}.so.4.0.0
 %dir %attr (0755, root, sys) %{_datadir}
 %dir %attr (0755, root, other) %{_docdir}
 %{_mandir}/man?/*
@@ -83,5 +84,7 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Nov 12 2010 - Milan Jurik
+- bump to 4.01
 * Thu Sep 07 2010 - Milan Jurik
 - Initial spec based on Fedora
