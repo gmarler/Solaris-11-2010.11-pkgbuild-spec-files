@@ -1,3 +1,8 @@
+2010-11-11  Alex Viskovatoff
+
+	* experimental/SFEqt47.spec: Fork spec off SFEqt4.spec
+	  to Qt version 4.7.1
+
 2010-11-11  Brian Cameron  <brian.cameron@oracle.com>
 
 	* SFEqt.spec, patches/qt-02-libpng.diff: Add new patch needed to build.
@@ -5,17 +10,17 @@
 	  of -p10.
 	* patches/qt-02-temp-removal-of-getresuid.diff: Remove unused patch.
 
-2010-11-10  Alex Viskovatoff
+2010-11-10  Alex Viskovatoff <viskovatoff@imap.cc>
 
 	* SFEmplayer-snap.spec: use fixed (constant) tarball by default,
 	  restore cpu detection patch, make gui optional, format man page
 
-2010-11-10  Alex Viskovatoff
+2010-11-10  Alex Viskovatoff <viskovatoff@imap.cc>
 
 	* SFElibx264.spec base-specs/x264.spec: update tarball, reworking
 	  patches; add optional (Build)Requires: SFEgpac(-devel)
 
-2010-11-10  Alex Viskovatoff
+2010-11-10  Alex Viskovatoff <viskovatoff@imap.cc>
 
 	* SFEhunspell.spec: find dicts without using environment variable
 	* SFEncursesw.spec: get version number from base spec
