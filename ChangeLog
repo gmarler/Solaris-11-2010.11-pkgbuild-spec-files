@@ -1,3 +1,8 @@
+2010-11-12  Alex Viskovatoff <viskovatoff@imap.cc>
+
+	* SFEabiword.spec base-specs/abiword.spec: AbiWord does not depend
+	  on aspell; install libs in /usr/lib/g++/%_gpp_version
+
 2010-11-12 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEctags.spec: use exctags as name, to be compatible with OpenSolaris

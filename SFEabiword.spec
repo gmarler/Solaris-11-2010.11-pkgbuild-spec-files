@@ -11,8 +11,6 @@
 %define cc_is_gcc 1
 %include base.inc
 
-%define SUNWaspell      %(/usr/bin/pkginfo -q SUNWaspell && echo 1 || echo 0)
-
 %use abiword = abiword.spec
 
 Name:               SFEabiword
@@ -54,13 +52,7 @@ BuildRequires:      SFEwv-devel
 BuildRequires:      SUNWgnome-common-devel
 BuildRequires:      SUNWlibrsvg-devel
 
-%if %SUNWaspell
-Requires:           SUNWaspell
-BuildRequires:      SUNWaspell-devel
-%else
-BuildRequires: SFEaspell-devel
-Requires: SFEaspell
-%endif
+Requires: SUNWmyspell-dictionary-en
 %if %option_with_gnu_iconv
 Requires: SUNWgnu-libiconv
 Requires: SUNWgnu-gettext
@@ -86,7 +78,7 @@ export CXX=g++
 export CXXFLAGS="%gcc_cxx_optflags"
 export LDFLAGS="%{_ldflags}"
 export RPM_OPT_FLAGS="$CFLAGS"
-export PKG_CONFIG_PATH="%{_libdir}/pkgconfig"
+export PKG_CONFIG_PATH="%{_cxx_libdir}/pkgconfig"
 %abiword.build -d %name-%version
 
 %install
@@ -103,9 +95,9 @@ rm -rf $RPM_BUILD_ROOT
 %defattr (-, root, bin)
 %dir %attr (0755, root, bin) %{_bindir}
 %{_bindir}/*
-%dir %attr (0755, root, bin) %{_libdir}
-%{_libdir}/lib*.so*
-%{_libdir}/abiword-2.8
+%dir %attr (0755, root, bin) %{_cxx_libdir}
+%{_cxx_libdir}/lib*.so*
+%{_cxx_libdir}/abiword-2.8
 %dir %attr (0755, root, sys) %{_datadir}
 %{_datadir}/abiword*
 %dir %attr (0755, root, other) %{_datadir}/applications
@@ -120,11 +112,15 @@ rm -rf $RPM_BUILD_ROOT
 %defattr (-, root, bin)
 %dir %attr (0755, root, bin) %{_includedir}
 %{_includedir}/*
-%dir %attr (0755, root, bin) %{_libdir}
-%dir %attr (0755, root, other) %{_libdir}/pkgconfig
-%{_libdir}/pkgconfig/*
+%dir %attr (0755, root, bin) %{_cxx_libdir}
+%dir %attr (0755, root, other) %{_cxx_libdir}/pkgconfig
+%{_cxx_libdir}/pkgconfig/*
 
 %changelog
+* Fri Nov 12 2010 - Alex Viskovatoff
+- Abiword has an internal spell checker, so do not require SFEaspell
+  but require library/myspell/dictionary/en (with SUNW name)
+- Do not install in /usr/lib, since compilation is with g++
 * May 2010 - Gilles dauphin
 - set PKG_CONFIG_PATH in case of install in /opt/SFE
 * Wed May 05 2010 - Milan Jurik

@@ -75,7 +75,7 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
 fi
 
 ./configure --prefix=%{_prefix}			\
-			--libdir=%{_libdir}			\
+			--libdir=%{_cxx_libdir}			\
 			--bindir=%{_bindir}			\
 			--includedir=%{_includedir}	\
 			--sysconfdir=%{_sysconfdir}	\
@@ -113,6 +113,8 @@ rm -rf ${RPM_BUILD_ROOT}
 /usr/X11R6/bin/abiword
 
 %changelog
+* Fri Nov 12 2010 - Alex Viskovatoff
+- Use --libdir=%_cxx_libdir, since compilation is with g++
 * Sat Aug 07 2010 - brian.cameron@oracle.com
 - Bump to 2.8.6.
 * Tue Apr 27 2010 - brian.cameron@sun.com
