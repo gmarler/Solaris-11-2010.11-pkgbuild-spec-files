@@ -1,3 +1,8 @@
+2010-11-12 Milan Jurik <sfnet@xylab.cz>
+
+	* SFEctags.spec: use exctags as name, to be compatible with OpenSolaris
+	  distro and avoid clash
+
 2010-11-11  Alex Viskovatoff
 
 	* experimental/SFEqt47.spec: Fork spec off SFEqt4.spec

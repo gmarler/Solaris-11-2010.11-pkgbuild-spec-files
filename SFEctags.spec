@@ -4,21 +4,23 @@
 # includes module(s): ctags
 #
 %include Solaris.inc
-%include usr-gnu.inc
 
 Name:                SFEctags
 Summary:             Exuberant ctags
 Version:             5.8
+License:             GPLv2
+URL:                 http://ctags.sourceforge.net/
 Source:              %{sf_download}/ctags/ctags-%{version}.tar.gz
 Patch1:		     ctags-01-destdir.diff
+Patch2:              ctags-02-exctags.diff
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
-Requires: SUNWpostrun
 
 %prep
 %setup -q -n ctags-%version
 %patch1 -p1
+%patch2 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -38,7 +40,9 @@ autoconf -f
             --libdir=%{_libdir} \
             --includedir=%{_includedir} \
             --mandir=%{_mandir} \
-	    --infodir=%{_infodir}
+	    --infodir=%{_infodir} \
+	    --enable-etags \
+	    --with-posix-regex
 
 make -j$CPUS
 
@@ -47,21 +51,24 @@ rm -rf $RPM_BUILD_ROOT
 
 make install DESTDIR=$RPM_BUILD_ROOT
 
-cd $RPM_BUILD_ROOT%{_prefix}
-ln -s share/man man
+#mv $RPM_BUILD_ROOT%{_prefix}/man $RPM_BUILD_ROOT%{_mandir}
+# No deliverables clash
+mv $RPM_BUILD_ROOT%{_bindir}/ctags $RPM_BUILD_ROOT%{_bindir}/exctags
+mv $RPM_BUILD_ROOT%{_mandir}/man1/ctags.1 $RPM_BUILD_ROOT%{_mandir}/man1/exctags.1
+cd $RPM_BUILD_ROOT%{_mandir}/man1/ && ln -s exctags.1 etags.1
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr (-, root, bin)
-%dir %attr (0755, root, bin) %{_prefix}
-%dir %attr (0755, root, sys) %{_datadir}
-%{_prefix}/man
 %{_bindir}
+%dir %attr (0755, root, sys) %{_datadir}
 %{_mandir}
 
 %changelog
+* Fri Nov 12 2010 - Milan Jurik
+- use exctags as name, to be compatible with OpenSolaris distro and avoid clash
 * Fri Nov 13 2009 - halton.huo@sun.com
 - Bump to 5.8
 * Thu Oct 30 2008 - jedy.wang@sun.com
