@@ -3,6 +3,25 @@
 # This file and all modifications and additions to the pristine
 # package are under the same license as the package itself.
 
+# NOTE FOR USERS:
+# If you want nice looking fonts with aliasing, you should create .fonts.conf in your homedir
+# qt apps don't respect GNOME settings without KDE stuff installed
+# Example .fonts.conf from my machine:
+#<?xml version='1.0'?>
+#<!DOCTYPE fontconfig SYSTEM 'fonts.dtd'>
+#<fontconfig>
+#    <match target="font" >
+#        <edit mode="assign" name="hinting" >
+#            <bool>true</bool>
+#        </edit>
+#    </match>
+#
+#    <match target="font" >
+#        <edit mode="assign" name="antialias" >
+#            <bool>true</bool>
+#        </edit>
+#
+
 %include Solaris.inc
 %define srcname qt-everywhere-opensource-src
 
@@ -44,7 +63,7 @@ fi
 
 export CFLAGS="%optflags"
 
-export CXXFLAGS="%stdcxx_cxxflags -I/usr/include/dbus-1.0 -I/usr/lib/dbus-1.0/include"
+export CXXFLAGS="%stdcxx_cxxflags -I/usr/include/dbus-1.0 -I/usr/lib/dbus-1.0/include -I/usr/include/libpng14"
 export LDFLAGS="%stdcxx_ldflags"
 
 # 4.6.3 runs into trouble with examples, so disable examples and demos.
@@ -63,7 +82,10 @@ echo yes | ./configure -prefix %{_prefix} \
            -no-phonon \
            -no-phonon-backend \
            -no-exceptions \
-           -sysconfdir %{_sysconfdir}
+           -sysconfdir %{_sysconfdir} \
+# Experimental configure options, which I recommend for real qt users
+	   -optimized-qmake \
+	   -verbose 		
 
 gmake -j$CPUS
 
@@ -108,6 +130,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/doc/*
 
 %changelog
+* Nov 17 2010 - Alex Viskovatoff
+- Add patch by russiane39 to correctly use libpng14 headers under snv_151
+  and adding some configure options
 * Nov 11 2010 - Alex Viskovatoff
 - Fork SFEqt47.spec off SFEqt4.spec, disregarding stlport and snv < 147
 - To make the build work, disable examples and phonon.  Disable demos

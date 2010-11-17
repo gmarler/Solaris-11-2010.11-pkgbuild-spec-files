@@ -1,3 +1,7 @@
+2010-11-17  Alex Viskovatoff <viskovatoff@imap.cc>
+
+	* experimental/SFEqt47.spec: fix use of libpng headers on snv_151
+
 2010-11-12 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEgeany.spec: bump to 0.19.1
