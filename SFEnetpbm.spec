@@ -49,6 +49,7 @@ SUNW_Copyright:          %{src_name}.copyright
 BuildRequires:  SUNWbtool
 BuildRequires:  SUNWgmake
 BuildRequires:  SUNWflexlex
+BuildRequires:	SUNWgsed
 
 Requires: SUNWlibC
 %if %is_s10
