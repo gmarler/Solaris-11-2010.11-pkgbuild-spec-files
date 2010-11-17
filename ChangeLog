@@ -1,3 +1,7 @@
+2010-11-16 Matt Lewandowsky <matt@greenviolet.net>
+
+	* SFEnginx.spec, copyright/nginx.copyright: Initial spec file.
+
 2010-11-12  Alex Viskovatoff <viskovatoff@imap.cc>
 
 	* SFEabiword.spec base-specs/abiword.spec: AbiWord does not depend
