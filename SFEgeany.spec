@@ -11,9 +11,10 @@
 
 Name:                SFEgeany
 Summary:             A small and lightweight integrated developer environment
-Version:             0.18
+Version:             0.19.1
 Source:              %{src_url}/%{src_name}-%{version}.tar.bz2
 URL:                 http://geany.uvena.de/Main/HomePage
+Group:               Development/Tools
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -83,14 +84,12 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, sys) %{_datadir}
 %dir %attr (0755, root, other) %{_datadir}/applications
 %dir %attr (0755, root, other) %{_datadir}/geany
-%dir %attr (0755, root, other) %{_datadir}/pixmaps
 %dir %attr (0755, root, other) %{_datadir}/icons
 %dir %attr (0755, root, other) %{_datadir}/icons/hicolor
 %dir %attr (0755, root, other) %{_datadir}/icons/hicolor/*
 %dir %attr (0755, root, other) %{_datadir}/icons/hicolor/*/apps
 %{_datadir}/applications/*
 %{_datadir}/geany/*
-%{_datadir}/pixmaps/*
 %{_datadir}/icons/hicolor/*/apps/*
 
 %files l10n
@@ -115,6 +114,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/geany/*
 
 %changelog
+* Wed Nov 17 2010 - Milan Jurik
+- bump to 0.19.1
 * Mon Mar 16 2009 - andras.barna@gmail.com
 - Bumped to 0.16
 * Sun May 28 2008 - Ananth Shrinivas <ananth@sun.com>

@@ -1,3 +1,7 @@
+2010-11-12 Milan Jurik <sfnet@xylab.cz>
+
+	* SFEgeany.spec: bump to 0.19.1
+
 2010-11-17  Knut Anders Hatlen  <knut.hatlen@oracle.com>
 
 	* SFEdovecot.spec: Bump to 1.2.16.
