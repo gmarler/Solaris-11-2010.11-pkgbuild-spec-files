@@ -8,7 +8,7 @@
 
 Name:           doxygen
 License:        GPL
-Version:        1.7.1
+Version:        1.7.2
 URL:            http://www.doxygen.org/
 Summary:        Doxygen is a documentation system for various programming languages
 Source:         %{sf_download}/doxygen/doxygen-%{version}.src.tar.gz
@@ -74,6 +74,8 @@ find $RPM_BUILD_ROOT -type f -name "*.a" -exec rm -f {} ';'
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Tue Nov 16 2010 - Matt Lewandowsky <matt@greenviolet.net>
+- Bump to 1.7.2.
 * Sat Aug 07 2010 - brian.cameron@oracle.com
 - Bump to 1.7.1.
 * Sat Aug 16 2008 - nonsea@users.sourceforge.net
