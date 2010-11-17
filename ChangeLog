@@ -1,3 +1,8 @@
+2010-11-17 Matt Lewandowsky <matt@greenviolet.net>
+
+	* SFEnginx.spec, ext-sources/http-nginx, ext-sources/http-nginx.xml:
+	  Add SMF manifest and method.
+
 2010-11-16 Matt Lewandowsky <matt@greenviolet.net>
 
 	* SFEnginx.spec, copyright/nginx.copyright: Initial spec file.

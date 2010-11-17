@@ -30,14 +30,11 @@
 ###
 ### TODO:
 ###
-### ! SMF
-###     - For pointers:
-###         ==> http://src.opensolaris.org/source/xref/webstack/nginx/etc/
 ### ! Determine if rtsig/select should be included (probably not)
+### ! Man Page
+### ! Test on SPARC
 ### ! Verify sanity of default config
 ### * GeoIP
-### * Man Page?
-### * Test on SPARC
 ### 
 
 %include Solaris.inc
@@ -61,6 +58,8 @@ Version:		0.8.53
 Name:			SFEnginx
 Summary:		Free, open-source, high-performance HTTP server and reverse proxy.
 Source:			http://nginx.org/download/%{sname}-%{version}.tar.gz
+Source1:		http-nginx
+Source2:		http-nginx.xml
 URL:			http://nginx.org/
 Group:			Web Services/Application and Web Servers
 License:		BSD
@@ -76,6 +75,7 @@ Meta(info.maintainer):		Matt Lewandowsky <matt@greenviolet.net>
 
 %include default-depend.inc
 
+BuildRequires:		SUNWgsed
 BuildRequires:		SUNWopenssl-include
 Requires:		SUNWopenssl-libraries
 Requires:		SUNWpcre
@@ -142,6 +142,10 @@ servers.
 # (Adds an unspecified dependency; not yet done.)
 %define geoip %{?_with_geoip:--with-http_geoip_module}%{!?_with_geoip:}
 
+# Is there a better way to refer to /lib?
+%define methodpath /lib/svc/method
+%define manifestpath %{_localstatedir}/svc/manifest/network
+
 #############################
 # End User-overrideable stuff
 #############################
@@ -168,12 +172,15 @@ export LDFLAGS="%{_ldflags}"
 
 export LD=/usr/ccs/bin/ld
 
-./configure \
-
+# Define the things we use more than once.
 %define statedir %{_localstatedir}/%{sname}
 %define logdir %{statedir}/logs
+%define confpath %{_sysconfdir}/%{sname}/%{sname}.conf
+%define pidpath %{statedir}/nginx.pid
+%define sbinpath %{_sbindir}/%{sname}
+
 ./configure								\
-		--conf-path=%{_sysconfdir}/%{sname}/%{sname}.conf	\
+		--conf-path=%{confpath}					\
 		--error-log-path=%{logdir}/error.log			\
 		--group=%{nginxgroup}					\
 		--http-client-body-temp-path=%{statedir}/client_body_temp \
@@ -183,9 +190,9 @@ export LD=/usr/ccs/bin/ld
 		--http-scgi-temp-path=%{statedir}/scgi_temp		\
 		--http-uwsgi-temp-path=%{statedir}/uwsgi_temp		\
 		--lock-path=%{statedir}/nginx.lock			\
-		--pid-path=%{statedir}/nginx.pid			\
+		--pid-path=%{pidpath}					\
 		--prefix=%{statedir}					\
-		--sbin-path=%{_sbindir}/%{sname}			\
+		--sbin-path=%{sbinpath}					\
 		--user=%{nginxuser}					\
 		--with-http_addition_module				\
 		--with-http_dav_module					\
@@ -209,6 +216,16 @@ make -j$CPUS || make
 %install
 rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
+install -d $RPM_BUILD_ROOT%{methodpath}
+install -d $RPM_BUILD_ROOT%{manifestpath}
+install %{SOURCE1} $RPM_BUILD_ROOT%{methodpath} # SMF method
+install %{SOURCE2} $RPM_BUILD_ROOT%{manifestpath} # SMF manifest
+
+gsed -i 's~-CONF_PATH-~%{confpath}~' $RPM_BUILD_ROOT%{methodpath}/http-nginx
+gsed -i 's~-PID_PATH-~%{pidpath}~' $RPM_BUILD_ROOT%{methodpath}/http-nginx
+gsed -i 's~-SBIN_PATH-~%{sbinpath}~' $RPM_BUILD_ROOT%{methodpath}/http-nginx
+
+gsed -i 's~-METHOD_PATH-~%{methodpath}/http-nginx~' $RPM_BUILD_ROOT%{manifestpath}/http-nginx.xml
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -227,7 +244,13 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, bin) %{_localstatedir}/%{sname}/html
 %attr (0644, root, bin) %{_localstatedir}/%{sname}/html/*
 %dir %attr (0755, %{nginxuser}, %{nginxgroup}) %{_localstatedir}/%{sname}/logs
+%dir %attr (0755, root, bin) %{methodpath}
+%attr (0644, root, bin) %{methodpath}/*
+%dir %attr (0755, root, sys) %{manifestpath}
+%class(manifest) %attr (0644, root, bin) %{manifestpath}/*
 
 %changelog
+* Wed Nov 17 2010 - Matt Lewandowsky <matt@greenviolet.net>
+- Added SMF manifest/method.
 * Tue Nov 16 2010 - Matt Lewandowsky <matt@greenviolet.net>
 - Initial version
