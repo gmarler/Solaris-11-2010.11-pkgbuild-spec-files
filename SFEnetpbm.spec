@@ -21,7 +21,7 @@ Distribution:            OpenSolaris
 Vendor:                  OpenSolaris Community
 %if %{?_with_svn_code:0}%{?!_with_svn_code:1}
 # stable tarball build
-Version:                 10.35.76
+Version:                 10.35.77
 Source:                  http://downloads.sourceforge.net/netpbm/%{src_name}-%{version}.tgz
 %else
 # svn code
@@ -38,6 +38,7 @@ Source1:		 netpbm-Makefile.conf
 Patch1:			 netpbm-01-strings.diff
 Patch2:			 netpbm-02-no-XDefs.diff
 Patch3:                  netpbm-03-Makefile.manpage.diff
+Patch4:                  netpbm-04-pngver.diff
 
 SUNW_Basedir:            /
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -55,8 +56,8 @@ Requires: SUNWlibC
 Requires:       FOSSghostscript
 %else
 BuildRequires:  SUNWgnu-coreutils
-BuildRequires:  web/wget
-Requires: print/filter/ghostscript
+BuildRequires:  SUNWwgetu
+Requires: SUNWghostscriptu
 %endif
 
 # OpenSolaris IPS Manifest Fields
@@ -77,6 +78,7 @@ converters for about 100 graphics formats.
 # stable tarball build
 %setup -q -n netpbm-%version
 %patch3 -p1
+%patch4 -p1
 %else
 # svn checkout
 rm -rf netpbm-%version
@@ -94,6 +96,10 @@ cd netpbm
 %endif
 
 cat Makefile.config.in %{SOURCE1} > Makefile.config
+%if %{?_with_svn_code:0}%{?!_with_svn_code:1}
+# stable tarball build
+echo PNGVER = 12 >> Makefile.config
+%endif
 touch Makefile.depend
 
 %build
@@ -156,7 +162,7 @@ popd
 export PATH=`pwd`/buildtools:$PATH
 mkdir netpbmdoc
 pushd netpbmdoc
-wget --recursive --relative http://netpbm.sourceforge.net/doc/
+wget --recursive --relative http://netpbm.sourceforge.net/doc/ || echo done
 cd netpbm.sourceforge.net/doc
 #19th July 2010 these files are 0 length, remove them from the makefile
 sed -i -e '/giftopnm/d' -e '/g3topbm/d' -e '/ppmtopict/d' -e '/pbmminkowski/d' -e '/liberror/d' ../../../buildtools/Makefile.manpage
@@ -204,6 +210,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/*
 
 %changelog
+* Wed Nov 17 2010 - Milan Jurik
+- bump to 10.35.77, fix wget download break
 * Mon July 19 2010 - markwright@internode.on.net
 - bump to 10.35.76
 * May 2010 - Gilles dauphin
