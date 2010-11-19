@@ -17,13 +17,13 @@
 %define _datadir %{_prefix}/%{src_name}/share
 %define _includedir %{_prefix}/%{src_name}/include
 
-%define	src_version	1.3.3a
+%define	src_version	1.3.3c
 %define	gss_version	1.3.3
 
 Name:		SFEproftpd
 Summary:	Highly configurable FTP server
 Version:	%{src_version}
-IPS_component_version: 1.3.3.0.1
+IPS_component_version: 1.3.3.0.3
 License:	GPL
 Group:		Applications/Internet
 URL:		http://www.proftpd.org/
@@ -163,6 +163,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Nov 19 2010 - Milan Jurik
+- bump to 1.3.3c
 * Mon Jul 19 2010 - Milan Jurik
 - bump to 1.3.3a
 * Sun May 23 2010 - Milan Jurik
