@@ -1,0 +1,22 @@
+--- ./tools/pkgdata/pkgdata.cpp.orig	2010-05-17 07:57:29.338567987 +0200
++++ ./tools/pkgdata/pkgdata.cpp	2010-05-17 07:57:34.692954472 +0200
+@@ -98,7 +98,7 @@
+ #endif
+ 
+ #define LARGE_BUFFER_MAX_SIZE 2048
+-#define SMALL_BUFFER_MAX_SIZE 512
++#define SMALL_BUFFER_MAX_SIZE 2048
+ 
+ static void loadLists(UPKGOptions *o, UErrorCode *status);
+ 
+--- ./test/iotest/stream.cpp.orig	2010-05-17 07:55:35.871137425 +0200
++++ ./test/iotest/stream.cpp	2010-05-17 07:56:33.301636402 +0200
+@@ -138,7 +138,7 @@
+ #endif
+     UnicodeString ustr("string");
+ 
+-    outFormatStream << "1234567890" << setw(10) << left << ustr << " " << "0123456789";
++    outFormatStream << "1234567890" << setw(10) << setiosflags(ios::left) << ustr << " " << "0123456789";
+ 
+ #ifdef USE_SSTREAM
+     const char *testFormatStreamBuf = outFormatStream.str().c_str();

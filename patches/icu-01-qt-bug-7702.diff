@@ -1,0 +1,23 @@
+--- ./source/common/ucnvmbcs.c.orig	2010-05-16 21:08:30.480537558 +0200
++++ ./source/common/ucnvmbcs.c	2010-05-16 21:09:19.548781552 +0200
+@@ -3938,6 +3938,9 @@
+     uint32_t stage2Entry;
+     uint32_t asciiRoundtrips;
+     uint32_t value;
++/* si_value is #defined in <siginfo.h> as a shortcut into the siginfo
++   structure, so undef it here to allow the variable name. */
++#undef si_value
+     uint8_t si_value[2], so_value[2], si_value_length, so_value_length;
+     int32_t length, prevLength;
+     uint8_t unicodeMask;
+--- ./source/tools/gennames/gennames.c.orig	2010-05-17 06:30:34.418986607 +0200
++++ ./source/tools/gennames/gennames.c	2010-05-17 06:31:15.386966127 +0200
+@@ -130,6 +130,8 @@
+ #include "uoptions.h"
+ #include "uparse.h"
+ 
++#undef UNICODE
++
+ #define LENGTHOF(array) (int32_t)(sizeof(array)/sizeof((array)[0]))
+ 
+ #define STRING_STORE_SIZE 1000000

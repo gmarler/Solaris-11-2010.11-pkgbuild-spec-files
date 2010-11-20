@@ -1,0 +1,19 @@
+Index: icu/trunk/source/config/mh-solaris
+===================================================================
+--- source/config/mh-solaris
++++ source/config/mh-solaris
+@@ -1,5 +1,5 @@
+ ## -*-makefile-*-
+ ## Solaris-specific setup using Sun's compilers
+-## Copyright (c) 1999-2009, International Business Machines Corporation and
++## Copyright (c) 1999-2010, International Business Machines Corporation and
+ ## others. All Rights Reserved.
+ 
+@@ -45,5 +45,5 @@
+ 
+ ## Compiler switch to embed a runtime search path
+-LD_RPATH=       -R'$$'ORIGIN
++LD_RPATH=       -R'$$'ORIGIN 
+ LD_RPATH_PRE=   -R
+ 
+

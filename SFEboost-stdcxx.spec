@@ -6,17 +6,15 @@
 #
 # includes module(s): [pkg module(s)]
 #
+#%define non_usr_install %{?_without_usr:1}%{?!_without_usr:0}
+#%if %non_usr_install
+%define _basedir /usr/stdcxx
+#%endif
 %include Solaris.inc
 %include stdcxx.inc
 
-%define _prefix /usr/stdcxx
-%define _libdir %{_prefix}/lib
-%define _includedir %{_prefix}/include
-%define _datadir %{_prefix}/share
-%define _docdir %{_datadir}/doc
-
 %define        major      1
-%define        minor      43
+%define        minor      44
 %define        patchlevel 0
 %define src_url http://easynews.dl.sourceforge.net/sourceforge/boost
 
@@ -35,11 +33,11 @@ URL:                 http://www.boost.org/
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
-BuildRequires: SUNWicu
-BuildRequires: SUNWicud
+BuildRequires: SFEicu-devel
 BuildRequires: SUNWPython
-Requires: SUNWicu
-Requires: stdcxx
+Requires: SFEicu
+Requires: SUNWlibstdcxx4
+Conflicts: SFEboost
 
 %package devel
 Summary:        %{summary} - development files
@@ -61,8 +59,8 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
      CPUS=1
 fi
 
-export CXXFLAGS="%cxx_optflags -library=%none -staticlib=%none -norunpath -features=tmplife -features=tmplrefstatic -L%{stdcxx_lib} -R%{stdcxx_lib} -I%{stdcxx_include} -lstdcxx -lm -UBOOST_DISABLE_THREADS -DBOOST_HAS_THREADS=1 -DBOOST_HAS_PTHREADS=1 -UBOOST_NO_STD_ITERATOR_TRAITS -UBOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION -DHAVE_ICU=1 -DBOOST_HAS_ICU=1 -UBOOST_NO_STDC_NAMESPACE -DSUNPROCC_BOOST_COMPILE=1 -UBOOST_NO_STDC_NAMESPACE -DSUNPROCC_BOOST_COMPILE=1 -DPy_TRACE_REFS -DPy_USING_UNICODE"
-export LDFLAGS="-library=%none -staticlib=%none -L%{stdcxx_dir} -R%{stdcxx_dir}"
+export CXXFLAGS="%stdcxx_cxxflags -norunpath -features=tmplife -features=tmplrefstatic -L%{stdcxx_lib} -R%{stdcxx_lib} -I%{stdcxx_include} -lstdcxx -lm -UBOOST_DISABLE_THREADS -DBOOST_HAS_THREADS=1 -DBOOST_HAS_PTHREADS=1 -UBOOST_NO_STD_ITERATOR_TRAITS -UBOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION -DHAVE_ICU=1 -DBOOST_HAS_ICU=1 -UBOOST_NO_STDC_NAMESPACE -DSUNPROCC_BOOST_COMPILE=1 -DSUNPROCC_BOOST_COMPILE=1 -DPy_TRACE_REFS -DPy_USING_UNICODE"
+export LDFLAGS="%stdcxx_ldflags"
 
 BOOST_ROOT=`pwd`
 TOOLSET=sun
@@ -85,7 +83,7 @@ cd $BOOST_ROOT
 
 # Build Boost
 BJAM=`find tools/jam/src -name bjam -a -type f`
-$BJAM --v2 -j$CPUS -sBUILD="release <threading>single/multi" -sICU_PATH=/usr \
+$BJAM --v2 -j$CPUS -sBUILD="release <threading>single/multi" -sICU_PATH=/usr/stdcxx \
   --layout=system --user-config=user-config.jam release stage
 
 %install
@@ -97,9 +95,9 @@ mkdir -p $RPM_BUILD_ROOT%{_includedir}
 mkdir -p $RPM_BUILD_ROOT%{_docdir}
 mkdir -p $RPM_BUILD_ROOT%{_docdir}/boost-%{version}
 
-for i in stage/lib/*.a; do
-  cp $i $RPM_BUILD_ROOT%{_libdir}
-done
+#for i in stage/lib/*.a; do
+#  cp $i $RPM_BUILD_ROOT%{_libdir}
+#done
 for i in stage/lib/*.so; do
   NAME=`basename $i`
   cp $i $RPM_BUILD_ROOT%{_libdir}/$NAME.%{version}
@@ -132,8 +130,8 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr (-, root, bin)
-%dir %attr (0755, root, bin) %{_libdir}
-%{_libdir}/lib*.a
+#%dir %attr (0755, root, bin) %{_libdir}
+#%{_libdir}/lib*.a
 %dir %attr (0755, root, bin) %{_includedir}
 %{_includedir}/boost
 %dir %attr (0755, root, sys) %{_datadir}
@@ -142,6 +140,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_docdir}/boost-%{version}/*
 
 %changelog
+* Sat Nov 20 2010 - Alex Viskovatoff
+- Bump to 1.44 (filesystem library does not get built with 1.43)
+- Use SFEicu, since library/icu is built against libcStd
+- Use %stdcxx_cxxflags and %stdcxx_ldflags
 * Sat Aug 07 2010 - sobotkap@gmail.com
 - Add patch to not link with stlport4
 * Sun May 16 2010 - sobotkap@gmail.com
