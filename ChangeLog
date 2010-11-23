@@ -1,11 +1,16 @@
+2010-11-23  Alex Viskovatoff <viskovatoff@imap.cc>
+
+	* SFEmkvtoolnix.spec: update to 4.4.0, use stdcxx.inc
+	* SFElibebml.spec, SFElibmatroska.spec: use stdcxx.inc
+
 2010-11-23 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEopenttd.spec: bump to 1.0.5
 
-2010-11-20  Alex Viskovatoff
+2010-11-20  Alex Viskovatoff <viskovatoff@imap.cc>
 
-	* SFEboost-stdcxx.spec: Bump to 1.44, use SFEicu
-	* SFEicu.spec, base-specs/icu.spec: Add
+	* SFEboost-stdcxx.spec: bump to 1.44, use SFEicu
+	* SFEicu.spec, base-specs/icu.spec: add
 
 2010-11-19 Milan Jurik <sfnet@xylab.cz>
 

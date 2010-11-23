@@ -6,10 +6,7 @@
 #
 # includes module(s): [pkg module(s)]
 #
-#%define non_usr_install %{?_without_usr:1}%{?!_without_usr:0}
-#%if %non_usr_install
 %define _basedir /usr/stdcxx
-#%endif
 %include Solaris.inc
 %include stdcxx.inc
 
@@ -37,7 +34,6 @@ BuildRequires: SFEicu-devel
 BuildRequires: SUNWPython
 Requires: SFEicu
 Requires: SUNWlibstdcxx4
-Conflicts: SFEboost
 
 %package devel
 Summary:        %{summary} - development files
@@ -95,9 +91,6 @@ mkdir -p $RPM_BUILD_ROOT%{_includedir}
 mkdir -p $RPM_BUILD_ROOT%{_docdir}
 mkdir -p $RPM_BUILD_ROOT%{_docdir}/boost-%{version}
 
-#for i in stage/lib/*.a; do
-#  cp $i $RPM_BUILD_ROOT%{_libdir}
-#done
 for i in stage/lib/*.so; do
   NAME=`basename $i`
   cp $i $RPM_BUILD_ROOT%{_libdir}/$NAME.%{version}
@@ -130,8 +123,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr (-, root, bin)
-#%dir %attr (0755, root, bin) %{_libdir}
-#%{_libdir}/lib*.a
 %dir %attr (0755, root, bin) %{_includedir}
 %{_includedir}/boost
 %dir %attr (0755, root, sys) %{_datadir}
@@ -144,6 +135,7 @@ rm -rf $RPM_BUILD_ROOT
 - Bump to 1.44 (filesystem library does not get built with 1.43)
 - Use SFEicu, since library/icu is built against libcStd
 - Use %stdcxx_cxxflags and %stdcxx_ldflags
+- Do not package static libs
 * Sat Aug 07 2010 - sobotkap@gmail.com
 - Add patch to not link with stlport4
 * Sun May 16 2010 - sobotkap@gmail.com

@@ -4,9 +4,7 @@
 # includes module(s): libmatroska
 #
 
-# NOTE: This must be built using Solaris Studio 12.2, since the compiler
-# option "=-library=stdcxx4" used by the spec is new to that release.
-
+%define _basedir /usr/stdcxx
 %include Solaris.inc
 %define srcname libmatroska
 
@@ -23,9 +21,13 @@ Patch1:		libmatroska-01-makefile.diff
 SUNW_BaseDir:	%{_basedir}
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
-BuildRequires: SUNWgmake
-BuildRequires: SFElibebml-devel
-Requires: SFElibebml
+%include stdcxx.inc
+
+BuildRequires:	SUNWgmake
+BuildRequires:	SUNWlibstdcxx4
+Requires:	SUNWlibstdcxx4
+BuildRequires:	SFElibebml-devel
+Requires:	SFElibebml
 
 %description
 Matroska aims to become THE Standard of Multimedia Container Formats.
@@ -51,15 +53,15 @@ CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
 if test "x$CPUS" = "x" -o $CPUS = 0; then
     CPUS=1
 fi
-export CFLAGS="%optflags -I%{_includedir}"
-export CXXFLAGS="-library=stdcxx4 %optflags -I%{_includedir}"
+
+export CXXFLAGS="%stdcxx_cxxflags -I%/usr/stdcxx/include"
 export ACLOCAL_FLAGS="-I/usr/share/aclocal -I %{_datadir}/aclocal"
 export MSGFMT="/usr/bin/msgfmt"
-export LDFLAGS="-library=stdcxx4 -R%{_libdir} -L%{_libdir}"
 
 cd make/linux
 gmake -j$CPUS  CXX=CC AR=CC  DEBUGFLAGS=-g WARNINGFLAGS="" \
-ARFLAGS="-xar -o" LOFLAGS=-Kpic LIBSOFLAGS="-G -h "
+ARFLAGS="-xar -o" LOFLAGS=-Kpic \
+LIBSOFLAGS="%stdcxx_ldflags -L/usr/stdcxx/lib -R/usr/stdcxx/lib -G -h "
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -79,12 +81,14 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}
 
 %changelog
+* Tue Nov 23 2010 - Alex Viskovatoff
+- Use stdcxx.inc instead of -library=stdcxx4
 * Fri Oct  1 2010 - Alex Viskovatoff
 - Update to 1.0.0; use stdcxx (requires Solaris Studio 12.2)
 - Patch linux Makefile so that it works with Linux and Solaris
   instead of creating a new Makefile for Solaris.
 * Mar 2010  - Gilles Dauphin
-- look at install dir. Exemple search for /usr/SFE/include
+- look at install dir. Example search for /usr/SFE/include
 - idem for _libdir
 * Fri Jul 13 2007 - dougs@truemail.co.th
 - Initial version

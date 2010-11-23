@@ -1,6 +1,6 @@
 --- Rakefile.orig	Thu Oct 21 18:01:36 2010
 +++ Rakefile	Thu Oct 21 18:05:03 2010
-@@ -73,7 +73,7 @@
+@@ -78,7 +78,7 @@
  
    $build_tools           ||=  c?(:TOOLS)
  
@@ -9,7 +9,7 @@
    ldflags_extra            = c?(:MINGW) ? '' : "-Wl,--enable-auto-import"
    $flags                   = {
      :cflags                => "#{cflags_common} #{c(:USER_CFLAGS)}",
-@@ -342,11 +342,11 @@
+@@ -349,11 +349,11 @@
      end
  
      task :guides do

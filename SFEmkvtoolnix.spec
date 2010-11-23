@@ -4,45 +4,48 @@
 # includes module: mkvtoolnix
 #
 
-# NOTE: This must be built using Solaris Studio 12.2, since the compiler
-# option "-library=stdcxx4" used by the spec is new to that release.
-
-# NOTE: The current version of the boost-stdcxx spec file must be modified to
-# use Boost 1.44.  This is because with version 1.43, the filessystem library
-# does not get built.
-# The reason SFEboost-stdcxx is used instead of SFEboost is that the filesystem
-# library is apparently broken when it is linked against stlport.
+# SFEboost-stdcxx is used instead of SFEboost because the filesystem
+# library is apparently broken when it is linked against stlport4.
 
 # TODO: Get mmg (the GUI front end) to build
 
 %include Solaris.inc
 %define srcname mkvtoolnix
+%define with_SUNWruby %(pkginfo -q SFEruby && echo 0 || echo 1)
 
 Name:		SFEmkvtoolnix
 Summary:	Tools for the Matroska video container
 URL:		http://www.bunkus.org/videotools/mkvtoolnix
 Vendor:		Moritz Bunkus <moritz@bunkus.org>
-Version:	4.3.0
+Version:	4.4.0
 License:	GPLv2
 Source:		http://www.bunkus.org/videotools/%srcname/sources/%{srcname}-%{version}.tar.bz2
-Patch1:		mkvtoolnix-01-git-version.diff.bz2
 Patch2:		mkvtoolnix-02-guide-install.diff
 Patch3:		mkvtoolnix-03-rmff.diff
 Patch4:		mkvtoolnix-04-mpegparser.diff
-Patch5:		mkvtoolnix-05-bug-567-patch.diff
 
 SUNW_BaseDir:	%{_basedir}
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
+%include stdcxx.inc
 
+%if %with_SUNWruby
 BuildRequires: SUNWruby18r
+%endif
 
+BuildRequires: SFElibebml-devel
 Requires: SFElibebml
+BuildRequires: SFElibmatroska-devel
 Requires: SFElibmatroska
+BuildRequires: SFEboost-stdcxx-devel
 Requires: SFEboost-stdcxx
+BuildRequires: SUNWlexpt
 Requires: SUNWlexpt
+BuildRequires: SUNWzlib
 Requires: SUNWzlib
+BuildRequires: SUNWogg-vorbis
 Requires: SUNWogg-vorbis
+BuildRequires: SUNWflac
 Requires: SUNWflac
 
 %description
@@ -63,15 +66,11 @@ Requires:       %{name}
 
 %prep
 %setup -q -n %srcname-%version
-# Bring MKVToolnix up to the Git version as of 2010-09-28.
-# Version 4.3.0 does not build on Solaris.
-%patch1 -p1
 # Based on https://build.opensuse.org/package/view_file?file=mkvtoolnix-4.3.0-guide_install.patch&package=mkvtoolnix&project=multimedia%3Aapps&srcmd5=6156e051db15cd8c196f83e4877192df#
 # Also removes GNU compiler warning flags
 %patch2 -p0
 %patch3 -p1
 %patch4 -p1
-%patch5 -p1
 
 %build
 
@@ -80,12 +79,12 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
      CPUS=1
 fi
 
-export USER_CXXFLAGS="-library=stdcxx4 -D_XOPEN_SOURCE=500 -D__EXTENSIONS__ \
+export USER_CXXFLAGS="%stdcxx_cxxflags -D_XOPEN_SOURCE=500 -D__EXTENSIONS__ \
 -D_POSIX_PTHREAD_SEMANTICS -erroff=identexpected,badargtype2w,storenotokw"
-export OPTIMIZATION_CFLAGS=-xO4
-export USER_LDFLAGS=-library=stdcxx4
+export USER_LDFLAGS="%stdcxx_ldflags -L/usr/stdcxx/lib -R/usr/stdcxx/lib"
 
-CXXFLAGS=$USER_CXXFLAGS LDFLAGS=$USER_LDFLAGS ./configure --prefix=%{_prefix}
+CXXFLAGS=$USER_CXXFLAGS LDFLAGS=$USER_LDFLAGS ./configure --prefix=%_prefix \
+--with-boost-libdir=/usr/stdcxx/lib --with-extra-includes=/usr/stdcxx/include
 ./drake -j$CPUS
 
 %install
@@ -95,7 +94,8 @@ rm -rf $RPM_BUILD_ROOT
 
 %if %build_l10n
 %else
-rm -rf $RPM_BUILD_ROOT%{_datadir}/locale
+rm -rf $RPM_BUILD_ROOT%_datadir/locale
+rm -rf $RPM_BUILD_ROOT%_docdir/%srcname/guide/zh_CN
 %endif
 
 
@@ -120,6 +120,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sun Nov 21 2010 - Alex Viskovatoff
+- Update to 4.4.0, with two patches no longer required
+- Accommodate to stdcxx libs and headers residing in /usr/stdcxx
+- Do not use -library=stdcxx4, which Sun Studio 12u1 does not understand
 * Thu Oct 21 2010 - Alex Viskovatoff
 - Add patch kindly provided by Moritz Bunkus to fix runtime bug (number 567)
 - Move out of experimental
