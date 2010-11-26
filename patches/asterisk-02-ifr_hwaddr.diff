@@ -1,0 +1,11 @@
+--- asterisk-1.8.0/main/netsock.c	2009-10-08 21:35:30.000000000 +0200
++++ asterisk-1.8.0-patch/main/netsock.c	2010-11-23 21:45:38.249274420 +0100
+@@ -234,7 +234,7 @@
+ 
+ void ast_set_default_eid(struct ast_eid *eid)
+ {
+-#if defined(SIOCGIFHWADDR)
++#if defined(SIOCGIFHWADDR) && !defined(SOLARIS)
+ 	int s, x = 0;
+ 	char eid_str[20];
+ 	struct ifreq ifr;

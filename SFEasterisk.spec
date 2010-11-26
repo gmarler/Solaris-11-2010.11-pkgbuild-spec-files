@@ -1,126 +1,108 @@
-# =========================================================================== 
-#                    Spec File
-# =========================================================================== 
+#
+# spec file for package SFEasterisk
+#
 %include Solaris.inc
 
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
-# Software specific variable definitions
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
-%define src_name	   asterisk
-%define src_version    1.4.10.1
-%define pkg_release	   1
-%define _varetcdir     /var/etc
-%define _varlogdir     /var/log
-%define _varoptdir     /var/opt
-%define _varrundir     /var/run
-%define _varspooldir   /var/spool
-%define _optdir        /opt
-%define _usrincludedir /usr/include
+%define cc_is_gcc 1
+%include base.inc
 
-# =========================================================================== 
-#                    SVR4 required definitions
-# =========================================================================== 
-SUNW_ProdVers:	%{src_version}
-SUNW_BaseDir:	/
+%define src_name   asterisk
+%define src_version    1.8.0
 
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
-# Tag definitions
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 Name:         	SFE%{src_name}
 Summary:      	Asterisk : Complete IP PBX in software
 Version:      	%{src_version}
-Release:      	%{pkg_release}
 License:      	GPL
 Group:          Communication
 Source:         http://downloads.digium.com/pub/asterisk/releases/%{src_name}-%{version}.tar.gz
-Patch:        	asterisk-01-include.relocate.diff
-Vendor:       	http://www.asterisk.org
+Patch1:        	asterisk-01-oss.diff
+Patch2:         asterisk-02-ifr_hwaddr.diff
 URL:            http://www.asterisk.org
-Packager:     	Shivakumar GN
-BuildRoot:		%{_tmppath}/%{src_name}-%{version}-build
-
-#Requires:      
-#BuildRequires: 
+SUNW_BaseDir:   %{_basedir}
+BuildRoot:      %{_tmppath}/%{name}-%{version}-build
+%include default-depend.inc
 
 %description 
 Asterisk is a complete IP PBX in software. It runs on a wide variety of operating systems and provides all of the features one would expect from a PBX including many advanced features that are often associated with high end (and high cost) proprietary PBXs. Asterisk supports Voice over IP in many protocols, and can interoperate with almost all standards-based telephony equipment using relatively inexpensive hardware.
 
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
-# Prep-Section 
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
+%package root
+Summary:                 %{summary} - / filesystem
+SUNW_BaseDir:            /
+%include default-depend.inc
+
+%package devel
+Summary:                 %{summary} - development files
+SUNW_BaseDir:            %{_basedir}
+%include default-depend.inc
+Requires: %name
+
 %prep 
 %setup -q -n %{src_name}-%{version}
-CC=gcc
-CXX=g++
-rm -rf ./grep
-ln -s /usr/sfw/bin/ggrep ./grep
-PATH="`pwd`:$PATH"
-echo "`type grep`"
-./configure --prefix=%{_prefix}
+%patch1 -p1
+%patch2 -p1
 
-%patch0 -p 1
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
-# Build-Section 
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 %build
+export CC=/usr/gcc/4.3/bin/gcc
+export CXX=/usr/gcc/4.3/bin/g++
+export CFLAGS="%optflags"
+export LDFLAGS="%_ldflags"
+./configure --prefix=%{_prefix} --sysconfdir=%{_sysconfdir}
+
 make
 
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
-# Install-Section 
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
-
 %install
-rm ./grep
-ln -s /usr/sfw/bin/ggrep ./grep
-PATH="`pwd`:$PATH"
-echo "`type grep`"
+rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
+
+# no section 8
+install -d 0755 $RPM_BUILD_ROOT%{_datadir}/man/man1m
+for i in $RPM_BUILD_ROOT%{_datadir}/man/man8/*.8
+do
+  base=`basename $i 8`
+  name1m=${base}1m
+  mv $i $RPM_BUILD_ROOT%{_datadir}/man/man1m/${name1m}
+done
+rmdir $RPM_BUILD_ROOT%{_datadir}/man/man8
+for i in $RPM_BUILD_ROOT%{_datadir}/man/*/*
+do
+  sed 's/(8)/(1M)/g' $i | sed '/^\.TH/s/ \"8\" / \"1M\" /g' > $i.new
+  mv $i.new $i
+done
+
+# run dir is swap
+rmdir $RPM_BUILD_ROOT%{_localstatedir}/run/%{src_name}
+
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# File permissions, ownership information. Note the difference between 
-# bin(_bindir),share(_datadir) & share/applications
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 %files
 %defattr(-,root,bin)
+%{_sbindir}
+%{_libdir}
+%dir %attr (0755, root, sys) %{_datadir}
+%{_mandir}
 
-%dir %attr (0755, root, sys) %{_optdir}
-%dir %attr (0755, root, sys) %{_localstatedir}
-%dir %attr (0755, root, sys) %{_varoptdir}
-%dir %attr (0755, root, sys) %{_varoptdir}/%{src_name}
-%{_varoptdir}/%{src_name}/*
+%files devel
+%defattr (-, root, bin)
+%{_includedir}
 
-%dir %attr (0755, root, sys) %{_varetcdir}/%{src_name}
-
-%dir %attr (0755, root, sys) %{_varlogdir}
-%dir %attr (0755, root, sys) %{_varlogdir}/%{src_name}
-%{_varlogdir}/%{src_name}/*
-
-%dir %attr (0755, root, sys) %{_varrundir}
-%dir %attr (0755, root, sys) %{_varrundir}/%{src_name}
-
-%dir %attr (0755, root, sys) %{_varspooldir}/%{src_name}
-%{_varspooldir}/%{src_name}/*
-
-%dir %attr (0755, root, bin) %{_optdir}/%{src_name}/bin
-%dir %attr (0755, root, bin) %{_optdir}/%{src_name}/sbin
-%{_optdir}/%{src_name}/sbin/*
-
-%dir %attr (0755, root, sys) %{_optdir}/%{src_name}/include
-%{_optdir}/%{src_name}/include/*
-
-%dir %attr (0755, root, sys) %{_optdir}/%{src_name}/lib
-%{_optdir}/%{src_name}/lib/*
-
-%dir %attr (0755, root, sys) %{_optdir}/%{src_name}/man
-%{_optdir}/%{src_name}/man/*
-
+%files root
+%defattr (-, root, sys)
+%{_sysconfdir}
+%dir %attr (0755, root, bin) %{_localstatedir}/spool
+%{_localstatedir}/spool/*
+%dir %attr (0755, root, sys) %{_localstatedir}/run
+%dir %attr (0755, root, sys) %{_localstatedir}/log
+%{_localstatedir}/log/%{src_name}
+%dir %attr (0755, root, other) %{_localstatedir}/lib
+%{_localstatedir}/lib/%{src_name}
 
 
 %changelog
+* Fri Nov 26 2010 - Milan Jurik
+- major update to 1.8.0
 * Sun Oct 14 2007 - laca@sun.com
 - fix some directory attributes
 * Sat Aug 11 2007 - <shivakumar dot gn at gmail dot com>

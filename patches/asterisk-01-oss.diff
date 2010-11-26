@@ -1,0 +1,29 @@
+--- asterisk-1.8.0/channels/chan_oss.c	2010-11-19 20:44:52.922559641 +0100
++++ asterisk-1.8.0-patch/channels/chan_oss.c	2010-11-19 20:45:08.770364280 +0100
+@@ -47,7 +47,7 @@
+ 
+ #ifdef __linux
+ #include <linux/soundcard.h>
+-#elif defined(__FreeBSD__) || defined(__CYGWIN__)
++#elif defined(__FreeBSD__) || defined(__CYGWIN__) || defined(__sun)
+ #include <sys/soundcard.h>
+ #else
+ #include <soundcard.h>
+@@ -248,7 +248,7 @@
+ 	char *name;
+ 	int total_blocks;			/*!< total blocks in the output device */
+ 	int sounddev;
+-	enum { M_UNSET, M_FULL, M_READ, M_WRITE } duplex;
++	enum { M_UNSET, M_FULL, M_READX, M_WRITE } duplex;
+ 	int autoanswer;             /*!< Boolean: whether to answer the immediately upon calling */
+ 	int autohangup;             /*!< Boolean: whether to hangup the call when the remote end hangs up */
+ 	int hookstate;              /*!< Boolean: 1 if offhook; 0 if onhook */
+@@ -516,7 +516,7 @@
+ 		break;
+ 
+ 	case O_RDONLY:
+-		o->duplex = M_READ;
++		o->duplex = M_READX;
+ 		break;
+ 	}
+ 

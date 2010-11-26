@@ -1,6 +1,7 @@
 2010-11-26 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEopenttd.spec: fix music datafiles place
+	* SFEasterisk.spec: major update to 1.8.0
 
 2010-11-23  Alex Viskovatoff <viskovatoff@imap.cc>
 
