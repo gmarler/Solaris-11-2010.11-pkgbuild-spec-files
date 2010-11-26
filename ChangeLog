@@ -1,3 +1,7 @@
+2010-11-26 Milan Jurik <sfnet@xylab.cz>
+
+	* SFEopenttd.spec: fix music datafiles place
+
 2010-11-23  Alex Viskovatoff <viskovatoff@imap.cc>
 
 	* SFEmkvtoolnix.spec: update to 4.4.0, use stdcxx.inc

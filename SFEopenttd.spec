@@ -97,9 +97,14 @@ desktop-file-install --dir=$RPM_BUILD_ROOT%{_datadir}/applications \
         --add-category=StrategyGame \
         media/openttd.desktop
 
-cd $RPM_BUILD_ROOT%{_datadir}/openttd/data && unzip %SOURCE1 && unzip %SOURCE2 && unzip %SOURCE3
-chmod 755  $RPM_BUILD_ROOT%{_datadir}/openttd/data/open*-0.2*
-chmod og+r $RPM_BUILD_ROOT%{_datadir}/openttd/data/open*-0.2*/*
+cd $RPM_BUILD_ROOT%{_datadir}/openttd/data && unzip %SOURCE1 && unzip %SOURCE2
+chmod 755  $RPM_BUILD_ROOT%{_datadir}/openttd/data/open*-0.*
+chmod og+r $RPM_BUILD_ROOT%{_datadir}/openttd/data/open*-0.*/*
+
+cd $RPM_BUILD_ROOT%{_datadir}/openttd/gm && unzip %SOURCE3
+chmod 755  $RPM_BUILD_ROOT%{_datadir}/openttd/gm/open*-0.*
+chmod og+r $RPM_BUILD_ROOT%{_datadir}/openttd/gm/open*-0.*/*
+
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -140,6 +145,8 @@ test -x $BASEDIR/var/lib/postrun/postrun || exit 0
 %{_datadir}/openttd/*
 
 %changelog
+* Fri Nov 26 2010 - Milan Jurik
+- fix music datafiles place
 * Tue Nov 23 2010 - Milan Jurik
 - bump to 1.0.5
 * Wed Sep 15 2010 - Milan Jurik
