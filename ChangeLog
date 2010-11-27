@@ -1,3 +1,7 @@
+2010-11-27 Milan Jurik <sfnet@xylab.cz>
+
+	* SFEtxt2pdbdoc.spec: Initial spec
+
 2010-11-26 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEopenttd.spec: fix music datafiles place
