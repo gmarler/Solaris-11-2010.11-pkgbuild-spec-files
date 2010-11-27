@@ -9,7 +9,7 @@
 %define amanda_indexserver	amandahost
 %define amanda_tapeserver	%{indexserver}
 
-%define perl_version	5.10.0
+%define perl_version	5.8.4
 
 Name:		SFEamanda
 Summary:	A network-capable tape backup solution

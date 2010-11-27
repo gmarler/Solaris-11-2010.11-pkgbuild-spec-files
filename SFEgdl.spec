@@ -23,6 +23,8 @@ SUNW_BaseDir:       %{_basedir}
 BuildRoot:          %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 BuildRequires:      SUNWgtk-doc
+BuildRequires:      SUNWgnome-common-devel
+BuildRequires:      SUNWgawk
 Requires:           SUNWgnome-base-libs
 Requires:           SUNWgnome-libs
 Requires:           SUNWgnome-vfs
