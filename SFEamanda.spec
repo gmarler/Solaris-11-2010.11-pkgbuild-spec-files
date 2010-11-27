@@ -9,11 +9,11 @@
 %define amanda_indexserver	amandahost
 %define amanda_tapeserver	%{indexserver}
 
-%define perl_version	5.8.4
+%define perl_version	5.10.0
 
 Name:		SFEamanda
 Summary:	A network-capable tape backup solution
-Version:	3.1.0
+Version:	3.2.0
 Source:		%{sf_download}/%{src_name}/%{src_name}-%{version}.tar.gz
 License:	BSD
 Group:		Applications/System
@@ -167,6 +167,7 @@ user ftpuser=false gcos-field="Amanda Reserved UID" username="%{amanda_user}" pa
 %{_mandir}/man7/amanda-auth.7
 %{_mandir}/man7/amanda-scripts.7
 %{_mandir}/man7/amanda-compatibility.7 
+%{_mandir}/man7/amanda-match.7
 
 %dir %attr(-, root, sys) %{_localstatedir}
 %dir %attr(-, root, sys) %{_localstatedir}/log
@@ -198,20 +199,10 @@ user ftpuser=false gcos-field="Amanda Reserved UID" username="%{amanda_user}" pa
 %attr(-,%amanda_user, sys)	%{_libexecdir}/amanda/taper
 %attr(-,%amanda_user, sys)	%{_libexecdir}/amanda/chunker
 %attr(-,%amanda_user, sys)	%{_libexecdir}/amanda/amcleanupdisk
-%attr(-,%amanda_user, sys)	%{_libexecdir}/amanda/chg-chio
-%attr(-,%amanda_user, sys)	%{_libexecdir}/amanda/chg-chs
-%attr(-,%amanda_user, sys)	%{_libexecdir}/amanda/chg-juke
 %attr(-,%amanda_user, sys)	%{_libexecdir}/amanda/chg-manual
-%attr(-,%amanda_user, sys)	%{_libexecdir}/amanda/chg-mcutil
-%attr(-,%amanda_user, sys)	%{_libexecdir}/amanda/chg-mtx
 %attr(-,%amanda_user, sys)	%{_libexecdir}/amanda/chg-multi
-%attr(-,%amanda_user, sys)	%{_libexecdir}/amanda/chg-null
-%attr(-,%amanda_user, sys)	%{_libexecdir}/amanda/chg-rait
-%attr(-,%amanda_user, sys)	%{_libexecdir}/amanda/chg-rth
-%attr(-,%amanda_user, sys)	%{_libexecdir}/amanda/chg-scsi
 %attr(-,%amanda_user, sys)	%{_libexecdir}/amanda/chg-zd-mtx
 %attr(-,%amanda_user, sys)	%{_libexecdir}/amanda/chg-disk
-%attr(-,%amanda_user, sys)	%{_libexecdir}/amanda/chg-iomega
 %attr(-,%amanda_user, sys)	%{_libexecdir}/amanda/chg-lib.sh
 %attr(-,%amanda_user, sys)	%{_libexecdir}/amanda/amcat.awk
 %attr(-,%amanda_user, sys)	%{_libexecdir}/amanda/amplot.awk
@@ -350,5 +341,7 @@ user ftpuser=false gcos-field="Amanda Reserved UID" username="%{amanda_user}" pa
 
 
 %changelog
+* Sat Nov 27 2010 - Milan Jurik
+- bump to 3.2.0
 * Sun Jul 11 2010 - Milan Jurik
 - Initial spec based on Fedora

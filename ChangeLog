@@ -2,6 +2,7 @@
 
 	* SFEtxt2pdbdoc.spec: Initial spec
 	* SFEgdl.spec: bump to 2.30.1
+	* SFEamanda.spec: bump to 3.2.0
 
 2010-11-26 Milan Jurik <sfnet@xylab.cz>
 
