@@ -22,6 +22,7 @@ IPS_package_name:   library/desktop/gdl
 SUNW_BaseDir:       %{_basedir}
 BuildRoot:          %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
+BuildRequires:      SUNWgtk-doc
 Requires:           SUNWgnome-base-libs
 Requires:           SUNWgnome-libs
 Requires:           SUNWgnome-vfs
@@ -97,6 +98,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Sat Nov 27 2010 - Milan Jurik
+- bump to 2.30.1
 * Wed Aug 20 2008 - nonsea@users.sourceforge.net
 - Use %{gdl.version} for Version
 * Thu Mar 22 2007 - nonsea@users.sourceforge.net

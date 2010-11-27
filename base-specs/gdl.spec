@@ -11,8 +11,7 @@
 Name:		gdl
 License:	GPL
 Group:		Development/Libraries
-Version:	2.30.0
-Release:	1
+Version:	2.30.1
 Distribution:   Java Desktop System
 Vendor:         Sun Microsystems, Inc.
 URL:		http://www.gnome.org
@@ -110,6 +109,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_prefix}/lib/pkgconfig/*
 
 %changelog
+* Sat Nov 27 2010 - Milan Jurik
+- bump to 2.30.1
 * Tue Apr 06 2010 - halton.huo@sun.com
 - Bump to 2.30.0
 * Mon Jun 15 2009 - halton.huo@sun.com
