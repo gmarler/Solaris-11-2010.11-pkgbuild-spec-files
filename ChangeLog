@@ -3,6 +3,7 @@
 	* SFElibgda.spec: bump to 4.1.11
 	* SFEnodejs.spec: bump to 0.2.5
 	* encumbered/SFElibgsm.spec: add pentium_pro+mmx lib
+	* base-specs/ffmpeg.spec: bump to 0.6.1
 
 2010-11-27 Milan Jurik <sfnet@xylab.cz>
 

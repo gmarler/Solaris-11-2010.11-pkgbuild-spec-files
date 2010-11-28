@@ -4,11 +4,11 @@
 # includes module(s): FFmpeg
 #
 
-%define src_version 0.6
+%define src_version 0.6.1
 
 Summary:                 FFmpeg - a very fast video and audio converter
 
-Version:                 0.6
+Version:                 0.6.1
 #Source:                  http://pkgbuild.sf.net/spec-files-extra/tarballs/ffmpeg-export-%{year}-%{month}-%{day}.tar.bz2
 #Source:                  http://electricsheep.org/ffmpeg-0.4.9-p%{year}%{month}%{day}.tar.bz2
 Source:                  http://www.ffmpeg.org/releases/ffmpeg-%{src_version}.tar.bz2
@@ -106,6 +106,8 @@ EOM
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Sun Nov 28 2010 - Milan Jurik
+- bump to 0.6.1
 * Wed Jun 16 2010 - Milan Jurik
 - update to 0.6
 - remove older amr codecs, add libschroedinger and openjpeg
