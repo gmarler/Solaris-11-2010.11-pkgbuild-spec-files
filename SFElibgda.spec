@@ -28,6 +28,7 @@ Requires:           SUNWgnome-vfs
 Requires:           SUNWlxml
 BuildRequires:      SUNWgnome-common-devel
 BuildRequires:      SUNWgtk-doc
+BuildRequires:      SUNWgnome-doc-utils
 
 %package devel
 Summary:       %{summary} - development files
@@ -100,7 +101,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, other) %{_datadir}/gnome
 %dir %attr (0755, root, bin) %{_datadir}/gnome/help
 %dir %attr (0755, root, bin) %{_datadir}/gnome/help/gda-browser
-%{_datadir}/gnome/help/gda-browser/C
+%{_datadir}/gnome/help/gda-browser/*
 %dir %attr(0755, root, bin) %{_mandir}
 %dir %attr(0755, root, bin) %{_mandir}/*
 %{_mandir}/*/*
@@ -130,6 +131,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_sysconfdir}/libgda*
 
 %changelog
+* Sun Nov 28 2010 - Milan Jurik
+- added missing build dep
 * Mon May 10 2010 - Milan Jurik
 - added missing build dependencies
 * Mon May 10 2010 - halton.huo@sun.com
