@@ -10,6 +10,11 @@
 %use libgsm_64 = libgsm.spec
 %endif
 
+%if %arch_sse2
+%include x86_sse2.inc
+%use libgsm_sse2 = libgsm.spec
+%endif
+
 %include base.inc
 %use libgsm = libgsm.spec
 
@@ -41,6 +46,11 @@ mkdir %name-%version/%_arch64
 %libgsm_64.prep -d %name-%version/%_arch64
 %endif
 
+%if %arch_sse2
+mkdir %name-%version/%sse2_arch
+%libgsm_sse2.prep -d %name-%version/%sse2_arch
+%endif
+
 mkdir %name-%version/%{base_arch}
 %libgsm.prep -d %name-%version/%{base_arch}
 
@@ -50,6 +60,10 @@ mkdir %name-%version/%{base_arch}
 %libgsm_64.build -d %name-%version/%_arch64
 %endif
 
+%if %arch_sse2
+%libgsm_sse2.build -d %name-%version/%sse2_arch
+%endif
+
 %libgsm.build -d %name-%version/%{base_arch}
 
 
@@ -57,6 +71,10 @@ mkdir %name-%version/%{base_arch}
 rm -rf $RPM_BUILD_ROOT
 %ifarch amd64 sparcv9
 %libgsm_64.install -d %name-%version/%_arch64
+%endif
+
+%if %arch_sse2
+%libgsm_sse2.install -d %name-%version/%sse2_arch
 %endif
 
 %libgsm.install -d %name-%version/%{base_arch}
@@ -74,6 +92,10 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, bin) %{_libdir}/%{_arch64}
 %{_libdir}/%{_arch64}/lib*.so*
 %endif
+%if %arch_sse2
+%dir %attr (0755, root, bin) %{_libdir}/%{sse2_arch}
+%{_libdir}/%{sse2_arch}/lib*.so*
+%endif
 %dir %attr (0755, root, sys) %{_datadir}
 %dir %attr (0755, root, bin) %{_mandir}
 %{_mandir}/man1
@@ -86,6 +108,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man3
 
 %changelog
+* Sun Nov 28 2010 - Milan Jurik
+- add pentium_pro+mmx lib
 * Tue Sep 08 2009 - Milan Jurik
 - update to 1.0.13
 - multiarch support

@@ -51,6 +51,11 @@ if $( echo "%{_libdir}" | /usr/xpg4/bin/grep -q %{_arch64} ) ; then
 	mv $RPM_BUILD_ROOT/%{_libdir}/../libgsm.* $RPM_BUILD_ROOT/%{_libdir}
 fi
 
+if $( echo "%{_libdir}" | /usr/xpg4/bin/grep -q %{sse2_arch} ) ; then
+        mkdir -p $RPM_BUILD_ROOT/%{_libdir}
+        mv $RPM_BUILD_ROOT/%{_libdir}/../libgsm.* $RPM_BUILD_ROOT/%{_libdir}
+fi
+
 # keep compatibility with other distros
 cp -r inc/*.h $RPM_BUILD_ROOT%{_includedir}/gsm
 
@@ -58,6 +63,8 @@ cp -r inc/*.h $RPM_BUILD_ROOT%{_includedir}/gsm
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Sun Nov 28 2010 - Milan Jurik
+- add pentium_pro+mmx lib
 * Wed Jun 16 2010 - Milan Jurik
 - usr/include/gsm for keeping compatibility with other distros
 * March 12 2010 - Gilles Dauphin
