@@ -11,7 +11,7 @@
 %include stdcxx.inc
 
 %define        major      1
-%define        minor      44
+%define        minor      45
 %define        patchlevel 0
 %define src_url http://easynews.dl.sourceforge.net/sourceforge/boost
 
@@ -55,7 +55,7 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
      CPUS=1
 fi
 
-export CXXFLAGS="%stdcxx_cxxflags -norunpath -features=tmplife -features=tmplrefstatic -L%{stdcxx_lib} -R%{stdcxx_lib} -I%{stdcxx_include} -lstdcxx -lm -UBOOST_DISABLE_THREADS -DBOOST_HAS_THREADS=1 -DBOOST_HAS_PTHREADS=1 -UBOOST_NO_STD_ITERATOR_TRAITS -UBOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION -DHAVE_ICU=1 -DBOOST_HAS_ICU=1 -UBOOST_NO_STDC_NAMESPACE -DSUNPROCC_BOOST_COMPILE=1 -DSUNPROCC_BOOST_COMPILE=1 -DPy_TRACE_REFS -DPy_USING_UNICODE"
+export CXXFLAGS="%stdcxx_cxxflags -norunpath -features=tmplife -features=tmplrefstatic -L%{stdcxx_lib} -R%{stdcxx_lib} -I%{stdcxx_include} -lstdcxx -lm -UBOOST_DISABLE_THREADS -DBOOST_HAS_THREADS=1 -DBOOST_HAS_PTHREADS=1 -UBOOST_NO_STD_ITERATOR_TRAITS -UBOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION -DHAVE_ICU=1 -DBOOST_HAS_ICU=1 -UBOOST_NO_STDC_NAMESPACE -DSUNPROCC_BOOST_COMPILE=1 -DSUNPROCC_BOOST_COMPILE=1 -DPy_USING_UNICODE"
 export LDFLAGS="%stdcxx_ldflags"
 
 BOOST_ROOT=`pwd`
@@ -74,11 +74,12 @@ using python : $PYTHON_VERSION : $PYTHON_ROOT ;
 EOF
 
 # Build bjam
-cd "tools/jam/src" && ./build.sh "$TOOLSET"
+%define bjamdir tools/build/v2/engine/src
+cd "%bjamdir" && ./build.sh "$TOOLSET"
 cd $BOOST_ROOT
 
 # Build Boost
-BJAM=`find tools/jam/src -name bjam -a -type f`
+BJAM=`find %bjamdir -name bjam -a -type f`
 $BJAM --v2 -j$CPUS -sBUILD="release <threading>single/multi" -sICU_PATH=/usr/stdcxx \
   --layout=system --user-config=user-config.jam release stage
 
@@ -131,6 +132,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_docdir}/boost-%{version}/*
 
 %changelog
+* Sun Nov 28 2010 - Alex Viskovatoff
+- Update to 1.45
+- Remove -DPy_TRACE_REFS from CXXFLAGS, since it makes libboost_python.so
+  incompatible with libpython2.6.so
 * Sat Nov 20 2010 - Alex Viskovatoff
 - Bump to 1.44 (filesystem library does not get built with 1.43)
 - Use SFEicu, since library/icu is built against libcStd
