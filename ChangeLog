@@ -2,6 +2,7 @@
 
 	* SFEnasm.spec: bump to 2.09.04
 	* SFEgocr.spec: bump to 0.49
+	* SFEclamav.spec: bump to 0.96.5
 
 2010-11-28  Alex Viskovatoff <viskovatoff@imap.cc>
 
