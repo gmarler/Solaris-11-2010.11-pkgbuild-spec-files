@@ -1,3 +1,7 @@
+2010-11-30 Milan Jurik <sfnet@xylab.cz>
+
+	* SFEnasm.spec: bump to 2.09.04
+
 2010-11-28  Alex Viskovatoff <viskovatoff@imap.cc>
 
 	* SFEboost-stdcxx.spec: update to 1.45
