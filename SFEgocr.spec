@@ -4,15 +4,15 @@
 #
 %include Solaris.inc
 
-Name:                    SFEgocr
-Summary:                 GOCR Optical Character Recognition package.
-Version:                 0.45
-Source:                  http://www-e.uni-magdeburg.de/jschulen/ocr/gocr-%{version}.tar.gz
-URL:                     http://jocr.sourceforge.net/download.html
-BuildRoot:               %{_tmppath}/%{name}-%{version}-build
-License:	             GPL
-Group:		             Graphics
-
+Name:		SFEgocr
+Summary:	GOCR Optical Character Recognition package.
+Version:	0.49
+URL:		http://jocr.sourceforge.net/
+Source:		http://www-e.uni-magdeburg.de/jschulen/ocr/gocr-%{version}.tar.gz
+Group:		Graphics
+License:	GPL
+SUNW_BaseDir:	%{_basedir}
+BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 
 %include default-depend.inc
 
@@ -37,51 +37,29 @@ Simply call gocr from the command line and get your results.
 
 
 %build
+CFLAGS="%{optflags}" \
+LDFLAGS="%{_ldflags}" \
 ./configure --prefix=%{_prefix} \
-            --mandir=%{_mandir} \
-            --bindir=%{_prefix}/bin \
-	        --sbindir=%{_prefix}/sbin \
-            --libdir=%{_libdir} \
-            --libexecdir=%{_libexecdir} \
-            --infodir=%{_infodir} \
-            --sysconfdir=%{_sysconfdir} \
-            --datadir=%{_datadir} \
-	        --includedir=%{_prefix}/include
+	--bindir=%{_bindir}	\
+	--mandir=%{_mandir}
 
 make
 
 %install
-gmake install DESTDIR=$RPM_BUILD_ROOT
+rm -rf $RPM_BUILD_ROOT
+make install DESTDIR=$RPM_BUILD_ROOT
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
-%defattr (-, root, sys)
-
-#%dir %attr (0755, root, bin) /bin
-#/bin/*
-
-%dir %attr (0755, root, bin) %{_bindir}
-%{_bindir}/*
-
-
-%dir %attr(0755, root, bin) %{_libdir}
-%{_libdir}/lib*
-
-%dir %attr (0755, root, bin) %{_includedir}
-%{_includedir}/*
-
-
-%dir %attr(0755, root, bin) %{_mandir}
-%dir %attr(0755, root, bin) %{_mandir}/man1
-%{_mandir}/man1/*
-
-#%dir %attr (0755, root, bin) %{_includedir}
-#%{_includedir}/*
-
+%defattr (-, root, bin)
+%{_bindir}
+%dir %attr(0755, root, sys) %{_datadir}
+%{_mandir}
 
 %changelog
-- Sat Feb 2 2008 - pradhap (at) gmail.com
+* Tue Nov 30 2010 - Milan Jurik
+- bump to 0.49
+* Sat Feb 2 2008 - pradhap (at) gmail.com
 - Initial gocr spec file
-
