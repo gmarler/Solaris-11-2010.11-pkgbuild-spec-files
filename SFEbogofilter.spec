@@ -7,7 +7,7 @@
 
 Name:		SFEbogofilter
 Summary:	A Bayesian spam filter.
-Version:	1.2.1
+Version:	1.2.2
 Source:		%{sf_download}/bogofilter/bogofilter-%{version}.tar.bz2
 URL:		http://bogofilter.sourceforge.net/
 License:	GPL
@@ -70,6 +70,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_sysconfdir}/bogofilter.cf.example
 
 %changelog
+* Wed Dec 01 2010 - Milan Jurik
+- bump to 1.2.2
 * Sat Jun 12 2010 - Milan Jurik
 - bump to 1.2.1, add build dependencies
 * Thu Mar 29 2007 - daymobrew@users.sourceforge.net
