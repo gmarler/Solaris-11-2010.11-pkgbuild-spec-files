@@ -7,7 +7,7 @@
 
 Name:		SFEliferea
 Summary:	Liferea - aggregator for online news feeds
-Version:	1.6.4
+Version:	1.6.5
 Source:		%{sf_download}/liferea/liferea-%{version}.tar.gz
 URL:		http://liferea.sourceforge.net/
 Group:		Applications/Internet
@@ -169,6 +169,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Wed Dec 01 2010 - Milan Jurik
+- bump to 1.6.5
 * Sun Aug 08 2010 - Milan Jurik
 - bump to 1.6.4, remove upstream patches
 * Fri May 21 2010 - Milan Jurik
