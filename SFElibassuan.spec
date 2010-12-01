@@ -7,7 +7,8 @@
 
 Name:		SFElibassuan
 Summary:	An IPC libbray used by GnuPG 2, GPGME etc. 
-Version:	2.0.0
+Version:	2.0.1
+URL:		http://www.gnupg.org/related_software/libassuan/
 Source:		ftp://ftp.gnupg.org/gcrypt/libassuan/libassuan-%{version}.tar.bz2
 URL:		http://www.gnupg.org/
 License:	GPLv3
@@ -95,6 +96,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/info/*
 
 %changelog
+* Wed Dec 01 2010 - Milan Jurik
+- bump to 2.0.1
 * Sat Jun 12 2010 - Milan Jurik
 - bump to 2.0.0, make it shared only
 * Mars 25 2010 - Gilles Dauphin
