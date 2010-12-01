@@ -8,7 +8,7 @@
 
 Name:                   SFEsmartmontools
 Summary:                S.M.A.R.T. monitoring tools
-Version:                5.39.1
+Version:                5.40
 Group:                  Utility
 License:                GPLv2
 URL:                    http://smartmontools.sourceforge.net/
@@ -71,6 +71,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1m/*
 %dir %attr(0755, root, bin) %{_mandir}/man4
 %{_mandir}/man4/*
+%{_datadir}/%{src_name}
 
 %files root
 %defattr (-, root, sys)
@@ -79,6 +80,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_sysconfdir}/smartd.conf
 
 %changelog
+* Wed Dec 01 2010 - Milan Jurik
+- bump to 5.40
 * Tue Jun 15 2010 - Milan Jurik
 - bump to 5.39.1
 * Thu May 29 2008 - Albert Lee <trisk@acm.jhu.edu>
