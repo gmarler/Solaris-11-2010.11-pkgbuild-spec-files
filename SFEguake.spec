@@ -10,9 +10,10 @@
 Name:		SFEguake
 URL:		http://guake.org/
 Summary:	Guake is a top-down terminal for Gnome
-Version:	0.4.1
+Version:	0.4.2
 Group:		Applications/System 
 License:	GPLv2+ 
+URL:		http://guake.org/
 Source:		http://guake.org/files/%{src_name}-%{version}.tar.gz 
 SUNW_BaseDir:	%{_basedir}
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
@@ -129,7 +130,7 @@ test -x $PKG_INSTALL_ROOT/usr/lib/postrun || exit 0
 %dir %attr (0755, root, other) %{_datadir}/applications
 %{_datadir}/applications/%{src_name}.desktop
 %{_datadir}/applications/%{src_name}-prefs.desktop
-%{_datadir}/dbus-1/services/org.gnome.Guake.service
+%{_datadir}/dbus-1/services/org.guake.Guake.service
 %dir %attr (0755, root, other) %{_datadir}/pixmaps
 %{_datadir}/pixmaps/%{src_name} 
 
@@ -147,5 +148,7 @@ test -x $PKG_INSTALL_ROOT/usr/lib/postrun || exit 0
 %endif
 
 %changelog
+* Wed Dec 01 2010 - Milan Jurik
+- bump to 0.4.2
 * Sun Jun 06 2010 - Milan Jurik
 - Initial version
