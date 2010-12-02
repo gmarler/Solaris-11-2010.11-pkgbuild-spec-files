@@ -143,6 +143,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,bin)
+%{_bindir}/orc-bugreport
 %{_libdir}/liborc-*.so.*
 %if %arch_sse2
 %{_libdir}/%{sse2_arch}/liborc-*.so.*
@@ -183,6 +184,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Dec 02 2010 - Milan Jurik
+- update to 0.4.11, enable only SSE backend because of Sun Studio
 * Sat Oct 20 2010 - Thomas Wagner
 - make (Build)Requires dependend of the osbuild version
 * Fri Apr 09 2010 - Milan Jurik

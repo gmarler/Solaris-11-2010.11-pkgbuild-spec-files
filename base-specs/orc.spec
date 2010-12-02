@@ -1,19 +1,21 @@
 %define src_name orc
 
 Name:		SFEorc
-Version:	0.4.5
+Version:	0.4.11
 Summary:	The Oil Run-time Compiler
 
 Group:		System Environment/Libraries
 License:	BSD
 URL:		http://code.entropywave.com/projects/orc/
 Source:		http://code.entropywave.com/download/orc/orc-%{version}.tar.gz
+Patch1:		orc-01-get_cpuid.diff
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 
 
 %prep
 %setup -q -n %{src_name}-%{version}
 perl -i.orig -lpe 'if ($. == 1){s/^.*$/#!\/bin\/bash/}' configure
+%patch1 -p1
 
 %build
 export CFLAGS="%optflags"
@@ -25,7 +27,8 @@ fi
 ./configure --prefix=%{_prefix}			\
             --libdir=%{_libdir}                 \
             --datadir=%{_datadir}               \
-            --disable-static --enable-gtk-doc
+            --disable-static --enable-gtk-doc	\
+            --enable-backend=sse
 
 make
 

@@ -1,0 +1,11 @@
+--- orc-0.4.11/orc/orccpu-x86.c	2010-09-06 09:35:01.000000000 +0200
++++ orc-0.4.11-patch/orc/orccpu-x86.c	2010-12-01 22:16:44.346246602 +0100
+@@ -71,7 +71,7 @@
+   *c = tmp[2];
+   *d = tmp[3];
+ }
+-#elif defined(__GNUC__)
++#elif defined(__GNUC__) || defined (__SUNPRO_C)
+ 
+ static void
+ get_cpuid_ecx (orc_uint32 op, orc_uint32 init_ecx, orc_uint32 *a, orc_uint32 *b,
