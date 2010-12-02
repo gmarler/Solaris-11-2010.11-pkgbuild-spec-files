@@ -1,5 +1,5 @@
---- vpnc-0.5.1.orig/sysdep.c	2007-02-19 16:39:08.000000000 -0500
-+++ vpnc-0.5.1/sysdep.c	2008-07-18 10:04:43.040773604 -0400
+--- vpnc-0.5.3/sysdep.c	2008-11-19 21:36:12.000000000 +0100
++++ vpnc-0.5.3-patch/sysdep.c	2010-12-02 21:36:47.050985645 +0100
 @@ -29,7 +29,7 @@
  #include <sys/socket.h>
  #include <net/if.h>
@@ -9,7 +9,7 @@
  #include <ctype.h>
  #include <sys/time.h>
  #include <sys/wait.h>
-@@ -74,8 +74,10 @@
+@@ -74,9 +74,12 @@
  #include <stdarg.h>
  #endif
  
@@ -19,9 +19,11 @@
  extern char **environ;
 +#endif
  static int ip_fd = -1, muxid;
++#undef SIOCGIFHWADDR
  #endif
  
-@@ -95,7 +97,7 @@
+ #if defined(__CYGWIN__)
+@@ -95,7 +98,7 @@
   * Allocate TUN/TAP device, returns opened fd. 
   * Stores dev name in the first arg(must be large enough).
   */
@@ -30,7 +32,7 @@
  int tun_open(char *dev, enum if_mode_enum mode)
  {
  	int tun_fd, if_fd, ppa = -1;
-@@ -477,7 +479,7 @@
+@@ -485,7 +488,7 @@
  /* 
   * Close TUN device. 
   */
@@ -39,7 +41,7 @@
  int tun_close(int fd, char *dev)
  {
  	struct ifreq ifr;
-@@ -513,7 +515,7 @@
+@@ -522,7 +525,7 @@
  #endif
  
  

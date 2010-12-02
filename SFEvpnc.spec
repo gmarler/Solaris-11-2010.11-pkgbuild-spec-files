@@ -18,6 +18,8 @@ BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 Requires: %name-root
 Requires: SUNWlibgcrypt
 BuildRequires: SUNWlibgcrypt-devel
+Requires: SFEtun
+BuildRequires: SFEtun
 
 %package root
 Summary:                 %{summary} - / filesystem
@@ -34,9 +36,26 @@ export CFLAGS="%optflags"
 export LDFLAGS="%_ldflags"
 
 make CC=$CC
+
 %install
-rm -rf $RPM_BUILD_ROOT
-make install DESTDIR=$RPM_BUILD_ROOT PREFIX=%{_prefix} ETCDIR=%{_sysconfdir}/vpnc MANDIR=%{_mandir}
+rm -rf %{buildroot}
+make install DESTDIR=%{buildroot} PREFIX=%{_prefix} ETCDIR=%{_sysconfdir}/vpnc MANDIR=%{_mandir}
+
+# no section 8
+install -d 0755 %{buildroot}%{_datadir}/man/man1m
+for i in %{buildroot}%{_datadir}/man/man8/*.8
+do
+  base=`basename $i 8`
+  name1m=${base}1m
+  mv $i %{buildroot}%{_datadir}/man/man1m/${name1m}
+done
+rmdir %{buildroot}%{_datadir}/man/man8
+for i in %{buildroot}%{_datadir}/man/*/*
+do
+  sed 's/(8)/(1M)/g' $i | sed '/^\.TH/s/ \"8\" / \"1M\" /g' > $i.new
+  mv $i.new $i
+done
+
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -51,11 +70,8 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, other) %{_docdir}
 %dir %attr (0755, root, other) %{_docdir}/vpnc
 %{_docdir}/vpnc/*
-%dir %attr (0755, root, bin) %{_mandir}
-%dir %attr (0755, root, bin) %{_mandir}/man1
-%{_mandir}/man1/*
-%dir %attr (0755, root, bin) %{_mandir}/man8
-%{_mandir}/man8/*
+%{_mandir}
+
 
 %files root
 %defattr (-, root, sys)
@@ -63,5 +79,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_sysconfdir}/vpnc
 
 %changelog
+* Thu Dec 02 2010 - Milan Jurik
+- fix build on the latest Solaris builds
+- no man8 on Solaris
 * Fri Jul 18 2008 - trisk@acm.jhu.edu
 - Initial spec

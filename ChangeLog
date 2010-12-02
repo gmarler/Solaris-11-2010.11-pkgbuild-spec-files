@@ -1,6 +1,8 @@
 2010-12-02 Milan Jurik <sfnet@xylab.cz>
 
-	* SFEorc.spec: - update to 0.4.11
+	* SFEorc.spec: update to 0.4.11
+	* SFEvpnc.spec: fix build on the latest Solaris builds, no man8
+	* SFEopenconnect.spec: initial spec
 
 2010-12-01 Milan Jurik <sfnet@xylab.cz>
 
