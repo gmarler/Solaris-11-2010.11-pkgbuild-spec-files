@@ -5,33 +5,33 @@
 #
 
 %include Solaris.inc
-Name:                    SFEgajim
-Summary:                 Gajim Jabber client
-Version:                 0.11.4
-Source:                  http://www.gajim.org/downloads/gajim-%{version}.tar.bz2
-SUNW_BaseDir:            %{_basedir}
-BuildRoot:               %{_tmppath}/%{name}-%{version}-build
-Patch2:                  gajim-02-logger.diff
+
+Name:		SFEgajim
+Summary:	Gajim Jabber client
+Group:		Applications/Internet
+Version:	0.14.1
+URL:		http://www.gajim.org/
+Source:		http://www.gajim.org/downloads/0.14/gajim-%{version}.tar.bz2
+SUNW_BaseDir:	%{_basedir}
+BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
-Requires:                SUNWPython
-Requires:                SUNWsqlite3
-Requires:                SUNWpysqlite
-BuildRequires:           SUNWPython-devel
-BuildRequires:           SUNWsqlite3-devel
-BuildRequires:           SUNWpysqlite
-BuildRequires:           SFEgtkspell-devel
+Requires:	SUNWPython26
+Requires:	SUNWgtkspell
+BuildRequires:	SUNWPython26-devel
+BuildRequires:	SUNWgtkspell-devel
+BuildRequires:	SUNWgnome-common-devel
+BuildRequires:	SUNWperl-xml-parser
 
 %if %build_l10n
 %package l10n
-Summary:                 %{summary} - l10n files
-SUNW_BaseDir:            %{_basedir}
+Summary:	%{summary} - l10n files
+SUNW_BaseDir:	%{_basedir}
 %include default-depend.inc
-Requires:                %{name}
+Requires:	%{name}
 %endif
 
 %prep
 %setup -q -n gajim-%version
-%patch2 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -40,7 +40,6 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
 fi
 
 export CFLAGS="%optflags"
-export CPPFLAGS="%optflags"
 export CXXFLAGS="%cxx_optflags"
 export LDFLAGS="%_ldflags"
 
@@ -77,19 +76,19 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, bin) %{_bindir}
 %{_bindir}/*
 
-%dir %attr (0755, root, bin) %{_libdir}
-%{_libdir}/gajim/*
-
 %dir %attr (0755, root, sys) %{_datadir}
-%dir %attr (0755, root, other) %{_datadir}/pixmaps
 %dir %attr (0755, root, other) %{_datadir}/applications
-%{_datadir}/gajim/*
-%{_datadir}/pixmaps/*
 %{_datadir}/applications/*
-
-%dir %attr(0755, root, bin) %{_mandir}
-%dir %attr(0755, root, bin) %{_mandir}/*
-%{_mandir}/*/gajim*
+%{_datadir}/gajim/*
+%dir %attr (0755, root, other) %{_datadir}/icons
+%dir %attr (-, root, other) %{_datadir}/icons/hicolor
+%dir %attr (-, root, other) %{_datadir}/icons/hicolor/64x64
+%dir %attr (-, root, other) %{_datadir}/icons/hicolor/64x64/apps
+%{_datadir}/icons/hicolor/64x64/apps/*
+%dir %attr (-, root, other) %{_datadir}/icons/hicolor/scalable
+%dir %attr (-, root, other) %{_datadir}/icons/hicolor/scalable/apps
+%{_datadir}/icons/hicolor/scalable/apps/*
+%{_mandir}
 
 %if %build_l10n
 %files l10n
@@ -99,6 +98,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Sat Dec 04 2010 - Milan Jurik
+- update to 0.14.1, move to python 2.6
 * Sat Mar 23 2008 - nicolas@slubman.info
 - Bumped version
 * Wed Oct 11 2006 - laca@sun.com

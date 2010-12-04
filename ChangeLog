@@ -1,6 +1,8 @@
 2010-12-04 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEwebalizer.spec: bump to 2.23 and GeoIP support added
+	* SFEgajim.spec: update to 0.14.1, move to python 2.6
+	* SFEgtkspell.spec: archived because already integrated
 
 2010-12-03 Milan Jurik <sfnet@xylab.cz>
 
