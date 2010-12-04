@@ -4,14 +4,18 @@
 # package are under the same license as the package itself.
 
 %include Solaris.inc
-%define tarball_version 2.21-02-src
+%define cc_is_gcc 1
+%include base.inc
+
+%define src_version 2.23-03
+%define tarball_version %{src_version}-src
 
 Name:                SFEwebalizer
 Summary:             Web server log analysis program
-Version:             2.21
+Version:             2.23.3
 Source:              ftp://ftp.mrunix.net/pub/webalizer/webalizer-%{tarball_version}.tar.bz2
 URL:		     http://www.webalizer.org
-
+Group:               Utility
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -20,6 +24,10 @@ BuildRequires: SUNWgd2
 Requires: SUNWgd2
 BuildRequires: SUNWlexpt
 Requires: SUNWlexpt
+BuildRequires: SFEbdb
+Requires: SFEbdb
+BuildRequires: SFEgeoip-devel
+Requires: SFEgeoip
 
 # Guarantee X/freetype environment, concisely (hopefully):
 BuildRequires: SUNWGtku
@@ -39,7 +47,7 @@ SUNW_BaseDir:            /
 %include default-depend.inc
 
 %prep
-%setup -q -n webalizer-%{version}-02
+%setup -q -n webalizer-%{src_version}
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -47,13 +55,18 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
      CPUS=1
 fi
 
+export CC=gcc
 export CFLAGS="%optflags"
-export LDFLAGS="%_ldflags"
+export LDFLAGS="%_ldflags -R/usr/gnu/lib"
 
 ./configure --prefix=%{_prefix}  \
             --mandir=%{_mandir} \
             --sysconfdir=%{_sysconfdir} \
-	    --with-gd=/usr/include/gd2 
+	    --with-gd=/usr/include/gd2 \
+	    --with-db=/usr/gnu/include \
+	    --with-dblib=/usr/gnu/lib \
+	    --enable-dns \
+	    --enable-geoip
 
 make -j$CPUS
 
@@ -89,6 +102,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_sysconfdir}/webalizer.conf.sample
 
 %changelog
+* Sat Dec 04 2010 - Milan Jurik
+- bump to 2.23 and GeoIP support added
 * Sun Mar 22 2009 - Thomas Wagner
 - add %doc
 * Mon Feb 02 2008 - Thomas Wagner

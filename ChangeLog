@@ -1,3 +1,7 @@
+2010-12-04 Milan Jurik <sfnet@xylab.cz>
+
+	* SFEwebalizer.spec: bump to 2.23 and GeoIP support added
+
 2010-12-03 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEenet.spec: initial spec
