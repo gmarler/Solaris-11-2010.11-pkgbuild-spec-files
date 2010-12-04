@@ -40,6 +40,8 @@ BuildRequires:	SFEfreealut-devel
 BuildRequires:	SUNWgawk
 BuildRequires:	SUNWgnu-findutils
 Requires:	SFEbullet
+BuildRequires:	SFEplib-devel
+Requires:	SFEplib
 
 %description
 3D go-kart racing game for kids with several famous OpenSource mascots
