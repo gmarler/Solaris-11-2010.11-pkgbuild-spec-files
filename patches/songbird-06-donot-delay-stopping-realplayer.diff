@@ -1,0 +1,18 @@
+--- firefox/layout/generic/nsObjectFrame.cpp.orig	2008-08-19 18:05:29.971589219 +0800
++++ firefox/layout/generic/nsObjectFrame.cpp	2008-08-19 18:02:21.477682134 +0800
+@@ -1772,10 +1772,13 @@
+ static PRBool
+ DoDelayedStop(nsPluginInstanceOwner *aInstanceOwner, PRBool aDelayedStop)
+ {
+-  // Don't delay stopping QuickTime (bug 425157), Flip4Mac (bug 426524).
++  // Don't delay stopping QuickTime (bug 425157), Flip4Mac (bug 426524),
++  // RealPlayer/Helix (bug 451007).
+   if (aDelayedStop &&
+       !::MatchPluginName(aInstanceOwner, "QuickTime") &&
+-      !::MatchPluginName(aInstanceOwner, "Flip4Mac")) {
++      !::MatchPluginName(aInstanceOwner, "Flip4Mac") &&
++      !::MatchPluginName(aInstanceOwner, "RealPlayer") &&
++      !::MatchPluginName(aInstanceOwner, "Helix")) {
+     nsCOMPtr<nsIRunnable> evt = new nsStopPluginRunnable(aInstanceOwner);
+     NS_DispatchToCurrentThread(evt);
+     return PR_TRUE;

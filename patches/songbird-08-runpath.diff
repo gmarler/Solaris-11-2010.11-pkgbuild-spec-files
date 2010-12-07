@@ -1,0 +1,22 @@
+--- mozilla/configure.in.orig	2009-01-15 15:24:39.461817320 +0800
++++ mozilla/configure.in	2009-01-15 15:24:51.386246743 +0800
+@@ -2425,7 +2425,7 @@
+     MOZ_MEMORY=1
+     if test -z "$GNU_CC"; then
+        NS_USE_NATIVE=1
+-       MOZ_FIX_LINK_PATHS='-R $(LIBXUL_DIST)/bin'
++       MOZ_FIX_LINK_PATHS=
+        AC_DEFINE(NSCAP_DISABLE_DEBUG_PTR_TYPES)
+ 
+        if test "$CPU_ARCH" != "sparc"; then
+--- mozilla/configure.orig	2009-01-15 15:24:57.847935053 +0800
++++ mozilla/configure	2009-01-15 15:25:58.110667291 +0800
+@@ -7033,7 +7033,7 @@
+     MOZ_MEMORY=1
+     if test -z "$GNU_CC"; then
+        NS_USE_NATIVE=1
+-       MOZ_FIX_LINK_PATHS='-R $(LIBXUL_DIST)/bin'
++       MOZ_FIX_LINK_PATHS=
+        cat >> confdefs.h <<\EOF
+ #define NSCAP_DISABLE_DEBUG_PTR_TYPES 1
+ EOF

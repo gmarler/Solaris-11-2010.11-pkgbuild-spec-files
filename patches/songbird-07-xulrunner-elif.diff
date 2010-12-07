@@ -1,0 +1,12 @@
+diff --git a/toolkit/xre/nsAppRunner.cpp b/toolkit/xre/nsAppRunner.cpp
+--- a/toolkit/xre/nsAppRunner.cpp
++++ b/toolkit/xre/nsAppRunner.cpp
+@@ -1421,7 +1421,7 @@
+   if (NS_FAILED(rv))
+     return rv;
+ 
+-#elif
++#else
+ #error Oops, you need platform-specific code here
+ #endif
+ 

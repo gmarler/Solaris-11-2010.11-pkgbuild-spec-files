@@ -1,0 +1,8 @@
+--- Songbird1.2.0/installer/linux/songbird.sh.old	2009-10-30 13:41:55.455399000 +0800
++++ Songbird1.2.0/installer/linux/songbird.sh	2009-10-30 13:42:03.519194000 +0800
+@@ -1,4 +1,4 @@
+-#!/bin/sh
++#!/bin/bash
+ #
+ # ***** BEGIN LICENSE BLOCK *****
+ # Version: MPL 1.1/GPL 2.0/LGPL 2.1

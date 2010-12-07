@@ -1,5 +1,5 @@
---- elisa-plugins-bad-1.0.6/setup.py-orig	2009-08-06 11:06:36.126927000 -0500
-+++ elisa-plugins-bad-1.0.6/setup.py	2009-08-06 11:07:42.287873000 -0500
+--- elisa-plugins-bad-1.0.9/setup.py-orig	2009-12-08 18:13:57.671090759 -0600
++++ elisa-plugins-bad-1.0.9/setup.py	2009-12-08 18:14:35.902782687 -0600
 @@ -4,9 +4,7 @@ from setup_bundle import setup
  # List of plugins to be packaged in the 'bad' bundle
  bad_plugins = ['amazon',
@@ -10,17 +10,10 @@
                 'database',
                 'discogs',
                 'dvd',
-@@ -14,18 +12,13 @@ bad_plugins = ['amazon',
-                'filtered_shares',
-                'gstreamer',
-                'http_client',
--               'ipod',
--               'osso',
-                'pigment',
+@@ -21,11 +19,8 @@ bad_plugins = ['amazon',
                 'poblesec',
                 'rss',
                 'search',
-                'shelf',
 -               'smbwin32',
                 'themoviedb',
                 'thetvdb',

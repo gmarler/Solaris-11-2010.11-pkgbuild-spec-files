@@ -1,0 +1,91 @@
+--- a/security/nss/lib/crmf/cmmfchal.c	Thu May 21 15:04:02 2009
++++ b/security/nss/lib/crmf/cmmfchal.c	Wed May 20 17:58:31 2009
+@@ -38,7 +38,7 @@
+ #include "cmmf.h"
+ #include "cmmfi.h"
+ #include "sechash.h"
+-#include "genname.h"
++#include "../certdb/genname.h"
+ #include "pk11func.h"
+ #include "cert.h"
+ #include "secitem.h"
+--- a/security/manager/Makefile.in	Thu May 21 15:02:44 2009
++++ b/security/manager/Makefile.in	Thu May 21 15:02:07 2009
+@@ -82,7 +82,12 @@
+   $(DIST)/lib/$(LIB_PREFIX)softokn.$(LIB_SUFFIX) \
+   $(NULL)
+ endif
++else
++ifeq ($(OS_ARCH), SunOS)
++SDK_LIBS = \
++  $(DIST)/lib/$(LIB_PREFIX)crmf.$(LIB_SUFFIX)
+ endif
++endif
+ 
+ # Default
+ HAVE_FREEBL_LIBS = 1
+@@ -251,7 +256,13 @@
+ 	$(MAKE) -C $(topsrcdir)/security/nss/cmd/shlibsign $(DEFAULT_GMAKE_FLAGS) clean
+ endif
+ 	touch $@
++else
++ifeq ($(OS_ARCH), SunOS)
++	$(MAKE) -C $(topsrcdir)/security/coreconf $(DEFAULT_GMAKE_FLAGS) clean
++	$(MAKE) -C $(topsrcdir)/security/nss/lib/crmf $(DEFAULT_GMAKE_FLAGS) clean
++	touch $@
+ endif
++endif
+ 
+ GARBAGE += .nss.cleaned
+ 
+@@ -328,7 +339,13 @@
+ 	$(INSTALL) -m 755 $(DIST)/lib/$(FREEBL_64INT_LIB) $(DIST)/bin
+ 	$(INSTALL) -m 755 $(DIST)/lib/$(FREEBL_64FPU_LIB) $(DIST)/bin
+ endif
++else
++ifeq ($(OS_ARCH), SunOS)
++	$(MAKE) -C $(topsrcdir)/security/coreconf $(DEFAULT_GMAKE_FLAGS)
++	$(MAKE) -C $(topsrcdir)/security/nss/lib/crmf $(DEFAULT_GMAKE_FLAGS)
++	$(INSTALL) -m 755 $(SDK_LIBS) $(DIST)/sdk/lib
+ endif
++endif
+ ifndef MOZ_NATIVE_NSS
+ # NSS installs headers to dist/public and we want them in dist/include
+ 	$(NSINSTALL) -D $(DIST)/include/nss
+@@ -409,7 +426,12 @@
+ 	$(MAKE) -C $(topsrcdir)/security/nss/cmd/lib $(DEFAULT_GMAKE_FLAGS) clean
+ 	$(MAKE) -C $(topsrcdir)/security/nss/cmd/shlibsign $(DEFAULT_GMAKE_FLAGS) clean
+ endif
++else
++ifeq ($(OS_ARCH), SunOS)
++	$(MAKE) -C $(topsrcdir)/security/coreconf $(DEFAULT_GMAKE_FLAGS) clean
++	$(MAKE) -C $(topsrcdir)/security/nss/lib/crmf $(DEFAULT_GMAKE_FLAGS) clean
+ endif
++endif
+ 
+ echo-requires-recursive::
+ 	$(MAKE) -C boot $@
+--- a/security/manager/ssl/src/nsNSSComponent.cpp	Thu May 21 18:39:37 2009
++++ b/security/manager/ssl/src/nsNSSComponent.cpp	Thu May 21 18:52:06 2009
+@@ -812,6 +812,7 @@
+   const char *possible_ckbi_locations[] = {
+     NS_XPCOM_CURRENT_PROCESS_DIR,
+     NS_GRE_DIR,
++    (const char *)-1, // This special value means: /usr/lib/mps
+     0 // This special value means: 
+       //   search for ckbi in the directories on the shared
+       //   library/DLL search path
+@@ -821,8 +822,12 @@
+     nsCOMPtr<nsILocalFile> mozFile;
+     char *fullLibraryPath = nsnull;
+ 
+-    if (!possible_ckbi_locations[il])
++    if (possible_ckbi_locations[il] == (const char *)-1)
+     {
++      fullLibraryPath = PR_GetLibraryName("/usr/lib/mps", "nssckbi");
++    }
++    else if (!possible_ckbi_locations[il])
++    {
+       fullLibraryPath = PR_GetLibraryName(nsnull, "nssckbi");
+     }
+     else

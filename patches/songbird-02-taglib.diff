@@ -1,5 +1,5 @@
---- dependencies/vendor/taglib/taglib/ape/apetag.h.orig	Wed Jun 18 15:40:12 2008
-+++ dependencies/vendor/taglib/taglib/ape/apetag.h	Wed Jun 18 15:40:16 2008
+--- Songbird0.6/dependencies/vendor/taglib/taglib/ape/apetag.h.orig	Wed Jul 16 16:24:02 2008
++++ Songbird0.6/dependencies/vendor/taglib/taglib/ape/apetag.h	Wed Jul 16 16:23:46 2008
 @@ -49,7 +49,7 @@
       *
       * \see APE::Tag::itemListMap()
@@ -9,3 +9,14 @@
  
  
      //! An APE tag implementation
+--- Songbird1.4-vendor/dependencies/vendor/taglib/taglib/m4a/mp4file.cpp.orig	2010-01-05 13:17:49.269849989 -0800
++++ Songbird1.4-vendor/dependencies/vendor/taglib/taglib/m4a/mp4file.cpp	2010-01-05 13:18:11.272785153 -0800
+@@ -46,6 +46,8 @@
+ 
+ using namespace TagLib;
+ 
++#define __FUNCTION__ __FILE__ + __LINE__
++
+ class MP4::File::FilePrivate
+ {
+ public:

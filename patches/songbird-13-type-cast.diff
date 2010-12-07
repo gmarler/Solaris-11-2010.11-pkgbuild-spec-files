@@ -1,0 +1,24 @@
+--- Songbird1.4.3/components/devices/device/src/sbDeviceStatusHelper.h.old	2010-01-11 16:02:12.297414000 +0800
++++ Songbird1.4.3/components/devices/device/src/sbDeviceStatusHelper.h	2010-01-11 16:07:41.630588000 +0800
+@@ -225,8 +225,8 @@
+     mStatus->OperationStart(mOperation,
+                             mRequest->batchIndex,
+                             mRequest->batchCount,
+-                            IsItemOp(mOperation) ? mRequest->list : nsnull,
+-                            IsItemOp(mOperation) ? mRequest->item : nsnull);
++                            IsItemOp(mOperation) ? mRequest->list : nsCOMPtr<sbIMediaList>(nsnull),
++                            IsItemOp(mOperation) ? mRequest->item : nsCOMPtr<sbIMediaItem>(nsnull));
+ 
+     if (IsItemOp(mOperation)) {
+       // Update item status
+@@ -252,8 +252,8 @@
+     mStatus->OperationStart(mOperation,
+                             0,
+                             aBatchCount,
+-                            IsItemOp(mOperation) ? mRequest->list : nsnull,
+-                            IsItemOp(mOperation) ? mRequest->item : nsnull);
++                            IsItemOp(mOperation) ? mRequest->list : nsCOMPtr<sbIMediaList>(nsnull),
++                            IsItemOp(mOperation) ? mRequest->item : nsCOMPtr<sbIMediaItem>(nsnull));
+ 
+     if (IsItemOp(mOperation)) {
+       // Update item status

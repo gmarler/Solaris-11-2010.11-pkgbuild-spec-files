@@ -1,0 +1,56 @@
+Index: Songbird1.1/components/mediacore/gstreamer/src/sbGStreamerMediacore.cpp
+===================================================================
+--- Songbird1.1/components/mediacore/gstreamer/src/sbGStreamerMediacore.cpp	(revision 13119)
++++ Songbird1.1/components/mediacore/gstreamer/src/sbGStreamerMediacore.cpp	(working copy)
+@@ -454,7 +454,7 @@
+   /* Add each filter, followed by an audioconvert. The first-added filter ends
+    * last in the pipeline, so we iterate in reverse.
+    */
+-  std::vector<GstElement *>::const_reverse_iterator it = mAudioFilters.rbegin(),
++  std::vector<GstElement *>::reverse_iterator it = mAudioFilters.rbegin(),
+       end = mAudioFilters.rend();
+   for ( ; it != end; ++it)
+   {
+Index: Songbird1.1/components/mediacore/base/src/sbMediacoreVotingChain.cpp
+===================================================================
+--- Songbird1.1/components/mediacore/base/src/sbMediacoreVotingChain.cpp	(revision 13119)
++++ Songbird1.1/components/mediacore/base/src/sbMediacoreVotingChain.cpp	(working copy)
+@@ -127,8 +127,8 @@
+ 
+   nsAutoLock lock(mLock);
+ 
+-  votingmap_t::const_reverse_iterator cit = mResults.rbegin();
+-  votingmap_t::const_reverse_iterator endCit = mResults.rend();
++  votingmap_t::reverse_iterator cit = mResults.rbegin();
++  votingmap_t::reverse_iterator endCit = mResults.rend();
+ 
+   for(; cit != endCit; ++cit) {
+     rv = mutableArray->AppendElement((*cit).second, PR_FALSE);
+@@ -152,8 +152,8 @@
+ 
+   nsAutoLock lock(mLock);
+ 
+-  votingmap_t::const_reverse_iterator cit = mResults.rbegin();
+-  votingmap_t::const_reverse_iterator endCit = mResults.rend();
++  votingmap_t::reverse_iterator cit = mResults.rbegin();
++  votingmap_t::reverse_iterator endCit = mResults.rend();
+   for(; cit != endCit; ++cit) {
+     if((*cit).second == aMediacore) {
+       *_retval = (*cit).first;
+Index: Songbird1.1/components/mediacore/manager/src/sbMediacoreShuffleSequenceGenerator.cpp
+===================================================================
+--- Songbird1.1/components/mediacore/manager/src/sbMediacoreShuffleSequenceGenerator.cpp	(revision 13119)
++++ Songbird1.1/components/mediacore/manager/src/sbMediacoreShuffleSequenceGenerator.cpp	(working copy)
+@@ -86,10 +86,10 @@
+   std::srand(std::clock());
+ 
+   // Randomly sample the pool to populate the sequence.
+-  random_shuffle(pool.begin(), pool.end());
++  std::random_shuffle(pool.begin(), pool.end());
+ 
+   // Copy into the return array
+-  copy(pool.begin(), pool.end(), *aSequence);
++  std::copy(pool.begin(), pool.end(), *aSequence);
+   
+   return NS_OK;
+ }

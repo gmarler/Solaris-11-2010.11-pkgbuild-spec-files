@@ -1,0 +1,124 @@
+--- firefox/gfx/cairo/libpixman/src/Makefile.in.orig	2008-08-19 17:51:55.451507774 +0800
++++ firefox/gfx/cairo/libpixman/src/Makefile.in	2008-08-19 17:52:34.386161547 +0800
+@@ -48,14 +48,11 @@
+ LIBRARY_NAME	= mozlibpixman
+ LIBXUL_LIBRARY = 1
+ 
+-ifndef MOZ_ENABLE_LIBXUL
+-VISIBILITY_FLAGS =
+-endif
+-
+ ifdef GNU_CC
+ MODULE_OPTIMIZE_FLAGS = -O2
+ else
+ ifeq ($(OS_ARCH),SunOS)
++VISIBILITY_FLAGS = "-xldscope=hidden"
+ MODULE_OPTIMIZE_FLAGS = -xO5
+ endif
+ ifeq ($(OS_ARCH),WINNT)
+@@ -106,7 +103,7 @@
+ DEFINES += -DUSE_MMX
+ endif
+ 
+-EXPORTS		= pixman.h pixman-remap.h pixman-version.h
++EXPORTS		= pixman.h pixman-version.h
+ 
+ LOCAL_INCLUDES	+= -I$(srcdir) -I$(srcdir)/../../cairo/src
+ 
+--- firefox/gfx/cairo/cairo/src/cairo-rename.h.orig	2008-08-19 17:51:48.915263715 +0800
++++ firefox/gfx/cairo/cairo/src/cairo-rename.h	2008-08-19 17:52:05.779870983 +0800
+@@ -355,4 +355,9 @@
+ #define pixman_add_trapezoids _moz_pixman_add_trapezoids
+ #define pixman_rasterize_trapezoid _moz_pixman_rasterize_trapezoid
+ #define pixman_transform_point_3d _moz_pixman_transform_point_3d
++#define pixman_format_supported_destination _moz_pixman_format_supported_destination
++#define pixman_format_supported_source _moz_pixman_format_supported_source
++#define pixman_image_set_source_clipping _moz_pixman_image_set_source_clipping
++#define pixman_version _moz_pixman_version
++#define pixman_version_string _moz_pixman_version_string
+ 
+diff --git a/gfx/cairo/libpixman/src/pixman-remap.h b/gfx/cairo/libpixman/src/pixman-remap.h
+deleted file mode 100644
+--- a/gfx/cairo/libpixman/src/pixman-remap.h
++++ /dev/null
+@@ -1,61 +0,0 @@
+-#define pixman_transform_point_3d _moz_pixman_transform_point_3d
+-#define pixman_region_set_static_pointers _moz_pixman_region_set_static_pointers
+-#define pixman_region_init _moz_pixman_region_init
+-#define pixman_region_init_rect _moz_pixman_region_init_rect
+-#define pixman_region_init_with_extents _moz_pixman_region_init_with_extents
+-#define pixman_region_fini _moz_pixman_region_fini
+-#define pixman_region_translate _moz_pixman_region_translate
+-#define pixman_region_copy _moz_pixman_region_copy
+-#define pixman_region_intersect _moz_pixman_region_intersect
+-#define pixman_region_union _moz_pixman_region_union
+-#define pixman_region_union_rect _moz_pixman_region_union_rect
+-#define pixman_region_subtract _moz_pixman_region_subtract
+-#define pixman_region_inverse _moz_pixman_region_inverse
+-#define pixman_region_contains_point _moz_pixman_region_contains_point
+-#define pixman_region_contains_rectangle _moz_pixman_region_contains_rectangle
+-#define pixman_region_not_empty _moz_pixman_region_not_empty
+-#define pixman_region_extents _moz_pixman_region_extents
+-#define pixman_region_n_rects _moz_pixman_region_n_rects
+-#define pixman_region_rectangles _moz_pixman_region_rectangles
+-#define pixman_region_equal _moz_pixman_region_equal
+-#define pixman_region_selfcheck _moz_pixman_region_selfcheck
+-#define pixman_region_reset _moz_pixman_region_reset
+-#define pixman_region_init_rects _moz_pixman_region_init_rects
+-#define pixman_blt _moz_pixman_blt
+-#define pixman_fill _moz_pixman_fill
+-#define pixman_image_create_solid_fill _moz_pixman_image_create_solid_fill
+-#define pixman_image_create_linear_gradient _moz_pixman_image_create_linear_gradient
+-#define pixman_image_create_radial_gradient _moz_pixman_image_create_radial_gradient
+-#define pixman_image_create_conical_gradient _moz_pixman_image_create_conical_gradient
+-#define pixman_image_create_bits _moz_pixman_image_create_bits
+-#define pixman_image_ref _moz_pixman_image_ref
+-#define pixman_image_unref _moz_pixman_image_unref
+-#define pixman_image_set_clip_region _moz_pixman_image_set_clip_region
+-#define pixman_image_set_has_client_clip _moz_pixman_image_set_has_client_clip
+-#define pixman_image_set_transform _moz_pixman_image_set_transform
+-#define pixman_image_set_repeat _moz_pixman_image_set_repeat
+-#define pixman_image_set_filter _moz_pixman_image_set_filter
+-#define pixman_image_set_filter_params _moz_pixman_image_set_filter_params
+-#define pixman_image_set_alpha_map _moz_pixman_image_set_alpha_map
+-#define pixman_image_set_component_alpha _moz_pixman_image_set_component_alpha
+-#define pixman_image_set_accessors _moz_pixman_image_set_accessors
+-#define pixman_image_set_indexed _moz_pixman_image_set_indexed
+-#define pixman_image_get_data _moz_pixman_image_get_data
+-#define pixman_image_get_width _moz_pixman_image_get_width
+-#define pixman_image_get_height _moz_pixman_image_get_height
+-#define pixman_image_get_stride _moz_pixman_image_get_stride
+-#define pixman_image_get_depth _moz_pixman_image_get_depth
+-#define pixman_image_fill_rectangles _moz_pixman_image_fill_rectangles
+-#define pixman_compute_composite_region _moz_pixman_compute_composite_region
+-#define pixman_image_composite _moz_pixman_image_composite
+-#define pixman_sample_ceil_y _moz_pixman_sample_ceil_y
+-#define pixman_sample_floor_y _moz_pixman_sample_floor_y
+-#define pixman_edge_step _moz_pixman_edge_step
+-#define pixman_edge_init _moz_pixman_edge_init
+-#define pixman_line_fixed_edge_init _moz_pixman_line_fixed_edge_init
+-#define pixman_rasterize_edges _moz_pixman_rasterize_edges
+-#define pixman_add_traps _moz_pixman_add_traps
+-#define pixman_add_trapezoids _moz_pixman_add_trapezoids
+-#define pixman_rasterize_trapezoid _moz_pixman_rasterize_trapezoid
+-#define pixman_transform_point_3d _moz_pixman_transform_point_3d
+-
+--- firefox/toolkit/library/libxul-rules.mk.orig	Wed Aug 27 13:42:31 2008
++++ firefox/toolkit/library/libxul-rules.mk	Wed Aug 27 13:43:03 2008
+@@ -43,6 +43,7 @@
+ 	$(LCMS_LIBS) \
+ 	$(MOZ_JS_LIBS) \
+ 	$(NSS_LIBS) \
++	$(MOZ_CAIRO_LIBS) \
+ 	$(NULL)
+ 
+ ifdef MOZ_NATIVE_ZLIB
+@@ -89,8 +90,6 @@
+ EXTRA_DSO_LDOPTS += $(MOZ_PANGO_LIBS)
+ endif
+ 
+-EXTRA_DSO_LDOPTS += $(MOZ_CAIRO_LIBS)
+-
+ export:: dlldeps.cpp
+ 
+ dlldeps.cpp: $(topsrcdir)/xpcom/build/dlldeps.cpp

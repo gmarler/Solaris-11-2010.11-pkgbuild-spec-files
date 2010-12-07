@@ -1,0 +1,15 @@
+--- Songbird1.2.0/dependencies/vendor/songbird-vendor-defs.mk.old	2009-10-22 14:44:12.292113000 +0800
++++ Songbird1.2.0/dependencies/vendor/songbird-vendor-defs.mk	2009-10-22 14:45:34.228633000 +0800
+@@ -180,6 +180,12 @@
+    SB_CXX = cl
+    SB_LD = link
+    SB_OBJDUMP = objdump
++else
++ifeq (SunOS,$(SB_VENDOR_ARCH))
++   SB_CC = cc 
++   SB_CXX = CC 
++   SB_LD = CC 
++endif
+ endif
+ endif
+ endif

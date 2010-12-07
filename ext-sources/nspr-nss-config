@@ -1,0 +1,45 @@
+#!/bin/sh
+
+# This is a wrapper of pkg-config to simulate nspr-config/nss-config.
+# Usage: nspr-nss-config nspr [--version] [--libs] [--cflags]
+#     or nspr-nss-config nss  [--version] [--libs] [--cflags]
+
+if test $# -eq 0; then
+  exit 1
+fi
+
+program_name=$1
+shift
+
+if test "$program_name" != "nspr" && test "$program_name" != "nss"; then
+  exit 1
+fi
+
+while test $# -gt 0; do
+  case $1 in
+    --version)
+    echo_version=yes
+    ;;
+    --cflags)
+    echo_cflags=yes
+    ;;
+    --libs)
+    echo_libs=yes
+    ;;
+  esac
+  shift
+done
+
+if test "$echo_version" = "yes"; then
+  # use sed to append .0 if it doesn't have micro version
+  pkg-config $program_name --modversion | sed 's/^\([0-9]*\)\.\([0-9]*\)$/\1.\2.0/'
+
+fi
+
+if test "$echo_cflags" = "yes"; then
+  pkg-config $program_name --cflags
+fi
+
+if test "$echo_libs" = "yes"; then
+  echo -R/usr/lib/mps `pkg-config $program_name --libs`
+fi

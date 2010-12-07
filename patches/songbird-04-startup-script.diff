@@ -1,0 +1,20 @@
+--- Songbird1.0.0/installer/linux/songbird.sh.orig	2009-01-07 18:33:02.528779259 +0800
++++ Songbird1.0.0/installer/linux/songbird.sh	2009-01-07 18:35:32.162491459 +0800
+@@ -44,6 +44,7 @@
+ MOZ_APPRUNNER_NAME="./mozilla-bin"
+ MOZ_VIEWER_NAME="./viewer"
+ MOZ_PROGRAM=""
++MOZ_LIBDIR=/usr/lib/songbird
+ 
+ exitcode=0
+ #
+@@ -304,6 +305,9 @@
+ 	if [ -x "$MOZ_DIST_BIN/$MOZ_DEFAULT_NAME" ]
+ 	then
+ 		MOZ_PROGRAM=$MOZ_DIST_BIN/$MOZ_DEFAULT_NAME
++	elif [ -x "$MOZ_LIBDIR/$MOZ_DEFAULT_NAME" ]
++	then
++		MOZ_PROGRAM=$MOZ_LIBDIR/$MOZ_DEFAULT_NAME
+ 	##
+ 	## Try mozilla-bin
+ 	## 

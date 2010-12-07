@@ -1,3 +1,37 @@
+2010-12-07  Brian Cameron  <brian.cameron@oracle.com>
+
+	* SFEesound.spec, base-specs/esound.spec, patches/esound-01-build.diff:
+	  Added.
+	* SFEsongbird.spec, ext-sources/nspr-nss-config,
+	  patches/songbird-01-cpp-template.diff,
+	  patches/songbird-02-taglib.diff,
+	  patches/songbird-03-remap-pixman-functions.diff,
+	  patches/songbird-05-build.diff,
+	  patches/songbird-04-startup-script.diff,
+	  patches/songbird-06-donot-delay-stopping-realplayer.diff,
+	  patches/songbird-07-xulrunner-elif.diff,
+	  patches/songbird-08-runpath.diff
+	  patches/songbird-09-system-nss-nspr.diff
+	  patches/songbird-10-moz-nss-nspr.diff
+	  patches/songbird-11-use-sun-cc.diff
+	  patches/songbird-12-using-bash.diff
+	  patches/songbird-13-type-cast.diff
+	  patches/songbird-14-check-readable-core.diff: Added.
+	* patches/songbird-02-taglib.diff: Updated
+	* patches/songbird-01-menu-item.diff: Removed.
+	* SFEquick-lounge-applet.spec, base-specs/quick-lounge-applet.spec:
+	  Added.
+	* SFEmoovida.spec, SFEmoovida-plugins.spec,
+	  base-specs/moovida.spec
+	  base-specs/moovida-plugins-good.spec,
+	  base-specs/moovida-plugins-bad.spec,
+	  patches/moovida-04-pidof.diff,
+	  patches/moovida-plugins-bad-01-rm-plugins.diff: Updated to latest
+	  from spec-files.
+	* SFElibpigment.spec,
+	  SFElibpigment-python26.spec,
+	  base-specs/libpigment-python.spec: Added.
+
 2010-12-04 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEwebalizer.spec: bump to 2.23 and GeoIP support added

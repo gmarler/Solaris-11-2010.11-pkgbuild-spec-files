@@ -1,0 +1,24 @@
+--- esound-0.2.41/configure.ac-orig	2010-12-06 20:35:50.086328194 -0600
++++ esound-0.2.41/configure.ac	2010-12-06 20:36:41.670341832 -0600
+@@ -211,7 +211,9 @@ if test "x$enable_local_sound" = "xyes";
+    CPPFLAGS="$CPPFLAGS -I/usr/include/mme"
+    AC_CHECK_HEADERS(mme/mme_api.h)
+    CPPFLAGS="$xCPPFLAGS"
+-   AM_PATH_ARTS(, HAVE_ARTS=yes, HAVE_ARTS=no)
++   dnl Comment this out as the macro is not found and we don't enable sound.
++   dnl AM_PATH_ARTS(, HAVE_ARTS=yes, HAVE_ARTS=no)
++   HAVE_ARTS=no
+ 
+    dnl Define the driver needed based on the first header file found
+ 
+@@ -416,7 +418,9 @@ int deny_severity = LOG_WARNING;],
+    LIBS="$esound_save_LIBS"
+ fi
+ 
+-AS_COMPILER_FLAG(-Wall, CFLAGS="$CFLAGS -Wall")
++dnl This macro is not in gnome-compiler-flags.m4. This option is invalid on
++dnl Solaris anyway.
++dnl AS_COMPILER_FLAG(-Wall, CFLAGS="$CFLAGS -Wall")
+ 
+ # set | sort; # just for double checking the script...
+ 

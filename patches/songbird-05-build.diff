@@ -1,0 +1,333 @@
+--- Songbird1.2.0/components/library/localdatabase/src/sbLocalDatabaseLibrary.cpp.orig	2009-06-19 17:17:02.665263203 +0800
++++ Songbird1.2.0/components/library/localdatabase/src/sbLocalDatabaseLibrary.cpp	2009-06-19 17:00:14.981000458 +0800
+@@ -153,6 +153,22 @@
+  */
+ template<class V, typename T>
+ PLDHashOperator PR_CALLBACK
++CopyInterfaceHashtableEntry(const nsAString& aKey,
++                            T* aData,
++                            void* aUserData)
++{
++  nsInterfaceHashtableMT<V, T> *newHash =
++    reinterpret_cast<nsInterfaceHashtableMT<V, T>*>(aUserData);
++
++  NS_ASSERTION(newHash->IsInitialized(), "copying to uninitialized hashtable!");
++
++  PRBool success = newHash->Put(aKey, aData);
++
++  return success ? PL_DHASH_NEXT : PL_DHASH_STOP;
++}
++
++template<class V, typename T>
++PLDHashOperator PR_CALLBACK
+ CopyInterfaceHashtableEntry(typename V::KeyType aKey,
+                             T* aData,
+                             void* aUserData)
+--- Songbird1.2.0/configure.ac.orig	2009-07-21 15:16:47.922634217 +0800
++++ Songbird1.2.0/configure.ac	2009-07-21 15:17:25.328753707 +0800
+@@ -876,7 +876,8 @@
+ 
+       CFLAGS="$CFLAGS $SUN_COMPILER_FLAGS"
+       CXXFLAGS="$CXXFLAGS $SUN_COMPILER_FLAGS"
+-      LDFLAGS_DLL="-G -z defs -library=Cstd,Crun -lc"
++      LDFLAGS="-L\$(topsrcdir)/$OBJDIRNAME/$DISTDIRNAME$XULRUNNERDIR $LDFLAGS"
++      LDFLAGS_DLL="-G -library=Cstd,Crun -lc"
+       LDFLAGS_BIN=""
+       USING_RANLIB=1
+     fi
+--- Songbird1.4/components/library/localdatabase/src/sbLocalDatabaseDiffingService.cpp.orig	2009-10-13 15:03:01.406389802 -0700
++++ Songbird1.4/components/library/localdatabase/src/sbLocalDatabaseDiffingService.cpp	2009-10-13 15:08:29.361060496 -0700
+@@ -442,14 +442,14 @@
+       }
+       // Check if the duration is the same in seconds, that's good enough
+       else if (propertyId.EqualsLiteral(SB_PROPERTY_DURATION)) {
+-        PRUint32 const sourceDuration = propertyValue.ToInteger(&rv, 10);
++        PRUint64 const sourceDuration = nsString_ToUint64(propertyValue, &rv);
+         if (NS_SUCCEEDED(rv)) {
+           PRUint64 const destDuration =
+             nsString_ToUint64(propertyDestinationValue, &rv);
+           // If the duration was parsed and the difference less than a second
+           // then treat it as unchanged
+           if (NS_SUCCEEDED(rv)
+-              && abs(sourceDuration - destDuration) < PR_USEC_PER_SEC) {
++              && labs(sourceDuration - destDuration) < PR_USEC_PER_SEC) {
+             continue;
+           }
+         }
+--- /dev/null	2009-10-13 17:30:01.000000000 -0700
++++ Songbird1.4/tools/scripts/make-mozilla-sdk.sh	2009-10-13 17:31:12.426790472 -0700
+@@ -0,0 +1,200 @@
++#!/bin/sh
++
++# bin_files are relative to $objdir/dist/bin/
++bin_files="regxpcom*
++           xpidl*
++           xpt_dump*
++           xpt_link*
++           mozcrt19*
++"
++
++# lib_files are relative to $objdir/dist/lib/
++lib_files="*js3250.*
++           *plc4.*
++           *plds4.*
++           *nspr4.*
++           *unicharutil_external_s.*
++           *xpcom.*
++           *xpcomglue_s.*
++           *mozjs*
++           *mozcrt19*
++           *xul*
++           *smime3*
++           *ssl3*
++           *nss3*
++           *nssutil3*
++           *sqlite3*
++"
++
++# symbol_files are relative to $objdir
++symbol_files="intl/unicharutil/util/nsunicharutils.pdb
++              intl/unicharutil/util/unicharutil_external_s.pdb
++              js/src/js3250.pdb
++              toolkit/library/xul.pdb
++              xpcom/glue/nsarrayenumerator.pdb
++              xpcom/glue/nsarrayutils.pdb
++              xpcom/glue/nsautolock.pdb
++              xpcom/glue/nscategorycache.pdb
++              xpcom/glue/nscomarray.pdb
++              xpcom/glue/nscomponentmanagerutils.pdb
++              xpcom/glue/nscomptr.pdb
++              xpcom/glue/nscrtglue.pdb
++              xpcom/glue/nsenumeratorutils.pdb
++              xpcom/glue/nsgenericfactory.pdb
++              xpcom/glue/nsid.pdb
++              xpcom/glue/nsiinterfacerequestorutils.pdb
++              xpcom/glue/nsisupportsimpl.pdb
++              xpcom/glue/nsmemory.pdb
++              xpcom/glue/nsquicksort.pdb
++              xpcom/glue/nsstringapi.pdb
++              xpcom/glue/nstarray.pdb
++              xpcom/glue/nsthashtable.pdb
++              xpcom/glue/nsthreadutils.pdb
++              xpcom/glue/nsvoidarray.pdb
++              xpcom/glue/nsweakreference.pdb
++              xpcom/glue/pldhash.pdb
++              xpcom/glue/xpcomglue_s.pdb
++              xpcom/stub/xpcom.pdb
++              xulrunner/app/xulrunner.pdb
++              xulrunner/stub/xulrunner-stub.pdb
++              memory/jemalloc/mozcrt19*.pdb
++              memory/jemalloc/libc*.pdb
++"
++
++# update_bin_files are relative to $objdir/dist/host/bin/
++update_bin_files="*mar*
++                  *bsdiff*
++"
++
++# update_script_files are relative to $srcdir/tools/update-packaging/
++update_script_files="common.sh
++                     make_full_update.sh
++                     make_incremental_update.sh
++                     unwrap_full_update.pl
++"
++
++# build_scripts are relative to $srcdir
++build_script_files="build/cygwin-wrapper
++                    build/autoconf/acoutput-fast.pl
++                    build/autoconf/make-makefile
++                    build/macosx/universal/fix-buildconfig
++                    build/macosx/universal/unify
++                    build/package/mac_osx/make-diskimage
++                    build/package/mac_osx/mozilla.dsstore
++                    config/build-list.pl
++                    config/configobj.py
++                    config/make-jars.pl
++                    config/mozLock.pm
++                    config/preprocessor.pl
++                    config/printconfigsetting.py
++"
++
++# breakpad script files are relative to $srcdir
++breakpad_script_files="toolkit/crashreporter/tools/symbolstore.py
++                       toolkit/crashreporter/tools/upload_symbols.sh
++"
++
++# windows breakpad binary files are relative to $srcdir
++breakpad_bin_files_win="toolkit/crashreporter/tools/win32/dump_syms.exe"
++
++# other breakpad binary files are relative to $objdir/dist/host/bin/
++breakpad_bin_files_nix="dump_syms"
++
++notice() {
++  echo $* 1>&2
++}
++
++if [ $# != 3 ]; then
++  notice "usage: make-mozilla-sdk.sh [mozilla-src-dir] [mozilla-obj-dir] [songbird-sdk-dir]"
++  exit 1
++fi
++
++MAKE=make
++CP=cp
++case `uname -s` in
++  CYGWIN*|MINGW*)
++    is_windows="1"
++    ;;
++  SunOS)
++    MAKE=gmake
++	if [ -x /usr/gnu/bin/cp ]; then
++		CP=/usr/gnu/bin/cp
++	fi
++    ;;
++esac
++
++relsrcdir="$1"
++temp1=`dirname "$relsrcdir"`
++temp2=`basename "$relsrcdir"`
++srcdir="`cd \"$temp1\" 2>/dev/null && pwd || echo \"$temp1\"`/$temp2"
++
++relobjdir="$2"
++temp1=`dirname "$relobjdir"`
++temp2=`basename "$relobjdir"`
++objdir="`cd \"$temp1\" 2>/dev/null && pwd || echo \"$temp1\"`/$temp2"
++
++distdir="$objdir/dist"
++
++relsdkdir="$3"
++temp1=`dirname "$relsdkdir"`
++temp2=`basename "$relsdkdir"`
++sdkdir="`cd \"$temp1\" 2>/dev/null && pwd || echo \"$temp1\"`/$temp2"
++
++mkdir -p "$sdkdir"
++
++# build in bsdiff to enable partial update patches (binary diffs)
++if test -d "$objdir"/other-licenses/bsdiff; then
++  notice "making bsdiff..."
++  cd "$objdir"/other-licenses/bsdiff && $MAKE
++fi
++
++notice "copying binary files..."
++cd "$sdkdir" && mkdir -p bin
++cd "$distdir/bin" && $CP -Lfp $bin_files "$sdkdir/bin"
++cd "$distdir/host/bin" && $CP -Lfp $update_bin_files "$sdkdir/bin"
++
++# breakpad binaries differ by platform
++if test -n "$is_windows"; then
++cd "$srcdir" && $CP -Lfp $breakpad_bin_files_win "$sdkdir/bin"
++else
++cd "$distdir/host/bin" && $CP -Lfp $breakpad_bin_files_nix "$sdkdir/bin"
++fi
++
++notice "copying library files..."
++cd "$sdkdir" && mkdir -p lib
++# some os don't have all these files, so silence errors
++cd "$distdir/lib" && $CP -Lfp $lib_files "$sdkdir/lib" 2>/dev/null
++
++notice "copying symbol files..."
++# some os don't have these files, so silence errors
++cd "$objdir" && $CP -Lfp $symbol_files "$sdkdir/lib" 2>/dev/null
++
++notice "copying include files..."
++cd "$sdkdir" && mkdir -p include
++cd "$distdir/include" && $CP -RLfp * "$sdkdir/include"
++
++notice "copying idl files..."
++cd "$sdkdir" && mkdir -p idl
++cd "$distdir/idl" && $CP -Lfp * "$sdkdir/idl"
++
++notice "copying frozen sdk..."
++cd "$sdkdir" && mkdir -p frozen
++cd "$distdir/sdk" && $CP -RLfp * "$sdkdir/frozen"
++
++notice "copying scripts..."
++cd "$sdkdir" && mkdir -p scripts
++cd "$srcdir" && $CP -Lfp $build_script_files "$sdkdir/scripts"
++if test -d "$srcdir"/tools/update-packaging; then
++  cd "$srcdir/tools/update-packaging" && $CP -Lfp $update_script_files "$sdkdir/scripts"
++fi
++cd "$srcdir" && $CP -Lfp $breakpad_script_files "$sdkdir/scripts"
++
++notice "performing post-processing..."
++
++# bump WINVER and _WIN32_WINNT to 0x501 on windows
++if test -n "$is_windows"; then
++cd "$sdkdir/include" && perl -p -i.bak -e 's/WINVER 0x500/WINVER 0x501/g;s/_WIN32_WINNT 0x500/_WIN32_WINNT 0x501/g' ./mozilla-config.h
++cd "$sdkdir/include" && rm -f ./mozilla-config.h.bak
++fi
++
++notice "done."
+--- /dev/null	2009-10-13 17:30:01.000000000 -0700
++++ Songbird1.4/tools/scripts/make-xulrunner-tarball.sh	2009-10-13 17:31:18.727150507 -0700
+@@ -0,0 +1,49 @@
++#!/bin/sh
++
++# Ugh. So stupid.
++# Mac OS 10.4, which is what's on the buildbots, uses bash 2.05,
++# which doesn't have a builtin version of which. It calls /usr/bin/which, which
++# will stupidly 1. Not use proper return values (so the "which foo && 
++# do_something" construct fails), and 2. print everything to stderr, no matter
++# what, so doing cute tricks like test -z `which gtar 2>/dev/null` don't work
++# either.
++#
++# We know OS X has tar, so just ignore gtar detection on the mac... for now...
++#
++
++TAR=tar
++if [ `uname` != "Darwin" ];  then
++  which gtar 2>&1 >/dev/null && \
++    TAR=gtar
++fi
++
++notice() {
++  echo $* 1>&2
++}
++
++if [ $# != 3 ]; then
++  notice "usage: make-xulrunner-tarball.sh [mozilla-bin-dir] [songbird-tarball-dest-dir] [target-tarball-name]"
++  exit 1
++fi
++
++srcdir="$1"
++temp1=`dirname "$srcdir"`
++temp2=`basename "$srcdir"`
++bindir="`cd \"$temp1\" 2>/dev/null && pwd || echo \"$temp1\"`/$temp2"
++
++destdir="$2"
++temp1=`dirname "$destdir"`
++temp2=`basename "$destdir"`
++tarballdir="`cd \"$temp1\" 2>/dev/null && pwd || echo \"$temp1\"`/$temp2"
++
++tarballname="$3"
++
++tarball="$tarballdir/$tarballname"
++
++echo cd "$bindir" 
++cd "$bindir" 
++
++notice "creating tarball in dest..."
++$TAR czvhf $tarball *
++
++notice "done."
+--- Songbird1.4/dependencies/Makefile.in.orig	2009-10-13 17:33:24.833397734 -0700
++++ Songbird1.4/dependencies/Makefile.in	2009-10-13 17:33:36.594695901 -0700
+@@ -494,7 +494,7 @@
+ 
+ ## See comment above about, re: the specifics of this export::'s logic.
+ export::
+-	$(TAR) -j -x -p -f $(XULRUNNER_DIR)/xulrunner.tar.bz2 -C $(SONGBIRD_XULRUNNERDIR)
++	$(TAR) -z -x -p -f $(XULRUNNER_DIR)/xulrunner.tar.gz -C $(SONGBIRD_XULRUNNERDIR)
+ 	$(RM) -r $(SONGBIRD_XR_EXTENSIONS)
+ ifneq (1,$(SONGBIRD_OFFICIAL))
+ 	$(MV) $(XULRUNNER_EXTENSION_DIRS) $(SONGBIRD_EXTENSIONSDIR)
+--- Songbird1.4/extensions/Makefile.in.orig	2009-10-13 17:42:44.121204363 -0700
++++ Songbird1.4/extensions/Makefile.in	2009-10-13 17:42:32.577792349 -0700
+@@ -45,7 +45,7 @@
+       DEFAULT_EXTENSIONS += ipod
+    endif
+ else
+-   DEFAULT_EXTENSIONS += ipod
++   #DEFAULT_EXTENSIONS += ipod
+ endif
+ 
+ # AlbumArt is not on the list because it's used internally by the bird, so

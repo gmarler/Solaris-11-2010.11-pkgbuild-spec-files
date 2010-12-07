@@ -3,28 +3,29 @@
 #
 # includes modules: moovida
 #
-# Copyright 2009 Sun Microsystems, Inc.
+# Copyright (c) 2008, 2010, Oracle and/or its affiliates. All rights reserved.
 # This file and all modifications and additions to the pristine
 # package are under the same license as the package itself.
 #
-# Owner: yippi 
+%define owner yippi 
 #
 # bugdb: https://bugs.launchpad.net/elisa
 #
 %include Solaris.inc
 
-%define pythonver 2.6
-
 %use moovida = moovida.spec
 
+%define default_python_version 2.6
+
 Name:              SFEmoovida
+IPS_package_name:  desktop/media-player/moovida
+Meta(info.classification): %{classification_prefix}:Applications/Sound and Video
 License:           GPL v3, MIT
+Vendor:            Sun Microsystems, Inc.
 Summary:           Media center written in Python
-Version:           %{default_pkg_version}
+Version:           %{moovida.version}
 SUNW_BaseDir:      %{_basedir}
 
-%ifnarch sparc
-# these packages are only available on x86
 BuildRoot:         %{_tmppath}/%{name}-%{version}-build
 
 %include default-depend.inc
@@ -34,20 +35,20 @@ BuildRequires:     SUNWPython26-extra
 BuildRequires:     SUNWimagick
 BuildRequires:     SUNWsqlite3
 BuildRequires:     SUNWgnome-python26-extras
-BuildRequires:     SUNWlibpigment-devel
+BuildRequires:     SFElibpigment-devel
 BuildRequires:     SUNWpython26-simplejson
 BuildRequires:     SUNWpython26-pyopenssl
 BuildRequires:     SUNWpython26-setuptools
 Requires:          SUNWgnome-media
 Requires:          SUNWimagick
-Requires:          SUNWPython
+Requires:          SUNWPython26
 Requires:          SUNWsqlite3
 Requires:          SUNWPython26-extra
 Requires:          SUNWdbus-python26
 Requires:          SUNWgnome-python26-extras
 Requires:          SUNWgst-python26
-Requires:          SUNWlibpigment
-Requires:          SUNWlibpigment-python26
+Requires:          SFElibpigment
+Requires:          SFElibpigment-python26
 Requires:          SUNWpython26-imaging
 Requires:          SUNWpython26-pyopenssl
 Requires:          SUNWpython26-setuptools
@@ -64,14 +65,6 @@ full advantage of harware acceleration provided by modern graphic
 cards by using OpenGL APIs. You can watch movies, listen to music 
 and view pictures with Moovida.
 
-%if %build_l10n
-%package l10n
-Summary:                 %{summary} - l10n files
-SUNW_BaseDir:            %{_basedir}
-%include default-depend.inc
-Requires:                %{name}
-%endif
-
 %prep
 rm -rf %name-%version
 mkdir %name-%version
@@ -87,11 +80,14 @@ rm -rf $RPM_BUILD_ROOT
 export PYTHONPATH=%{_builddir}/%name-%version/elisa-%{elisa.version}:$PYTHONPATH
 
 mv $RPM_BUILD_ROOT%{_bindir}/elisa $RPM_BUILD_ROOT%{_bindir}/moovida
-# move to vendor-packages
-mkdir -p $RPM_BUILD_ROOT%{_libdir}/python%{pythonver}/vendor-packages
-mv $RPM_BUILD_ROOT%{_libdir}/python%{pythonver}/site-packages/* \
-   $RPM_BUILD_ROOT%{_libdir}/python%{pythonver}/vendor-packages/
-rmdir $RPM_BUILD_ROOT%{_libdir}/python%{pythonver}/site-packages
+# move to verndor-packages
+mkdir -p $RPM_BUILD_ROOT%{_libdir}/python%{default_python_version}/vendor-packages
+mv $RPM_BUILD_ROOT%{_libdir}/python%{default_python_version}/site-packages/* \
+   $RPM_BUILD_ROOT%{_libdir}/python%{default_python_version}/vendor-packages/
+rmdir $RPM_BUILD_ROOT%{_libdir}/python%{default_python_version}/site-packages
+
+# Do not ship mobile desktop file.
+rm $RPM_BUILD_ROOT%{_datadir}/applications/moovida-mobile.desktop
 
 %{?pkgbuild_postprocess: %pkgbuild_postprocess -v -c "%{version}:%{jds_version}:%{name}:$RPM_ARCH:%(date +%%Y-%%m-%%d):%{support_level}" $RPM_BUILD_ROOT}
 
@@ -110,9 +106,9 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, bin) %{_bindir}
 %{_bindir}/*
 %dir %attr (0755, root, bin) %{_libdir}
-%{_libdir}/python%{pythonver}/vendor-packages/elisa
-%{_libdir}/python%{pythonver}/vendor-packages/elisa-*-py%{pythonver}.egg-info
-%{_libdir}/python%{pythonver}/vendor-packages/elisa-*-py%{pythonver}-nspkg.pth
+%{_libdir}/python%{default_python_version}/vendor-packages/elisa
+%{_libdir}/python%{default_python_version}/vendor-packages/elisa-*-py%{default_python_version}.egg-info
+%{_libdir}/python%{default_python_version}/vendor-packages/elisa-*-py%{default_python_version}-nspkg.pth
 %doc -d elisa-%{moovida.version} AUTHORS
 %doc(bzip2) -d elisa-%{moovida.version} COPYING README
 %doc(bzip2) -d elisa-%{moovida.version} LICENSE.GPL
@@ -131,17 +127,10 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, bin) %{_mandir}/man1
 %{_mandir}/man1/*
 
-%if %build_l10n
-%files l10n
-%defattr (-, root, bin)
-%dir %attr (0755, root, sys) %{_datadir}
-%attr (-, root, other) %{_datadir}/locale
-%endif
-
-# endif for "ifnarch sparc"
-%endif
 
 %changelog
+* Mon Oct 12 2009 - brian.cameron@sun.com
+- Now use %{default_python_version}.
 * Wed May 27 2009 - brian.cameron@sun.com
 - Move elisa spec files to moovida spec files.
 * Fri Apr  3 2009 - laca@sun.com
