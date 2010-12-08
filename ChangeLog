@@ -1,3 +1,7 @@
+2010-12-08  Alex Viskovatoff <viskovatoff@imap.cc>
+
+	* SFEsakura: added
+
 2010-12-07  Brian Cameron  <brian.cameron@oracle.com>
 
 	* SFEesound.spec, base-specs/esound.spec, patches/esound-01-build.diff:
