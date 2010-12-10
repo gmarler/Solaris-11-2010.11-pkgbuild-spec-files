@@ -1,0 +1,13 @@
+--- ./src/3rdparty/webkit/JavaScriptCore/wtf/FastMalloc.cpp.orig	2009-12-01 16:26:09.575151249 +0100
++++ ./src/3rdparty/webkit/JavaScriptCore/wtf/FastMalloc.cpp	2009-12-01 16:27:19.487955155 +0100
+@@ -1431,10 +1431,7 @@
+ void* TCMalloc_PageHeap::runScavengerThread(void* context)
+ {
+   static_cast<TCMalloc_PageHeap*>(context)->scavengerThread();
+-#if COMPILER(MSVC)
+-  // Without this, Visual Studio will complain that this method does not return a value.
+   return 0;
+-#endif
+ }
+ 
+ void TCMalloc_PageHeap::scavenge() 

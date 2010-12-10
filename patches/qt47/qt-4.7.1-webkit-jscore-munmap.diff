@@ -1,0 +1,12 @@
+--- src/3rdparty/webkit/JavaScriptCore/runtime/MarkStackPosix.orig	2010-11-18 18:37:45.793236104 +0300
++++ src/3rdparty/webkit/JavaScriptCore/runtime/MarkStackPosix.cpp	2010-11-18 18:40:04.556969032 +0300
+@@ -44,7 +44,7 @@
+ }
+ void MarkStack::releaseStack(void* addr, size_t size)
+ {
+-    munmap(addr, size);
++    munmap((caddr_t)addr, size);
+ }
+ 
+ }
+

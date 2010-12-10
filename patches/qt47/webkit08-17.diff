@@ -1,0 +1,51 @@
+From 4c18f3659496f6782e5e9de2ca6e5bceb39be900 Mon Sep 17 00:00:00 2001
+From: Thiago Macieira <thiago.macieira@nokia.com>
+Date: Sun, 19 Jul 2009 15:14:06 +0200
+Subject: [PATCH 08/17] Fix compilation error on Solaris: mmap/munmap take/return a char*, not void*.
+
+"../JavaScriptCore/interpreter/RegisterFile.h", line 128: Error: Using static_cast to convert from char* to JSC::Register* not allowed.
+
+Error: Formal argument 1 of type char* in call to munmap(char*, unsigned) is being passed JSC::Register*.
+---
+ .../JavaScriptCore/interpreter/RegisterFile.cpp    |    2 +-
+ .../JavaScriptCore/interpreter/RegisterFile.h      |    4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/src/3rdparty/webkit/JavaScriptCore/interpreter/RegisterFile.cpp b/src/3rdparty/webkit/JavaScriptCore/interpreter/RegisterFile.cpp
+index cfcf1d3..186d888 100644
+--- a/src/3rdparty/webkit/JavaScriptCore/interpreter/RegisterFile.cpp
++++ b/src/3rdparty/webkit/JavaScriptCore/interpreter/RegisterFile.cpp
+@@ -34,7 +34,7 @@ namespace JSC {
+ RegisterFile::~RegisterFile()
+ {
+ #if HAVE(MMAP)
+-    munmap(m_buffer, ((m_max - m_start) + m_maxGlobals) * sizeof(Register));
++    munmap(reinterpret_cast<char*>(m_buffer), ((m_max - m_start) + m_maxGlobals) * sizeof(Register));
+ #elif HAVE(VIRTUALALLOC)
+     VirtualFree(m_buffer, 0, MEM_RELEASE);
+ #else
+diff --git a/src/3rdparty/webkit/JavaScriptCore/interpreter/RegisterFile.h b/src/3rdparty/webkit/JavaScriptCore/interpreter/RegisterFile.h
+index 3a6e63b..a8cc8a3 100644
+--- a/src/3rdparty/webkit/JavaScriptCore/interpreter/RegisterFile.h
++++ b/src/3rdparty/webkit/JavaScriptCore/interpreter/RegisterFile.h
+@@ -105,7 +105,7 @@ namespace JSC {
+             ReturnValueRegister = -4,
+             ArgumentCount = -3,
+             Callee = -2,
+-            OptionalCalleeArguments = -1,
++            OptionalCalleeArguments = -1
+         };
+ 
+         enum { ProgramCodeThisRegister = -CallFrameHeaderSize - 1 };
+@@ -174,7 +174,7 @@ namespace JSC {
+ 
+         size_t bufferLength = (capacity + maxGlobals) * sizeof(Register);
+     #if HAVE(MMAP)
+-        m_buffer = static_cast<Register*>(mmap(0, bufferLength, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANON, VM_TAG_FOR_REGISTERFILE_MEMORY, 0));
++        m_buffer = reinterpret_cast<Register*>(mmap(0, bufferLength, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANON, VM_TAG_FOR_REGISTERFILE_MEMORY, 0));
+         if (m_buffer == MAP_FAILED) {
+ #if PLATFORM(WINCE)
+             fprintf(stderr, "Could not allocate register file: %d\n", GetLastError());
+-- 
+1.6.2.1.223.g2f1f
+

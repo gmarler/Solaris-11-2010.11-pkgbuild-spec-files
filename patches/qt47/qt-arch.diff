@@ -1,0 +1,17 @@
+--- src/corelib/arch/i386/arch.pri.orig	2009-10-13 17:34:08.000000000 +0200
++++ src/corelib/arch/i386/arch.pri	2009-11-08 21:07:05.732151739 +0100
+@@ -1,4 +1,4 @@
+ # 
+ # i386 architecture
+ #
+-!*-g++*:!*-icc*:SOURCES += $$QT_ARCH_CPP/qatomic_i386.s
++SOURCES += $$QT_ARCH_CPP/qatomic_i386.s
+\ No newline at end of file
+--- src/corelib/arch/x86_64/arch.pri.orig	2009-10-13 17:34:08.000000000 +0200
++++ src/corelib/arch/x86_64/arch.pri	2009-11-08 21:08:10.361513696 +0100
+@@ -1,4 +1,4 @@
+ #
+ # AMD64 architecture
+ #
+-solaris-cc*:SOURCES += $$QT_ARCH_CPP/qatomic_sun.s
++SOURCES += $$QT_ARCH_CPP/qatomic_sun.s

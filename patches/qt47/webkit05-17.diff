@@ -1,0 +1,29 @@
+From 5a28b84746b15ec9fd666238a01f1d8a3291b71b Mon Sep 17 00:00:00 2001
+From: Thiago Macieira <thiago.macieira@nokia.com>
+Date: Thu, 23 Jul 2009 17:11:23 +0200
+Subject: [PATCH 05/17] Fix crash misaligned reads on Sparc processors.
+
+Sparc cannot do 32-bit reads on misaligned boundaries. The program
+crashes if you try to do so.
+
+t@1 (l@1) signal BUS (invalid address alignment) in WebCore::equal at 0xffffffff7e2719fc
+0xffffffff7e2719fc: equal+0x002c:       ld       [%o1], %g1
+(dbx) where -q 1
+=>[1] WebCore::equal(WebCore::StringImpl*,const unsigned short*,unsigned)
+(dbx) print -fx $o1
+$o1 = 0x45d15a
+---
+ .../webkit/WebCore/platform/text/AtomicString.cpp  |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+--- a/src/3rdparty/webkit/WebCore/platform/text/AtomicString.cpp.orig	2010-07-09 00:26:39.247786047 +0200
++++ b/src/3rdparty/webkit/WebCore/platform/text/AtomicString.cpp	2010-07-09 00:28:42.170006407 +0200
+@@ -105,7 +105,7 @@
+ 
+     // FIXME: perhaps we should have a more abstract macro that indicates when
+     // going 4 bytes at a time is unsafe
+-#if CPU(ARM) || CPU(SH4)
++#if CPU(ARM) || CPU(SH4) || CPU(SPARC)
+     const UChar* stringCharacters = string->characters();
+     for (unsigned i = 0; i != length; ++i) {
+         if (*stringCharacters++ != *characters++)

@@ -1,0 +1,48 @@
+From 8609e07394203de8a30284f5603044d03ae20b95 Mon Sep 17 00:00:00 2001
+From: Thiago Macieira <thiago.macieira@nokia.com>
+Date: Mon, 27 Jul 2009 13:35:39 +0200
+Subject: [PATCH 04/17] Fix compilation on Solaris 9: missing definition for time_t
+
+"platform/network/ResourceResponseBase.h", line 83: Error: time_t is not defined.
+"page/Page.h", line 245: Error: No storage class or type for this declaration.
+[etc]
+---
+ .../webkit/WebCore/loader/icon/IconRecord.h        |    2 ++
+ src/3rdparty/webkit/WebCore/page/Page.h            |    1 +
+ .../platform/network/ResourceResponseBase.h        |    1 +
+ 3 files changed, 4 insertions(+), 0 deletions(-)
+
+diff --git a/src/3rdparty/webkit/WebCore/loader/icon/IconRecord.h b/src/3rdparty/webkit/WebCore/loader/icon/IconRecord.h
+index aaea787..bc5607b 100644
+--- a/src/3rdparty/webkit/WebCore/loader/icon/IconRecord.h
++++ b/src/3rdparty/webkit/WebCore/loader/icon/IconRecord.h
+@@ -38,6 +38,8 @@
+ #include "PlatformString.h"
+ #include "StringHash.h"
+ 
++#include <sys/types.h>          // for time_t
++
+ namespace WebCore { 
+ 
+ class IconDataSnapshot;
+--- a/src/3rdparty/webkit/WebCore/page/Page.h.orig	2010-07-09 00:20:56.071851918 +0200
++++ b/src/3rdparty/webkit/WebCore/page/Page.h	2010-07-09 00:21:25.054216803 +0200
+@@ -26,6 +26,7 @@
+ #include <wtf/Forward.h>
+ #include <wtf/HashSet.h>
+ #include <wtf/Noncopyable.h>
++#include <sys/time.h>
+ 
+ #if PLATFORM(MAC)
+ #include "SchedulePair.h"
+--- a/src/3rdparty/webkit/WebCore/platform/network/ResourceResponseBase.h.orig	2010-07-09 00:22:26.256081558 +0200
++++ b/src/3rdparty/webkit/WebCore/platform/network/ResourceResponseBase.h	2010-07-09 00:22:59.970650806 +0200
+@@ -29,7 +29,7 @@
+ 
+ #include "HTTPHeaderMap.h"
+ #include "KURL.h"
+-
++#include <sys/time.h>
+ #include <wtf/PassOwnPtr.h>
+ 
+ namespace WebCore {

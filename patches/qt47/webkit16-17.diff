@@ -1,0 +1,243 @@
+From aae21dd0f21c6089062181bacfafdc0523a211a0 Mon Sep 17 00:00:00 2001
+From: Thiago Macieira <thiago.macieira@nokia.com>
+Date: Sun, 19 Jul 2009 15:33:13 +0200
+Subject: [PATCH 16/17] Fix compilation with Sun CC 5.9: ambiguity with QString's operator+.
+
+This is also a slight performance improvement since we're avoiding a temporary string.
+
+Error: Overloading ambiguity between "WebCore::operator+(const WebCore::String&, const char*)" and "operator+(const QString&, const char*)".
+[and others similar]
+---
+ src/3rdparty/webkit/WebCore/css/CSSSelector.cpp    |   15 ++++++++++-----
+ src/3rdparty/webkit/WebCore/dom/QualifiedName.cpp  |    8 ++++++--
+ src/3rdparty/webkit/WebCore/editing/markup.cpp     |   10 +++++++---
+ .../webkit/WebCore/html/HTMLInputElement.cpp       |   12 ++++++++++--
+ src/3rdparty/webkit/WebCore/html/HTMLParser.cpp    |   16 ++++++++++++----
+ src/3rdparty/webkit/WebCore/svg/SVGPathElement.cpp |    8 ++++++--
+ src/3rdparty/webkit/WebCore/svg/SVGPolyElement.cpp |    5 ++++-
+ src/3rdparty/webkit/WebCore/xml/XMLHttpRequest.cpp |   13 ++++++++++---
+ src/3rdparty/webkit/WebCore/xml/XPathFunctions.cpp |    2 +-
+ 9 files changed, 66 insertions(+), 23 deletions(-)
+
+diff --git a/src/3rdparty/webkit/WebCore/css/CSSSelector.cpp b/src/3rdparty/webkit/WebCore/css/CSSSelector.cpp
+index 5429c16..5c97e99 100644
+--- a/src/3rdparty/webkit/WebCore/css/CSSSelector.cpp
++++ b/src/3rdparty/webkit/WebCore/css/CSSSelector.cpp
+@@ -373,10 +373,13 @@ String CSSSelector::selectorText() const
+     const AtomicString& prefix = m_tag.prefix();
+     const AtomicString& localName = m_tag.localName();
+     if (m_match == CSSSelector::None || !prefix.isNull() || localName != starAtom) {
+-        if (prefix.isNull())
++        if (prefix.isNull()) {
+             str = localName;
+-        else
+-            str = prefix + "|" + localName;
++        } else {
++            str = prefix;
++            str += "|";
++            str += localName;
++        }
+     }
+ 
+     const CSSSelector* cs = this;
+@@ -408,8 +411,10 @@ String CSSSelector::selectorText() const
+         } else if (cs->hasAttribute()) {
+             str += "[";
+             const AtomicString& prefix = cs->attribute().prefix();
+-            if (!prefix.isNull())
+-                str += prefix + "|";
++            if (!prefix.isNull()) {
++                str += prefix;
++                str += "|";
++            }
+             str += cs->attribute().localName();
+             switch (cs->m_match) {
+                 case CSSSelector::Exact:
+diff --git a/src/3rdparty/webkit/WebCore/dom/QualifiedName.cpp b/src/3rdparty/webkit/WebCore/dom/QualifiedName.cpp
+index 607c846..9eeb433 100644
+--- a/src/3rdparty/webkit/WebCore/dom/QualifiedName.cpp
++++ b/src/3rdparty/webkit/WebCore/dom/QualifiedName.cpp
+@@ -77,8 +77,12 @@ void QualifiedName::deref()
+ String QualifiedName::toString() const
+ {
+     String local = localName();
+-    if (hasPrefix())
+-        return prefix() + ":" + local;
++    if (hasPrefix()) {
++        String retval = prefix();
++        retval += ":";
++        retval += local;
++        return retval;
++    }
+     return local;
+ }
+ 
+diff --git a/src/3rdparty/webkit/WebCore/editing/markup.cpp b/src/3rdparty/webkit/WebCore/editing/markup.cpp
+index 254e2f5..b0b7943 100644
+--- a/src/3rdparty/webkit/WebCore/editing/markup.cpp
++++ b/src/3rdparty/webkit/WebCore/editing/markup.cpp
+@@ -311,7 +311,7 @@ static bool shouldAddNamespaceElem(const Element* elem)
+ {
+     // Don't add namespace attribute if it is already defined for this elem.
+     const AtomicString& prefix = elem->prefix();
+-    AtomicString attr = !prefix.isEmpty() ? "xmlns:" + prefix : "xmlns";
++    AtomicString attr = !prefix.isEmpty() ? String("xmlns:") + prefix : String("xmlns");
+     return !elem->hasAttribute(attr);
+ }
+ 
+@@ -963,8 +963,12 @@ String createMarkup(const Range* range, Vector<Node*>* nodes, EAnnotateForInterc
+                 
+                 // Bring the background attribute over, but not as an attribute because a background attribute on a div
+                 // appears to have no effect.
+-                if (!fullySelectedRootStyle->getPropertyCSSValue(CSSPropertyBackgroundImage) && static_cast<Element*>(fullySelectedRoot)->hasAttribute(backgroundAttr))
+-                    fullySelectedRootStyle->setProperty(CSSPropertyBackgroundImage, "url('" + static_cast<Element*>(fullySelectedRoot)->getAttribute(backgroundAttr) + "')");
++                if (!fullySelectedRootStyle->getPropertyCSSValue(CSSPropertyBackgroundImage) && static_cast<Element*>(fullySelectedRoot)->hasAttribute(backgroundAttr)) {
++                    String url = "url('";
++                    url += static_cast<Element*>(fullySelectedRoot)->getAttribute(backgroundAttr);
++                    url += "')";
++                    fullySelectedRootStyle->setProperty(CSSPropertyBackgroundImage, url);
++                }
+                 
+                 if (fullySelectedRootStyle->length()) {
+                     Vector<UChar> openTag;
+diff --git a/src/3rdparty/webkit/WebCore/html/HTMLInputElement.cpp b/src/3rdparty/webkit/WebCore/html/HTMLInputElement.cpp
+index 8b2aa0e..ee29cf3 100644
+--- a/src/3rdparty/webkit/WebCore/html/HTMLInputElement.cpp
++++ b/src/3rdparty/webkit/WebCore/html/HTMLInputElement.cpp
+@@ -821,8 +821,16 @@ bool HTMLInputElement::appendFormData(FormDataList& encoding, bool multipart)
+ 
+         case IMAGE:
+             if (m_activeSubmit) {
+-                encoding.appendData(name().isEmpty() ? "x" : (name() + ".x"), m_xPos);
+-                encoding.appendData(name().isEmpty() ? "y" : (name() + ".y"), m_yPos);
++                String xname, yname;
++                if (!name().isEmpty()) {
++                    xname = name();
++                    xname += ".";
++                    yname = xname;
++                }
++                xname += "x";
++                yname += "y";
++                encoding.appendData(xname, m_xPos);
++                encoding.appendData(yname, m_yPos);
+                 if (!name().isEmpty() && !value().isEmpty())
+                     encoding.appendData(name(), value());
+                 return true;
+diff --git a/src/3rdparty/webkit/WebCore/html/HTMLParser.cpp b/src/3rdparty/webkit/WebCore/html/HTMLParser.cpp
+index 928a1bf..8429fb2 100644
+--- a/src/3rdparty/webkit/WebCore/html/HTMLParser.cpp
++++ b/src/3rdparty/webkit/WebCore/html/HTMLParser.cpp
+@@ -1649,16 +1649,24 @@ void HTMLParser::reportErrorToConsole(HTMLParserErrorCode errorCode, const Atomi
+             tag1 = "Text";
+         else if (*tagName1 == "#comment")
+             tag1 = "<!-- comment -->";
+-        else
+-            tag1 = (closeTags ? "</" : "<") + *tagName1 + ">";
++        else {
++            String tag = (closeTags ? "</" : "<");
++            tag += *tagName1;
++            tag += ">";
++            tag1 = tag;
++	}
+     }
+     if (tagName2) {
+         if (*tagName2 == "#text")
+             tag2 = "Text";
+         else if (*tagName2 == "#comment")
+             tag2 = "<!-- comment -->";
+-        else
+-            tag2 = (closeTags ? "</" : "<") + *tagName2 + ">";
++        else {
++            String tag = (closeTags ? "</" : "<");
++            tag += *tagName2;
++            tag += ">";
++            tag2 = tag;
++        }
+     }
+         
+     const char* errorMsg = htmlParserErrorMessageTemplate(errorCode);
+diff --git a/src/3rdparty/webkit/WebCore/svg/SVGPathElement.cpp b/src/3rdparty/webkit/WebCore/svg/SVGPathElement.cpp
+index 172cac1..41e4ca6 100644
+--- a/src/3rdparty/webkit/WebCore/svg/SVGPathElement.cpp
++++ b/src/3rdparty/webkit/WebCore/svg/SVGPathElement.cpp
+@@ -175,8 +175,12 @@ void SVGPathElement::parseMappedAttribute(MappedAttribute* attr)
+     if (attr->name() == SVGNames::dAttr) {
+         ExceptionCode ec;
+         pathSegList()->clear(ec);
+-        if (!pathSegListFromSVGData(pathSegList(), attr->value(), true))
+-            document()->accessSVGExtensions()->reportError("Problem parsing d=\"" + attr->value() + "\"");
++        if (!pathSegListFromSVGData(pathSegList(), attr->value(), true)) {
++            String errorMsg = "Problem parsing d=\"";
++            errorMsg += attr->value();
++            errorMsg += "\"";
++            document()->accessSVGExtensions()->reportError(errorMsg);
++        }
+     } else if (attr->name() == SVGNames::pathLengthAttr) {
+         setPathLengthBaseValue(attr->value().toFloat());
+         if (pathLengthBaseValue() < 0.0f)
+diff --git a/src/3rdparty/webkit/WebCore/svg/SVGPolyElement.cpp b/src/3rdparty/webkit/WebCore/svg/SVGPolyElement.cpp
+index db39c52..a2a41ec 100644
+--- a/src/3rdparty/webkit/WebCore/svg/SVGPolyElement.cpp
++++ b/src/3rdparty/webkit/WebCore/svg/SVGPolyElement.cpp
+@@ -72,7 +72,10 @@ void SVGPolyElement::parseMappedAttribute(MappedAttribute* attr)
+ 
+         if (!pointsListFromSVGData(points(), value)) {
+             points()->clear(ec);
+-            document()->accessSVGExtensions()->reportError("Problem parsing points=\"" + value + "\"");
++            String errorMsg = "Problem parsing points=\"";
++            errorMsg += value;
++            errorMsg += "\"";
++            document()->accessSVGExtensions()->reportError(errorMsg);
+         }
+     } else {
+         if (SVGTests::parseMappedAttribute(attr))
+diff --git a/src/3rdparty/webkit/WebCore/xml/XMLHttpRequest.cpp b/src/3rdparty/webkit/WebCore/xml/XMLHttpRequest.cpp
+index 5e20252..c8c11c8 100644
+--- a/src/3rdparty/webkit/WebCore/xml/XMLHttpRequest.cpp
++++ b/src/3rdparty/webkit/WebCore/xml/XMLHttpRequest.cpp
+@@ -646,7 +646,10 @@
+ 
+     // A privileged script (e.g. a Dashboard widget) can set any headers.
+     if (!scriptExecutionContext()->securityOrigin()->canLoadLocalResources() && !isSafeRequestHeader(name)) {
+-        reportUnsafeUsage(scriptExecutionContext(), "Refused to set unsafe header \"" + name + "\"");
++        String errorMsg = "Refused to set unsafe header \"";
++        errorMsg += name;
++        errorMsg += "\"";
++        reportUnsafeUsage(scriptExecutionContext(), errorMsg);
+         return;
+     }
+ 
+@@ -712,14 +715,18 @@
+         return String();
+     }
+ 
++    String errorMsg = "Refused to get unsafe header \"";
++    errorMsg += name;
++    errorMsg += "\"";
++
+     // See comment in getAllResponseHeaders above.
+     if (isSetCookieHeader(name) && !scriptExecutionContext()->securityOrigin()->canLoadLocalResources()) {
+-        reportUnsafeUsage(scriptExecutionContext(), "Refused to get unsafe header \"" + name + "\"");
++        reportUnsafeUsage(scriptExecutionContext(), errorMsg);
+         return String();
+     }
+ 
+     if (!m_sameOriginRequest && !isOnAccessControlResponseHeaderWhitelist(name)) {
+-        reportUnsafeUsage(scriptExecutionContext(), "Refused to get unsafe header \"" + name + "\"");
++        reportUnsafeUsage(scriptExecutionContext(), errorMsg);
+         return String();
+     }
+     return m_response.httpHeaderField(name);
+diff --git a/src/3rdparty/webkit/WebCore/xml/XPathFunctions.cpp b/src/3rdparty/webkit/WebCore/xml/XPathFunctions.cpp
+index da39443..6774c06 100644
+--- a/src/3rdparty/webkit/WebCore/xml/XPathFunctions.cpp
++++ b/src/3rdparty/webkit/WebCore/xml/XPathFunctions.cpp
+@@ -375,7 +375,7 @@ static inline String expandedNameLocalPart(Node* node)
+ static inline String expandedName(Node* node)
+ {
+     const AtomicString& prefix = node->prefix();
+-    return prefix.isEmpty() ? expandedNameLocalPart(node) : prefix + ":" + expandedNameLocalPart(node);
++    return prefix.isEmpty() ? expandedNameLocalPart(node) : prefix + String(":") + expandedNameLocalPart(node);
+ }
+ 
+ Value FunLocalName::evaluate() const

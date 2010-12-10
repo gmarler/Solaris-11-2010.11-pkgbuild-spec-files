@@ -1,0 +1,299 @@
+--- src/corelib/plugin/qlibrary_unix.cpp.orig	2010-10-06 12:33:01.273340170 +0200
++++ src/corelib/plugin/qlibrary_unix.cpp	2010-10-06 15:38:37.729438644 +0200
+@@ -56,6 +56,278 @@
+ #include <string.h>
+ #endif
+ 
++#ifdef Q_OS_SOLARIS
++/* rawelf.cc
++
++   A program to examine ELF files without libelf.
++
++   Copyright 2010 by Adriaan de Groot <groot@kde.org>
++
++   This file is released under the terms of the LGPL version 2.1.
++   Contains some parts cut-and-pasted from elf(5) manpage.
++
++// TODO: full license text
++
++*/
++
++#include <unistd.h>
++#include <sys/types.h>
++#include <sys/stat.h>
++#include <stdint.h>
++#include <fcntl.h>
++#include <malloc.h>
++#include <strings.h>
++
++
++/* Definitions derived from elf(5) manpage and GNU elf.h */
++
++#define EI_NIDENT 16
++
++typedef uint32_t Elf32_Addr;
++typedef uint32_t Elf32_Off;
++typedef uint64_t Elf64_Addr;
++typedef uint64_t Elf64_Off;
++typedef int32_t  Elf_Sword;
++typedef uint32_t Elf_Word;
++typedef int64_t  Elf_Sxword;
++typedef uint64_t Elf_Xword;
++
++
++typedef struct {
++	unsigned char e_ident[EI_NIDENT];
++	uint16_t      e_type;
++	uint16_t      e_machine;
++	uint32_t      e_version;
++} elf_stubheader;
++
++template<int> struct elf_header;
++template<> struct elf_header<32> {
++	Elf32_Addr     e_entry;
++	Elf32_Off      e_phoff;
++	Elf32_Off      e_shoff;
++	uint32_t      e_flags;
++	uint16_t      e_ehsize;
++	uint16_t      e_phentsize;
++	uint16_t      e_phnum;
++	uint16_t      e_shentsize;
++	uint16_t      e_shnum;
++	uint16_t      e_shstrndx;
++};
++
++template<> struct elf_header<64> {
++	Elf64_Addr     e_entry;
++	Elf64_Off      e_phoff;
++	Elf64_Off      e_shoff;
++	uint32_t      e_flags;
++	uint16_t      e_ehsize;
++	uint16_t      e_phentsize;
++	uint16_t      e_phnum;
++	uint16_t      e_shentsize;
++	uint16_t      e_shnum;
++	uint16_t      e_shstrndx;
++};
++
++template<int> struct elf_section_header;
++template<> struct elf_section_header<32> {
++	uint32_t   sh_name;
++	uint32_t   sh_type;
++	uint32_t   sh_flags;
++	Elf32_Addr sh_addr;
++	Elf32_Off  sh_offset;
++	uint32_t   sh_size;
++	uint32_t   sh_link;
++	uint32_t   sh_info;
++	uint32_t   sh_addralign;
++	uint32_t   sh_entsize;
++};
++
++template<> struct elf_section_header<64> {
++	uint32_t   sh_name;
++	uint32_t   sh_type;
++	uint64_t   sh_flags;
++	Elf64_Addr sh_addr;
++	Elf64_Off  sh_offset;
++	uint64_t   sh_size;
++	uint32_t   sh_link;
++	uint32_t   sh_info;
++	uint64_t   sh_addralign;
++	uint64_t   sh_entsize;
++};
++
++template<int> struct elf_dyn;
++template<> struct elf_dyn<32> {
++	Elf_Sword    d_tag;
++	union {
++		Elf_Word d_val;
++		Elf32_Addr d_ptr;
++	} d_un;
++};
++
++template<> struct elf_dyn<64>{
++	Elf_Sxword    d_tag;
++	union {
++		Elf_Xword d_val;
++		Elf64_Addr  d_ptr;
++	} d_un;
++};
++
++template<typename s> bool structReader(int fd, s *p) {
++	int r = read(fd,p,sizeof(s));
++	return r == sizeof(s);
++}
++
++class elf_info {
++public:
++	elf_info(const char *filename) :
++		fd(-1),
++		is_32(true),
++		shoff(0),
++		shentsize(0),
++		shstrndx(0),
++		shstr(NULL),
++		shstr_size(0),
++		dynamicndx(-1),
++		dynstrndx(-1),
++		dynstr(NULL),
++		dynstr_size(0),
++		dynamic(NULL),
++		dynamic_size(0)
++	{
++		fd = open(filename, O_RDONLY);
++		if (fd == -1)
++		{
++			perror(filename);
++		}
++	} ;
++
++	~elf_info()
++	{
++		if (shstr != NULL) free(shstr);
++		if (dynstr != NULL) free(dynstr);
++		if (dynamic != NULL) free(dynamic);
++		shstr = dynstr = dynamic = NULL;
++		if (fd != -1) close(fd);
++	}
++
++	int fd;
++	bool is_32;
++	off_t shoff;
++	int shnum;
++	int shentsize;
++	int shstrndx;
++	unsigned char *shstr;
++	int shstr_size;
++	int dynamicndx;
++	int dynstrndx;
++	unsigned char *dynstr;
++	int dynstr_size;
++	unsigned char *dynamic;
++	int dynamic_size;
++};
++
++template<typename s> bool sectionReader(int fd, int index, s *p, elf_info &info)
++{
++	off_t o = lseek(fd, info.shoff + index*info.shentsize, SEEK_SET) ;
++	if (o != info.shoff + index*info.shentsize) { return false; }
++	return structReader<s>(fd,p);
++};
++
++template<int n> bool sectiondataReader(int fd, elf_section_header<n> &section, unsigned char *&buffer, int &size)
++{
++	off_t o = lseek(fd, section.sh_offset, SEEK_SET);
++	if (o != section.sh_offset) { return false; }
++	buffer = (unsigned char *)malloc(section.sh_size);
++	if (buffer == NULL) { return false; }
++	int r = read(fd, buffer, section.sh_size);
++	if (r != section.sh_size) { free(buffer); buffer=NULL; return false; } \
++	size = r;
++	return true;
++};
++
++template<int n> bool process_(elf_info &info)
++{
++	elf_header<n> header;
++	if (!structReader(info.fd,&header)) { return false; }
++	info.shoff = header.e_shoff;
++	info.shentsize = header.e_shentsize;
++	info.shnum = header.e_shnum;
++	info.shstrndx = header.e_shstrndx;
++
++	elf_section_header<n> section;
++	if (!sectionReader(info.fd,info.shstrndx,&section,info)) { return false; }
++	if (!sectiondataReader(info.fd, section, info.shstr, info.shstr_size)) { return false; }
++
++	/* Scan all the sections for .dynamic and .dynstr */
++	info.dynamicndx = info.dynstrndx = -1;
++	for (int i=0; i<info.shnum; i++)
++	{
++		if (!sectionReader(info.fd, i, &section, info)) { return false; }
++		if (section.sh_type == 6) 
++		{ 
++			info.dynamicndx = i; 
++			if (!sectiondataReader(info.fd, section, info.dynamic, info.dynamic_size)) { return false; }
++		}
++		if ((section.sh_type == 3) && strcmp((char *)(info.shstr + section.sh_name), ".dynstr")==0) 
++		{ 
++			info.dynstrndx = i; 
++			if (!sectiondataReader(info.fd, section, info.dynstr, info.dynstr_size)) { return false; }
++		}
++		if ((info.dynamicndx != -1) && (info.dynstrndx != -1)) break;
++	}
++
++	if ((info.dynamicndx == -1) || (info.dynstrndx == -1))
++	{
++		return false;
++	}
++
++	elf_dyn<n> *dyn = (elf_dyn<n> *)info.dynamic;
++	while ( ((char *)dyn-(char *)info.dynamic) < info.dynamic_size) 
++	{
++		if (dyn->d_tag == 0) { break; }
++		if (dyn->d_tag == 1) 
++		{ 
++			const char *libname = (char *)(info.dynstr + dyn->d_un.d_ptr);
++			int match = strncmp(libname,"libCstd.so", 10);
++			if (match == 0) { return false; }
++		}
++		dyn++;
++	}
++	
++	return true;
++}
++
++bool is_library_usable(const char *filename)
++{
++	elf_info info(filename);
++	if (info.fd == -1) { return false; }
++
++
++	/* Check magic number and get 32-bit flag */
++	{
++		elf_stubheader header;
++		if (!structReader(info.fd, &header)) { return false; }
++		if ( (header.e_ident[4] != 1) && (header.e_ident[4] != 2)) { return false; }
++		if (!(header.e_ident[0] == 0x7f) && (header.e_ident[1] == 'E') && (header.e_ident[2] == 'L') && (header.e_ident[3] == 'F')) { return false; }
++
++		info.is_32 = header.e_ident[4] == 1;
++	}
++
++	if (info.is_32)
++	{
++		return process_<32>(info);
++	}
++	else
++	{
++		return process_<64>(info);
++	}
++
++	return true;
++}
++
++
++#endif
++
++
+ QT_BEGIN_NAMESPACE
+ 
+ #if !defined(QT_HPUX_LD) && !defined(Q_OS_VXWORKS)
+@@ -199,11 +471,17 @@
+             } else {
+                 attempt = path + prefixes.at(prefix) + name + suffixes.at(suffix);
+             }
++#ifdef Q_OS_SOLARIS
++            if (is_library_usable(QFile::encodeName(attempt))  {
++#endif
+ #if defined(QT_HPUX_LD)
+             pHnd = (void*)shl_load(QFile::encodeName(attempt), dlFlags, 0);
+ #else
+             pHnd = dlopen(QFile::encodeName(attempt), dlFlags);
+ #endif
++#ifdef Q_OS_SOLARIS
++            }
++#endif
+ 
+ #if defined(Q_OS_SYMBIAN)
+             // Never try again in symbian, dlopen already handles the library search logic,

@@ -1,0 +1,8 @@
+--- config.tests/unix/gnu-libiconv/gnu-libiconv.pro.orig	Fri Aug 21 07:40:52 2009
++++ config.tests/unix/gnu-libiconv/gnu-libiconv.pro	Fri Aug 21 07:40:54 2009
+@@ -1,4 +1,4 @@
+ SOURCES = gnu-libiconv.cpp
+ CONFIG -= qt dylib
+ mac:CONFIG -= app_bundle
+-LIBS += -liconv
++# LIBS += -liconv

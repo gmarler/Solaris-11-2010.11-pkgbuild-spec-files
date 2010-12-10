@@ -1,0 +1,16 @@
+--- src/3rdparty/webkit/JavaScriptCore/runtime/UString.cpp.orig	2010-08-06 01:49:40.584306485 +0200
++++ src/3rdparty/webkit/JavaScriptCore/runtime/UString.cpp	2010-08-06 01:52:48.282129447 +0200
+@@ -704,8 +704,12 @@
+ 
+     return (l1 > l2) ? 1 : -1;
+ }
+-
++#if OS(SOLARIS) && COMPILER(SUNCC)
++// Signature must match that of UStringImpl.h, otherwise the linker complains about undefined symbol.
++bool equal(const UStringImpl* r, const UStringImpl* b)
++#else
+ bool equal(const UString::Rep* r, const UString::Rep* b)
++#endif
+ {
+     unsigned length = r->length();
+     if (length != b->length())

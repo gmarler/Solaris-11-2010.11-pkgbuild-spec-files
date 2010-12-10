@@ -1,0 +1,56 @@
+From eac136d8c89968cad5083f281790d4587d2976b5 Mon Sep 17 00:00:00 2001
+From: Thiago Macieira <thiago.macieira@nokia.com>
+Date: Thu, 23 Jul 2009 11:26:22 +0200
+Subject: [PATCH 17/17] Fix linking with Sun CC 5.9: function pointers for extern "C" are treated differently
+
+The Sun CC compiler treats C functions and C++ functions differently,
+as if they had a different calling sequence (they don't, but they
+could). So if you declare a function in C++ having a function pointer
+as a parameter, it's understood to be C++ even if it had previously
+been declared as extern "C".
+
+This could be a compiler error, though. In any case, the end result is
+that WebKit fails to link because of an undefined reference to
+NPN_PluginThreadAsyncCall.
+
+"plugins/npapi.cpp", line 177: Warning (Anachronism): Formal argument 2 of type void(*)(void*) in call to WebCore::PluginMainThreadScheduler::scheduleCall(_NPP*, void(*)(void*), void*) is being passed extern "C" void(*)(void*).
+
+There are more of these errors left in WebKit, but they are not
+causing problems right now.
+---
+ .../webkit/JavaScriptCore/wtf/MainThread.h         |    4 +++-
+ src/3rdparty/webkit/WebCore/plugins/npapi.cpp      |    2 ++
+ 2 files changed, 5 insertions(+), 1 deletions(-)
+
+diff --git a/src/3rdparty/webkit/JavaScriptCore/wtf/MainThread.h b/src/3rdparty/webkit/JavaScriptCore/wtf/MainThread.h
+index 01ce804..b8305b5 100644
+--- a/src/3rdparty/webkit/JavaScriptCore/wtf/MainThread.h
++++ b/src/3rdparty/webkit/JavaScriptCore/wtf/MainThread.h
+@@ -34,7 +34,9 @@ namespace WTF {
+ 
+ class Mutex;
+ 
+-typedef void MainThreadFunction(void*);
++extern "C" {
++    typedef void MainThreadFunction(void*);
++}
+ 
+ void callOnMainThread(MainThreadFunction*, void* context);
+ 
+diff --git a/src/3rdparty/webkit/WebCore/plugins/npapi.cpp b/src/3rdparty/webkit/WebCore/plugins/npapi.cpp
+index 4135b64..d275a39 100644
+--- a/src/3rdparty/webkit/WebCore/plugins/npapi.cpp
++++ b/src/3rdparty/webkit/WebCore/plugins/npapi.cpp
+@@ -171,7 +171,9 @@ void NPN_PopPopupsEnabledState(NPP instance)
+     pluginViewForInstance(instance)->popPopupsEnabledState();
+ }
+ 
++extern "C" {
+ void NPN_PluginThreadAsyncCall(NPP instance, void (*func) (void *), void *userData)
+ {
+     PluginMainThreadScheduler::scheduler().scheduleCall(instance, func, userData);
+ }
++}
+-- 
+1.6.2.1.223.g2f1f
+

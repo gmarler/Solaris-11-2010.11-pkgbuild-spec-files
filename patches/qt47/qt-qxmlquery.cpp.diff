@@ -1,0 +1,11 @@
+--- ./src/xmlpatterns/api/qxmlquery.h.orig	2009-04-09 00:29:01.780777683 +0200
++++ ./src/xmlpatterns/api/qxmlquery.h	2009-04-09 00:29:27.977938178 +0200
+@@ -136,7 +136,7 @@
+     friend class QXmlSerializer;
+     friend class QPatternistSDK::TestCase;
+     friend class QPatternist::VariableLoader;
+-    template<typename TInputType> friend bool setFocusHelper(QXmlQuery *const queryInstance,
++    template<typename TInputType> friend static bool setFocusHelper(QXmlQuery *const queryInstance,
+                                                              const TInputType &focusValue);
+     QXmlQueryPrivate *d;
+ };

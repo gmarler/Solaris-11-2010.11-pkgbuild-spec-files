@@ -1,0 +1,11 @@
+--- src/3rdparty/webkit/JavaScriptCore/wtf/Vector.h.orig	2009-10-21 20:52:08.841245455 +0200
++++ src/3rdparty/webkit/JavaScriptCore/wtf/Vector.h	2009-10-21 20:53:39.227669565 +0200
+@@ -38,7 +38,7 @@
+     using std::max;
+ 
+     // WTF_ALIGN_OF / WTF_ALIGNED
+-    #if COMPILER(GCC) || COMPILER(MINGW) || COMPILER(RVCT) || COMPILER(WINSCW)
++    #if COMPILER(GCC) || COMPILER(MINGW) || COMPILER(RVCT) || COMPILER(WINSCW) || COMPILER(SUNCC)
+         #define WTF_ALIGN_OF(type) __alignof__(type)
+         #define WTF_ALIGNED(variable_type, variable, n) variable_type variable __attribute__((__aligned__(n)))
+     #elif COMPILER(MSVC)

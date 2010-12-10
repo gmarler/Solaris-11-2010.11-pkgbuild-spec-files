@@ -1,0 +1,30 @@
+--- src/corelib/codecs/qiconvcodec.cpp.orig	2010-11-18 20:23:46.624167274 +0300
++++ src/corelib/codecs/qiconvcodec.cpp	2010-11-18 20:31:48.653258259 +0300
+@@ -218,7 +218,7 @@
+     IconvState *state = *pstate;
+     size_t inBytesLeft = len;
+     // best case assumption, each byte is converted into one UTF-16 character, plus 2 bytes for the BOM
+-#ifdef GNU_LIBICONV
++#if defined(GNU_LIBICONV) || (__SUNPRO_CC)
+     // GNU doesn't disagree with POSIX :/
+     const char *inBytes = chars;
+ #else
+@@ -311,7 +311,7 @@
+     size_t outBytesLeft = sizeof buf;
+     size_t inBytesLeft = sizeof bom;
+ 
+-#if defined(GNU_LIBICONV)
++#if defined(GNU_LIBICONV) || (__SUNPRO_CC)
+     const char **inBytesPtr = const_cast<const char **>(&inBytes);
+ #else
+     char **inBytesPtr = &inBytes;
+@@ -331,7 +331,7 @@
+     char *outBytes;
+     size_t inBytesLeft;
+ 
+-#if defined(GNU_LIBICONV)
++#if defined(GNU_LIBICONV) || (__SUNPRO_CC)
+     const char **inBytesPtr = const_cast<const char **>(&inBytes);
+ #else
+     char **inBytesPtr = &inBytes;
+

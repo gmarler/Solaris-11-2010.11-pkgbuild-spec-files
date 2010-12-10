@@ -1,0 +1,11 @@
+diff -r d743efab4cb5 JavaScriptCore/wtf/MathExtras.h
+--- src/3rdparty/webkit/JavaScriptCore/wtf/MathExtras.h Wed Mar 24 18:16:39 2010 +0800
++++ src/3rdparty/webkit/JavaScriptCore/wtf/MathExtras.h Thu Mar 25 10:55:43 2010 +0800
+@@ -32,6 +32,7 @@
+ 
+ #if OS(SOLARIS)
+ #include <ieeefp.h>
++#include <math.h>
+ #endif
+ 
+ #if OS(OPENBSD)

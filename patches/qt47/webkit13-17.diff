@@ -1,0 +1,49 @@
+From a01e5c78156bb1d6da6498ae28acf4e3febde9ea Mon Sep 17 00:00:00 2001
+From: Thiago Macieira <thiago.macieira@nokia.com>
+Date: Tue, 21 Jul 2009 13:55:40 +0200
+Subject: [PATCH 13/17] Fix compilation with Sun CC 5.9: types must match on ?:
+
+"loader/DocumentLoader.h", line 169: Error: Different types for "?:" (WebCore::String and WebCore::KURL).
+---
+ .../webkit/WebCore/loader/DocumentLoader.h         |    2 +-
+ src/3rdparty/webkit/WebCore/loader/FrameLoader.cpp |    4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/src/3rdparty/webkit/WebCore/loader/DocumentLoader.h b/src/3rdparty/webkit/WebCore/loader/DocumentLoader.h
+index d4ac427..f158e27 100644
+--- a/src/3rdparty/webkit/WebCore/loader/DocumentLoader.h
++++ b/src/3rdparty/webkit/WebCore/loader/DocumentLoader.h
+@@ -166,7 +166,7 @@ namespace WebCore {
+         String clientRedirectDestinationForHistory() const { return urlForHistory(); }
+         void setClientRedirectSourceForHistory(const String& clientedirectSourceForHistory) { m_clientRedirectSourceForHistory = clientedirectSourceForHistory; }
+         
+-        String serverRedirectSourceForHistory() const { return urlForHistory() == url() ? String() : urlForHistory(); } // null if no server redirect occurred.
++        String serverRedirectSourceForHistory() const { return urlForHistory() == url() ? String() : urlForHistory().string(); } // null if no server redirect occurred.
+         String serverRedirectDestinationForHistory() const { return url(); }
+ 
+         bool didCreateGlobalHistoryEntry() const { return m_didCreateGlobalHistoryEntry; }
+diff --git a/src/3rdparty/webkit/WebCore/loader/FrameLoader.cpp b/src/3rdparty/webkit/WebCore/loader/FrameLoader.cpp
+index 1e51583..a857a4c 100644
+--- a/src/3rdparty/webkit/WebCore/loader/FrameLoader.cpp
++++ b/src/3rdparty/webkit/WebCore/loader/FrameLoader.cpp
+@@ -2263,7 +2263,7 @@ void FrameLoader::load(const ResourceRequest& request, const SubstituteData& sub
+     m_loadType = FrameLoadTypeStandard;
+     RefPtr<DocumentLoader> loader = m_client->createDocumentLoader(request, substituteData);
+     if (lockHistory && m_documentLoader)
+-        loader->setClientRedirectSourceForHistory(m_documentLoader->didCreateGlobalHistoryEntry() ? m_documentLoader->urlForHistory() : m_documentLoader->clientRedirectSourceForHistory());
++        loader->setClientRedirectSourceForHistory(m_documentLoader->didCreateGlobalHistoryEntry() ? m_documentLoader->urlForHistory().string() : m_documentLoader->clientRedirectSourceForHistory());
+     load(loader.get());
+ }
+ 
+@@ -2287,7 +2287,7 @@ void FrameLoader::loadWithNavigationAction(const ResourceRequest& request, const
+ {
+     RefPtr<DocumentLoader> loader = m_client->createDocumentLoader(request, SubstituteData());
+     if (lockHistory && m_documentLoader)
+-        loader->setClientRedirectSourceForHistory(m_documentLoader->didCreateGlobalHistoryEntry() ? m_documentLoader->urlForHistory() : m_documentLoader->clientRedirectSourceForHistory());
++        loader->setClientRedirectSourceForHistory(m_documentLoader->didCreateGlobalHistoryEntry() ? m_documentLoader->urlForHistory().string() : m_documentLoader->clientRedirectSourceForHistory());
+ 
+     loader->setTriggeringAction(action);
+     if (m_documentLoader)
+-- 
+1.6.2.1.223.g2f1f
+

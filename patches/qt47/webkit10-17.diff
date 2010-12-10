@@ -1,0 +1,28 @@
+From d6ba69759c3702d4a717a64d1fdd46e74f3abf22 Mon Sep 17 00:00:00 2001
+From: Thiago Macieira <thiago.macieira@nokia.com>
+Date: Tue, 27 Jan 2009 20:34:35 +0100
+Subject: [PATCH 10/17] Fix compilation with Sun CC 5.9: I have no clue why it thinks one of the operands is bool.
+
+Error: Different types for "?:" (bool and WebCore::RenderStyle*).
+---
+ src/3rdparty/webkit/WebCore/dom/NodeRenderStyle.h |    4 +++-
+ 1 files changed, 3 insertions(+), 1 deletions(-)
+
+diff --git a/src/3rdparty/webkit/WebCore/dom/NodeRenderStyle.h b/src/3rdparty/webkit/WebCore/dom/NodeRenderStyle.h
+index 3a67e02..83a942e 100644
+--- a/src/3rdparty/webkit/WebCore/dom/NodeRenderStyle.h
++++ b/src/3rdparty/webkit/WebCore/dom/NodeRenderStyle.h
+@@ -33,7 +33,9 @@ namespace WebCore {
+ 
+ inline RenderStyle* Node::renderStyle() const
+ {
+-    return m_renderer ? m_renderer->style() : nonRendererRenderStyle();
++    if (m_renderer)
++        return m_renderer->style();
++    return nonRendererRenderStyle();
+ }
+ 
+ }
+-- 
+1.6.2.1.223.g2f1f
+

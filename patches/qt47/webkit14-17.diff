@@ -1,0 +1,25 @@
+From 7cc4fe21af1aaa1790b4c1d70327be473ba66ea0 Mon Sep 17 00:00:00 2001
+From: Thiago Macieira <thiago.macieira@nokia.com>
+Date: Tue, 27 Jan 2009 18:53:44 +0100
+Subject: [PATCH 14/17] Fix compilation with Sun CC 5.9: ambiguity in ?:
+
+Error: Ambiguous "?:" expression, second operand of type "JSC::JSObject*" and third operand of type "JSC::JSValuePtr" can be converted to one another.
+Error: Ambiguous "?:" expression, second operand of type "JSC::RuntimeObjectImp*" and third operand of type "JSC::JSValuePtr" can be converted to one another.
+---
+ .../bindings/js/JSJavaScriptCallFrameCustom.cpp    |    2 +-
+ .../bindings/js/JSPluginElementFunctions.cpp       |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/3rdparty/webkit/WebCore/bindings/js/JSJavaScriptCallFrameCustom.cpp b/src/3rdparty/webkit/WebCore/bindings/js/JSJavaScriptCallFrameCustom.cpp
+index 08ecf2b..d156025 100644
+--- a/src/3rdparty/webkit/WebCore/bindings/js/JSJavaScriptCallFrameCustom.cpp
++++ b/src/3rdparty/webkit/WebCore/bindings/js/JSJavaScriptCallFrameCustom.cpp
+@@ -48,7 +48,7 @@ JSValue JSJavaScriptCallFrame::evaluate(ExecState* exec, const ArgList& args)
+ 
+ JSValue JSJavaScriptCallFrame::thisObject(ExecState*) const
+ {
+-    return impl()->thisObject() ? impl()->thisObject() : jsNull();
++    return impl()->thisObject() ? JSValue(impl()->thisObject()) : jsNull();
+ }
+ 
+ JSValue JSJavaScriptCallFrame::type(ExecState* exec) const

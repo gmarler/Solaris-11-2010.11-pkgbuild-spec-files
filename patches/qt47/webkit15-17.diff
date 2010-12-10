@@ -1,0 +1,210 @@
+From 57e6c904c817d3f54423b012827e726315bf4390 Mon Sep 17 00:00:00 2001
+From: Thiago Macieira <thiago.macieira@nokia.com>
+Date: Sun, 19 Jul 2009 15:25:50 +0200
+Subject: [PATCH 15/17] Fix compilation with Sun CC 5.9: ambiguity in ?:
+
+Error: Ambiguous "?:" expression, second operand of type "WTF::PassRefPtr<WebCore::DocumentFragment>" and third operand of type "int" can be converted to one another.
+Error: Ambiguous "?:" expression, second operand of type "WTF::PassRefPtr<JSC::Label>" and third operand of type "int" can be converted to one another.
+[and others similar]
+---
+ .../bytecompiler/BytecodeGenerator.cpp             |    2 +-
+ .../WebCore/editing/CompositeEditCommand.cpp       |    2 +-
+ src/3rdparty/webkit/WebCore/editing/markup.cpp     |    2 +-
+ src/3rdparty/webkit/WebCore/html/HTMLParser.cpp    |    4 ++--
+ .../webkit/WebCore/loader/DocumentLoader.cpp       |    2 +-
+ .../loader/appcache/ApplicationCacheGroup.cpp      |    2 +-
+ .../WebCore/loader/archive/ArchiveFactory.cpp      |    2 +-
+ .../WebCore/loader/archive/ArchiveResource.cpp     |    6 +++---
+ .../webkit/WebCore/loader/icon/IconDatabase.cpp    |    2 +-
+ src/3rdparty/webkit/WebCore/page/DOMWindow.cpp     |    2 +-
+ .../WebCore/page/animation/AnimationBase.cpp       |    2 +-
+ .../webkit/WebCore/rendering/RenderLayer.cpp       |    4 ++--
+ .../webkit/WebCore/rendering/RenderScrollbar.cpp   |    2 +-
+ .../WebCore/rendering/RenderTextFragment.cpp       |    2 +-
+ src/3rdparty/webkit/WebCore/svg/SVGElement.cpp     |    2 +-
+ src/3rdparty/webkit/WebCore/workers/Worker.cpp     |    2 +-
+ .../webkit/WebCore/workers/WorkerContext.cpp       |    2 +-
+ 17 files changed, 21 insertions(+), 21 deletions(-)
+
+diff --git a/src/3rdparty/webkit/JavaScriptCore/bytecompiler/BytecodeGenerator.cpp b/src/3rdparty/webkit/JavaScriptCore/bytecompiler/BytecodeGenerator.cpp
+index 15261ee..eccef47 100644
+--- a/src/3rdparty/webkit/JavaScriptCore/bytecompiler/BytecodeGenerator.cpp
++++ b/src/3rdparty/webkit/JavaScriptCore/bytecompiler/BytecodeGenerator.cpp
+@@ -521,7 +521,7 @@ PassRefPtr<LabelScope> BytecodeGenerator::newLabelScope(LabelScope::Type type, c
+         m_labelScopes.removeLast();
+ 
+     // Allocate new label scope.
+-    LabelScope scope(type, name, scopeDepth(), newLabel(), type == LabelScope::Loop ? newLabel() : PassRefPtr<Label>()); // Only loops have continue targets.
++    LabelScope scope(type, name, scopeDepth(), newLabel(), type == LabelScope::Loop ? newLabel() : PassRefPtr<Label>(0)); // Only loops have continue targets.
+     m_labelScopes.append(scope);
+     return &m_labelScopes.last();
+ }
+diff --git a/src/3rdparty/webkit/WebCore/editing/CompositeEditCommand.cpp b/src/3rdparty/webkit/WebCore/editing/CompositeEditCommand.cpp
+index 9737e92..dcb3326 100644
+--- a/src/3rdparty/webkit/WebCore/editing/CompositeEditCommand.cpp
++++ b/src/3rdparty/webkit/WebCore/editing/CompositeEditCommand.cpp
+@@ -795,7 +795,7 @@ void CompositeEditCommand::moveParagraphs(const VisiblePosition& startOfParagrap
+ 
+     // FIXME: This is an inefficient way to preserve style on nodes in the paragraph to move.  It 
+     // shouldn't matter though, since moved paragraphs will usually be quite small.
+-    RefPtr<DocumentFragment> fragment = startOfParagraphToMove != endOfParagraphToMove ? createFragmentFromMarkup(document(), createMarkup(range.get(), 0, DoNotAnnotateForInterchange, true), "") : 0;
++    RefPtr<DocumentFragment> fragment = startOfParagraphToMove != endOfParagraphToMove ? createFragmentFromMarkup(document(), createMarkup(range.get(), 0, DoNotAnnotateForInterchange, true), "") : PassRefPtr<DocumentFragment>(0);
+     
+     // A non-empty paragraph's style is moved when we copy and move it.  We don't move 
+     // anything if we're given an empty paragraph, but an empty paragraph can have style
+diff --git a/src/3rdparty/webkit/WebCore/editing/markup.cpp b/src/3rdparty/webkit/WebCore/editing/markup.cpp
+index d6fe1ce..254e2f5 100644
+--- a/src/3rdparty/webkit/WebCore/editing/markup.cpp
++++ b/src/3rdparty/webkit/WebCore/editing/markup.cpp
+@@ -950,7 +950,7 @@ String createMarkup(const Range* range, Vector<Node*>* nodes, EAnnotateForInterc
+     Node* body = enclosingNodeWithTag(Position(commonAncestor, 0), bodyTag);
+     // FIXME: Do this for all fully selected blocks, not just the body.
+     Node* fullySelectedRoot = body && *VisibleSelection::selectionFromContentsOfNode(body).toNormalizedRange() == *updatedRange ? body : 0;
+-    RefPtr<CSSMutableStyleDeclaration> fullySelectedRootStyle = fullySelectedRoot ? styleFromMatchedRulesAndInlineDecl(fullySelectedRoot) : 0;
++    RefPtr<CSSMutableStyleDeclaration> fullySelectedRootStyle = fullySelectedRoot ? styleFromMatchedRulesAndInlineDecl(fullySelectedRoot) : PassRefPtr<CSSMutableStyleDeclaration>(0);
+     if (annotate && fullySelectedRoot) {
+         if (shouldIncludeWrapperForFullySelectedRoot(fullySelectedRoot, fullySelectedRootStyle.get()))
+             specialCommonAncestor = fullySelectedRoot;
+diff --git a/src/3rdparty/webkit/WebCore/loader/DocumentLoader.cpp b/src/3rdparty/webkit/WebCore/loader/DocumentLoader.cpp
+index 87cb725..812d17b 100644
+--- a/src/3rdparty/webkit/WebCore/loader/DocumentLoader.cpp
++++ b/src/3rdparty/webkit/WebCore/loader/DocumentLoader.cpp
+@@ -519,7 +519,7 @@ ArchiveResource* DocumentLoader::archiveResourceForURL(const KURL& url) const
+ 
+ PassRefPtr<Archive> DocumentLoader::popArchiveForSubframe(const String& frameName)
+ {
+-    return m_archiveResourceCollection ? m_archiveResourceCollection->popSubframeArchive(frameName) : 0;
++    return m_archiveResourceCollection ? m_archiveResourceCollection->popSubframeArchive(frameName) : PassRefPtr<Archive>(0);
+ }
+ 
+ void DocumentLoader::clearArchiveResources()
+diff --git a/src/3rdparty/webkit/WebCore/loader/archive/ArchiveFactory.cpp b/src/3rdparty/webkit/WebCore/loader/archive/ArchiveFactory.cpp
+index 1322dbb..753c3c3 100644
+--- a/src/3rdparty/webkit/WebCore/loader/archive/ArchiveFactory.cpp
++++ b/src/3rdparty/webkit/WebCore/loader/archive/ArchiveFactory.cpp
+@@ -75,7 +75,7 @@ bool ArchiveFactory::isArchiveMimeType(const String& mimeType)
+ PassRefPtr<Archive> ArchiveFactory::create(SharedBuffer* data, const String& mimeType)
+ {
+     RawDataCreationFunction* function = archiveMIMETypes().get(mimeType);
+-    return function ? function(data) : 0;
++    return function ? function(data) : PassRefPtr<Archive>(0);
+ }
+ 
+ void ArchiveFactory::registerKnownArchiveMIMETypes()
+diff --git a/src/3rdparty/webkit/WebCore/loader/archive/ArchiveResource.cpp b/src/3rdparty/webkit/WebCore/loader/archive/ArchiveResource.cpp
+index 691f66a..b6317da 100644
+--- a/src/3rdparty/webkit/WebCore/loader/archive/ArchiveResource.cpp
++++ b/src/3rdparty/webkit/WebCore/loader/archive/ArchiveResource.cpp
+@@ -35,17 +35,17 @@ namespace WebCore {
+ 
+ PassRefPtr<ArchiveResource> ArchiveResource::create(PassRefPtr<SharedBuffer> data, const KURL& url, const ResourceResponse& response)
+ {
+-    return data ? adoptRef(new ArchiveResource(data, url, response)) : 0;
++    return data ? adoptRef(new ArchiveResource(data, url, response)) : PassRefPtr<ArchiveResource>(0);
+ }
+ 
+ PassRefPtr<ArchiveResource> ArchiveResource::create(PassRefPtr<SharedBuffer> data, const KURL& url, const String& mimeType, const String& textEncoding, const String& frameName)
+ {
+-    return data ? adoptRef(new ArchiveResource(data, url, mimeType, textEncoding, frameName)) : 0;
++    return data ? adoptRef(new ArchiveResource(data, url, mimeType, textEncoding, frameName)) : PassRefPtr<ArchiveResource>(0);
+ }
+ 
+ PassRefPtr<ArchiveResource> ArchiveResource::create(PassRefPtr<SharedBuffer> data, const KURL& url, const String& mimeType, const String& textEncoding, const String& frameName, const ResourceResponse& resourceResponse)
+ {
+-    return data ? adoptRef(new ArchiveResource(data, url, mimeType, textEncoding, frameName, resourceResponse)) : 0;
++    return data ? adoptRef(new ArchiveResource(data, url, mimeType, textEncoding, frameName, resourceResponse)) : PassRefPtr<ArchiveResource>(0);
+ }
+ 
+ ArchiveResource::ArchiveResource(PassRefPtr<SharedBuffer> data, const KURL& url, const ResourceResponse& response)
+diff --git a/src/3rdparty/webkit/WebCore/page/animation/AnimationBase.cpp b/src/3rdparty/webkit/WebCore/page/animation/AnimationBase.cpp
+index a4916e9..139488a 100644
+--- a/src/3rdparty/webkit/WebCore/page/animation/AnimationBase.cpp
++++ b/src/3rdparty/webkit/WebCore/page/animation/AnimationBase.cpp
+@@ -132,7 +132,7 @@ static inline TransformOperations blendFunc(const AnimationBase* anim, const Tra
+         for (unsigned i = 0; i < size; i++) {
+             RefPtr<TransformOperation> fromOp = (i < fromSize) ? from.operations()[i].get() : 0;
+             RefPtr<TransformOperation> toOp = (i < toSize) ? to.operations()[i].get() : 0;
+-            RefPtr<TransformOperation> blendedOp = toOp ? toOp->blend(fromOp.get(), progress) : (fromOp ? fromOp->blend(0, progress, true) : 0);
++            RefPtr<TransformOperation> blendedOp = toOp ? toOp->blend(fromOp.get(), progress) : (fromOp ? fromOp->blend(0, progress, true) : PassRefPtr<TransformOperation>(0));
+             if (blendedOp)
+                 result.operations().append(blendedOp);
+             else {
+diff --git a/src/3rdparty/webkit/WebCore/rendering/RenderLayer.cpp b/src/3rdparty/webkit/WebCore/rendering/RenderLayer.cpp
+index 5de1bbf..8086e06 100644
+--- a/src/3rdparty/webkit/WebCore/rendering/RenderLayer.cpp
++++ b/src/3rdparty/webkit/WebCore/rendering/RenderLayer.cpp
+@@ -3211,7 +3211,7 @@ void RenderLayer::styleChanged(StyleDifference diff, const RenderStyle*)
+ void RenderLayer::updateScrollCornerStyle()
+ {
+     RenderObject* actualRenderer = renderer()->node() ? renderer()->node()->shadowAncestorNode()->renderer() : renderer();
+-    RefPtr<RenderStyle> corner = renderer()->hasOverflowClip() ? actualRenderer->getUncachedPseudoStyle(SCROLLBAR_CORNER, actualRenderer->style()) : 0;
++    RefPtr<RenderStyle> corner = renderer()->hasOverflowClip() ? actualRenderer->getUncachedPseudoStyle(SCROLLBAR_CORNER, actualRenderer->style()) : PassRefPtr<RenderStyle>(0);
+     if (corner) {
+         if (!m_scrollCorner) {
+             m_scrollCorner = new (renderer()->renderArena()) RenderScrollbarPart(renderer()->document());
+@@ -3227,7 +3227,7 @@ void RenderLayer::updateScrollCornerStyle()
+ void RenderLayer::updateResizerStyle()
+ {
+     RenderObject* actualRenderer = renderer()->node() ? renderer()->node()->shadowAncestorNode()->renderer() : renderer();
+-    RefPtr<RenderStyle> resizer = renderer()->hasOverflowClip() ? actualRenderer->getUncachedPseudoStyle(RESIZER, actualRenderer->style()) : 0;
++    RefPtr<RenderStyle> resizer = renderer()->hasOverflowClip() ? actualRenderer->getUncachedPseudoStyle(RESIZER, actualRenderer->style()) : PassRefPtr<RenderStyle>(0);
+     if (resizer) {
+         if (!m_resizer) {
+             m_resizer = new (renderer()->renderArena()) RenderScrollbarPart(renderer()->document());
+diff --git a/src/3rdparty/webkit/WebCore/rendering/RenderScrollbar.cpp b/src/3rdparty/webkit/WebCore/rendering/RenderScrollbar.cpp
+index db24a06..32cea92 100644
+--- a/src/3rdparty/webkit/WebCore/rendering/RenderScrollbar.cpp
++++ b/src/3rdparty/webkit/WebCore/rendering/RenderScrollbar.cpp
+@@ -183,7 +183,7 @@ void RenderScrollbar::updateScrollbarPart(ScrollbarPart partType, bool destroy)
+     if (partType == NoPart)
+         return;
+ 
+-    RefPtr<RenderStyle> partStyle = !destroy ? getScrollbarPseudoStyle(partType,  pseudoForScrollbarPart(partType)) : 0;
++    RefPtr<RenderStyle> partStyle = !destroy ? getScrollbarPseudoStyle(partType,  pseudoForScrollbarPart(partType)) : PassRefPtr<RenderStyle>(0);
+     
+     bool needRenderer = !destroy && partStyle && partStyle->display() != NONE && partStyle->visibility() == VISIBLE;
+     
+diff --git a/src/3rdparty/webkit/WebCore/rendering/RenderTextFragment.cpp b/src/3rdparty/webkit/WebCore/rendering/RenderTextFragment.cpp
+index 7da9e5a..1d8fca6 100644
+--- a/src/3rdparty/webkit/WebCore/rendering/RenderTextFragment.cpp
++++ b/src/3rdparty/webkit/WebCore/rendering/RenderTextFragment.cpp
+@@ -28,7 +28,7 @@
+ namespace WebCore {
+ 
+ RenderTextFragment::RenderTextFragment(Node* node, StringImpl* str, int startOffset, int length)
+-    : RenderText(node, str ? str->substring(startOffset, length) : 0)
++    : RenderText(node, str ? str->substring(startOffset, length) : PassRefPtr<StringImpl>(0))
+     , m_start(startOffset)
+     , m_end(length)
+     , m_firstLetter(0)
+--- a/src/3rdparty/webkit/WebCore/loader/icon/IconDatabase.cpp.orig	2009-11-11 14:15:37.000000000 +0100
++++ b/src/3rdparty/webkit/WebCore/loader/icon/IconDatabase.cpp	2009-12-01 20:58:09.528126947 +0100
+@@ -511,7 +511,7 @@
+     if (!isOpen() || iconURLOriginal.isEmpty())
+         return;
+     
+-    RefPtr<SharedBuffer> data = dataOriginal ? dataOriginal->copy() : 0;
++    RefPtr<SharedBuffer> data = dataOriginal ? dataOriginal->copy() : PassRefPtr<SharedBuffer>(0);
+     String iconURL = iconURLOriginal.crossThreadString();
+     
+     Vector<String> pageURLs;
+--- a/src/3rdparty/webkit/WebCore/html/HTMLParser.cpp.orig	2010-07-09 01:11:36.224713257 +0200
++++ b/src/3rdparty/webkit/WebCore/html/HTMLParser.cpp	2010-07-09 01:14:22.929616359 +0200
+@@ -141,7 +141,7 @@
+     , m_handlingResidualStyleAcrossBlocks(false)
+     , m_inStrayTableContent(0)
+     , m_scriptingPermission(FragmentScriptingAllowed)
+-    , m_parserQuirks(m_document->page() ? m_document->page()->chrome()->client()->createHTMLParserQuirks() : 0)
++    , m_parserQuirks(m_document->page() ? m_document->page()->chrome()->client()->createHTMLParserQuirks() : PassOwnPtr<HTMLParserQuirks>(0))
+ {
+ }
+ 
+@@ -160,7 +160,7 @@
+     , m_handlingResidualStyleAcrossBlocks(false)
+     , m_inStrayTableContent(0)
+     , m_scriptingPermission(scriptingPermission)
+-    , m_parserQuirks(m_document->page() ? m_document->page()->chrome()->client()->createHTMLParserQuirks() : 0)
++    , m_parserQuirks(m_document->page() ? m_document->page()->chrome()->client()->createHTMLParserQuirks() : PassOwnPtr<HTMLParserQuirks>(0))
+ {
+     if (frag)
+         frag->ref();

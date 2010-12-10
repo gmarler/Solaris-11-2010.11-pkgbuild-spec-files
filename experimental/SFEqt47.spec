@@ -1,7 +1,27 @@
 #
-# Copyright 2008 Sun Microsystems, Inc.
-# This file and all modifications and additions to the pristine
-# package are under the same license as the package itself.
+# spec file for package SFEqt47
+#
+# includes module: qt
+#
+
+################################################################################
+###									     ###
+###				  EXPERIMENTAL				     ###
+###									     ###
+### This spec makes use of patches which are hard-coded to enable features   ###
+### of the Intel Nehalem processor, specifically, the SSE 4.2 instruction    ###
+### set.  This means that if you do not have a bleeding edge Intel CPU, you  ###
+### must edit the spec to add an option to disable features which your CPU   ###
+### does not have.  It is sufficient to	use only one such option: disabling  ###
+### a given instruction set disables all later instruction sets		     ###
+### incorporating that instruction set.  To see the relevant options, run    ###
+### "./configure --help | grep instructions" in the source root directory.   ###
+###									     ###
+### Despite the experimental status of this spec, the library that it builds ###
+### has been observed to be quite stable.				     ###
+################################################################################
+
+# TODO: Make package build on non-Nehalem systems without user intervention
 
 # NOTE FOR USERS:
 # If you want nice looking fonts with aliasing, you should create .fonts.conf in your homedir
@@ -22,6 +42,9 @@
 #        </edit>
 #
 
+# NOTE: To build software using this library which uses qmake, use
+# export QMAKESPEC=solaris-cc-stdcxx
+
 %include Solaris.inc
 %define srcname qt-everywhere-opensource-src
 
@@ -30,12 +53,60 @@ Summary:             Cross-platform development framework/toolkit
 URL:                 http://trolltech.com/products/qt
 License:             LGPLv2
 Version:             4.7.1
-Source:              ftp://ftp.trolltech.com/qt/source/%{srcname}-%{version}.tar.gz
+Source:              ftp://ftp.trolltech.com/qt/source/%srcname-%version.tar.gz
+Source1:	     qmake.conf
+Patch1:		     qt471-01-configure-ext.diff
+Patch2:		     qt471-02-ext.diff
+Patch3:		     qt471-03-ext2.diff
+Patch4:		     qt471-04-sse42.diff
+#These patches are stolen from KDE guys and affect WebKit 
+#(I'm not first who stole them, most of them are stolen from cvsdude old repo)
+Patch5:		     webkit01-17.diff
+Patch6:		     webkit04-17.diff
+Patch7:		     webkit05-17.diff
+Patch8:		     webkit08-17.diff
+Patch9:		     webkit10-17.diff
+Patch10:	     webkit11-17.diff
+Patch11:	     webkit13-17.diff
+Patch12:	     webkit14-17.diff
+Patch13:	     webkit15-17.diff
+Patch14:	     webkit16-17.diff
+Patch15:	     webkit17-17.diff
+#These don't affect Webkit, I've decided they are nice and steal from KDE guys
+Patch16:	     qt-fastmalloc.diff
+Patch17:	     qt-align.diff 
+Patch18:	     qt-qglobal.diff
+Patch19:	     qt-4.6.2-iconv-XPG5.diff
+Patch20: 	     qt-thread.diff
+Patch21:	     qt-arch.diff 
+Patch22:	     qt-4.6.2-webkit-CSSComputedStyleDeclaration.cpp.221.diff
+Patch23:	     qt-4.6.2-networkaccessmanager.cpp.233.diff
+Patch24:	     qt-4.7.0-webkit-runtime_array.h.234.diff
+Patch25:	     qt-MathExtras.diff
+Patch26:	     qt-webkit-exceptioncode.diff 
+Patch27:	     qt-uistring.diff 
+Patch28:	     template.diff 
+Patch29:	     plugin-loader.diff 
+Patch30:	     qt-qxmlquery.cpp.diff
+Patch31:	     qt-clucene.diff 
+Patch32:	     qt-configure-iconv.diff 
+Patch33:	     qt-4.6.2-iconv.diff
+Patch34:	     qt-qmutex_unix.cpp.diff
+#These exclusive to SFE
+Patch35:	     qt471-05-pluginqlib.diff
+Patch36:	     qt-4.7.1-webkit-jscore-munmap.diff
+Patch37:	     qt-4.7.1-webkit-jsc-wts-systemalloc.diff
+Patch38:	     qt-4.7.1-mathextras.diff
+Patch39: 	     qt-4.7.1-qiconvcodec.diff
+Patch40:	     qt-471-shm.diff 
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
+
 %include default-depend.inc
 %include stdcxx.inc
+BuildRequires: SUNWlibstdcxx4
 Requires: SUNWlibstdcxx4
+Conflicts: SFEqt4
 
 #FIXME: Requires: SUNWxorg-mesa
 # Guarantee X/freetype environment concisely (hopefully):
@@ -53,6 +124,47 @@ Requires: %name
 
 %prep
 %setup -q -n %{srcname}-%version
+%define _patch_options
+%patch1 -p0
+%patch2 -p0
+%patch3 -p0
+%patch4 -p0
+%patch5 -p0
+%patch6 -p1
+%patch7 -p1
+%patch8 -p1
+%patch9 -p1
+%patch10 -p1
+%patch11 -p1
+%patch12 -p1
+%patch13 -p1
+%patch14 -p1
+%patch15 -p1
+%patch16 -p1
+%patch17 -p0
+%patch18 -p1
+%patch19 -p1
+%patch20 -p0
+%patch21 -p0
+%patch22 -p1
+%patch23 -p1
+%patch24 -p1
+%patch25 -p0
+%patch26 -p0
+%patch27 -p0
+%patch28 -p0
+%patch29 -p0
+%patch30 -p0
+%patch31 -p0
+%patch32 -p0
+%patch33 -p0
+%patch34 -p1
+%patch35 -p0
+%patch36 -p0
+%patch37 -p0
+%patch38 -p0
+%patch39 -p0
+%patch40 -p0
 
 
 %build
@@ -61,14 +173,19 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
      CPUS=1
 fi
 
+# export CFLAGS="%optflags -fast -xO3 -xarch=sse3 -features=gcc"
+# export CXXFLAGS="-fast -xarch=sse3 -xO3 -mr -norunpath -xregs=no%frameptr -library=%none -staticlib=%none -I/usr/include/stdcxx4 -I/usr/lib/dbus-1.0/include -I/usr/include/libpng14 -xarch=native -features=anachronisms,except,rtti,export,extensions,nestedaccess,tmplife,tmplrefstatic -xalias_level=compatible"
+# export LDFLAGS="%stdcxx_ldflags -fast"
 export CFLAGS="%optflags"
-
-export CXXFLAGS="%stdcxx_cxxflags -I/usr/include/dbus-1.0 -I/usr/lib/dbus-1.0/include -I/usr/include/libpng14"
+export CXXFLAGS="%stdcxx_cxxflags -I/usr/lib/dbus-1.0/include -I/usr/include/libpng14 -features=anachronisms,except,rtti,export,extensions,nestedaccess,tmplife,tmplrefstatic -xalias_level=compatible"
 export LDFLAGS="%stdcxx_ldflags"
+
 
 # 4.6.3 runs into trouble with examples, so disable examples and demos.
 # 4.7.0 runs into trouble with phonon, so don't build that.
 
+# WARNING: If your CPU does not understand SSE 4.2 instructions,
+# add the appropriate option here.  See EXPERIMENTAL note above.
 echo yes | ./configure -prefix %{_prefix} \
            -platform solaris-cc \
            -opensource \
@@ -82,11 +199,14 @@ echo yes | ./configure -prefix %{_prefix} \
            -no-phonon \
            -no-phonon-backend \
            -no-exceptions \
-           -sysconfdir %{_sysconfdir} \
-# Experimental configure options, which I recommend for real qt users
-	   -optimized-qmake \
-	   -verbose 		
+           -sysconfdir %{_sysconfdir}
 
+# Solaris Studio 12.2 chokes on -Winline
+cd src/gui
+sed 's/ -Winline//' Makefile > Makefile.fixed
+mv Makefile.fixed Makefile
+cd ../..
+	   
 gmake -j$CPUS
 
 %install
@@ -100,6 +220,13 @@ rm ${RPM_BUILD_ROOT}%{_libdir}/*.a
 # Eliminate QML imports stuff for now:
 # Who is Nokia to create a new subdirectary in /usr?
 rm -r ${RPM_BUILD_ROOT}%_prefix/imports
+
+# Create qmake.conf for building against this library
+cd ${RPM_BUILD_ROOT}%_datadir/qt/mkspecs
+mkdir solaris-cc-stdcxx
+cd solaris-cc-stdcxx
+install %SOURCE1 .
+cp -p ../solaris-cc-stlport/qplatformdefs.h .
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -130,9 +257,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/doc/*
 
 %changelog
-* Nov 17 2010 - Alex Viskovatoff
-- Add patch by russiane39 to correctly use libpng14 headers under snv_151
-  and adding some configure options
+* Dec 10 2010 - Alex Viskovatoff
+- Add 40 patches supplied by russiane39 which enable WebKit among other things.
+- Install qmake.conf file for solaris-cc-stdcxx
 * Nov 11 2010 - Alex Viskovatoff
 - Fork SFEqt47.spec off SFEqt4.spec, disregarding stlport and snv < 147
 - To make the build work, disable examples and phonon.  Disable demos

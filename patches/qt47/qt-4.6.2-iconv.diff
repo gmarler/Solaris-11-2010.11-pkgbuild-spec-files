@@ -1,0 +1,20 @@
+--- src/corelib/codecs/qiconvcodec.cpp.orig	Sat Aug 22 21:32:01 2009
++++ src/corelib/codecs/qiconvcodec.cpp	Sat Aug 22 21:32:02 2009
+@@ -242,7 +242,7 @@
+     size_t outBytesLeft = len * 2 + 2;
+     ba.resize(outBytesLeft);
+     char *outBytes = ba.data();
+-    do {
++    while (inBytesLeft>0) {
+         size_t ret = iconv(state->cd, &inBytes, &inBytesLeft, &outBytes, &outBytesLeft);
+         if (ret == (size_t) -1) {
+             if (errno == E2BIG) {
+@@ -283,7 +283,7 @@
+ 
+             return QString::fromAscii(chars, len);
+         }
+-    } while (inBytesLeft != 0);
++    }
+ 
+     QString s = utf16Codec->toUnicode(ba.constData(), ba.size() - outBytesLeft);
+ 

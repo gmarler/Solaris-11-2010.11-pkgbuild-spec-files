@@ -1,0 +1,11 @@
+--- qt-everywhere-opensource-src-4.6.1-orig/config.tests/unix/iconv/iconv.cpp	2010-01-15 17:01:36.000000000 +0000
++++ qt-everywhere-opensource-src-4.6.1/config.tests/unix/iconv/iconv.cpp	2010-02-13 11:57:17.348154909 +0000
+@@ -48,7 +48,7 @@
+ {
+     iconv_t x = iconv_open("", "");
+ 
+-    char *inp;
++    const char *inp;
+     char *outp;
+     size_t inbytes, outbytes;
+     iconv(x, &inp, &inbytes, &outp, &outbytes);

@@ -1,0 +1,11 @@
+--- qt-everywhere-opensource-src-4.6.0/demos/browser/networkaccessmanager.cpp.ORIG      2009-12-23 19:24:31.783769960 -0500
++++ qt-everywhere-opensource-src-4.6.0/demos/browser/networkaccessmanager.cpp   2009-12-23 19:24:42.330194057 -0500
+@@ -186,7 +186,7 @@
+ void NetworkAccessManager::sslErrors(QNetworkReply *reply, const QList<QSslError> &error)
+ {
+     // check if SSL certificate has been trusted already
+-    QString replyHost = reply->url().host() + ":" + reply->url().port();
++    QString replyHost = reply->url().host() + ":" + QString::number(reply->url().port());
+     if(! sslTrustedHostList.contains(replyHost)) {
+         BrowserMainWindow *mainWindow = BrowserApplication::instance()->mainWindow();
+

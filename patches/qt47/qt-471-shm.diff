@@ -1,0 +1,58 @@
+--- src/gui/image/qnativeimage.cpp.orig	2010-06-01 22:03:15.000000000 -0400
++++ src/gui/image/qnativeimage.cpp	2010-07-11 13:21:55.000000000 -0400
+@@ -176,29 +176,26 @@ QNativeImage::QNativeImage(int width, in
+                             IPC_CREAT | 0777);
+     ok = xshminfo.shmid != -1;
+     if (ok) {
+-        xshmimg->data = (char*)shmat(xshminfo.shmid, 0, 0);
+-        xshminfo.shmaddr = xshmimg->data;
+-        if (shmctl(xshminfo.shmid, IPC_RMID, 0) == -1)
+-            qWarning() << "Error while marking the shared memory segment to be destroyed";
++        xshmimg->data = xshminfo.shmaddr = (char*)shmat(xshminfo.shmid, 0, 0);
+         ok = (xshminfo.shmaddr != (char*)-1);
+         if (ok)
+             image = QImage((uchar *)xshmimg->data, width, height, format);
+     }
+     xshminfo.readOnly = false;
+-    if (ok)
++    if (ok) {
+         ok = XShmAttach(X11->display, &xshminfo);
++	XSync(X11->display, false);
++    }
++    if (shmctl(xshminfo.shmid, IPC_RMID, 0) == -1)
++	qWarning() << "QNativeImage: Error marking the shared memory segment to be destroyed";
+     if (!ok) {
+-        qWarning() << "QNativeImage: Unable to attach to shared memory segment.";
+-        if (xshmimg->data) {
+-            free(xshmimg->data);
+-            xshmimg->data = 0;
+-        }
++        qWarning() << "QNativeImage: X server was unable to attach to shared memory segment.";
+         XDestroyImage(xshmimg);
++	XSync(X11->display, false);
++	xshmimg->data = 0;
+         xshmimg = 0;
+-        if (xshminfo.shmaddr)
++        if (xshminfo.shmaddr != (char*)-1)
+             shmdt(xshminfo.shmaddr);
+-        if (xshminfo.shmid != -1)
+-            shmctl(xshminfo.shmid, IPC_RMID, 0);
+         return;
+     }
+     if (X11->use_mitshm_pixmaps) {
+@@ -221,11 +218,12 @@ QNativeImage::~QNativeImage()
+         xshmpm = 0;
+     }
+     XShmDetach(X11->display, &xshminfo);
+-    xshmimg->data = 0;
+     XDestroyImage(xshmimg);
++    XSync(X11->display, false);
++    xshmimg->data = 0;
+     xshmimg = 0;
+-    shmdt(xshminfo.shmaddr);
+-    shmctl(xshminfo.shmid, IPC_RMID, 0);
++    if (xshminfo.shmaddr != (char*)-1)
++	shmdt(xshminfo.shmaddr);
+ }
+ 
+ QImage::Format QNativeImage::systemFormat()

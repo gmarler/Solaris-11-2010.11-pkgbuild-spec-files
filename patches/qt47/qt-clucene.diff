@@ -1,0 +1,41 @@
+--- ./src/3rdparty/clucene/src/CLucene/config/repl_tcstoll.cpp.orig	2009-04-09 15:01:09.859779695 +0200
++++ ./src/3rdparty/clucene/src/CLucene/config/repl_tcstoll.cpp	2009-04-09 15:04:00.952848395 +0200
+@@ -6,6 +6,7 @@
+ ------------------------------------------------------------------------------*/
+ 
+ #include "CLucene/StdHeader.h"
++#include <qmath.h>
+ 
+ int64_t lucene_tcstoi64(const TCHAR* str, TCHAR**end, int radix){
+ 	#define LUCENE_TCSTOI64_RADIX(x,r) ((x>=_T('0') && x<=_T('9'))?x-_T('0'):((x>=_T('a') && x<=_T('z'))?x-_T('a')+10:((x>=_T('A') && x<=_T('Z'))?x-_T('A')+10:1000)))
+--- ./src/3rdparty/clucene/src/CLucene/config/repl_tprintf.cpp.orig	2009-04-09 15:04:17.644411597 +0200
++++ ./src/3rdparty/clucene/src/CLucene/config/repl_tprintf.cpp	2009-04-09 15:04:23.169069933 +0200
+@@ -6,6 +6,7 @@
+ ------------------------------------------------------------------------------*/
+ #include "CLucene/StdHeader.h"
+ #include "CLucene/util/StringBuffer.h"
++#include <qmath.h>
+ 
+ #ifdef __CL_INCLUDE_TPRINTF
+ 
+--- ./src/3rdparty/clucene/src/CLucene/util/StringBuffer.h.orig	2009-04-09 15:37:50.871624708 +0200
++++ ./src/3rdparty/clucene/src/CLucene/util/StringBuffer.h	2009-04-09 15:28:23.457211446 +0200
+@@ -11,6 +11,8 @@
+ # pragma once
+ #endif
+ 
++#include <qmath.h>
++
+ CL_NS_DEF(util)
+   class StringBuffer:LUCENE_BASE{
+   public:
+--- ./src/3rdparty/clucene/src/CLucene/document/Field.h.orig	2009-04-09 15:04:45.980921309 +0200
++++ ./src/3rdparty/clucene/src/CLucene/document/Field.h	2009-04-09 15:04:55.273567390 +0200
+@@ -13,6 +13,7 @@
+ 
+ #include "CLucene/util/Reader.h"
+ #include "CLucene/util/streambase.h"
++#include <qmath.h>
+ 
+ CL_NS_DEF(document)
+ /**

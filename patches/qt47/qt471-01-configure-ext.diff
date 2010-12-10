@@ -1,0 +1,133 @@
+--- configure	2010-11-06 04:55:00.000000000 +0300
++++ configure.new	2010-11-17 23:48:54.000000000 +0300
+@@ -4752,7 +4752,12 @@
+ 
+ # detect mmx support
+ if [ "${CFG_MMX}" = "auto" ]; then
+-    if "$unixtests/compile.test" "$XQMAKESPEC" "$QMAKE_CONFIG" $OPT_VERBOSE "$relpath" "$outpath" config.tests/unix/mmx "mmx" $L_FLAGS $I_FLAGS $l_FLAGS "-mmmx"; then
++    if [ "$PLATFORM" == "solaris-cc" ]; then
++        MMXFLAG="-xarch=sse2"
++    else
++        MMXFLAG="-mmmx"
++    fi
++    if "$unixtests/compile.test" "$XQMAKESPEC" "$QMAKE_CONFIG" $OPT_VERBOSE "$relpath" "$outpath" config.tests/unix/mmx "mmx" $L_FLAGS $I_FLAGS $l_FLAGS "$MMXFLAG"; then
+ 	CFG_MMX=yes
+     else
+ 	CFG_MMX=no
+@@ -4761,7 +4766,12 @@
+ 
+ # detect 3dnow support
+ if [ "${CFG_3DNOW}" = "auto" ]; then
+-    if "$unixtests/compile.test" "$XQMAKESPEC" "$QMAKE_CONFIG" $OPT_VERBOSE "$relpath" "$outpath" config.tests/unix/3dnow "3dnow" $L_FLAGS $I_FLAGS $l_FLAGS "-m3dnow"; then
++    if [ "$PLATFORM" == "solaris-cc" ]; then
++        3DNOWFLAG="-xarch=pentium_proa"
++    else
++        3DNOWFLAG="-m3dnow"
++    fi
++    if "$unixtests/compile.test" "$XQMAKESPEC" "$QMAKE_CONFIG" $OPT_VERBOSE "$relpath" "$outpath" config.tests/unix/3dnow "3dnow" $L_FLAGS $I_FLAGS $l_FLAGS "$3DNOWFLAG"; then
+ 	CFG_3DNOW=yes
+     else
+ 	CFG_3DNOW=no
+@@ -4770,7 +4780,12 @@
+ 
+ # detect sse support
+ if [ "${CFG_SSE}" = "auto" ]; then
+-    if "$unixtests/compile.test" "$XQMAKESPEC" "$QMAKE_CONFIG" $OPT_VERBOSE "$relpath" "$outpath" config.tests/unix/sse "sse" $L_FLAGS $I_FLAGS $l_FLAGS "-msse"; then
++    if [ "$PLATFORM" == "solaris-cc" ]; then
++        SSEFLAG="-xarch=sse"
++    else
++        SSEFLAG="-msse"
++    fi
++    if "$unixtests/compile.test" "$XQMAKESPEC" "$QMAKE_CONFIG" $OPT_VERBOSE "$relpath" "$outpath" config.tests/unix/sse "sse" $L_FLAGS $I_FLAGS $l_FLAGS "$SSEFLAG"; then
+ 	CFG_SSE=yes
+     else
+ 	CFG_SSE=no
+@@ -4779,7 +4794,12 @@
+ 
+ # detect sse2 support
+ if [ "${CFG_SSE2}" = "auto" ]; then
+-    if "$unixtests/compile.test" "$XQMAKESPEC" "$QMAKE_CONFIG" $OPT_VERBOSE "$relpath" "$outpath" config.tests/unix/sse2 "sse2" $L_FLAGS $I_FLAGS $l_FLAGS "-msse2"; then
++    if [ "$PLATFORM" == "solaris-cc" ]; then
++        SSE2FLAG="-xarch=sse2"
++    else
++        SSE2FLAG="-msse2"
++    fi
++    if "$unixtests/compile.test" "$XQMAKESPEC" "$QMAKE_CONFIG" $OPT_VERBOSE "$relpath" "$outpath" config.tests/unix/sse2 "sse2" $L_FLAGS $I_FLAGS $l_FLAGS "$SSE2FLAG"; then
+        CFG_SSE2=yes
+     else
+        CFG_SSE2=no
+@@ -4788,7 +4808,12 @@
+ 
+ # detect sse3 support
+ if [ "${CFG_SSE3}" = "auto" ]; then
+-    if "$unixtests/compile.test" "$XQMAKESPEC" "$QMAKE_CONFIG" $OPT_VERBOSE "$relpath" "$outpath" config.tests/unix/sse3 "sse3" $L_FLAGS $I_FLAGS $l_FLAGS "-msse3"; then
++    if [ "$PLATFORM" == "solaris-cc" ]; then
++        SSE3FLAG="-xarch=sse3"
++    else
++        SSE3FLAG="-msse3"
++    fi
++    if "$unixtests/compile.test" "$XQMAKESPEC" "$QMAKE_CONFIG" $OPT_VERBOSE "$relpath" "$outpath" config.tests/unix/sse3 "sse3" $L_FLAGS $I_FLAGS $l_FLAGS "$SSE3FLAG"; then
+        CFG_SSE3=yes
+     else
+        CFG_SSE3=no
+@@ -4797,7 +4822,12 @@
+ 
+ # detect ssse3 support
+ if [ "${CFG_SSSE3}" = "auto" ]; then
+-    if "$unixtests/compile.test" "$XQMAKESPEC" "$QMAKE_CONFIG" $OPT_VERBOSE "$relpath" "$outpath" config.tests/unix/ssse3 "ssse3" $L_FLAGS $I_FLAGS $l_FLAGS "-mssse3"; then
++    if [ "$PLATFORM" == "solaris-cc" ]; then
++        SSSE3FLAG="-xarch=ssse3"
++    else
++        SSSE3FLAG="-mssse3"
++    fi
++    if "$unixtests/compile.test" "$XQMAKESPEC" "$QMAKE_CONFIG" $OPT_VERBOSE "$relpath" "$outpath" config.tests/unix/ssse3 "ssse3" $L_FLAGS $I_FLAGS $l_FLAGS "$SSSE3FLAG"; then
+        CFG_SSSE3=yes
+     else
+        CFG_SSSE3=no
+@@ -4806,7 +4836,12 @@
+ 
+ # detect sse4.1 support
+ if [ "${CFG_SSE4_1}" = "auto" ]; then
+-    if "$unixtests/compile.test" "$XQMAKESPEC" "$QMAKE_CONFIG" $OPT_VERBOSE "$relpath" "$outpath" config.tests/unix/sse4_1 "sse4_1" $L_FLAGS $I_FLAGS $l_FLAGS "-msse4.1"; then
++    if [ "$PLATFORM" == "solaris-cc" ]; then
++        SSE41FLAG="-xarch=sse4_1"
++    else
++        SSE41FLAG="-msse4.1"
++    fi
++    if "$unixtests/compile.test" "$XQMAKESPEC" "$QMAKE_CONFIG" $OPT_VERBOSE "$relpath" "$outpath" config.tests/unix/sse4_1 "sse4_1" $L_FLAGS $I_FLAGS $l_FLAGS "$SSE41FLAG"; then
+        CFG_SSE4_1=yes
+     else
+        CFG_SSE4_1=no
+@@ -4815,7 +4850,12 @@
+ 
+ # detect sse4.2 support
+ if [ "${CFG_SSE4_2}" = "auto" ]; then
+-    if "$unixtests/compile.test" "$XQMAKESPEC" "$QMAKE_CONFIG" $OPT_VERBOSE "$relpath" "$outpath" config.tests/unix/sse4_2 "sse4_2" $L_FLAGS $I_FLAGS $l_FLAGS "-msse4.2"; then
++    if [ "$PLATFORM" == "solaris-cc" ]; then
++        SSE42FLAG="-xarch=sse4_2"
++    else
++        SSE42FLAG="-msse4.2"
++    fi
++    if "$unixtests/compile.test" "$XQMAKESPEC" "$QMAKE_CONFIG" $OPT_VERBOSE "$relpath" "$outpath" config.tests/unix/sse4_2 "sse4_2" $L_FLAGS $I_FLAGS $l_FLAGS "$SSE42FLAG"; then
+        CFG_SSE4_2=yes
+     else
+        CFG_SSE4_2=no
+@@ -7063,13 +7103,13 @@
+         # Check the compiler version
+         case `${QMAKE_CONF_COMPILER} -V 2>&1 | awk '{print $4}'` in
+             5.[012345678])
+-                canBuildWebKit="no"
+-                canBuildQtXmlPatterns="no"
++                canBuildWebKit="yes"
++                canBuildQtXmlPatterns="yes"
+                 canBuildQtConcurrent="no"
+                 ;;
+             5.*)
+-                canBuildWebKit="no"
+-                canBuildQtConcurrent="no"
++                canBuildWebKit="yes"
++                canBuildQtConcurrent="yes"
+                 ;;
+         esac
+         ;;
+

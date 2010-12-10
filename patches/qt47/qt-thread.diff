@@ -1,0 +1,12 @@
+--- src/corelib/thread/thread.pri.orig	2009-11-08 20:59:16.242293433 +0100
++++ src/corelib/thread/thread.pri	2009-11-08 21:00:33.518424179 +0100
+@@ -16,8 +16,7 @@
+            thread/qreadwritelock_p.h \
+            thread/qthread_p.h
+ 
+-SOURCES += thread/qatomic.cpp \
+-           thread/qmutex.cpp \
++SOURCES += thread/qmutex.cpp \
+            thread/qreadwritelock.cpp \
+ 	   thread/qmutexpool.cpp \
+ 	   thread/qsemaphore.cpp \

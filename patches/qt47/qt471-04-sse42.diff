@@ -1,0 +1,15 @@
+--- config.tests/unix/sse4_2/sse4_2.cpp	2010-11-06 04:55:11.000000000 +0300
++++ config.tests/unix/sse4_2/sse4_2.cpp.new	2010-11-18 00:37:22.245261648 +0300
+@@ -39,7 +39,11 @@
+ **
+ ****************************************************************************/
+ 
+-#include <smmintrin.h>
++#if defined(__SUNPRO_CC)
++#include <nmmintrin.h>
++#else
++include <smmintrin.h>
++#endif
+ 
+ int main(int, char**)
+ {

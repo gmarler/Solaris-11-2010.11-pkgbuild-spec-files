@@ -1,0 +1,14 @@
+--- src/3rdparty/webkit/JavaScriptCore/wtf/Platform.h.orig	2010-07-09 12:56:09.460019381 +0200
++++ src/3rdparty/webkit/JavaScriptCore/wtf/Platform.h	2010-07-09 12:58:16.722599253 +0200
+@@ -53,7 +53,10 @@
+ #undef _WIN32
+ #endif
+ 
+-
++/* COMPILER(SUNCC) */
++#if defined(__SUNPRO_CC) || defined(__SUNPRO_C)
++#define WTF_COMPILER_SUNCC 1
++#endif
+ 
+ /* ==== CPU() - the target CPU architecture ==== */
+ 

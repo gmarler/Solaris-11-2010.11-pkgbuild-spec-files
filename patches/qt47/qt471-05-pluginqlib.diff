@@ -1,0 +1,12 @@
+--- src/corelib/plugin/qlibrary_unix.cpp.orig	2010-11-18 05:02:35.645949172 +0300
++++ src/corelib/plugin/qlibrary_unix.cpp	2010-11-18 05:02:40.160164204 +0300
+@@ -472,7 +472,7 @@
+                 attempt = path + prefixes.at(prefix) + name + suffixes.at(suffix);
+             }
+ #ifdef Q_OS_SOLARIS
+-            if (is_library_usable(QFile::encodeName(attempt))  {
++            if (is_library_usable(QFile::encodeName(attempt)))  {
+ #endif
+ #if defined(QT_HPUX_LD)
+             pHnd = (void*)shl_load(QFile::encodeName(attempt), dlFlags, 0);
+
