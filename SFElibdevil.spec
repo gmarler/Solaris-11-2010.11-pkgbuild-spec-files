@@ -4,31 +4,35 @@
 # includes module(s): libdevil
 #
 %include Solaris.inc
+%define cc_is_gcc 1
+%include base.inc
 
 %define src_name	DevIL
-%define src_url		http://jaist.dl.sourceforge.net/sourceforge/openil
 
-Name:                   SFElibdevil
-Summary:                Cross-platform image library
-Version:                1.6.8
-Source:                 %{src_url}/%{src_name}-%{version}-rc2.tar.gz
-patch1:			libdevil-01-wall.diff
-SUNW_BaseDir:           %{_basedir}
-BuildRoot:              %{_tmppath}/%{name}-%{version}-build
+Name:		SFElibdevil
+Summary:	Cross-platform image library
+Version:	1.7.8
+Group:		Development/Libraries
+URL:		http://openil.sourceforge.net/
+Source:		%{sf_download}/openil/%{src_name}-%{version}.tar.gz
+SUNW_BaseDir:	%{_basedir}
+BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
-BuildRequires: SFElibmng-devel
-Requires: SFElibmng
-BuildRequires: SUNWlcms-devel
+BuildRequires: SUNWlibmng
+Requires: SUNWlibmng
+BuildRequires: SUNWlcms
 Requires: SUNWlcms
+BuildRequires: SUNWlibsdl-devel
+Requires: SUNWlibsdl
+BuildRequires: SUNWgawk
 
 %package devel
-Summary:                 %{summary} - development files
-SUNW_BaseDir:            %{_prefix}
+Summary:	%{summary} - development files
+SUNW_BaseDir:	%{_prefix}
 %include default-depend.inc
 
 %prep
-%setup -q -n %{src_name}-%{version}
-%patch1 -p1
+%setup -q -n devil-%{version}
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -36,15 +40,10 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
     CPUS=1
 fi
 
-
-libtoolize --force --copy
-aclocal -I .
-automake -a
-autoconf --force
-#export CFLAGS="$(echo %optflags|sed -e 's/-xpentium//' -e 's/-xspace//')"
-export CFLAGS="-xO2"
-export LDFLAGS="%_ldflags"
-export LD_OPTIONS="-z muldefs"
+export CC=gcc
+export CXX=g++
+export CFLAGS="-I/usr/include/libpng12 %{optflags}"
+export LDFLAGS="%{_ldflags}"
 ./configure --prefix=%{_prefix}		\
 	    --bindir=%{_bindir}		\
 	    --mandir=%{_mandir}		\
@@ -53,27 +52,36 @@ export LD_OPTIONS="-z muldefs"
             --libexecdir=%{_libexecdir} \
             --sysconfdir=%{_sysconfdir} \
             --enable-shared		\
-	    --disable-static
+	    --disable-static		\
+	    --enable-ILU=yes		\
+	    --disable-release		\
+	    --disable-debug
+
 make -j$CPUS 
 
 %install
-rm -rf $RPM_BUILD_ROOT
-export LD_OPTIONS="-z muldefs"
-make install DESTDIR=$RPM_BUILD_ROOT
-rm $RPM_BUILD_ROOT%{_libdir}/lib*.*a
-
+rm -rf %{buildroot}
+make install DESTDIR=%{buildroot}
+rm %{buildroot}%{_libdir}/lib*.*a
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %files
 %defattr (-, root, bin)
-%{_libdir}
+%{_bindir}
+%{_libdir}/*.so*
 
 %files devel
 %defattr (-, root, bin)
 %{_includedir}
+%dir %attr (0755, root, other) %{_libdir}/pkgconfig
+%{_libdir}/pkgconfig/*
+%dir %attr (0755, root, sys) %{_datadir}
+%{_datadir}/*
 
 %changelog
+* Thu Dec 16 2010 - Milan Jurik
+- bump to 1.7.8
 * Mon May  7 2007 - dougs@truemail.co.th
 - Initial version
