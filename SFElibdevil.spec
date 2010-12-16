@@ -25,6 +25,7 @@ Requires: SUNWlcms
 BuildRequires: SUNWlibsdl-devel
 Requires: SUNWlibsdl
 BuildRequires: SUNWgawk
+BuildRequires: SUNWgnome-common-devel
 
 %package devel
 Summary:	%{summary} - development files
