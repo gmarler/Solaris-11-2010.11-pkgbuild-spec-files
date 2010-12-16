@@ -10,7 +10,7 @@
 
 Name:                    SFEscummvm
 Summary:                 ScummVM - emulator for classic graphical games
-Version:                 1.2.0
+Version:                 1.2.1
 Group:                   System/Emulators/Other
 Source:                  %{sf_download}/scummvm/scummvm-%{version}.tar.bz2
 URL:                     http://www.scummvm.org/
@@ -92,6 +92,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man6/*
 
 %changelog
+* Thu Dec 16 2010 - Milan Jurik
+- bump to 1.2.1
 * Wed Dec 01 2010 - Milan Jurik
 - bump to 1.2.0
 * Mon Aug 30 2010 - Milan Jurik
