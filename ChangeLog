@@ -1,3 +1,10 @@
+2010-12-17  James Choi <jchoi42@pha.jhu.edu>
+
+	* SFEpianobar.spec: initial spec
+	* base-specs/pianobar.spec: initial spec
+	* patches/pianobar-01-defs.diff, 
+	  patches/pianobar-02-lsocket.diff: added
+
 2010-12-16 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEscummvm.spec: bump to 1.2.1
