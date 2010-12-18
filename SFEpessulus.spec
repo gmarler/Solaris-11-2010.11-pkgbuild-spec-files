@@ -7,19 +7,21 @@
 %include Solaris.inc
 %define pythonver 2.6
 
-Name:                    SFEpessulus
-Summary:                 Pessulus
-Version:                 2.16.2
-Source:                  http://ftp.gnome.org/pub/GNOME/sources/pessulus/2.16/pessulus-%{version}.tar.bz2
-SUNW_BaseDir:            %{_basedir}
-BuildRoot:               %{_tmppath}/%{name}-%{version}-build
+Name:		SFEpessulus
+Summary:	Pessulus
+Version:	2.30.4
+Group:		System/GUI/GNOME
+URL:		http://live.gnome.org/Pessulus
+Source:		http://ftp.gnome.org/pub/GNOME/sources/pessulus/2.30/pessulus-%{version}.tar.bz2
+SUNW_BaseDir:	%{_basedir}
+BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 
 %include default-depend.inc
 BuildRequires: SUNWgnome-libs-devel
-BuildRequires: SUNWgnome-python-libs-devel
-BuildRequires: SUNWPython
+BuildRequires: SUNWgnome-python26-libs-devel
+BuildRequires: SUNWPython26
 Requires: SUNWgnome-libs
-Requires: SUNWgnome-python-libs
+Requires: SUNWgnome-python26-libs
 
 %if %build_l10n
 %package l10n
@@ -94,6 +96,27 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, other) %{_datadir}/applications
 %{_datadir}/applications/pessulus.desktop
 %{_datadir}/pessulus
+%dir %attr (0755, root, other) %{_datadir}/icons
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/16x16
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/16x16/apps/
+%{_datadir}/icons/hicolor/16x16/apps/*
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/22x22/
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/22x22/apps/
+%{_datadir}/icons/hicolor/22x22/apps/*
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/24x24/
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/24x24/apps/
+%{_datadir}/icons/hicolor/24x24/apps/*
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/32x32/
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/32x32/apps/
+%{_datadir}/icons/hicolor/32x32/apps/*
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/48x48/
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/48x48/apps/
+%{_datadir}/icons/hicolor/48x48/apps/*
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/scalable/
+%dir %attr (0755, root, other) %{_datadir}/icons/hicolor/scalable/apps/
+%{_datadir}/icons/hicolor/scalable/apps/*
+
 
 %if %build_l10n
 %files l10n
@@ -104,6 +127,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sat Dec 18 2010 - Milan Jurik
+- bump to 2.30.4
 * Mon Jan 15 2007 - daymobrew@users.sourceforge.net
 - Add l10n package.
 * Mon Jan 08 2007 - matt.keenan@sun.com
