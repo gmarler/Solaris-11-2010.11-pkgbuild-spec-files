@@ -17,6 +17,9 @@ SUNW_BaseDir:	%{_basedir}
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 
 %include default-depend.inc
+BuildRequires: SUNWgnome-common-devel
+BuildRequires: SUNWperl-xml-parser
+BuildRequires: SUNWperl584usr
 BuildRequires: SUNWgnome-libs-devel
 BuildRequires: SUNWgnome-python26-libs-devel
 BuildRequires: SUNWPython26

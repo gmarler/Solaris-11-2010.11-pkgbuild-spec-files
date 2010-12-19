@@ -1,0 +1,22 @@
+--- libpano13-2.9.17/parser.c	2010-04-06 02:03:25.000000000 +0200
++++ libpano13-2.9.17-patch/parser.c	2010-12-18 21:59:39.342683973 +0100
+@@ -106,7 +106,7 @@
+ 
+ #define panoLocaleSave    char *oldLocale;oldLocale=strdup(setlocale(LC_ALL, NULL));setlocale(LC_ALL, "C")
+ 
+-#define panoLocaleRestore (oldLocale != NULL? (setlocale(LC_ALL,oldLocale),free(oldLocale)):0)
++#define panoLocaleRestore (oldLocale != NULL? (setlocale(LC_ALL,oldLocale),free(oldLocale),1):0)
+ 
+ 
+ // Optimizer Script parser; fill global info structure
+--- libpano13-2.9.17/Makefile.in	Fri Sep 10 00:16:10 2010
++++ libpano13-2.9.17-patch/Makefile.in	Sun Dec 19 18:54:08 2010
+@@ -305,7 +305,7 @@
+ @HAVE_DARWIN_TRUE@DAR_LDFS = -version-info 2:0:0
+ @HAVE_SOLARIS_TRUE@SOL_SRC = sys_ansi.c ppm.c
+ @HAVE_SOLARIS_TRUE@SOL_DEFS = -D__Ansi__=1
+-@HAVE_SOLARIS_TRUE@SOL_LDFS = -version-info 2:0:0 -lxnet -lm -lsunmath
++@HAVE_SOLARIS_TRUE@SOL_LDFS = -version-info 2:0:0 -lxnet -lm
+ AM_CPPFLAGS = $(JAVA_FLAGS) $(JPEG_FLAGS) $(PNG_FLAGS) $(TIFF_FLAGS) $(ZLIB_FLAGS) $(WIN_DEFS) $(LIN_DEFS) $(DAR_DEFS) $(SOL_DEFS) $(ENDIAN_FLAG)
+ lib_LTLIBRARIES = libpano13.la
+ libpano13_la_SOURCES = $(STD_SRC) $(JAVA_SRC) $(X11_SRC) $(WIN_SRC) $(MAC_SRC) $(LIN_SRC) $(DAR_SRC) $(SOL_SRC)

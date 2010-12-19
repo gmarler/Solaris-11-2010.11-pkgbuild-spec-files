@@ -8,12 +8,16 @@
 %define src_name	openexr
 %define src_url		http://download.savannah.nongnu.org/releases/openexr
 
-Name:                   SFEopenexr
-Summary:                high dynamic-range (HDR) image file format
-Version:                1.5.0
-Source:                 %{src_url}/%{src_name}-%{version}.tar.gz
-SUNW_BaseDir:           %{_basedir}
-BuildRoot:              %{_tmppath}/%{name}-%{version}-build
+Name:		SFEopenexr
+Summary:	high dynamic-range (HDR) image file format
+Version:	1.7.0
+Group:		Development/Libraries
+URL:		http://www.openexr.com/
+Source:		%{src_url}/%{src_name}-%{version}.tar.gz
+Patch1:		openexr-01-templ.diff
+Patch2:		openexr-02-cast.diff
+SUNW_BaseDir:	%{_basedir}
+BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 BuildRequires: SFEilmbase-devel
 Requires: SFEilmbase
@@ -25,6 +29,8 @@ SUNW_BaseDir:            %{_prefix}
 
 %prep
 %setup -q -n %{src_name}-%{version}
+%patch1 -p1
+%patch2 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -33,19 +39,8 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
 fi
 
 
-ln -s `which automake-1.9` automake
-ln -s `which aclocal-1.9` aclocal
-export PATH=$PWD:$PATH
-
-X11LIBS="-L/usr/X11/lib -R/usr/X11/lib"
-SFWLIBS="-L/usr/sfw/lib -R/usr/sfw/lib"
-export CPPFLAGS="-I/usr/X11/include"
-export CXX=/usr/sfw/bin/g++
-export CXXFLAGS="-O3 -fno-omit-frame-pointer"
 export CFLAGS="%optflags"
-export LDFLAGS="%_ldflags $X11LIBS $SFWLIBS -lstdc++"
-export LD_OPTIONS="-i"
-bash ./bootstrap
+export LDFLAGS="%_ldflags -lm"
 ./configure --prefix=%{_prefix}		\
 	    --bindir=%{_bindir}		\
 	    --mandir=%{_mandir}		\
@@ -53,7 +48,6 @@ bash ./bootstrap
             --datadir=%{_datadir}	\
             --libexecdir=%{_libexecdir} \
             --sysconfdir=%{_sysconfdir} \
-            --disable-rpath		\
             --enable-shared		\
 	    --disable-static
 make -j$CPUS 
@@ -85,5 +79,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/doc/*
 
 %changelog
+* Sun Dec 19 2010 - Milan Jurik
+- bump to 1.7.0, use Sun Studio
 * Mon May  7 2007 - dougs@truemail.co.th
 - Initial version

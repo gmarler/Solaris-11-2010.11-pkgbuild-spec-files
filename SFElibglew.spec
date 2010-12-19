@@ -10,11 +10,12 @@
 
 Summary:	OpenGL Extension Wrangler Library
 Name:		SFElibglew
-Version:	1.5.4
+Version:	1.5.7
 License:	BSD
 Group:		Development/Libraries
 URL:		http://glew.sourceforge.net/
 Source:		%{sf_download}/%{src_name}/%{src_name}-%{version}.tgz
+SUNW_BaseDir:	%{_basedir}
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 
@@ -69,5 +70,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*
 
 %changelog
+* Sun Dec 19 2010 - Milan Jurik
+- bump to 1.5.7
 * Sat May 15 2010 - Milan Jurik
 - Initial package

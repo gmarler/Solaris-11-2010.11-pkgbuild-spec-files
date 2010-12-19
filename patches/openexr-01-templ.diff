@@ -1,0 +1,29 @@
+--- openexr-1.7.0/IlmImf/ImfChannelListAttribute.cpp	2010-07-17 01:11:51.000000000 +0200
++++ openexr-1.7.0-patch/IlmImf/ImfChannelListAttribute.cpp	2010-12-18 17:47:35.363105716 +0100
+@@ -47,9 +47,10 @@
+ 
+ namespace {
+ 
+-template <size_t N>
+-void checkIsNullTerminated (const char (&str)[N], const char *what)
++void checkIsNullTerminated (const char *str, const char *what)
+ {
++    int N = strlen(str);
++
+     for (int i = 0; i < N; ++i) {
+         if (str[i] == '\0')
+             return;
+--- openexr-1.7.0/IlmImf/ImfHeader.cpp	2010-07-17 01:11:52.000000000 +0200
++++ openexr-1.7.0-patch/IlmImf/ImfHeader.cpp	2010-12-18 17:59:42.370920081 +0100
+@@ -146,9 +146,9 @@
+     return false;
+ }
+ 
+-template <size_t N>
+-void checkIsNullTerminated (const char (&str)[N], const char *what)
++void checkIsNullTerminated (const char *str, const char *what)
+ {
++	int N = strlen(str);
+ 	for (int i = 0; i < N; ++i) {
+ 		if (str[i] == '\0')
+ 			return;
