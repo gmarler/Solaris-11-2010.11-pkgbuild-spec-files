@@ -70,6 +70,7 @@ make
 %install
 make install DESTDIR=%{buildroot}
 rm %{buildroot}/%{_libdir}/libpano13.la
+mkdir %{buildroot}/%{_datadir}
 mv %{buildroot}/%{_prefix}/man %{buildroot}/%{_mandir}
 
 %clean
