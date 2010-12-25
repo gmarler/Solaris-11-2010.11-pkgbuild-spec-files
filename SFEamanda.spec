@@ -13,7 +13,7 @@
 
 Name:		SFEamanda
 Summary:	A network-capable tape backup solution
-Version:	3.2.0
+Version:	3.2.1
 Source:		%{sf_download}/%{src_name}/%{src_name}-%{version}.tar.gz
 License:	BSD
 Group:		Applications/System
@@ -341,6 +341,8 @@ user ftpuser=false gcos-field="Amanda Reserved UID" username="%{amanda_user}" pa
 
 
 %changelog
+* Sat Dec 25 2010 - Milan Jurik
+- bump to 3.2.1
 * Sat Nov 27 2010 - Milan Jurik
 - bump to 3.2.0
 * Sun Jul 11 2010 - Milan Jurik

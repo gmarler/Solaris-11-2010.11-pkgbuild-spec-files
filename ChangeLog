@@ -1,3 +1,7 @@
+2010-12-25 Milan Jurik <sfnet@xylab.cz>
+
+	* SFEamanda.spec: bump to 3.2.1
+
 2010-12-19 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEopenexr.spec: bump to 1.7.0, use Sun Studio

@@ -68,6 +68,7 @@ export LDFLAGS="%{_ldflags} -lm"
 make
 
 %install
+rm -rf %{buildroot}
 make install DESTDIR=%{buildroot}
 rm %{buildroot}/%{_libdir}/libpano13.la
 mkdir %{buildroot}/%{_datadir}
