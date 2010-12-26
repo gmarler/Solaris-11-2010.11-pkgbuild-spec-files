@@ -2,6 +2,7 @@
 
 	* SFEtimidity.spec: from jucr to SFE
 	* SFEwildmidi.spec: bump to 0.2.3.4
+	* SFEaaphoto.spec: initial spec file
 
 2010-12-25 Milan Jurik <sfnet@xylab.cz>
 

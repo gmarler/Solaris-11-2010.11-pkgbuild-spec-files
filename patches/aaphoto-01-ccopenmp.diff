@@ -1,0 +1,13 @@
+--- aaphoto-0.40/Makefile.in	2010-12-26 19:55:01.490072328 +0100
++++ aaphoto-0.40-patch/Makefile.in	2010-12-26 19:55:11.440079704 +0100
+@@ -162,8 +162,8 @@
+ top_build_prefix = @top_build_prefix@
+ top_builddir = @top_builddir@
+ top_srcdir = @top_srcdir@
+-AM_CFLAGS = -Wall -O2 -D__OPENMP__ -fopenmp
+-AM_LDFLAGS = -ljasper -ljpeg -lpng -lm -lgomp
++AM_CFLAGS = -D__OPENMP__ -xopenmp
++AM_LDFLAGS = -ljasper -ljpeg -lpng -lm
+ aaphoto_SOURCES = aaphoto.c
+ INCLUDES = 
+ all: config.h
