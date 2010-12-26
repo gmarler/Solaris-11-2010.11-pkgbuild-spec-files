@@ -1,0 +1,20 @@
+--- wildmidi-0.2.3.4/src/gus_pat.c	2010-12-26 11:37:49.549215651 +0100
++++ wildmidi-0.2.3.4-patch/src/gus_pat.c	2010-12-26 11:38:24.284820712 +0100
+@@ -30,6 +30,7 @@
+ #include <stdlib.h>
+ #include <string.h>
+ 
++#include "config.h"
+ #include "gus_pat.h"
+ #include "common.h"
+ #include "wm_error.h"
+--- wildmidi-0.2.3.4/src/lock.c	2010-12-26 11:37:50.479554708 +0100
++++ wildmidi-0.2.3.4-patch/src/lock.c	2010-12-26 11:38:38.103219697 +0100
+@@ -30,6 +30,7 @@
+ #include <unistd.h>
+ #endif
+ 
++#include "config.h"
+ #include "lock.h"
+ 
+ /*

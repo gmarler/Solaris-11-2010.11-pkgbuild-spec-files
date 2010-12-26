@@ -1,15 +1,20 @@
---- wildmidi-0.2.2.orig/src/wildmidi.c	2004-01-28 13:13:46.000000000 -0500
-+++ wildmidi-0.2.2/src/wildmidi.c	2008-12-11 02:39:52.831957387 -0500
-@@ -63,7 +63,11 @@
+--- wildmidi-0.2.3.4/src/wildmidi.c	2010-12-26 11:30:09.484741055 +0100
++++ wildmidi-0.2.3.4-patch/src/wildmidi.c	2010-12-26 11:31:16.380552153 +0100
+@@ -63,9 +63,17 @@
  #include "wildmidi_lib.h"
  
  #ifndef FNONBLOCK
--#define FNONBLOCK _FNONBLOCK
++#ifdef __sun
 +#define FNONBLOCK O_NONBLOCK
++#else
+ #define FNONBLOCK _FNONBLOCK
 +#endif
-+
-+#ifndef MAP_FILE
-+#define MAP_FILE 0
  #endif
  
++#ifndef MAP_FILE
++#define MAP_FILE 0
++#endif
++
  
+ struct _midi_test {
+ 	unsigned char *data;
