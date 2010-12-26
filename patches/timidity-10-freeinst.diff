@@ -1,0 +1,14 @@
+diff -Naur TiMidity++-2.13.2/timidity/instrum.c TiMidity++-2.13.2.new/timidity/instrum.c
+--- TiMidity++-2.13.2/timidity/instrum.c	2004-05-30 23:48:11.000000000 +0200
++++ TiMidity++-2.13.2.new/timidity/instrum.c	2009-08-11 15:09:30.977041000 +0200
+@@ -1465,8 +1465,9 @@
+     clear_magic_instruments();
+ 
+     /* Free soundfont instruments */
+-    while(i--)
++    while(i > 0)
+     {
++	i--;
+ 	/* Note that bank[*]->tone[j].instrument may pointer to
+ 	   bank[0]->tone[j].instrument. See play_midi_load_instrument()
+ 	   at playmidi.c for the implementation */
