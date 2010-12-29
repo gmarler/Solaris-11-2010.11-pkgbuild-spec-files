@@ -3,17 +3,22 @@
 #
 # includes module(s): c-icap
 #
+# This file and all modifications and additions to the pristine
+# package are under the same license as the package itself.
+#
 %include Solaris.inc
 
 %define cc_is_gcc 1
 %include base.inc
 
 %define	src_name c_icap
-%define src_version 0.1.1-pre2
+%define src_version 0.1.4
 
 Name:                SFEc-icap
 Summary:             An implementation of an ICAP server
-Version:             0.1.1.0.2
+Version:             0.1.4
+Group:		System/Utilities
+URL:		http://c-icap.sourceforge.net/
 Source:              %{sf_download}/c-icap/%{src_name}-%{src_version}.tar.gz
 Source1:             c-icap.xml
 SUNW_BaseDir:        %{_basedir}
@@ -109,6 +114,8 @@ rm -rf $RPM_BUILD_ROOT
 %class(manifest) %attr(0444, root, sys) %{_localstatedir}/svc/manifest/system/filesystem/c-icap.xml
 
 %changelog
+* Wed Dec 29 2010 - Milan Jurik
+- bump to 0.1.4
 * Sun Apr 25 2010 - Milan Jurik
 - update to 0.1.1-pre2
 * Sat Sep 19 2009 - Milan Jurik
