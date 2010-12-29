@@ -1,0 +1,89 @@
+--- gpsd-2.95/libgpsd_core.c	Fri Jun 11 21:45:37 2010
++++ gpsd-2.95-patch/libgpsd_core.c	Tue Dec 28 20:25:56 2010
+@@ -848,3 +848,48 @@
+     out->satellites_visible = 0;
+     clear_dop(&out->dop);
+ }
++
++#ifdef __sun
++/*
++ * On solaris no timegm function exists,
++ * we must implement it here
++ */
++time_t timegm(struct tm *t)
++{
++    time_t tl, tb;
++    struct tm *tg;
++
++    tl = mktime (t);
++     if (tl == -1)
++    {
++        t->tm_hour--;
++        tl = mktime (t);
++        if (tl == -1)
++            return -1; /* can't deal with output from strptime */
++        tl += 3600;
++    }
++    tg = gmtime (&tl);
++    tg->tm_isdst = 0;
++    tb = mktime (tg);
++    if (tb == -1)
++    {
++        tg->tm_hour--;
++        tb = mktime (tg);
++        if (tb == -1)
++            return -1; /* can't deal with output from gmtime */
++        tb += 3600;
++    }
++    return (tl - (tb - tl));
++}
++
++void cfmakeraw (struct termios *termios_p)
++{
++    termios_p->c_iflag &= ~(IGNBRK|BRKINT|PARMRK|ISTRIP
++                            |INLCR|IGNCR|ICRNL|IXON);
++    termios_p->c_oflag &= ~OPOST;
++    termios_p->c_lflag &= ~(ECHO|ECHONL|ICANON|ISIG|IEXTEN);
++    termios_p->c_cflag &= ~(CSIZE|PARENB);
++    termios_p->c_cflag |= CS8;
++}
++#endif
++
+--- gpsd-2.95/gpsctl.c	Fri Jun 11 11:21:42 2010
++++ gpsd-2.95-patch/gpsctl.c	Tue Dec 28 20:28:44 2010
+@@ -4,6 +4,8 @@
+  * BSD terms apply: see the file COPYING in the distribution root for details.
+  *
+  */
++#define BSD_COMP
++
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <sys/types.h>
+--- gpsd-2.95/gpspipe.c	Fri Jun 11 11:21:42 2010
++++ gpsd-2.95-patch/gpspipe.c	Tue Dec 28 20:30:37 2010
+@@ -49,6 +49,7 @@
+ 
+ static struct gps_data_t gpsdata;
+ static void spinner(unsigned int, unsigned int);
++static void cfmakeraw (struct termios *termios_p);
+ 
+ /* NMEA-0183 standard baud rate */
+ #define BAUDRATE B4800
+@@ -406,3 +407,16 @@
+     (void)fflush(stderr);
+     return;
+ }
++
++#ifdef __sun
++static void cfmakeraw (struct termios *termios_p)
++{
++    termios_p->c_iflag &= ~(IGNBRK|BRKINT|PARMRK|ISTRIP
++                            |INLCR|IGNCR|ICRNL|IXON);
++    termios_p->c_oflag &= ~OPOST;
++    termios_p->c_lflag &= ~(ECHO|ECHONL|ICANON|ISIG|IEXTEN);
++    termios_p->c_cflag &= ~(CSIZE|PARENB);
++    termios_p->c_cflag |= CS8;
++}
++#endif
++

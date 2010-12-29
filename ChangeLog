@@ -2,6 +2,7 @@
 
 	* ext-sources/c-icap.xml: fix naming
 	* SFEc-icap.spec: bump to 0.1.4
+	* SFEgpsd.spec: initial spec
 
 2010-12-26 Milan Jurik <sfnet@xylab.cz>
 

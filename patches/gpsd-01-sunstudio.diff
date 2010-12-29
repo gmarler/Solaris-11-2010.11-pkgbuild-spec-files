@@ -1,0 +1,66 @@
+--- gpsd-2.95/libgps_json.c	Tue Jun  8 02:23:47 2010
++++ gpsd-2.95-patch/libgps_json.c	Tue Dec 28 20:15:19 2010
+@@ -153,10 +153,12 @@
+ 	                             .dflt.real = NAN},
+ 	{"gdop",       t_real,    .addr.real    = &gpsdata->dop.gdop,
+ 	                             .dflt.real = NAN},
+-	{"satellites", t_array,   .addr.array.element_type = t_object,
+-				     .addr.array.arr.objects.subtype=json_attrs_2_1,
+-	                             .addr.array.maxlen = MAXCHANNELS,
+-	                             .addr.array.count = &gpsdata->satellites_visible},
++	{"satellites", t_array,   .addr.array = {
++					.element_type = t_object,
++					.maxlen = MAXCHANNELS,
++					.count = &gpsdata->satellites_visible,
++					.arr.objects.subtype=json_attrs_2_1,
++	                                }},
+ 	{NULL},
+ 	/* *INDENT-ON* */
+     };
+--- gpsd-2.95/json.h	Wed Jun  2 23:03:02 2010
++++ gpsd-2.95-patch/json.h	Tue Dec 28 20:18:58 2010
+@@ -113,11 +113,14 @@
+  */
+ #define STRUCTOBJECT(s, f)	.addr.offset = offsetof(s, f)
+ #define STRUCTARRAY(a, e, n) \
+-	.addr.array.element_type = t_structobject, \
+-	.addr.array.arr.objects.subtype = e, \
+-	.addr.array.arr.objects.base = (char*)a, \
+-	.addr.array.arr.objects.stride = sizeof(a[0]), \
+-	.addr.array.count = n, \
+-	.addr.array.maxlen = NITEMS(a)
++	.addr.array = { \
++		.element_type = t_structobject, \
++		.count = n, \
++		.maxlen = NITEMS(a), \
++		.arr.objects = { \
++			.subtype = e, \
++			.base = (char*)a, \
++			.stride = sizeof(a[0]), \
++	}}
+ 
+ /* json.h ends here */
+--- gpsd-2.95/rtcm2_json.c	Wed Jun  2 23:03:02 2010
++++ gpsd-2.95-patch/rtcm2_json.c	Tue Dec 28 20:20:57 2010
+@@ -158,12 +158,15 @@
+     /*@-type@*//* complex union array initislizations confuses splint */
+     const struct json_attr_t json_rtcm2_fallback[] = {
+ 	RTCM2_HEADER
+-	{"data",         t_array, .addr.array.element_type = t_string,
+-	                             .addr.array.arr.strings.ptrs = stringptrs,
+-	                             .addr.array.arr.strings.store = stringstore,
+-	                             .addr.array.arr.strings.storelen = sizeof(stringstore),
+-	                             .addr.array.count = &stringcount,
+-	                             .addr.array.maxlen = NITEMS(stringptrs)},
++	{"data",         t_array, .addr.array = {
++					.element_type = t_string,
++					.count = &stringcount,
++					.maxlen = NITEMS(stringptrs),
++	                             	.arr.strings = {
++						.ptrs = stringptrs,
++	                             		.store = stringstore,
++	                             		.storelen = sizeof(stringstore),
++	                             }}},
+ 	{NULL},
+     };
+     /*@+type@*/
