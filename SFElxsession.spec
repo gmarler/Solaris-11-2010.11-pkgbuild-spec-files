@@ -9,7 +9,7 @@
 
 Name:                    SFElxsession
 Summary:                 LXDE session manager
-Version:                 0.4.4
+Version:                 0.4.5
 Source:                  http://nchc.dl.sourceforge.net/sourceforge/lxde/lxsession-%{version}.tar.gz
 Patch1:                  lxsession-01-Werror.diff
 Patch2:                  lxsession-02-fixcrash.diff
@@ -80,6 +80,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Thu Dec 30 2010 - brian.cameron@oracle.com
+- Bump to 0.4.5.
 * Fri Sep 17 2010 - brian.cameron@oracle.com
 - Add patch lxsession-03-reboot.diff so that HAL is not checked to see if
   reboot/shutdown is available.
