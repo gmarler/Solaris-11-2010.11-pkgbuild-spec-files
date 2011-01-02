@@ -1,0 +1,32 @@
+#!/bin/sh
+
+. /lib/svc/share/smf_include.sh
+
+case "$1" in
+'start')
+	#FMRI=svc:/site/freeradius:default
+
+	#arg=`eval "echo \`svcprop -p freeradius/args $FMRI\`"`
+
+        [ -d /var/run/radiusd ] || mkdir /var/run/radiusd
+	/usr/sbin/radiusd -X &
+
+	;;
+
+'stop')
+	PIDFILE=/var/run/radiusd/radiusd.pid 
+	if test '!' -f $PIDFILE ; then
+	        echo "$PIDFILE doesn't exist, perhaps freeradius radiusd isn't running"
+	        exit 1
+	fi
+	# exec the kill to get the correct return code
+	exec kill -TERM `cat $PIDFILE`
+	;;
+
+*)
+	echo "Usage: $0 { start | stop }"
+	exit 1
+	;;
+esac
+
+exit $SMF_EXIT_OK
