@@ -6,7 +6,7 @@
 Name:                    SFEmbuffer
 Summary:                 mbuffer - tool for extra buffering pipes
 URL:                     http://www.maier-komor.de/software/mbuffer
-Version:                 20081113
+Version:                 20101230
 Source:                  http://www.maier-komor.de/software/mbuffer/mbuffer-%{version}.tgz
 
 
@@ -24,10 +24,8 @@ Requires: SUNWopenssl-libraries
 
 %build
 
-
-./configure --prefix=%{_prefix}  \
-            --disable-debug      \
-            --disable-static
+perl -w -pi.bak -e "s,^#\!\s*/bin/sh,#\!/usr/bin/bash," configure
+./configure --prefix=%{_prefix}  
 
 
 make
@@ -45,7 +43,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-, root, bin)
-%doc README ChangeLog INSTALL NEWS AUTHORS
+%doc README ChangeLog INSTALL NEWS AUTHORS LICENSE
 %dir %attr (0755, root, bin) %{_bindir}
 %{_bindir}/*
 %dir %attr (0755, root, sys) %{_datadir}
@@ -56,5 +54,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sun Jan  1 2011  - Thomas Wagner
+- bump to 20101230
+- change shell in configure, remove obsolete configure switches
 * Tue Jan 27 2009  - Thomas Wagner
 - Initial spec
