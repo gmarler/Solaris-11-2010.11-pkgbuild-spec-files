@@ -1,3 +1,7 @@
+2010-01-03  Brian Cameron  <brian.cameron@oracle.com>
+
+	* patches/lxsession-03-reboot.diff: Update patch so it applies.
+
 2010-12-30  Brian Cameron  <brian.cameron@oracle.com>
 
 	* SFElxsession.spec: Bump to 0.4.5.

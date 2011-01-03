@@ -1,18 +1,18 @@
 --- lxsession-0.4.4/lxsession-logout/lxsession-logout.c-orig	2010-09-17 19:02:40.148284621 -0500
 +++ lxsession-0.4.4/lxsession-logout/lxsession-logout.c	2010-09-17 19:03:29.216620337 -0500
-@@ -356,6 +356,7 @@ int main(int argc, char * argv[])
- #endif
- 
-     /* Initialize capabilities of the HAL mechanism. */
-+/*
-     if (!handler_context.shutdown_available && dbus_HAL_CanShutdown())
-     {
-         handler_context.shutdown_available = TRUE;
-@@ -366,6 +367,7 @@ int main(int argc, char * argv[])
-         handler_context.reboot_available = TRUE;
-         handler_context.reboot_HAL = TRUE;
+@@ -370,6 +370,7 @@ int main(int argc, char * argv[])
+         handler_context.reboot_ConsoleKit = TRUE;
      }
-+*/
-     if (!handler_context.suspend_available && dbus_HAL_CanSuspend())
+ 
++#if 0
+     /* Initialize capabilities of the UPower mechanism. */
+     if (dbus_UPower_CanSuspend())
      {
-         handler_context.suspend_available = TRUE;
+@@ -403,6 +404,7 @@ int main(int argc, char * argv[])
+         handler_context.hibernate_available = TRUE;
+         handler_context.hibernate_HAL = TRUE;
+     }
++#endif
+ 
+     /* If we are under GDM, its "Switch User" is available. */
+     if (verify_running("gdm", "gdmflexiserver"))
