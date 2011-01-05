@@ -7,9 +7,10 @@
 %include Solaris.inc
 Name:                    SFEc-ares
 Group:                   System/Libraries
-Version:                 1.7.3
+Version:                 1.7.4
 Vendor:                  Sun Microsystems, Inc.
 Summary:                 Library to perform DNS requests and name resolves asynchronously
+Group:                   Libraries
 License:                 MIT
 Source:                  http://c-ares.haxx.se/c-ares-%{version}.tar.gz
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -66,6 +67,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*
 
 %changelog
+* Wed Jan 05 2011 - Milan Jurik
+- bump to 1.7.4
 * Tue Sep 07 2010 - Milan Jurik
 - bump to 1.7.3
 * Fri Jan 29 2010 - Brian Cameron  <brian.cameron@sun.com>
