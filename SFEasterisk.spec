@@ -1,13 +1,16 @@
 #
 # spec file for package SFEasterisk
 #
+# This file and all modifications and additions to the pristine
+# package are under the same license as the package itself.
+#
 %include Solaris.inc
 
 %define cc_is_gcc 1
 %include base.inc
 
 %define src_name   asterisk
-%define src_version    1.8.0
+%define src_version    1.8.1.1
 
 Name:         	SFE%{src_name}
 Summary:      	Asterisk : Complete IP PBX in software
@@ -101,6 +104,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Jan 05 2011 - Milan Jurik 
+- bump to 1.8.1.1
 * Fri Nov 26 2010 - Milan Jurik
 - major update to 1.8.0
 * Sun Oct 14 2007 - laca@sun.com
