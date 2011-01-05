@@ -1,3 +1,7 @@
+2011-01-05 Milan Jurik <sfnet@xylab.cz>
+
+	* SFEnodejs.spec: bump to 0.2.6
+
 2010-01-03  Brian Cameron  <brian.cameron@oracle.com>
 
 	* patches/lxsession-03-reboot.diff: Update patch so it applies.

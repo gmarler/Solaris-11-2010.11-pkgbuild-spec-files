@@ -3,18 +3,20 @@
 #
 # includes module(s): nodejs
 #
+# This file and all modifications and additions to the pristine
+# package are under the same license as the package itself.
+#
 %include Solaris.inc
 
-%define	src_version 0.2.5
+%define	src_version 0.2.6
 
 Summary:	Asynchronous JavaScript Engine  
 Name:		SFEnodejs  
-Version:	0.2.5
+Version:	0.2.6
 License:	BSD  
 Group:		Libraries  
 URL:		http://nodejs.org/  
 Source:		http://nodejs.org/dist/node-v%{src_version}.tar.gz  
-Patch1:		nodejs-01-gcc.diff
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 SUNW_BaseDir:	%{_basedir}
 %include default-depend.inc
@@ -44,9 +46,13 @@ Development headers for nodejs.
 
 %prep  
 %setup -q -n node-v%{src_version}  
-%patch1 -p1
 
 %build  
+CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
+if test "x$CPUS" = "x" -o $CPUS = 0; then
+     CPUS=1
+fi
+
 export CC=gcc
 export CXX=g++
 
@@ -55,7 +61,7 @@ export CXX=g++
 	--shared-libev \
 	--shared-libev-includes=/usr/include/libev
 
-make
+make -j$CPUS
 
 %install  
 rm -rf $RPM_BUILD_ROOT  
@@ -81,6 +87,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/node/wafadmin/  
 
 %changelog  
+* Wed Jan 05 2011 - Milan Jurik
+- bump to 0.2.6
 * Sun Nov 28 2010 - Milan Jurik
 - bump to 0.2.5
 * Fri Nov 12 2010 - Milan Jurik
