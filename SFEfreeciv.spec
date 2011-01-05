@@ -12,7 +12,7 @@
 Name:                    SFEfreeciv
 Summary:                 freeciv - a multiplayer strategy game
 URL:                     http://freeciv.wikia.com/
-Version:                 2.2.3
+Version:                 2.2.4
 Group:                   Amusements/Games
 Source:                  http://%{sf_mirror}/freeciv/freeciv-%{version}.tar.bz2
 # date:2008-12-23 type:bug owner:halton bugid:40661
@@ -105,6 +105,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_sysconfdir}/ggz.modules
 
 %changelog
+* Wed Jan 05 2010 - Milan Jurik
+- bump to 2.2.4
 * Thu Sep 23 2010 - Milan Jurik
 - bump to 2.2.3
 * Thu Jan 15 2009 - halton.huo@sun.com
