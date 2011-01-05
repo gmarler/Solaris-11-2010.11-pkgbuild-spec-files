@@ -8,6 +8,7 @@
 	* SFEleafpad.spec: bump to 0.8.18.1
 	* base-specs/sdl-ttf.spec: bump to 2.0.10
 	* SFEsdl-ttf.spec: pkgconfig support
+	* base-specs/sdl-gfx.spec: bump to 2.0.22
 
 2010-01-03  Brian Cameron  <brian.cameron@oracle.com>
 

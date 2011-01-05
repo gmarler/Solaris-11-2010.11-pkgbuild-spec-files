@@ -8,27 +8,30 @@
 
 Name:			SFEsdl-gfx
 Summary: 		Graphics library for SDL
-Version:		2.0.20
+Version:		2.0.22
 URL:			http://www.ferzkopp.net/Software/SDL_gfx-2.0/
 License:		LGPL
 Source: 		http://www.ferzkopp.net/Software/%{src_name}-2.0/%{src_name}-%{version}.tar.gz
 BuildRoot:		%{_tmppath}/%{name}-%{version}-build
-Patch1:			sdl-gfx-01-shell.diff
 
 %prep
 %setup -q -n %{src_name}-%{version}
 
 %build
+# workaround for wrong Makefile
+mkdir -p m4
+
 export PATH=%{_bindir}:$PATH
 export CFLAGS="%optflags" 
 export LDFLAGS="%_ldflags" 
-%patch1 -p0
 ./configure --prefix=%{_prefix}                 \
             --bindir=%{_bindir}                 \
             --mandir=%{_mandir}                 \
             --libdir=%{_libdir}                 \
             --libexecdir=%{_libexecdir}         \
             --sysconfdir=%{_sysconfdir}		\
+            --enable-shared			\
+	    --disable-static			\
 	    %mmx_option
 
 make
@@ -36,12 +39,13 @@ make
 %install
 make install DESTDIR=$RPM_BUILD_ROOT
 rm -f $RPM_BUILD_ROOT%{_libdir}/*.la
-rm -f $RPM_BUILD_ROOT%{_libdir}/*.a
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Wed Jan 05 2011 - Milan Jurik
+- bump to 2.0.22
 * Sun Apr 11 2010 - Milan Jurik
 - minor cleanup
 * Tue Mar 02 2010 - matt@greenviolet.net
