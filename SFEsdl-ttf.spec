@@ -111,8 +111,20 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,bin)
 %dir %attr (0755, root, bin) %{_includedir}
 %{_includedir}/SDL/
+%dir %attr (0755, root, other) %{_libdir}/pkgconfig
+%{_libdir}/pkgconfig/SDL_ttf.pc
+%ifarch amd64 sparcv9
+%dir %attr (0755, root, other) %{_libdir}/%{_arch64}/pkgconfig
+%{_libdir}/%{_arch64}/pkgconfig/SDL_ttf.pc
+%endif
+%if %arch_sse2
+%dir %attr (0755, root, other) %{_libdir}/pentium_pro+mmx/pkgconfig
+%{_libdir}/pentium_pro+mmx/pkgconfig/SDL_ttf.pc
+%endif
 
 %changelog
+* Wed Jan 05 2011 - Milan Jurik
+- pkgconfig support 
 * Sun Apr 11 2010 - Milan Jurik
 - prefer SUNWlibsdl
 * Wed Aug 15 2007 - trisk@acm.jhu.edu
