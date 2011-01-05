@@ -7,7 +7,7 @@
 
 Name:		SFEleafpad
 Summary:	Leafpad - A GTK+ based text editor
-Version:	0.8.17
+Version:	0.8.18.1
 Source:		http://savannah.nongnu.org/download/leafpad/leafpad-%{version}.tar.gz
 URL:		http://tarot.freeshell.org/leafpad/
 License:	GPLv2
@@ -74,6 +74,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Wed Jan 05 2011 - Milan Jurik
+- bump to 0.8.18.1
 * Mon May 17 2010 - Milan Jurik
 - bump to 0.8.17
 * Sun Dec 25 2007 - Ananth Shrinivas <ananth@sun.com>

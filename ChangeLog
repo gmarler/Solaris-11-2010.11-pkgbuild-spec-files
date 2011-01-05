@@ -5,6 +5,7 @@
 	* SFEfreeciv.spec: bump to 2.2.4
 	* SFEc-ares.spec: bump to 1.7.4
 	* SFEgeany.spec: bump to 0.19.2
+	* SFEleafpad.spec: bump to 0.8.18.1
 
 2010-01-03  Brian Cameron  <brian.cameron@oracle.com>
 
