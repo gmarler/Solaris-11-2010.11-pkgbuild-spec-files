@@ -25,6 +25,10 @@ Requires:                SUNWglib2
 Requires:                SUNWdbus-glib
 BuildRequires:           SUNWglib2-devel
 BuildRequires:           SUNWdbus-glib-devel
+BuildRequires:           SFEgpsd-devel
+Requires:                SFEgpsd
+BuildRequires:           SUNWlxsl
+BuildRequires:           SUNWgtk-doc
 
 %package devel
 Summary:                 %{summary} - development files
@@ -73,6 +77,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libexecdir}/geoclue-plazes
 %{_libexecdir}/geoclue-skyhook
 %{_libexecdir}/geoclue-yahoo
+%{_libexecdir}/geoclue-gpsd
 %dir %attr (0755, root, sys) %{_datadir}
 %{_datadir}/dbus-1/services/*
 %{_datadir}/geoclue-providers
@@ -88,6 +93,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-doc
 
 %changelog
+* Fri Jan 07 2011 - Milan Jurik
+- add missing deps
 * Tue Apr 27 2010 - Brian Cameron  <brian.cameron@sun.com>
 - Bump to 0.12.0.
 * Sun Oct 11 2009 - Brian Cameron  <brian.cameron@sun.com>

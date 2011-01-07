@@ -27,6 +27,10 @@ BuildRequires:      SUNWclutter-devel
 Requires:           SUNWclutter-gtk
 BuildRequires:      SUNWclutter-gtk-devel
 BuildRequires:      SUNWgobject-introspection 
+BuildRequires:      SUNWvala-devel
+Requires:           SUNWvala
+BuildRequires:      SFEmemphis-devel
+Requires:           SFEmemphis
 
 %package devel
 Summary:       %{summary} - development files
@@ -68,6 +72,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/gir*
 %dir %attr (0755, root, sys) %{_datadir}
 %{_datadir}/gir*
+%{_datadir}/vala
 
 %files devel
 %defattr (-, root, bin)
@@ -82,6 +87,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Fri Jan 07 2011 - Milan Jurik
+- missing deps added
 * Mon Jan 02 2010 - yuntong.jin@sun.com
 - Add doc like copyright file etc and licence info  
 * Wed Aug 05 2009 - halton.huo@sun.com

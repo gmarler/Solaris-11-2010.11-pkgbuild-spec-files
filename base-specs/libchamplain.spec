@@ -11,7 +11,7 @@
 Name:		libchamplain
 License:	GPL
 Group:		Development/Libraries
-Version:	0.4.4
+Version:	0.8.0
 Release:	1
 Distribution:   Java Desktop System
 Vendor:         Sun Microsystems, Inc.
@@ -55,13 +55,6 @@ own programs.
 %prep
 %setup -q
 
-#FIXME: When #590829 fixed in next release, remove following lines 
-rm -f m4/lt~obsolete.m4
-rm -f m4/ltoptions.m4
-rm -f m4/libtool.m4
-rm -f m4/ltsugar.m4
-rm -f m4/ltversion.m4
-
 %build
 %ifos linux
 if [ -x /usr/bin/getconf ]; then
@@ -74,12 +67,6 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
   CPUS=1
 fi
 
-libtoolize --force
-aclocal $ACLOCAL_FLAGS -I m4
-autoheader
-automake -a -c -f
-autoconf
-
 ./configure --prefix=%{_prefix} \
 	    --bindir=%{_bindir} \
 	    --mandir=%{_mandir} \
@@ -87,6 +74,7 @@ autoconf
 	    --datadir=%{_datadir} \
 	    --includedir=%{_includedir} \
 	    --sysconfdir=%{_sysconfdir} \
+	    --disable-static \
 	    %gtk_doc_option
 
 make -j $CPUS
@@ -117,6 +105,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_prefix}/lib/pkgconfig/*
 
 %changelog
+* Fri Jan 07 2011 - Milan Jurik
+- bump to 0.8.0
 * Wed Mar 10 2010 - brian.cameron@sun.com
 - Bump to 0.4.4.
 * Wed Oct 28 2009 - brian.cameron@sun.com

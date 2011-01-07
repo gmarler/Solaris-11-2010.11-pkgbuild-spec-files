@@ -17,12 +17,12 @@ Requires:                SUNWPython26
 Requires:                SUNWlibcroco
 Requires:                SUNWlibrsvg
 Requires:                SUNWgtk2
-Requires:                SUNWgnome-python-libs
+Requires:                SUNWgnome-python26-libs
 BuildRequires:           SUNWPython26-devel
 BuildRequires:           SUNWlibcroco-devel
 BuildRequires:           SUNWlibrsvg-devel
 BuildRequires:           SUNWgtk2-devel
-BuildRequires:           SUNWgnome-python-libs-devel
+BuildRequires:           SUNWgnome-python26-libs-devel
 
 %include default-depend.inc
 
@@ -77,5 +77,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-doc
 
 %changelog
+* Fri Jan 07 2011 - Milan Jurik
+- python 2.6 deps
 * Tue Feb 02 2010 - brian.cameron@sun.com
 - Created with version 0.3.0.
