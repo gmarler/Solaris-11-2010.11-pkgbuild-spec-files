@@ -1,0 +1,44 @@
+--- orig/configure	2011-01-05 17:25:34.141380827 -0500
++++ new/configure	2011-01-05 17:31:14.093219964 -0500
+@@ -1,4 +1,4 @@
+-#!/bin/sh
++#!/bin/bash
+ #
+ # FFmpeg configure script
+ #
+@@ -1549,7 +1549,7 @@
+     thing=$1
+     pattern=$2
+     file=$source_path/$3
+-    sed -n "s/^[^#]*$pattern.*([^,]*, *\([^,]*\)\(,.*\)*).*/\1_$thing/p" "$file"
++    /usr/gnu/bin/sed -n "s/^[^#]*$pattern.*([^,]*, *\([^,]*\)\(,.*\)*).*/\1_$thing/p" "$file"
+ }
+ 
+ ENCODER_LIST=$(find_things  encoder  ENC      libavcodec/allcodecs.c)
+@@ -1898,7 +1898,7 @@
+         gcc)
+             check_native(){
+                 $cc $1=native -v -c -o $TMPO $TMPC >$TMPE 2>&1 || return
+-                sed -n "/$1=/{
++                /usr/gnu/bin/sed -n "/$1=/{
+                             s/.*$1=\\([^ ]*\\).*/\\1/
+                             p
+                             q
+@@ -2365,7 +2365,7 @@
+ check_cc <<EOF || die "Symbol mangling check failed."
+ int ff_extern;
+ EOF
+-sym=$($nm $nm_opts $TMPO | awk '/ff_extern/{ print substr($0, match($0, /[^ \t]*ff_extern/)) }')
++sym=$($nm $nm_opts $TMPO | gawk '/ff_extern/{ print substr($0, match($0, /[^ \t]*ff_extern/)) }')
+ extern_prefix=${sym%%ff_extern*}
+ 
+ check_cc <<EOF && enable inline_asm
+@@ -3047,7 +3047,7 @@
+ get_version(){
+     name=$1
+     file=$source_path/$2
+-    eval $(grep "#define ${name}_VERSION_M" "$file" | awk '{ print $2"="$3 }')
++    eval $(grep "#define ${name}_VERSION_M" "$file" | gawk '{ print $2"="$3 }')
+     eval ${name}_VERSION=\$${name}_VERSION_MAJOR.\$${name}_VERSION_MINOR.\$${name}_VERSION_MICRO
+     lcname=$(tolower $name)
+     eval echo "${lcname}_VERSION=\$${name}_VERSION" >> config.mak

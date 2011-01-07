@@ -1,0 +1,11 @@
+--- orig/Makefile	2011-01-05 01:00:38.058314845 -0500
++++ new/Makefile	2011-01-05 01:01:52.018812044 -0500
+@@ -12,7 +12,7 @@
+ #CRYPTO=POLARSSL
+ #CRYPTO=GNUTLS
+ LIB_GNUTLS=-lgnutls -lgcrypt
+-LIB_OPENSSL=-lssl -lcrypto
++LIB_OPENSSL=-lssl -lcrypto -lsocket -lnsl
+ LIB_POLARSSL=-lpolarssl
+ CRYPTO_LIB=$(LIB_$(CRYPTO))
+ DEF_=-DNO_CRYPTO

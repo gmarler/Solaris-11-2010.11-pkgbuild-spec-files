@@ -1,0 +1,31 @@
+--- orig/make/variant/solaris.defs	2011-01-06 23:38:18.898989460 -0500
++++ new/make/variant/solaris.defs	2011-01-06 23:38:46.840808304 -0500
+@@ -9,3 +9,6 @@
+ GCC.args.g.min  = -g1
+ GCC.args.g.std  = -g2
+ GCC.args.g.max  = -g3
++
++X264.CONFIGURE.extra += --host=x86_64-pc-solaris2.11
++X264.CONFIGURE.env.LDFLAGS = LDFLAGS="-m64"
+--- orig/make/include/gcc.defs	2011-01-06 23:39:54.684257947 -0500
++++ new/make/include/gcc.defs	2011-01-06 23:40:18.090441840 -0500
+@@ -69,7 +69,7 @@
+ GCC.args.l         = -l$(1)
+ GCC.args.end       = -Wl,--end-group
+ 
+-GCC.args.extra         =
++GCC.args.extra         = -m64
+ GCC.args.extra.h_o     =
+ GCC.args.extra.c_o     =
+ GCC.args.extra.dylib   =
+--- orig/contrib/libdvdnav/module.defs	2011-01-06 23:41:08.660658356 -0500
++++ new/contrib/libdvdnav/module.defs	2011-01-06 23:41:21.378622497 -0500
+@@ -5,7 +5,7 @@
+ LIBDVDNAV.EXTRACT.tarbase = libdvdnav
+ 
+ ifneq (max,$(GCC.g))
+-	LIBDVDNAV.CONFIGURE.env.CFLAGS = CFLAGS="-DNDEBUG"
++	LIBDVDNAV.CONFIGURE.env.CFLAGS = CFLAGS="-m64 -DNDEBUG"
+ endif
+ 
+ LIBDVDNAV.CONFIGURE.bootstrap = rm -fr aclocal.m4 autom4te.cache; autoreconf -fiv;

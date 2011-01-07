@@ -1,0 +1,21 @@
+--- orig/contrib/libtheora/module.defs	2011-01-07 02:56:17.435157827 -0500
++++ new/contrib/libtheora/module.defs	2011-01-07 02:57:12.097244606 -0500
+@@ -3,6 +3,8 @@
+ 
+ LIBTHEORA.FETCH.url = http://download.m0k.org/handbrake/contrib/libtheora-1.1.0.tar.bz2
+ 
++LIBTHEORA.CONFIGURE.env.LDFLAGS  = LDFLAGS="-L/usr/gnu/lib -R/usr/gnu/lib"
++
+ LIBTHEORA.CONFIGURE.extra = \
+     --disable-examples \
+     --disable-oggtest \
+--- orig/contrib/mp4v2/module.defs	2011-01-07 03:09:46.278055636 -0500
++++ new/contrib/mp4v2/module.defs	2011-01-07 03:10:08.433918818 -0500
+@@ -6,6 +6,7 @@
+ ## propagate more flags
+ MP4V2.CONFIGURE.env.CFLAGS = CFLAGS="$(call fn.ARGS,MP4V2.GCC,*archs *sysroot *minver *D .g .O)"
+ MP4V2.CONFIGURE.env.CXXFLAGS = CXXFLAGS="$(call fn.ARGS,MP4V2.GCC,*archs *sysroot *minver *D .g .O)"
++MP4V2.CONFIGURE.env.LDFLAGS  = LDFLAGS="-L/usr/gnu/lib -R/usr/gnu/lib"
+ 
+ ## save some build-time by disabling utils
+ MP4V2.CONFIGURE.extra += --disable-util

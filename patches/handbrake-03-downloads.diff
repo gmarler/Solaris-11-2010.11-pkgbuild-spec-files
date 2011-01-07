@@ -1,0 +1,8 @@
+--- orig/make/include/select.defs	Thu Jan  6 03:09:01 2011
++++ new/make/include/select.defs	Thu Jan  6 03:10:34 2011
+@@ -9,4 +9,4 @@
+ FETCH.select  = MISSING
+ FETCH.MISSING = $(error one of the following tools is required: wget, curl)
+ FETCH.curl    = $(CURL.exe) -q -L -o $(1) $(2)
+-FETCH.wget    = $(WGET.exe) -O $(1) $(2)
++FETCH.wget    = echo $(WGET.exe) -O $(1) $(2)

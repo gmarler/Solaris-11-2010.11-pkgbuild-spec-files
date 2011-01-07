@@ -14,6 +14,7 @@ Version:                 0.6.1
 Source:                  http://www.ffmpeg.org/releases/ffmpeg-%{src_version}.tar.bz2
 URL:                     http://www.ffmpeg.org/index.html
 Patch2:                  ffmpeg-02-configure.diff
+Patch3:                  ffmpeg-03-gnuisms.diff
 Patch4:                  ffmpeg-04-options.diff
 Patch8:                  ffmpeg-08-versionsh.diff
 SUNW_BaseDir:            %{_basedir}
@@ -26,6 +27,8 @@ Autoreqprov:             on
 %patch2 -p1
 %patch4 -p1
 %patch8 -p1
+%patch3 -p1
+
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -54,6 +57,7 @@ bash ./configure	\
     --cc=$CC		\
     %{arch_opt}		\
     --disable-debug	\
+    --enable-nonfree	\
     --enable-gpl	\
     --enable-postproc	\
     --enable-avfilter   \
@@ -61,6 +65,7 @@ bash ./configure	\
     --enable-libgsm	\
     --enable-libxvid	\
     --enable-libx264	\
+    --enable-libfaac	\
     --enable-libfaad	\
     --enable-libfaadbin	\
     --enable-libtheora	\
@@ -106,6 +111,8 @@ EOM
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Wed Jan 05 2011 - James Choi <jchoi42@pha.jhu.edu>
+- patch configure to gnu defaults
 * Sun Nov 28 2010 - Milan Jurik
 - bump to 0.6.1
 * Wed Jun 16 2010 - Milan Jurik

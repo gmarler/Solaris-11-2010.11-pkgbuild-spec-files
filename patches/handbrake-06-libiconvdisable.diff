@@ -1,0 +1,15 @@
+--- orig/make/include/main.defs	2011-01-07 01:50:41.963290655 -0500
++++ new/make/include/main.defs	2011-01-07 01:50:55.558662090 -0500
+@@ -53,9 +53,9 @@
+ endif
+ endif
+ 
+-ifneq (,$(filter $(BUILD.system),solaris))
+-    MODULES += contrib/libiconv
+-endif
++#ifneq (,$(filter $(BUILD.system),solaris))
++#    MODULES += contrib/libiconv
++#endif
+ 
+ ## these must come after contrib since some contrib modules are optional
+ MODULES += libhb
