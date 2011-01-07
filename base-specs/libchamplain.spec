@@ -11,13 +11,13 @@
 Name:		libchamplain
 License:	GPL
 Group:		Development/Libraries
-Version:	0.8.0
+Version:	0.6.1
 Release:	1
 Distribution:   Java Desktop System
 Vendor:         Sun Microsystems, Inc.
 URL:		http://projects.gnome.org/libchamplain/
 Summary:	a Clutter based widget to display rich, eye-candy and interactive maps
-Source:		http://download.gnome.org/sources/%{name}/0.4/%{name}-%{version}.tar.bz2
+Source:		http://download.gnome.org/sources/%{name}/0.6/%{name}-%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-root
 
 Requires: 	clutter >= 1.0
@@ -106,7 +106,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %changelog
 * Fri Jan 07 2011 - Milan Jurik
-- bump to 0.8.0
+- bump to 0.6.1 (for emerillon)
 * Wed Mar 10 2010 - brian.cameron@sun.com
 - Bump to 0.4.4.
 * Wed Oct 28 2009 - brian.cameron@sun.com

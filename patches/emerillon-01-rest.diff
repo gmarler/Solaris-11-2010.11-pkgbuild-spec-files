@@ -1,11 +1,29 @@
---- emerillon-0.1.1/configure.ac-orig	2010-02-16 03:42:08.279912845 -0600
-+++ emerillon-0.1.1/configure.ac	2010-02-16 03:42:18.400086322 -0600
-@@ -103,7 +103,7 @@ if test x$enable_search = xyes; then
-   AC_SUBST(SEARCH_DEPS_LIBS)
-   PKG_CHECK_MODULES(SEARCH_DEPS,
-     [
+--- emerillon-0.1.2/configure	Fri Jun 25 14:27:10 2010
++++ emerillon-0.1.2-patch/configure	Fri Jan  7 22:11:53 2011
+@@ -13919,1 +13919,1 @@
 -      rest-0.6 >= 0.6
 +      rest >= 0.6
-     ]
-   )
- 
+@@ -13923,1 +13923,1 @@
+-      rest-0.6 >= 0.6
++      rest >= 0.6
+@@ -13930,1 +13930,1 @@
+-      rest-0.6 >= 0.6
++      rest >= 0.6
+@@ -13946,1 +13946,1 @@
+-      rest-0.6 >= 0.6
++      rest >= 0.6
+@@ -13950,1 +13950,1 @@
+-      rest-0.6 >= 0.6
++      rest >= 0.6
+@@ -13957,1 +13957,1 @@
+-      rest-0.6 >= 0.6
++      rest >= 0.6
+@@ -13979,1 +13979,1 @@
+-      rest-0.6 >= 0.6
++      rest >= 0.6
+@@ -13984,1 +13984,1 @@
+-      rest-0.6 >= 0.6
++      rest >= 0.6
+@@ -13992,1 +13992,1 @@
+-      rest-0.6 >= 0.6
++      rest >= 0.6

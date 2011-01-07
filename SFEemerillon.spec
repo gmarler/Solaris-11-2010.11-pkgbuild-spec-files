@@ -10,7 +10,7 @@
 Name:                    SFEemerillon
 License:                 GPL v3
 Group:                   Libraries/Multimedia
-Version:                 0.1.1
+Version:                 0.1.2
 Source:                  http://download.gnome.org/sources/emerillon/0.1/emerillon-%{version}.tar.bz2
 Patch1:                  emerillon-01-rest.diff
 Distribution:            Java Desktop System
@@ -37,6 +37,7 @@ BuildRequires:           SFElibchamplain-devel
 BuildRequires:           SFEgeoclue-devel
 BuildRequires:           SFElibrest-devel
 BuildRequires:           SFEethos-devel
+BuildRequires:           SUNWgtk-doc
 
 %package root
 Summary:		 %{summary} - / filesystem
@@ -53,11 +54,6 @@ SUNW_BaseDir:            %{_basedir}
 %patch1 -p1
 
 %build
-libtoolize --force
-aclocal $ACLOCAL_FLAGS
-autoheader
-automake -a -c -f
-autoconf
 ./configure \
    --prefix=%{_prefix} \
    --libexecdir=%{_libexecdir} \
@@ -91,10 +87,16 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, bin) %{_libdir}/emerillon
 %dir %attr (0755, root, bin) %{_libdir}/emerillon/plugins
 %dir %attr (0755, root, bin) %{_libdir}/emerillon/plugins/*
+%{_libdir}/gir*
 %dir %attr (0755, root, sys) %{_datadir}
 %dir %attr (0755, root, other) %{_datadir}/applications
 %{_datadir}/applications/*
 %{_datadir}/emerillon
+%{_datadir}/gir*
+%{_datadir}/vala
+%dir %attr (-, root, other) %{_datadir}/gnome
+%{_datadir}/gnome/*
+%{_datadir}/gtk-doc
 
 %files root
 %defattr (-, root, sys)
@@ -110,6 +112,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*
 
 %changelog
+* Fri Jan 07 2011 - Milan Jurik
+- bump to 0.1.2
 * Tue Feb 16 2010 - Brian Cameron  <brian.cameron@sun.com>
 - Bump to 0.1.1.  Remove upstream patch emerillon-01-Wl.diff
 * Sun Oct 11 2009 - Brian Cameron  <brian.cameron@sun.com>
