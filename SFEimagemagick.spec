@@ -7,14 +7,16 @@
 
 %define src_name	ImageMagick
 #%define src_url		ftp://ftp.imagemagick.net/pub/%src_name
-%define major		6.5.8
-%define minor		-0
-%define src_url         %{sf_download}/imagemagick/files/ImageMagick/00-%{major}
+%define major		6.6.7
+%define minor		0
+%define src_url         %{sf_download}/project/imagemagick/%{major}-sources
 
 Name:                   SFEimagemagick
 Summary:                ImageMagick - Image Manipulation Utilities and Libraries
-Version:                %major
-Source:                 %{src_url}/%{src_name}-%{version}%{minor}.tar.bz2
+Version:                %{major}.%{minor}
+Source:                 %{src_url}/%{src_name}-%{major}-%{minor}.tar.bz2
+Group:			Graphics
+License:		ImageMagick License
 SUNW_BaseDir:           %{_basedir}
 BuildRoot:              %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -26,7 +28,7 @@ SUNW_BaseDir:            %{_prefix}
 %include default-depend.inc
 
 %prep
-%setup -q -n %{src_name}-%{version}
+%setup -q -n %{src_name}-%{major}-%{minor}
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -49,6 +51,7 @@ export CFLAGS="%optflags -xCC"
             --datadir=%{_datadir}	\
             --libexecdir=%{_libexecdir} \
             --sysconfdir=%{_sysconfdir} \
+	    --with-perl=yes		\
             --enable-shared		\
 	    --disable-static
 
@@ -71,9 +74,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}
 %dir %attr (0755,root,bin) %{_libdir}
 %{_libdir}/lib*.so*
-%{_libdir}/%{src_name}-%{version}
+%{_libdir}/%{src_name}-%{major}
 %dir %attr (0755,root,sys) %{_datadir}
-%{_datadir}/%{src_name}-%{version}
+%{_datadir}/%{src_name}-%{major}
 %{_mandir}
 %dir %attr (0755,root,other) %{_datadir}/doc
 %{_datadir}/doc/*
@@ -87,6 +90,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*
 
 %changelog
+* Thu Jan 13 2010 - Milan Jurik
+- bump to 6.6.7-0
 * Thu Nov 26 1009 - Thomas Wagner
 - bump to 6.5.8-0
 - new download-URL

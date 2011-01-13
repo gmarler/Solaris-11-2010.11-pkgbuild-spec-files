@@ -1,3 +1,7 @@
+2011-01-13 Milan Jurik <sfnet@xylab.cz>
+
+	* SFEimagemagick.spec: bump to 6.6.7-0
+
 2011-01-07 Milan Jurik <sfnet@xylab.cz>
 
 	* SFElibchamplain.spec: missing deps added
