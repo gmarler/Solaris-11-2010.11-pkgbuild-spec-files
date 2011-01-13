@@ -1,3 +1,7 @@
+2010-10-30  Thomas Wagner  <tom68@users.sourceforge.net>
+
+        * SFEwordpress.spec: initial spec
+
 2011-01-13 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEimagemagick.spec: bump to 6.6.7-0
