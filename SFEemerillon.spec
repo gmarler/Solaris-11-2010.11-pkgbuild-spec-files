@@ -49,6 +49,15 @@ Summary:                 %{summary} - development files
 SUNW_BaseDir:            %{_basedir}
 %include default-depend.inc
 
+%if %build_l10n
+%package l10n
+Summary:                 %{summary} - l10n files
+SUNW_BaseDir:            %{_basedir}
+%include default-depend.inc
+Requires:                %{name}
+%endif
+
+
 %prep
 %setup -q -n emerillon-%version
 %patch1 -p1
@@ -66,7 +75,10 @@ make install DESTDIR=$RPM_BUILD_ROOT
 find $RPM_BUILD_ROOT%{_libdir} -type f -name "*.la" -exec rm -f {} ';'
 find $RPM_BUILD_ROOT%{_libdir} -type f -name "*.a" -exec rm -f {} ';'
 
+%if %build_l10n
+%else
 rm -rf $RPM_BUILD_ROOT%{_datadir}/locale
+%endif
 
 %{?pkgbuild_postprocess: %pkgbuild_postprocess -v -c "%{version}:%{jds_version}:%{name}:$RPM_ARCH:%(date +%%Y-%%m-%%d):%{support_level}" $RPM_BUILD_ROOT}
 
@@ -111,7 +123,16 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, other) %{_libdir}/pkgconfig
 %{_libdir}/pkgconfig/*
 
+%if %build_l10n
+%files l10n
+%defattr (-, root, other)
+%dir %attr (0755, root, sys) %{_datadir}
+%{_localedir}
+%endif
+
 %changelog
+* Sat Jan 15 2011 - Milan Jurik
+- with locales build
 * Fri Jan 07 2011 - Milan Jurik
 - bump to 0.1.2
 * Tue Feb 16 2010 - Brian Cameron  <brian.cameron@sun.com>

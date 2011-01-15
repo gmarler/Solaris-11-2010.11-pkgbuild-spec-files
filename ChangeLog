@@ -1,6 +1,7 @@
 2011-01-15 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEviking.spec: initial spec
+	* SFEemerillon.spec: with locales build
 
 2010-10-30  Thomas Wagner  <tom68@users.sourceforge.net>
 
