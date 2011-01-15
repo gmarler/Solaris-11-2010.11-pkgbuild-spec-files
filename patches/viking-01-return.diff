@@ -1,0 +1,33 @@
+--- viking-1.0.2/src/vikmapsource.c	2010-12-14 22:11:07.000000000 +0100
++++ viking-1.0.2-patch/src/vikmapsource.c	2011-01-15 17:05:17.131714946 +0100
+@@ -176,7 +176,7 @@
+ 
+ 	g_return_if_fail (klass->mapcoord_to_center_coord != NULL);
+ 
+-	return (*klass->mapcoord_to_center_coord)(self, src, dest);
++	(*klass->mapcoord_to_center_coord)(self, src, dest);
+ }
+ 
+ int
+--- viking-1.0.2/src/vikslippymapsource.c	2010-12-14 22:11:07.000000000 +0100
++++ viking-1.0.2-patch/src/vikslippymapsource.c	2011-01-15 17:05:40.308831110 +0100
+@@ -414,7 +414,7 @@
+ static void
+ _download_handle_cleanup ( VikMapSource *self, void *handle )
+ {
+-   return a_download_handle_cleanup ( handle );
++   a_download_handle_cleanup ( handle );
+ }
+ 
+ static gchar *
+--- viking-1.0.2/src/terraservermapsource.c	2010-12-14 22:11:07.000000000 +0100
++++ viking-1.0.2-patch/src/terraservermapsource.c	2011-01-15 17:06:29.486865987 +0100
+@@ -238,7 +238,7 @@
+ static void
+ _download_handle_cleanup ( VikMapSource *self, void *handle )
+ {
+-	return a_download_handle_cleanup ( handle );
++	a_download_handle_cleanup ( handle );
+ }
+ 
+ TerraserverMapSource *

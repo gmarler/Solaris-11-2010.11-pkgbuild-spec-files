@@ -1,0 +1,22 @@
+--- viking-1.0.2/src/Makefile.in	2010-12-14 22:39:04.000000000 +0100
++++ viking-1.0.2-patch/src/Makefile.in	2011-01-15 17:25:49.716394367 +0100
+@@ -425,7 +425,7 @@
+ viking_SOURCES = main.c
+ LDADD = libviking.a $(PACKAGE_LIBS) @EXPAT_LIBS@ @LIBCURL@ \
+ 	icons/libicons.a $(am__append_7)
+-AM_CFLAGS = -Wall -g -D_GNU_SOURCE \
++AM_CFLAGS = -g -D_GNU_SOURCE \
+ 	$(PACKAGE_CFLAGS) \
+ 	@EXPAT_CFLAGS@ @LIBCURL_CPPFLAGS@
+ 
+--- viking-1.0.2/src/icons/Makefile.in	2010-12-14 22:39:05.000000000 +0100
++++ viking-1.0.2-patch/src/icons/Makefile.in	2011-01-15 17:26:01.220011146 +0100
+@@ -409,7 +409,7 @@
+ CLEANFILES = $(BUILT_SOURCES)
+ noinst_LIBRARIES = libicons.a
+ libicons_a_SOURCES = icons.c icons.h
+-AM_CFLAGS = -Wall -g -D_GNU_SOURCE \
++AM_CFLAGS = -g -D_GNU_SOURCE \
+ 	$(PACKAGE_CFLAGS)
+ 
+ iconsdir = $(datadir)/icons/hicolor/48x48/apps
