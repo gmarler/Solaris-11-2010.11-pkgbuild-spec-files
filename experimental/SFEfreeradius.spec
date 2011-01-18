@@ -259,6 +259,8 @@ user ftpuser=false gcos-field="freeradius" username="%{radiususer}" password=NP 
 
 %changelog
 * Tue Jan 18 2011 - Thomas Wagner
+- tweaked drivers/rlm_sql_mysql/Makefile and Make.inc to not catch the wrong
+  mysql /usr/sfw/lib/libmysqlclient_r.so.12 from sfw
 - remove *.a files from /usr/lib/
 - enhance svc-freeradius startscript to create and chown /var/run/radiusd directory
   according to the "user =" value in the configuration file.
