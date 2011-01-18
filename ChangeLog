@@ -1,3 +1,8 @@
+2011-01-18  Alex Viskovatoff <viskovatoff@imap.cc>
+
+	* encumbered/SFEmplayer-snap.spec: update to new tarball
+	* base-specs/libx264.spec: update to new tarball
+
 2011-01-15 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEviking.spec: initial spec

@@ -4,7 +4,7 @@
 # includes module(s): libx264
 #
 
-%define         snap    20101029
+%define         snap    20110117
 %define         snaph   2245
 %define src_name x264-snapshot
 %define src_url	 http://download.videolan.org/pub/videolan/x264/snapshots
@@ -85,6 +85,8 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/lib*.*a
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Tue Jan 18 2011 - Alex Viskovatoff
+- update to new tarball
 * Wed Nov 10 2010 - Alex Viskovatoff
 - update to new tarball
 - reworked patches libx264-02-version.diff (though replaced by Source1),

@@ -11,8 +11,8 @@
 # NOTE: To make man display the man page correctly, use
 #	export PAGER="/usr/bin/less -insR"
 
-# If you don't want to build the gui, use
-#   pkgtool --without-gui build <specfile>
+# If you want to build the gui, use
+#   pkgtool --with-gui build <specfile>
 # Please note that the MPlayer download page says the included gui is
 # no longer developed and there is limited bug fixing for it.
 # SMPlayer is recommended instead as a front end.
@@ -24,11 +24,12 @@
 # Default is to use fixed tarball revision from Arch Linux
 %define with_constant_tarball %{?_with_daily_snap:0}%{?!_with_daily_snap:1}
 
-# Default is to build with the gui "gmplayer"; if you set --without-gui
-# then consider building SFEsmplayer as well to get a more modern gui
-%define build_gui %{?_without_gui:0}%{?!_without_gui:1}
+# Default is to build without the gui "gmplayer"; if you want a modern gui,
+# then consider building SFEsmplayer as well
+%define build_gui %{?_with_gui:1}%{?!_with_gui:0}
 
 %include Solaris.inc
+%define cc_is_gcc 1 
 
 %define with_faad %(pkginfo -q SFEfaad2 && echo 1 || echo 0)
 %define with_fribidi %(pkginfo -q SFElibfribidi && echo 1 || echo 0)
@@ -45,7 +46,7 @@
 %define with_giflib %(pkginfo -q SFEgiflib && echo 1 || echo 0)
 
 %if %with_constant_tarball
-%define revision 32492
+%define revision 32792
 #else
 %define ver %(date '+%Y%m%d')
 %endif
@@ -66,7 +67,7 @@ Patch2:                  mplayer-snap-02-aserror.diff
 Patch3:                  mplayer-snap-03-ldflags.diff
 Patch4:                  mplayer-snap-04-realplayer.diff
 Patch5:                  mplayer-snap-05-cpudetect.diff
-Patch6:                  mplayer-snap-06-mkstemp.diff
+#Patch6:                  mplayer-snap-06-mkstemp.diff
 %if %build_gui
 Source3:                 http://www.mplayerhq.hu/MPlayer/skins/Blue-1.7.tar.bz2
 Source4:                 http://www.mplayerhq.hu/MPlayer/skins/Abyss-1.7.tar.bz2
@@ -176,7 +177,7 @@ cd %builddir
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
-%patch6 -p1
+#%patch6 -p1
 
 %build
 cd %name-build/%builddir
@@ -274,11 +275,14 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Tue Jan 18 2011 - Alex Viskovatoff
+- Update to new tarball, with Patch6 no longer required
+- Replace --without-gui option with --with-gui, disabling gui by default
 * Fri Nov  5 2010 - Alex Viskovatoff
 - Use fixed (constant) tarball from Arch Linux repository by default
 - Remove obsolete configure switch --enable-network
 - Restore cpu detection patch by Milan Jurik
-- Add patch by Thomas Wagner to make mkstemp get used
+- Add Patch6 by Thomas Wagner to make mkstemp get used
 - Add --without-gui option: the configure default is to disable the gui,
   and the MPlayer download page effectively deprecates the included gui
 - Create a formatted man page, since nroff cannot handle the man page
