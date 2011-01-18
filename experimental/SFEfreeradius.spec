@@ -4,6 +4,10 @@
 # package are under the same license as the package itself.
 
 ##TODO## check dependencies with check-deps(.pl) script
+##TODO## what is the right thing to do in %postun, remove user/group or not
+##TODO## change startscript to read SF property for command-line-switches
+#        or make a boolean flag for running radiusd -X and let svc-freeradius
+#        svc script do the initialization once if usefull criteria is met
 
 %include Solaris.inc
 %include packagenamemacros.inc
@@ -80,16 +84,22 @@ cp %{SOURCE3} svc-freeradius
 #perl -w -pi.bak -e "s,^#\!\s*/bin/sh,#\!/usr/bin/bash," `find . -type f -exec egrep -q "^#\! */bin/sh" {} \; -print| egrep -v "/configure|/config.status|CONFIG_SHELL|>conf.*.sh"`
 perl -w -pi -e "s,^#\!\s*/bin/sh,#\!/usr/bin/bash," `find . -type f -exec egrep -q "^#\! */bin/sh" {} \; -print| egrep -v "/configure|/config.status|CONFIG_SHELL|>conf.*.sh"`
 
+perl -w -pi -e "s,^#user = radius,user = %{radiususer},; s,^#group = radius,group = %{radiusgroup},;" raddb/radiusd.conf.in
+
+
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
 if test "x$CPUS" = "x" -o $CPUS = 0; then
   CPUS=1
 fi
 
-export CFLAGS="%optflags `krb5-config --cflags` -I/usr/sfw/include"
-export LDFLAGS="%_ldflags `krb5-config --libs` -L/usr/sfw/lib -R/usr/sfw/lib"
+export CFLAGS="%optflags -I/usr/mysql/include/mysql `krb5-config --cflags` -I/usr/sfw/include"
+export LDFLAGS="%_ldflags -I/usr/mysql/include/mysql -L/usr/mysql/lib -R/usr/mysql/lib `krb5-config --libs` -L/usr/sfw/lib -R/usr/sfw/lib"
 export PERL=%{PERLpath}
 
+#put preferred mysql_config in front of the path (else sfw version would be detected)
+
+export PATH=/usr/mysql/bin:$PATH
 ./configure --prefix=%{_prefix}               \
             --bindir=%{_bindir}               \
             --sbindir=%{_sbindir}             \
@@ -104,9 +114,19 @@ export PERL=%{PERLpath}
             --with-ldap                       \
             --with-mysql                      \
             --with-system-libltdl             \
+            --disable-static                  \
 
-#            --disable-static                  \
 #            --enable-dynamic                  \
+
+#fix wrong linking against /usr/sfw/lib/libmysql* for the rlm_sql_mysql module
+#Modify freeradius-server-2.1.10/src/modules/rlm_sql/drivers/rlm_sql_mysql/Makefile
+#to no longer contain /sfw/ in LDFLAGS (and CFLAGS). This doesn't break openssl for mysqlclient?
+#copy the Make.inc to Make-without-sfw.inc and change the rlm_sql_mysql/Makefile
+# to include the new include file
+#cat Make.inc | sed -e 's#-\(R\|L\)/usr/sfw/lib##g' -e 's#-I/usr/sfw/include##g' > Make-without-sfw.inc
+#sed -i 's#/Make.inc#/Make-without-sfw.inc#' src/modules/rlm_sql/drivers/rlm_sql_mysql/Makefile
+cat Make.inc | sed -e '/^LDFLAGS/ s#-\(R\|L\)/usr/sfw/lib##g' > Make-without-sfw.inc
+sed -i 's#/Make.inc#/Make-without-sfw.inc#' src/modules/rlm_sql/drivers/rlm_sql_mysql/Makefile
 
 #doesn't succeed if built in parallel
 gmake -j1
@@ -125,11 +145,16 @@ for file in `ls -1 $RPM_BUILD_ROOT%{_libdir}/libltdl.so*`
    done
 #check that RPM_BUILD_ROOT is not empty (not save if it is "/")
 find $RPM_BUILD_ROOT%{_libdir} -type f -name "*.la" -exec rm -f {} ';'
+find $RPM_BUILD_ROOT%{_libdir} -type f -name "*.a"  -exec rm -f {} ';'
 
 mkdir -p ${RPM_BUILD_ROOT}/var/svc/manifest/site
 cp freeradius.xml ${RPM_BUILD_ROOT}/var/svc/manifest/site/
 mkdir -p ${RPM_BUILD_ROOT}/lib/svc/method
 cp svc-freeradius ${RPM_BUILD_ROOT}/lib/svc/method/
+
+#remove directory, will be created at runtime by svc-freeradius script
+[ -d ${RPM_BUILD_ROOT}/%{_localstatedir}/run/radiusd ] && rmdir ${RPM_BUILD_ROOT}/%{_localstatedir}/run/radiusd
+[ -d ${RPM_BUILD_ROOT}/%{_localstatedir}/run         ] && rmdir ${RPM_BUILD_ROOT}/%{_localstatedir}/run
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -154,11 +179,11 @@ user ftpuser=false gcos-field="freeradius" username="%{radiususer}" password=NP 
   echo 'getent passwd %{radiususer} || useradd -d /etc/raddb -g %{radiusgroup} -s /bin/false  -u %{raidusuid} %{radiususer}';
   echo 'exit $retval' ) | $PKG_INSTALL_ROOT/usr/lib/postrun -c SFE
 
-%postun root
-( echo 'PATH=/usr/bin:/usr/sbin; export PATH' ;
-  echo 'getent passwd %{radiususer} && userdel %{radiususer}';
-  echo 'getent group %{radiusgroup} && groupdel %{radiusgroup}';
-  echo 'exit 0' ) | $PKG_INSTALL_ROOT/usr/lib/postrun -c SFE
+#%postun root
+#( echo 'PATH=/usr/bin:/usr/sbin; export PATH' ;
+#  echo 'getent passwd %{radiususer} && userdel %{radiususer}';
+#  echo 'getent group %{radiusgroup} && groupdel %{radiusgroup}';
+#  echo 'exit 0' ) | $PKG_INSTALL_ROOT/usr/lib/postrun -c SFE
 
 
 %files
@@ -219,8 +244,8 @@ user ftpuser=false gcos-field="freeradius" username="%{radiususer}" password=NP 
 %class(renamenew) %attr (0700, %{radiususer}, %{radiusgroup}) %{_sysconfdir}/raddb/templates.conf
 %class(renamenew) %attr (0700, %{radiususer}, %{radiusgroup}) %{_sysconfdir}/raddb/users
 %dir %defattr (-, root, sys)
-%dir %attr (0755, root, sys) %{_localstatedir}/run
-%dir %attr (0755, %{radiususer}, %{radiusgroup}) %{_localstatedir}/run/radiusd
+#removed %dir %attr (0755, root, sys) %{_localstatedir}/run
+#removed %dir %attr (0755, %{radiususer}, %{radiusgroup}) %{_localstatedir}/run/radiusd
 %dir %attr (0755, root, sys) %{_localstatedir}/log
 %attr (0755, %{radiususer}, %{radiusgroup}) %{_localstatedir}/log/radius
 %dir %attr (0755, root, bin) /lib
@@ -233,6 +258,23 @@ user ftpuser=false gcos-field="freeradius" username="%{radiususer}" password=NP 
 
 
 %changelog
+* Tue Jan 18 2011 - Thomas Wagner
+- remove *.a files from /usr/lib/
+- enhance svc-freeradius startscript to create and chown /var/run/radiusd directory
+  according to the "user =" value in the configuration file.
+  Know the SMF config/debug property and set "-X" for fulldebug.
+- freeradius.xml manifest: add SMF runtime config property for "-X" fulldebug 
+  switch. Default is "false". Examples:
+  svccfg -s freeradius setprop config/debug = boolean: true
+  svcadm refresh freeradius
+  svcprop freeradius | grep debug
+  next service start will use new value (remember the refesh subcommand)
+  ##TODO## needs improvement to know more fine grained debug settings
+  ##TODO## improve "exec" string to explicitly set the configuration script set in SMF
+- SMF manifest, change runuser for startscript to root, let radiusd step down the
+  permissions to configured user in /etc/raddb/radiusd.conf
+- pause %postun, don't remove user/group at uninstall of root package
+- removed /var/run/radiusd - makes troubles at package upgrades (possible runtime owner mismatch)
 * Sat Jan  1 2011 - Thomas Wagner
 - bump to 2.1.10
 - remove patch1 patch2

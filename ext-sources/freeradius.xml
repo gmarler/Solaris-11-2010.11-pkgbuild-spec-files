@@ -22,9 +22,9 @@
         
         
         
-        
+       <!-- daemon will change the UID to "freerad" or whatever is configured in /etc/raddb/radiusd.conf user=/group=  -->
         <method_context>
-            <method_credential user="freerad" group="freerad"/>
+            <method_credential user="root" group="root"/>
         </method_context>
 
         <exec_method type="method" name="start" exec="/lib/svc/method/svc-freeradius start" timeout_seconds="240"/>
@@ -39,6 +39,12 @@
         <property_group name="application" type="application">
             <propval name="config_file" type="astring" value="/etc/raddb/radiusd.conf"/>
         </property_group>
+
+	<property_group name='config' type='application'>
+		<!-- to enable full debugging -->
+                <!-- ##TODO## improvement: more fine grained debug setting, property names might change -->
+		<propval name='debug' type='boolean' value='false' />
+	</property_group>
         
         
         <stability value="Evolving"/>

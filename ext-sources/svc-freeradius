@@ -1,15 +1,47 @@
-#!/bin/sh
+#!/bin/ksh
+#needs ksh for test -O
 
 . /lib/svc/share/smf_include.sh
 
+getprop() {
+    PROPVAL=""
+    svcprop -q -p $1 ${SMF_FMRI}
+    if [ $? -eq 0 ] ; then
+        PROPVAL=`svcprop -p $1 ${SMF_FMRI}`
+        if [ "${PROPVAL}" = "\"\"" ] ; then
+            PROPVAL=""
+        fi
+        return
+    fi
+    return
+}
+
+getprop application/config_file
+if [ "${PROPVAL}" != "" -a -O "${PROPVAL}" ] ; then
+ #find user setting and strip whitespace from beginning and end of username
+ #RUNUSER=`/usr/bin/egrep "^\s*user.*=" ${PROPVAL} | /usr/bin/sed -e 's/^.*user.*?=[ 	]*//' -e 's/[ 	]*$//'`
+ #find user setting and let variable assignment strip whitespace from beginning and end of username
+ SMF_START_RUNUSER=`/usr/bin/egrep "^\s*user.*=" ${PROPVAL} | /usr/bin/sed -e 's/^.*user.*=//'`
+ export SMF_START_RUNUSER
+fi
+
+getprop application/config_file
+debug=${PROPVAL}
+
 case "$1" in
 'start')
-	#FMRI=svc:/site/freeradius:default
 
-	#arg=`eval "echo \`svcprop -p freeradius/args $FMRI\`"`
+        [ -d /var/run/radiusd ] || mkdir /var/run/radiusd || exit 1
 
-        [ -d /var/run/radiusd ] || mkdir /var/run/radiusd
-	/usr/sbin/radiusd -X &
+        ##TODO## improvement: Might only set owner for the directory if not owned by freeradius runuser.
+        #for now set the owner if the directory is owened by root, who runs this script
+        [ -n ${SMF_START_RUNUSER} -a -d /var/run/radiusd -a -O /var/run/radiusd ] && chown ${SMF_START_RUNUSER} /var/run/radiusd;
+
+	if [ "x$debug" = "xtrue" ]; then
+	   /usr/sbin/radiusd -X &
+        else
+	   /usr/sbin/radiusd &
+        fi
 
 	;;
 
