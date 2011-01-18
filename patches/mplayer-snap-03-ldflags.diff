@@ -1,11 +1,10 @@
---- mplayer/configure.orig	Sat Nov  6 14:32:20 2010
-+++ mplayer/configure	Sat Nov  6 14:34:12 2010
-@@ -3053,6 +3053,15 @@
+--- mplayer/configure.orig	Sun Nov 28 09:16:30 2010
++++ mplayer/configure	Fri Dec 24 14:31:59 2010
+@@ -3055,6 +3055,14 @@
  fi
  echores "$_builtin_expect"
  
 +echocheck "rpath"
-+netbsd &&_rpath=yes
 +if test "$_rpath" = yes ; then
 +  for I in $(echo $extra_ldflags | sed 's/-L//g') ; do
 +    tmp="$tmp $(echo $I | sed 's/.*/ -L& -Wl,-R&/')"
@@ -16,12 +15,11 @@
  
  echocheck "kstat"
  _kstat=no
-@@ -3583,16 +3592,6 @@
+@@ -3576,15 +3584,6 @@
  test "$_w32threads" = yes && def_threads='#define HAVE_THREADS 1'
  echores "$_w32threads"
  
 -echocheck "rpath"
--netbsd &&_rpath=yes
 -if test "$_rpath" = yes ; then
 -  for I in $(echo $extra_ldflags | sed 's/-L//g') ; do
 -    tmp="$tmp $(echo $I | sed 's/.*/ -L& -Wl,-R&/')"

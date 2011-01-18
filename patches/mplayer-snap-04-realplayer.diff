@@ -1,6 +1,6 @@
 --- mplayer/configure.orig	Sat Nov  6 14:34:12 2010
 +++ mplayer/configure	Sat Nov  6 14:37:22 2010
-@@ -6791,7 +6791,7 @@
+@@ -6708,7 +6708,7 @@
    _real=no
    res_comment="dynamic loader support needed"
    if test "$_dl" = yes || test "$_win32dll" = yes &&
