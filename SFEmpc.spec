@@ -7,12 +7,14 @@
 
 Name:                SFEmpc
 Summary:             Command line tool and client for MPD - Music Player Daemon
-Version:             0.12.0
-Source:              http://www.musicpd.org/uploads/files/mpc-%{version}.tar.bz2
-
+Version:             0.20
+Source:              http://downloads.sourceforge.net/project/musicpd/mpc/0.20/mpc-%version.tar.bz2
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
+
+BuildRequires:	SFEmpd
+Requires:	SFEmpd
 
 %package devel
 Summary:        %{summary} - development files
@@ -37,17 +39,20 @@ export LDFLAGS="%_ldflags"
             --mandir=%{_mandir} \
 	    --disable-iconv
 
-make -j$CPUS
+# Be modern and use libxnet instead of libsocket
+sed 's/-lsocket -lnsl/-lxnet/' Makefile > Makefile.xnet
+mv Makefile.xnet Makefile
+
+gmake -j$CPUS
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-make install DESTDIR=$RPM_BUILD_ROOT
-
-rmdir ${RPM_BUILD_ROOT}%{_datadir}/mpc
+gmake install DESTDIR=$RPM_BUILD_ROOT
 
 %clean
 rm -rf $RPM_BUILD_ROOT
+
 
 %files
 %defattr (-, root, bin)
@@ -65,6 +70,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/doc/*
 
 %changelog
+* Tue Jan 18 2011 - Alex Viskovatoff
+- Bump to 0.20; use libxnet
 * Wed Oct 25 2006 - Eric Boutilier
 - Add devel package and fix attributes
 * Tue Sep 26 2006 - Eric Boutilier

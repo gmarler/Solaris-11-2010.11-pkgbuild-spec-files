@@ -1,5 +1,12 @@
 2011-01-18  Alex Viskovatoff <viskovatoff@imap.cc>
 
+	* encumbered/SFEmpd.spec: update to 0.16.1
+	* SFEmpc.spec: bump to 0.20
+	* SFElibmpdclient.spec: initial spec
+	* SFEmpdscribble.spec: initial spec
+
+2011-01-18  Alex Viskovatoff <viskovatoff@imap.cc>
+
 	* encumbered/SFEmplayer-snap.spec: update to new tarball
 	* base-specs/libx264.spec: update to new tarball
 

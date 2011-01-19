@@ -19,8 +19,8 @@
 
 Name:                SFEmpd
 Summary:             Daemon for remote access music playing & managing playlists
-Version:             0.15.12
-Source:              http://downloads.sourceforge.net/musicpd/%{srcname}-%{version}.tar.bz2
+Version:             0.16.1
+Source:              http://downloads.sourceforge.net/musicpd/%srcname-%version.tar.bz2
 
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
@@ -58,10 +58,10 @@ Requires: SUNWavahi-bridge-dsd
 %description
 Music Daemon to play common audio fileformats to audio devices or 
 audio-networks. 
-Uses a database to stire indexes (mp3-tags,...) and supports Playlists.
+Uses a database to store indexes (mp3-tags,...) and supports Playlists.
 Controlled via Network by SFEgmpc, SFEmpc, SFEncmpc, pitchfork and others.
 Output might go to local Solaris Audio-Hardware, Streams with SFEicecast,
-auto-network SFEpulseaudio ( via pulseaudio, libao (sun|pulse) )
+auto-network SFEpulseaudio ( via pulseaudio, libao (sun|pulse) ).
 
 
 %prep
@@ -74,20 +74,23 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
      CPUS=1
 fi
 
-export CFLAGS="%optflags"
-export LDFLAGS="%{_ldflags}"
+export CFLAGS="%optflags -D_XOPEN_SOURCE -D_XOPEN_SOURCE_EXTENDED=1 -D__EXTENSIONS__"
+export LDFLAGS="%_ldflags"
 
 ./configure --prefix=%{_prefix}  \
             --mandir=%{_mandir}  \
     	    --enable-ao          \
-	        --enable-shout       \
+	    --enable-shout       \
             --disable-alsa       \
-            --disable-alsatest   \
 #            --disable-lsr        \
 
 #optional:
             # --with-zeroconf=no   \
-	        # --enable-pulse
+            # --enable-pulse
+
+# Be modern and use libxnet instead of libsocket
+sed 's/-lsocket -lnsl/-lxnet/' Makefile > Makefile.xnet
+mv Makefile.xnet Makefile
 
 gmake -j$CPUS
 
@@ -121,6 +124,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/doc/*
 
 %changelog
+* Tue Jan 18 2011 - Alex Viskovatoff
+- Update to 0.16.1; use libxnet
 * Sun Oct  3 2010 - Alex Viskovatoff
 - Bump to 0.15.12; use gmake.
 - mpd does not use id3lib (only faad2 does): remove the dependency.
