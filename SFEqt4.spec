@@ -13,15 +13,15 @@
 
 %include Solaris.inc
 %include osdistro.inc
-%define srcname qt-x11-opensource-src
+%define srcname qt-everywhere-opensource-src
 
 Name:                SFEqt4
 Summary:             Cross-platform development framework/toolkit
 URL:                 http://trolltech.com/products/qt
 License:             LGPLv2
-Version:             4.5.3
+Version:             4.6.3
+Group:               Development/Libraries
 Source:              ftp://ftp.trolltech.com/qt/source/%{srcname}-%{version}.tar.gz
-Patch:               qt4-01-libpng.diff
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -46,13 +46,6 @@ Requires: %name
 %prep
 %setup -q -n %{srcname}-%version
 
-##TODO##  Verify that build 147 really is the correct build number for this change
-%if %( expr %{osbuild} '>=' 147 )
-# In libpng-1.4, the "trans" and "trans_values" fields have been renamed to
-# "trans_alpha" and "trans_color", respectively.
-%patch0 -p1
-%endif
-
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
 if test "x$CPUS" = "x" -o $CPUS = 0; then
@@ -63,14 +56,17 @@ fi
 export CFLAGS="%optflags"
 
 %if %use_stdcxx
-export CXXFLAGS="cxx_optflags -library=stdcxx4"
+export CXXFLAGS="%cxx_optflags -library=stdcxx4"
 export LDFLAGS="%_ldflags -library=stdcxx4"
 %else
-export CXXFLAGS="cxx_optflags -library=stlport4"
+export CXXFLAGS="%cxx_optflags -library=stlport4"
 export LDFLAGS="%_ldflags -library=stlport4"
 %endif
 
-echo yes | ./configure -prefix %{_prefix} \
+# STL support does not work with stdcxx4
+# "stltest.cpp", line 145: Error: Could not find a match for std::distance<std::_ForwardIterator, std::_Distance>(DummyIterator<int>, DummyIterator<int>) needed in main().
+
+echo yes | ./configure -v -prefix %{_prefix} \
            -platform solaris-cc \
            -opensource \
            -docdir %{_docdir}/qt \
@@ -78,10 +74,9 @@ echo yes | ./configure -prefix %{_prefix} \
            -plugindir %{_libdir}/qt/plugins \
            -datadir %{_datadir}/qt \
            -translationdir %{_datadir}/qt/translations \
-           -examplesdir %{_datadir}/qt/examples \
-           -demosdir %{_datadir}/qt/demos \
-           -no-exceptions \
-           -sysconfdir %{_sysconfdir}
+           -sysconfdir %{_sysconfdir} \
+           -nomake demos \
+           -nomake examples
 
 # configure says: "Qt is now configured for building. Just run 'gmake'."
 gmake -j$CPUS
@@ -123,6 +118,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/doc/*
 
 %changelog
+* Thu Jan 20 2011 - Milan Jurik
+- update to 4.6.3
+- disable demos and examples
+- move to libpng1.4
+- enable exceptions again
 * Nov  4 2010 - Alex Viskovatoff
 - Spec needs "%include osdistro.inc" (pointed out by Thomas Wagner)
 * Nov  3 2010 - Alex Viskovatoff
