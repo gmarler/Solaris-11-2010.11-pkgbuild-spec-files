@@ -22,6 +22,8 @@ BuildRequires:	SUNWgmake
 BuildRequires:	SUNWgcc
 BuildRequires:	SUNWncurses-devel
 Requires:	SUNWncurses
+BuildRequires:	SFElibmpdclient-devel
+Requires:	SFElibmpdclient
 
 
 %prep

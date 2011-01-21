@@ -13,8 +13,8 @@ SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 
-BuildRequires:	SFEmpd
-Requires:	SFEmpd
+BuildRequires:	SFElibmpdclient-devel
+Requires:	SFElibmpdclient
 
 %package devel
 Summary:        %{summary} - development files
