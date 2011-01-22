@@ -16,6 +16,8 @@ URL:                     http://sourceforge.net/projects/lxde/
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
+Requires: SFEpcmanfm
+BuildRequires: SFEpcmanfm
 
 %package root
 Summary:                 %{summary} - / filesystem
@@ -69,6 +71,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_sysconfdir}/xdg/*
 
 %changelog
+* Fri Jan 21 2010 - brian.cameron@oracle.com
+- Add requires on SFEpcmanfm.
 * Thu Aug 19 2010 - brian.cameron@oracle.com
 - Add patch lxde-common-02-config.diff to set up configuration so the icons
   show up in the menus.

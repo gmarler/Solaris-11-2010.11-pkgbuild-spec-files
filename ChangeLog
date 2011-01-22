@@ -1,6 +1,13 @@
+2010-01-20  Brian Cameron  <brian.cameron@oracle.com>
+
+	* SFElxde-common.spec: Add requires on SFEpcmanfm.
+	* patches/lxde-common-02-config.diff: Now call pcmanfm with --desktop
+	  so the desktop looks nicer.
+
 2011-01-20 Milan Jurik <sfnet@xylab.cz>
 
-	* SFEqt4.spec: update to 4.6.3, disable demos and examples, enable exceptions again
+	* SFEqt4.spec: update to 4.6.3, disable demos and examples, enable
+	  exceptions again
 
 2011-01-18  Alex Viskovatoff <viskovatoff@imap.cc>
 
@@ -21,7 +28,7 @@
 
 2010-10-30  Thomas Wagner  <tom68@users.sourceforge.net>
 
-        * SFEwordpress.spec: initial spec
+	* SFEwordpress.spec: initial spec
 
 2011-01-13 Milan Jurik <sfnet@xylab.cz>
 
