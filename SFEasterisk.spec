@@ -10,7 +10,7 @@
 %include base.inc
 
 %define src_name   asterisk
-%define src_version    1.8.1.1
+%define src_version    1.8.2.2
 
 Name:         	SFE%{src_name}
 Summary:      	Asterisk : Complete IP PBX in software
@@ -19,7 +19,6 @@ License:      	GPL
 Group:          Communication
 Source:         http://downloads.digium.com/pub/asterisk/releases/%{src_name}-%{version}.tar.gz
 Patch1:        	asterisk-01-oss.diff
-Patch2:         asterisk-02-ifr_hwaddr.diff
 URL:            http://www.asterisk.org
 SUNW_BaseDir:   %{_basedir}
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
@@ -42,16 +41,20 @@ Requires: %name
 %prep 
 %setup -q -n %{src_name}-%{version}
 %patch1 -p1
-%patch2 -p1
 
 %build
+CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
+if test "x$CPUS" = "x" -o $CPUS = 0; then
+    CPUS=1
+fi
+
 export CC=/usr/gcc/4.3/bin/gcc
 export CXX=/usr/gcc/4.3/bin/g++
 export CFLAGS="%optflags"
 export LDFLAGS="%_ldflags"
 ./configure --prefix=%{_prefix} --sysconfdir=%{_sysconfdir}
 
-make
+make -j$CPUS
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -104,6 +107,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Jan 24 2011 - Milan Jurik
+- bump to 1.8.2.2
 * Wed Jan 05 2011 - Milan Jurik 
 - bump to 1.8.1.1
 * Fri Nov 26 2010 - Milan Jurik
