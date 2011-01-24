@@ -1,0 +1,22 @@
+--- boost/tr1/detail/config_all.hpp.orig	2011-01-24 00:08:04.525704337 +0100
++++ boost/tr1/detail/config_all.hpp	2011-01-24 00:10:42.059533380 +0100
+@@ -48,9 +48,7 @@
+ #include <cstdlib>
+ 
+ #  if defined(_RWSTD_VER) && _RWSTD_VER >= 0x04010200
+-#     if !defined (__SUNPRO_CC) && !defined (__DECCXX)
+-#        define BOOST_TR1_STD_CHEADER(name) <../include/ansi/name>
+-#     endif
++#        define BOOST_TR1_STD_CHEADER(name) <ansi/name>
+ #  endif
+ 
+ 
+@@ -106,7 +104,7 @@
+ #      endif
+ 
+ #  else
+-#     define BOOST_TR1_STD_HEADER(name) <../include/name>
++#     define BOOST_TR1_STD_HEADER(name) <name>
+ #  endif
+ 
+ #if !defined(BOOST_TR1_STD_CHEADER)

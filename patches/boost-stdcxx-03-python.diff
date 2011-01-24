@@ -1,0 +1,18 @@
+On Solaris 10, pyport.h redefines gethostname if SOLARIS is defined. As this
+breaks compilation and isn't necessary anyway, undefine SOLARIS before
+including the Python headers.
+
+diff -ru boost_1_43_0.orig/boost/python/detail/wrap_python.hpp boost_1_43_0/boost/python/detail/wrap_python.hpp
+--- boost_1_43_0.orig/boost/python/detail/wrap_python.hpp	2009-10-14 00:37:59.000000000 +0200
++++ boost_1_43_0/boost/python/detail/wrap_python.hpp	2010-12-06 21:00:29.779922582 +0100
+@@ -138,6 +138,10 @@
+ 
+ #if PY_MAJOR_VERSION == 2 && PY_MINOR_VERSION == 2 && PY_MICRO_VERSION < 2
+ # include <boost/python/detail/python22_fixed.h>
++#elif defined SOLARIS10
++# undef SOLARIS
++# include <Python.h>
++# define SOLARIS
+ #else
+ # include <Python.h>
+ #endif

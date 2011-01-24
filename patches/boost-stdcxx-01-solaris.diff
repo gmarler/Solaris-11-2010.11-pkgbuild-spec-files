@@ -1,0 +1,703 @@
+--- boost_1_43_0-orig/tools/regression/src/run_tests.sh	2010-01-14 05:03:18.000000000 +1100
++++ boost_1_43_0/tools/regression/src/run_tests.sh	2010-05-08 22:17:43.574223880 +1000
+@@ -1,4 +1,4 @@
+-#!/bin/sh
++#!/bin/bash
+ #
+ # Copyright John Maddock
+ # Copyright Rene Rivera
+@@ -13,7 +13,6 @@
+ # should set, i.e. usually required are listed first. Optional variables
+ # have reasonable defaults for most situations.
+ 
+-
+ ### THESE SHOULD BE CHANGED!
+ 
+ #
+@@ -21,7 +20,7 @@
+ # This can be either a non-exitent directory or an already complete Boost
+ # source tree.
+ #
+-boost_root="$HOME/CVSROOTs/Boost/boost_regression"
++boost_root="${BOOST}"
+ 
+ #
+ # Wether to fetch the most current Boost code from CVS (yes/no):
+@@ -38,20 +37,20 @@
+ # regression tests. Specify a space separated list, of the Boost.Build toolsets.
+ # Each will be built and tested in sequence.
+ #
+-test_tools=gcc
++test_tools=sun
+ 
+ #
+ # "toolset" is the Boost.Build toolset to use for building the helper programs.
+ # This is usually different than the toolsets one is testing. And this is
+ # normally a toolset that corresponds to the compiler built into your platform.
+ #
+-toolset=gcc
++toolset=sun
+ 
+ #
+ # "comment_path" is the path to an html-file describing the test environment.
+ # The content of this file will be embedded in the status pages being produced.
+ #
+-comment_path="$boost_root/../regression_comment.html"
++comment_path="$boost_root/regression_comment.html"
+ #
+ # "test_dir" is the relative path to the directory to run the tests in,
+ # defaults to "status" and runs all the tests, but could be a sub-directory
+@@ -88,7 +87,7 @@
+ #
+ # "boost_build_path" can point to additional locations to find toolset files.
+ #
+-boost_build_path="$HOME/.boost-build"
++boost_build_path="${BOOST}/build"
+ 
+ 
+ ### NO MORE CONFIGURABLE PARTS.
+@@ -116,6 +115,8 @@
+         exit 256
+     fi
+ fi
++
++cvs_update=no
+ if test $cvs_update = yes ; then
+     echo fetching Boost:
+     echo "/1 :pserver:anonymous@cvs.sourceforge.net:2401/cvsroot/boost A" >> "$HOME/.cvspass"
+@@ -129,18 +130,6 @@
+ fi
+ 
+ #
+-# STEP 1:
+-# rebuild bjam if required:
+-#
+-echo building bjam:
+-cd "$boost_root/tools/build/v2/engine/src" && \
+-LOCATE_TARGET=bin sh ./build.sh
+-if test $? != 0 ; then
+-    echo "bjam build failed."
+-    exit 256
+-fi
+-
+-#
+ # STEP 2:
+ # rebuild the regression test helper programs if required:
+ #
+@@ -193,5 +182,3 @@
+ 
+ echo "done!"
+ 
+-
+-
+--- boost_1_43_0-orig/tools/regression/build/Jamroot.jam	2010-01-14 05:03:18.000000000 +1100
++++ boost_1_43_0/tools/regression/build/Jamroot.jam	2010-05-08 22:17:43.574618594 +1000
+@@ -41,7 +41,7 @@
+     :
+     release
+     ;
+-explicit tiny_xml ;
++# explicit tiny_xml ;
+ 
+ exe process_jam_log
+     :
+@@ -55,7 +55,7 @@
+     :
+     release
+     ;
+-#~ explicit process_jam_log ;
++# explicit process_jam_log ;
+ 
+ exe compiler_status
+     :
+@@ -68,7 +68,7 @@
+     :
+     release
+     ;
+-explicit compiler_status ;
++# explicit compiler_status ;
+ 
+ exe library_status
+     :
+@@ -81,4 +81,4 @@
+     :
+     release
+     ;
+-explicit library_status ;
++# explicit library_status ;
+--- boost_1_43_0-orig/tools/build/v2/engine/src/build.sh	2010-04-20 21:51:08.000000000 +1000
++++ boost_1_43_0/tools/build/v2/engine/src/build.sh	2010-05-09 10:51:06.017502359 +1000
+@@ -1,4 +1,4 @@
+-#!/bin/sh
++#!/bin/bash
+ 
+ #~ Copyright 2002-2005 Rene Rivera.
+ #~ Distributed under the Boost Software License, Version 1.0.
+@@ -94,9 +94,24 @@
+     elif test_path bc++ ; then BOOST_JAM_TOOLSET=kylix
+     elif test_path aCC ; then BOOST_JAM_TOOLSET=acc
+     elif test_uname HP-UX ; then BOOST_JAM_TOOLSET=acc
++    elif test -r /opt/solstudio12.2/bin/cc ; then
++        BOOST_JAM_TOOLSET=sunpro
++        BOOST_JAM_TOOLSET_ROOT=/opt/solstudio12.2/
++    elif test -r /opt/sunstudio12.1/bin/cc ; then
++        BOOST_JAM_TOOLSET=sunpro
++        BOOST_JAM_TOOLSET_ROOT=/opt/sunstudio12.1/
+     elif test -r /opt/SUNWspro/bin/cc ; then
+         BOOST_JAM_TOOLSET=sunpro
+         BOOST_JAM_TOOLSET_ROOT=/opt/SUNWspro/
++    elif test -r /opt/SunStudio-12.0/SUNWspro/prod/bin/c99 ; then
++        BOOST_JAM_TOOLSET=sunpro
++        BOOST_JAM_TOOLSET_ROOT=/opt/SunStudio-12.0/SUNWspro/
++    elif test -r /opt/SS12/SUNWspro/prod/bin/c99 ; then
++        BOOST_JAM_TOOLSET=sunpro
++        BOOST_JAM_TOOLSET_ROOT=/opt/SS12/SUNWspro/
++    elif test -r /opt/SunStudio12/SUNWspro/prod/bin/c99 ; then
++        BOOST_JAM_TOOLSET=sunpro
++        BOOST_JAM_TOOLSET_ROOT=/opt/SunStudio12/SUNWspro/
+     # Test for "cc" as the default fallback.
+     elif test_path $CC ; then BOOST_JAM_TOOLSET=cc
+     elif test_path cc ; then
+@@ -201,7 +213,7 @@
+         PATH=${BOOST_JAM_TOOLSET_ROOT}bin:${PATH}
+         export PATH
+     fi
+-    BOOST_JAM_CC=cc
++    BOOST_JAM_CC="${CC} ${CPPFLAGS} ${CFLAGS}"
+     ;;
+ 
+     tru64cxx)
+@@ -286,9 +298,51 @@
+     fi
+     echo_run ${BOOST_JAM_CC} ${BOOST_JAM_OPT_JAM} ${BJAM_SOURCES}
+ fi
++
+ if test -x "./bootstrap/jam0" ; then
+     if test "${BJAM_UPDATE}" != "update" ; then
+         echo_run ./bootstrap/jam0 -f build.jam --toolset=$BOOST_JAM_TOOLSET "--toolset-root=$BOOST_JAM_TOOLSET_ROOT" clean
+     fi
+     echo_run ./bootstrap/jam0 -f build.jam --toolset=$BOOST_JAM_TOOLSET "--toolset-root=$BOOST_JAM_TOOLSET_ROOT" "$@"
+ fi
++
++# 32-bit
++if [ -d bin.unknownx86 ] ; then
++    if [ -d bin.solaris ] ; then
++        rm -rf bin.solaris
++    fi
++    mv bin.unknownx86 bin.solaris
++
++    if [ -L bin ] ; then
++        rm bin
++    fi
++    ln -sf bin.solaris bin
++fi
++
++# Maybe 32-bit sparc, this is probably wrong for sparc though, no way to test it.
++if [ -d bin.unknown ] ; then
++    if [ -d bin.solaris ] ; then
++        rm -rf bin.solaris
++    fi
++    mv bin.unknown bin.solaris
++
++    if [ -L bin ] ; then
++        rm bin
++    fi
++    ln -sf bin.solaris bin
++fi
++
++# 64-bit
++if [ -d bin.unknownx86_64 ] ; then
++    if [ -d bin.solaris ] ; then
++        rm -rf bin.solaris
++    fi
++    mv bin.unknownx86_64 bin.solaris
++
++    if [ -L bin ] ; then
++        rm bin
++    fi
++    ln -sf bin.solaris bin
++fi
++
++# TODO FIXME 64 bit sparcv9
+--- boost_1_43_0-orig/tools/build/v2/engine/src/build.jam	2010-04-20 21:51:08.000000000 +1000
++++ boost_1_43_0/tools/build/v2/engine/src/build.jam	2010-05-08 22:17:43.575828731 +1000
+@@ -304,15 +304,15 @@
+ ## Sun Workshop 6 C++
+ toolset sun cc : "-o " : -D
+     :
+-    [ opt --release : -s -fast -xO4 ]
+-    [ opt --debug : -g ]
++    [ opt --release : $(CPPFLAGS) $(CFLAGS) ]
++    [ opt --debug : $(CPPFLAGS) $(CFLAGS) ]
+     -I$(--python-include) -I$(--extra-include)
+     : -L$(--python-lib[1]) -l$(--python-lib[2]) ;
+ ## Sun Workshop 6 C++ (old alias)
+ toolset sunpro cc : "-o " : -D
+     :
+-    [ opt --release : -s -fast -xO4 ]
+-    [ opt --debug : -g ]
++    [ opt --release : $(CPPFLAGS) $(CFLAGS) ]
++    [ opt --debug : $(CPPFLAGS) $(CFLAGS) ]
+     -I$(--python-include) -I$(--extra-include)
+     : -L$(--python-lib[1]) -l$(--python-lib[2]) ;
+ ## Compaq Alpha CXX
+--- boost_1_43_0-orig/libs/filesystem/v2/src/v2_operations.cpp	2009-10-14 00:50:45.000000000 +1100
++++ boost_1_43_0/libs/filesystem/v2/src/v2_operations.cpp	2010-05-08 22:17:43.576644834 +1000
+@@ -18,7 +18,9 @@
+ # define BOOST_SYSTEM_NO_DEPRECATED
+ #endif
+ 
++#if !defined(_POSIX_PTHREAD_SEMANTICS)
+ #define _POSIX_PTHREAD_SEMANTICS  // Sun readdir_r() needs this
++#endif
+ 
+ #if !(defined(__HP_aCC) && defined(_ILP32) && \
+       !defined(_STATVFS_ACPP_PROBLEMS_FIXED))
+a@@ -92,6 +94,7 @@
+ #include <string>
+ #include <cstring>
+ #include <cstdio>      // for remove, rename
++#include <cstdlib>     // for malloc, free
+ #include <cerrno>
+ #include <cassert>
+ // #include <iostream>    // for debugging only; comment out when not in use
+--- boost_1_43_0-orig/boost/test/impl/debug.ipp	2009-11-28 20:19:18.000000000 +1100
++++ boost_1_43_0/boost/test/impl/debug.ipp	2010-05-08 22:17:43.577227537 +1000
+@@ -60,7 +60,7 @@
+ #include <cstring>  // std::memcpy
+ #include <map>
+ #include <cstdio>
+-#include <stdarg.h> // !! ?? cstdarg
++#include <cstdarg> // !! ?? cstdarg
+ 
+ // SYSTEM API
+ #  include <unistd.h>
+@@ -85,6 +85,11 @@
+ #    define BOOST_TEST_CNL_DBG  dbx
+ #    define BOOST_TEST_GUI_DBG  dbx-ddd
+ 
++#    if !defined(_LP64) && _FILE_OFFSET_BITS == 64
++#    undef _FILE_OFFSET_BITS
++#    define _FILE_OFFSET_BITS 32
++#    endif
++
+ #    include <procfs.h>
+ 
+ #  elif defined(linux) || defined(__linux)
+--- boost_1_43_0-orig/boost/config/stdlib/roguewave.hpp	2009-05-30 21:16:25.000000000 +1000
++++ boost_1_43_0/boost/config/stdlib/roguewave.hpp	2010-05-08 22:17:43.577543782 +1000
+@@ -10,9 +10,9 @@
+ 
+ //  Rogue Wave std lib:
+ 
+-#if !defined(__STD_RWCOMPILER_H__) && !defined(_RWSTD_VER)
++#if !defined(_RWSTD_VER)
+ #  include <boost/config/no_tr1/utility.hpp>
+-#  if !defined(__STD_RWCOMPILER_H__) && !defined(_RWSTD_VER)
++#  if !defined(_RWSTD_VER)
+ #     error This is not the Rogue Wave standard library
+ #  endif
+ #endif
+--- boost_1_43_0-orig/boost/config/compiler/sunpro_cc.hpp	2009-10-10 03:16:02.000000000 +1100
++++ boost_1_43_0/boost/config/compiler/sunpro_cc.hpp	2010-05-08 22:17:43.577890541 +1000
+@@ -124,6 +124,77 @@
+ #define BOOST_NO_VARIADIC_TEMPLATES
+ #define BOOST_NO_VARIADIC_MACROS
+ 
++#if ((__SUNPRO_CC + 0x0) >= 0x590)
++#    ifndef BOOST_HAS_LONG_LONG
++#    define BOOST_HAS_LONG_LONG 1
++#    endif
++
++#    ifndef BOOST_HAS_THREADS
++#    define BOOST_HAS_THREADS 1
++#    endif
++
++#    ifndef BOOST_HAS_STDINT_H
++#    define BOOST_HAS_STDINT_H 1
++#    endif
++
++#    ifdef BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
++#    undef BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
++#    endif
++
++#    ifdef BOOST_NO_INCLASS_MEMBER_INITIALIZATION
++#    undef BOOST_NO_INCLASS_MEMBER_INITIALIZATION
++#    endif
++
++#    ifdef BOOST_NO_INTEGRAL_INT64_T
++#    undef BOOST_NO_INTEGRAL_INT64_T
++#    endif
++
++#    ifdef BOOST_NO_STD_ITERATOR_TRAITS
++#    undef BOOST_NO_STD_ITERATOR_TRAITS
++#    endif
++
++#    ifdef BOOST_NO_STDC_NAMESPACE
++#    undef BOOST_NO_STDC_NAMESPACE
++#    endif
++
++#    ifdef BOOST_NO_MEMBER_TEMPLATES
++#    undef BOOST_NO_MEMBER_TEMPLATES
++#    endif
++
++#    ifdef BOOST_NO_FUNCTION_TEMPLATE_ORDERING
++#    undef BOOST_NO_FUNCTION_TEMPLATE_ORDERING
++#    endif
++
++#   ifdef BOOST_NO_INCLASS_MEMBER_INITIALIZATION
++#   undef BOOST_NO_INCLASS_MEMBER_INITIALIZATION
++#   endif
++
++#   ifdef BOOST_NO_SFINAE
++#   undef BOOST_NO_SFINAE
++#   endif
++
++#   ifdef BOOST_NO_ARRAY_TYPE_SPECIALIZATIONS
++#   undef BOOST_NO_ARRAY_TYPE_SPECIALIZATIONS
++#   endif
++
++#   ifdef BOOST_NO_IS_ABSTRACT
++#   undef BOOST_NO_IS_ABSTRACT
++#   endif
++
++#   ifdef BOOST_IOSTREAMS_NO_STREAM_TEMPLATES
++#   undef BOOST_IOSTREAMS_NO_STREAM_TEMPLATES
++#   endif
++
++#   ifdef BOOST_IOSTREAMS_NO_WIDE_STREAMS
++#   undef BOOST_IOSTREAMS_NO_WIDE_STREAMS
++#   endif
++
++#   ifdef BOOST_IOSTREAMS_NO_LOCALE
++#   undef BOOST_IOSTREAMS_NO_LOCALE
++#   endif
++#endif
++
++
+ //
+ // Version
+ //
+--- boost_1_43_0-orig/boost/config/posix_features.hpp	2005-10-15 00:16:26.000000000 +1000
++++ boost_1_43_0/boost/config/posix_features.hpp	2010-05-08 22:17:43.578162226 +1000
+@@ -43,8 +43,10 @@
+       // non-functioning stub <pthreads.h>, but such occurrences should
+       // occur very rarely if at all.
+ #     if defined(_POSIX_THREADS) && (_POSIX_THREADS+0 >= 0) && !defined(BOOST_HAS_WINTHREADS) && !defined(BOOST_HAS_MPTASKS)
++#        ifndef BOOST_HAS_PTHREADS
+ #        define BOOST_HAS_PTHREADS
+ #     endif
++#     endif
+ 
+       // BOOST_HAS_NANOSLEEP:
+       // This is predicated on _POSIX_TIMERS or _XOPEN_REALTIME:
+--- boost_1_43_0-orig/boost/cstdint.hpp	2009-12-15 05:14:48.000000000 +1100
++++ boost_1_43_0/boost/cstdint.hpp	2010-05-08 22:17:43.578595280 +1000
+@@ -44,7 +44,7 @@
+ #if defined(BOOST_HAS_STDINT_H) && (!defined(__GLIBC__) || defined(__GLIBC_HAVE_LONG_LONG))
+ 
+ // The following #include is an implementation artifact; not part of interface.
+-# ifdef __hpux
++# if defined(__hpux)
+ // HP-UX has a vaguely nice <stdint.h> in a non-standard location
+ #   include <inttypes.h>
+ #   ifdef __STDC_32_MODE__
+@@ -53,6 +53,9 @@
+ #   endif 
+ # elif defined(__FreeBSD__) || defined(__IBMCPP__) || defined(_AIX)
+ #   include <inttypes.h>
++# elif defined(__sun) && defined(__SUNPRO_CC)
++#   include <inttypes.h>
++#   include <stdint.h>
+ # else
+ #   include <stdint.h>
+ 
+--- boost_1_43_0-orig/bootstrap.sh	2010-05-02 06:29:31.000000000 +1000
++++ boost_1_43_0/bootstrap.sh	2010-05-08 22:17:43.579385772 +1000
+@@ -1,4 +1,5 @@
+-#!/bin/sh
++#!/bin/bash
++#
+ # Copyright (C) 2005, 2006 Douglas Gregor.
+ # Copyright (C) 2006 The Trustees of Indiana University
+ #
+@@ -7,19 +8,24 @@
+ 
+ # boostinspect:notab - Tabs are required for the Makefile.
+ 
+-BJAM=""
+-TOOLSET=""
+-BJAM_CONFIG=""
++export BJAM=
++export TOOLSET="sun"
++export TOOLS="sun"
++export BJAM_CONFIG=
+ BUILD=""
+-PREFIX=/usr/local
+-EPREFIX=
+-LIBDIR=
+-INCLUDEDIR=
+-LIBS=""
++PREFIX="/usr/local"
++EPREFIX=""
++LIBDIR=""
++BINDIR=""
++INCLUDEDIR=""
++USE_MPI="no"
++export LIBS=
+ PYTHON=python
+ PYTHON_VERSION=
+ PYTHON_ROOT=
+-ICU_ROOT=
++ICU_ROOT=""
++EXPAT_INCLUDE=""
++EXPAT_LIBPATH=""
+ 
+ # Internal flags
+ flag_no_python=
+@@ -45,10 +51,22 @@
+       LIBDIR=`expr "x$option" : "x-*libdir=\(.*\)"`
+       ;;
+ 
++    -bindir=* | --bindir=*)
++      BINDIR=`expr "x$option" : "x-*bindir=\(.*\)"`
++      ;;
++
+     -includedir=* | --includedir=*)
+       INCLUDEDIR=`expr "x$option" : "x-*includedir=\(.*\)"`
+       ;;
+ 
++    -expat-include=* | --expat-include=* )
++      EXPAT_INCLUDE=`expr "x$option" : "x-*expat-include=\(.*\)"`
++      ;;
++
++    -expat-libpath=* | --expat-libpath=* )
++      EXPAT_LIBPATH=`expr "x$option" : "x-*expat-libpath=\(.*\)"`
++      ;;
++
+     -show-libraries | --show-libraries )
+       flag_show_libraries=yes
+       ;;
+@@ -57,6 +75,10 @@
+       BJAM=`expr "x$option" : "x-*with-bjam=\(.*\)"`
+       ;;
+ 
++    -with-mpi | --with-mpi )
++      USE_MPI="yes"
++      ;;
++
+     -with-icu | --with-icu )
+       flag_icu=yes
+       ;;
+@@ -77,7 +99,7 @@
+           IFS=,
+           for library in $library_list
+           do
+-              LIBS="$LIBS --with-$library"
++              export LIBS="${LIBS} --with-$library"
+ 
+               if test $library = python; then
+                   requested_python=yes
+@@ -97,7 +119,7 @@
+       IFS=,
+       for library in $library_list
+       do
+-          LIBS="$LIBS --without-$library"
++          export LIBS="${LIBS} --without-$library"
+ 
+           if test $library = python; then
+               flag_no_python=yes
+@@ -131,6 +153,10 @@
+     esac
+ done
+ 
++export BJAM
++export TOOLSET
++export LIBS="-lc -lm -lpthread -lposix4 -lrt -lstdcxx4 -lCrun -lpython -licuuc -licudata -licui18n"
++
+ if test "x$want_help" = xyes; then
+   cat <<EOF
+ \`./bootstrap.sh' prepares Boost for building on a few kinds of systems.
+@@ -152,8 +178,10 @@
+   --with-libraries=list     build only a particular set of libraries,
+                             describing using either a comma-separated list of
+                             library names or "all"
+-                            [all]
++                            [ default all ]
+   --without-libraries=list  build all libraries except the ones listed []
++  --with-mpi                enable OpenMPI library support [ default disabled ]
++                            [ asumes OpenMPI is installed ]
+   --with-icu                enable Unicode/ICU support in Regex 
+                             [automatically detected]
+   --without-icu             disable Unicode/ICU support in Regex
+@@ -165,16 +193,19 @@
+                             [automatically detected]
+   --with-python-version=X.Y specify the Python version as X.Y
+                             [automatically detected]
++  --expat-include=DIR       specify the location of the Expat headers 
++  --expat-libpath=DIR       specify the location of the Expat library
+ 
+ Installation directories:
+   --prefix=PREFIX           install Boost into the given PREFIX
+-                            [/usr/local]
++                            [ default /usr/local ]
+   --exec-prefix=EPREFIX     install Boost binaries into the given EPREFIX
+-                            [PREFIX]
++                            [ default PREFIX ]
+ 
+ More precise control over installation directories:
+-  --libdir=DIR              install libraries here [EPREFIX/lib]
+-  --includedir=DIR          install headers here [PREFIX/include]
++  --bindir=DIR              install executables here [ default EPREFIX/bin ]
++  --libdir=DIR              install libraries here [ default EPREFIX/lib ]
++  --includedir=DIR          install headers here [ default PREFIX/include ]
+ 
+ EOF
+ fi
+@@ -212,7 +243,7 @@
+ rm -f config.log
+ 
+ # Build bjam
+-if test "x$BJAM" = x; then
++if [ "x${BJAM}" = "x" ] ; then
+   echo -n "Building Boost.Jam with toolset $TOOLSET... "
+   pwd=`pwd`
+   (cd "$my_dir/tools/build/v2/engine/src" && ./build.sh "$TOOLSET") > bootstrap.log 2>&1
+@@ -288,7 +319,7 @@
+ echo -n "Unicode/ICU support for Boost.Regex?... "
+ if test "x$flag_icu" != xno; then
+   if test "x$ICU_ROOT" = x; then
+-    COMMON_ICU_PATHS="/usr /usr/local /sw"
++    COMMON_ICU_PATHS="/opt/kde4 /usr/gnu /usr /usr/local /sw"
+     for p in $COMMON_ICU_PATHS; do
+       if test -r $p/include/unicode/utypes.h; then
+         ICU_ROOT=$p
+@@ -309,6 +340,16 @@
+   echo "disabled."
+ fi
+ 
++if [ "x$USE_MPI" = "xyes" ] ; then
++cat >> user-config.jam <<EOF
++
++# MPI configuration
++using mpi ;
++EOF
++fi
++
++BJAM_CONFIG="$BJAM_CONFIG -sEXPAT_INCLUDE=${EXPAT_INCLUDE} -sEXPAT_LIBPATH=${EXPAT_LIBPATH}"
++
+ # Backup the user's existing project-config.jam
+ JAM_CONFIG_OUT="project-config.jam"
+ if test -r "project-config.jam"; then
+@@ -365,7 +406,7 @@
+ # options. If left empty, all libraries will be built.
+ # Options specified on the command line completely
+ # override this variable.
+-libraries = $LIBS ;
++libraries = "$LIBS" ;
+ 
+ # These settings are equivivalent to corresponding command-line
+ # options.
+--- boost_1_43_0-orig/tools/regression/src/library_status.cpp	2010-04-06 11:32:56.000000000 +1000
++++ boost_1_43_0/tools/regression/src/library_status.cpp	2010-05-08 22:17:43.580338709 +1000
+@@ -25,6 +25,7 @@
+ 
+ #include "boost/filesystem/operations.hpp"
+ #include "boost/filesystem/fstream.hpp"
++#include "boost/shared_ptr.hpp"
+ 
+ namespace fs = boost::filesystem;
+ 
+@@ -88,15 +89,25 @@
+         return os;
+     }
+ 
+-    struct col_node {
+-        int rows, cols;
++    class col_node;
++    typedef boost::shared_ptr<col_node> col_node_ptr;
++
++    class col_node
++    {
++        public:
++        int rows;
++        int cols;
+         bool has_leaf;
+-        typedef std::map<std::string, col_node> subcolumns_t;
++        typedef std::map<std::string, col_node_ptr> subcolumns_t;
+         subcolumns_t m_subcolumns;
+         bool operator<(const col_node &cn) const;
+         col_node() :
+-            has_leaf(false)
++            rows(0),
++            cols(0),
++            has_leaf(false),
++            m_subcolumns()
+         {}
++
+         std::pair<int, int> get_spans();
+     };
+ 
+@@ -110,7 +121,7 @@
+             subcolumns_t::iterator itr;
+             for(itr = m_subcolumns.begin(); itr != m_subcolumns.end(); ++itr){
+                 std::pair<int, int> spans;
+-                spans = itr->second.get_spans();
++                spans = itr->second->get_spans();
+                 rows = (std::max)(rows, spans.first);
+                 cols += spans.second;
+             }
+@@ -130,9 +141,10 @@
+             if(fs::is_directory(*itr)){
+                 std::pair<col_node::subcolumns_t::iterator, bool> result 
+                     = node.m_subcolumns.insert(
+-                        std::make_pair(itr->filename(), col_node())
++                        std::make_pair(itr->leaf(),
++                             col_node_ptr(new col_node()))
+                     );
+-                build_node_tree(*itr, result.first->second);
++                build_node_tree(*itr, (*result.first->second));
+             }
+             ++itr;
+         }
+@@ -562,7 +574,7 @@
+         ){
+             fs::path subdir = dir_root / col_itr->first;
+             retval |= visit_node_tree(
+-                col_itr->second, 
++                (*col_itr->second), 
+                 subdir,
+                 lib_name,
+                 target,
+@@ -665,7 +677,7 @@
+         col_node::subcolumns_t::const_iterator itr;
+         int max_depth = 1;
+         for(itr = root.m_subcolumns.begin(); itr != root.m_subcolumns.end(); ++itr){
+-            max_depth = (std::max)(max_depth, itr->second.rows);
++            max_depth = std::max(max_depth, itr->second->rows);
+         }
+         return max_depth;
+     }
+@@ -693,7 +705,7 @@
+             if(! node.m_subcolumns.empty()){
+                 col_node::subcolumns_t::const_iterator itr;
+                 for(itr = node.m_subcolumns.begin(); itr != node.m_subcolumns.end(); ++itr){
+-                    emit_column_headers(itr->second, display_row, current_row + 1, row_count);
++                    emit_column_headers((*itr->second), display_row, current_row + 1, row_count);
+                 }
+             }
+             return;
+@@ -704,10 +716,10 @@
+ 
+         col_node::subcolumns_t::const_iterator itr;
+         for(itr = node.m_subcolumns.begin(); itr != node.m_subcolumns.end(); ++itr){
+-            if(1 == itr->second.rows)
+-                header_cell(row_count - current_row, itr->second.cols, itr->first);
++            if(1 == itr->second->rows)
++                header_cell(row_count - current_row, itr->second->cols, itr->first);
+             else
+-                header_cell(1, itr->second.cols, itr->first);
++                header_cell(1, itr->second->cols, itr->first);
+         }
+     }
+ 

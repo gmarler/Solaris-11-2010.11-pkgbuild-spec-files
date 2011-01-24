@@ -1,0 +1,33 @@
+--- boost/proto/detail/decltype.hpp.orig	2010-03-12 06:51:46.000000000 +0100
++++ boost/proto/detail/decltype.hpp	2010-09-21 16:46:11.377665952 +0200
+@@ -340,7 +340,7 @@
+             {};
+ 
+             template<typename T, typename U, typename V>
+-            struct result_of_<T U::*(V), typename enable_if_c<is_member_object_pointer<T U::*>::value>::type>
++            struct result_of_<T U::*(typename V), typename enable_if_c<is_member_object_pointer<T U::*>::value>::type>
+             {
+                 BOOST_STATIC_CONSTANT(bool, is_V_a_smart_ptr = 2 == sizeof(test_V_is_a_U<U>(&lvalue(make<V>()))));
+                 BOOST_STATIC_CONSTANT(bool, is_ptr_to_const = 2 == sizeof(test_ptr_to_const(BOOST_PROTO_GET_POINTER(U, make<V>()))));
+
+
+--- boost/spirit/home/qi/nonterminal/rule.hpp.orig	2010-04-07 03:42:10.000000000 +0200
++++ boost/spirit/home/qi/nonterminal/rule.hpp	2010-09-21 16:45:41.218025474 +0200
+@@ -125,7 +125,7 @@
+           , locals_type>
+         context_type;
+ 
+-        typedef function<
++        typedef typename function<
+             bool(Iterator& first, Iterator const& last
+               , context_type& context
+               , skipper_type const& skipper
+@@ -360,7 +360,7 @@
+         #include <boost/spirit/home/qi/nonterminal/detail/fcall.hpp>
+ 
+         std::string name_;
+-        function_type f;
++        typename function_type f;
+     };
+ 
+ #if BOOST_WORKAROUND(BOOST_MSVC, < 1400)

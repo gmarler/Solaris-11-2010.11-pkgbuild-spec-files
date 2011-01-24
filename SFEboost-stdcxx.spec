@@ -10,25 +10,28 @@
 %include Solaris.inc
 %include stdcxx.inc
 
-%define        major      1
-%define        minor      45
-%define        patchlevel 0
-%define src_url http://easynews.dl.sourceforge.net/sourceforge/boost
+%define		major	1
+%define		minor	45
+%define		patchlevel 0
+%define		src_url	http://easynews.dl.sourceforge.net/sourceforge/boost
 
-Name:                SFEboost-stdcxx
-Summary:             Boost - free peer-reviewed portable C++ source libraries
-Version:             %{major}.%{minor}.%{patchlevel}
-License:             Boost Software License
-Source:              %{src_url}/boost_%{major}_%{minor}_%{patchlevel}.tar.bz2
-Patch1:              boost-01-studio.diff
-Patch2:              boost-02-gcc34.diff
-#Patch3:              boost-03-fixinclude.diff
-#Patch4:              boost-04-fixthread.diff
-Patch5:              boost-05-bjam-stdcxx.diff
-URL:                 http://www.boost.org/
+Name:		SFEboost-stdcxx
+Summary:	Boost - free peer-reviewed portable C++ source libraries
+Version:	%{major}.%{minor}.%{patchlevel}
+License:	Boost Software License
+URL:		http://www.boost.org/
+Source:		%{src_url}/boost_%{major}_%{minor}_%{patchlevel}.tar.bz2
+Patch0:		boost-stdcxx-00-sun-jam.diff
+# These are from http://solaris.bionicmutton.org/hg/kde4-specs-460/raw-file/243b8041ba78/specs/patches/boost
+Patch1:		boost-stdcxx-01-solaris.diff
+Patch2:		boost-stdcxx-02-typenames.diff
+Patch3:		boost-stdcxx-03-python.diff
+Patch4:		boost-stdcxx-04-transform-width-min.diff
+Patch5:		boost-stdcxx-05-graphviz.diff
+Patch6:		boost-stdcxx-06-stdcxx.diff
 
-SUNW_BaseDir:        %{_basedir}
-BuildRoot:           %{_tmppath}/%{name}-%{version}-build
+SUNW_BaseDir:	%{_basedir}
+BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 BuildRequires: SFEicu-devel
 BuildRequires: SUNWPython
@@ -42,11 +45,13 @@ SUNW_BaseDir:   %{_basedir}
 
 %prep
 %setup -q -n boost_%{major}_%{minor}_%{patchlevel}
+%patch0 -p1
 %patch1 -p1
-%patch2 -p1
-#%patch3 -p1
-#%patch4 -p1
-%patch5 -p1
+%patch2 -p0
+%patch3 -p1
+%patch4	
+%patch5	
+%patch6
 
 %build
 
@@ -55,7 +60,7 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
      CPUS=1
 fi
 
-export CXXFLAGS="%stdcxx_cxxflags -norunpath -features=tmplife -features=tmplrefstatic -L%{stdcxx_lib} -R%{stdcxx_lib} -I%{stdcxx_include} -lstdcxx -lm -UBOOST_DISABLE_THREADS -DBOOST_HAS_THREADS=1 -DBOOST_HAS_PTHREADS=1 -UBOOST_NO_STD_ITERATOR_TRAITS -UBOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION -DHAVE_ICU=1 -DBOOST_HAS_ICU=1 -UBOOST_NO_STDC_NAMESPACE -DSUNPROCC_BOOST_COMPILE=1 -DSUNPROCC_BOOST_COMPILE=1 -DPy_USING_UNICODE"
+export CXXFLAGS="%stdcxx_cxxflags -norunpath -features=tmplife -features=tmplrefstatic -L%{stdcxx_lib} -R%{stdcxx_lib} -I%{stdcxx_include} -lm -UBOOST_DISABLE_THREADS -DBOOST_HAS_THREADS=1 -DBOOST_HAS_PTHREADS=1 -UBOOST_NO_STD_ITERATOR_TRAITS -UBOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION -DHAVE_ICU=1 -DBOOST_HAS_ICU=1 -UBOOST_NO_STDC_NAMESPACE -DSUNPROCC_BOOST_COMPILE=1 -DSUNPROCC_BOOST_COMPILE=1 -DPy_USING_UNICODE -D_XOPEN_SOURCE=500 -D__EXTENSIONS__ -erroff"
 export LDFLAGS="%stdcxx_ldflags"
 
 BOOST_ROOT=`pwd`
@@ -77,6 +82,13 @@ EOF
 %define bjamdir tools/build/v2/engine/src
 cd "%bjamdir" && ./build.sh "$TOOLSET"
 cd $BOOST_ROOT
+
+for i in tools/**/*.jam tools/**/*.py
+do
+  sed -i -e 's,stlport,stdcxx,g' $i
+done
+sed -i -e 's,stlport,stdcxx,g' Jamroot
+
 
 # Build Boost
 BJAM=`find %bjamdir -name bjam -a -type f`
@@ -132,6 +144,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_docdir}/boost-%{version}/*
 
 %changelog
+* Mon Jan 24 2011 - Alex Viskovatoff
+- Use patches from KDE Solaris (other than the patch for sun.jam), to avoid
+  duplication of effort
+- Add -D_XOPEN_SOURCE=500 -D__EXTENSIONS__ to CXXFLAGS to make all targets build
+- Create and use "feature.extend stdlib : sun-stdcxx" in sun.jam
 * Sun Nov 28 2010 - Alex Viskovatoff
 - Update to 1.45
 - Remove -DPy_TRACE_REFS from CXXFLAGS, since it makes libboost_python.so

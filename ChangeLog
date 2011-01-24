@@ -1,3 +1,8 @@
+2010-01-24  Alex Viskovatoff <viskovatoff@imap.cc>
+
+	* SFEboost-stdcxx.spec: use patches from kde-solaris;
+	  add compilation flags to make all targets build
+
 2011-01-24 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEldns.spec: bump to 1.6.8
