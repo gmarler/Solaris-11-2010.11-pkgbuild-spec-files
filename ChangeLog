@@ -1,3 +1,7 @@
+2010-01-25  TAKI, Yasushi <taki@justplayer.com>
+
+        * add PostgreSQL 9.0 packages for IPS
+
 2010-01-20  Brian Cameron  <brian.cameron@oracle.com>
 
 	* SFElxde-common.spec: Add requires on SFEpcmanfm.
