@@ -1,3 +1,8 @@
+2011-01-24 Milan Jurik <sfnet@xylab.cz>
+
+	* SFEldns.spec: bump to 1.6.8
+	* SFEunbound.spec: bump to 1.4.8
+
 2010-01-25  TAKI, Yasushi <taki@justplayer.com>
 
         * add PostgreSQL 9.0 packages for IPS
