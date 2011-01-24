@@ -58,6 +58,8 @@ BuildRequires: SFElibx264-devel
 Requires: SFElibx264
 BuildRequires: SFEfaad2-devel
 Requires: SFEfaad2
+BuildRequires: SFEfaac-devel
+Requires: SFEfaac
 BuildRequires: SFElame-devel
 Requires: SFElame
 BuildRequires: SUNWogg-vorbis-devel
@@ -170,6 +172,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/libswscale
 
 %changelog
+* Mon Jan 24 2011 - Alex Viskovatoff
+- Add missing build dependency
 * Wed Jun 16 2010 - Milan Jurik
 - update to 0.6
 - remove older amr codecs, add libschroedinger and openjpeg

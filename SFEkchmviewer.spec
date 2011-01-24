@@ -13,9 +13,9 @@ URL:		http://www.kchmviewer.net
 Vendor:		George Yunaev
 Version:	5.2
 License:	GPL
-Source:		http://downloads.sourceforge.net/%{srcname}/%{srcname}-%{version}.tar.gz
-SUNW_BaseDir:	%{_basedir}
-BuildRoot:	%{_tmppath}/%{name}-%{version}-build
+Source:		http://downloads.sourceforge.net/%srcname/%srcname-%version.tar.gz
+SUNW_BaseDir:	%_basedir
+BuildRoot:	%_tmppath/%name-%version-build
 %include default-depend.inc
 
 BuildRequires: SUNWgmake
@@ -30,8 +30,6 @@ Requires: SUNWzlib
 
 
 %prep
-#%setup -q -n %srcname-%version
-#gtar -xzf %srcname-%version.tar.gz
 gtar -xzf %SOURCE0
 rm -fr %srcname-%version
 mv build-%version %srcname-%version
@@ -43,7 +41,6 @@ CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
 if test "x$CPUS" = "x" -o $CPUS = 0; then
      CPUS=1
 fi
-#export LIBS=-lz
 export QMAKESPEC=solaris-cc-stdcxx
 
 qmake
@@ -65,5 +62,7 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Jan 24 2011 - Alex Viskovatoff
+- Define QMAKESPEC
 * Sat Dec 11 2010 - Alex Viskovatoff
 - Initial spec
