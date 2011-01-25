@@ -7,6 +7,7 @@
 2011-01-25 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEgeany.spec: bump to 0.20
+	* encumbered/SFElibquicktime.spec: update to 1.2.2
 
 2010-01-24  Alex Viskovatoff <viskovatoff@imap.cc>
 

@@ -36,7 +36,7 @@ Requires: SFElibx264
 BuildRequires: SFElibx264-devel
 BuildRequires: SUNWdoxygen
 BuildRequires: SUNWgsed
-BuildRequires: SUNWscp
+BuildRequires: SUNWscpu
 
 %package devel
 Summary:         %{summary} - development files
@@ -79,8 +79,8 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, bin) %{_bindir}
 %{_bindir}/libquicktime_config
 %{_bindir}/lqt_transcode
-%{_bindir}/lqt-config
 %{_bindir}/lqtplay
+%{_bindir}/lqtremux
 %{_bindir}/qt2text
 %{_bindir}/qtdechunk
 %{_bindir}/qtdump
@@ -102,8 +102,8 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, bin) %{_bindir}/%{_arch64}
 %{_bindir}/%{_arch64}/libquicktime_config
 %{_bindir}/%{_arch64}/lqt_transcode
-%{_bindir}/%{_arch64}/lqt-config
 %{_bindir}/%{_arch64}/lqtplay
+%{_bindir}/%{_arch64}/lqtremux
 %{_bindir}/%{_arch64}/qt2text
 %{_bindir}/%{_arch64}/qtdechunk
 %{_bindir}/%{_arch64}/qtdump
@@ -124,10 +124,8 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, other) %{_libdir}/pkgconfig
 %{_libdir}/pkgconfig/*
 %dir %attr (0755, root, sys) %{_datadir}
-%dir %attr (0755, root, other) %{_datadir}/aclocal
-%{_datadir}/aclocal/*
-%dir %attr (0755, root, other) %{_datadir}/doc
-%{_datadir}/doc/*
+%dir %attr (0755, root, other) %{_docdir}
+%{_docdir}/*
 %ifarch amd64 sparcv9
 %dir %attr (0755, root, bin) %{_libdir}/%{_arch64}
 %dir %attr (0755, root, other) %{_libdir}/%{_arch64}/pkgconfig
@@ -135,6 +133,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Tue Jan 25 2011 - Milan Jurik
+- update to 1.2.2
 * Sun Apr 18 2010 - Milan Jurik
 - update to 1.1.5
 - additional build dependencies

@@ -4,7 +4,7 @@
 # includes module(s): libquicktime
 #
 
-%define src_ver 1.1.5
+%define src_ver 1.2.2
 %define src_name libquicktime
 %define src_url http://downloads.sourceforge.net/%{src_name}
 
@@ -65,6 +65,8 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/libquicktime/lib*.*a
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Tue Jan 25 2011 - Milan Jurik
+- update to 1.2.2
 * Sun Apr 18 2010 - Milan Jurik
 - update to 1.1.5
 - additional build dependencies
