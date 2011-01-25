@@ -11,7 +11,7 @@
 
 Name:                SFEgeany
 Summary:             A small and lightweight integrated developer environment
-Version:             0.19.2
+Version:             0.20
 Source:              %{src_url}/%{src_name}-%{version}.tar.bz2
 URL:                 http://geany.uvena.de/Main/HomePage
 Group:               Development/Tools
@@ -40,15 +40,7 @@ Requires:                %{name}
 %prep 
 %setup -q -n %{src_name}-%{version}
 
-glib-gettextize -f
-libtoolize --copy --force
-intltoolize --force
-aclocal $ACLOCAL_FLAGS
-autoheader
-automake -a -c -f 
-autoconf
-
-./configure --prefix=%{_prefix} --mandir=%{_mandir} \
+./autogen.sh --prefix=%{_prefix} --mandir=%{_mandir} \
             --libdir=%{_libdir}              \
             --libexecdir=%{_libexecdir}      \
             --sysconfdir=%{_sysconfdir}
@@ -114,7 +106,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/geany/*
 
 %changelog
-* Wed Jan 05 2010 - Milan Jurik
+* Tue Jan 25 2011 - Milan Jurik
+- bump to 0.20
+* Wed Jan 05 2011 - Milan Jurik
 - bump to 0.19.2
 * Wed Nov 17 2010 - Milan Jurik
 - bump to 0.19.1

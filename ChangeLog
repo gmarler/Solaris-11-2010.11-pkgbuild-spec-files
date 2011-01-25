@@ -1,3 +1,7 @@
+2011-01-25 Milan Jurik <sfnet@xylab.cz>
+
+	* SFEgeany.spec: bump to 0.20
+
 2010-01-24  Alex Viskovatoff <viskovatoff@imap.cc>
 
 	* SFEboost-stdcxx.spec: use patches from kde-solaris;
