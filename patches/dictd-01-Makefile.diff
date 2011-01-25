@@ -1,0 +1,10 @@
+--- dictd-1.12.0/Makefile.in.orig	Sun Jan  9 14:34:55 2011
++++ dictd-1.12.0/Makefile.in	Mon Jan 24 21:27:41 2011
+@@ -118,6 +118,7 @@
+ 
+ %.o: %.c
+ 	$(LIBTOOL) --tag=CC --mode=compile $(CC) -c $(CFLAGS) $< -o $@
++	mv .libs/* .
+ %.o: %.cpp
+ 	$(LIBTOOL) --tag=CXX --mode=compile $(CXX) -c $(CFLAGS) $< -o $@
+ 

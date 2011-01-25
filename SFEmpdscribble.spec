@@ -39,6 +39,9 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
      CPUS=1
 fi
 
+export CFLAGS="%optflags"
+export LDFLAGS="%_ldflags"
+
 ./configure --prefix=%_prefix --sysconfdir=%_sysconfdir
 
 # Be modern and use libxnet instead of libsocket

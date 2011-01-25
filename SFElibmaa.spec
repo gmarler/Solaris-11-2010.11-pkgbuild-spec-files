@@ -5,19 +5,20 @@
 #
 
 %include Solaris.inc
-%define srcname libmpdclient
+%define srcname libmaa
 
-Name:		SFElibmpdclient
-Summary:	Asynchronous API library for interfacing to MPD
-URL:		http://mpd.wikia.com/wiki/ClientLib:libmpdclient
-Vendor:		Max Kellermann
-Version:	2.4
-License:	BSD revised
-Source:		%sf_download/project/musicpd/%srcname/%version/%srcname-%version.tar.bz2
+Name:		SFElibmaa
+Summary:	Library consisting of code that was previously part of dictd
+URL:		https://sourceforge.net/projects/dict/
+Vendor:		Aleksey Cheusov
+Version:	1.2.0
+License:	GPLv2
+Source:		%sf_download/project/dict/%srcname/%srcname-%version/%srcname-%version.tar.gz
 SUNW_BaseDir:	%_basedir
 BuildRoot:	%_tmppath/%name-%version-build
 %include default-depend.inc
 
+BuildRequires: SUNWscpu
 
 %package devel
 Summary:        %summary - development files
@@ -40,12 +41,11 @@ fi
 export CFLAGS="%optflags"
 export LDFLAGS="%_ldflags"
 
-# --disable-static doesn't do what it's supposed to, but use it anyway
-./configure --prefix=%_prefix --disable-static
+./configure --prefix=%_prefix
 
 # Be modern and use libxnet instead of libsocket
-sed 's/-lsocket -lnsl/-lxnet/' Makefile > Makefile.xnet
-mv Makefile.xnet Makefile
+#sed 's/-lsocket -lnsl/-lxnet/' Makefile > Makefile.xnet
+#mv Makefile.xnet Makefile
 
 gmake -j$CPUS
 
@@ -62,19 +62,14 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr (-, root, bin)
 %dir %attr (0755, root, bin) %_libdir
-%_libdir/lib*.so*
+%_libdir/libmaa.so*
 
 %files devel
 %defattr (-, root, bin)
 %dir %attr (0755, root, bin) %_includedir
-%dir %attr (0755, root, other) %_includedir/mpd
-%_includedir/mpd/*
-%_libdir/pkgconfig
-%dir %attr (0755, root, sys) %_datadir
-%dir %attr (0755, root, other) %_datadir/doc
-%_datadir/doc/*
+%_includedir/maa.h
 
 
 %changelog
-* Tue Jan 18 2011 - Alex Viskovatoff
+* Tue Jan 25 2011 - Alex Viskovatoff
 - Initial spec
