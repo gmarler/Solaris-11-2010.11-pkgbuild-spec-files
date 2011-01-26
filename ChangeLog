@@ -1,3 +1,10 @@
+2010-01-26  Alex Viskovatoff <viskovatoff@imap.cc>
+
+	* include/stdcxx.inc: try to make functionality equivalent
+	  to Solaris Studio 12.2's -library=stdcxx4
+	* SFEboost-stdcxx.spec: clean up compile flags
+	* patches/boost-stdcxx-00-sun-jam.diff: define feature sun-stdcxx
+
 2010-01-25  Alex Viskovatoff <viskovatoff@imap.cc>
 
 	* SFEdictd.spec: update to 1.12.0

@@ -23,11 +23,9 @@
 %define stdcxx_version 4.2.1
 
 %if %with_sfestdcxx
-%define stdcxx_cxxflags %{cxx_optflags} -library=%none -staticlib=%none -norunpath -features=tmplife -features=tmplrefstatic -L%{stdcxx_lib} -R%{stdcxx_lib} -I%{stdcxx_include}
-%define stdcxx_ldflags -library=%none -staticlib=%none -L%{stdcxx_dir} -R%{stdcxx_dir} -lstdcxx4 -lm
+%define stdcxx_cxxflags %{cxx_optflags} -library=no%Cstd -mt -L%{stdcxx_lib} -R%{stdcxx_lib} -I%{stdcxx_include}
+%define stdcxx_ldflags %{_ldflags} -library=no%Cstd -mt -L%{stdcxx_dir} -R%{stdcxx_dir} -lstdcxx4
 %else
-%define stdcxx_cxxflags %{cxx_optflags} -library=%none -staticlib=%none -norunpath -features=tmplife -features=tmplrefstatic -I%{stdcxx_include}
-%define stdcxx_ldflags -library=%none -staticlib=%none -lstdcxx4 -lm
+%define stdcxx_cxxflags %{cxx_optflags} -library=no%Cstd -mt -I%{stdcxx_include}
+%define stdcxx_ldflags %{_ldflags} -library=no%Cstd -lstdcxx4 -mt
 %endif
-
-
