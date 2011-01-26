@@ -1,5 +1,5 @@
 #
-# spec file for package proftpd
+# spec file for package PostgreSQL 9.0
 #
 # This file and all modifications and additions to the pristine
 # package are under the same license as the package itself.
@@ -72,7 +72,7 @@ Requires: system/library
 
 %package -n postgres-90-languages
 IPS_package_name: database/postgres-90/language-bindings
-Summary: "PostgreSQL additional Perl, Python & TCL server procedural languages"
+Summary: PostgreSQL additional Perl, Python & TCL server procedural languages
 
 Requires: runtime/perl-584
 Requires: runtime/python-24
@@ -84,7 +84,7 @@ Requires: database/postgres-90/library
 
 %package -n postgres-90-developer
 IPS_package_name: database/postgres-90/developer
-Summary: "PostgreSQL development tools and header files"
+Summary: PostgreSQL development tools and header files
 
 Requires: library/libxslt
 Requires: library/libxml2
@@ -98,7 +98,7 @@ Requires: database/postgres-90/library
 
 %package -n postgres-90-documentation
 IPS_package_name: database/postgres-90/documentation
-Summary: "PostgreSQL documentation and man pages"
+Summary: PostgreSQL documentation and man pages
 
 %package -n postgres-90-server
 IPS_package_name: service/database/postgres-90
@@ -144,7 +144,8 @@ CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
 if test "x$CPUS" = "x" -o $CPUS = 0; then
     CPUS=1
 fi
-export CFLAGS="$RPM_OPT_FLAGS"
+
+export CFLAGS="%optflags"
 export LDFLAGS="%_ldflags"
 export CC=cc
 
