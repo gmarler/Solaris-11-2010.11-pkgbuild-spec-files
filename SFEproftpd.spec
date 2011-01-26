@@ -79,17 +79,18 @@ cp mod_gss-%{gss_version}/mod_gss.c contrib
 ./configure --prefix=%{_prefix}/%{src_name}  \
             --bindir=%{_bindir} \
             --libdir=%{_libdir} \
+            --libexecdir=%{_libdir}/%{src_name} \
             --mandir=%{_mandir} \
             --sbindir=%{_sbindir} \
             --sysconfdir=%{_sysconfdir} \
-            --localstatedir=%{_localstatedir} \
+            --localstatedir=%{_localstatedir}/run \
             --enable-ipv6 \
             --enable-ctrls \
             --enable-facl \
             --enable-nls \
             --enable-dso \
             --enable-openssl \
-            --with-shared=mod_shaper:mod_gss
+            --with-shared=mod_facl:mod_shaper:mod_tls:mod_gss
 
 make -j$CPUS
 
@@ -104,6 +105,8 @@ cp mod_gss-%{gss_version}/README.mod_gss ${RPM_BUILD_ROOT}%{_docdir}/contrib
 cp mod_gss-%{gss_version}/mod_gss.html ${RPM_BUILD_ROOT}%{_docdir}/contrib
 cp mod_gss-%{gss_version}/rfc1509.txt ${RPM_BUILD_ROOT}%{_docdir}/rfc
 cp mod_gss-%{gss_version}/rfc2228.txt ${RPM_BUILD_ROOT}%{_docdir}/rfc
+
+install -m 0755 contrib/ftpmail %{buildroot}%{_sbindir}
 
 install -d 0755 %{buildroot}%/var/svc/manifest/site
 install -m 0644 %{SOURCE1} %{buildroot}%/var/svc/manifest/site
@@ -123,8 +126,8 @@ do
   mv $i.new $i
 done
 
-find $RPM_BUILD_ROOT%{_prefix}/%{src_name}/libexec -type f -name "*.a" -exec rm -f {} ';'
-find $RPM_BUILD_ROOT%{_prefix}/%{src_name}/libexec -type f -name "*.la" -exec rm -f {} ';'
+find $RPM_BUILD_ROOT%{_prefix} -type f -name "*.a" -exec rm -f {} ';'
+find $RPM_BUILD_ROOT%{_prefix} -type f -name "*.la" -exec rm -f {} ';'
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -146,14 +149,13 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr (0755, root, other) %{_docdir}
 %{_docdir}/*
 %attr (-, root, other) %{_localedir}
-%dir %attr (0755, root, bin) %{_prefix}/%{src_name}/libexec
-%{_prefix}/%{src_name}/libexec/*
 
 %files root
 %defattr (-, root, sys)
 %dir %attr (0755, root, sys) %{_sysconfdir}
 %{_sysconfdir}/%{src_name}.conf
 %dir %attr (0755, root, sys) %{_localstatedir}
+%dir %attr (0755, root, sys) %{_localstatedir}/run
 %class(manifest) %attr(0444, root, sys) %{_localstatedir}/svc/manifest/site/%{src_name}.xml
 
 %files devel
@@ -163,6 +165,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Jan 26 2011 - Milan Jurik
+- fix modules path and run path
+- add mod_facl and mod_tls to loadable pre-compiled binaries
 * Sat Dec 18 2010 - Milan Jurik
 - bump to 1.3.3d
 * Fri Nov 19 2010 - Milan Jurik
