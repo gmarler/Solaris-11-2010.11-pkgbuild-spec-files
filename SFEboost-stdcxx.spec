@@ -8,7 +8,6 @@
 #
 %define _basedir /usr/stdcxx
 %include Solaris.inc
-%include stdcxx.inc
 
 %define		major	1
 %define		minor	45
@@ -60,8 +59,10 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
      CPUS=1
 fi
 
-export CXXFLAGS="%stdcxx_cxxflags -features=tmplrefstatic -UBOOST_DISABLE_THREADS -DBOOST_HAS_THREADS=1 -DBOOST_HAS_PTHREADS=1 -UBOOST_NO_STD_ITERATOR_TRAITS -UBOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION -DHAVE_ICU=1 -DBOOST_HAS_ICU=1 -UBOOST_NO_STDC_NAMESPACE -DSUNPROCC_BOOST_COMPILE=1 -DSUNPROCC_BOOST_COMPILE=1 -DPy_USING_UNICODE -D_XOPEN_SOURCE=500 -D__EXTENSIONS__ -erroff"
-export LDFLAGS="%stdcxx_ldflags"
+# -library=stdcxx4 is added by feature stdlib : sun-stdcxx in sun.jam
+
+export CXXFLAGS="%cxx_optflags -features=tmplrefstatic -UBOOST_DISABLE_THREADS -DBOOST_HAS_THREADS=1 -DBOOST_HAS_PTHREADS=1 -UBOOST_NO_STD_ITERATOR_TRAITS -UBOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION -DHAVE_ICU=1 -DBOOST_HAS_ICU=1 -UBOOST_NO_STDC_NAMESPACE -DSUNPROCC_BOOST_COMPILE=1 -DSUNPROCC_BOOST_COMPILE=1 -DPy_USING_UNICODE -D_XOPEN_SOURCE=500 -D__EXTENSIONS__"
+export LDFLAGS="%_ldflags"
 
 BOOST_ROOT=`pwd`
 TOOLSET=sun
@@ -144,6 +145,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_docdir}/boost-%{version}/*
 
 %changelog
+* Thu Jan 27 2011 - Alex Viskovatoff
+- Use -library=stdcxx4 instead of include/stdcxx.inc
 * Wed Jan 26 2011 - Alex Viskovatoff
 - Clean up CXXFLAGS
 * Mon Jan 24 2011 - Alex Viskovatoff

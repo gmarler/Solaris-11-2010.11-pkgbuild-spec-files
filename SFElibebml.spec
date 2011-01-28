@@ -21,7 +21,6 @@ Patch2:		libebml-02-headers.diff
 SUNW_BaseDir:	%{_basedir}
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
-%include stdcxx.inc
 
 BuildRequires:	SUNWgmake
 BuildRequires:	SUNWgnu-coreutils
@@ -47,13 +46,13 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
     CPUS=1
 fi
 
-export CXXFLAGS="%stdcxx_cxxflags"
+export CXXFLAGS="%cxx_optflags -library=stdcxx4"
 export ACLOCAL_FLAGS="-I %{_datadir}/aclocal"
 export MSGFMT=/usr/bin/msgfmt
 
 cd make/linux
 gmake -j$CPUS CXX=CC AR=CC  DEBUGFLAGS=-g WARNINGFLAGS="" \
-ARFLAGS="-xar -o" LOFLAGS=-Kpic LIBSOFLAGS="%stdcxx_ldflags -G -h "
+ARFLAGS="-xar -o" LOFLAGS=-Kpic LIBSOFLAGS="%_ldflags -library=stdcxx4 -G -h "
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -73,10 +72,12 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}
 
 %changelog
+* Thu Jan 27 2011 - Alex Viskovatoff
+- Go back to using -library=stdcxx4
 * Tue Nov 23 2010 - Alex Viskovatoff
-- Use stdcxx.inc instead of -library=stdcxx4
+- Use stdcxx.inc instead of -library=stdcxx4; install in /usr/stdcxx
 * Fri Oct  1 2010 - Alex Viskovatoff
-- Update to 1.0.0; use stdcxx (requires Solaris Studio 12.2)
+- Update to 1.0.0; use stdcxx (requires Solaris Studio 12u1)
 - Patch linux Makefile so that it works with Linux and Solaris
   instead of creating a new Makefile for Solaris.
 * Fri Jul 13 2007 - dougs@truemail.co.th

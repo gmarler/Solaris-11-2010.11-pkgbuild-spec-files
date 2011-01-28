@@ -1,0 +1,15 @@
+--- smplayer-0.6.9/Makefile.orig	Fri Nov 20 06:16:28 2009
++++ smplayer-0.6.9/Makefile	Thu Jan 27 19:24:18 2011
+@@ -17,8 +17,10 @@
+ KDE_ICONS=$(KDE_PREFIX)/share/icons/hicolor/
+ KDE_APPLNK=$(KDE_PREFIX)/share/applications/
+ 
+-QMAKE=qmake
+-LRELEASE=lrelease
++QMAKE=/usr/stdcxx/bin/qmake
++LRELEASE=/usr/stdcxx/bin/lrelease
++QTDIR=/usr/stdcxx
++QMAKESPEC=solaris-cc-stdcxx
+ 
+ DEFS=DATA_PATH=\\\"$(DATA_PATH)\\\" \
+      TRANSLATION_PATH=\\\"$(TRANSLATION_PATH)\\\" \

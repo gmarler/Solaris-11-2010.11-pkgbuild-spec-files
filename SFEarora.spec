@@ -46,7 +46,9 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
      CPUS=1
 fi
 
+export PATH=$PATH:/usr/stdcxx/bin
 export QMAKESPEC=solaris-cc-stdcxx
+export QTDIR=/usr/stdcxx
 qmake PREFIX=$RPM_BUILD_ROOT%_basedir
 gmake -j$CPUS
 
@@ -98,5 +100,7 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Jan 27 2011 - Alex Viskovatoff
+- Accommodate to Qt being in /usr/stdcxx
 * Sat Dec 11 2010 - Alex Viskovatoff
 - Initial spec

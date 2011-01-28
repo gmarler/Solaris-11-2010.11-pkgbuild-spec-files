@@ -1,7 +1,18 @@
+2010-01-27  Alex Viskovatoff <viskovatoff@imap.cc>
+
+	* SFEboost-stdcxx.spec: use -library=stdcxx4
+	* SFEmkvtoolnix.spec: use -library=stdcxx4
+	* SFElibebml.spec: use -library=stdcxx4
+	* SFElibmatroska.spec: use -library=stdcxx4
+	* SFEqt47.spec: use -library=stdcxx4; install in /usr/stdcxx
+	* SFEarora.spec: accommodate to Qt being in /usr/stdcxx
+	* SFEsmplayer.spec: switch from SFEqt to SFEqt47
+
 2011-01-26 Milan Jurik <sfnet@xylab.cz>
 
 	* SFEproftpd.spec: fix modules path and run path and add mod_facl
 	  and mod_tls to loadable pre-compiled binaries
+
 2010-01-26  Alex Viskovatoff <viskovatoff@imap.cc>
 
 	* include/stdcxx.inc: try to make functionality equivalent

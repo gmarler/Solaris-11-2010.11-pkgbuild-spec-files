@@ -6,7 +6,7 @@
  
 +feature.extend stdlib : sun-stdcxx ;
 +feature.compose <stdlib>sun-stdcxx
-+    : <cxxflags>-library=no%Cstd <linkflags>-library=no%Cstd
++    : <cxxflags>-library=stdcxx4 <linkflags>-library=stdcxx4
 +    ;
 +
  rule init ( version ? : command * : options * ) 

@@ -20,6 +20,8 @@ Vendor:		Moritz Bunkus <moritz@bunkus.org>
 Version:	4.4.0
 License:	GPLv2
 Source:		http://www.bunkus.org/videotools/%srcname/sources/%{srcname}-%{version}.tar.bz2
+# Based on https://build.opensuse.org/package/view_file?file=mkvtoolnix-4.3.0-guide_install.patch&package=mkvtoolnix&project=multimedia%3Aapps&srcmd5=6156e051db15cd8c196f83e4877192df#
+# Also removes GNU compiler warning flags
 Patch2:		mkvtoolnix-02-guide-install.diff
 Patch3:		mkvtoolnix-03-rmff.diff
 Patch4:		mkvtoolnix-04-mpegparser.diff
@@ -27,7 +29,6 @@ Patch4:		mkvtoolnix-04-mpegparser.diff
 SUNW_BaseDir:	%{_basedir}
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
-%include stdcxx.inc
 
 %if %with_SUNWruby
 BuildRequires: SUNWruby18r
@@ -66,8 +67,6 @@ Requires:       %{name}
 
 %prep
 %setup -q -n %srcname-%version
-# Based on https://build.opensuse.org/package/view_file?file=mkvtoolnix-4.3.0-guide_install.patch&package=mkvtoolnix&project=multimedia%3Aapps&srcmd5=6156e051db15cd8c196f83e4877192df#
-# Also removes GNU compiler warning flags
 %patch2 -p0
 %patch3 -p1
 %patch4 -p1
@@ -79,12 +78,13 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
      CPUS=1
 fi
 
-export USER_CXXFLAGS="%stdcxx_cxxflags -D_XOPEN_SOURCE=500 -D__EXTENSIONS__ \
--D_POSIX_PTHREAD_SEMANTICS -erroff=identexpected,badargtype2w,storenotokw"
-export USER_LDFLAGS="%stdcxx_ldflags -L/usr/stdcxx/lib -R/usr/stdcxx/lib"
+export USER_CXXFLAGS="%cxx_optflags -library=stdcxx4 \
+  -D_XOPEN_SOURCE=500 -D__EXTENSIONS__ -D_POSIX_PTHREAD_SEMANTICS \
+  -erroff=identexpected,badargtype2w,storenotokw"
+export USER_LDFLAGS="%_ldflags -library=stdcxx4 -L/usr/stdcxx/lib -R/usr/stdcxx/lib"
 
 CXXFLAGS=$USER_CXXFLAGS LDFLAGS=$USER_LDFLAGS ./configure --prefix=%_prefix \
---with-boost-libdir=/usr/stdcxx/lib --with-extra-includes=/usr/stdcxx/include
+--with-extra-includes=/usr/stdcxx/include --with-boost-libdir=/usr/stdcxx/lib
 ./drake -j$CPUS
 
 %install
@@ -120,6 +120,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Jan 27 2011 - Alex Viskovatoff
+- Go back to using -library=stdcxx4
 * Sun Nov 21 2010 - Alex Viskovatoff
 - Update to 4.4.0, with two patches no longer required
 - Accommodate to stdcxx libs and headers residing in /usr/stdcxx

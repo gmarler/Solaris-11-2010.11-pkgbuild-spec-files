@@ -1,0 +1,46 @@
+diff --recursive -u smplayer-0.6.9.orig/src/basegui.cpp smplayer-0.6.9/src/basegui.cpp
+--- smplayer-0.6.9.orig/src/basegui.cpp	2010-02-02 22:14:06.000000000 -0500
++++ smplayer-0.6.9/src/basegui.cpp	2011-01-27 18:02:46.398326265 -0500
+@@ -4003,8 +4003,8 @@
+ 
+ 	static int last_second = 0;
+ 
+-	if (floor(sec)==last_second) return; // Update only once per second
+-	last_second = (int) floor(sec);
++	if (std::floor(sec)==last_second) return; // Update only once per second
++	last_second = (int) std::floor(sec);
+ 
+ 	QString time = Helper::formatTime( (int) sec ) + " / " +
+                            Helper::formatTime( (int) core->mdat.duration );
+diff --recursive -u smplayer-0.6.9.orig/src/core.cpp smplayer-0.6.9/src/core.cpp
+--- smplayer-0.6.9.orig/src/core.cpp	2010-02-18 06:35:29.000000000 -0500
++++ smplayer-0.6.9/src/core.cpp	2011-01-27 17:57:17.576877000 -0500
+@@ -2998,8 +2998,8 @@
+ 	// Emit posChanged:
+ 	static int last_second = 0;
+ 
+-	if (floor(sec)==last_second) return; // Update only once per second
+-	last_second = (int) floor(sec);
++	if (std::floor(sec)==last_second) return; // Update only once per second
++	last_second = (int) std::floor(sec);
+ 
+ #ifdef SEEKBAR_RESOLUTION
+ 	int value = 0;
+diff --recursive -u smplayer-0.6.9.orig/src/videopreview/videopreview.cpp smplayer-0.6.9/src/videopreview/videopreview.cpp
+--- smplayer-0.6.9.orig/src/videopreview/videopreview.cpp	2010-01-15 19:59:57.000000000 -0500
++++ smplayer-0.6.9/src/videopreview/videopreview.cpp	2011-01-27 17:59:40.523616084 -0500
+@@ -359,11 +359,11 @@
+ 	QTime t = QTime().addSecs(i.length);
+ 
+ 	QString aspect = QString::number(i.aspect);
+-	if (fabs(1.77 - i.aspect) < 0.1) aspect = "16:9";
++	if (std::fabs(1.77 - i.aspect) < 0.1) aspect = "16:9";
+ 	else
+-	if (fabs(1.33 - i.aspect) < 0.1) aspect = "4:3";
++	  if (std::fabs(1.33 - i.aspect) < 0.1) aspect = "4:3";
+ 	else
+-	if (fabs(2.35 - i.aspect) < 0.1) aspect = "2.35:1";
++	  if (std::fabs(2.35 - i.aspect) < 0.1) aspect = "2.35:1";
+ 
+ 	QString no_info = tr("No info");
+ 

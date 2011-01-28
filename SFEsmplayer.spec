@@ -13,7 +13,9 @@ URL:		http://smplayer.sourceforge.net
 Vendor:		Ricardo Villalba
 Version:	0.6.9
 License:	GPL
-Source:		http://downloads.sourceforge.net/%{srcname}/%{srcname}-%{version}.tar.bz2
+Source:		%sf_download/%srcname/%srcname-%version.tar.bz2
+Patch1:		smplayer-01-Makefile.diff
+Patch2:		smplayer-02-std-namespace.diff
 SUNW_BaseDir:	%{_basedir}
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -21,14 +23,15 @@ BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 BuildRequires: SUNWgmake
 BuildRequires: SUNWgnu-coreutils
 BuildRequires: SUNWgtar
-BuildRequires: SFEqt4-devel
-
-Requires: SFEqt4
+BuildRequires: SFEqt47-devel
+Requires: SFEqt47
 Requires: SUNWzlib
 
 
 %prep
 %setup -q -n %srcname-%version
+%patch1 -p1
+%patch2 -p1
 
 %build
 
@@ -67,6 +70,8 @@ rm -rf $RPM_BUILD_ROOT
 %_docdir/%srcname
 %_mandir
 %_datadir/%srcname
+%dir %attr (-, root, other) %_datadir/icons
+%dir %attr (-, root, other) %_datadir/icons/hicolor
 %dir %attr (-, root, other) %_datadir/icons/hicolor/16x16
 %dir %attr (-, root, other) %_datadir/icons/hicolor/16x16/apps
 %_datadir/icons/hicolor/16x16/apps/smplayer.png
@@ -82,5 +87,7 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Jan 27 2011 - Alex Viskovatoff
+- Use SFEqt47, adding two patches
 * Sun Oct 17 2010 - Alex Viskovatoff
 - Initial spec

@@ -4,24 +4,18 @@
 # includes module: qt
 #
 
-################################################################################
-###									     ###
-###				  EXPERIMENTAL				     ###
-###									     ###
-### This spec makes use of patches which are hard-coded to enable features   ###
-### of the Intel Nehalem processor, specifically, the SSE 4.2 instruction    ###
-### set.  This means that if you do not have a bleeding edge Intel CPU, you  ###
-### must edit the spec to add an option to disable features which your CPU   ###
-### does not have.  It is sufficient to	use only one such option: disabling  ###
-### a given instruction set disables all later instruction sets		     ###
-### incorporating that instruction set.  To see the relevant options, run    ###
-### "./configure --help | grep instructions" in the source root directory.   ###
-###									     ###
-### Despite the experimental status of this spec, the library that it builds ###
-### has been observed to be quite stable.				     ###
-################################################################################
+# NOTE: Build with
+# pkgtool build --patches=patches/qt47 experimental/SFEqt47.spec
 
-# TODO: Make package build on non-Nehalem systems without user intervention
+# NOTE: This spec makes use of patches which are hard-coded to enable features
+# of the Intel Nehalem processor, specifically, the SSE 4.2 instruction set.
+# However, the enabling of these features is overriden in the call to configure
+# below, to conform with the practice at SFE of assuming that an i386 CPU is not
+# higher than Pentium.  Thus, if your CPU has a bigger feature set than a
+# Pentium CPU, you should remove the corresponding flags in the call to
+# configure.
+
+# TODO: Autodetect CPU features and configure correspondingly.
 
 # NOTE FOR USERS:
 # If you want nice looking fonts with aliasing, you should create .fonts.conf in your homedir
@@ -43,8 +37,11 @@
 #
 
 # NOTE: To build software using this library which uses qmake, use
+# export PATH=$PATH:/usr/stdcxx/bin
 # export QMAKESPEC=solaris-cc-stdcxx
+# export QTDIR=/usr/stdcxx
 
+%define _basedir /usr/stdcxx
 %include Solaris.inc
 %define srcname qt-everywhere-opensource-src
 
@@ -103,10 +100,8 @@ SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 
 %include default-depend.inc
-%include stdcxx.inc
 BuildRequires: SUNWlibstdcxx4
 Requires: SUNWlibstdcxx4
-Conflicts: SFEqt4
 
 #FIXME: Requires: SUNWxorg-mesa
 # Guarantee X/freetype environment concisely (hopefully):
@@ -124,7 +119,8 @@ Requires: %name
 
 %prep
 %setup -q -n %{srcname}-%version
-%define _patch_options
+# Don't pass --fuzz=0 to patch
+%define _patch_options --unified
 %patch1 -p0
 %patch2 -p0
 %patch3 -p0
@@ -173,20 +169,17 @@ if test "x$CPUS" = "x" -o $CPUS = 0; then
      CPUS=1
 fi
 
-# export CFLAGS="%optflags -fast -xO3 -xarch=sse3 -features=gcc"
-# export CXXFLAGS="-fast -xarch=sse3 -xO3 -mr -norunpath -xregs=no%frameptr -library=%none -staticlib=%none -I/usr/include/stdcxx4 -I/usr/lib/dbus-1.0/include -I/usr/include/libpng14 -xarch=native -features=anachronisms,except,rtti,export,extensions,nestedaccess,tmplife,tmplrefstatic -xalias_level=compatible"
-# export LDFLAGS="%stdcxx_ldflags -fast"
 export CFLAGS="%optflags"
-export CXXFLAGS="%stdcxx_cxxflags -I/usr/lib/dbus-1.0/include -I/usr/include/libpng14 -features=anachronisms,except,rtti,export,extensions,nestedaccess,tmplife,tmplrefstatic -xalias_level=compatible"
-export LDFLAGS="%stdcxx_ldflags"
+export CXXFLAGS="%cxx_optflags -library=stdcxx4 -I/usr/lib/dbus-1.0/include -I/usr/include/libpng14 -features=extensions,nestedaccess,tmplrefstatic -xalias_level=compatible"
+export LDFLAGS="%_ldflags -library=stdcxx4"
 
 
 # 4.6.3 runs into trouble with examples, so disable examples and demos.
 # 4.7.0 runs into trouble with phonon, so don't build that.
 
-# WARNING: If your CPU does not understand SSE 4.2 instructions,
-# add the appropriate option here.  See EXPERIMENTAL note above.
+# Assume i386 CPU is not higher than Pentium
 echo yes | ./configure -prefix %{_prefix} \
+           -no-sse -nosse2 -no-sse3 -no-ssse3 -no-sse4.1 -no-sse4.2 \
            -platform solaris-cc \
            -opensource \
            -docdir %{_docdir}/qt \
@@ -201,7 +194,7 @@ echo yes | ./configure -prefix %{_prefix} \
            -no-exceptions \
            -sysconfdir %{_sysconfdir}
 
-# Solaris Studio 12.2 chokes on -Winline
+# Elliminate -Winline, which Solaris Studio 12.2 rejects
 cd src/gui
 sed 's/ -Winline//' Makefile > Makefile.fixed
 mv Makefile.fixed Makefile
@@ -214,8 +207,7 @@ rm -rf $RPM_BUILD_ROOT
 
 gmake install INSTALL_ROOT=$RPM_BUILD_ROOT
 
-rm ${RPM_BUILD_ROOT}%{_libdir}/*.la
-rm ${RPM_BUILD_ROOT}%{_libdir}/*.a
+rm ${RPM_BUILD_ROOT}%{_libdir}/*.*a
 
 # Eliminate QML imports stuff for now:
 # Who is Nokia to create a new subdirectary in /usr?
@@ -257,6 +249,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/doc/*
 
 %changelog
+* Thu Jan 27 2011 - Alex Viskovatoff
+- Use -library=stdcxx4 instead of include/stdcxx.inc
+- Install in /usr/stdcxx (no longer conflicting with SFEqt4)
 * Dec 10 2010 - Alex Viskovatoff
 - Add 40 patches supplied by russiane39 which enable WebKit among other things.
 - Install qmake.conf file for solaris-cc-stdcxx
