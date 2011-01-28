@@ -22,6 +22,7 @@ License:             LGPLv2
 Version:             4.6.3
 Group:               Development/Libraries
 Source:              ftp://ftp.trolltech.com/qt/source/%{srcname}-%{version}.tar.gz
+Patch3:              qt-03-libpng14.diff
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -45,6 +46,8 @@ Requires: %name
 
 %prep
 %setup -q -n %{srcname}-%version
+# Enforce libpng 1.4
+%patch3 -p1
 
 %build
 CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
@@ -118,10 +121,12 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/doc/*
 
 %changelog
+* Sat Jan 29 2011 - Milan Jurik
+- enforce libpng 1.4
 * Thu Jan 20 2011 - Milan Jurik
 - update to 4.6.3
 - disable demos and examples
-- move to libpng1.4
+- move to libpng 1.4
 - enable exceptions again
 * Nov  4 2010 - Alex Viskovatoff
 - Spec needs "%include osdistro.inc" (pointed out by Thomas Wagner)

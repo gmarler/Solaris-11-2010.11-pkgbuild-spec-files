@@ -1,0 +1,7 @@
+--- qt-everywhere-opensource-src-4.6.3/src/gui/image/qpnghandler.cpp	Thu Jan 27 19:53:21 2011
++++ qt-everywhere-opensource-src-4.6.3-patch/src/gui/image/qpnghandler.cpp	Thu Jan 27 19:53:10 2011
+@@ -53,2 +53,2 @@
+-#include <png.h>
+-#include <pngconf.h>
++#include <libpng14/png.h>
++#include <libpng14/pngconf.h>
