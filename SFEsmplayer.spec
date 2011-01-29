@@ -14,8 +14,7 @@ Vendor:		Ricardo Villalba
 Version:	0.6.9
 License:	GPL
 Source:		%sf_download/%srcname/%srcname-%version.tar.bz2
-Patch1:		smplayer-01-Makefile.diff
-Patch2:		smplayer-02-std-namespace.diff
+Patch1:		smplayer-01-std-namespace.diff
 SUNW_BaseDir:	%{_basedir}
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
@@ -31,7 +30,6 @@ Requires: SUNWzlib
 %prep
 %setup -q -n %srcname-%version
 %patch1 -p1
-%patch2 -p1
 
 %build
 
@@ -39,16 +37,11 @@ CPUS=`/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' '`
 if test "x$CPUS" = "x" -o $CPUS = 0; then
      CPUS=1
 fi
+
 export LIBS=-lz
-
-# The smplayer Makefile doesn't look at CXXFLAGS or LDFLAGS.  Qt is built
-# against stdcxx, but apparently not using -library=stdcxx4 when building
-# smplayer doesn't do any harm.
-
-# Use ginstall and gtar
-sed -e 's/install /ginstall /' -e 's/tar /gtar /g' Makefile > Makefile.fixed
-mv Makefile.fixed Makefile
-
+export PATH=$PATH:/usr/stdcxx/bin
+export QMAKESPEC=solaris-cc-stdcxx
+export QTDIR=/usr/stdcxx
 gmake -j$CPUS PREFIX=%_basedir
 
 %install
@@ -87,6 +80,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Jan 28 2011 - Alex Viskovatoff
+- Stop linking to libCstd (which did not cause crashes for some reason)
+- Add the Qt bin directory to $PATH, so one patch is no longer needed
 * Thu Jan 27 2011 - Alex Viskovatoff
 - Use SFEqt47, adding two patches
 * Sun Oct 17 2010 - Alex Viskovatoff

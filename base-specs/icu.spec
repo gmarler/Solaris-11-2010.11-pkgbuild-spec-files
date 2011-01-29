@@ -29,8 +29,8 @@ Patch3:	icu-03-Rpath.diff
 export LD=CC
 export CFLAGS="%optflags"
 export CPPFLAGS=""
-export CXXFLAGS="-library=stdcxx4 %cxx_optflags"
-export LDFLAGS="-library=stdcxx4"
+export CXXFLAGS="%cxx_optflags -library=stdcxx4"
+export LDFLAGS="%_ldflags -library=stdcxx4"
 export LIBS=""
 PATH=%{_bindir}:$PATH
 
@@ -99,5 +99,7 @@ ${MAKE} install DESTDIR=${RPM_BUILD_ROOT}
 
 
 %changelog
+* Fri Jan 28 2011 - Alex Viskovatoff
+- Add %_ldflags to LDFLAGS
 * Fri Nov 19 2010 - Alex Viskovatoff
 - Adapt kde-solaris base-icu4c.spec, bumping to 4.4.2 from 4.4.1

@@ -89,6 +89,6 @@ rm -rf ${RPM_BUILD_ROOT}
 
 %changelog
 * Fri Nov  5 2010 - Alex Viskovatoff
-- Update to 1.0.0, adding l10n
+- Update to 5.0.0, adding l10n
 * Wed Jun 02 2010 - brian.cameron@oracle.com
 - Initial setup.

@@ -4,7 +4,7 @@
 # includes module: qt
 #
 
-# NOTE: Build with
+# NOTE: If you don't have the patched pkgtool, build with
 # pkgtool build --patches=patches/qt47 experimental/SFEqt47.spec
 
 # NOTE: This spec makes use of patches which are hard-coded to enable features
@@ -34,7 +34,9 @@
 #        <edit mode="assign" name="antialias" >
 #            <bool>true</bool>
 #        </edit>
-#
+#   </match>
+#</fontconfig>
+
 
 # NOTE: To build software using this library which uses qmake, use
 # export PATH=$PATH:/usr/stdcxx/bin
@@ -52,50 +54,50 @@ License:             LGPLv2
 Version:             4.7.1
 Source:              ftp://ftp.trolltech.com/qt/source/%srcname-%version.tar.gz
 Source1:	     qmake.conf
-Patch1:		     qt471-01-configure-ext.diff
-Patch2:		     qt471-02-ext.diff
-Patch3:		     qt471-03-ext2.diff
-Patch4:		     qt471-04-sse42.diff
+Patch1:		     qt47/qt471-01-configure-ext.diff
+Patch2:		     qt47/qt471-02-ext.diff
+Patch3:		     qt47/qt471-03-ext2.diff
+Patch4:		     qt47/qt471-04-sse42.diff
 #These patches are stolen from KDE guys and affect WebKit 
 #(I'm not first who stole them, most of them are stolen from cvsdude old repo)
-Patch5:		     webkit01-17.diff
-Patch6:		     webkit04-17.diff
-Patch7:		     webkit05-17.diff
-Patch8:		     webkit08-17.diff
-Patch9:		     webkit10-17.diff
-Patch10:	     webkit11-17.diff
-Patch11:	     webkit13-17.diff
-Patch12:	     webkit14-17.diff
-Patch13:	     webkit15-17.diff
-Patch14:	     webkit16-17.diff
-Patch15:	     webkit17-17.diff
+Patch5:		     qt47/webkit01-17.diff
+Patch6:		     qt47/webkit04-17.diff
+Patch7:		     qt47/webkit05-17.diff
+Patch8:		     qt47/webkit08-17.diff
+Patch9:		     qt47/webkit10-17.diff
+Patch10:	     qt47/webkit11-17.diff
+Patch11:	     qt47/webkit13-17.diff
+Patch12:	     qt47/webkit14-17.diff
+Patch13:	     qt47/webkit15-17.diff
+Patch14:	     qt47/webkit16-17.diff
+Patch15:	     qt47/webkit17-17.diff
 #These don't affect Webkit, I've decided they are nice and steal from KDE guys
-Patch16:	     qt-fastmalloc.diff
-Patch17:	     qt-align.diff 
-Patch18:	     qt-qglobal.diff
-Patch19:	     qt-4.6.2-iconv-XPG5.diff
-Patch20: 	     qt-thread.diff
-Patch21:	     qt-arch.diff 
-Patch22:	     qt-4.6.2-webkit-CSSComputedStyleDeclaration.cpp.221.diff
-Patch23:	     qt-4.6.2-networkaccessmanager.cpp.233.diff
-Patch24:	     qt-4.7.0-webkit-runtime_array.h.234.diff
-Patch25:	     qt-MathExtras.diff
-Patch26:	     qt-webkit-exceptioncode.diff 
-Patch27:	     qt-uistring.diff 
-Patch28:	     template.diff 
-Patch29:	     plugin-loader.diff 
-Patch30:	     qt-qxmlquery.cpp.diff
-Patch31:	     qt-clucene.diff 
-Patch32:	     qt-configure-iconv.diff 
-Patch33:	     qt-4.6.2-iconv.diff
-Patch34:	     qt-qmutex_unix.cpp.diff
+Patch16:	     qt47/qt-fastmalloc.diff
+Patch17:	     qt47/qt-align.diff 
+Patch18:	     qt47/qt-qglobal.diff
+Patch19:	     qt47/qt-4.6.2-iconv-XPG5.diff
+Patch20: 	     qt47/qt-thread.diff
+Patch21:	     qt47/qt-arch.diff 
+Patch22:	     qt47/qt-4.6.2-webkit-CSSComputedStyleDeclaration.cpp.221.diff
+Patch23:	     qt47/qt-4.6.2-networkaccessmanager.cpp.233.diff
+Patch24:	     qt47/qt-4.7.0-webkit-runtime_array.h.234.diff
+Patch25:	     qt47/qt-MathExtras.diff
+Patch26:	     qt47/qt-webkit-exceptioncode.diff 
+Patch27:	     qt47/qt-uistring.diff 
+Patch28:	     qt47/template.diff 
+Patch29:	     qt47/plugin-loader.diff 
+Patch30:	     qt47/qt-qxmlquery.cpp.diff
+Patch31:	     qt47/qt-clucene.diff 
+Patch32:	     qt47/qt-configure-iconv.diff 
+Patch33:	     qt47/qt-4.6.2-iconv.diff
+Patch34:	     qt47/qt-qmutex_unix.cpp.diff
 #These exclusive to SFE
-Patch35:	     qt471-05-pluginqlib.diff
-Patch36:	     qt-4.7.1-webkit-jscore-munmap.diff
-Patch37:	     qt-4.7.1-webkit-jsc-wts-systemalloc.diff
-Patch38:	     qt-4.7.1-mathextras.diff
-Patch39: 	     qt-4.7.1-qiconvcodec.diff
-Patch40:	     qt-471-shm.diff 
+Patch35:	     qt47/qt471-05-pluginqlib.diff
+Patch36:	     qt47/qt-4.7.1-webkit-jscore-munmap.diff
+Patch37:	     qt47/qt-4.7.1-webkit-jsc-wts-systemalloc.diff
+Patch38:	     qt47/qt-4.7.1-mathextras.diff
+Patch39: 	     qt47/qt-4.7.1-qiconvcodec.diff
+Patch40:	     qt47/qt-471-shm.diff 
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 
@@ -179,7 +181,7 @@ export LDFLAGS="%_ldflags -library=stdcxx4"
 
 # Assume i386 CPU is not higher than Pentium
 echo yes | ./configure -prefix %{_prefix} \
-           -no-sse -nosse2 -no-sse3 -no-ssse3 -no-sse4.1 -no-sse4.2 \
+           -no-sse -no-sse2 -no-sse3 -no-ssse3 -no-sse4.1 -no-sse4.2 \
            -platform solaris-cc \
            -opensource \
            -docdir %{_docdir}/qt \
@@ -214,7 +216,10 @@ rm ${RPM_BUILD_ROOT}%{_libdir}/*.*a
 rm -r ${RPM_BUILD_ROOT}%_prefix/imports
 
 # Create qmake.conf for building against this library
-cd ${RPM_BUILD_ROOT}%_datadir/qt/mkspecs
+cd ${RPM_BUILD_ROOT}%_datadir/qt/mkspecs/solaris-cc
+sed 's/ -O2/ -xO3 -xspace/' qmake.conf > qmake.conf.new
+mv qmake.conf.new qmake.conf
+cd ..
 mkdir solaris-cc-stdcxx
 cd solaris-cc-stdcxx
 install %SOURCE1 .
@@ -249,6 +254,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/doc/*
 
 %changelog
+* Fri Jan 28 2011 - Alex Viskovatoff
+- Change optimization flags in share/qt/mkspecs/solaris-cc/qmake.conf
 * Thu Jan 27 2011 - Alex Viskovatoff
 - Use -library=stdcxx4 instead of include/stdcxx.inc
 - Install in /usr/stdcxx (no longer conflicting with SFEqt4)
