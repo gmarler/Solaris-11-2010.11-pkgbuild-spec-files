@@ -8,18 +8,20 @@
 # Where dhcp configuration files are stored
 %define dhcpconfdir %{_sysconfdir}/dhcp
 
+%define short_name dhcp
+
 %include Solaris.inc
 
-Name:            dhcp
+Name:            SFE%{short_name}
 Summary:         Dynamic host configuration protocol software
 Version:         4.2.0
 License:         ISC DHCP license
 URL:             http://www.isc.org/software/dhcp
-Source:          ftp://ftp.isc.org/isc/%{name}/%{name}-%{version}.tar.gz
-Source1:         %{name}-manifest.xml
+Source:          ftp://ftp.isc.org/isc/%{short_name}/%{short_name}-%{version}.tar.gz
+Source1:         %{short_name}-manifest.xml
 SUNW_BaseDir:    /
-BuildRoot:       %{_tmppath}/%{name}-%{version}-build
-SUNW_Copyright:  %{name}.copyright
+BuildRoot:       %{_tmppath}/%{short_name}-%{version}-build
+SUNW_Copyright:  %{short_name}.copyright
 
 #####################################
 ##  Package Requirements Section   ##
@@ -47,7 +49,7 @@ the ISC DHCP service and relay agent.
 
 
 %prep
-%setup -q -n %name-%{version}
+%setup -q -n %short_name-%{version}
 
 # Update paths in all man pages
 for page in client/dhclient.conf.5 client/dhclient.leases.5 \
@@ -67,10 +69,10 @@ done
 
 
 %build
-export CC=/usr/bin/gcc
-export CXX=g++
+export CC=cc
+export CXX=CC
 export LDFLAGS="%_ldflags"
-export CFLAGS="%{gcc_optflags}"
+export CFLAGS="%{optflags}"
 ./configure --prefix=%{_prefix} --sysconfdir=%{dhcpconfdir} \
   || (cat config.log; false)
 
@@ -108,7 +110,7 @@ touch    %{buildroot}/var/db/dhcpd.leases
 # install smf manifest
 %define svcdir /var/svc/manifest/network
 mkdir -p %{buildroot}/%{svcdir}
-cp %{SOURCE1} %{buildroot}/%{svcdir}/%{name}.xml
+cp %{SOURCE1} %{buildroot}/%{svcdir}/%{short_name}.xml
 
 
 %clean
@@ -166,6 +168,7 @@ rm -rf $RPM_BUILD_ROOT
 %changelog
 * 2011-02-01 gmarler@gmarler.com
 - Rework for Solaris 11 2010.11, update to 4.2.0 from 4.2.0a1
+- Use with Studio 12.1 instead of gcc/g++
 * 2010-02-16 Robert Milkowski
 - updated to 4.2.0a1
 * 2009-08-30 Robert Milkowski
