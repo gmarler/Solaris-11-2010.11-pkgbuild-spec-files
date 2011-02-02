@@ -8,7 +8,6 @@
 # Where dhcp configuration files are stored
 %define dhcpconfdir %{_sysconfdir}/dhcp
 
-
 %include Solaris.inc
 
 Name:            dhcp
@@ -16,26 +15,20 @@ Summary:         Dynamic host configuration protocol software
 Version:         4.2.0
 License:         ISC DHCP license
 URL:             http://www.isc.org/software/dhcp
-Source:          ftp://ftp.isc.org/isc/%{name}/%{name}-%{version}a1.tar.gz
+Source:          ftp://ftp.isc.org/isc/%{name}/%{name}-%{version}.tar.gz
 Source1:         %{name}-manifest.xml
 SUNW_BaseDir:    /
 BuildRoot:       %{_tmppath}/%{name}-%{version}-build
 SUNW_Copyright:  %{name}.copyright
-
-# OpenSolaris IPS Manifest Fields
-Meta(info.upstream): dhcp-users@isc.org
-Meta(info.maintainer): Robert Milkowski <milek@wp.pl>
-Meta(info.classification): org.opensolaris.category.2008:System/Services
-Meta(pkg.detailed_url): http://www.isc.org/software/dhcp
 
 #####################################
 ##  Package Requirements Section   ##
 #####################################
 
 %include default-depend.inc
-BuildRequires: SUNWgcc
-BuildRequires: SUNWggrp
-BuildRequires: SUNWgsed
+BuildRequires: developer/gcc-3
+BuildRequires: text/gnu-grep
+BuildRequires: text/gnu-sed
 
 %define sed /usr/bin/gsed
 
@@ -54,7 +47,7 @@ the ISC DHCP service and relay agent.
 
 
 %prep
-%setup -q -n %name-%{version}a1
+%setup -q -n %name-%{version}
 
 # Update paths in all man pages
 for page in client/dhclient.conf.5 client/dhclient.leases.5 \
@@ -123,7 +116,6 @@ rm -rf $RPM_BUILD_ROOT
 
 
 
-
 %files
 %defattr (-, root, bin)
 
@@ -172,6 +164,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* 2011-02-01 gmarler@gmarler.com
+- Rework for Solaris 11 2010.11, update to 4.2.0 from 4.2.0a1
 * 2010-02-16 Robert Milkowski
 - updated to 4.2.0a1
 * 2009-08-30 Robert Milkowski
