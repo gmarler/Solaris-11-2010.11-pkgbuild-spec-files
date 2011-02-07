@@ -9,28 +9,24 @@
 
 %include Solaris.inc
 
-Name:           gtk-gnutella
+%define short_name gtk-gnutella
+
+Name:           SFE%{short_name}
 Summary:        Gtk-Gnutella - Graphical Gnutella Client
-Version:        0.96.6
+Version:        0.96.8
 License:        GPLv2
 URL:            http://gtk-gnutella.sourceforge.net/
-Source:         http://downloads.sourceforge.net/project/%{name}/%{name}/%{version}/%{name}-%{version}.tar.bz2
+Source:         http://downloads.sourceforge.net/project/%{short_name}/%{short_name}/%{version}/%{short_name}-%{version}.tar.bz2
 Distribution:   OpenSolaris
 Vendor:		      OpenSolaris Community
-BuildRoot:      %{_tmppath}/%{name}-%{version}-build
+BuildRoot:      %{_tmppath}/%{short_name}-%{version}-build
 SUNW_Basedir:   %{_basedir}
-SUNW_Copyright: %{name}.copyright
+SUNW_Copyright: %{short_name}.copyright
 
 %include default-depend.inc
 
 # Very likely that OpenSolaris only supports GTK v2 anyway...
 %define gtkver 2
-
-# OpenSolaris IPS Package Manifest Fields
-Meta(info.upstream):        gtk-gnutella-devel@lists.sourceforge.net
-Meta(info.maintainer):      Gordon Marler <gmarler@gmarler.com>
-Meta(info.repository_url):  http://downloads.sourceforge.net/project/%{name}/%{name}/%{version}/%{name}-%{version}.tar.bz2
-Meta(info.classification):  org.opensolaris.category.2008:Applications/Internet
 
 #
 # BuildRequires: (configuration/compile time requirements)
@@ -82,8 +78,11 @@ Passive/Active Remote Queueing (PARQ) and other modern gnutella network
 features.
 
 %prep
+rm -rf %{short_name}-%{version}
+#mkdir %{short_name}-%{version}
+#cd %{_builddir}/%{short_name}-%{version}
 
-%setup
+%setup -n %{short_name}-%{version}
 
 %build
 CPUS=$(/usr/sbin/psrinfo | grep on-line | wc -l | tr -d ' ')
@@ -97,7 +96,7 @@ MAKE=/bin/gmake \
           --gtk%{gtkver} \
           --prefix=%{_prefix} \
           --bindir=%{_bindir} \
-          --datadir=%{_datadir}/%{name} \
+          --datadir=%{_datadir}/%{short_name} \
           --mandir=%{_mandir}/man1 \
           --cc=gcc \
           --ldflags="-lnsl -lsocket" \
@@ -173,23 +172,26 @@ rm -rf $RPM_BUILD_ROOT
 
 %dir %attr(0755, root, bin) %{_mandir}
 %attr(0444, root, bin) %{_mandir}/man1/*
-%dir %attr(0755, root, bin) %{_prefix}/share/%{name}
-%attr(0444, root, other) %{_prefix}/share/%{name}/*.txt
-%attr(0444, root, other) %{_prefix}/share/%{name}/*.png
-%dir %attr(0755, root, other) %{_prefix}/share/%{name}/en
-%attr(0444, root, other) %{_prefix}/share/%{name}/en/FAQ
-%dir %attr(0755, root, other) %{_prefix}/share/%{name}/ja
-%attr(0444, root, other) %{_prefix}/share/%{name}/ja/FAQ
-%dir %attr(0755, root, other) %{_prefix}/share/%{name}/el
-%attr(0444, root, other) %{_prefix}/share/%{name}/el/FAQ
-%dir %attr(0755, root, bin) %{_prefix}/share/%{name}/pixmaps
-%attr(0444, root, bin) %{_prefix}/share/%{name}/pixmaps/*
+%dir %attr(0755, root, bin) %{_prefix}/share/%{short_name}
+%attr(0444, root, other) %{_prefix}/share/%{short_name}/*.txt
+%attr(0444, root, other) %{_prefix}/share/%{short_name}/*.png
+%dir %attr(0755, root, other) %{_prefix}/share/%{short_name}/en
+%attr(0444, root, other) %{_prefix}/share/%{short_name}/en/FAQ
+%dir %attr(0755, root, other) %{_prefix}/share/%{short_name}/ja
+%attr(0444, root, other) %{_prefix}/share/%{short_name}/ja/FAQ
+%dir %attr(0755, root, other) %{_prefix}/share/%{short_name}/el
+%attr(0444, root, other) %{_prefix}/share/%{short_name}/el/FAQ
+%dir %attr(0755, root, bin) %{_prefix}/share/%{short_name}/pixmaps
+%attr(0444, root, bin) %{_prefix}/share/%{short_name}/pixmaps/*
 %dir %attr(0755, root, other) %{_prefix}/share/applications
 %attr(0444, root, bin) %{_prefix}/share/applications/*
 %dir %attr(0755, root, other) %{_prefix}/share/pixmaps
 %attr(0444, root, bin) %{_prefix}/share/pixmaps/*
 
 %changelog
+* Fri Feb 04, 2011 - gmarler@gmarler.com
+- Use new S11 Express naming scheme
+- use of short_name
 * Thu Aug 27 - gmarler@gmarler.com
 Initial spec file, all %files directives
 Fix Source location
