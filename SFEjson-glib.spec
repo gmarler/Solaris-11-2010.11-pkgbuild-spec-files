@@ -18,18 +18,18 @@ BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 
 %if %{!?_without_gtk_doc:1}%{?_without_gtk_doc:0}
-BuildRequires: SUNWgnome-common-devel
-BuildRequires: SUNWgtk-doc
+BuildRequires: developer/gnome/gettext
+BuildRequires: developer/documentation-tool/gtk-doc
 %endif
-BuildRequires: SUNWgnome-base-libs-devel
-Requires: SUNWgnome-base-libs
+BuildRequires: library/gnome/base-libs
+Requires: library/gnome/base-libs
 
 %package devel
 Summary:                 %{summary} - development files
 SUNW_BaseDir:            %{_basedir}
 %include default-depend.inc
 Requires: %name
-Requires: SUNWgnome-base-libs-devel
+Requires: library/gnome/base-libs
 
 %prep
 %setup -q -n json-glib-%version
@@ -71,9 +71,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc AUTHORS COPYING ChangeLog NEWS README
 %dir %attr (0755, root, bin) %{_libdir}
 %{_libdir}/lib*.so*
-%{_libdir}/girepository-1.0
+# %{_libdir}/girepository-1.0
 %dir %attr (0755, root, sys) %{_datadir}
-%{_datadir}/gir-1.0
+# %{_datadir}/gir-1.0
 %dir %attr (0755, root, other) %{_docdir}
 
 %files devel

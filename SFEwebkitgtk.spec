@@ -7,6 +7,7 @@
 
 #we are on OpenSolaris (or on SXCE or Solaris 10)
 %define OS2nnn %( egrep "OpenSolaris 20[0-9][0-9]" /etc/release > /dev/null  && echo 1 || echo 0) 
+%define S11Express %( egrep "Solaris 11 Express" /etc/release > /dev/null  && echo 1 || echo 0) 
 
 Name:                    SFEwebkitgtk
 Summary:                 WetKit, an open source web browser engine that's used by Safari, Dashboard, Mail, and many other OS X applications.
@@ -48,28 +49,27 @@ SUNW_Copyright:          SFEwebkit.copyright
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
 %include default-depend.inc
 
-Requires: SUNWcurl
-Requires: SUNWlibsoup
-Requires: SUNWgtk2
-Requires: SUNWflexlex
+Requires: web/curl
+Requires: library/libsoup
+Requires: library/desktop/gtk2
+Requires: developer/lexer/flex
 
-BuildRequires: SUNWgnome-spell
-BuildRequires: SUNWgnu-idn
-BuildRequires: SUNWgnome-base-libs
-BuildRequires: SUNWicu
-BuildRequires: SUNWlxml
-BuildRequires: SUNWsqlite3
-BuildRequires: SUNWzlib
-BuildRequires: SUNWgnome-media
-BuildRequires: SUNWicud
-BuildRequires: SUNWgnu-gettext
-BuildRequires: SUNWgnu-gperf
-BuildRequires: SUNWgnome-common-devel
-BuildRequires: SUNWgnome-media
-BuildRequires: SUNWflexlex
+BuildRequires: library/spell-checking/enchant
+BuildRequires: library/libidn
+BuildRequires: library/gnome/base-libs
+BuildRequires: library/icu
+BuildRequires: library/libxml2
+BuildRequires: database/sqlite-3
+BuildRequires: library/zlib
+BuildRequires: library/audio/gstreamer
+BuildRequires: developer/icu
+BuildRequires: text/gnu-gettext
+BuildRequires: developer/gperf
+BuildRequires: developer/gnome/gettext
+BuildRequires: developer/lexer/flex
 
-%if %OS2nnn
-Requires: SUNWopenssl
+%if %S11Express
+Requires: library/security/openssl
 %else
 BuildRequires: SUNWopenssl-include
 Requires: SUNWopenssl-libraries
@@ -181,6 +181,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sun Jan 30 2011 - gmarler@gmarler.com
+- Use S11 2010.11 package names
 * Thu Aug 26 2010 - brian.cameron@oracle.com
 - Add flex dependency.
 * Fri Jul 16 2010 - yuntong.jin@sun.com

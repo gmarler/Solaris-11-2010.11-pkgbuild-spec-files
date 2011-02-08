@@ -6,11 +6,11 @@
 %include Solaris.inc
 
 %define	src_name vala
-%define	src_url	http://download.gnome.org/sources/vala/0.7
+%define	src_url	http://download.gnome.org/sources/vala/0.10
 
 Name:                SFEvala
 Summary:             Vala programming language
-Version:             0.7.10
+Version:             0.10.3
 Source:              %{src_url}/%{src_name}-%{version}.tar.bz2
 SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
@@ -21,6 +21,10 @@ Summary:                 %{summary} - development files
 SUNW_BaseDir:            %{_prefix}
 %include default-depend.inc
 Requires: %name
+#
+# TODO: Does this depend on library/libgee too?
+#
+BuildRequires: library/desktop/libgee
 
 %prep
 %setup -q -n %{src_name}-%version
@@ -65,7 +69,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/lib*.so*
 %dir %attr (0755, root, sys) %{_datadir}
 %{_datadir}/devhelp
-%{_datadir}/vala
+%{_datadir}/vala-0.10
+%{_datadir}/aclocal
 %{_mandir}
 
 %files devel
@@ -76,6 +81,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*
 
 %changelog
+* Sat Jan 29 2011 - gmarler@gmarler.com
+- Bump to 0.10.3
+- Change %{_datadir}/vala to .../vala-0.10
 * Wed Mar 10 2010 - brian.cameron@sun.com
 - Bump to 0.7.10.
 * Tue Nov 24 2009 - brian.cameron@sun.com

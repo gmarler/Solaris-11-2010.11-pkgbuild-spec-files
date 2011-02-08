@@ -19,33 +19,33 @@ SUNW_BaseDir:        %{_basedir}
 BuildRoot:           %{_tmppath}/%{name}-%{version}-build
 
 %include default-depend.inc
-Requires: SUNWlibtool
-Requires: SUNWgd2
-Requires: SUNWlexpt
-Requires: SUNWfontconfig
-Requires: SUNWlexpt
+Requires: developer/build/libtool
+Requires: library/gd
+Requires: library/expat
+Requires: system/library/fontconfig
+Requires: library/expat
 %if %SFEfreetype
 Requires: SFEfreetype
 %else
-Requires: SUNWfreetype2
+Requires: system/library/freetype-2
 %endif
-Requires: SUNWgnome-base-libs
-Requires: SUNWjpg
-Requires: SUNWlibC
-Requires: SUNWpng
+Requires: library/gnome/base-libs
+Requires: image/library/libjpeg
+Requires: system/library/c++/sunpro
+Requires: image/library/libpng
 %if %SFEfreetype
 BuildRequires: SFEfreetype-devel
 %else
-BuildRequires: SUNWfreetype2
+BuildRequires: system/library/freetype-2
 %endif
-BuildRequires: SUNWgnome-base-libs-devel
-BuildRequires: SUNWlibtool
-BuildRequires: SUNWPython-devel
-BuildRequires: SUNWTcl
-BuildRequires: SUNWperl584core
-BuildRequires: SUNWruby18u
-BuildRequires: SUNWswig
-BuildRequires: SUNWgnome-common-devel
+BuildRequires: library/gnome/base-libs
+BuildRequires: developer/build/libtool
+BuildRequires: runtime/python-24
+BuildRequires: runtime/tcl-8
+BuildRequires: runtime/perl-584
+BuildRequires: runtime/ruby-18
+BuildRequires: developer/swig
+BuildRequires: developer/gnome/gettext
 
 %package devel
 Summary:                 %{summary} - development files
