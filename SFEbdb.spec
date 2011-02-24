@@ -4,6 +4,7 @@
 # includes module(s): bdb
 #
 %include Solaris.inc
+# %include arch64.inc
 
 #SUNWbdb is w/o db.h, we install in /usr/gnu/
 %include usr-gnu.inc
@@ -12,7 +13,7 @@ Name:                    SFEbdb
 Summary:                 Berkeley DB
 Version:                 4.8.26
 #Source:                  http://download-west.oracle.com/berkeley-db/db-%{version}.tar.gz
-Source:			http://download.oracle.com/berkeley-db/db-%{version}.tar.gz
+Source:                  http://download.oracle.com/berkeley-db/db-%{version}.tar.gz
 URL:                     http://www.oracle.com/technology/software/products/berkeley-db/index.html
 SUNW_BaseDir:            %{_basedir}
 BuildRoot:               %{_tmppath}/%{name}-%{version}-build
@@ -32,23 +33,23 @@ cd build_unix
 ../dist/configure                           \
         --prefix=%{_prefix}                 \
         --libexecdir=%{_libexecdir}         \
+        --libdir=%{_libdir}                 \
         --mandir=%{_mandir}                 \
         --datadir=%{_datadir}               \
         --infodir=%{_datadir}/info          \
-	--enable-compat185		    \
+        --enable-compat185                  \
+        --enable-cxx                        \
+        --enable-o_direct                   \
         --disable-static                    \
         --enable-shared
 
-
-
-make -j$CPUS 
+gmake -j$CPUS 
 
 %install
 rm -rf $RPM_BUILD_ROOT
 cd build_unix
 make install DESTDIR=$RPM_BUILD_ROOT
 rm $RPM_BUILD_ROOT%{_libdir}/*.la
-#rm $RPM_BUILD_ROOT%{_libdir}/*.a
 mkdir -p $RPM_BUILD_ROOT%{_prefix}/share/doc
 mv $RPM_BUILD_ROOT%{_prefix}/docs $RPM_BUILD_ROOT%{_prefix}/share/doc/bdb
 
