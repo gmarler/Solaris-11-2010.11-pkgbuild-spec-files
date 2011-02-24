@@ -3,6 +3,7 @@
 #
 #
 %include Solaris.inc
+# %include arch64.inc
 
 Name:             GMperl510
 Summary:          Practical Extraction and Report Language
@@ -21,7 +22,7 @@ BuildRoot:        %{_tmppath}/%{name}-%{version}-build
 %else
 %define perl_arch_dir i86pc-solaris-64int 
 %endif
-%define           vendor          GM
+%define           perl_vendor     GM
 %define           perl5_dir       %{_prefix}/perl5
 %define           perl_prefix     %{perl5_dir}/%{version}
 %define           perl_lib        %{perl_prefix}/lib
@@ -31,8 +32,10 @@ BuildRoot:        %{_tmppath}/%{name}-%{version}-build
 %define           perl_sitelib    %{perl_sitedir}/%{version}
 %define           perl_sitearch   %{perl_sitelib}/%{perl_arch_dir}
 %define           perl_vendordir  %{perl5_dir}/vendor_perl
-%define           perl_vendorlib  %{perl_vendordir}/%{version}/%{vendor}
-%define           perl_vendorarch %{perl_vendordir}/%{version}/%{vendor}/%{perl_arch_dir}
+#%define           perl_vendorlib  %{perl_vendordir}/%{version}/%{vendor}
+#%define           perl_vendorarch %{perl_vendordir}/%{version}/%{vendor}/%{perl_arch_dir}
+%define           perl_vendorlib  %{perl_vendordir}/%{version}
+%define           perl_vendorarch %{perl_vendordir}/%{version}/%{perl_arch_dir}
 
 
 %include default-depend.inc
