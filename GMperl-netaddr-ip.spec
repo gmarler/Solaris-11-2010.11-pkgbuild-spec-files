@@ -15,6 +15,7 @@
 
 %define perl_version 5.10.1
 %define perl         /usr/perl5/5.10.1/bin/perl
+
 # The prefix matches the one that Sun/Oracle has used for deployment over
 # the years, and prevents any kind of collision with existing versions
 %ifarch sparc
@@ -22,18 +23,21 @@
 %else
 %define perl_arch_dir i86pc-solaris-64int 
 %endif
+
 %define           vendor          GM  
 %define           perl5_dir       %{_prefix}/perl5
-%define           perl_prefix     %{perl5_dir}/%{version}
+%define           perl_prefix     %{perl5_dir}/%{perl_version}
 %define           perl_lib        %{perl_prefix}/lib
 %define           perl_archlib    %{perl_lib}/%{perl_arch_dir}
 %define           perl_mandir     %{perl_prefix}/man
 %define           perl_sitedir    %{perl5_dir}/site_perl
-%define           perl_sitelib    %{perl_sitedir}/%{version}
+%define           perl_sitelib    %{perl_sitedir}/%{perl_version}
 %define           perl_sitearch   %{perl_sitelib}/%{perl_arch_dir}
 %define           perl_vendordir  %{perl5_dir}/vendor_perl
-%define           perl_vendorlib  %{perl_vendordir}/%{version}/%{vendor}
-%define           perl_vendorarch %{perl_vendordir}/%{version}/%{vendor}/%{perl_arch_dir}
+#%define           perl_vendorlib  %{perl_vendordir}/%{version}/%{vendor}
+#%define           perl_vendorarch %{perl_vendordir}/%{version}/%{vendor}/%{perl_arch_dir}
+%define           perl_vendorlib  %{perl_vendordir}/%{perl_version}
+%define           perl_vendorarch %{perl_vendorlib}/%{perl_arch_dir}
 
 %include Solaris.inc
 
@@ -60,9 +64,6 @@ NetAddr::IP
 %setup -q            -c -n %name-%module_version
 
 %build
-
-
-
 
 cd %{module_name}-%{module_version_download}
 %{perl} Makefile.PL \
