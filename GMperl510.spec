@@ -22,6 +22,7 @@ BuildRoot:        %{_tmppath}/%{name}-%{version}-build
 %else
 %define perl_arch_dir i86pc-solaris-64int 
 %endif
+
 %define           perl_vendor     GM
 %define           perl5_dir       %{_prefix}/perl5
 %define           perl_prefix     %{perl5_dir}/%{version}
@@ -35,7 +36,7 @@ BuildRoot:        %{_tmppath}/%{name}-%{version}-build
 #%define           perl_vendorlib  %{perl_vendordir}/%{version}/%{vendor}
 #%define           perl_vendorarch %{perl_vendordir}/%{version}/%{vendor}/%{perl_arch_dir}
 %define           perl_vendorlib  %{perl_vendordir}/%{version}
-%define           perl_vendorarch %{perl_vendordir}/%{version}/%{perl_arch_dir}
+%define           perl_vendorarch %{perl_vendorlib}/%{perl_arch_dir}
 
 
 %include default-depend.inc
@@ -114,8 +115,8 @@ export LDFLAGS="%_ldflags -L%{_prefix}/gnu/lib -R%{_prefix}/gnu/lib -L%{_libdir}
   -Dusesitecustomize                    \
   -Dusethreads                          \
   -Dccdlflags="-R %{perl_archlib}/CORE" \
-  -Dvendorarch=%{perl_vendorarch}/%{vendor} \
-  -Dvendorlib=%{perl_vendorlib}/%{vendor}   \
+  -Dvendorarch=%{perl_vendorarch}       \
+  -Dvendorlib=%{perl_vendorlib}         \
   -Dvendorprefix=%{perl_prefix}         \
   -Dlibs="$PERL_LIBS"                   \
   -Dlibsdirs=" /usr/lib "               \
