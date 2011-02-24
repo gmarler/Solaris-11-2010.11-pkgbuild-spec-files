@@ -21,10 +21,10 @@
 
 %ifarch amd64
 %define opt_amd64 1
-%define bld_arch	"amd64"
+%define bld_arch	amd64
 %else
 %define opt_sparcv9 1
-%define bld_arch	"sparcv9"
+%define bld_arch	sparcv9
 %endif
 
 %if %debug_build
@@ -59,8 +59,8 @@
 %endif
 
 %ifarch i386
-%define suncc_optflags64           -i %_cc64_opt_level -xstrconst -xarch=generic64 -Kpic -xregs=no%%frameptr
-%define suncc_cxx_optflags64       -i %_cxx64_opt_level -xarch=generic64 -Kpic -pentium -mr -norunpath -xregs=no%%frameptr
+%define suncc_optflags64           -i %_cc64_opt_level -xstrconst -m64 -Kpic -xregs=no%%frameptr
+%define suncc_cxx_optflags64       -i %_cxx64_opt_level -m64 -Kpic -pentium -mr -norunpath -xregs=no%%frameptr
 %endif
 
 %if %cc_is_gcc
